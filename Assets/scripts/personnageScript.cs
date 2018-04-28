@@ -14,6 +14,7 @@ public class personnageScript : MonoBehaviour {
 	public float gravite; // la force de la gravité
 	public float sensibilite; // la sensibilité de la souris
 	public float dureeMur; // le temps que l'on peut rester accroché au mur
+	public float distanceMurMax; // la distance maximale de laquelle on peut s'éloigner du mur
 
 	private GameObject personnage;
 	private CharacterController controller;
@@ -27,6 +28,8 @@ public class personnageScript : MonoBehaviour {
 	private float debutSaut; // le timing où le personnage a débuté son dernier saut !
 	private Vector3 pointDebutSaut; // le point de départ du saut !
 	private float debutMur; // le timing où le personnage a commencé à s'accrocher au mur !
+	private Vector3 normaleMur; // la normale au mur sur lequel le personnage est accroché !
+	private Vector3 pointMur; // un point du mur sur lequel le personnage est accroché ! En effet, la normale ne suffit pas :p
 
 	// Use this for initialization
 	void Start () {
@@ -35,8 +38,8 @@ public class personnageScript : MonoBehaviour {
 		yRot = Input.mousePosition.x;
 
 		// On empêche la souris de sortir de l'écran !
-		//Cursor.lockState = CursorLockMode.Locked;
-		//Cursor.visible = false;
+		Cursor.lockState = CursorLockMode.Locked;
+		Cursor.visible = false;
 
 		// On récupère le personnage
 		personnage = GameObject.Find("Joueur");
@@ -76,8 +79,6 @@ public class personnageScript : MonoBehaviour {
 			}
 		}
 
-		Debug.Log ("etat = " + etat);
-
 		// En fonction de l'état du personnage, on applique le mouvement correspondant !
 		switch (etat) {
 		case EtatPersonnage.AU_SOL:
@@ -87,20 +88,22 @@ public class personnageScript : MonoBehaviour {
 				pointDebutSaut = transform.position;
 				StartCoroutine (stopJump (debutSaut));
 			} else {
-				// Petit débuggage pour empêcher l'alternance !
+				// Petit débuggage pour empêcher l'alternance entre AU_SOL et EN_CHUTE !
 				move.y = - gravite * Time.deltaTime;
 			}
 			break;
+
 		case EtatPersonnage.EN_SAUT:
 			float percentSaut = (Time.time - debutSaut) / dureeSaut;
 			if (percentSaut <= dureeEfficaciteSaut) {
 				move.y = vitesseSaut;
 			}
-
 			break;
+
 		case EtatPersonnage.EN_CHUTE:
 			move.y -= gravite * Time.deltaTime;
 			break;
+
 		case EtatPersonnage.AU_MUR:
 			// On peut encore sauter quand on est au mur ! 
 			if (Input.GetButtonDown ("Jump")) {
@@ -109,13 +112,27 @@ public class personnageScript : MonoBehaviour {
 				pointDebutSaut = transform.position;
 				StartCoroutine (stopJump (debutSaut));
 			}
-			Debug.Log ("time = " + Time.time + " debut mur = " + debutMur + " duree mur = " + dureeMur);
-			if ((Time.time - debutMur) >= dureeMur) {
+			// Si ça fait trop longtemps qu'on est sur le mur
+			// Ou que l'on s'éloigne trop du mur on tombe
+			float distanceMur = ((transform.position - pointMur) - Vector3.ProjectOnPlane ((transform.position - pointMur), normaleMur)).magnitude; // pourtant c'est clair non ? Fais un dessins si tu comprends pas <3
+			if ((Time.time - debutMur) >= dureeMur
+			    || distanceMur >= distanceMurMax) {
 				etat = EtatPersonnage.EN_CHUTE;
 				pointDebutSaut = transform.position;
 			}
+			// Et on veut aussi vérifier que le mur continue encore à nos cotés !
+			// Pour ça on va lancer un rayon ! <3
+			Ray ray = new Ray (transform.position, -normaleMur);
+			RaycastHit hit; // là où l'on récupère l'information du ray !
+			if (!Physics.Raycast (ray, out hit, distanceMurMax) || hit.collider.tag != "Cube") {
+				// En fait il faudrait passer en mode AU_POTEAU ici !
+				etat = EtatPersonnage.EN_CHUTE;
+				pointDebutSaut = transform.position;
+			}
+
 			break;
 		case EtatPersonnage.AU_POTEAU:
+			// C'est possible de rajouter ça quand on voudra =)
 			break;
 		}
 
@@ -155,6 +172,8 @@ public class personnageScript : MonoBehaviour {
 					if (Mathf.Abs (Vector3.Angle (nProject, directionProject)) < 45f) {
 						etat = EtatPersonnage.AU_MUR; // YEAH !!!
 						debutMur = Time.time;
+						normaleMur = n;
+						pointMur = hit.point;
 					}
 				}
 			}

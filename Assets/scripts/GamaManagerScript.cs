@@ -6,8 +6,9 @@ public class GamaManagerScript : MonoBehaviour {
 
 	public GameObject cube; // On récupère ce qu'est un cube !
 	public GameObject personnage; // On récupère le personnage !
-	public static int tailleMap = 10;
+	public static int tailleMap = 30;
 	public static int nbBridges = 1;
+	public static float proportionCaves = 0.2f;
 
 
 	private List<GameObject> cubes = new List<GameObject>();
@@ -42,6 +43,13 @@ public class GamaManagerScript : MonoBehaviour {
 		}
 		generateBridges (sources, (int) Mathf.Floor(nbSources / 2));
 
+		// On veut générer des caves dangeureuses :3
+		int tailleMaxCave = (int) Mathf.Min((int) tailleMap / 2, 10);
+		int volumeCave = (int) Mathf.Pow (tailleMaxCave, 3);
+		int volumeMap = (int) Mathf.Pow (tailleMap, 3);
+		int nbCaves = (int) Mathf.Ceil (proportionCaves * volumeMap / volumeCave);
+		generateCave(nbCaves, 3, tailleMaxCave);
+
 		// On veut ajouter un personnage dans le cube central !
 		Vector3 posPerso = new Vector3(tailleMap / 2, tailleMap / 2, tailleMap / 2);
 		GameObject perso = Instantiate (personnage, posPerso, Quaternion.identity) as GameObject;
@@ -75,6 +83,7 @@ public class GamaManagerScript : MonoBehaviour {
 		}
 	}
 
+	// Génère des ponts entre les sources ! =)
 	void generateBridges(List<CubeScript> sources, int nbBridges) {
 		for (int i = 0; i < nbBridges; i++) {
 			// On récupère les deux sources qui nous intéressent
@@ -100,7 +109,130 @@ public class GamaManagerScript : MonoBehaviour {
 			instance = Instantiate (cube, pos, Quaternion.identity) as GameObject;
 		}
 	}
-	
+
+	void generateCave(int nbCaves, int tailleMinCave, int tailleMaxCave) {
+		for (int k = 0; k < nbCaves; k++) {
+			// On définit la taille de la cave
+			int sizeX = Random.Range (tailleMinCave, tailleMaxCave);
+			int sizeY = Random.Range (tailleMinCave, tailleMaxCave);
+			int sizeZ = Random.Range (tailleMinCave, tailleMaxCave);
+
+			// On définit sa position sur la carte
+			Vector3 position = new Vector3(Random.Range(1, tailleMap - sizeX - 1),
+				Random.Range(1, tailleMap - sizeY - 1),
+				Random.Range(1, tailleMap - sizeZ - 1));
+
+			// On veut détruire tous les cubes qui se trouvent dans notre cave !
+			Collider[] colliders;
+			Vector3 center = position + (sizeX / 2) * Vector3.right + (sizeY / 2) * Vector3.up + (sizeZ / 2) * Vector3.forward;
+			Vector3 halfSize = new Vector3 (sizeX / 2, sizeY / 2, sizeZ / 2);
+			if ((colliders = Physics.OverlapBox (center, halfSize)).Length > 0) {
+				foreach (Collider collider in colliders) {
+					if (collider.tag == "Cube") {
+						Destroy (collider.gameObject);
+					}
+				}
+			}
+
+			// On crée la matrice d'identification des nouveaux blocs
+			// 1 signifie qu'il y a un bloc, 0 signifie qu'il n'y en a pas !
+			// De base c'est une matrice pleine de blocs
+			int[,,] cave = new int[sizeX, sizeY, sizeZ];
+			for (int i = 0; i < sizeX; i++) {
+				for (int j = 0; j < sizeY; j++) {
+					for (int l = 0; l < sizeZ; l++) {
+						cave [i, j, l] = 1;
+					}
+				}
+			}
+			// On va choisir les entrées, une pour chaque coté !
+			List<Vector3> entrees = new List<Vector3>();
+			entrees.Add (new Vector3(0, Random.Range(0, sizeY-1), Random.Range(0, sizeZ-1)));
+			entrees.Add (new Vector3(sizeX-1, Random.Range(0, sizeY-1), Random.Range(0, sizeZ-1)));
+			entrees.Add (new Vector3(Random.Range(0, sizeX-1), 0, Random.Range(0, sizeZ-1)));
+			entrees.Add (new Vector3(Random.Range(0, sizeX-1), sizeY-1, Random.Range(0, sizeZ-1)));
+			entrees.Add (new Vector3(Random.Range(0, sizeX-1), Random.Range(0, sizeY-1), 0));
+			entrees.Add (new Vector3(Random.Range(0, sizeX-1), Random.Range(0, sizeY-1), sizeZ-1));
+
+			// On va choisir les points de passages internes
+			int nbPointsDePassage = Random.Range(1, (int) Mathf.Ceil(sizeX*sizeY*sizeZ / 15));
+			List<Vector3> pointsDePassage = new List<Vector3>();
+			for (int i = 0; i < nbPointsDePassage; i++) {
+				pointsDePassage.Add (new Vector3 (Random.Range (1, sizeX - 2), Random.Range (1, sizeY - 2), Random.Range (1, sizeZ - 2)));
+			}
+
+			// Et maintenant on va chercher à relier tout ces points !
+			List<Vector3> ptsCibles = entrees;
+			ptsCibles.AddRange (pointsDePassage);
+
+			// On creuse dans tout ces points
+			for (int i = 0; i < ptsCibles.Count; i++) {
+				cave [(int) ptsCibles [i].x, (int) ptsCibles [i].y, (int) ptsCibles [i].z] = 0;
+			}
+
+			// On part d'un point, on va creuser pour atteindre un autre point, et on va continuer tant qu'on a pas atteint tous les points !
+			List<Vector3> ptsAtteints = new List<Vector3>();
+			Vector3 depart = ptsCibles [Random.Range (0, ptsCibles.Count - 1)]; // on rajoute le premier point
+			ptsAtteints.Add (depart);
+			ptsCibles.Remove (depart);
+			while (ptsCibles.Count > 0) {
+				Vector3 debutChemin = ptsAtteints [Random.Range (0, ptsAtteints.Count - 1)];
+				Vector3 finChemin = ptsCibles [Random.Range (0, ptsCibles.Count - 1)];
+				cave = relierChemin (debutChemin, finChemin, cave);
+				ptsCibles.Remove (finChemin);
+			}
+
+			// On instancie les cubes de la cave !
+			for (int i = 0; i < sizeX; i++) {
+				for (int j = 0; j < sizeY; j++) {
+					for (int l = 0; l < sizeZ; l++) {
+						if (cave [i, j, l] == 1) {
+							Vector3 pos = position + i * Vector3.right + j * Vector3.up + l * Vector3.forward;
+							Instantiate (cube, pos, Quaternion.identity);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	// Le but de cette fonction est de renvoyer la cave en ayant creusé un tunel allant de debutChemin a finChemin !
+	int[,,] relierChemin(Vector3 debutChemin, Vector3 finChemin, int[,,] cave) {
+		Vector3 pointsActuel = debutChemin;
+		while (pointsActuel != finChemin) {
+			// On creuse
+			cave[(int) pointsActuel.x, (int) pointsActuel.y, (int) pointsActuel.z] = 0;
+
+			// On liste les bonnes directions à prendre
+			List<Vector3> directions = new List<Vector3>();
+			if (pointsActuel.x != finChemin.x) {
+				if (pointsActuel.x < finChemin.x) {
+					directions.Add (new Vector3 (pointsActuel.x + 1, pointsActuel.y, pointsActuel.z));
+				} else {
+					directions.Add (new Vector3 (pointsActuel.x - 1, pointsActuel.y, pointsActuel.z));
+				}
+			}
+			if (pointsActuel.y != finChemin.y) {
+				if (pointsActuel.y < finChemin.y) {
+					directions.Add (new Vector3 (pointsActuel.x, pointsActuel.y + 1, pointsActuel.z));
+				} else {
+					directions.Add (new Vector3 (pointsActuel.x, pointsActuel.y - 1, pointsActuel.z));
+				}
+			}
+			if (pointsActuel.z != finChemin.z) {
+				if (pointsActuel.z < finChemin.z) {
+					directions.Add (new Vector3 (pointsActuel.x, pointsActuel.y, pointsActuel.z + 1));
+				} else {
+					directions.Add (new Vector3 (pointsActuel.x, pointsActuel.y, pointsActuel.z - 1));
+				}
+			}
+
+			// On se déplace dans une bonne direction aléatoirement
+			pointsActuel = directions[Random.Range(0, directions.Count - 1)];
+		}
+		return cave;
+	}
+
 	// Update is called once per frame
 	void Update () {
 		// Si on a appuyé sur la touche Escape, on quitte le jeu !
