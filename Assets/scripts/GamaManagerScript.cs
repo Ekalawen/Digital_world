@@ -64,10 +64,11 @@ public class GamaManagerScript : MonoBehaviour {
 				GameObject instance = Instantiate (cube, actuel, Quaternion.identity) as GameObject;
 
 				// On va un peu décaler les cubes pour créer du relief !
-				float decalageMax = personnage.GetComponent<CharacterController>().stepOffset / 2;
+				//float decalageMax = personnage.GetComponent<CharacterController>().stepOffset / 2;
+				float decalageMax = 0.1f;
 				Vector3 directionDecalage = Vector3.Cross (pas1, pas2);
 				directionDecalage.Normalize ();
-				instance.transform.Translate (directionDecalage * Random.Range (-decalageMax, decalageMax));
+				//instance.transform.Translate (directionDecalage * Random.Range (-decalageMax, decalageMax));
 
 				cubes.Add (instance);
 			}
@@ -87,11 +88,16 @@ public class GamaManagerScript : MonoBehaviour {
 			// On va les relier par une ligne droite !
 			float distance = Vector3.Distance(c1.transform.position, c2.transform.position);
 			Vector3 pas = (c2.transform.position - c1.transform.position) / distance;
-			for (int k = 0; k < Mathf.Floor (distance); k++) {
+			Vector3 pos;
+			GameObject instance;
+			for (int k = 1; k <= Mathf.Floor (distance); k++) {
 				// On crée un cube !
-				Vector3 pos = c1.transform.position + pas * k;
-				GameObject instance = Instantiate (cube, pos, Quaternion.identity) as GameObject;
+				pos = c1.transform.position + pas * k;
+				instance = Instantiate (cube, pos, Quaternion.identity) as GameObject;
 			}
+			// Et on rajoute le dernier cube
+			pos = c1.transform.position + pas * distance;
+			instance = Instantiate (cube, pos, Quaternion.identity) as GameObject;
 		}
 	}
 	
