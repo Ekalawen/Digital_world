@@ -15,6 +15,7 @@ public class personnageScript : MonoBehaviour {
 	public float sensibilite; // la sensibilité de la souris
 	public float dureeMur; // le temps que l'on peut rester accroché au mur
 	public float distanceMurMax; // la distance maximale de laquelle on peut s'éloigner du mur
+	public GameObject trail; // Les trails à tracer quand le personnage est perdu !
 
 	private GameObject personnage;
 	private CharacterController controller;
@@ -27,15 +28,24 @@ public class personnageScript : MonoBehaviour {
 	private EtatPersonnage etat; // l'état du personnage
 	private float debutSaut; // le timing où le personnage a débuté son dernier saut !
 	private Vector3 pointDebutSaut; // le point de départ du saut !
+	private EtatPersonnage origineSaut; // Permet de savoir depuis où (le sol ou un mur) le personnage a sauté !
+	private Vector3 normaleOrigineSaut; // La normale au plan du mur duquel le personnage a sauté
 	private float debutMur; // le timing où le personnage a commencé à s'accrocher au mur !
 	private Vector3 normaleMur; // la normale au mur sur lequel le personnage est accroché !
 	private Vector3 pointMur; // un point du mur sur lequel le personnage est accroché ! En effet, la normale ne suffit pas :p
 
+	private Vector3 pousee; // Lorsque le personnage est poussé
+	private float debutPousee; // Le début de la poussée
+	private float tempsPousee; // Le temps pendant lequel le personnage reçoit cette poussée
+
+	[HideInInspector]
+	public float lastNotContactEnnemy; // Le dernier temps où il ne touchait pas d'ennemi, utilisé pour la fin du jeu
+
 	// Use this for initialization
 	void Start () {
-		// On positionne la souris au centre de l'écran !
-		xRot -= Input.mousePosition.y;
-		yRot = Input.mousePosition.x;
+		// On regarde en bas quand on commence !
+		xRot = 180; 
+		yRot = 0;
 
 		// On empêche la souris de sortir de l'écran !
 		Cursor.lockState = CursorLockMode.Locked;
@@ -67,6 +77,11 @@ public class personnageScript : MonoBehaviour {
 		// On applique la vitesse au déplacement
 		move *= vitesseDeplacement;
 
+		// On applique la poussee si le personnage en a une !
+		if (Time.time - debutPousee < tempsPousee) {
+			move += pousee;
+		}
+
 		// On trouve l'état du personnage
 		if (etat != EtatPersonnage.AU_MUR) {
 			if (controller.isGrounded) {
@@ -86,17 +101,18 @@ public class personnageScript : MonoBehaviour {
 				etat = EtatPersonnage.EN_SAUT;
 				debutSaut = Time.time;
 				pointDebutSaut = transform.position;
+				origineSaut = EtatPersonnage.AU_SOL;
 				StartCoroutine (stopJump (debutSaut));
 			} else {
 				// Petit débuggage pour empêcher l'alternance entre AU_SOL et EN_CHUTE !
-				move.y = - gravite * Time.deltaTime;
+				move.y -= gravite * Time.deltaTime;
 			}
 			break;
 
 		case EtatPersonnage.EN_SAUT:
 			float percentSaut = (Time.time - debutSaut) / dureeSaut;
 			if (percentSaut <= dureeEfficaciteSaut) {
-				move.y = vitesseSaut;
+				move.y += vitesseSaut;
 			}
 			break;
 
@@ -105,12 +121,25 @@ public class personnageScript : MonoBehaviour {
 			break;
 
 		case EtatPersonnage.AU_MUR:
+			// On peut se décrocher du mur en reculant !
+			if (Input.GetButtonDown("Fire3")) {
+				etat = EtatPersonnage.EN_CHUTE;
+				pointDebutSaut = transform.position;
+				origineSaut = EtatPersonnage.AU_MUR;
+				normaleOrigineSaut = normaleMur;
 			// On peut encore sauter quand on est au mur ! 
-			if (Input.GetButtonDown ("Jump")) {
+			} else if (Input.GetButtonDown ("Jump")) { // Mais il faut appuyer à nouveau !
 				etat = EtatPersonnage.EN_SAUT;
 				debutSaut = Time.time;
 				pointDebutSaut = transform.position;
+				origineSaut = EtatPersonnage.AU_MUR;
+				normaleOrigineSaut = normaleMur;
 				StartCoroutine (stopJump (debutSaut));
+			} else if (Input.GetButton ("Jump")) { // On a le droit de terminer son saut lorsqu'on touche un mur
+				float pourcentageSaut = (Time.time - debutSaut) / dureeSaut;
+				if (pourcentageSaut <= dureeEfficaciteSaut) {
+					move.y += vitesseSaut;
+				}
 			}
 			// Si ça fait trop longtemps qu'on est sur le mur
 			// Ou que l'on s'éloigne trop du mur on tombe
@@ -119,6 +148,8 @@ public class personnageScript : MonoBehaviour {
 			    || distanceMur >= distanceMurMax) {
 				etat = EtatPersonnage.EN_CHUTE;
 				pointDebutSaut = transform.position;
+				origineSaut = EtatPersonnage.AU_MUR;
+				normaleOrigineSaut = normaleMur;
 			}
 			// Et on veut aussi vérifier que le mur continue encore à nos cotés !
 			// Pour ça on va lancer un rayon ! <3
@@ -128,6 +159,8 @@ public class personnageScript : MonoBehaviour {
 				// En fait il faudrait passer en mode AU_POTEAU ici !
 				etat = EtatPersonnage.EN_CHUTE;
 				pointDebutSaut = transform.position;
+				origineSaut = EtatPersonnage.AU_MUR;
+				normaleOrigineSaut = normaleMur;
 			}
 
 			break;
@@ -137,6 +170,36 @@ public class personnageScript : MonoBehaviour {
 		}
 
 		controller.Move (move * Time.deltaTime);
+
+		// On vérifie qu'il n'est pas en contact avec un ennemy !
+		Collider[] colliders = Physics.OverlapSphere (transform.position, 1f);
+		bool pasTouchee = true;
+		foreach (Collider collider in colliders) {
+			if (collider.tag == "Ennemi") {
+				pasTouchee = false;
+			}
+		}
+		if (pasTouchee) {
+			lastNotContactEnnemy = Time.time;
+		}
+
+
+		// On regarde si le joueur a appuyé sur tab
+		if (Input.GetKeyDown (KeyCode.Tab)) {
+			// On trace les rayons ! =)
+			GameObject[] lumieres = GameObject.FindGameObjectsWithTag ("Objectif");
+			for (int i = 0; i < lumieres.Length; i++) {
+				GameObject tr = Instantiate (trail, transform.position - 0.5f * Vector3.up, Quaternion.identity) as GameObject;
+				tr.GetComponent<TrailScript> ().setTarget (lumieres [i].transform.position);
+			}
+
+			// Un petit message
+			ConsoleScript cs = GameObject.Find ("Console").GetComponent<ConsoleScript> ();
+			cs.ajouterMessage ("On t'envoie les données !", ConsoleScript.TypeText.ALLY_TEXT);
+
+			// Et on certifie qu'on a appuyé sur TAB
+			cs.updateLastOrbeAttrapee();
+		}
 	}
 
 	IEnumerator stopJump(float debut) {
@@ -154,29 +217,41 @@ public class personnageScript : MonoBehaviour {
 	void OnControllerColliderHit(ControllerColliderHit hit) {
 
 		// On regarde si le personnage s'accroche à un mur !
+		// Pour ça il doit être dans les airs !
 		if (etat == EtatPersonnage.EN_SAUT || etat == EtatPersonnage.EN_CHUTE) {
-			// On ne peut pas s'aggriper si on a une distance horizontale suffisament grande !
+
+			/*// On ne peut pas s'aggriper si on a une distance horizontale trop petite !
 			Vector3 pointDepart = pointDebutSaut;
 			Vector3 pointDepartProject = Vector3.ProjectOnPlane (pointDepart, Vector3.up);
-			if(Vector3.Distance(pointDepartProject, Vector3.ProjectOnPlane(hit.point, Vector3.up)) >= 0.5f) {
-				// Si la normale est au moins un peu à l'horizontale !
+			if(true) {//Vector3.Distance(pointDepartProject, Vector3.ProjectOnPlane(hit.point, Vector3.up)) >= 0.5f) {*/
+
+				// Si on vient d'un mur, on vérifie que la normale du mur précédent est suffisamment différente de la normale actuelle !
 				Vector3 n = hit.normal;
-				Vector3 nProject = Vector3.ProjectOnPlane (n, Vector3.up);
-				if (Mathf.Abs (Vector3.Angle (n, nProject)) < 45f) {
+				if(origineSaut == EtatPersonnage.AU_SOL
+					|| (origineSaut == EtatPersonnage.AU_MUR && Vector3.Angle(normaleOrigineSaut, n) > 10)) {
 
-					// Si on détecte une collision avec un mur, on peut s'aggriper si l'angle entre la normale
-					// au mur et le vecteur (pointDepartSaut/mur) est inférieur à 45°
-					Vector3 direction = pointDepart - hit.point;
-					Vector3 directionProject = Vector3.ProjectOnPlane(direction, Vector3.up);
+					// Si la normale est au moins un peu à l'horizontale !
+					Vector3 nProject = Vector3.ProjectOnPlane (n, Vector3.up);
+					if (Mathf.Abs (Vector3.Angle (n, nProject)) < 45f) {
 
-					if (Mathf.Abs (Vector3.Angle (nProject, directionProject)) < 45f) {
-						etat = EtatPersonnage.AU_MUR; // YEAH !!!
-						debutMur = Time.time;
-						normaleMur = n;
-						pointMur = hit.point;
+						/*// Si on détecte une collision avec un mur, on peut s'aggriper si l'angle entre la normale
+						// au mur et le vecteur (pointDepartSaut/mur) est inférieur à 45°
+						Vector3 direction = pointDebutSaut - hit.point;
+						Vector3 directionProject = Vector3.ProjectOnPlane(direction, Vector3.up);
+						if (Mathf.Abs (Vector3.Angle (nProject, directionProject)) < 45f) {*/
+							etat = EtatPersonnage.AU_MUR; // YEAH !!!
+							debutMur = Time.time;
+							normaleMur = n;
+							pointMur = hit.point;
 					}
 				}
-			}
 		}
 	}
+
+	public void etrePoussee(Vector3 directionPoussee, float tempsDeLaPousee) {
+		pousee = directionPoussee;
+		tempsPousee = tempsDeLaPousee;
+		debutPousee = Time.time;
+	}
 }
+

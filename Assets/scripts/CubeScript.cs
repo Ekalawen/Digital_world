@@ -31,7 +31,7 @@ public class CubeScript : MonoBehaviour {
 		// On récupère toutes les sources à moins de distSourceMax
 		if (type == CubeType.Recepteur) {
 			//GameObject[] cubes = GameObject.FindGameObjectsWithTag ("Cube");
-			Collider[] colliders = Physics.OverlapSphere(this.transform.position, distSourceMax / 2);
+			Collider[] colliders = Physics.OverlapSphere(this.transform.position, distSourceMax);
 			foreach (Collider collider in colliders) {
 				if (collider.tag == "Cube") {
 					CubeScript c = collider.gameObject.GetComponent<CubeScript> () as CubeScript;				
