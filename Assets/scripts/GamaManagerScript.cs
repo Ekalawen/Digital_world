@@ -10,6 +10,7 @@ public class GamaManagerScript : MonoBehaviour {
 	public GameObject objectif; // On récupère les objectifs !
 	public GameObject console; // On récupère la console !
 	public GameObject pointeur; // Pour avoir un visuel du centre de l'écran
+	public GameObject dataBase; // Pour créer l'IA chargé de supervisé les ennemis !
 	public int tailleMap;
 	public float proportionCaves;
 	public float proportionEnnemis;
@@ -42,6 +43,9 @@ public class GamaManagerScript : MonoBehaviour {
 		// On crée la console et le pointeur !
 		Instantiate (pointeur);
 		Instantiate (console);
+
+		// On crée la database
+		Instantiate (dataBase);
 
 		// On veut créer les faces du cube !
 		remplirFace(0, 1, 2, 3); // coté 1

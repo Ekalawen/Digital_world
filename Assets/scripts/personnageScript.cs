@@ -40,6 +40,8 @@ public class personnageScript : MonoBehaviour {
 
 	[HideInInspector]
 	public float lastNotContactEnnemy; // Le dernier temps où il ne touchait pas d'ennemi, utilisé pour la fin du jeu
+	[HideInInspector]
+	public bool vu = false; // permet de savoir si le joueur est vu par des ennemis ou pas
 
 	// Use this for initialization
 	void Start () {
@@ -121,11 +123,11 @@ public class personnageScript : MonoBehaviour {
 			break;
 
 		case EtatPersonnage.AU_MUR:
-			// On peut se décrocher du mur en reculant !
-			if (Input.GetButtonDown("Fire3")) {
+			// On peut se décrocher du mur en appuyant sur shift
+			if (Input.GetKey (KeyCode.LeftShift)) {
 				etat = EtatPersonnage.EN_CHUTE;
 				pointDebutSaut = transform.position;
-				origineSaut = EtatPersonnage.AU_MUR;
+				origineSaut = EtatPersonnage.AU_SOL;
 				normaleOrigineSaut = normaleMur;
 			// On peut encore sauter quand on est au mur ! 
 			} else if (Input.GetButtonDown ("Jump")) { // Mais il faut appuyer à nouveau !
@@ -184,12 +186,14 @@ public class personnageScript : MonoBehaviour {
 		}
 
 
-		// On regarde si le joueur a appuyé sur tab
-		if (Input.GetKeyDown (KeyCode.Tab)) {
+		// On regarde si le joueur a appuyé sur E
+		if (Input.GetKeyDown (KeyCode.E)) {
 			// On trace les rayons ! =)
 			GameObject[] lumieres = GameObject.FindGameObjectsWithTag ("Objectif");
 			for (int i = 0; i < lumieres.Length; i++) {
-				GameObject tr = Instantiate (trail, transform.position - 0.5f * Vector3.up, Quaternion.identity) as GameObject;
+				//Vector3 departRayons = transform.position - 0.5f * camera.transform.forward + 0.5f * Vector3.up;
+				Vector3 departRayons = transform.position + 0.5f * Vector3.up;
+				GameObject tr = Instantiate (trail, departRayons, Quaternion.identity) as GameObject;
 				tr.GetComponent<TrailScript> ().setTarget (lumieres [i].transform.position);
 			}
 
@@ -197,7 +201,7 @@ public class personnageScript : MonoBehaviour {
 			ConsoleScript cs = GameObject.Find ("Console").GetComponent<ConsoleScript> ();
 			cs.ajouterMessage ("On t'envoie les données !", ConsoleScript.TypeText.ALLY_TEXT);
 
-			// Et on certifie qu'on a appuyé sur TAB
+			// Et on certifie qu'on a appuyé sur E
 			cs.updateLastOrbeAttrapee();
 		}
 	}
@@ -218,7 +222,8 @@ public class personnageScript : MonoBehaviour {
 
 		// On regarde si le personnage s'accroche à un mur !
 		// Pour ça il doit être dans les airs !
-		if (etat == EtatPersonnage.EN_SAUT || etat == EtatPersonnage.EN_CHUTE) {
+		// Et il ne doit PAS être en train d'appuyer sur SHIFT
+		if (etat == EtatPersonnage.EN_SAUT || etat == EtatPersonnage.EN_CHUTE && !Input.GetKey(KeyCode.LeftShift)) {
 
 			/*// On ne peut pas s'aggriper si on a une distance horizontale trop petite !
 			Vector3 pointDepart = pointDebutSaut;

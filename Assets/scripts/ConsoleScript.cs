@@ -60,7 +60,22 @@ public class ConsoleScript : MonoBehaviour {
 		// On conseille d'appuyer sur TAB si le joueur galère a trouver des orbes
 		if (Time.time - lastOrbeAttrapee > 30) {
 			lastOrbeAttrapee = Time.time;
-			ajouterMessage ("On peut te géolocaliser les Datas si tu appuies sur TAB !", TypeText.ALLY_TEXT);
+			ajouterMessage ("On peut te géolocaliser les Datas si tu appuies sur E !", TypeText.ALLY_TEXT);
+		}
+
+		// On vérifie si le joueur est suivi ou pas
+		GameObject[] gos = GameObject.FindGameObjectsWithTag("Ennemi");
+		bool nonSuivi = true;
+		foreach (GameObject go in gos) {
+			EnnemiScript es = go.GetComponent<EnnemiScript> ();
+			if (es.isMoving()) {
+				nonSuivi = false;
+				break;
+			}
+		}
+		if (Time.time >= 10 && nonSuivi && player.GetComponent<personnageScript>().vu == true) {
+			ajouterMessageImportant ("On les a semés, on est plus suivi !", TypeText.ALLY_TEXT, 2f);
+			player.GetComponent<personnageScript> ().vu = false;
 		}
 	}
 
