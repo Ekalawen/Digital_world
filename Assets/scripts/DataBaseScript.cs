@@ -2,16 +2,31 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Le but de la DataBase est de gérer le comportement de tout ce qui est entrave le joueur.
+// Cela va de la coordination des Drones, à la génération d'évenements néffastes.
 public class DataBaseScript : MonoBehaviour {
 
-	private EnnemiScript[] drones; // Elle connait tous les drones !
-	private EnnemiScript.EtatEnnemi etatDrones; // Permet de donner des ordres aux drones
-	private GameObject player; // Le joueur
+	//////////////////////////////////////////////////////////////////////////////////////
+	// ATTRIBUTS PRIVÉES
+	//////////////////////////////////////////////////////////////////////////////////////
+
+	[HideInInspector]
+	public EnnemiScript[] drones; // Elle connait tous les drones !
+	[HideInInspector]
+	public EnnemiScript.EtatEnnemi etatDrones; // Permet de donner des ordres aux drones
+	[HideInInspector]
+	public GameObject player; // Le joueur
+	[HideInInspector]
+	public MapManagerScript mapManager; // la map
 	private bool plusDeLumieres;
 	private float timingPlusDeLumieres;
 
-	// Use this for initialization
+	//////////////////////////////////////////////////////////////////////////////////////
+	// ATTRIBUTS PRIVÉES
+	//////////////////////////////////////////////////////////////////////////////////////
+
 	void Start () {
+		// Initialisation
 		name = "DataBase";
 		GameObject[] go = GameObject.FindGameObjectsWithTag ("Ennemi");
 		drones = new EnnemiScript[go.Length];
@@ -19,14 +34,13 @@ public class DataBaseScript : MonoBehaviour {
 			drones [i] = go [i].GetComponent<EnnemiScript> ();
 		}
 		player = GameObject.Find ("Joueur");
+		mapManager = GameObject.Find("MapManager").GetComponent<MapManagerScript>();
 		plusDeLumieres = false;
 	}
 	
-	// Update is called once per frame
 	void Update () {
 		// On regarde si il reste des lumières
-		if (GameObject.Find ("GameManager").GetComponent<GamaManagerScript> ().nbLumieres <= 0) {
-			Debug.Log ("Database : nbLumières = " + GameObject.Find ("GameManager").GetComponent<GamaManagerScript> ().nbLumieres);
+		if (mapManager.nbLumieres <= 0) {
 			if (!plusDeLumieres) {
 				plusDeLumieres = true;
 				timingPlusDeLumieres = Time.time;
@@ -54,5 +68,17 @@ public class DataBaseScript : MonoBehaviour {
 
 	public EnnemiScript.EtatEnnemi demanderOrdre() {
 		return etatDrones;
+	}
+
+	// Permet de savoir si le joueur est actuellement suivi
+	public bool joueurSuivi() {
+		bool nonSuivi = true;
+		foreach (EnnemiScript drone in drones) {
+			if (drone.isMoving()) {
+				nonSuivi = false;
+				break;
+			}
+		}
+		return nonSuivi;
 	}
 }

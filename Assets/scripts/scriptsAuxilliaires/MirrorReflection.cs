@@ -7,18 +7,28 @@ using System.Collections;
 [ExecuteInEditMode] // Make mirror live-update even when not in play mode
 public class MirrorReflection : MonoBehaviour
 {
+
+	//////////////////////////////////////////////////////////////////////////////////////
+	// ATTRIBUTS PUBLIQUES
+	//////////////////////////////////////////////////////////////////////////////////////
+
 	public bool m_DisablePixelLights = true;
 	public int m_TextureSize = 256;
 	public float m_ClipPlaneOffset = 0.07f;
-
 	public LayerMask m_ReflectLayers = -1;
 
-	private Hashtable m_ReflectionCameras = new Hashtable(); // Camera -> Camera table
+	//////////////////////////////////////////////////////////////////////////////////////
+	// ATTRIBUTS PRIVÉES
+	//////////////////////////////////////////////////////////////////////////////////////
 
+	private Hashtable m_ReflectionCameras = new Hashtable(); // Camera -> Camera table
 	private RenderTexture m_ReflectionTexture = null;
 	private int m_OldReflectionTextureSize = 0;
-
 	private static bool s_InsideRendering = false;
+
+	//////////////////////////////////////////////////////////////////////////////////////
+	// METHODES
+	//////////////////////////////////////////////////////////////////////////////////////
 
 	// This is called when it's known that the object will be rendered by some
 	// camera. We render reflections and do other updates here.

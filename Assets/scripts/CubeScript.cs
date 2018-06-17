@@ -4,12 +4,24 @@ using UnityEngine;
 
 public class CubeScript : MonoBehaviour {
 
-	public enum CubeType {Source, Recepteur };
+	//////////////////////////////////////////////////////////////////////////////////////
+	// STATIC
+	//////////////////////////////////////////////////////////////////////////////////////
 
-	public CubeType type;
+	public enum CubeType {Source, Recepteur};
 	public static float probaSource = 0.02f;
 	public static float distSourceMax = 5f;
-	private Color couleur;
+
+	//////////////////////////////////////////////////////////////////////////////////////
+	// ATTRIBUTS PUBLIQUES
+	//////////////////////////////////////////////////////////////////////////////////////
+
+	public CubeType type;
+	public Color couleur;
+
+	//////////////////////////////////////////////////////////////////////////////////////
+	// METHODES
+	//////////////////////////////////////////////////////////////////////////////////////
 
 	void Awake () {
 		// De base, tous les cubes sont des récepteurs avec une probabilité 1-p !
@@ -30,7 +42,6 @@ public class CubeScript : MonoBehaviour {
 		// La couleur des récepteurs se met à jour en fonction des sources qui sont suffisamment proches d'eux !
 		// On récupère toutes les sources à moins de distSourceMax
 		if (type == CubeType.Recepteur) {
-			//GameObject[] cubes = GameObject.FindGameObjectsWithTag ("Cube");
 			Collider[] colliders = Physics.OverlapSphere(this.transform.position, distSourceMax);
 			foreach (Collider collider in colliders) {
 				if (collider.tag == "Cube") {

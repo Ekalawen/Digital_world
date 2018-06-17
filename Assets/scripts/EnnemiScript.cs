@@ -4,7 +4,15 @@ using UnityEngine;
 
 public class EnnemiScript : MonoBehaviour {
 
+	//////////////////////////////////////////////////////////////////////////////////////
+	// ENUMERATION
+	//////////////////////////////////////////////////////////////////////////////////////
+
 	public enum EtatEnnemi {WAITING, TRACKING, DEFENDING, RUSHING};
+
+	//////////////////////////////////////////////////////////////////////////////////////
+	// ATTRIBUTS PUBLIQUES
+	//////////////////////////////////////////////////////////////////////////////////////
 
 	public float vitesseMin; // On veut une vitesse aléatoire comprise
 	public float vitesseMax; // entre min et max !
@@ -14,46 +22,63 @@ public class EnnemiScript : MonoBehaviour {
 	public float coefficiantDeRushVitesse; // Le multiplicateur de vitesse lorsque les drones rushs
 	public float coefficiantDeRushDistanceDeDetection; // Le multiplicateur de la portée de détection quand on est en rush
 
-	private GameObject player;
-	private Vector3 lastPositionSeen; // La dernière position à laquelle le joueur a été vu !
+	//////////////////////////////////////////////////////////////////////////////////////
+	// ATTRIBUTS PRIVÉES
+	//////////////////////////////////////////////////////////////////////////////////////
+
+	[HideInInspector]
+	public GameManagerScript gameManager;
+	[HideInInspector]
+	public GameObject player;
+	[HideInInspector]
+	public CharacterController controller;
+	[HideInInspector]
+	public DataBaseScript dataBase; // La dataBase qui envoie les ordres
+	[HideInInspector]
+	public MapManagerScript mapManager; // La map
+	[HideInInspector]
+	public ConsoleScript console; // la console
+	[HideInInspector]
 	private EtatEnnemi etat;
-	private CharacterController controller;
-	private DataBaseScript dataBase; // La dataBase qui envoie les ordres
+	private Vector3 lastPositionSeen; // La dernière position à laquelle le joueur a été vu !
 	private float vitesse;
 
-	// Use this for initialization
+	//////////////////////////////////////////////////////////////////////////////////////
+	// METHODES
+	//////////////////////////////////////////////////////////////////////////////////////
+
 	void Start () {
+		// Initialisation
 		name = "Sonde_" + Random.Range (0, 9999);
+		gameManager = GameObject.Find("GameManager").GetComponent<GameManagerScript>();
 		player = GameObject.Find ("Joueur");
-		dataBase = GameObject.Find ("DataBase").GetComponent<DataBaseScript> ();
-		lastPositionSeen = transform.position;
-		etat = EtatEnnemi.WAITING;
-		vitesse = Mathf.Exp(Random.Range (Mathf.Log(vitesseMin), Mathf.Log(vitesseMax)));
 		controller = this.GetComponent<CharacterController> ();
+		dataBase = GameObject.Find ("DataBase").GetComponent<DataBaseScript> ();
+		mapManager = GameObject.Find("MapManager").GetComponent<MapManagerScript>();
+		console = GameObject.Find ("Console").GetComponent<ConsoleScript> ();
+		etat = EtatEnnemi.WAITING;
+		lastPositionSeen = transform.position;
+		vitesse = Mathf.Exp(Random.Range (Mathf.Log(vitesseMin), Mathf.Log(vitesseMax)));
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		ConsoleScript cs = GameObject.Find ("Console").GetComponent<ConsoleScript> ();
-
 		// On regarde si il reste des lumières
 		// Si il n'en reste plus, on adopte une stratégie défensive pour empécher le joueur de sortir !
-		if (GameObject.Find ("GameManager").GetComponent<GamaManagerScript> ().nbLumieres <= 0) {
-			Debug.Log ("nb lumières = " + GameObject.Find ("GameManager").GetComponent<GamaManagerScript> ().nbLumieres);
-
+		if (mapManager.nbLumieres <= 0) {
 			// On se réfère à une autre entité qui décidera du mouvement COMMUN de tous les drones !
 			etat = dataBase.demanderOrdre();
 
 		} else {
-			// Si l'ennemie est suffisament proche et qu'il est visible ! Et que le jeu a commencé depuis au moins 5 secondes
+			// Si l'ennemie est suffisament proche et qu'il est visible ! Et que le jeu a commencé depuis au moins 10 secondes
 			Ray ray = new Ray (transform.position, player.transform.position - transform.position);
 			RaycastHit hit;
 			if (Time.time >= 10f && Physics.Raycast (ray, out hit, distanceDeDetection) && hit.collider.name == "Joueur") {
 				// Si la sonde vient juste de le repérer
 				if (etat == EtatEnnemi.WAITING) {
 					// On l'anonce !
-					cs.ajouterMessage (name + " vous a détecté, je sais où vous êtes.", ConsoleScript.TypeText.ENNEMI_TEXT);
-					player.GetComponent<personnageScript> ().vu = true;
+					console.joueurDetecte(name);
+					player.GetComponent<PersonnageScript> ().vu = true;
 				}
 				etat = EtatEnnemi.TRACKING;
 
@@ -61,7 +86,7 @@ public class EnnemiScript : MonoBehaviour {
 				// Si la sonde vient juste de perdre sa trace
 				if (etat == EtatEnnemi.TRACKING) {
 					// On l'anonce !
-					cs.ajouterMessage ("On a déconnecté " + name + ".", ConsoleScript.TypeText.ALLY_TEXT);
+					console.joueurPerduDeVue(name);
 				}
 				etat = EtatEnnemi.WAITING;
 			}
@@ -97,7 +122,7 @@ public class EnnemiScript : MonoBehaviour {
 		case EtatEnnemi.DEFENDING:
 			// On va tout en haut pour empêcher le joueur de sortir !
 			Vector3 cible = transform.position;
-			cible.y = GameObject.Find ("GameManager").GetComponent<GamaManagerScript> ().tailleMap + 1;
+			cible.y = mapManager.tailleMap + 1;
 			direction = cible;
 			direction.Normalize ();
 			direction *= coefficiantDeRushVitesse;
@@ -134,12 +159,11 @@ public class EnnemiScript : MonoBehaviour {
 			// Si c'est le cas, on l'envoie ballader !
 			Vector3 directionPoussee = hit.collider.transform.position - transform.position;
 			directionPoussee.Normalize ();
-			hit.collider.GetComponent<personnageScript> ().etrePoussee (directionPoussee * puissancePoussee, tempsPousee);
+			hit.collider.GetComponent<PersonnageScript> ().etrePoussee (directionPoussee * puissancePoussee, tempsPousee);
 
 			// Et on affiche un message dans la console !
-			if (!GameObject.Find ("GameManager").GetComponent<GamaManagerScript> ().partieDejaTerminee) {
-				ConsoleScript cs = GameObject.Find ("Console").GetComponent<ConsoleScript> ();
-				cs.ajouterMessageImportant ("TOUCHÉ ! Je vais vous avoir !", ConsoleScript.TypeText.ENNEMI_TEXT, 1);
+			if (!gameManager.partieDejaTerminee) {
+				console.joueurTouche();
 			}
 		}
 	}

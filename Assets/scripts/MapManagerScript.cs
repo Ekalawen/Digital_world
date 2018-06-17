@@ -2,35 +2,69 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GamaManagerScript : MonoBehaviour {
+public class MapManagerScript : MonoBehaviour {
+	//////////////////////////////////////////////////////////////////////////////////////
+	// ENUMERATION
+	//////////////////////////////////////////////////////////////////////////////////////
+
+	public enum TypeMap {CUBE_MAP, PLAINE_MAP, LABYRINTHE_MAP};
+
+	//////////////////////////////////////////////////////////////////////////////////////
+	// ATTRIBUTS PUBLIQUES
+	//////////////////////////////////////////////////////////////////////////////////////
 
 	public GameObject cube; // On récupère ce qu'est un cube !
-	public GameObject personnage; // On récupère le personnage !
-	public GameObject ennemi; // On récupère un ennemi !
 	public GameObject objectif; // On récupère les objectifs !
-	public GameObject console; // On récupère la console !
-	public GameObject pointeur; // Pour avoir un visuel du centre de l'écran
-	public GameObject dataBase; // Pour créer l'IA chargé de supervisé les ennemis !
+	public GameObject ennemiPrefabs; // On récupère un ennemi !
+	public TypeMap typeMap;
 	public int tailleMap;
 	public float proportionCaves;
-	public float proportionEnnemis;
+	public float proportionEnnemis; // La quantité d'ennemies relativement à la taille de la carte
 
+	//////////////////////////////////////////////////////////////////////////////////////
+	// ATTRIBUTS PRIVÉES
+	//////////////////////////////////////////////////////////////////////////////////////
 
-	private List<GameObject> cubes = new List<GameObject>();
-	private Vector3[] pos;
+	private List<GameObject> cubes;
 	[HideInInspector]
 	public int nbLumieres;
 	[HideInInspector]
+	public bool lumieresAttrapees;
+	[HideInInspector]
+	public int volumeMap;
+	[HideInInspector]
 	public int nbEnnemis;
 
-	[HideInInspector]
-	public bool partieDejaTerminee = false;
-	private bool lumieresAttrapees = false;
+	//////////////////////////////////////////////////////////////////////////////////////
+	// METHODES
+	//////////////////////////////////////////////////////////////////////////////////////
 
-	// Use this for initialization
-	void Start () {
+	void Start() {
+		// Initialisation
+		name = "MapManager";
+		cubes = new List<GameObject>();
+		lumieresAttrapees = false;
+
+		// On charge la bonne map
+		volumeMap = (int) Mathf.Pow (tailleMap, 3);
+		switch (typeMap)
+		{
+			case TypeMap.CUBE_MAP:
+				generateCubeMap();
+			break;
+			default:
+				Debug.Log("Je ne connais pas ce type de Map !");
+			break;
+		}
+
+		// On veut ajouter des ennemis !
+		generateEnnemies();
+	}
+
+	// Crée une map en forme de Cube
+	void generateCubeMap() {
 		// On initialise la position des coins !
-		pos = new Vector3[8];
+		Vector3[] pos = new Vector3[8];
 		pos [0] = new Vector3 (0, 0, 0);
 		pos [1] = new Vector3 (tailleMap, 0, 0);
 		pos [2] = new Vector3 (tailleMap, tailleMap, 0);
@@ -40,19 +74,12 @@ public class GamaManagerScript : MonoBehaviour {
 		pos [6] = new Vector3 (tailleMap, tailleMap, tailleMap);
 		pos [7] = new Vector3 (0, tailleMap, tailleMap);
 
-		// On crée la console et le pointeur !
-		Instantiate (pointeur);
-		Instantiate (console);
-
-		// On crée la database
-		Instantiate (dataBase);
-
 		// On veut créer les faces du cube !
-		remplirFace(0, 1, 2, 3); // coté 1
-		remplirFace(4, 5, 6, 7); // coté 2
-		remplirFace(0, 4, 7, 3); // coté 3
-		remplirFace(0, 1, 5, 4); // sol !
-		remplirFace(1, 2, 6, 5); // coté 4
+		remplirFace(0, 1, 2, 3, pos); // coté 1
+		remplirFace(4, 5, 6, 7, pos); // coté 2
+		remplirFace(0, 4, 7, 3, pos); // coté 3
+		remplirFace(0, 1, 5, 4, pos); // sol !
+		remplirFace(1, 2, 6, 5, pos); // coté 4
 		//remplirFace(2, 3, 7, 6); // plafond !
 
 		// On veut créer des passerelles entre les sources ! <3
@@ -72,29 +99,11 @@ public class GamaManagerScript : MonoBehaviour {
 		nbLumieres = 0;
 		int tailleMaxCave = (int) Mathf.Min((int) tailleMap / 2, 10);
 		int volumeCave = (int) Mathf.Pow (tailleMaxCave, 3);
-		int volumeMap = (int) Mathf.Pow (tailleMap, 3);
 		int nbCaves = (int) Mathf.Ceil (proportionCaves * volumeMap / volumeCave);
 		generateCave(nbCaves, 3, tailleMaxCave);
-
-		// On veut ajouter un personnage dans le cube central !
-		// On arrive en hauteur comme ça on a le temps de bien voir la carte ! =)
-		Vector3 posPerso = new Vector3(tailleMap / 2, tailleMap + 50, tailleMap / 2);
-		GameObject perso = Instantiate (personnage, posPerso, Quaternion.identity) as GameObject;
-		perso.name = "Joueur";
-
-		// On veut maintenant activer la caméra du personnage !
-		Camera camPerso = perso.transform.GetChild(0).GetComponent<Camera>() as Camera;
-		camPerso.enabled = true;
-
-		// On veut ajouter des ennemis !
-		nbEnnemis = (int) Mathf.Ceil(volumeMap * proportionEnnemis);
-		for (int i = 0; i < nbEnnemis; i++) {
-			Vector3 posEnnemi = new Vector3 (Random.Range (1f, tailleMap - 1f), Random.Range (1f, tailleMap - 1f), Random.Range (1f, tailleMap - 1f)); 
-			Instantiate (ennemi, posEnnemi, Quaternion.identity);
-		}
 	}
 
-	void remplirFace(int indVertx1, int indVertx2, int indVertx3, int indVertx4) {
+	void remplirFace(int indVertx1, int indVertx2, int indVertx3, int indVertx4, Vector3[] pos) {
 		Vector3 depart = pos [indVertx1];
 		//Vector3 arrivee = pos [indVertx4];
 		Vector3 pas1 = (pos [indVertx2] - depart) / tailleMap;
@@ -318,111 +327,11 @@ public class GamaManagerScript : MonoBehaviour {
 		return cave;
 	}
 
-	// Update is called once per frame
-	void Update () {
-		// Si on a appuyé sur la touche Escape, on quitte le jeu !
-		if (Input.GetKey ("escape")) {
-			QuitGame ();
+	void generateEnnemies() {
+		nbEnnemis = (int) Mathf.Ceil(volumeMap * proportionEnnemis);
+		for (int i = 0; i < nbEnnemis; i++) {
+			Vector3 posEnnemi = new Vector3 (Random.Range (1f, tailleMap - 1f), Random.Range (1f, tailleMap - 1f), Random.Range (1f, tailleMap - 1f)); 
+			Instantiate (ennemiPrefabs, posEnnemi, Quaternion.identity);
 		}
-
-		// Si on a attrapé toutes les lumières
-		ConsoleScript cs = GameObject.Find ("Console").GetComponent<ConsoleScript> ();
-		if (!lumieresAttrapees && nbLumieres <= 0) {
-			lumieresAttrapees = true;
-			// On affiche un message dans la console !
-			cs.ajouterMessage ("Vous ne vous en sortirez pas comme ça !", ConsoleScript.TypeText.ENNEMI_TEXT);
-			cs.ajouterMessage ("OK Super maintenant faut sortir d'ici !", ConsoleScript.TypeText.ALLY_TEXT);
-		}
-
-		// Si c'est la fin de la partie, on quitte après 5 secondes !
-		if (!partieDejaTerminee && partieTerminee ()) {
-			partieDejaTerminee = true;
-			StartCoroutine (QuitInSeconds(7));
-		}
-	}
-
-	bool partieTerminee() {
-		ConsoleScript cs = GameObject.Find ("Console").GetComponent<ConsoleScript> ();
-		GameObject player = GameObject.Find ("Joueur");
-
-		// Si le joueur est tombé du cube ...
-		if (player.transform.position.y < -10) {
-			// Si le joueur a perdu ...
-			if (!lumieresAttrapees) {
-			// Si le joueur a gagné !
-				cs.ajouterMessageImportant ("MENACE ÉJECTÉE !", ConsoleScript.TypeText.ENNEMI_TEXT, 5);
-				cs.ajouterMessage ("Désactivation du processus défensif ...", ConsoleScript.TypeText.ENNEMI_TEXT);
-				cs.ajouterMessage ("Vous avez été éjecté de la Matrix. ", ConsoleScript.TypeText.BASIC_TEXT);
-			} else {
-				cs.ajouterMessage ("NOOOOOOOOOOOOOOOOOON ...", ConsoleScript.TypeText.ENNEMI_TEXT);
-				cs.ajouterMessage ("J'ai échouée ...", ConsoleScript.TypeText.ENNEMI_TEXT);
-				cs.ajouterMessageImportant ("NOUS AVONS RÉUSSI !!!", ConsoleScript.TypeText.ALLY_TEXT, 5);
-				StartCoroutine (recompenser (cs));
-			}
-			return true;
-		}
-
-		// Ou qu'il est en contact avec un ennemi depuis plus de 5 secondes
-		// C'est donc qu'il s'est fait conincé !
-		if (Time.time - player.GetComponent<personnageScript> ().lastNotContactEnnemy >= 5f) {
-			cs.ajouterMessageImportant ("MENACE ÉLIMINÉ !", ConsoleScript.TypeText.ENNEMI_TEXT, 5);
-			StartCoroutine (seMoquer (cs));
-			return true;
-		}
-
-		return false;
-	}
-
-	IEnumerator QuitInSeconds(int tps) {
-		yield return new WaitForSeconds (tps);
-		QuitGame ();
-	}
-
-	IEnumerator recompenser(ConsoleScript cs) {
-		yield return new WaitForSeconds (2);
-		string message;
-		while (true) {
-			message = "";
-			for (int i = 0; i < Random.Range (0, 6); i++)
-				message += " ";
-			message += "On a réussi YES";
-			for (int i = 0; i < Random.Range (3, 12); i++)
-				message += "S";
-			message += " ";
-			for (int i = 0; i < Random.Range (1, 6); i++)
-				message += "!";
-			cs.ajouterMessage (message, ConsoleScript.TypeText.ALLY_TEXT);
-			yield return null;
-		}
-	}
-
-	IEnumerator seMoquer(ConsoleScript cs) {
-		yield return new WaitForSeconds (2);
-		string message;
-		while (true) {
-			message = "";
-			for (int i = 0; i < Random.Range (0, 6); i++)
-				message += " ";
-			message += "Nous vous avons attrapé ... MOU";
-			for (int i = 0; i < Random.Range (1, 6); i++)
-				message += "HA";
-			message += " ";
-			for (int i = 0; i < Random.Range (1, 6); i++)
-				message += "!";
-			cs.ajouterMessage (message, ConsoleScript.TypeText.ENNEMI_TEXT);
-			yield return null;
-		}
-	}
-
-	public void QuitGame()
-	{
-		// save any game data here
-		#if UNITY_EDITOR
-		// Application.Quit() does not work in the editor so
-		// UnityEditor.EditorApplication.isPlaying need to be set to false to end the game
-		UnityEditor.EditorApplication.isPlaying = false;
-		#else
-		Application.Quit();
-		#endif
 	}
 }

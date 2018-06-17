@@ -4,34 +4,36 @@ using UnityEngine;
 
 public class ObjectifScript : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-		ParticleSystem ps = GetComponent<ParticleSystem> ();
+	//////////////////////////////////////////////////////////////////////////////////////
+	// ATTRIBUTS PRIVÉES
+	//////////////////////////////////////////////////////////////////////////////////////
 
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+	[HideInInspector]
+	public ConsoleScript console;
+	[HideInInspector]
+	public MapManagerScript mapManager;
+
+	//////////////////////////////////////////////////////////////////////////////////////
+	// METHODES
+	//////////////////////////////////////////////////////////////////////////////////////
+
+	void Start () {
+		// Initialisation
+		ParticleSystem ps = GetComponent<ParticleSystem> ();
+		console = GameObject.Find("Console").GetComponent<ConsoleScript>();
+		mapManager = GameObject.Find("MapManager").GetComponent<MapManagerScript>();
 	}
 
 	// Si le joueur nous touche, on disparait !
 	void OnTriggerEnter(Collider hit) {
-		ConsoleScript cs = GameObject.Find ("Console").GetComponent<ConsoleScript> ();
 		if (hit.gameObject.name == "Joueur"){
-			cs.ajouterMessage ("ON A DES INFOS !", ConsoleScript.TypeText.ALLY_TEXT);
-			int nbLumieresRestantes = GameObject.Find ("GameManager").GetComponent<GamaManagerScript> ().nbLumieres--;
+			int nbLumieresRestantes = mapManager.nbLumieres--;
 			nbLumieresRestantes--;
-			if (nbLumieresRestantes > 0) {
-				cs.ajouterMessageImportant ("Plus que " + nbLumieresRestantes + " !", ConsoleScript.TypeText.ALLY_TEXT, 2);
-			} else {
-				cs.ajouterMessage ("ON LES A TOUTES !", ConsoleScript.TypeText.ALLY_TEXT);
-				cs.ajouterMessageImportant ("FAUT SE BARRER MAINTENANT !!!", ConsoleScript.TypeText.ALLY_TEXT, 2);
-			}
+			console.attraperLumiere(nbLumieresRestantes);
 			Destroy (this.gameObject);
 
 			// Et on certifie qu'on a bien attrapé une orbe
-			cs.updateLastOrbeAttrapee();
+			console.updateLastOrbeAttrapee();
 		}
 	}
 }

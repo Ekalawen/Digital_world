@@ -3,9 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class personnageScript : MonoBehaviour {
+public class PersonnageScript : MonoBehaviour {
+
+	//////////////////////////////////////////////////////////////////////////////////////
+	// ENUMERATION
+	//////////////////////////////////////////////////////////////////////////////////////
 
 	public enum EtatPersonnage {AU_SOL, EN_SAUT, EN_CHUTE, AU_MUR, AU_POTEAU};
+
+	//////////////////////////////////////////////////////////////////////////////////////
+	// ATTRIBUTS PUBLIQUES
+	//////////////////////////////////////////////////////////////////////////////////////
 
 	public float vitesseDeplacement; // la vitesse de déplacement horizontale
 	public float vitesseSaut; // la vitesse d'élévation du saut
@@ -17,8 +25,16 @@ public class personnageScript : MonoBehaviour {
 	public float distanceMurMax; // la distance maximale de laquelle on peut s'éloigner du mur
 	public GameObject trail; // Les trails à tracer quand le personnage est perdu !
 
-	private GameObject personnage;
-	private CharacterController controller;
+	//////////////////////////////////////////////////////////////////////////////////////
+	// ATTRIBUTS PRIVÉES
+	//////////////////////////////////////////////////////////////////////////////////////
+
+	[HideInInspector]
+	public GameObject personnage;
+	[HideInInspector]
+	public CharacterController controller;
+	[HideInInspector]
+	public ConsoleScript console;
 	private Camera camera;
 	private float xRot, yRot;
 	private float currentRotationX, currentRotationY;
@@ -43,8 +59,17 @@ public class personnageScript : MonoBehaviour {
 	[HideInInspector]
 	public bool vu = false; // permet de savoir si le joueur est vu par des ennemis ou pas
 
-	// Use this for initialization
+	//////////////////////////////////////////////////////////////////////////////////////
+	// METHODES
+	//////////////////////////////////////////////////////////////////////////////////////
+
 	void Start () {
+		// On récupère le personnage
+		personnage = GameObject.Find("Joueur");
+		controller = personnage.GetComponent<CharacterController> ();
+		camera = personnage.transform.GetChild(0).GetComponent<Camera>() as Camera;
+		pointDebutSaut = transform.position;
+
 		// On regarde en bas quand on commence !
 		xRot = 180; 
 		yRot = 0;
@@ -52,14 +77,8 @@ public class personnageScript : MonoBehaviour {
 		// On empêche la souris de sortir de l'écran !
 		Cursor.lockState = CursorLockMode.Locked;
 		Cursor.visible = false;
-
-		// On récupère le personnage
-		personnage = GameObject.Find("Joueur");
-		controller = personnage.GetComponent<CharacterController> ();
-		camera = personnage.transform.GetChild(0).GetComponent<Camera>() as Camera;
 	}
 
-	// Update is called once per frame
 	void Update () {
 		// On oriente notre personnage dans dans le sens de la souris
 		xRot -= Input.GetAxisRaw ("Mouse Y") * sensibilite; // mouvement caméra haut-bad
@@ -84,17 +103,14 @@ public class personnageScript : MonoBehaviour {
 			move += pousee;
 		}
 
+		// On retient l'état d'avant
+		EtatPersonnage etatAvant = etat;
+
 		// On trouve l'état du personnage
-		if (etat != EtatPersonnage.AU_MUR) {
-			if (controller.isGrounded) {
-				//if((controller.collisionFlags & CollisionFlags.Below) != 0) {
-				etat = EtatPersonnage.AU_SOL;
-			} else {
-				if (etat != EtatPersonnage.EN_SAUT) {
-					etat = EtatPersonnage.EN_CHUTE;
-				}
-			}
-		}
+		getEtatPersonnage();
+
+		// Si on a fait un grand saut, on le dit
+		detecterGrandSaut(etatAvant);
 
 		// En fonction de l'état du personnage, on applique le mouvement correspondant !
 		switch (etat) {
@@ -198,11 +214,24 @@ public class personnageScript : MonoBehaviour {
 			}
 
 			// Un petit message
-			ConsoleScript cs = GameObject.Find ("Console").GetComponent<ConsoleScript> ();
-			cs.ajouterMessage ("On t'envoie les données !", ConsoleScript.TypeText.ALLY_TEXT);
+			console.envoyerTrails();
 
 			// Et on certifie qu'on a appuyé sur E
-			cs.updateLastOrbeAttrapee();
+			console.updateLastOrbeAttrapee();
+		}
+	}
+
+	// Pour mettre à jour l'état du personnage !
+	void getEtatPersonnage() {
+		if (etat != EtatPersonnage.AU_MUR) {
+			if (controller.isGrounded) {
+				//if((controller.collisionFlags & CollisionFlags.Below) != 0) {
+				etat = EtatPersonnage.AU_SOL;
+			} else {
+				if (etat != EtatPersonnage.EN_SAUT) {
+					etat = EtatPersonnage.EN_CHUTE;
+				}
+			}
 		}
 	}
 
@@ -218,12 +247,22 @@ public class personnageScript : MonoBehaviour {
 		}
 	}
 
+	void detecterGrandSaut(EtatPersonnage etatAvant) {
+		if((etatAvant == EtatPersonnage.EN_CHUTE || etatAvant == EtatPersonnage.EN_SAUT)
+		&& (etat == EtatPersonnage.AU_SOL || etat == EtatPersonnage.AU_MUR)) {
+			float hauteurSaut = pointDebutSaut.y - transform.position.y;
+			if(hauteurSaut > 7) {
+				console.grandSaut(hauteurSaut);
+			}
+		}
+	}
+
 	void OnControllerColliderHit(ControllerColliderHit hit) {
 
 		// On regarde si le personnage s'accroche à un mur !
 		// Pour ça il doit être dans les airs !
 		// Et il ne doit PAS être en train d'appuyer sur SHIFT
-		if (etat == EtatPersonnage.EN_SAUT || etat == EtatPersonnage.EN_CHUTE && !Input.GetKey(KeyCode.LeftShift)) {
+		if ((etat == EtatPersonnage.EN_SAUT || etat == EtatPersonnage.EN_CHUTE) && !Input.GetKey(KeyCode.LeftShift)) {
 
 			/*// On ne peut pas s'aggriper si on a une distance horizontale trop petite !
 			Vector3 pointDepart = pointDebutSaut;

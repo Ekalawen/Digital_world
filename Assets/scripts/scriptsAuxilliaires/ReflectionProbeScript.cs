@@ -4,13 +4,24 @@ using UnityEngine;
 
 public class ReflectionProbeScript : MonoBehaviour {
 
+	//////////////////////////////////////////////////////////////////////////////////////
+	// ATTRIBUTS PUBLIQUES
+	//////////////////////////////////////////////////////////////////////////////////////
+
 	public float distanceDeRafraichissement = 5f;
 	public int frequenceDeRafraichissement = 1000;
+
+	//////////////////////////////////////////////////////////////////////////////////////
+	// ATTRIBUTS PRIVÉES
+	//////////////////////////////////////////////////////////////////////////////////////
 
 	private GameObject player;
 	private int dernierRafraichissement;
 
-	// Use this for initialization
+	//////////////////////////////////////////////////////////////////////////////////////
+	// METHODES
+	//////////////////////////////////////////////////////////////////////////////////////
+
 	void Start () {
 		// On récupère le joueur		
 		player = GameObject.Find("Joueur");
@@ -18,8 +29,7 @@ public class ReflectionProbeScript : MonoBehaviour {
 			Debug.Log ("Player non trouvé !!!");
 		}
 	}
-	
-	// Update is called once per frame
+
 	void Update () {
 		// On ne s'update que si le joueur est suffisamment proche !
 		if (Vector3.Distance (player.transform.position, transform.position) < distanceDeRafraichissement) {

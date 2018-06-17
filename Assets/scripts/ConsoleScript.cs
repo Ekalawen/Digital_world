@@ -3,47 +3,79 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+// La Console a pour but de gérer l'interface graphique de l'utilisateur.
+// Elle gérera notemment tous les affichages dans le Terminal du personnage.
 public class ConsoleScript : MonoBehaviour {
 
+	//////////////////////////////////////////////////////////////////////////////////////
+	// ENUMERATION
+	//////////////////////////////////////////////////////////////////////////////////////
+
 	public enum TypeText {BASIC_TEXT, ENNEMI_TEXT, ALLY_TEXT};
+
+	//////////////////////////////////////////////////////////////////////////////////////
+	// ATTRIBUTS PUBLIQUES
+	//////////////////////////////////////////////////////////////////////////////////////
 
 	public Color basicColor; // La couleur avec laquelle on écrit la plupart du temps
 	public Color ennemiColor; // La couleur des messages ennemis
 	public Color allyColor; // La couleur des messages alliées
 	public Font font; // La police de charactère des messages
 	public GameObject textContainer; // Là où l'on va afficher les lignes
-	public Text importantText; // Là où l'on affiche les informations importantes
-	public float probaPhraseRandom;
 	public int tailleTexte; // La taille du texte affiché
+	public float probaPhraseRandom; // La probabilité de générer une phrase aléatoire dans la console
+	public Text importantText; // Là où l'on affiche les informations importantes
 
+	//////////////////////////////////////////////////////////////////////////////////////
+	// ATTRIBUTS PRIVEES
+	//////////////////////////////////////////////////////////////////////////////////////
+
+	[HideInInspector]
+	public GameManagerScript gameManager;
+	[HideInInspector]
+	public MapManagerScript mapManager;
+	[HideInInspector]
+	public GameObject player;
+	[HideInInspector]
+	public DataBaseScript dataBase;
 	private List<GameObject> lines; // Les lignes de la console, constitués d'un RectTransform et d'un Text
 	private List<int> numLines; // Les numéros de lignes
-	private GameObject player;
 	private float lastTimeImportantText;
 	private float tempsImportantText;
-	private float lastOrbeAttrapee; // Le dernier temps auquel le joueur n'a pas attrapé d'orbe
+	private float lastOrbeAttrapee; // Le dernier temps auquel le joueur n'a pas attrapé d'Orbe
 
-	// Use this for initialization
+	//////////////////////////////////////////////////////////////////////////////////////
+	// METHODES
+	//////////////////////////////////////////////////////////////////////////////////////
+
 	void Start () {
+		// Initialisation des variables
 		name = "Console";
+		gameManager = GameObject.Find("GameManager").GetComponent<GameManagerScript>();
+		mapManager = GameObject.Find("MapManager").GetComponent<MapManagerScript>();
 		lines = new List<GameObject> ();
 		numLines = new List<int> ();
 		player = GameObject.Find ("Joueur");
 		importantText.text = "";
+		dataBase = GameObject.Find("DataBase").GetComponent<DataBaseScript>();
 
 		// Les premiers messages
+		premiersMessages();
+	}
+
+	public void premiersMessages() {
 		ajouterMessage ("Chargement de la Matrix ...", TypeText.BASIC_TEXT);
 		ajouterMessage ("Détection des Bases de Données ...", TypeText.BASIC_TEXT);
-		ajouterMessageImportant (GameObject.Find("GameManager").GetComponent<GamaManagerScript>().nbLumieres + " Datas trouvées ! À vous de jouer !", TypeText.ALLY_TEXT, 5);
+		ajouterMessageImportant (mapManager.nbLumieres + " Datas trouvées ! À vous de jouer !", TypeText.ALLY_TEXT, 5);
 		ajouterMessage ("DÉTECTION INTRUSION ...", TypeText.ENNEMI_TEXT);
 		ajouterMessage ("ANTI-VIRUS ACTIVÉS DANS 5 SECONDES !", TypeText.ENNEMI_TEXT);
-		ajouterMessage ("On détecte " + GameObject.Find("GameManager").GetComponent<GamaManagerScript>().nbEnnemis + " Sondes !", TypeText.ALLY_TEXT);
+		ajouterMessage ("On détecte " + mapManager.nbEnnemis + " Sondes !", TypeText.ALLY_TEXT);
 	}
 	
-	// Update is called once per frame
 	void Update () {
 		// On regarde si le joueur n'est pas trop haut en altitude
-		if (Time.time >= 10f && player.transform.position.y > GameObject.Find("GameManager").GetComponent<GamaManagerScript>().tailleMap + 3) {
+		if (Time.time >= 10f
+		&& player.transform.position.y > mapManager.tailleMap + 3) {
 			ajouterMessage ("Altitude critique !", TypeText.BASIC_TEXT);
 		}
 
@@ -64,18 +96,10 @@ public class ConsoleScript : MonoBehaviour {
 		}
 
 		// On vérifie si le joueur est suivi ou pas
-		GameObject[] gos = GameObject.FindGameObjectsWithTag("Ennemi");
-		bool nonSuivi = true;
-		foreach (GameObject go in gos) {
-			EnnemiScript es = go.GetComponent<EnnemiScript> ();
-			if (es.isMoving()) {
-				nonSuivi = false;
-				break;
-			}
-		}
-		if (Time.time >= 10 && nonSuivi && player.GetComponent<personnageScript>().vu == true) {
+		bool nonSuivi = dataBase.joueurSuivi();
+		if (Time.time >= 10 && nonSuivi && player.GetComponent<PersonnageScript>().vu == true) {
 			ajouterMessageImportant ("On les a semés, on est plus suivi !", TypeText.ALLY_TEXT, 2f);
-			player.GetComponent<personnageScript> ().vu = false;
+			player.GetComponent<PersonnageScript> ().vu = false;
 		}
 	}
 
@@ -177,9 +201,111 @@ public class ConsoleScript : MonoBehaviour {
 		phrases.Add ("Tu as oublié les touches ? RTFM !");
 		phrases.Add ("Récursif ou Itératif ?");
 		phrases.Add ("POO = Parfaite Optimisation Originelle");
-		phrases.Add ("Il y a " + GameObject.Find ("GameManager").GetComponent<GamaManagerScript> ().nbEnnemis + " Sondes à votre recherche.");
+		phrases.Add ("Il y a " + mapManager.nbEnnemis + " Sondes à votre recherche.");
 
 		string phrase = phrases [Random.Range (0, phrases.Count)];
 		ajouterMessage (phrase, TypeText.BASIC_TEXT);
 	}
+
+	// Lorsqu'une sonde repère le joueur
+	public void joueurDetecte(string nomDetecteur) {
+		ajouterMessage (nomDetecteur + " vous a détecté, je sais où vous êtes.", ConsoleScript.TypeText.ENNEMI_TEXT);
+	}
+	
+	// Lorsqu'une sonde perd le joueur de vue
+	public void joueurPerduDeVue(string nomDetecteur) {
+		ajouterMessage ("On a déconnecté " + nomDetecteur + ".", ConsoleScript.TypeText.ALLY_TEXT);
+	}
+
+	// Lorsque le joueur est touché
+	public void joueurTouche() {
+		ajouterMessageImportant ("TOUCHÉ ! Je vais vous avoir !", ConsoleScript.TypeText.ENNEMI_TEXT, 1);
+	}
+
+	// Lorsque toutes les lumieres ont été attrapés
+	public void toutesLumieresAttrapees() {
+		ajouterMessage ("Vous ne vous en sortirez pas comme ça !", ConsoleScript.TypeText.ENNEMI_TEXT);
+		ajouterMessage ("OK Super maintenant faut sortir d'ici !", ConsoleScript.TypeText.ALLY_TEXT);
+	}
+
+	// Lorsque le joueur est éjecté
+	public void joueurEjecte() {
+		ajouterMessageImportant ("MENACE ÉJECTÉE !", ConsoleScript.TypeText.ENNEMI_TEXT, 5);
+		ajouterMessage ("Désactivation du processus défensif ...", ConsoleScript.TypeText.ENNEMI_TEXT);
+		ajouterMessage ("Vous avez été éjecté de la Matrix. ", ConsoleScript.TypeText.BASIC_TEXT);
+	}
+
+	// Lorsque le joueur réussi à s'échapper
+	public void joueurEchappe() {
+		ajouterMessage ("NOOOOOOOOOOOOOOOOOON ...", ConsoleScript.TypeText.ENNEMI_TEXT);
+		ajouterMessage ("J'ai échouée ...", ConsoleScript.TypeText.ENNEMI_TEXT);
+		ajouterMessageImportant ("NOUS AVONS RÉUSSI !!!", ConsoleScript.TypeText.ALLY_TEXT, 5);
+		StartCoroutine (recompenser ());
+	}
+
+	// Text de récompense
+	IEnumerator recompenser() {
+		yield return new WaitForSeconds (2);
+		string message;
+		while (true) {
+			message = "";
+			for (int i = 0; i < Random.Range (0, 6); i++)
+				message += " ";
+			message += "On a réussi YES";
+			for (int i = 0; i < Random.Range (3, 12); i++)
+				message += "S";
+			message += " ";
+			for (int i = 0; i < Random.Range (1, 6); i++)
+				message += "!";
+			ajouterMessage (message, ConsoleScript.TypeText.ALLY_TEXT);
+			yield return null;
+		}
+	}
+
+	// Lorsque le joueur a été bloqué par les drones
+	public void joueurCapture() {
+		ajouterMessageImportant ("MENACE ÉLIMINÉE !", ConsoleScript.TypeText.ENNEMI_TEXT, 5);
+		StartCoroutine (seMoquer ());
+	}
+
+	// On se moque de lui
+	IEnumerator seMoquer() {
+		yield return new WaitForSeconds (2);
+		string message;
+		while (true) {
+			message = "";
+			for (int i = 0; i < Random.Range (0, 6); i++)
+				message += " ";
+			message += "Nous vous avons attrapé ... MOU";
+			for (int i = 0; i < Random.Range (1, 6); i++)
+				message += "HA";
+			message += " ";
+			for (int i = 0; i < Random.Range (1, 6); i++)
+				message += "!";
+			ajouterMessage (message, ConsoleScript.TypeText.ENNEMI_TEXT);
+			yield return null;
+		}
+	}
+
+	// Quand on attrape une lumière
+	public void attraperLumiere(int nbLumieresRestantes) {
+		ajouterMessage ("ON A DES INFOS !", ConsoleScript.TypeText.ALLY_TEXT);
+		if (nbLumieresRestantes > 0) {
+			ajouterMessageImportant ("Plus que " + nbLumieresRestantes + " !", ConsoleScript.TypeText.ALLY_TEXT, 2);
+		} else {
+			ajouterMessage ("ON LES A TOUTES !", ConsoleScript.TypeText.ALLY_TEXT);
+			ajouterMessageImportant ("FAUT SE BARRER MAINTENANT !!!", ConsoleScript.TypeText.ALLY_TEXT, 2);
+		}
+	}
+
+	// Quand le joueur lance les trails
+	public void envoyerTrails() {
+		ajouterMessage ("On t'envoie les données !", ConsoleScript.TypeText.ALLY_TEXT);
+	}
+
+	// Quand le joueur attérit d'un grand saut
+	public void grandSaut(float hauteurSaut) {
+		ajouterMessage("Wow quel saut ! " + ((int) hauteurSaut) + " mètres !", ConsoleScript.TypeText.BASIC_TEXT);
+	}
+
 }
