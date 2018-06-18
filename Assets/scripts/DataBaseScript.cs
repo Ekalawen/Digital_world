@@ -43,7 +43,7 @@ public class DataBaseScript : MonoBehaviour {
 		if (mapManager.nbLumieres <= 0) {
 			if (!plusDeLumieres) {
 				plusDeLumieres = true;
-				timingPlusDeLumieres = Time.time;
+				timingPlusDeLumieres = Time.timeSinceLevelLoad;
 			}
 			// Alors on décide de la stratégie à adopter pour tous les drones !
 			// Il suffit qu'un seul drône puisse voir le joueur pour que TOUS le trackent !
@@ -58,7 +58,7 @@ public class DataBaseScript : MonoBehaviour {
 					break;
 				}
 			}
-			if (joueurVisible && Time.time - timingPlusDeLumieres > 5f) {
+			if (joueurVisible && Time.timeSinceLevelLoad - timingPlusDeLumieres > 5f) {
 				etatDrones = EnnemiScript.EtatEnnemi.RUSHING;
 			} else {
 				etatDrones = EnnemiScript.EtatEnnemi.DEFENDING;

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManagerScript : MonoBehaviour {
 
@@ -66,7 +67,8 @@ public class GameManagerScript : MonoBehaviour {
 
 		// Si on a appuyé sur la touche Escape, on quitte le jeu !
 		if (Input.GetKey ("escape")) {
-			QuitGame ();
+			// QuitGame ();
+			revenirAuMenu();
 		}
 
 		// Si on a attrapé toutes les lumières
@@ -98,7 +100,8 @@ public class GameManagerScript : MonoBehaviour {
 
 		// Ou qu'il est en contact avec un ennemiPrefabs depuis plus de 5 secondes
 		// C'est donc qu'il s'est fait conincé !
-		if (Time.time - player.GetComponent<PersonnageScript> ().lastNotContactEnnemy >= 5f) {
+		//Debug.Log("lastnotcontact = "+ player.GetComponent<PersonnageScript>().lastNotContactEnnemy);
+		if (Time.timeSinceLevelLoad - player.GetComponent<PersonnageScript> ().lastNotContactEnnemy >= 5f) {
 			console.joueurCapture();
 			player.vitesseDeplacement = 0; // On immobilise le joueur
 			player.vitesseSaut = 0; // On immobilise le joueur
@@ -109,7 +112,8 @@ public class GameManagerScript : MonoBehaviour {
 
 	IEnumerator QuitInSeconds(int tps) {
 		yield return new WaitForSeconds (tps);
-		QuitGame ();
+		// QuitGame ();
+		revenirAuMenu();
 	}
 
 	public void QuitGame()
@@ -122,5 +126,18 @@ public class GameManagerScript : MonoBehaviour {
 		#else
 			Application.Quit();
 		#endif
+	}
+
+	public void revenirAuMenu() {
+		// On détruit tout !
+		Object.Destroy(map);
+		Object.Destroy(player);
+		Object.Destroy(console);
+		Object.Destroy(dataBase);
+		Object.Destroy(this);
+
+		Cursor.lockState = CursorLockMode.None;
+		Cursor.visible = true;
+		SceneManager.LoadScene("MenuScene");
 	}
 }

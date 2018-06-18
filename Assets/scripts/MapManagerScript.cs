@@ -17,6 +17,7 @@ public class MapManagerScript : MonoBehaviour {
 	public GameObject objectif; // On récupère les objectifs !
 	public GameObject ennemiPrefabs; // On récupère un ennemi !
 	public TypeMap typeMap;
+	public CubeScript.ThemeCube themeCube;
 	public int tailleMap;
 	public float proportionCaves;
 	public float proportionEnnemis; // La quantité d'ennemies relativement à la taille de la carte
@@ -44,6 +45,15 @@ public class MapManagerScript : MonoBehaviour {
 		name = "MapManager";
 		cubes = new List<GameObject>();
 		lumieresAttrapees = false;
+
+		// On charge le thème de la map
+		if(themeCube == CubeScript.ThemeCube.RANDOM) {
+			System.Array values = System.Enum.GetValues(typeof(CubeScript.ThemeCube));
+			int indiceTheme = Random.Range(0, values.Length - 1);
+			CubeScript.theme = (CubeScript.ThemeCube) values.GetValue(indiceTheme);
+		} else {
+			CubeScript.theme = themeCube;
+		}
 
 		// On charge la bonne map
 		volumeMap = (int) Mathf.Pow (tailleMap, 3);

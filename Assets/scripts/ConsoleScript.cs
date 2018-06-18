@@ -74,7 +74,7 @@ public class ConsoleScript : MonoBehaviour {
 	
 	void Update () {
 		// On regarde si le joueur n'est pas trop haut en altitude
-		if (Time.time >= 10f
+		if (Time.timeSinceLevelLoad >= 10f
 		&& player.transform.position.y > mapManager.tailleMap + 3) {
 			ajouterMessage ("Altitude critique !", TypeText.BASIC_TEXT);
 		}
@@ -85,26 +85,26 @@ public class ConsoleScript : MonoBehaviour {
 		}
 
 		// On efface l'important texte si ça fait suffisamment longtemps qu'il est affiché
-		if (Time.time - lastTimeImportantText > tempsImportantText) {
+		if (Time.timeSinceLevelLoad - lastTimeImportantText > tempsImportantText) {
 			importantText.text = "";
 		}
 
 		// On conseille d'appuyer sur TAB si le joueur galère a trouver des orbes
-		if (Time.time - lastOrbeAttrapee > 30) {
-			lastOrbeAttrapee = Time.time;
+		if (Time.timeSinceLevelLoad - lastOrbeAttrapee > 30) {
+			lastOrbeAttrapee = Time.timeSinceLevelLoad;
 			ajouterMessage ("On peut te géolocaliser les Datas si tu appuies sur E !", TypeText.ALLY_TEXT);
 		}
 
 		// On vérifie si le joueur est suivi ou pas
 		bool nonSuivi = dataBase.joueurSuivi();
-		if (Time.time >= 10 && nonSuivi && player.GetComponent<PersonnageScript>().vu == true) {
+		if (Time.timeSinceLevelLoad >= 10 && nonSuivi && player.GetComponent<PersonnageScript>().vu == true) {
 			ajouterMessageImportant ("On les a semés, on est plus suivi !", TypeText.ALLY_TEXT, 2f);
 			player.GetComponent<PersonnageScript> ().vu = false;
 		}
 	}
 
 	public void updateLastOrbeAttrapee() {
-		lastOrbeAttrapee = Time.time;
+		lastOrbeAttrapee = Time.timeSinceLevelLoad;
 	}
 
 	public void ajouterMessageImportant(string message, TypeText type, float tempsAffichage) {
@@ -124,7 +124,7 @@ public class ConsoleScript : MonoBehaviour {
 			importantText.color = allyColor;
 			break;
 		}
-		lastTimeImportantText = Time.time;
+		lastTimeImportantText = Time.timeSinceLevelLoad;
 		tempsImportantText = tempsAffichage;
 	}
 
@@ -195,7 +195,7 @@ public class ConsoleScript : MonoBehaviour {
 		phrases.Add ("Instruction 2 : Ne regardez pas une sonde dans les yeux.");
 		phrases.Add ("Instruction 3 : Faites attention quand vous rentrez dans une grotte ...");
 		phrases.Add ("Instruction 3 : Restez toujours en mouvement !");
-		phrases.Add ("Durée d'existence de la Matrix : " + Time.time);
+		phrases.Add ("Durée d'existence de la Matrix : " + Time.timeSinceLevelLoad);
 		phrases.Add ("Numéro d'identification de la Matrix : " + Random.Range (0, 10000000));
 		phrases.Add ("Il y a une sonde dernière toi ! Non je déconne :D");
 		phrases.Add ("Tu as oublié les touches ? RTFM !");
@@ -233,6 +233,7 @@ public class ConsoleScript : MonoBehaviour {
 		ajouterMessageImportant ("MENACE ÉJECTÉE !", ConsoleScript.TypeText.ENNEMI_TEXT, 5);
 		ajouterMessage ("Désactivation du processus défensif ...", ConsoleScript.TypeText.ENNEMI_TEXT);
 		ajouterMessage ("Vous avez été éjecté de la Matrix. ", ConsoleScript.TypeText.BASIC_TEXT);
+		StartCoroutine (seMoquer ());
 	}
 
 	// Lorsque le joueur réussi à s'échapper

@@ -99,7 +99,7 @@ public class PersonnageScript : MonoBehaviour {
 		move *= vitesseDeplacement;
 
 		// On applique la poussee si le personnage en a une !
-		if (Time.time - debutPousee < tempsPousee) {
+		if (Time.timeSinceLevelLoad - debutPousee < tempsPousee) {
 			move += pousee;
 		}
 
@@ -117,7 +117,7 @@ public class PersonnageScript : MonoBehaviour {
 		case EtatPersonnage.AU_SOL:
 			if (Input.GetButton ("Jump")) {
 				etat = EtatPersonnage.EN_SAUT;
-				debutSaut = Time.time;
+				debutSaut = Time.timeSinceLevelLoad;
 				pointDebutSaut = transform.position;
 				origineSaut = EtatPersonnage.AU_SOL;
 				StartCoroutine (stopJump (debutSaut));
@@ -128,7 +128,7 @@ public class PersonnageScript : MonoBehaviour {
 			break;
 
 		case EtatPersonnage.EN_SAUT:
-			float percentSaut = (Time.time - debutSaut) / dureeSaut;
+			float percentSaut = (Time.timeSinceLevelLoad - debutSaut) / dureeSaut;
 			if (percentSaut <= dureeEfficaciteSaut) {
 				move.y += vitesseSaut;
 			}
@@ -148,13 +148,13 @@ public class PersonnageScript : MonoBehaviour {
 			// On peut encore sauter quand on est au mur ! 
 			} else if (Input.GetButtonDown ("Jump")) { // Mais il faut appuyer à nouveau !
 				etat = EtatPersonnage.EN_SAUT;
-				debutSaut = Time.time;
+				debutSaut = Time.timeSinceLevelLoad;
 				pointDebutSaut = transform.position;
 				origineSaut = EtatPersonnage.AU_MUR;
 				normaleOrigineSaut = normaleMur;
 				StartCoroutine (stopJump (debutSaut));
 			} else if (Input.GetButton ("Jump")) { // On a le droit de terminer son saut lorsqu'on touche un mur
-				float pourcentageSaut = (Time.time - debutSaut) / dureeSaut;
+				float pourcentageSaut = (Time.timeSinceLevelLoad - debutSaut) / dureeSaut;
 				if (pourcentageSaut <= dureeEfficaciteSaut) {
 					move.y += vitesseSaut;
 				}
@@ -162,7 +162,7 @@ public class PersonnageScript : MonoBehaviour {
 			// Si ça fait trop longtemps qu'on est sur le mur
 			// Ou que l'on s'éloigne trop du mur on tombe
 			float distanceMur = ((transform.position - pointMur) - Vector3.ProjectOnPlane ((transform.position - pointMur), normaleMur)).magnitude; // pourtant c'est clair non ? Fais un dessins si tu comprends pas <3
-			if ((Time.time - debutMur) >= dureeMur
+			if ((Time.timeSinceLevelLoad - debutMur) >= dureeMur
 			    || distanceMur >= distanceMurMax) {
 				etat = EtatPersonnage.EN_CHUTE;
 				pointDebutSaut = transform.position;
@@ -198,7 +198,7 @@ public class PersonnageScript : MonoBehaviour {
 			}
 		}
 		if (pasTouchee) {
-			lastNotContactEnnemy = Time.time;
+			lastNotContactEnnemy = Time.timeSinceLevelLoad;
 		}
 
 
@@ -236,7 +236,7 @@ public class PersonnageScript : MonoBehaviour {
 	}
 
 	IEnumerator stopJump(float debut) {
-		while (Time.time - debut < dureeSaut && Input.GetButton ("Jump")) {
+		while (Time.timeSinceLevelLoad - debut < dureeSaut && Input.GetButton ("Jump")) {
 			yield return null;
 		}
 		if (etat != EtatPersonnage.AU_MUR) {
@@ -284,7 +284,7 @@ public class PersonnageScript : MonoBehaviour {
 						Vector3 directionProject = Vector3.ProjectOnPlane(direction, Vector3.up);
 						if (Mathf.Abs (Vector3.Angle (nProject, directionProject)) < 45f) {*/
 							etat = EtatPersonnage.AU_MUR; // YEAH !!!
-							debutMur = Time.time;
+							debutMur = Time.timeSinceLevelLoad;
 							normaleMur = n;
 							pointMur = hit.point;
 					}
@@ -295,7 +295,7 @@ public class PersonnageScript : MonoBehaviour {
 	public void etrePoussee(Vector3 directionPoussee, float tempsDeLaPousee) {
 		pousee = directionPoussee;
 		tempsPousee = tempsDeLaPousee;
-		debutPousee = Time.time;
+		debutPousee = Time.timeSinceLevelLoad;
 	}
 }
 

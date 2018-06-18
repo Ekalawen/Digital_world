@@ -5,12 +5,21 @@ using UnityEngine;
 public class CubeScript : MonoBehaviour {
 
 	//////////////////////////////////////////////////////////////////////////////////////
+	// ENUM
+	//////////////////////////////////////////////////////////////////////////////////////
+
+	public enum ThemeCube {JAUNE, VERT, BLEU_GLACE, BLEU_NUIT, VIOLET, ROUGE, MULTICOLOR, BLANC, NOIR, RANDOM};
+
+	//////////////////////////////////////////////////////////////////////////////////////
 	// STATIC
 	//////////////////////////////////////////////////////////////////////////////////////
 
 	public enum CubeType {Source, Recepteur};
 	public static float probaSource = 0.02f;
 	public static float distSourceMax = 5f;
+	// ON peut choisir le thème du cube =)
+	// 0.0 = automne, 0.1 = jaune, 0.3 = vert, O.5 = bleu, 0.65 = violet, 0.8 = rose, 0.9 = rouge
+	public static ThemeCube theme;
 
 	//////////////////////////////////////////////////////////////////////////////////////
 	// ATTRIBUTS PUBLIQUES
@@ -28,7 +37,7 @@ public class CubeScript : MonoBehaviour {
 		if (Random.Range (0f, 1f) <= probaSource) {
 			type = CubeType.Source;
 			// Si le cube est une source, on va changer sa couleur !
-			Color c = Color.HSVToRGB(Random.Range(0f, 1f), 0.8f, 1f);
+			Color c = getColor();
 			couleur = c;
 			GetComponent<MeshRenderer> ().material.color = c;
 		} else {
@@ -36,6 +45,45 @@ public class CubeScript : MonoBehaviour {
 			couleur = Color.black;
 			GetComponent<MeshRenderer> ().material.color = Color.black;
 		}
+	}
+
+	private Color getColor() {
+		Color c;
+		switch (theme)
+		{
+			case ThemeCube.JAUNE:
+				c = Color.HSVToRGB(Random.Range(0.1f, 0.2f), 0.8f, 0.5f);
+			break;
+			case ThemeCube.VERT:
+				c = Color.HSVToRGB(Random.Range(0.27f, 0.37f), 1f, 0.5f);
+			break;
+			case ThemeCube.BLEU_GLACE:
+				c = Color.HSVToRGB(Random.Range(0.5f, 0.6f), 1f, 0.7f);
+			break;
+			case ThemeCube.BLEU_NUIT:
+				c = Color.HSVToRGB(Random.Range(0.6f, 0.7f), 1f, 0.4f);
+			break;
+			case ThemeCube.VIOLET:
+				c = Color.HSVToRGB(Random.Range(0.7f, 0.8f), 1f, 0.7f);
+			break;
+			case ThemeCube.ROUGE:
+				c = Color.HSVToRGB(Random.Range(0.98f, 1.02f), 1f, 0.7f);
+			break;
+			case ThemeCube.MULTICOLOR:
+				c = Color.HSVToRGB(Random.Range(0f, 1f), 1f, 0.7f);
+			break;
+			case ThemeCube.BLANC:
+				c = Color.HSVToRGB(0f, 0f, 0.6f);
+			break;
+			case ThemeCube.NOIR:
+				c = Color.HSVToRGB(0f, 1f, 0f);
+			break;
+			default:
+				c = Color.black;
+				Debug.Log("Je ne connais pas ce thème !");
+			break;
+		}
+		return c;
 	}
 	
 	void Start () {

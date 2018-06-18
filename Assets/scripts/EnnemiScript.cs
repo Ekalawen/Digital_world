@@ -73,7 +73,7 @@ public class EnnemiScript : MonoBehaviour {
 			// Si l'ennemie est suffisament proche et qu'il est visible ! Et que le jeu a commencé depuis au moins 10 secondes
 			Ray ray = new Ray (transform.position, player.transform.position - transform.position);
 			RaycastHit hit;
-			if (Time.time >= 10f && Physics.Raycast (ray, out hit, distanceDeDetection) && hit.collider.name == "Joueur") {
+			if (Time.timeSinceLevelLoad >= 10f && Physics.Raycast (ray, out hit, distanceDeDetection) && hit.collider.name == "Joueur") {
 				// Si la sonde vient juste de le repérer
 				if (etat == EtatEnnemi.WAITING) {
 					// On l'anonce !

@@ -35,13 +35,13 @@ public class TrailScript : MonoBehaviour {
 		if (Vector3.Magnitude (direction * Time.deltaTime * vitesse) > Vector3.Distance (target, transform.position)) {
 			transform.Translate (target - transform.position);
 			cibleAtteinte = true;
-			timeCibleAtteinte = Time.time;
+			timeCibleAtteinte = Time.timeSinceLevelLoad;
 		} else {
 			transform.Translate (direction * Time.deltaTime * vitesse);
 		}
 
 		// Si ça fait suffisament longtemps qu'on a atteint la cible, on disparait
-		if (cibleAtteinte && Time.time - timeCibleAtteinte > lifeTime) {
+		if (cibleAtteinte && Time.timeSinceLevelLoad - timeCibleAtteinte > lifeTime) {
 			Destroy (this.gameObject);
 		}
 	}
