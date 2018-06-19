@@ -8,18 +8,18 @@ public class CubeScript : MonoBehaviour {
 	// ENUM
 	//////////////////////////////////////////////////////////////////////////////////////
 
+	public enum CubeType {Source, Recepteur};
 	public enum ThemeCube {JAUNE, VERT, BLEU_GLACE, BLEU_NUIT, VIOLET, ROUGE, MULTICOLOR, BLANC, NOIR, RANDOM};
 
 	//////////////////////////////////////////////////////////////////////////////////////
 	// STATIC
 	//////////////////////////////////////////////////////////////////////////////////////
 
-	public enum CubeType {Source, Recepteur};
-	public static float probaSource = 0.02f;
-	public static float distSourceMax = 5f;
+	public static float probaSource;
+	public static float distSourceMax;
 	// ON peut choisir le thème du cube =)
 	// 0.0 = automne, 0.1 = jaune, 0.3 = vert, O.5 = bleu, 0.65 = violet, 0.8 = rose, 0.9 = rouge
-	public static ThemeCube theme;
+	public static List<ThemeCube> theme;
 
 	//////////////////////////////////////////////////////////////////////////////////////
 	// ATTRIBUTS PUBLIQUES
@@ -49,7 +49,12 @@ public class CubeScript : MonoBehaviour {
 
 	private Color getColor() {
 		Color c;
-		switch (theme)
+
+		// On choisit notre thème parmis nos thème
+		CubeScript.ThemeCube themeChoisi = theme[Random.Range(0, theme.Count)];
+
+		// Puis on l'applique !
+		switch (themeChoisi)
 		{
 			case ThemeCube.JAUNE:
 				c = Color.HSVToRGB(Random.Range(0.1f, 0.2f), 0.8f, 0.5f);
@@ -76,7 +81,7 @@ public class CubeScript : MonoBehaviour {
 				c = Color.HSVToRGB(0f, 0f, 0.6f);
 			break;
 			case ThemeCube.NOIR:
-				c = Color.HSVToRGB(0f, 1f, 0f);
+				c = Color.HSVToRGB(0f, 0f, 0.001f);
 			break;
 			default:
 				c = Color.black;
@@ -89,20 +94,20 @@ public class CubeScript : MonoBehaviour {
 	void Start () {
 		// La couleur des récepteurs se met à jour en fonction des sources qui sont suffisamment proches d'eux !
 		// On récupère toutes les sources à moins de distSourceMax
-		if (type == CubeType.Recepteur) {
-			Collider[] colliders = Physics.OverlapSphere(this.transform.position, distSourceMax);
-			foreach (Collider collider in colliders) {
-				if (collider.tag == "Cube") {
-					CubeScript c = collider.gameObject.GetComponent<CubeScript> () as CubeScript;				
-					if (c.type == CubeType.Source) {
-						float distance = Vector3.Distance (c.transform.position, this.transform.position);
-						if (distance < distSourceMax) {
-							float affaiblissement = 1f - distance / distSourceMax;
-							GetComponent<MeshRenderer> ().material.color += (c.couleur * affaiblissement);
-						}
+		Collider[] colliders = Physics.OverlapSphere(this.transform.position, distSourceMax);
+		foreach (Collider collider in colliders) {
+			if (collider.tag == "Cube") {
+				CubeScript c = collider.gameObject.GetComponent<CubeScript> () as CubeScript;				
+				if (c.type == CubeType.Source) {
+					float distance = Vector3.Distance (c.transform.position, this.transform.position);
+					if (distance < distSourceMax) {
+						float affaiblissement = 1f - distance / distSourceMax;
+						GetComponent<MeshRenderer> ().material.color += (c.couleur * affaiblissement);
 					}
 				}
 			}
 		}
+		// Puis on soustrait sa propre couleur pour ne pas la compter deux fois
+		GetComponent<MeshRenderer>().material.color -= couleur;
 	}
 }

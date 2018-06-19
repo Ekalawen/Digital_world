@@ -19,10 +19,14 @@ public class GameManagerScript : MonoBehaviour {
 	// ATTRIBUTS PRIVÉES
 	//////////////////////////////////////////////////////////////////////////////////////
 
-	private MapManagerScript map;
-	private PersonnageScript player;
-	private ConsoleScript console;
-	private DataBaseScript dataBase;
+	[HideInInspector]
+	public MapManagerScript map;
+	[HideInInspector]
+	public PersonnageScript player;
+	[HideInInspector]
+	public ConsoleScript console;
+	[HideInInspector]
+	public DataBaseScript dataBase;
 	[HideInInspector]
 	public bool partieDejaTerminee = false;
 
@@ -44,10 +48,10 @@ public class GameManagerScript : MonoBehaviour {
 		finirLiaisons();
 	}
 
-	void instantiatePlayer() {
+	public virtual void instantiatePlayer() {
 		// On veut ajouter un playerPrefabs dans le cube central !
 		// On arrive en hauteur comme ça on a le temps de bien voir la carte ! =)
-		Vector3 posPerso = new Vector3(map.tailleMap / 2, map.tailleMap + 50, map.tailleMap / 2);
+		Vector3 posPerso = new Vector3(map.tailleMap / 2, map.tailleMap * 4, map.tailleMap / 2);
 		GameObject perso = Instantiate (playerPrefabs, posPerso, Quaternion.identity) as GameObject;
 		perso.name = "Joueur";
 		player = perso.GetComponent<PersonnageScript>();
@@ -69,6 +73,17 @@ public class GameManagerScript : MonoBehaviour {
 		if (Input.GetKey ("escape")) {
 			// QuitGame ();
 			revenirAuMenu();
+		}
+
+		// Si on a appuyé sur F1 on récupère la souris, ou on la cache ! :D
+		if(Input.GetKeyDown(KeyCode.F1)) {
+			if(Cursor.visible) {
+				Cursor.lockState = CursorLockMode.Locked;
+				Cursor.visible = false;
+			} else {
+				Cursor.lockState = CursorLockMode.None;
+				Cursor.visible = true;
+			}
 		}
 
 		// Si on a attrapé toutes les lumières
