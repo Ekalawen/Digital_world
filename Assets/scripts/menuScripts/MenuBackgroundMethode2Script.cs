@@ -9,7 +9,7 @@ using UnityEngine.UI;
 // Si la place est libre ils iront.
 // Si il y a quelqu'un il recevra alors l'ordre de bouger à son tour pour libérer la place ! :D
 // Et ça serait trop bien que chaque cube aille vers le barycentre de sa propre couleur ! :D
-public class MenuBackgroundScript : MonoBehaviour {
+public class MenuBackgroundMethode2Script : MonoBehaviour {
 
 	//////////////////////////////////////////////////////////////////////////////////////
 	// ATTRIBUTS PUBLIQUES
@@ -18,7 +18,6 @@ public class MenuBackgroundScript : MonoBehaviour {
 	public GameObject cubePrefabs; // Les petits cubes à faire apparaître à l'écran <3 (ce sont en fait des panels :/)
 	public RectTransform rect; // la taille de la zone à remplir
 	public int size; // La taille des petits cubes
-	public float proportionCubes; // La quantité de petits cubes !
 
 	//////////////////////////////////////////////////////////////////////////////////////
 	// ATTRIBUTS PRIVÉES
@@ -32,8 +31,6 @@ public class MenuBackgroundScript : MonoBehaviour {
 	public int nbCubes; // Le nombre total de cubes
     [HideInInspector]
 	public List<GameObject> cubes; // Tous les petits cubes ! <3
-    [HideInInspector]
-	public int[,] positions; // Les positions de tous les cubes. 1 il y a quelqu'un, 0 il n'y a personne
 
 	//////////////////////////////////////////////////////////////////////////////////////
 	// METHODES
@@ -43,27 +40,23 @@ public class MenuBackgroundScript : MonoBehaviour {
 		// Initialisations
 		nbX = (int) (rect.rect.width / size) + 2; // +2 pour être vraiment sur que ça dépasse de tous les cotés !
 		nbY = (int) (rect.rect.height / size) + 2; // +2 pour être vraiment sur que ça dépasse de tous les cotés !
-		nbCubes = (int) (nbX * nbY * proportionCubes);
-		positions = new int[nbX, nbY];
+		nbCubes = (int) (nbX * nbY); // On prend toutes les places possibles
 		cubes = new List<GameObject>();
 
 		// Puis on ajoute tous les cubes ! <3
 		for(int i = 0; i < nbCubes; i++) {
 			// On instancie notre cube
 			GameObject monCube = Instantiate(cubePrefabs) as GameObject;
-            monCube.GetComponent<PanelScript>().menu = this;
-
-			// On cherche une position innocupée
-			int x;
-			int y;
-			while(positions[x = Random.Range(0, nbX-1), y = Random.Range(0, nbY-1)] == 1);
-            monCube.GetComponent<PanelScript>().x = x;
-            monCube.GetComponent<PanelScript>().y = y;
+            monCube.GetComponent<PanelMethode2Script>().menu = this;
 
 			// On lui donne cette position
+			int x = i / nbY;
+			int y = i % nbY;
+            monCube.GetComponent<PanelMethode2Script>().x = x;
+            monCube.GetComponent<PanelMethode2Script>().y = y;
 
 			// On lui donne également une couleur aléatoire !
-			monCube.GetComponent<Image>().color = Color.HSVToRGB(Random.Range(0f, 1f), 1f, Random.Range(0.5f, 0.5f));
+			monCube.GetComponent<Image>().color = Color.HSVToRGB(Random.Range(0f, 1f), 1f, Random.Range(0.7f, 0.7f));
 
 			// On set son parent
 			monCube.transform.SetParent(this.transform);
@@ -78,19 +71,6 @@ public class MenuBackgroundScript : MonoBehaviour {
 
 			// Et on l'ajoute à notre liste
 			cubes.Add(monCube);
-			positions[x, y] = 1;
-		}
-
-        // On cherche les n plus proches voisins colorimétriques de nos cubes
-		for(int i = 0; i < cubes.Count; i++) {
-			PanelScript cube = cubes[i].GetComponent<PanelScript>();
-			cube.semblables = new List<PanelScript>();
-			for(int j = 0; j < cubes.Count; j++) {
-				if(j != i) {
-					PanelScript autreCube = cubes[j].GetComponent<PanelScript>();
-					cube.tryAddSemblable(autreCube);
-				}
-			}
 		}
 	}
 	
@@ -98,10 +78,10 @@ public class MenuBackgroundScript : MonoBehaviour {
 		return x >= 0 && y >= 0 && x < nbX && y < nbY;
 	}
 
-	public PanelScript getPanelXY(int x, int y ) {
+	public PanelMethode2Script getPanelXY(int x, int y ) {
 		foreach (GameObject g in cubes)
 		{
-			PanelScript p = g.GetComponent<PanelScript>();
+			PanelMethode2Script p = g.GetComponent<PanelMethode2Script>();
 			if(p.x == x && p.y == y) {
 				return p;
 			}

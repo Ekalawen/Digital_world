@@ -21,6 +21,7 @@ public class MenuManagerScript : MonoBehaviour {
 	// Lorsqu'on appui sur le bouton tutoriel
 	public void OnTutorialPress() {
 		Debug.Log("On a appuyé sur Tutoriel !");
+		SceneManager.LoadScene("TutorialScene");
 	}
 
 	// Lorsqu'on appui sur le bouton options
