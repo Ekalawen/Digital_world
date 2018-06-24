@@ -46,6 +46,7 @@ public class PersonnageScript : MonoBehaviour {
 	private Vector3 pointDebutSaut; // le point de départ du saut !
 	private EtatPersonnage origineSaut; // Permet de savoir depuis où (le sol ou un mur) le personnage a sauté !
 	private Vector3 normaleOrigineSaut; // La normale au plan du mur duquel le personnage a sauté
+	private float hauteurMaxSaut; // La hauteur maximale d'un saut !
 	private float debutMur; // le timing où le personnage a commencé à s'accrocher au mur !
 	private Vector3 normaleMur; // la normale au mur sur lequel le personnage est accroché !
 	private Vector3 pointMur; // un point du mur sur lequel le personnage est accroché ! En effet, la normale ne suffit pas :p
@@ -111,6 +112,7 @@ public class PersonnageScript : MonoBehaviour {
 
 		// Si on a fait un grand saut, on le dit
 		detecterGrandSaut(etatAvant);
+		majHauteurMaxSaut();
 
 		// En fonction de l'état du personnage, on applique le mouvement correspondant !
 		switch (etat) {
@@ -248,9 +250,9 @@ public class PersonnageScript : MonoBehaviour {
 	}
 
 	void detecterGrandSaut(EtatPersonnage etatAvant) {
-		if((etatAvant == EtatPersonnage.EN_CHUTE || etatAvant == EtatPersonnage.EN_SAUT)
+		if((etatAvant == EtatPersonnage.EN_CHUTE || etatAvant == EtatPersonnage.EN_SAUT || etatAvant == EtatPersonnage.AU_MUR)
 		&& (etat == EtatPersonnage.AU_SOL || etat == EtatPersonnage.AU_MUR)) {
-			float hauteurSaut = pointDebutSaut.y - transform.position.y;
+			float hauteurSaut = hauteurMaxSaut - transform.position.y;
 			if(hauteurSaut > 7) {
 				console.grandSaut(hauteurSaut);
 			}
@@ -296,6 +298,16 @@ public class PersonnageScript : MonoBehaviour {
 		pousee = directionPoussee;
 		tempsPousee = tempsDeLaPousee;
 		debutPousee = Time.timeSinceLevelLoad;
+	}
+
+	public void majHauteurMaxSaut() {
+		if(etat == EtatPersonnage.EN_SAUT || etat == EtatPersonnage.EN_CHUTE) {
+			if(transform.position.y > hauteurMaxSaut) {
+				hauteurMaxSaut = transform.position.y;
+			}
+		} else {
+			hauteurMaxSaut = transform.position.y;
+		}
 	}
 }
 

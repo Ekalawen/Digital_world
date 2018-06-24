@@ -27,9 +27,8 @@ public class ObjectifScript : MonoBehaviour {
 	// Si le joueur nous touche, on disparait !
 	void OnTriggerEnter(Collider hit) {
 		if (hit.gameObject.name == "Joueur"){
-			int nbLumieresRestantes = mapManager.nbLumieres--;
-			nbLumieresRestantes--;
-			console.attraperLumiere(nbLumieresRestantes);
+			mapManager.nbLumieres--;
+			console.attraperLumiere(mapManager.nbLumieres);
 			Destroy (this.gameObject);
 
 			// Et on certifie qu'on a bien attrapé une orbe

@@ -207,7 +207,7 @@ public class MapManagerScript : MonoBehaviour {
 		remplirFace(new Vector3(102, 0, 5), Vector3.right, 7, Vector3.up, 5); // un mur horizontal !
 		remplirFace(new Vector3(109, 0, 1), Vector3.right, 6, Vector3.forward, 5); // une plus petite zone
 		nbLumieres++;
-		Instantiate (objectif, new Vector3(114, 1, 3), Quaternion.identity);
+		Instantiate (objectif, new Vector3(105.5f, 3f, 4f), Quaternion.identity); // Un objectif à attraper en plein vol ! <3
 		remplirFace(new Vector3(115, 0, 0), Vector3.right, 5, Vector3.up, 5); // un mur horizontal !
 		remplirFace(new Vector3(120, 0, 5), Vector3.right, 5, Vector3.up, 5); // un mur horizontal !
 		remplirFace(new Vector3(125, 0, 0), Vector3.right, 5, Vector3.up, 5); // un mur horizontal !
@@ -242,6 +242,7 @@ public class MapManagerScript : MonoBehaviour {
 		// Sixième zone : ennemi !
 		remplirFace(new Vector3(175, -5, 0), Vector3.right, 25, Vector3.forward, 25); // une grande zone
 		remplirFace(new Vector3(175, -5, 0), Vector3.up, 10, Vector3.forward, 20); // et 4 murs pour protéger
+		remplirFace(new Vector3(175, -4, 20), Vector3.up, 1, Vector3.forward, 5); // et une petite rembarde pour empêcher le joueur de mourir d'un coup :D
 		remplirFace(new Vector3(175, -5, 0), Vector3.right, 25, Vector3.up, 10); // et 4 murs pour protéger
 		remplirFace(new Vector3(200, -5, 0), Vector3.up, 10, Vector3.forward, 26); // et 4 murs pour protéger
 		remplirFace(new Vector3(175, -5, 25), Vector3.right, 25, Vector3.up, 10); // et 4 murs pour protéger

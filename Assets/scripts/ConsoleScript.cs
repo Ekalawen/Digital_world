@@ -90,9 +90,11 @@ public class ConsoleScript : MonoBehaviour {
 		}
 
 		// On conseille d'appuyer sur TAB si le joueur galère a trouver des orbes
-		if (Time.timeSinceLevelLoad - lastOrbeAttrapee > 30) {
-			lastOrbeAttrapee = Time.timeSinceLevelLoad;
-			ajouterMessage ("On peut te géolocaliser les Datas si tu appuies sur E !", TypeText.ALLY_TEXT);
+		if(mapManager.nbLumieres > 0) {
+			if (Time.timeSinceLevelLoad - lastOrbeAttrapee > 30) {
+				lastOrbeAttrapee = Time.timeSinceLevelLoad;
+				ajouterMessage ("On peut te géolocaliser les Datas si tu appuies sur E !", TypeText.ALLY_TEXT);
+			}
 		}
 
 		// On vérifie si le joueur est suivi ou pas
@@ -301,7 +303,12 @@ public class ConsoleScript : MonoBehaviour {
 
 	// Quand le joueur lance les trails
 	public void envoyerTrails() {
-		ajouterMessage ("On t'envoie les données !", ConsoleScript.TypeText.ALLY_TEXT);
+		int nbLumieresRestantes = mapManager.nbLumieres;
+		if(nbLumieresRestantes > 0) {
+			ajouterMessage ("On t'envoie les données ! Il te restes " + nbLumieresRestantes + " Objectifs !", ConsoleScript.TypeText.ALLY_TEXT);
+		} else {
+			ajouterMessage ("On a hacké toute la base, faut s'enfuir maintenant !", ConsoleScript.TypeText.ALLY_TEXT);
+		}
 	}
 
 	// Quand le joueur attérit d'un grand saut
