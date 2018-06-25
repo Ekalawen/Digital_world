@@ -97,12 +97,6 @@ public class ConsoleScript : MonoBehaviour {
 			}
 		}
 
-		// On vérifie si le joueur est suivi ou pas
-		bool nonSuivi = dataBase.joueurSuivi();
-		if (Time.timeSinceLevelLoad >= 10 && nonSuivi && player.GetComponent<PersonnageScript>().vu == true) {
-			ajouterMessageImportant ("On les a semés, on est plus suivi !", TypeText.ALLY_TEXT, 2f);
-			player.GetComponent<PersonnageScript> ().vu = false;
-		}
 	}
 
 	public void updateLastOrbeAttrapee() {
@@ -316,4 +310,13 @@ public class ConsoleScript : MonoBehaviour {
 		ajouterMessage("Wow quel saut ! " + ((int) hauteurSaut) + " mètres !", ConsoleScript.TypeText.BASIC_TEXT);
 	}
 
+	// Quand le joueur réussit à semer toutes les sondes
+	public void semerSondes() {
+		ajouterMessageImportant ("On les a semés, on est plus suivi !", TypeText.ALLY_TEXT, 2f);
+	}
+
+	// Quand le joueur se fait voir au début par les sondes !
+	public void joueurRepere() {
+		ajouterMessageImportant ("Nous t'avons trouvé !", TypeText.ENNEMI_TEXT, 2f);
+	}
 }

@@ -56,9 +56,7 @@ public class PanelMethode3Script : MonoBehaviour {
     void decroitreCouleur() {
         float h, s, v;
         Color.RGBToHSV(couleurSource, out h, out s, out v);
-        Debug.Log("avant v = " + v);
         v = v - decroissanceSource;
-        Debug.Log("après v = " + v);
         if(v <= 0f) {
             isSource = false;
         } else {

@@ -78,7 +78,6 @@ public class EnnemiScript : MonoBehaviour {
 				if (etat == EtatEnnemi.WAITING) {
 					// On l'anonce !
 					console.joueurDetecte(name);
-					player.GetComponent<PersonnageScript> ().vu = true;
 				}
 				etat = EtatEnnemi.TRACKING;
 
@@ -95,6 +94,7 @@ public class EnnemiScript : MonoBehaviour {
 		// Tant que l'ennemi n'est pas visible et/ou trop proche, on reste sur place
 		// Sinon on le pourchasse !
 		Vector3 direction;
+		Vector3 finalMouvement;
 		switch (etat) {
 		case EtatEnnemi.WAITING:
 			// On va là où on a vu le joueur pour la dernière fois !
@@ -103,9 +103,16 @@ public class EnnemiScript : MonoBehaviour {
 
 			// Si c'est trop long, on ajuste
 			if (Vector3.Magnitude(direction * vitesse * Time.deltaTime) > Vector3.Magnitude(lastPositionSeen - transform.position)) {
-				controller.Move (lastPositionSeen - transform.position);
+				finalMouvement = lastPositionSeen - transform.position;
 			} else {
-				controller.Move (direction * vitesse * Time.deltaTime);
+				finalMouvement = direction * vitesse * Time.deltaTime;
+			}
+			controller.Move(finalMouvement);
+
+			// Si le mouvement est trop petit, c'est que l'on est bloqué, donc on arrête le mouvement
+			if(Vector3.Magnitude(finalMouvement) <= 0.001f && Vector3.Magnitude(finalMouvement) != 0f) {
+				Debug.Log("On arrête les petits mouvements");
+				lastPositionSeen = transform.position;
 			}
 			break;
 
@@ -129,9 +136,16 @@ public class EnnemiScript : MonoBehaviour {
 
 			// Si c'est trop long, on ajuste
 			if (Vector3.Magnitude(direction * vitesse * Time.deltaTime) > Vector3.Magnitude(cible - transform.position)) {
-				controller.Move (cible - transform.position);
+				finalMouvement = cible - transform.position;
 			} else {
-				controller.Move (direction * vitesse * Time.deltaTime);
+				finalMouvement = direction * vitesse * Time.deltaTime;
+			}
+			controller.Move(finalMouvement);
+
+			// Si le mouvement est trop petit, c'est que l'on est bloqué, donc on arrête le mouvement
+			if(Vector3.Magnitude(finalMouvement) <= 0.01f && Vector3.Magnitude(finalMouvement) != 0f) {
+				Debug.Log("On arrête les petits mouvements");
+				lastPositionSeen = transform.position;
 			}
 			break;
 
@@ -148,7 +162,7 @@ public class EnnemiScript : MonoBehaviour {
 		}
 	}
 
-	// Permet de savoir so me drpone est en mouvement
+	// Permet de savoir si le drone est en mouvement
 	public bool isMoving() {
 		return (etat == EtatEnnemi.TRACKING || etat == EtatEnnemi.RUSHING) || Vector3.Distance(lastPositionSeen, transform.position) > 1f;
 	}

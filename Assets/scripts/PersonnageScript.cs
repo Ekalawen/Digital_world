@@ -58,7 +58,6 @@ public class PersonnageScript : MonoBehaviour {
 	[HideInInspector]
 	public float lastNotContactEnnemy; // Le dernier temps où il ne touchait pas d'ennemi, utilisé pour la fin du jeu
 	[HideInInspector]
-	public bool vu = false; // permet de savoir si le joueur est vu par des ennemis ou pas
 
 	//////////////////////////////////////////////////////////////////////////////////////
 	// METHODES

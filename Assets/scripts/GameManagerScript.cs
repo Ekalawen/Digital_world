@@ -63,6 +63,7 @@ public class GameManagerScript : MonoBehaviour {
 
 	void finirLiaisons() {
 		player.console = console;
+		dataBase.console = console;
 	}
 
 
