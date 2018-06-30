@@ -72,7 +72,6 @@ public class DataBaseScript : MonoBehaviour {
 		}
 
 		// Si le joueur était visible avant mais qu'on le perd de vu, alors on le signal ! =)
-		Debug.Log("suivi = " + isJoueurSuivi);
 		if (Time.timeSinceLevelLoad >= 10 && isJoueurSuivi && !joueurSuivi()) {
 			console.semerSondes();
 			isJoueurSuivi = false;
