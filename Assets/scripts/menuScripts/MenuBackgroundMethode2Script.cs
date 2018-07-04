@@ -12,7 +12,7 @@ using UnityEngine.UI;
 public class MenuBackgroundMethode2Script : MonoBehaviour {
 
 	//////////////////////////////////////////////////////////////////////////////////////
-	// ATTRIBUTS PUBLIQUES
+	// ATTRIBUTS PUBLICS
 	//////////////////////////////////////////////////////////////////////////////////////
 
 	public GameObject cubePrefabs; // Les petits cubes à faire apparaître à l'écran <3 (ce sont en fait des panels :/)
@@ -20,11 +20,12 @@ public class MenuBackgroundMethode2Script : MonoBehaviour {
 	public int size; // La taille des petits cubes
 
 	//////////////////////////////////////////////////////////////////////////////////////
-	// ATTRIBUTS PRIVÉES
+	// ATTRIBUTS PRIVÉS
 	//////////////////////////////////////////////////////////////////////////////////////
-
-    [HideInInspector]
-	public int nbX; // Le nombre de petits cubes en large
+    // y a pas un soucis entre la notion de "privé" ci-dessus et la quantité de "public" ci-dessous ? :p
+   
+	protected int nbX; // Le nombre de petits cubes en large
+    public int NbX { get { return nbX; } set { nbX = value; } }
     [HideInInspector]
 	public int nbY; // Le nombre de petits cubes en hauteur
     [HideInInspector]

@@ -308,6 +308,7 @@ public class ConsoleScript : MonoBehaviour {
 	// Quand le joueur attérit d'un grand saut
 	public void grandSaut(float hauteurSaut) {
 		ajouterMessage("Wow quel saut ! " + ((int) hauteurSaut) + " mètres !", ConsoleScript.TypeText.BASIC_TEXT);
+		ajouterMessage("duree = " + Time.timeSinceLevelLoad, TypeText.BASIC_TEXT);
 	}
 
 	// Quand le joueur réussit à semer toutes les sondes
