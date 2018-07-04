@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.EventSystems;
 
 public class PersonnageScript : MonoBehaviour {
 
@@ -16,6 +17,7 @@ public class PersonnageScript : MonoBehaviour {
     /////////////////////////////////////////////////////////////////////////////////////
 
     public static PersonnageScript _instance;
+    public IPouvoir pouvoir; // Le pouvoir du personnage =)
 	public float vitesseDeplacement; // la vitesse de déplacement horizontale
 	public float vitesseSaut; // la vitesse d'élévation du saut
 	public float dureeSaut; // la durée totale d'un saut
@@ -221,6 +223,13 @@ public class PersonnageScript : MonoBehaviour {
 			// Et on certifie qu'on a appuyé sur E
 			console.updateLastOrbeAttrapee();
 		}
+
+        // Lorsque le joueur clique avec sa souris
+        if(Input.GetMouseButtonDown(0)) {
+            Debug.Log("ON a appuyé sur un bouton !");
+            // On utilise son pouvoir ! =)
+//            pouvoir.usePouvoir();
+        }
 	}
 
 	// Pour mettre à jour l'état du personnage !

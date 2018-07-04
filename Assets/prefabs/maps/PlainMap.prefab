@@ -19,9 +19,10 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4913549307214802}
-  - component: {fileID: 114143742428905982}
+  - component: {fileID: 114837518253026026}
+  - component: {fileID: 114597651940545052}
   m_Layer: 0
-  m_Name: TutorialMap
+  m_Name: PlainMap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -40,7 +41,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114143742428905982
+--- !u!114 &114597651940545052
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -48,7 +49,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1698300190402578}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8659235a2e8c94a31a72011fcbdded77, type: 3}
+  m_Script: {fileID: 11500000, guid: 8abd4759f8e404ee4a680e733d8fdf34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   cube: {fileID: 1586838666760998, guid: 166cc3691555747479ad6b1623980374, type: 2}
@@ -56,9 +57,36 @@ MonoBehaviour:
   ennemiPrefabs: {fileID: 1252573298759596, guid: d49852f29496f46858edc6834aef370d,
     type: 2}
   tailleMap: 0
-  themeCube: 01000000
-  frequenceSource: 0.05
-  distanceSourceMax: 7
+  themeCube: 0900000009000000
+  frequenceSource: 0.005
+  distanceSourceMax: 10
+  nbLumieres: 0
+  lumieresAttrapees: 0
+  nbEnnemis: 0
+  tailleX: 20
+  tailleY: 20
+  pas: 5
+  hauteurMax: 5
+  proportionArbres: 0.013
+--- !u!114 &114837518253026026
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1698300190402578}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba84e068e9e8e4b68997d0c80ea9b339, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cube: {fileID: 1586838666760998, guid: 166cc3691555747479ad6b1623980374, type: 2}
+  objectif: {fileID: 1106701525400260, guid: e464862985a8e4bb3a14bf8d90846952, type: 2}
+  ennemiPrefabs: {fileID: 1252573298759596, guid: d49852f29496f46858edc6834aef370d,
+    type: 2}
+  tailleMap: 20
+  themeCube: 0900000009000000
+  frequenceSource: 0.02
+  distanceSourceMax: 5
   nbLumieres: 0
   lumieresAttrapees: 0
   nbEnnemis: 0
