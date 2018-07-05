@@ -38,7 +38,8 @@ public class PersonnageScript : MonoBehaviour {
 	public CharacterController controller;
 	[HideInInspector]
 	public ConsoleScript console;
-	private Camera camera;
+	[HideInInspector]
+	public Camera camera;
 	private float xRot, yRot;
 	private float currentRotationX, currentRotationY;
 	private float xRotV, yRotV;
@@ -127,7 +128,7 @@ public class PersonnageScript : MonoBehaviour {
 				StartCoroutine (stopJump (debutSaut));
 			} else {
 				// Petit débuggage pour empêcher l'alternance entre AU_SOL et EN_CHUTE !
-				move.y -= gravite * Time.deltaTime;
+				move.y -= gravite;
 			}
 			break;
 
@@ -139,7 +140,7 @@ public class PersonnageScript : MonoBehaviour {
 			break;
 
 		case EtatPersonnage.EN_CHUTE:
-			move.y -= gravite * Time.deltaTime;
+			move.y -= gravite;
 			break;
 
 		case EtatPersonnage.AU_MUR:
@@ -227,8 +228,7 @@ public class PersonnageScript : MonoBehaviour {
         // Lorsque le joueur clique avec sa souris
         if(Input.GetMouseButtonDown(0)) {
             Debug.Log("ON a appuyé sur un bouton !");
-            // On utilise son pouvoir ! =)
-//            pouvoir.usePouvoir();
+            pouvoir.usePouvoir();
         }
 	}
 
