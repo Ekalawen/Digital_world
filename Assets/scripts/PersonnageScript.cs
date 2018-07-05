@@ -85,11 +85,11 @@ public class PersonnageScript : MonoBehaviour {
 
 	void Update () {
 		// On oriente notre personnage dans dans le sens de la souris
-		xRot -= Input.GetAxisRaw ("Mouse Y") * sensibilite; // mouvement caméra haut-bad
-		yRot += Input.GetAxisRaw ("Mouse X") * sensibilite; // mouvement personnage axe 
+		xRot -= Input.GetAxis ("Mouse Y") * sensibilite; // mouvement caméra haut-bad
+		yRot += Input.GetAxis ("Mouse X") * sensibilite; // mouvement personnage axe 
 		xRot = Mathf.Clamp(xRot, -90, 90);
-		currentRotationX = Mathf.SmoothDamp (currentRotationX, xRot, ref xRotV, lookSmoothDamp);
-		currentRotationY = Mathf.SmoothDamp (currentRotationY, yRot, ref yRotV, lookSmoothDamp);
+		currentRotationX = xRot; // Mathf.SmoothDamp (currentRotationX, xRot, ref xRotV, lookSmoothDamp);
+		currentRotationY = yRot; // Mathf.SmoothDamp (currentRotationY, yRot, ref yRotV, lookSmoothDamp);
 		camera.transform.rotation = Quaternion.Euler (currentRotationX, currentRotationY, 0);// mouvement caméra haut-bas
 
 		// On récupère le mouvement dans le sens de l'orientation du personnage
@@ -227,8 +227,7 @@ public class PersonnageScript : MonoBehaviour {
 
         // Lorsque le joueur clique avec sa souris
         if(Input.GetMouseButtonDown(0)) {
-            Debug.Log("ON a appuyé sur un bouton !");
-            pouvoir.usePouvoir();
+            pouvoir.tryUsePouvoir();
         }
 	}
 

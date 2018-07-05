@@ -9,7 +9,19 @@ using UnityEngine;
 /// </summary>
 public abstract class IPouvoir : MonoBehaviour {
 
-    // La fonction appelée lorsque le joueur appui sur une touche
-    abstract public void usePouvoir();
+    protected bool pouvoirAvailable;
 
+    public void Start() {
+        pouvoirAvailable = true;
+    }
+
+    // La fonction appelée lorsque le joueur appui sur une touche
+    public void tryUsePouvoir() {
+        if(pouvoirAvailable) {
+            usePouvoir();
+        }
+    }
+
+    // La véritable fonction qui appelle le pouvoir
+    protected abstract void usePouvoir();
 }
