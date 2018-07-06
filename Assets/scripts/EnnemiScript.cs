@@ -63,6 +63,11 @@ public class EnnemiScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        // Si le temps est freeze, on ne fait rien
+        if(GameManagerScript.Instance.timeFreezed) {
+            return;
+        }
+
 		// On regarde si il reste des lumières
 		// Si il n'en reste plus, on adopte une stratégie défensive pour empécher le joueur de sortir !
 		if (mapManager.nbLumieres <= 0) {

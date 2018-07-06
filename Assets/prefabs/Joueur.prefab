@@ -138,11 +138,11 @@ Camera:
   m_TargetEye: 3
   m_HDR: 1
   m_AllowMSAA: 1
+  m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
-  m_StereoMirrorMode: 0
 --- !u!23 &23167008973360464
 MeshRenderer:
   m_ObjectHideFlags: 1
@@ -152,9 +152,11 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: cc407c5505aa14a789884aaaa4ea6245, type: 2}
   m_StaticBatchInfo:
@@ -167,6 +169,7 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -222,8 +225,9 @@ MonoBehaviour:
   blueSpherePrefab: {fileID: 1943540323160194, guid: 58017e42033f0ec49911c6a06c465672,
     type: 2}
   nbDashs: 3
-  distanceDash: 7
+  distanceDash: 5
   nbFramesDash: 5
+  tempsPourDash: 2.25
 --- !u!114 &114715615325811474
 MonoBehaviour:
   m_ObjectHideFlags: 1

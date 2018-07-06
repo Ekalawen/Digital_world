@@ -15,28 +15,30 @@ public class PouvoirTripleSauts : IPouvoir {
     public int nbDashs; // Le nombre de dashs que peut faire le joueur
     public float distanceDash; // La distance maximale du dash
     public int nbFramesDash; // Le nombre de frames que doit prendre le dash
+    public float tempsPourDash; // Le temps qu'on laisse au joueur pourchoisir sa trajectoire !
 
     private GameObject blueSphere; // La sphère une fois allumée
 
     protected override void usePouvoir() {
-        Debug.Log("On a bien utilisé le Triple Saut ! <3");
         // Freezer le temps
         pouvoirAvailable = false;
-        Time.timeScale = 0;
-        Debug.Log("On FREEZE !");
+        GameManagerScript.Instance.timeFreezed = true;
         // Faire un dash et attendre qu'il se termine
         StartCoroutine(performDash(nbDashs));
     }
 
     IEnumerator performDash(int dashsRestants) {
+        // On a un certain temps pour pouvoir effectuer chaque dash !
+        float debutDash = Time.timeSinceLevelLoad;
+
         // Allumer la boule de couleur
         Vector3 pos = transform.parent.transform.position ;
         blueSphere = Instantiate(blueSpherePrefab, pos, Quaternion.identity) as GameObject;
-        blueSphere.transform.localScale = Vector3.one * distanceDash;
+        blueSphere.transform.localScale = Vector3.one * distanceDash * 2;
 
         // Faire le dash, pour ça on attends que le joueur relache le bouton de la souris !
         yield return null; // Important pour ne pas trigger le premier dash tout de suite !
-        while (!Input.GetMouseButtonDown(0)) {
+        while (!Input.GetMouseButtonDown(0) && Time.timeSinceLevelLoad - debutDash < tempsPourDash) {
             // Rendre la main
             yield return null;
         }
@@ -45,35 +47,35 @@ public class PouvoirTripleSauts : IPouvoir {
         // On éteint la sphère
         DestroyImmediate(blueSphere);
 
-        // Si il vient de choisir la position, on le TP (pour le moment on s'embête pas ^^')
-        Vector3 direction = transform.parent.GetComponent<PersonnageScript>().camera.transform.forward;
-        direction.Normalize();
-        Debug.Log("début");
-        yield return StartCoroutine(translatePlayer(direction * distanceDash));
-        Debug.Log("fin");
+        // Si on a mis trop de temps, le triple dash est brisé !
+        if (Time.timeSinceLevelLoad - debutDash < tempsPourDash) {
 
-        Debug.Log("dashsRestants = " + dashsRestants);
-        if(dashsRestants - 1 > 0) {
-            StartCoroutine(performDash(dashsRestants - 1));
+            // Si il vient de choisir la position, on le TP (pour le moment on s'embête pas ^^')
+            Vector3 direction = transform.parent.GetComponent<PersonnageScript>().camera.transform.forward;
+            direction.Normalize();
+            yield return StartCoroutine(translatePlayer(direction * distanceDash));
+
+            if (dashsRestants - 1 > 0) {
+                StartCoroutine(performDash(dashsRestants - 1));
+            } else {
+                // Si c'est la dernière coroutine, defreezer le temps
+                pouvoirAvailable = true;
+                GameManagerScript.Instance.timeFreezed = false;
+            }
         } else {
-            // Si c'est la dernière coroutine, defreezer le temps
             pouvoirAvailable = true;
-            Time.timeScale = 1;
-            Debug.Log("On defreeze !");
+            GameManagerScript.Instance.timeFreezed = false;
         }
     }
 
     IEnumerator translatePlayer(Vector3 mouvementTotal) {
         CharacterController controller = transform.parent.GetComponent<PersonnageScript>().controller;
-        float slopeLimit = controller.slopeLimit;
         float stepOffset = controller.stepOffset;
-        controller.slopeLimit = 0;
         controller.stepOffset = 0;
         for(int i = 0; i < nbFramesDash; i++) {
             controller.Move(mouvementTotal / nbFramesDash);
             yield return null;
         }
-        controller.slopeLimit = slopeLimit;
         controller.stepOffset = stepOffset;
     }
 

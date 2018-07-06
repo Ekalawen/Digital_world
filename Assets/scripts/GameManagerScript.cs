@@ -5,19 +5,26 @@ using UnityEngine.SceneManagement;
 
 public class GameManagerScript : MonoBehaviour {
 
-	//////////////////////////////////////////////////////////////////////////////////////
-	// ATTRIBUTS PUBLIQUES
-	//////////////////////////////////////////////////////////////////////////////////////
+    /// Reference to this script
+    /// See http://clearcutgames.net/home/?p=437 for singleton pattern.
+    // Returns _instance if it exists, otherwise create one and set it has current _instance
+    static GameManagerScript _instance;
+    public static GameManagerScript Instance { get { return _instance ?? (_instance = new GameObject("HuntManager").AddComponent<GameManagerScript>()); } }
 
-	public GameObject playerPrefabs; // On récupère le personnage !
+
+    //////////////////////////////////////////////////////////////////////////////////////
+    // ATTRIBUTS PUBLIQUES
+    //////////////////////////////////////////////////////////////////////////////////////
+
+    public GameObject playerPrefabs; // On récupère le personnage !
 	public GameObject consolePrefabs; // On récupère la console !
 	public GameObject pointeurPrefabs; // Pour avoir un visuel du centre de l'écran
 	public GameObject dataBasePrefabs; // Pour créer l'IA chargé de supervisé les ennemis !
 	public GameObject mapManagerPrefabs; // Pour gérer la map !
 
-	//////////////////////////////////////////////////////////////////////////////////////
-	// ATTRIBUTS PRIVÉES
-	//////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////
+    // ATTRIBUTS PRIVÉES
+    //////////////////////////////////////////////////////////////////////////////////////
 
 	[HideInInspector]
 	public MapManagerScript map;
@@ -28,13 +35,22 @@ public class GameManagerScript : MonoBehaviour {
 	[HideInInspector]
 	public DataBaseScript dataBase;
 	[HideInInspector]
-	public bool partieDejaTerminee = false;
+	public bool partieDejaTerminee;
+    [HideInInspector]
+    public bool timeFreezed;
 
-	//////////////////////////////////////////////////////////////////////////////////////
-	// METHODES
-	//////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////
+    // METHODES
+    //////////////////////////////////////////////////////////////////////////////////////
 
-	void Start () {
+    void Awake() {
+        if (!_instance) { _instance = this; }
+    }
+
+    void Start () {
+        partieDejaTerminee = false;
+        timeFreezed = false;
+
 		// On crée la map
 		map = Instantiate(mapManagerPrefabs).GetComponent<MapManagerScript>();
 
@@ -51,7 +67,7 @@ public class GameManagerScript : MonoBehaviour {
 	public virtual void instantiatePlayer() {
 		// On veut ajouter un playerPrefabs dans le cube central !
 		// On arrive en hauteur comme ça on a le temps de bien voir la carte ! =)
-		Vector3 posPerso = new Vector3(map.tailleMap / 2, map.tailleMap * 4, map.tailleMap / 2);
+		Vector3 posPerso = new Vector3(map.tailleMap / 2, map.tailleMap * 2, map.tailleMap / 2);
 		GameObject perso = Instantiate (playerPrefabs, posPerso, Quaternion.identity) as GameObject;
 		perso.name = "Joueur";
 		player = perso.GetComponent<PersonnageScript>();
@@ -116,7 +132,7 @@ public class GameManagerScript : MonoBehaviour {
 
 		// Ou qu'il est en contact avec un ennemiPrefabs depuis plus de 5 secondes
 		// C'est donc qu'il s'est fait conincé !
-		//Debug.Log("lastnotcontact = "+ player.GetComponent<PersonnageScript>().lastNotContactEnnemy);
+		// Debug.Log("lastnotcontact = "+ player.GetComponent<PersonnageScript>().lastNotContactEnnemy);
 		if (Time.timeSinceLevelLoad - player.GetComponent<PersonnageScript> ().lastNotContactEnnemy >= 5f) {
 			console.joueurCapture();
 			player.vitesseDeplacement = 0; // On immobilise le joueur

@@ -84,6 +84,39 @@ public class PersonnageScript : MonoBehaviour {
 	}
 
 	void Update () {
+        // On met à jour la caméra
+        updateCamera();
+
+        // Puis on met à jour la position du joueur
+        updateMouvement();
+        updateLastNotContactEnnemi();
+
+		// On regarde si le joueur a appuyé sur E
+		if (Input.GetKeyDown (KeyCode.E)) {
+			// On trace les rayons ! =)
+			GameObject[] lumieres = GameObject.FindGameObjectsWithTag ("Objectif");
+			for (int i = 0; i < lumieres.Length; i++) {
+				//Vector3 departRayons = transform.position - 0.5f * camera.transform.forward + 0.5f * Vector3.up;
+				Vector3 departRayons = transform.position + 0.5f * Vector3.up;
+				GameObject tr = Instantiate (trail, departRayons, Quaternion.identity) as GameObject;
+				tr.GetComponent<TrailScript> ().setTarget (lumieres [i].transform.position);
+			}
+
+			// Un petit message
+			console.envoyerTrails();
+
+			// Et on certifie qu'on a appuyé sur E
+			console.updateLastOrbeAttrapee();
+		}
+
+        // Lorsque le joueur clique avec sa souris
+        if(Input.GetMouseButtonDown(0)) {
+            pouvoir.tryUsePouvoir();
+        }
+	}
+
+    // Utilisé pour gérer la caméra
+    void updateCamera() {
 		// On oriente notre personnage dans dans le sens de la souris
 		xRot -= Input.GetAxis ("Mouse Y") * sensibilite; // mouvement caméra haut-bad
 		yRot += Input.GetAxis ("Mouse X") * sensibilite; // mouvement personnage axe 
@@ -91,6 +124,14 @@ public class PersonnageScript : MonoBehaviour {
 		currentRotationX = xRot; // Mathf.SmoothDamp (currentRotationX, xRot, ref xRotV, lookSmoothDamp);
 		currentRotationY = yRot; // Mathf.SmoothDamp (currentRotationY, yRot, ref yRotV, lookSmoothDamp);
 		camera.transform.rotation = Quaternion.Euler (currentRotationX, currentRotationY, 0);// mouvement caméra haut-bas
+    }
+
+    // On met à jour le mouvement du joueur
+    void updateMouvement() {
+        // Si le temps est freeze, on ne se déplace pas !
+        if(GameManagerScript.Instance.timeFreezed) {
+            return;
+        }
 
 		// On récupère le mouvement dans le sens de l'orientation du personnage
 		Vector3 move = Vector3.zero;
@@ -193,7 +234,10 @@ public class PersonnageScript : MonoBehaviour {
 		}
 
 		controller.Move (move * Time.deltaTime);
+    }
 
+    // Permet de savoir la dernière fois qu'il a été en contact avec un ennemi !
+    void updateLastNotContactEnnemi() {
 		// On vérifie qu'il n'est pas en contact avec un ennemy !
 		Collider[] colliders = Physics.OverlapSphere (transform.position, 1f);
 		bool pasTouchee = true;
@@ -205,31 +249,7 @@ public class PersonnageScript : MonoBehaviour {
 		if (pasTouchee) {
 			lastNotContactEnnemy = Time.timeSinceLevelLoad;
 		}
-
-
-		// On regarde si le joueur a appuyé sur E
-		if (Input.GetKeyDown (KeyCode.E)) {
-			// On trace les rayons ! =)
-			GameObject[] lumieres = GameObject.FindGameObjectsWithTag ("Objectif");
-			for (int i = 0; i < lumieres.Length; i++) {
-				//Vector3 departRayons = transform.position - 0.5f * camera.transform.forward + 0.5f * Vector3.up;
-				Vector3 departRayons = transform.position + 0.5f * Vector3.up;
-				GameObject tr = Instantiate (trail, departRayons, Quaternion.identity) as GameObject;
-				tr.GetComponent<TrailScript> ().setTarget (lumieres [i].transform.position);
-			}
-
-			// Un petit message
-			console.envoyerTrails();
-
-			// Et on certifie qu'on a appuyé sur E
-			console.updateLastOrbeAttrapee();
-		}
-
-        // Lorsque le joueur clique avec sa souris
-        if(Input.GetMouseButtonDown(0)) {
-            pouvoir.tryUsePouvoir();
-        }
-	}
+    }
 
 	// Pour mettre à jour l'état du personnage !
 	void getEtatPersonnage() {
