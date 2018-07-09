@@ -19,9 +19,9 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4042448225208702}
-  - component: {fileID: 114276670561027700}
+  - component: {fileID: 114018676838216340}
   m_Layer: 0
-  m_Name: PouvoirBridgeBuilder
+  m_Name: PouvoirExplosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -40,7 +40,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114276670561027700
+--- !u!114 &114018676838216340
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -48,10 +48,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1859676056984938}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 988b31be1c083db4ca0396ff4c4ddb54, type: 3}
+  m_Script: {fileID: 11500000, guid: 1894cb8edefc7435db4c68181da3244d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cubePrefab: {fileID: 1586838666760998, guid: 7b24e9a6d3279a74798e3057b2127bd6, type: 2}
-  vitessePropagationCubes: 0.18
-  isDestructive: 0
-  rayonDestruction: 0
+  redSpherePrefab: {fileID: 1943540323160194, guid: 585339c3e19f341c9b3f423c3f36f418,
+    type: 2}
+  porteeExplosion: 2
+  tempsIncantationExplosion: 1

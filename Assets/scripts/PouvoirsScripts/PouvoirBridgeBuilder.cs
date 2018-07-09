@@ -15,23 +15,23 @@ public class PouvoirBridgeBuilder : IPouvoir {
     public bool isDestructive; // Permet de savoir si ce pouvoir détruit les autres cubes ou pas !
     public float rayonDestruction; // Le rayon de destruction autour duquel on détruit les cubes pour pouvoir passe =)
 
-    private Vector3 pointSource; // Le départ du pont
-    private Vector3 pointCible; // La fin du pont
 
     protected override void usePouvoir() {
+        Vector3 pointSource; // Le départ du pont
+        Vector3 pointCible; // La fin du pont
+
         // On récupère les informations du pont en lancant un rayon
         // Et en vérifiant qu'il touche bien un cube
         pointSource = transform.parent.transform.position + Vector3.down; // On essaye de faire partir le pont d'en dessous de nous !
-        Ray ray = new Ray(pointSource, transform.parent.GetComponent<PersonnageScript>().camera.transform.forward);
+        Ray ray = new Ray(transform.parent.transform.position, transform.parent.GetComponent<PersonnageScript>().camera.transform.forward); // On part pas d'en-dessous pour ne pas que le ray soit bloqué !
         RaycastHit hit;
-        Debug.DrawRay(pointSource, transform.parent.GetComponent<PersonnageScript>().camera.transform.forward, Color.red, 1f);
         if(Physics.Raycast(ray, out hit, float.PositiveInfinity)) {
             // On vérifie qu'on a bien touché un cube
             if(hit.collider.tag == "Cube") {
                 pointCible = hit.collider.transform.position;
 
                 // Puis on lance sa création, si tout s'est bien passé !
-                StartCoroutine(buildBridge());
+                StartCoroutine(buildBridge(pointSource, pointCible));
 
             } else {
                 cibleInvalide();
@@ -44,16 +44,15 @@ public class PouvoirBridgeBuilder : IPouvoir {
 
     void cibleInvalide() {
         // On informe que ce n'est pas une cible valide !
-        Debug.Log("Ce n'est pas une cible valide !");
         ConsoleScript.Instance.pouvoirBridgeBuilderInvalide();
     }
 
-    IEnumerator buildBridge() {
+    IEnumerator buildBridge(Vector3 pointSource, Vector3 pointCible) {
         // On calcule la direction
         Vector3 bridgeDirection = (pointCible - pointSource).normalized;
 
         // On compte le nombre de cubes
-        int nbCubes = (int)(pointCible - pointSource).magnitude + 1;
+        int nbCubes = (int)Mathf.Ceil((pointCible - pointSource).magnitude);
 
         // Pour chaque cube, on le crée avec un interval !
         for(int i = 0; i < nbCubes; i++) {

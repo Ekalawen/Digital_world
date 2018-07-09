@@ -333,6 +333,6 @@ public class ConsoleScript : MonoBehaviour {
 
     // Lorsque le joueur tente de construire un pont avec une cible invalide !
     public void pouvoirBridgeBuilderInvalide() {
-        ajouterMessageImportant("Ce n'est pas une cible valide !", TypeText.BASIC_TEXT, 1f);
+        ajouterMessageImportant("Ce n'est pas une cible valide !", TypeText.ENNEMI_TEXT, 1f);
     }
 }

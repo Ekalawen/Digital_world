@@ -116,7 +116,6 @@ public class EnnemiScript : MonoBehaviour {
 
 			// Si le mouvement est trop petit, c'est que l'on est bloqué, donc on arrête le mouvement
 			if(Vector3.Magnitude(finalMouvement) <= 0.001f && Vector3.Magnitude(finalMouvement) != 0f) {
-				Debug.Log("On arrête les petits mouvements");
 				lastPositionSeen = transform.position;
 			}
 			break;
