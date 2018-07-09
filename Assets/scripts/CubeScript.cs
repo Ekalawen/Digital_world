@@ -27,6 +27,7 @@ public class CubeScript : MonoBehaviour {
 
 	public CubeType type;
 	public Color couleur;
+    public bool isBridgeCube;
 
 	//////////////////////////////////////////////////////////////////////////////////////
 	// METHODES

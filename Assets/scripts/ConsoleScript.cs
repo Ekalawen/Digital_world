@@ -7,6 +7,12 @@ using UnityEngine.UI;
 // Elle gérera notemment tous les affichages dans le Terminal du personnage.
 public class ConsoleScript : MonoBehaviour {
 
+    /// Reference to this script
+    /// See http://clearcutgames.net/home/?p=437 for singleton pattern.
+    // Returns _instance if it exists, otherwise create one and set it has current _instance
+    static ConsoleScript _instance;
+    public static ConsoleScript Instance { get { return _instance ?? (_instance = new GameObject().AddComponent<ConsoleScript>()); } }
+
 	//////////////////////////////////////////////////////////////////////////////////////
 	// ENUMERATION
 	//////////////////////////////////////////////////////////////////////////////////////
@@ -47,6 +53,10 @@ public class ConsoleScript : MonoBehaviour {
 	//////////////////////////////////////////////////////////////////////////////////////
 	// METHODES
 	//////////////////////////////////////////////////////////////////////////////////////
+
+    void Awake() {
+        if (!_instance) { _instance = this; }
+    }
 
 	void Start () {
 		// Initialisation des variables
@@ -320,4 +330,9 @@ public class ConsoleScript : MonoBehaviour {
 	public void joueurRepere() {
 		ajouterMessageImportant ("Nous t'avons trouvé !", TypeText.ENNEMI_TEXT, 2f);
 	}
+
+    // Lorsque le joueur tente de construire un pont avec une cible invalide !
+    public void pouvoirBridgeBuilderInvalide() {
+        ajouterMessageImportant("Ce n'est pas une cible valide !", TypeText.BASIC_TEXT, 1f);
+    }
 }

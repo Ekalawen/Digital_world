@@ -9,7 +9,7 @@ public class GameManagerScript : MonoBehaviour {
     /// See http://clearcutgames.net/home/?p=437 for singleton pattern.
     // Returns _instance if it exists, otherwise create one and set it has current _instance
     static GameManagerScript _instance;
-    public static GameManagerScript Instance { get { return _instance ?? (_instance = new GameObject("HuntManager").AddComponent<GameManagerScript>()); } }
+    public static GameManagerScript Instance { get { return _instance ?? (_instance = new GameObject().AddComponent<GameManagerScript>()); } }
 
 
     //////////////////////////////////////////////////////////////////////////////////////
