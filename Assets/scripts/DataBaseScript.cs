@@ -96,6 +96,7 @@ public class DataBaseScript : MonoBehaviour {
         }
         int longueurGrille = (int)Mathf.Sqrt(nextSquare); // La grille est carrée
         int tailleMap = mapManager.tailleMap - 2; // On peut faire -2 pour ne pas être vraiment sur les bords
+        float distanceDetection = (float)tailleMap / (float)longueurGrille;
 
         // On crée la grille
         List<Vector3> positionsGrille = new List<Vector3>();
@@ -126,6 +127,13 @@ public class DataBaseScript : MonoBehaviour {
             GameObject go = Instantiate(ennemiPrefabs, pos, Quaternion.identity); // Et normalement la sonde s'ajoute toute seule à la liste :D
             go.GetComponent<EnnemiScript>().positionGrilleDefense = pos; // Et on lui set sa position de la grille de défense
             Debug.Log("position associée à une nouvelle sonde = " + pos);
+        }
+
+        // Puis on met à jour le coef de detection de toutes les sondes
+        foreach(EnnemiScript sonde in sondes) {
+            float coefDistanceDetection = (float)distanceDetection / (float)sonde.distanceDeDetection;
+            Debug.Log("distanceTotale = " + coefDistanceDetection * (float)sonde.distanceDeDetection);
+            sonde.coefficiantDeRushDistanceDeDetection = coefDistanceDetection;
         }
     }
 
