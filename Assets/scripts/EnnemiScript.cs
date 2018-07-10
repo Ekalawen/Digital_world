@@ -42,6 +42,8 @@ public class EnnemiScript : MonoBehaviour {
 	private EtatEnnemi etat;
 	private Vector3 lastPositionSeen; // La dernière position à laquelle le joueur a été vu !
 	private float vitesse;
+    [HideInInspector]
+    public Vector3 positionGrilleDefense; // La position de la grille de défense !
 
 	//////////////////////////////////////////////////////////////////////////////////////
 	// METHODES
@@ -53,12 +55,15 @@ public class EnnemiScript : MonoBehaviour {
 		gameManager = GameObject.Find("GameManager").GetComponent<GameManagerScript>();
 		player = GameObject.Find ("Joueur");
 		controller = this.GetComponent<CharacterController> ();
-		dataBase = GameObject.Find ("DataBase").GetComponent<DataBaseScript> ();
+        dataBase = DataBaseScript.Instance;
 		mapManager = GameObject.Find("MapManager").GetComponent<MapManagerScript>();
 		console = GameObject.Find ("Console").GetComponent<ConsoleScript> ();
 		etat = EtatEnnemi.WAITING;
 		lastPositionSeen = transform.position;
 		vitesse = Mathf.Exp(Random.Range (Mathf.Log(vitesseMin), Mathf.Log(vitesseMax)));
+
+        // L'ennemi doit se renseigner auprès de la database !
+        dataBase.sondes.Add(this);
 	}
 	
 	// Update is called once per frame
@@ -68,33 +73,7 @@ public class EnnemiScript : MonoBehaviour {
             return;
         }
 
-		// On regarde si il reste des lumières
-		// Si il n'en reste plus, on adopte une stratégie défensive pour empécher le joueur de sortir !
-		if (mapManager.nbLumieres <= 0) {
-			// On se réfère à une autre entité qui décidera du mouvement COMMUN de tous les drones !
-			etat = dataBase.demanderOrdre();
-
-		} else {
-			// Si l'ennemie est suffisament proche et qu'il est visible ! Et que le jeu a commencé depuis au moins 10 secondes
-			Ray ray = new Ray (transform.position, player.transform.position - transform.position);
-			RaycastHit hit;
-			if (Time.timeSinceLevelLoad >= 10f && Physics.Raycast (ray, out hit, distanceDeDetection) && hit.collider.name == "Joueur") {
-				// Si la sonde vient juste de le repérer
-				if (etat == EtatEnnemi.WAITING) {
-					// On l'anonce !
-					console.joueurDetecte(name);
-				}
-				etat = EtatEnnemi.TRACKING;
-
-			} else {
-				// Si la sonde vient juste de perdre sa trace
-				if (etat == EtatEnnemi.TRACKING) {
-					// On l'anonce !
-					console.joueurPerduDeVue(name);
-				}
-				etat = EtatEnnemi.WAITING;
-			}
-		}
+        getEtat();
 
 		// Tant que l'ennemi n'est pas visible et/ou trop proche, on reste sur place
 		// Sinon on le pourchasse !
@@ -131,10 +110,10 @@ public class EnnemiScript : MonoBehaviour {
 			break;
 
 		case EtatEnnemi.DEFENDING:
-			// On va tout en haut pour empêcher le joueur de sortir !
-			Vector3 cible = transform.position;
-			cible.y = mapManager.tailleMap + 1;
-			direction = cible;
+            // En défensif, dès qu'on perd le joueur de vue, on rentre à la maison :D
+            // On va tout en haut pour empêcher le joueur de sortir !
+            Vector3 cible = positionGrilleDefense;
+            direction = cible - transform.position;
 			direction.Normalize ();
 			direction *= coefficiantDeRushVitesse;
 
@@ -166,6 +145,63 @@ public class EnnemiScript : MonoBehaviour {
 		}
 	}
 
+    // On récupère l'état dans lequel doit être notre sonde
+    void getEtat() {
+        DataBaseScript.EtatDataBase etatDataBase = dataBase.demanderOrdre();
+        switch(etatDataBase) {
+            case DataBaseScript.EtatDataBase.NORMAL:
+                // On regarde si le joueur est visible
+                if(Time.timeSinceLevelLoad >= 10f && isPlayerVisible(etatDataBase)) {
+                    // Si la sonde vient juste de le repérer, on l'annonce
+                    if (etat == EtatEnnemi.WAITING) {
+                        console.joueurDetecte(name);
+                    }
+                    etat = EtatEnnemi.TRACKING;
+                } else {
+                    // Si la sonde vient juste de perdre sa trace, on l'annonce
+                    if (etat == EtatEnnemi.TRACKING) {
+                        console.joueurPerduDeVue(name);
+                    }
+                    etat = EtatEnnemi.WAITING;
+                }
+                break;
+            case DataBaseScript.EtatDataBase.DEFENDING:
+                // On regarde si le joueur est visible
+                if(isPlayerVisible(etatDataBase)) {
+                    // Si la sonde vient juste de le repérer, on l'annonce
+                    if (etat == EtatEnnemi.DEFENDING) {
+                        console.joueurDetecte(name);
+                    }
+                    etat = EtatEnnemi.RUSHING;
+                } else {
+                    // Si la sonde vient juste de perdre sa trace, on l'annonce
+                    if (etat == EtatEnnemi.RUSHING) {
+                        console.joueurPerduDeVue(name);
+                    }
+                    etat = EtatEnnemi.DEFENDING;
+                }
+                break;
+        }
+    }
+
+    // Permet de savoir si la sonde voit le joueur
+    public bool isPlayerVisible(DataBaseScript.EtatDataBase etatDataBase) {
+        // On calcul la distance de détection
+        float distance = distanceDeDetection;
+        if(etatDataBase == DataBaseScript.EtatDataBase.DEFENDING) {
+            distance *= coefficiantDeRushDistanceDeDetection;
+        }
+
+        // Si l'ennemie est suffisament proche et qu'il est visible !
+        RaycastHit hit;
+        Ray ray = new Ray (transform.position, player.transform.position - transform.position);
+        if(Physics.Raycast(ray, out hit, distance) && hit.collider.name == "Joueur") {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 	// Permet de savoir si le drone est en mouvement
 	public bool isMoving() {
 		return (etat == EtatEnnemi.TRACKING || etat == EtatEnnemi.RUSHING) || Vector3.Distance(lastPositionSeen, transform.position) > 1f;
@@ -185,6 +221,4 @@ public class EnnemiScript : MonoBehaviour {
 			}
 		}
 	}
-		
-
 }
