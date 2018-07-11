@@ -84,9 +84,11 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: abcba3ef8d13a447b93bf3473f1cec31, type: 2}
   m_StaticBatchInfo:
@@ -99,6 +101,7 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -141,7 +144,7 @@ MonoBehaviour:
   vitesseMin: 1
   vitesseMax: 3
   puissancePoussee: 20
-  tempsPousee: 1
+  tempsPouseePersonnage: 1
   distanceDeDetection: 10
   coefficiantDeRushVitesse: 1.8
   coefficiantDeRushDistanceDeDetection: 1
