@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnnemiScript : MonoBehaviour {
+public class SondeScript : MonoBehaviour {
 
 	//////////////////////////////////////////////////////////////////////////////////////
 	// ENUMERATION
@@ -35,8 +35,6 @@ public class EnnemiScript : MonoBehaviour {
 	[HideInInspector]
 	public DataBaseScript dataBase; // La dataBase qui envoie les ordres
 	[HideInInspector]
-	public MapManagerScript mapManager; // La map
-	[HideInInspector]
 	public ConsoleScript console; // la console
 	[HideInInspector]
 	private EtatEnnemi etat;
@@ -61,7 +59,6 @@ public class EnnemiScript : MonoBehaviour {
 		player = GameObject.Find ("Joueur");
 		controller = this.GetComponent<CharacterController> ();
         dataBase = DataBaseScript.Instance;
-		mapManager = GameObject.Find("MapManager").GetComponent<MapManagerScript>();
 		console = GameObject.Find ("Console").GetComponent<ConsoleScript> ();
 		etat = EtatEnnemi.WAITING;
 		lastPositionSeen = transform.position;

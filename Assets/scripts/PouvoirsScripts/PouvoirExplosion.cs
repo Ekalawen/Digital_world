@@ -49,7 +49,7 @@ public class PouvoirExplosion : IPouvoir {
                 // Vector3 directionPoussee = (collider.gameObject.transform.position - centreExplosion).normalized;
                 Vector3 directionPoussee = (collider.gameObject.transform.position - transform.parent.transform.position).normalized;
                 float tempsDeLaPousseeFinal = Mathf.Max(0.2f, tempsDeLaPoussee * ratioTemps);
-                collider.gameObject.GetComponent<EnnemiScript>().etrePoussee(directionPoussee * puissanceDePoussee, tempsDeLaPousseeFinal);
+                collider.gameObject.GetComponent<SondeScript>().etrePoussee(directionPoussee * puissanceDePoussee, tempsDeLaPousseeFinal);
             }
         }
 

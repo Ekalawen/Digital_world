@@ -25,9 +25,9 @@ public class DataBaseScript : MonoBehaviour {
 	//////////////////////////////////////////////////////////////////////////////////////
 
 	[HideInInspector]
-	public List<EnnemiScript> sondes; // Elle connait tous les drones !
+	public List<SondeScript> sondes; // Elle connait tous les drones !
 	[HideInInspector]
-	public EnnemiScript.EtatEnnemi etatDrones; // Permet de donner des ordres aux drones
+	public SondeScript.EtatEnnemi etatDrones; // Permet de donner des ordres aux drones
 	[HideInInspector]
 	public GameObject player; // Le joueur
 	[HideInInspector]
@@ -50,7 +50,7 @@ public class DataBaseScript : MonoBehaviour {
 	void Start () {
 		// Initialisation
 		name = "DataBase";
-        sondes = new List<EnnemiScript>(); // Les sondes viennent se renseigner tout seuls =)
+        sondes = new List<SondeScript>(); // Les sondes viennent se renseigner tout seuls =)
 		player = GameObject.Find ("Joueur");
 		mapManager = GameObject.Find("MapManager").GetComponent<MapManagerScript>();
 		plusDeLumieres = false;
@@ -125,12 +125,12 @@ public class DataBaseScript : MonoBehaviour {
             Vector3 pos = positionsGrille[Random.Range(0, positionsGrille.Count)];
             positionsGrille.Remove(pos);
             GameObject go = Instantiate(ennemiPrefabs, pos, Quaternion.identity); // Et normalement la sonde s'ajoute toute seule à la liste :D
-            go.GetComponent<EnnemiScript>().positionGrilleDefense = pos; // Et on lui set sa position de la grille de défense
+            go.GetComponent<SondeScript>().positionGrilleDefense = pos; // Et on lui set sa position de la grille de défense
             Debug.Log("position associée à une nouvelle sonde = " + pos);
         }
 
         // Puis on met à jour le coef de detection de toutes les sondes
-        foreach(EnnemiScript sonde in sondes) {
+        foreach(SondeScript sonde in sondes) {
             float coefDistanceDetection = (float)distanceDetection / (float)sonde.distanceDeDetection;
             Debug.Log("distanceTotale = " + coefDistanceDetection * (float)sonde.distanceDeDetection);
             sonde.coefficiantDeRushDistanceDeDetection = coefDistanceDetection;
@@ -156,7 +156,7 @@ public class DataBaseScript : MonoBehaviour {
 	// Permet de savoir si le joueur est actuellement suivi
 	public bool joueurSuivi() {
 		bool suivi = false;
-		foreach (EnnemiScript drone in sondes) {
+		foreach (SondeScript drone in sondes) {
 			if (drone.isMoving()) {
 				suivi = true;
 				break;
