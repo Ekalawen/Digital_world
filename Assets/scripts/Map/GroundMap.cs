@@ -8,12 +8,16 @@ public class GroundMap : MapManager {
 
 	public void Start() {
 		base.Start();
-		
-		generateGroundMap();
 	}
 
-	// Génère juste une map pour pouvoir tester des trucs !
-	void generateGroundMap() {
+    public override void Initialize() {
+        base.Initialize();
+
+        generateGroundMap();
+    }
+
+    // Génère juste une map pour pouvoir tester des trucs !
+    void generateGroundMap() {
 		// On initialise la position des coins !
 		Vector3[] pos = new Vector3[8];
 		pos [0] = new Vector3 (0, 0, 0);

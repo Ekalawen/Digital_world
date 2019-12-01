@@ -39,6 +39,9 @@ public class MapManager : MonoBehaviour {
 	//////////////////////////////////////////////////////////////////////////////////////
 
 	protected void Start() {
+	}
+
+    public virtual void Initialize() {
 		// Initialisation
 		name = "MapManager";
 		cubes = new List<GameObject>();
@@ -61,7 +64,7 @@ public class MapManager : MonoBehaviour {
 		}
 
 		// Ce sont les classes qui hériteront de cette classe qui créeront leur propre map !
-	}
+    }
 
 	// Remplit un mur qui part d'un point de départ dans 2 directions avec une certaine taille selon les 2 directions
 	// C'est clair ? Non ? Bah lit le code <3

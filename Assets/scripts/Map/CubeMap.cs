@@ -24,17 +24,21 @@ public class CubeMap : MapManager {
 	//////////////////////////////////////////////////////////////////////////////////////
 
 	public void Start() {
-		base.Start();
+        base.Start();
+	}
+
+    public override void Initialize() {
+        base.Initialize();
 		
 		volumeMap = (int) Mathf.Pow (tailleMap, 3);
 		generateCubeMap();
 
 		// On veut ajouter des ennemis !
 		generateEnnemies();
-	}
+    }
 
-	// Crée une map en forme de Cube
-	void generateCubeMap() {
+    // Crée une map en forme de Cube
+    void generateCubeMap() {
 		// On initialise la position des coins !
 		Vector3[] pos = new Vector3[8];
 		pos [0] = new Vector3 (0, 0, 0);
@@ -283,4 +287,5 @@ public class CubeMap : MapManager {
 			return false;
 		}
 	}
+
 }

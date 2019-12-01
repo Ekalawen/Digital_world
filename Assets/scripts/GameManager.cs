@@ -29,15 +29,17 @@ public class GameManager : MonoBehaviour {
 	[HideInInspector]
 	public MapManager map;
 	[HideInInspector]
-	public Personnage player;
+	public Player player;
+	[HideInInspector]
+	public GameObject pointeur;
 	[HideInInspector]
 	public Console console;
 	[HideInInspector]
 	public DataBase dataBase;
-	[HideInInspector]
-	public bool partieDejaTerminee;
     [HideInInspector]
-    public bool timeFreezed;
+    public bool partieDejaTerminee = false;
+    [HideInInspector]
+    public bool timeFreezed = false;
 
     //////////////////////////////////////////////////////////////////////////////////////
     // METHODES
@@ -48,48 +50,25 @@ public class GameManager : MonoBehaviour {
     }
 
     void Start () {
-        partieDejaTerminee = false;
-        timeFreezed = false;
-
-		// On crée la map
+		// On crée ce dont on a besoin
 		map = Instantiate(mapManagerPrefabs).GetComponent<MapManager>();
-
-		// On crée le joueur, le pointeur, la console et la database
-		instantiatePlayer();
-		Instantiate (pointeurPrefabs);
+        player = Instantiate(playerPrefabs).GetComponent<Player>();
 		dataBase = Instantiate (dataBasePrefabs).GetComponent<DataBase>();
 		console = Instantiate (consolePrefabs).GetComponent<Console>();
 
-		// On finit les liaisaons entre eux
-		finirLiaisons();
+        // Puis on les initialises !
+        map.Initialize();
+        player.Initialize(new Vector3(map.tailleMap / 2, map.tailleMap * 2, map.tailleMap / 2), new Vector2(180, 0));
+        dataBase.Initialize();
+        console.Initialize();
 	}
-
-	public virtual void instantiatePlayer() {
-		// On veut ajouter un playerPrefabs dans le cube central !
-		// On arrive en hauteur comme ça on a le temps de bien voir la carte ! =)
-		Vector3 posPerso = new Vector3(map.tailleMap / 2, map.tailleMap * 2, map.tailleMap / 2);
-		GameObject perso = Instantiate (playerPrefabs, posPerso, Quaternion.identity) as GameObject;
-		perso.name = "Joueur";
-		player = perso.GetComponent<Personnage>();
-
-		// On veut maintenant activer la caméra du playerPrefabs !
-		Camera camPerso = perso.transform.GetChild(0).GetComponent<Camera>() as Camera;
-		camPerso.enabled = true;
-	}
-
-	void finirLiaisons() {
-		player.console = console;
-		dataBase.console = console;
-	}
-
 
 	// Update is called once per frame
 	void Update () {
 
 		// Si on a appuyé sur la touche Escape, on quitte le jeu !
 		if (Input.GetKey ("escape")) {
-			// QuitGame ();
-			revenirAuMenu();
+			RevenirAuMenu();
 		}
 
 		// Si on a appuyé sur F1 on récupère la souris, ou on la cache ! :D
@@ -107,25 +86,25 @@ public class GameManager : MonoBehaviour {
 		if (!map.lumieresAttrapees && map.nbLumieres <= 0) {
 			map.lumieresAttrapees = true;
 			// On affiche un message dans la consolePrefabs !
-			console.toutesLumieresAttrapees();
+			console.ToutesLesLumieresAttrapees();
 		}
 
 		// Si c'est la fin de la partie, on quitte après 7 secondes !
-		if (!partieDejaTerminee && partieTerminee ()) {
+		if (!partieDejaTerminee && PartieTermine ()) {
 			partieDejaTerminee = true;
 			StartCoroutine (QuitInSeconds(7));
 		}
 	}
 
-	bool partieTerminee() {
+	bool PartieTermine() {
 		// Si le joueur est tombé du cube ...
 		if (player.transform.position.y < -10) {
 			// Si le joueur a perdu ...
 			if (!map.lumieresAttrapees) {
-				console.joueurEjecte();
+				console.JoueurEjecte();
 			// Si le joueur a gagné !
 			} else {
-				console.joueurEchappe();
+				console.JoueurEchappe();
 			}
 			return true;
 		}
@@ -133,8 +112,8 @@ public class GameManager : MonoBehaviour {
 		// Ou qu'il est en contact avec un ennemiPrefabs depuis plus de 5 secondes
 		// C'est donc qu'il s'est fait conincé !
 		// Debug.Log("lastnotcontact = "+ player.GetComponent<Personnage>().lastNotContactEnnemy);
-		if (Time.timeSinceLevelLoad - player.GetComponent<Personnage> ().lastNotContactEnnemy >= 5f) {
-			console.joueurCapture();
+		if (Time.timeSinceLevelLoad - player.GetComponent<Player>().lastNotContactEnnemy >= 5f) {
+			console.JoueurCapture();
 			player.vitesseDeplacement = 0; // On immobilise le joueur
 			player.vitesseSaut = 0; // On immobilise le joueur
 			return true;
@@ -145,7 +124,7 @@ public class GameManager : MonoBehaviour {
 	IEnumerator QuitInSeconds(int tps) {
 		yield return new WaitForSeconds (tps);
 		// QuitGame ();
-		revenirAuMenu();
+		RevenirAuMenu();
 	}
 
 	public void QuitGame()
@@ -160,7 +139,7 @@ public class GameManager : MonoBehaviour {
 		#endif
 	}
 
-	public void revenirAuMenu() {
+	public void RevenirAuMenu() {
 		// On détruit tout !
 		Object.Destroy(map);
 		Object.Destroy(player);

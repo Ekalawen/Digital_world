@@ -27,7 +27,7 @@ public class PouvoirExplosion : IPouvoir {
     IEnumerator performExplosion() {
         // On retient le temps
         float tempsDebut = Time.timeSinceLevelLoad;
-        Vector3 direction = transform.parent.GetComponent<Personnage>().camera.transform.forward.normalized;
+        Vector3 direction = transform.parent.GetComponent<Player>().camera.transform.forward.normalized;
         Vector3 centre = transform.parent.transform.position + direction * 0.5f;
 
         // On crée la boule rouge

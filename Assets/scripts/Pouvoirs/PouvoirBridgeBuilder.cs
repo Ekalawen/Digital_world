@@ -23,7 +23,7 @@ public class PouvoirBridgeBuilder : IPouvoir {
         // On récupère les informations du pont en lancant un rayon
         // Et en vérifiant qu'il touche bien un cube
         pointSource = transform.parent.transform.position + Vector3.down; // On essaye de faire partir le pont d'en dessous de nous !
-        Ray ray = new Ray(transform.parent.transform.position, transform.parent.GetComponent<Personnage>().camera.transform.forward); // On part pas d'en-dessous pour ne pas que le ray soit bloqué !
+        Ray ray = new Ray(transform.parent.transform.position, transform.parent.GetComponent<Player>().camera.transform.forward); // On part pas d'en-dessous pour ne pas que le ray soit bloqué !
         RaycastHit hit;
         if(Physics.Raycast(ray, out hit, float.PositiveInfinity)) {
             // On vérifie qu'on a bien touché un cube
@@ -44,7 +44,7 @@ public class PouvoirBridgeBuilder : IPouvoir {
 
     void cibleInvalide() {
         // On informe que ce n'est pas une cible valide !
-        Console.Instance.pouvoirBridgeBuilderInvalide();
+        Console.Instance.PouvoirBridgeBuilderInvalide();
     }
 
     IEnumerator buildBridge(Vector3 pointSource, Vector3 pointCible) {

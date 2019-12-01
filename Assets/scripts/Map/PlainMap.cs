@@ -23,12 +23,17 @@ public class PlainMap : MapManager {
 
 	public void Start() {
 		base.Start();
-		
-		generatePlainsMap(tailleX, tailleY, pas, hauteurMax);
 	}
 
-	// Génère une map avec une plaine interpolé
-	void generatePlainsMap(int tailleX, int tailleY, int pas, float hauteurMax) {
+    public override void Initialize() {
+        base.Initialize();
+		
+		generatePlainsMap(tailleX, tailleY, pas, hauteurMax);
+    }
+
+
+    // Génère une map avec une plaine interpolé
+    void generatePlainsMap(int tailleX, int tailleY, int pas, float hauteurMax) {
 
 		// On génère les points de contrôles
 		Vector3[,] pdc = generatePointsDeControle(tailleX, tailleY, hauteurMax, pas);

@@ -51,7 +51,7 @@ public class PouvoirTripleSauts : IPouvoir {
         if (Time.timeSinceLevelLoad - debutDash < tempsPourDash) {
 
             // Si il vient de choisir la position, on le TP (pour le moment on s'embête pas ^^')
-            Vector3 direction = transform.parent.GetComponent<Personnage>().camera.transform.forward;
+            Vector3 direction = transform.parent.GetComponent<Player>().camera.transform.forward;
             direction.Normalize();
             yield return StartCoroutine(translatePlayer(direction * distanceDash));
 
@@ -69,7 +69,7 @@ public class PouvoirTripleSauts : IPouvoir {
     }
 
     IEnumerator translatePlayer(Vector3 mouvementTotal) {
-        CharacterController controller = transform.parent.GetComponent<Personnage>().controller;
+        CharacterController controller = transform.parent.GetComponent<Player>().controller;
         float stepOffset = controller.stepOffset;
         controller.stepOffset = 0;
         for(int i = 0; i < nbFramesDash; i++) {

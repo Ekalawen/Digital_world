@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 using UnityEngine.EventSystems;
 
-public class Personnage : MonoBehaviour {
+public class Player : MonoBehaviour {
 
 	//////////////////////////////////////////////////////////////////////////////////////
 	// ENUMERATION
@@ -16,7 +16,7 @@ public class Personnage : MonoBehaviour {
     // ATTRIBUTS PUBLIQUES
     /////////////////////////////////////////////////////////////////////////////////////
 
-    public static Personnage _instance;
+    public static Player _instance;
     public IPouvoir pouvoir; // Le pouvoir du personnage =)
 	public float vitesseDeplacement; // la vitesse de déplacement horizontale
 	public float vitesseSaut; // la vitesse d'élévation du saut
@@ -68,22 +68,38 @@ public class Personnage : MonoBehaviour {
 	//////////////////////////////////////////////////////////////////////////////////////
 
 	void Start () {
-		// On récupère le personnage
-		personnage = GameObject.Find("Joueur");
-		controller = personnage.GetComponent<CharacterController> ();
-		camera = personnage.transform.GetChild(0).GetComponent<Camera>() as Camera;
-		pointDebutSaut = transform.position;
-
-		// On regarde en bas quand on commence !
-		xRot = 180; 
-		yRot = 0;
-
-		// On empêche la souris de sortir de l'écran !
-		Cursor.lockState = CursorLockMode.Locked;
-		Cursor.visible = false;
 	}
 
-	void Update () {
+    public void Initialize(Vector3 position, Vector2 orientationXY) {
+        // On récupère le personnage
+        personnage = gameObject;
+        personnage.name = "Joueur";
+		controller = personnage.GetComponent<CharacterController> ();
+		camera = personnage.transform.GetChild(0).GetComponent<Camera>() as Camera;
+
+        //ChoseStartingPosition();
+        transform.position = position;
+
+        // On regarde là où on nous dit de regarder
+        xRot = orientationXY.x;
+        yRot = orientationXY.y;
+
+		pointDebutSaut = transform.position;
+
+        // On veut maintenant activer la caméra du playerPrefabs !
+        personnage.GetComponentInChildren<Camera>().enabled = true;
+
+        // On empêche la souris de sortir de l'écran !
+        Cursor.lockState = CursorLockMode.Locked;
+		Cursor.visible = false;
+
+        console = GameObject.FindObjectOfType<Console>();
+    }
+
+    void ChoseStartingPosition() {
+    }
+
+    void Update () {
         // On met à jour la caméra
         updateCamera();
 
@@ -103,10 +119,10 @@ public class Personnage : MonoBehaviour {
 			}
 
 			// Un petit message
-			console.envoyerTrails();
+			console.EnvoyerTrails();
 
 			// Et on certifie qu'on a appuyé sur E
-			console.updateLastOrbeAttrapee();
+			console.UpdateLastLumiereAttrapee();
 		}
 
         // Lorsque le joueur clique avec sa souris
@@ -282,7 +298,7 @@ public class Personnage : MonoBehaviour {
 		&& (etat == EtatPersonnage.AU_SOL || etat == EtatPersonnage.AU_MUR)) {
 			float hauteurSaut = hauteurMaxSaut - transform.position.y;
 			if(hauteurSaut > 7) {
-				console.grandSaut(hauteurSaut);
+				console.GrandSaut(hauteurSaut);
 			}
 		}
 	}

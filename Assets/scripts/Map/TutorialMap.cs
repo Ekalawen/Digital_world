@@ -19,12 +19,16 @@ public class TutorialMap : MapManager {
 
 	public void Start() {
 		base.Start();
-		
-		generateTutorialMap();
 	}
 
-	// Génère la map du tutoriel ! =)
-	void generateTutorialMap() {
+    public override void Initialize() {
+        base.Initialize();
+		
+		generateTutorialMap();
+    }
+
+    // Génère la map du tutoriel ! =)
+    void generateTutorialMap() {
 		// Première zone : Arrivée
 		remplirFace(Vector3.zero, Vector3.right, 20, Vector3.forward, 10); // sol
 		remplirFace(Vector3.zero, Vector3.right, 20, Vector3.up, 10); // les 3 cotés

@@ -28,11 +28,11 @@ public class Lumiere : MonoBehaviour {
 	void OnTriggerEnter(Collider hit) {
 		if (hit.gameObject.name == "Joueur"){
 			mapManager.nbLumieres--;
-			console.attraperLumiere(mapManager.nbLumieres);
+			console.AttraperLumiere(mapManager.nbLumieres);
 			Destroy (this.gameObject);
 
 			// Et on certifie qu'on a bien attrapé une orbe
-			console.updateLastOrbeAttrapee();
+			console.UpdateLastLumiereAttrapee();
 		}
 	}
 }

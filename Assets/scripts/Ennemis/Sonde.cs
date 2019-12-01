@@ -161,13 +161,13 @@ public class Sonde : MonoBehaviour {
                 if(Time.timeSinceLevelLoad >= 10f && isPlayerVisible(etatDataBase)) {
                     // Si la sonde vient juste de le repérer, on l'annonce
                     if (etat == EtatEnnemi.WAITING) {
-                        console.joueurDetecte(name);
+                        console.JoueurDetecte(name);
                     }
                     etat = EtatEnnemi.TRACKING;
                 } else {
                     // Si la sonde vient juste de perdre sa trace, on l'annonce
                     if (etat == EtatEnnemi.TRACKING) {
-                        console.joueurPerduDeVue(name);
+                        console.JoueurPerduDeVue(name);
                     }
                     etat = EtatEnnemi.WAITING;
                 }
@@ -177,13 +177,13 @@ public class Sonde : MonoBehaviour {
                 if(isPlayerVisible(etatDataBase)) {
                     // Si la sonde vient juste de le repérer, on l'annonce
                     if (etat == EtatEnnemi.DEFENDING) {
-                        console.joueurDetecte(name);
+                        console.JoueurDetecte(name);
                     }
                     etat = EtatEnnemi.RUSHING;
                 } else {
                     // Si la sonde vient juste de perdre sa trace, on l'annonce
                     if (etat == EtatEnnemi.RUSHING) {
-                        console.joueurPerduDeVue(name);
+                        console.JoueurPerduDeVue(name);
                     }
                     etat = EtatEnnemi.DEFENDING;
                 }
@@ -220,11 +220,11 @@ public class Sonde : MonoBehaviour {
 			// Si c'est le cas, on l'envoie ballader !
 			Vector3 directionPoussee = hit.collider.transform.position - transform.position;
 			directionPoussee.Normalize ();
-			hit.collider.GetComponent<Personnage> ().etrePoussee (directionPoussee * puissancePoussee, tempsPouseePersonnage);
+			hit.collider.GetComponent<Player> ().etrePoussee (directionPoussee * puissancePoussee, tempsPouseePersonnage);
 
 			// Et on affiche un message dans la console !
 			if (!gameManager.partieDejaTerminee) {
-				console.joueurTouche();
+				console.JoueurTouche();
 			}
 		}
 	}

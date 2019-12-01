@@ -48,6 +48,9 @@ public class DataBase : MonoBehaviour {
     }
 
 	void Start () {
+	}
+
+    public void Initialize() {
 		// Initialisation
 		name = "DataBase";
         sondes = new List<Sonde>(); // Les sondes viennent se renseigner tout seuls =)
@@ -56,7 +59,8 @@ public class DataBase : MonoBehaviour {
 		plusDeLumieres = false;
         etat = EtatDataBase.NORMAL;
 		isJoueurSuivi = false;
-	}
+        console = GameObject.FindObjectOfType<Console>();
+    }
 	
 	void Update () {
         majEtatDataBase();
@@ -141,11 +145,11 @@ public class DataBase : MonoBehaviour {
     void detecterJoueurSuivi() {
 		// Si le joueur était visible avant mais qu'on le perd de vu, alors on le signal ! =)
 		if (Time.timeSinceLevelLoad >= 10 && isJoueurSuivi && !joueurSuivi()) {
-			console.semerSondes();
+			console.SemerSondes();
 			isJoueurSuivi = false;
 		}
 		if (Time.timeSinceLevelLoad >= 10 && !isJoueurSuivi && joueurSuivi()) {
-			console.joueurRepere();
+			console.JoueurRepere();
 			isJoueurSuivi = true;
 		}
     }

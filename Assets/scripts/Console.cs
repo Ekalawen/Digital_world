@@ -48,7 +48,7 @@ public class Console : MonoBehaviour {
 	private List<int> numLines; // Les numéros de lignes
 	private float lastTimeImportantText;
 	private float tempsImportantText;
-	private float lastOrbeAttrapee; // Le dernier temps auquel le joueur n'a pas attrapé d'Orbe
+	private float timeLastLumiereAttrapee; // Le dernier temps auquel le joueur n'a pas attrapé d'Orbe
 
 	//////////////////////////////////////////////////////////////////////////////////////
 	// METHODES
@@ -59,6 +59,9 @@ public class Console : MonoBehaviour {
     }
 
 	void Start () {
+	}
+
+    public void Initialize() {
 		// Initialisation des variables
 		name = "Console";
 		gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
@@ -70,28 +73,28 @@ public class Console : MonoBehaviour {
 		dataBase = GameObject.Find("DataBase").GetComponent<DataBase>();
 
 		// Les premiers messages
-		premiersMessages();
-	}
+		PremiersMessages();
+    }
 
-	public void premiersMessages() {
-		ajouterMessage ("Chargement de la Matrix ...", TypeText.BASIC_TEXT);
-		ajouterMessage ("Détection des Bases de Données ...", TypeText.BASIC_TEXT);
-		ajouterMessageImportant (mapManager.nbLumieres + " Datas trouvées ! À vous de jouer !", TypeText.ALLY_TEXT, 5);
-		ajouterMessage ("DÉTECTION INTRUSION ...", TypeText.ENNEMI_TEXT);
-		ajouterMessage ("ANTI-VIRUS ACTIVÉS DANS 5 SECONDES !", TypeText.ENNEMI_TEXT);
-		ajouterMessage ("On détecte " + mapManager.nbEnnemis + " Sondes !", TypeText.ALLY_TEXT);
+	public void PremiersMessages() {
+		AjouterMessage ("Chargement de la Matrix ...", TypeText.BASIC_TEXT);
+		AjouterMessage ("Détection des Bases de Données ...", TypeText.BASIC_TEXT);
+		AjouterMessageImportant (mapManager.nbLumieres + " Datas trouvées ! À vous de jouer !", TypeText.ALLY_TEXT, 5);
+		AjouterMessage ("DÉTECTION INTRUSION ...", TypeText.ENNEMI_TEXT);
+		AjouterMessage ("ANTI-VIRUS ACTIVÉS DANS 5 SECONDES !", TypeText.ENNEMI_TEXT);
+		AjouterMessage ("On détecte " + mapManager.nbEnnemis + " Sondes !", TypeText.ALLY_TEXT);
 	}
 	
 	void Update () {
 		// On regarde si le joueur n'est pas trop haut en altitude
 		if (Time.timeSinceLevelLoad >= 10f
 		&& player.transform.position.y > mapManager.tailleMap + 3) {
-			ajouterMessage ("Altitude critique !", TypeText.BASIC_TEXT);
+			AjouterMessage ("Altitude critique !", TypeText.BASIC_TEXT);
 		}
 
 		// On lance des phrases random desfois !
 		if (Random.Range (0f, 1f) < probaPhraseRandom) {
-			lancerPhraseRandom ();
+			LancerPhraseRandom ();
 		}
 
 		// On efface l'important texte si ça fait suffisamment longtemps qu'il est affiché
@@ -102,21 +105,21 @@ public class Console : MonoBehaviour {
         // On conseille d'appuyer sur TAB si le joueur galère a trouver des orbes
         mapManager = GameObject.Find("MapManager").GetComponent<MapManager>();
         if (mapManager.nbLumieres > 0) {
-			if (Time.timeSinceLevelLoad - lastOrbeAttrapee > 30) {
-				lastOrbeAttrapee = Time.timeSinceLevelLoad;
-				ajouterMessage ("On peut te géolocaliser les Datas si tu appuies sur E !", TypeText.ALLY_TEXT);
+			if (Time.timeSinceLevelLoad - timeLastLumiereAttrapee > 30) {
+				timeLastLumiereAttrapee = Time.timeSinceLevelLoad;
+				AjouterMessage ("On peut te géolocaliser les Datas si tu appuies sur E !", TypeText.ALLY_TEXT);
 			}
 		}
 
 	}
 
-	public void updateLastOrbeAttrapee() {
-		lastOrbeAttrapee = Time.timeSinceLevelLoad;
+	public void UpdateLastLumiereAttrapee() {
+		timeLastLumiereAttrapee = Time.timeSinceLevelLoad;
 	}
 
-	public void ajouterMessageImportant(string message, TypeText type, float tempsAffichage) {
+	public void AjouterMessageImportant(string message, TypeText type, float tempsAffichage) {
 		// Déjà on affiche le message dans la console
-		ajouterMessage (message, type);
+		AjouterMessage (message, type);
 
 		// Et en plus on l'affiche en gros !
 		importantText.text = message;
@@ -135,7 +138,7 @@ public class Console : MonoBehaviour {
 		tempsImportantText = tempsAffichage;
 	}
 
-	public void ajouterMessage(string message, TypeText type) {
+	public void AjouterMessage(string message, TypeText type) {
 		// On crée le nouveau texte !
 		GameObject newText = new GameObject(message, typeof(RectTransform));
 
@@ -194,7 +197,7 @@ public class Console : MonoBehaviour {
 		numLines.Add (1);
 	}
 
-	void lancerPhraseRandom() {
+	void LancerPhraseRandom() {
 		List<string> phrases = new List<string> ();
 		phrases.Add ("Wow vous êtes en forme !");
 		phrases.Add ("Happy Hacking ! :D");
@@ -213,48 +216,48 @@ public class Console : MonoBehaviour {
 		phrases.Add ("Il y a " + mapManager.nbEnnemis + " Sondes à votre recherche.");
 
 		string phrase = phrases [Random.Range (0, phrases.Count)];
-		ajouterMessage (phrase, TypeText.BASIC_TEXT);
+		AjouterMessage (phrase, TypeText.BASIC_TEXT);
 	}
 
 	// Lorsqu'une sonde repère le joueur
-	public void joueurDetecte(string nomDetecteur) {
-		ajouterMessage (nomDetecteur + " vous a détecté, je sais où vous êtes.", Console.TypeText.ENNEMI_TEXT);
+	public void JoueurDetecte(string nomDetecteur) {
+		AjouterMessage (nomDetecteur + " vous a détecté, je sais où vous êtes.", Console.TypeText.ENNEMI_TEXT);
 	}
 	
 	// Lorsqu'une sonde perd le joueur de vue
-	public void joueurPerduDeVue(string nomDetecteur) {
-		ajouterMessage ("On a déconnecté " + nomDetecteur + ".", Console.TypeText.ALLY_TEXT);
+	public void JoueurPerduDeVue(string nomDetecteur) {
+		AjouterMessage ("On a déconnecté " + nomDetecteur + ".", Console.TypeText.ALLY_TEXT);
 	}
 
 	// Lorsque le joueur est touché
-	public void joueurTouche() {
-		ajouterMessageImportant ("TOUCHÉ ! Je vais vous avoir !", Console.TypeText.ENNEMI_TEXT, 1);
+	public void JoueurTouche() {
+		AjouterMessageImportant ("TOUCHÉ ! Je vais vous avoir !", Console.TypeText.ENNEMI_TEXT, 1);
 	}
 
 	// Lorsque toutes les lumieres ont été attrapés
-	public void toutesLumieresAttrapees() {
-		ajouterMessage ("Vous ne vous en sortirez pas comme ça !", Console.TypeText.ENNEMI_TEXT);
-		ajouterMessage ("OK Super maintenant faut sortir d'ici !", Console.TypeText.ALLY_TEXT);
+	public void ToutesLesLumieresAttrapees() {
+		AjouterMessage ("Vous ne vous en sortirez pas comme ça !", Console.TypeText.ENNEMI_TEXT);
+		AjouterMessage ("OK Super maintenant faut sortir d'ici !", Console.TypeText.ALLY_TEXT);
 	}
 
 	// Lorsque le joueur est éjecté
-	public void joueurEjecte() {
-		ajouterMessageImportant ("MENACE ÉJECTÉE !", Console.TypeText.ENNEMI_TEXT, 5);
-		ajouterMessage ("Désactivation du processus défensif ...", Console.TypeText.ENNEMI_TEXT);
-		ajouterMessage ("Vous avez été éjecté de la Matrix. ", Console.TypeText.BASIC_TEXT);
-		StartCoroutine (seMoquer ());
+	public void JoueurEjecte() {
+		AjouterMessageImportant ("MENACE ÉJECTÉE !", Console.TypeText.ENNEMI_TEXT, 5);
+		AjouterMessage ("Désactivation du processus défensif ...", Console.TypeText.ENNEMI_TEXT);
+		AjouterMessage ("Vous avez été éjecté de la Matrix. ", Console.TypeText.BASIC_TEXT);
+		StartCoroutine (SeMoquer ());
 	}
 
 	// Lorsque le joueur réussi à s'échapper
-	public void joueurEchappe() {
-		ajouterMessage ("NOOOOOOOOOOOOOOOOOON ...", Console.TypeText.ENNEMI_TEXT);
-		ajouterMessage ("J'ai échouée ...", Console.TypeText.ENNEMI_TEXT);
-		ajouterMessageImportant ("NOUS AVONS RÉUSSI !!!", Console.TypeText.ALLY_TEXT, 5);
-		StartCoroutine (recompenser ());
+	public void JoueurEchappe() {
+		AjouterMessage ("NOOOOOOOOOOOOOOOOOON ...", Console.TypeText.ENNEMI_TEXT);
+		AjouterMessage ("J'ai échouée ...", Console.TypeText.ENNEMI_TEXT);
+		AjouterMessageImportant ("NOUS AVONS RÉUSSI !!!", Console.TypeText.ALLY_TEXT, 5);
+		StartCoroutine (Recompenser ());
 	}
 
 	// Text de récompense
-	IEnumerator recompenser() {
+	IEnumerator Recompenser() {
 		yield return new WaitForSeconds (2);
 		string message;
 		while (true) {
@@ -267,19 +270,19 @@ public class Console : MonoBehaviour {
 			message += " ";
 			for (int i = 0; i < Random.Range (1, 6); i++)
 				message += "!";
-			ajouterMessage (message, Console.TypeText.ALLY_TEXT);
+			AjouterMessage (message, Console.TypeText.ALLY_TEXT);
 			yield return null;
 		}
 	}
 
 	// Lorsque le joueur a été bloqué par les drones
-	public void joueurCapture() {
-		ajouterMessageImportant ("MENACE ÉLIMINÉE !", Console.TypeText.ENNEMI_TEXT, 5);
-		StartCoroutine (seMoquer ());
+	public void JoueurCapture() {
+		AjouterMessageImportant ("MENACE ÉLIMINÉE !", Console.TypeText.ENNEMI_TEXT, 5);
+		StartCoroutine (SeMoquer ());
 	}
 
 	// On se moque de lui
-	IEnumerator seMoquer() {
+	IEnumerator SeMoquer() {
 		yield return new WaitForSeconds (2);
 		string message;
 		while (true) {
@@ -292,50 +295,50 @@ public class Console : MonoBehaviour {
 			message += " ";
 			for (int i = 0; i < Random.Range (1, 6); i++)
 				message += "!";
-			ajouterMessage (message, Console.TypeText.ENNEMI_TEXT);
+			AjouterMessage (message, Console.TypeText.ENNEMI_TEXT);
 			yield return null;
 		}
 	}
 
 	// Quand on attrape une lumière
-	public void attraperLumiere(int nbLumieresRestantes) {
-		ajouterMessage ("ON A DES INFOS !", Console.TypeText.ALLY_TEXT);
+	public void AttraperLumiere(int nbLumieresRestantes) {
+		AjouterMessage ("ON A DES INFOS !", Console.TypeText.ALLY_TEXT);
 		if (nbLumieresRestantes > 0) {
-			ajouterMessageImportant ("Plus que " + nbLumieresRestantes + " !", Console.TypeText.ALLY_TEXT, 2);
+			AjouterMessageImportant ("Plus que " + nbLumieresRestantes + " !", Console.TypeText.ALLY_TEXT, 2);
 		} else {
-			ajouterMessage ("ON LES A TOUTES !", Console.TypeText.ALLY_TEXT);
-			ajouterMessageImportant ("FAUT SE BARRER MAINTENANT !!!", Console.TypeText.ALLY_TEXT, 2);
+			AjouterMessage ("ON LES A TOUTES !", Console.TypeText.ALLY_TEXT);
+			AjouterMessageImportant ("FAUT SE BARRER MAINTENANT !!!", Console.TypeText.ALLY_TEXT, 2);
 		}
 	}
 
 	// Quand le joueur lance les trails
-	public void envoyerTrails() {
+	public void EnvoyerTrails() {
 		int nbLumieresRestantes = mapManager.nbLumieres;
 		if(nbLumieresRestantes > 0) {
-			ajouterMessage ("On t'envoie les données ! Il te restes " + nbLumieresRestantes + " Objectifs !", Console.TypeText.ALLY_TEXT);
+			AjouterMessage ("On t'envoie les données ! Il te restes " + nbLumieresRestantes + " Objectifs !", Console.TypeText.ALLY_TEXT);
 		} else {
-			ajouterMessage ("On a hacké toute la base, faut s'enfuir maintenant !", Console.TypeText.ALLY_TEXT);
+			AjouterMessage ("On a hacké toute la base, faut s'enfuir maintenant !", Console.TypeText.ALLY_TEXT);
 		}
 	}
 
 	// Quand le joueur attérit d'un grand saut
-	public void grandSaut(float hauteurSaut) {
-		ajouterMessage("Wow quel saut ! " + ((int) hauteurSaut) + " mètres !", Console.TypeText.BASIC_TEXT);
-		ajouterMessage("duree = " + Time.timeSinceLevelLoad, TypeText.BASIC_TEXT);
+	public void GrandSaut(float hauteurSaut) {
+		AjouterMessage("Wow quel saut ! " + ((int) hauteurSaut) + " mètres !", Console.TypeText.BASIC_TEXT);
+		AjouterMessage("duree = " + Time.timeSinceLevelLoad, TypeText.BASIC_TEXT);
 	}
 
 	// Quand le joueur réussit à semer toutes les sondes
-	public void semerSondes() {
-		ajouterMessageImportant ("On les a semés, on est plus suivi !", TypeText.ALLY_TEXT, 2f);
+	public void SemerSondes() {
+		AjouterMessageImportant ("On les a semés, on est plus suivi !", TypeText.ALLY_TEXT, 2f);
 	}
 
 	// Quand le joueur se fait voir au début par les sondes !
-	public void joueurRepere() {
-		ajouterMessageImportant ("Nous t'avons trouvé !", TypeText.ENNEMI_TEXT, 2f);
+	public void JoueurRepere() {
+		AjouterMessageImportant ("Nous t'avons trouvé !", TypeText.ENNEMI_TEXT, 2f);
 	}
 
     // Lorsque le joueur tente de construire un pont avec une cible invalide !
-    public void pouvoirBridgeBuilderInvalide() {
-        ajouterMessageImportant("Ce n'est pas une cible valide !", TypeText.ENNEMI_TEXT, 1f);
+    public void PouvoirBridgeBuilderInvalide() {
+        AjouterMessageImportant("Ce n'est pas une cible valide !", TypeText.ENNEMI_TEXT, 1f);
     }
 }
