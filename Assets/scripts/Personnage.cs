@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 using UnityEngine.EventSystems;
 
-public class PersonnageScript : MonoBehaviour {
+public class Personnage : MonoBehaviour {
 
 	//////////////////////////////////////////////////////////////////////////////////////
 	// ENUMERATION
@@ -16,7 +16,7 @@ public class PersonnageScript : MonoBehaviour {
     // ATTRIBUTS PUBLIQUES
     /////////////////////////////////////////////////////////////////////////////////////
 
-    public static PersonnageScript _instance;
+    public static Personnage _instance;
     public IPouvoir pouvoir; // Le pouvoir du personnage =)
 	public float vitesseDeplacement; // la vitesse de déplacement horizontale
 	public float vitesseSaut; // la vitesse d'élévation du saut
@@ -37,7 +37,7 @@ public class PersonnageScript : MonoBehaviour {
 	[HideInInspector]
 	public CharacterController controller;
 	[HideInInspector]
-	public ConsoleScript console;
+	public Console console;
 	[HideInInspector]
 	public Camera camera;
 	private float xRot, yRot;
@@ -99,7 +99,7 @@ public class PersonnageScript : MonoBehaviour {
 				//Vector3 departRayons = transform.position - 0.5f * camera.transform.forward + 0.5f * Vector3.up;
 				Vector3 departRayons = transform.position + 0.5f * Vector3.up;
 				GameObject tr = Instantiate (trail, departRayons, Quaternion.identity) as GameObject;
-				tr.GetComponent<TrailScript> ().setTarget (lumieres [i].transform.position);
+				tr.GetComponent<Trail> ().setTarget (lumieres [i].transform.position);
 			}
 
 			// Un petit message
@@ -129,7 +129,7 @@ public class PersonnageScript : MonoBehaviour {
     // On met à jour le mouvement du joueur
     void updateMouvement() {
         // Si le temps est freeze, on ne se déplace pas !
-        if(GameManagerScript.Instance.timeFreezed) {
+        if(GameManager.Instance.timeFreezed) {
             return;
         }
 

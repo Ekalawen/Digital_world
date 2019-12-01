@@ -27,7 +27,7 @@ public class PouvoirExplosion : IPouvoir {
     IEnumerator performExplosion() {
         // On retient le temps
         float tempsDebut = Time.timeSinceLevelLoad;
-        Vector3 direction = transform.parent.GetComponent<PersonnageScript>().camera.transform.forward.normalized;
+        Vector3 direction = transform.parent.GetComponent<Personnage>().camera.transform.forward.normalized;
         Vector3 centre = transform.parent.transform.position + direction * 0.5f;
 
         // On crée la boule rouge
@@ -49,7 +49,7 @@ public class PouvoirExplosion : IPouvoir {
                 // Vector3 directionPoussee = (collider.gameObject.transform.position - centreExplosion).normalized;
                 Vector3 directionPoussee = (collider.gameObject.transform.position - transform.parent.transform.position).normalized;
                 float tempsDeLaPousseeFinal = Mathf.Max(0.2f, tempsDeLaPoussee * ratioTemps);
-                collider.gameObject.GetComponent<SondeScript>().etrePoussee(directionPoussee * puissanceDePoussee, tempsDeLaPousseeFinal);
+                collider.gameObject.GetComponent<Sonde>().etrePoussee(directionPoussee * puissanceDePoussee, tempsDeLaPousseeFinal);
             }
         }
 

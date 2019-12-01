@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CubeScript : MonoBehaviour {
+public class Cube : MonoBehaviour {
 
 	//////////////////////////////////////////////////////////////////////////////////////
 	// ENUM
@@ -52,7 +52,7 @@ public class CubeScript : MonoBehaviour {
 		Color c;
 
 		// On choisit notre thème parmis nos thème
-		CubeScript.ThemeCube themeChoisi = theme[Random.Range(0, theme.Count)];
+		Cube.ThemeCube themeChoisi = theme[Random.Range(0, theme.Count)];
 
 		// Puis on l'applique !
 		switch (themeChoisi)
@@ -98,7 +98,7 @@ public class CubeScript : MonoBehaviour {
 		Collider[] colliders = Physics.OverlapSphere(this.transform.position, distSourceMax);
 		foreach (Collider collider in colliders) {
 			if (collider.tag == "Cube") {
-				CubeScript c = collider.gameObject.GetComponent<CubeScript> () as CubeScript;				
+				Cube c = collider.gameObject.GetComponent<Cube> () as Cube;				
 				if (c.type == CubeType.Source) {
 					float distance = Vector3.Distance (c.transform.position, this.transform.position);
 					if (distance < distSourceMax) {

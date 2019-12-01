@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjectifScript : MonoBehaviour {
+public class Lumiere : MonoBehaviour {
 
 	//////////////////////////////////////////////////////////////////////////////////////
 	// ATTRIBUTS PRIVÉES
 	//////////////////////////////////////////////////////////////////////////////////////
 
 	[HideInInspector]
-	public ConsoleScript console;
+	public Console console;
 	[HideInInspector]
-	public MapManagerScript mapManager;
+	public MapManager mapManager;
 
 	//////////////////////////////////////////////////////////////////////////////////////
 	// METHODES
@@ -20,8 +20,8 @@ public class ObjectifScript : MonoBehaviour {
 	void Start () {
 		// Initialisation
 		ParticleSystem ps = GetComponent<ParticleSystem> ();
-		console = GameObject.Find("Console").GetComponent<ConsoleScript>();
-		mapManager = GameObject.Find("MapManager").GetComponent<MapManagerScript>();
+		console = GameObject.Find("Console").GetComponent<Console>();
+		mapManager = GameObject.Find("MapManager").GetComponent<MapManager>();
 	}
 
 	// Si le joueur nous touche, on disparait !

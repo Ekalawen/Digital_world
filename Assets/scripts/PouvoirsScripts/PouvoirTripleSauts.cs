@@ -22,7 +22,7 @@ public class PouvoirTripleSauts : IPouvoir {
     protected override void usePouvoir() {
         // Freezer le temps
         pouvoirAvailable = false;
-        GameManagerScript.Instance.timeFreezed = true;
+        GameManager.Instance.timeFreezed = true;
         // Faire un dash et attendre qu'il se termine
         StartCoroutine(performDash(nbDashs));
     }
@@ -51,7 +51,7 @@ public class PouvoirTripleSauts : IPouvoir {
         if (Time.timeSinceLevelLoad - debutDash < tempsPourDash) {
 
             // Si il vient de choisir la position, on le TP (pour le moment on s'embête pas ^^')
-            Vector3 direction = transform.parent.GetComponent<PersonnageScript>().camera.transform.forward;
+            Vector3 direction = transform.parent.GetComponent<Personnage>().camera.transform.forward;
             direction.Normalize();
             yield return StartCoroutine(translatePlayer(direction * distanceDash));
 
@@ -60,16 +60,16 @@ public class PouvoirTripleSauts : IPouvoir {
             } else {
                 // Si c'est la dernière coroutine, defreezer le temps
                 pouvoirAvailable = true;
-                GameManagerScript.Instance.timeFreezed = false;
+                GameManager.Instance.timeFreezed = false;
             }
         } else {
             pouvoirAvailable = true;
-            GameManagerScript.Instance.timeFreezed = false;
+            GameManager.Instance.timeFreezed = false;
         }
     }
 
     IEnumerator translatePlayer(Vector3 mouvementTotal) {
-        CharacterController controller = transform.parent.GetComponent<PersonnageScript>().controller;
+        CharacterController controller = transform.parent.GetComponent<Personnage>().controller;
         float stepOffset = controller.stepOffset;
         controller.stepOffset = 0;
         for(int i = 0; i < nbFramesDash; i++) {

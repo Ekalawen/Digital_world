@@ -4,13 +4,13 @@ using UnityEngine;
 
 // Le but de la DataBase est de gérer le comportement de tout ce qui entrave le joueur.
 // Cela va de la coordination des Drones, à la génération d'évenements néffastes.
-public class DataBaseScript : MonoBehaviour {
+public class DataBase : MonoBehaviour {
 
     /// Reference to this script
     /// See http://clearcutgames.net/home/?p=437 for singleton pattern.
     // Returns _instance if it exists, otherwise create one and set it has current _instance
-    static DataBaseScript _instance;
-    public static DataBaseScript Instance { get { return _instance ?? (_instance = new GameObject().AddComponent<DataBaseScript>()); } }
+    static DataBase _instance;
+    public static DataBase Instance { get { return _instance ?? (_instance = new GameObject().AddComponent<DataBase>()); } }
 
 	public enum EtatDataBase {NORMAL, DEFENDING};
 
@@ -25,15 +25,15 @@ public class DataBaseScript : MonoBehaviour {
 	//////////////////////////////////////////////////////////////////////////////////////
 
 	[HideInInspector]
-	public List<SondeScript> sondes; // Elle connait tous les drones !
+	public List<Sonde> sondes; // Elle connait tous les drones !
 	[HideInInspector]
-	public SondeScript.EtatEnnemi etatDrones; // Permet de donner des ordres aux drones
+	public Sonde.EtatEnnemi etatDrones; // Permet de donner des ordres aux drones
 	[HideInInspector]
 	public GameObject player; // Le joueur
 	[HideInInspector]
-	public ConsoleScript console; // La console
+	public Console console; // La console
 	[HideInInspector]
-	public MapManagerScript mapManager; // la map
+	public MapManager mapManager; // la map
 	private bool plusDeLumieres;
     private EtatDataBase etat; // L'état de la base de données
 	private float timingPlusDeLumieres;
@@ -50,9 +50,9 @@ public class DataBaseScript : MonoBehaviour {
 	void Start () {
 		// Initialisation
 		name = "DataBase";
-        sondes = new List<SondeScript>(); // Les sondes viennent se renseigner tout seuls =)
+        sondes = new List<Sonde>(); // Les sondes viennent se renseigner tout seuls =)
 		player = GameObject.Find ("Joueur");
-		mapManager = GameObject.Find("MapManager").GetComponent<MapManagerScript>();
+		mapManager = GameObject.Find("MapManager").GetComponent<MapManager>();
 		plusDeLumieres = false;
         etat = EtatDataBase.NORMAL;
 		isJoueurSuivi = false;
@@ -69,7 +69,7 @@ public class DataBaseScript : MonoBehaviour {
     void majEtatDataBase() {
         // On regarde si il reste des lumières
         // Si il n'en reste plus, on passe en état de défense !
-        mapManager = GameObject.Find("MapManager").GetComponent<MapManagerScript>();
+        mapManager = GameObject.Find("MapManager").GetComponent<MapManager>();
         if (mapManager.nbLumieres <= 0) {
             // Si on vient juste de perdre toutes les lumières ...
 			if (!plusDeLumieres) {
@@ -126,12 +126,12 @@ public class DataBaseScript : MonoBehaviour {
             Vector3 pos = positionsGrille[Random.Range(0, positionsGrille.Count)];
             positionsGrille.Remove(pos);
             GameObject go = Instantiate(ennemiPrefabs, pos, Quaternion.identity); // Et normalement la sonde s'ajoute toute seule à la liste :D
-            go.GetComponent<SondeScript>().positionGrilleDefense = pos; // Et on lui set sa position de la grille de défense
+            go.GetComponent<Sonde>().positionGrilleDefense = pos; // Et on lui set sa position de la grille de défense
             Debug.Log("position associée à une nouvelle sonde = " + pos);
         }
 
         // Puis on met à jour le coef de detection de toutes les sondes
-        foreach(SondeScript sonde in sondes) {
+        foreach(Sonde sonde in sondes) {
             float coefDistanceDetection = (float)distanceDetection / (float)sonde.distanceDeDetection;
             Debug.Log("distanceTotale = " + coefDistanceDetection * (float)sonde.distanceDeDetection);
             sonde.coefficiantDeRushDistanceDeDetection = coefDistanceDetection;
@@ -157,7 +157,7 @@ public class DataBaseScript : MonoBehaviour {
 	// Permet de savoir si le joueur est actuellement suivi
 	public bool joueurSuivi() {
 		bool suivi = false;
-		foreach (SondeScript drone in sondes) {
+		foreach (Sonde drone in sondes) {
 			if (drone.isMoving()) {
 				suivi = true;
 				break;

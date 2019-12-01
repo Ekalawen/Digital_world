@@ -5,13 +5,13 @@ using UnityEngine.UI;
 
 // La Console a pour but de gérer l'interface graphique de l'utilisateur.
 // Elle gérera notemment tous les affichages dans le Terminal du personnage.
-public class ConsoleScript : MonoBehaviour {
+public class Console : MonoBehaviour {
 
     /// Reference to this script
     /// See http://clearcutgames.net/home/?p=437 for singleton pattern.
     // Returns _instance if it exists, otherwise create one and set it has current _instance
-    static ConsoleScript _instance;
-    public static ConsoleScript Instance { get { return _instance ?? (_instance = new GameObject().AddComponent<ConsoleScript>()); } }
+    static Console _instance;
+    public static Console Instance { get { return _instance ?? (_instance = new GameObject().AddComponent<Console>()); } }
 
 	//////////////////////////////////////////////////////////////////////////////////////
 	// ENUMERATION
@@ -37,13 +37,13 @@ public class ConsoleScript : MonoBehaviour {
 	//////////////////////////////////////////////////////////////////////////////////////
 
 	[HideInInspector]
-	public GameManagerScript gameManager;
+	public GameManager gameManager;
 	[HideInInspector]
-	public MapManagerScript mapManager;
+	public MapManager mapManager;
 	[HideInInspector]
 	public GameObject player;
 	[HideInInspector]
-	public DataBaseScript dataBase;
+	public DataBase dataBase;
 	private List<GameObject> lines; // Les lignes de la console, constitués d'un RectTransform et d'un Text
 	private List<int> numLines; // Les numéros de lignes
 	private float lastTimeImportantText;
@@ -61,13 +61,13 @@ public class ConsoleScript : MonoBehaviour {
 	void Start () {
 		// Initialisation des variables
 		name = "Console";
-		gameManager = GameObject.Find("GameManager").GetComponent<GameManagerScript>();
-		mapManager = GameObject.Find("MapManager").GetComponent<MapManagerScript>();
+		gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+		mapManager = GameObject.Find("MapManager").GetComponent<MapManager>();
 		lines = new List<GameObject> ();
 		numLines = new List<int> ();
 		player = GameObject.Find ("Joueur");
 		importantText.text = "";
-		dataBase = GameObject.Find("DataBase").GetComponent<DataBaseScript>();
+		dataBase = GameObject.Find("DataBase").GetComponent<DataBase>();
 
 		// Les premiers messages
 		premiersMessages();
@@ -100,7 +100,7 @@ public class ConsoleScript : MonoBehaviour {
 		}
 
         // On conseille d'appuyer sur TAB si le joueur galère a trouver des orbes
-        mapManager = GameObject.Find("MapManager").GetComponent<MapManagerScript>();
+        mapManager = GameObject.Find("MapManager").GetComponent<MapManager>();
         if (mapManager.nbLumieres > 0) {
 			if (Time.timeSinceLevelLoad - lastOrbeAttrapee > 30) {
 				lastOrbeAttrapee = Time.timeSinceLevelLoad;
@@ -156,6 +156,8 @@ public class ConsoleScript : MonoBehaviour {
 		text.font = font;
 		text.alignment = TextAnchor.LowerLeft;
 		text.fontSize = tailleTexte;
+        text.horizontalOverflow = HorizontalWrapMode.Overflow;
+        text.verticalOverflow = VerticalWrapMode.Overflow;
 		switch (type) {
 		case TypeText.BASIC_TEXT:
 			text.color = basicColor;
@@ -216,38 +218,38 @@ public class ConsoleScript : MonoBehaviour {
 
 	// Lorsqu'une sonde repère le joueur
 	public void joueurDetecte(string nomDetecteur) {
-		ajouterMessage (nomDetecteur + " vous a détecté, je sais où vous êtes.", ConsoleScript.TypeText.ENNEMI_TEXT);
+		ajouterMessage (nomDetecteur + " vous a détecté, je sais où vous êtes.", Console.TypeText.ENNEMI_TEXT);
 	}
 	
 	// Lorsqu'une sonde perd le joueur de vue
 	public void joueurPerduDeVue(string nomDetecteur) {
-		ajouterMessage ("On a déconnecté " + nomDetecteur + ".", ConsoleScript.TypeText.ALLY_TEXT);
+		ajouterMessage ("On a déconnecté " + nomDetecteur + ".", Console.TypeText.ALLY_TEXT);
 	}
 
 	// Lorsque le joueur est touché
 	public void joueurTouche() {
-		ajouterMessageImportant ("TOUCHÉ ! Je vais vous avoir !", ConsoleScript.TypeText.ENNEMI_TEXT, 1);
+		ajouterMessageImportant ("TOUCHÉ ! Je vais vous avoir !", Console.TypeText.ENNEMI_TEXT, 1);
 	}
 
 	// Lorsque toutes les lumieres ont été attrapés
 	public void toutesLumieresAttrapees() {
-		ajouterMessage ("Vous ne vous en sortirez pas comme ça !", ConsoleScript.TypeText.ENNEMI_TEXT);
-		ajouterMessage ("OK Super maintenant faut sortir d'ici !", ConsoleScript.TypeText.ALLY_TEXT);
+		ajouterMessage ("Vous ne vous en sortirez pas comme ça !", Console.TypeText.ENNEMI_TEXT);
+		ajouterMessage ("OK Super maintenant faut sortir d'ici !", Console.TypeText.ALLY_TEXT);
 	}
 
 	// Lorsque le joueur est éjecté
 	public void joueurEjecte() {
-		ajouterMessageImportant ("MENACE ÉJECTÉE !", ConsoleScript.TypeText.ENNEMI_TEXT, 5);
-		ajouterMessage ("Désactivation du processus défensif ...", ConsoleScript.TypeText.ENNEMI_TEXT);
-		ajouterMessage ("Vous avez été éjecté de la Matrix. ", ConsoleScript.TypeText.BASIC_TEXT);
+		ajouterMessageImportant ("MENACE ÉJECTÉE !", Console.TypeText.ENNEMI_TEXT, 5);
+		ajouterMessage ("Désactivation du processus défensif ...", Console.TypeText.ENNEMI_TEXT);
+		ajouterMessage ("Vous avez été éjecté de la Matrix. ", Console.TypeText.BASIC_TEXT);
 		StartCoroutine (seMoquer ());
 	}
 
 	// Lorsque le joueur réussi à s'échapper
 	public void joueurEchappe() {
-		ajouterMessage ("NOOOOOOOOOOOOOOOOOON ...", ConsoleScript.TypeText.ENNEMI_TEXT);
-		ajouterMessage ("J'ai échouée ...", ConsoleScript.TypeText.ENNEMI_TEXT);
-		ajouterMessageImportant ("NOUS AVONS RÉUSSI !!!", ConsoleScript.TypeText.ALLY_TEXT, 5);
+		ajouterMessage ("NOOOOOOOOOOOOOOOOOON ...", Console.TypeText.ENNEMI_TEXT);
+		ajouterMessage ("J'ai échouée ...", Console.TypeText.ENNEMI_TEXT);
+		ajouterMessageImportant ("NOUS AVONS RÉUSSI !!!", Console.TypeText.ALLY_TEXT, 5);
 		StartCoroutine (recompenser ());
 	}
 
@@ -265,14 +267,14 @@ public class ConsoleScript : MonoBehaviour {
 			message += " ";
 			for (int i = 0; i < Random.Range (1, 6); i++)
 				message += "!";
-			ajouterMessage (message, ConsoleScript.TypeText.ALLY_TEXT);
+			ajouterMessage (message, Console.TypeText.ALLY_TEXT);
 			yield return null;
 		}
 	}
 
 	// Lorsque le joueur a été bloqué par les drones
 	public void joueurCapture() {
-		ajouterMessageImportant ("MENACE ÉLIMINÉE !", ConsoleScript.TypeText.ENNEMI_TEXT, 5);
+		ajouterMessageImportant ("MENACE ÉLIMINÉE !", Console.TypeText.ENNEMI_TEXT, 5);
 		StartCoroutine (seMoquer ());
 	}
 
@@ -290,19 +292,19 @@ public class ConsoleScript : MonoBehaviour {
 			message += " ";
 			for (int i = 0; i < Random.Range (1, 6); i++)
 				message += "!";
-			ajouterMessage (message, ConsoleScript.TypeText.ENNEMI_TEXT);
+			ajouterMessage (message, Console.TypeText.ENNEMI_TEXT);
 			yield return null;
 		}
 	}
 
 	// Quand on attrape une lumière
 	public void attraperLumiere(int nbLumieresRestantes) {
-		ajouterMessage ("ON A DES INFOS !", ConsoleScript.TypeText.ALLY_TEXT);
+		ajouterMessage ("ON A DES INFOS !", Console.TypeText.ALLY_TEXT);
 		if (nbLumieresRestantes > 0) {
-			ajouterMessageImportant ("Plus que " + nbLumieresRestantes + " !", ConsoleScript.TypeText.ALLY_TEXT, 2);
+			ajouterMessageImportant ("Plus que " + nbLumieresRestantes + " !", Console.TypeText.ALLY_TEXT, 2);
 		} else {
-			ajouterMessage ("ON LES A TOUTES !", ConsoleScript.TypeText.ALLY_TEXT);
-			ajouterMessageImportant ("FAUT SE BARRER MAINTENANT !!!", ConsoleScript.TypeText.ALLY_TEXT, 2);
+			ajouterMessage ("ON LES A TOUTES !", Console.TypeText.ALLY_TEXT);
+			ajouterMessageImportant ("FAUT SE BARRER MAINTENANT !!!", Console.TypeText.ALLY_TEXT, 2);
 		}
 	}
 
@@ -310,15 +312,15 @@ public class ConsoleScript : MonoBehaviour {
 	public void envoyerTrails() {
 		int nbLumieresRestantes = mapManager.nbLumieres;
 		if(nbLumieresRestantes > 0) {
-			ajouterMessage ("On t'envoie les données ! Il te restes " + nbLumieresRestantes + " Objectifs !", ConsoleScript.TypeText.ALLY_TEXT);
+			ajouterMessage ("On t'envoie les données ! Il te restes " + nbLumieresRestantes + " Objectifs !", Console.TypeText.ALLY_TEXT);
 		} else {
-			ajouterMessage ("On a hacké toute la base, faut s'enfuir maintenant !", ConsoleScript.TypeText.ALLY_TEXT);
+			ajouterMessage ("On a hacké toute la base, faut s'enfuir maintenant !", Console.TypeText.ALLY_TEXT);
 		}
 	}
 
 	// Quand le joueur attérit d'un grand saut
 	public void grandSaut(float hauteurSaut) {
-		ajouterMessage("Wow quel saut ! " + ((int) hauteurSaut) + " mètres !", ConsoleScript.TypeText.BASIC_TEXT);
+		ajouterMessage("Wow quel saut ! " + ((int) hauteurSaut) + " mètres !", Console.TypeText.BASIC_TEXT);
 		ajouterMessage("duree = " + Time.timeSinceLevelLoad, TypeText.BASIC_TEXT);
 	}
 

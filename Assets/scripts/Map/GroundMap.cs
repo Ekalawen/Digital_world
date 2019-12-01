@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // Permet de générer une map avec un sol plat, pratique pour tester des trucs !
-public class GroundMapScript : MapManagerScript {
+public class GroundMap : MapManager {
 
 
 	public void Start() {

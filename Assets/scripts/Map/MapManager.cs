@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MapManagerScript : MonoBehaviour {
+public class MapManager : MonoBehaviour {
 	//////////////////////////////////////////////////////////////////////////////////////
 	// ENUMERATION
 	//////////////////////////////////////////////////////////////////////////////////////
@@ -18,7 +18,7 @@ public class MapManagerScript : MonoBehaviour {
 	public GameObject ennemiPrefabs; // On récupère un ennemi !
 	public int tailleMap; // La taille de la map, en largeur, hauteur et profondeur
 	// Plus vraiment utile : public TypeMap typeMap; // Le type de la map, Cube, Plains ...
-	public List<CubeScript.ThemeCube> themeCube; // Le thème, cad la couleur de la map !
+	public List<Cube.ThemeCube> themeCube; // Le thème, cad la couleur de la map !
 	public float frequenceSource; // La frequence qu'un cube soit une source
 	public float distanceSourceMax; // La distance de coloration d'une source
 
@@ -45,18 +45,18 @@ public class MapManagerScript : MonoBehaviour {
 		lumieresAttrapees = false;
 
 		// On définit nos cubes
-		CubeScript.probaSource = frequenceSource;
-		CubeScript.distSourceMax = distanceSourceMax;
+		Cube.probaSource = frequenceSource;
+		Cube.distSourceMax = distanceSourceMax;
 
 		// On charge le thème de la map
-		CubeScript.theme = new List<CubeScript.ThemeCube>();
-		foreach(CubeScript.ThemeCube theme in themeCube) {
-			if(theme == CubeScript.ThemeCube.RANDOM) {
-				System.Array values = System.Enum.GetValues(typeof(CubeScript.ThemeCube));
+		Cube.theme = new List<Cube.ThemeCube>();
+		foreach(Cube.ThemeCube theme in themeCube) {
+			if(theme == Cube.ThemeCube.RANDOM) {
+				System.Array values = System.Enum.GetValues(typeof(Cube.ThemeCube));
 				int indiceTheme = Random.Range(0, values.Length - 1);
-				CubeScript.theme.Add((CubeScript.ThemeCube) values.GetValue(indiceTheme));
+				Cube.theme.Add((Cube.ThemeCube) values.GetValue(indiceTheme));
 			} else {
-				CubeScript.theme.Add(theme);
+				Cube.theme.Add(theme);
 			}
 		}
 

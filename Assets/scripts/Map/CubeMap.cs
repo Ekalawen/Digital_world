@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // Permet de générer une carte à l'intérieur d'un grand cube !
-public class CubeMapScript : MapManagerScript {
+public class CubeMap : MapManager {
 
 	//////////////////////////////////////////////////////////////////////////////////////
 	// ATTRIBUTS PUBLIQUES
@@ -55,11 +55,11 @@ public class CubeMapScript : MapManagerScript {
         remplirFace(2, 3, 7, 6, pos); // plafond !
 
         // On veut créer des passerelles entre les sources ! <3
-        List<CubeScript> sources = new List<CubeScript>();
+        List<Cube> sources = new List<Cube>();
 		int nbSources = 0;
 		foreach (GameObject go in cubes) {
-			CubeScript c = go.GetComponent<CubeScript> () as CubeScript;				
-			if (c.type == CubeScript.CubeType.Source) {
+			Cube c = go.GetComponent<Cube> () as Cube;				
+			if (c.type == Cube.CubeType.Source) {
 				sources.Add (c);
 				nbSources++;
 			}
@@ -241,14 +241,14 @@ public class CubeMapScript : MapManagerScript {
 	}
 
 	// Génère des ponts entre les sources ! =)
-	void generateBridges(List<CubeScript> sources, int nbBridges) {
+	void generateBridges(List<Cube> sources, int nbBridges) {
 		for (int i = 0; i < nbBridges; i++) {
 			// On récupère les deux sources qui nous intéressent
 			int n = Random.Range (0, sources.Count);
-			CubeScript c1 =	sources[n];
+			Cube c1 =	sources[n];
 			sources.Remove (c1);
 			n = Random.Range (0, sources.Count);
-			CubeScript c2 =	sources[n];
+			Cube c2 =	sources[n];
 			sources.Remove (c2);
 
 			// Si le pont n'est pas dans un mur ...

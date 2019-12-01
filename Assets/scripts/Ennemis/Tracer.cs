@@ -2,6 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TracerScript : MonoBehaviour {
+public class Tracer : MonoBehaviour {
 
 }

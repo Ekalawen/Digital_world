@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GameManagerScript : MonoBehaviour {
+public class GameManager : MonoBehaviour {
 
     /// Reference to this script
     /// See http://clearcutgames.net/home/?p=437 for singleton pattern.
     // Returns _instance if it exists, otherwise create one and set it has current _instance
-    static GameManagerScript _instance;
-    public static GameManagerScript Instance { get { return _instance ?? (_instance = new GameObject().AddComponent<GameManagerScript>()); } }
+    static GameManager _instance;
+    public static GameManager Instance { get { return _instance ?? (_instance = new GameObject().AddComponent<GameManager>()); } }
 
 
     //////////////////////////////////////////////////////////////////////////////////////
@@ -27,13 +27,13 @@ public class GameManagerScript : MonoBehaviour {
     //////////////////////////////////////////////////////////////////////////////////////
 
 	[HideInInspector]
-	public MapManagerScript map;
+	public MapManager map;
 	[HideInInspector]
-	public PersonnageScript player;
+	public Personnage player;
 	[HideInInspector]
-	public ConsoleScript console;
+	public Console console;
 	[HideInInspector]
-	public DataBaseScript dataBase;
+	public DataBase dataBase;
 	[HideInInspector]
 	public bool partieDejaTerminee;
     [HideInInspector]
@@ -52,13 +52,13 @@ public class GameManagerScript : MonoBehaviour {
         timeFreezed = false;
 
 		// On crée la map
-		map = Instantiate(mapManagerPrefabs).GetComponent<MapManagerScript>();
+		map = Instantiate(mapManagerPrefabs).GetComponent<MapManager>();
 
 		// On crée le joueur, le pointeur, la console et la database
 		instantiatePlayer();
 		Instantiate (pointeurPrefabs);
-		dataBase = Instantiate (dataBasePrefabs).GetComponent<DataBaseScript>();
-		console = Instantiate (consolePrefabs).GetComponent<ConsoleScript>();
+		dataBase = Instantiate (dataBasePrefabs).GetComponent<DataBase>();
+		console = Instantiate (consolePrefabs).GetComponent<Console>();
 
 		// On finit les liaisaons entre eux
 		finirLiaisons();
@@ -70,7 +70,7 @@ public class GameManagerScript : MonoBehaviour {
 		Vector3 posPerso = new Vector3(map.tailleMap / 2, map.tailleMap * 2, map.tailleMap / 2);
 		GameObject perso = Instantiate (playerPrefabs, posPerso, Quaternion.identity) as GameObject;
 		perso.name = "Joueur";
-		player = perso.GetComponent<PersonnageScript>();
+		player = perso.GetComponent<Personnage>();
 
 		// On veut maintenant activer la caméra du playerPrefabs !
 		Camera camPerso = perso.transform.GetChild(0).GetComponent<Camera>() as Camera;
@@ -132,8 +132,8 @@ public class GameManagerScript : MonoBehaviour {
 
 		// Ou qu'il est en contact avec un ennemiPrefabs depuis plus de 5 secondes
 		// C'est donc qu'il s'est fait conincé !
-		// Debug.Log("lastnotcontact = "+ player.GetComponent<PersonnageScript>().lastNotContactEnnemy);
-		if (Time.timeSinceLevelLoad - player.GetComponent<PersonnageScript> ().lastNotContactEnnemy >= 5f) {
+		// Debug.Log("lastnotcontact = "+ player.GetComponent<Personnage>().lastNotContactEnnemy);
+		if (Time.timeSinceLevelLoad - player.GetComponent<Personnage> ().lastNotContactEnnemy >= 5f) {
 			console.joueurCapture();
 			player.vitesseDeplacement = 0; // On immobilise le joueur
 			player.vitesseSaut = 0; // On immobilise le joueur

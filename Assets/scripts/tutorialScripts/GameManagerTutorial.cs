@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManagerTutorialScript : GameManagerScript {
+public class GameManagerTutorial : GameManager {
 
 	public override void instantiatePlayer() {
 		base.instantiatePlayer();

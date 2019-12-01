@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // Permet de créer la map du tutoriel !
-public class TutorialMapScript : MapManagerScript {
+public class TutorialMap : MapManager {
 
 	//////////////////////////////////////////////////////////////////////////////////////
 	// ATTRIBUTS PUBLIQUES

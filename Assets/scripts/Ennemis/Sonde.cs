@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SondeScript : MonoBehaviour {
+public class Sonde : MonoBehaviour {
 
 	//////////////////////////////////////////////////////////////////////////////////////
 	// ENUMERATION
@@ -27,15 +27,15 @@ public class SondeScript : MonoBehaviour {
 	//////////////////////////////////////////////////////////////////////////////////////
 
 	[HideInInspector]
-	public GameManagerScript gameManager;
+	public GameManager gameManager;
 	[HideInInspector]
 	public GameObject player;
 	[HideInInspector]
 	public CharacterController controller;
 	[HideInInspector]
-	public DataBaseScript dataBase; // La dataBase qui envoie les ordres
+	public DataBase dataBase; // La dataBase qui envoie les ordres
 	[HideInInspector]
-	public ConsoleScript console; // la console
+	public Console console; // la console
 	[HideInInspector]
 	private EtatEnnemi etat;
 	private Vector3 lastPositionSeen; // La dernière position à laquelle le joueur a été vu !
@@ -55,11 +55,11 @@ public class SondeScript : MonoBehaviour {
 	void Start () {
 		// Initialisation
 		name = "Sonde_" + Random.Range (0, 9999);
-		gameManager = GameObject.Find("GameManager").GetComponent<GameManagerScript>();
+		gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 		player = GameObject.Find ("Joueur");
 		controller = this.GetComponent<CharacterController> ();
-        dataBase = DataBaseScript.Instance;
-		console = GameObject.Find ("Console").GetComponent<ConsoleScript> ();
+        dataBase = DataBase.Instance;
+		console = GameObject.Find ("Console").GetComponent<Console> ();
 		etat = EtatEnnemi.WAITING;
 		lastPositionSeen = transform.position;
 		vitesse = Mathf.Exp(Random.Range (Mathf.Log(vitesseMin), Mathf.Log(vitesseMax)));
@@ -71,7 +71,7 @@ public class SondeScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         // Si le temps est freeze, on ne fait rien
-        if(GameManagerScript.Instance.timeFreezed) {
+        if(GameManager.Instance.timeFreezed) {
             return;
         }
 
@@ -154,9 +154,9 @@ public class SondeScript : MonoBehaviour {
 
     // On récupère l'état dans lequel doit être notre sonde
     void getEtat() {
-        DataBaseScript.EtatDataBase etatDataBase = dataBase.demanderOrdre();
+        DataBase.EtatDataBase etatDataBase = dataBase.demanderOrdre();
         switch(etatDataBase) {
-            case DataBaseScript.EtatDataBase.NORMAL:
+            case DataBase.EtatDataBase.NORMAL:
                 // On regarde si le joueur est visible
                 if(Time.timeSinceLevelLoad >= 10f && isPlayerVisible(etatDataBase)) {
                     // Si la sonde vient juste de le repérer, on l'annonce
@@ -172,7 +172,7 @@ public class SondeScript : MonoBehaviour {
                     etat = EtatEnnemi.WAITING;
                 }
                 break;
-            case DataBaseScript.EtatDataBase.DEFENDING:
+            case DataBase.EtatDataBase.DEFENDING:
                 // On regarde si le joueur est visible
                 if(isPlayerVisible(etatDataBase)) {
                     // Si la sonde vient juste de le repérer, on l'annonce
@@ -192,10 +192,10 @@ public class SondeScript : MonoBehaviour {
     }
 
     // Permet de savoir si la sonde voit le joueur
-    public bool isPlayerVisible(DataBaseScript.EtatDataBase etatDataBase) {
+    public bool isPlayerVisible(DataBase.EtatDataBase etatDataBase) {
         // On calcul la distance de détection
         float distance = distanceDeDetection;
-        if(etatDataBase == DataBaseScript.EtatDataBase.DEFENDING) {
+        if(etatDataBase == DataBase.EtatDataBase.DEFENDING) {
             distance *= coefficiantDeRushDistanceDeDetection;
         }
 
@@ -220,7 +220,7 @@ public class SondeScript : MonoBehaviour {
 			// Si c'est le cas, on l'envoie ballader !
 			Vector3 directionPoussee = hit.collider.transform.position - transform.position;
 			directionPoussee.Normalize ();
-			hit.collider.GetComponent<PersonnageScript> ().etrePoussee (directionPoussee * puissancePoussee, tempsPouseePersonnage);
+			hit.collider.GetComponent<Personnage> ().etrePoussee (directionPoussee * puissancePoussee, tempsPouseePersonnage);
 
 			// Et on affiche un message dans la console !
 			if (!gameManager.partieDejaTerminee) {
