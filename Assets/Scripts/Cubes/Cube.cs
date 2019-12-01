@@ -5,10 +5,10 @@ using UnityEngine;
 public class Cube : MonoBehaviour {
 
 	//////////////////////////////////////////////////////////////////////////////////////
-	// ENUM
+	// ENUMS
 	//////////////////////////////////////////////////////////////////////////////////////
 
-	public enum CubeType {Source, Recepteur};
+	public enum CubeType {SOURCE, RECEPTEUR};
 	public enum ThemeCube {JAUNE, VERT, BLEU_GLACE, BLEU_NUIT, VIOLET, ROUGE, MULTICOLOR, BLANC, NOIR, RANDOM};
 
 	//////////////////////////////////////////////////////////////////////////////////////
@@ -17,7 +17,7 @@ public class Cube : MonoBehaviour {
 
 	public static float probaSource;
 	public static float distSourceMax;
-	// ON peut choisir le thème du cube =)
+	// On peut choisir le thème du cube =)
 	// 0.0 = automne, 0.1 = jaune, 0.3 = vert, O.5 = bleu, 0.65 = violet, 0.8 = rose, 0.9 = rouge
 	public static List<ThemeCube> theme;
 
@@ -36,13 +36,13 @@ public class Cube : MonoBehaviour {
 	void Awake () {
 		// De base, tous les cubes sont des récepteurs avec une probabilité 1-p !
 		if (Random.Range (0f, 1f) <= probaSource) {
-			type = CubeType.Source;
+			type = CubeType.SOURCE;
 			// Si le cube est une source, on va changer sa couleur !
 			Color c = getColor();
 			couleur = c;
 			GetComponent<MeshRenderer> ().material.color = c;
 		} else {
-			type = CubeType.Recepteur;
+			type = CubeType.RECEPTEUR;
 			couleur = Color.black;
 			GetComponent<MeshRenderer> ().material.color = Color.black;
 		}
@@ -99,7 +99,7 @@ public class Cube : MonoBehaviour {
 		foreach (Collider collider in colliders) {
 			if (collider.tag == "Cube") {
 				Cube c = collider.gameObject.GetComponent<Cube> () as Cube;				
-				if (c.type == CubeType.Source) {
+				if (c.type == CubeType.SOURCE) {
 					float distance = Vector3.Distance (c.transform.position, this.transform.position);
 					if (distance < distSourceMax) {
 						float affaiblissement = 1f - distance / distSourceMax;
