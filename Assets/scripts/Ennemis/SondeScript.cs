@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnnemiScript : MonoBehaviour {
+public class SondeScript : MonoBehaviour {
 
 	//////////////////////////////////////////////////////////////////////////////////////
 	// ENUMERATION
@@ -17,7 +17,7 @@ public class EnnemiScript : MonoBehaviour {
 	public float vitesseMin; // On veut une vitesse aléatoire comprise
 	public float vitesseMax; // entre min et max !
 	public float puissancePoussee; // La force avec laquelle on va pousser le joueur en cas de contact !
-	public float tempsPousee; // Le temps pendant lequel le personnage est poussé !
+	public float tempsPouseePersonnage; // Le temps pendant lequel le personnage est poussé !
 	public float distanceDeDetection; // La distance à partir de laquelle le probe peut pourchasser l'ennemi
 	public float coefficiantDeRushVitesse; // Le multiplicateur de vitesse lorsque les drones rushs
 	public float coefficiantDeRushDistanceDeDetection; // Le multiplicateur de la portée de détection quand on est en rush
@@ -35,8 +35,6 @@ public class EnnemiScript : MonoBehaviour {
 	[HideInInspector]
 	public DataBaseScript dataBase; // La dataBase qui envoie les ordres
 	[HideInInspector]
-	public MapManagerScript mapManager; // La map
-	[HideInInspector]
 	public ConsoleScript console; // la console
 	[HideInInspector]
 	private EtatEnnemi etat;
@@ -44,6 +42,11 @@ public class EnnemiScript : MonoBehaviour {
 	private float vitesse;
     [HideInInspector]
     public Vector3 positionGrilleDefense; // La position de la grille de défense !
+
+	private Vector3 pousee; // Lorsque le personnage est poussé
+	private float debutPousee; // Le début de la poussée
+	private float tempsPousee; // Le temps pendant lequel le personnage reçoit cette poussée
+
 
 	//////////////////////////////////////////////////////////////////////////////////////
 	// METHODES
@@ -56,7 +59,6 @@ public class EnnemiScript : MonoBehaviour {
 		player = GameObject.Find ("Joueur");
 		controller = this.GetComponent<CharacterController> ();
         dataBase = DataBaseScript.Instance;
-		mapManager = GameObject.Find("MapManager").GetComponent<MapManagerScript>();
 		console = GameObject.Find ("Console").GetComponent<ConsoleScript> ();
 		etat = EtatEnnemi.WAITING;
 		lastPositionSeen = transform.position;
@@ -143,6 +145,11 @@ public class EnnemiScript : MonoBehaviour {
 			lastPositionSeen = player.transform.position;
 			break;
 		}
+
+        // On pousse !
+		if (Time.timeSinceLevelLoad - debutPousee < tempsPousee) {
+            controller.Move(pousee * Time.deltaTime);
+		}
 	}
 
     // On récupère l'état dans lequel doit être notre sonde
@@ -213,12 +220,19 @@ public class EnnemiScript : MonoBehaviour {
 			// Si c'est le cas, on l'envoie ballader !
 			Vector3 directionPoussee = hit.collider.transform.position - transform.position;
 			directionPoussee.Normalize ();
-			hit.collider.GetComponent<PersonnageScript> ().etrePoussee (directionPoussee * puissancePoussee, tempsPousee);
+			hit.collider.GetComponent<PersonnageScript> ().etrePoussee (directionPoussee * puissancePoussee, tempsPouseePersonnage);
 
 			// Et on affiche un message dans la console !
 			if (!gameManager.partieDejaTerminee) {
 				console.joueurTouche();
 			}
 		}
+	}
+
+    // Permet à d'autres éléments de pousser la sonde
+	public void etrePoussee(Vector3 directionPoussee, float tempsDeLaPousee) {
+		pousee = directionPoussee;
+		tempsPousee = tempsDeLaPousee;
+		debutPousee = Time.timeSinceLevelLoad;
 	}
 }

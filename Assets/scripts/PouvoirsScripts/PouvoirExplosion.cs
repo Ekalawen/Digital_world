@@ -12,6 +12,8 @@ public class PouvoirExplosion : IPouvoir {
     public float distanceBlast; // La distance du tir
     public float porteeExplosion; // La distance maximale de l'explosion
     public float tempsIncantationExplosion; // Le temps avant que l'explosion ait lieu !
+    public float puissanceDePoussee; // La puissance avec laquelle les ennemis sont poussés !
+    public float tempsDeLaPoussee; // Le temps pendant lequel les ennemis sont poussés !
 
 
     protected override void usePouvoir() {
@@ -38,12 +40,16 @@ public class PouvoirExplosion : IPouvoir {
         // ON EXPLOSE !!!
         float ratioTemps = (Time.timeSinceLevelLoad - tempsDebut) / tempsIncantationExplosion;
         float rayonExplosion = Mathf.Max(0.5f, porteeExplosion * ratioTemps);
-        Collider[] colliders = Physics.OverlapSphere(centre + (ratioTemps * direction * distanceBlast), rayonExplosion);
+        Vector3 centreExplosion = centre + (ratioTemps * direction * distanceBlast);
+        Collider[] colliders = Physics.OverlapSphere(centreExplosion, rayonExplosion);
         foreach (Collider collider in colliders) {
             if (collider.tag == "Cube") {
                 DestroyImmediate(collider.gameObject);
             } else if(collider.tag == "Ennemi") {
-                Debug.Log("On a touché un ennemi !");
+                // Vector3 directionPoussee = (collider.gameObject.transform.position - centreExplosion).normalized;
+                Vector3 directionPoussee = (collider.gameObject.transform.position - transform.parent.transform.position).normalized;
+                float tempsDeLaPousseeFinal = Mathf.Max(0.2f, tempsDeLaPoussee * ratioTemps);
+                collider.gameObject.GetComponent<SondeScript>().etrePoussee(directionPoussee * puissanceDePoussee, tempsDeLaPousseeFinal);
             }
         }
 
@@ -53,7 +59,7 @@ public class PouvoirExplosion : IPouvoir {
 
     IEnumerator deplacerBoule(GameObject redSphere, Vector3 centre, Vector3 direction, float tempsDebut) {
         // Tant que l'on explose pas ...
-        while(!shouldExplodes(redSphere.transform.position, tempsDebut)) {
+        while(!shouldExplodes(redSphere.transform.position, tempsDebut, redSphere.transform.localScale.x / 2)) {
             // On aggrandit la taille de notre bouboule <3
             float ratioTemps = (Time.timeSinceLevelLoad - tempsDebut) / tempsIncantationExplosion;
             redSphere.transform.localScale = Vector3.one * (porteeExplosion * ratioTemps * 2);
@@ -64,16 +70,24 @@ public class PouvoirExplosion : IPouvoir {
         }
     }
 
-    bool shouldExplodes(Vector3 centre, float tempsDebut) {
+    bool shouldExplodes(Vector3 centre, float tempsDebut, float rayon) {
         // Si c'est la fin du temps imparti il faut exploser
         if(Time.timeSinceLevelLoad - tempsDebut >= tempsIncantationExplosion) {
             return true;
         }
 
-        // Si le centre entre en contact avec un cube ou un ennemi !
+        // Si le centre entre en contact avec un cube
         Collider[] colliders = Physics.OverlapSphere(centre, 0.3f); // O.5f pour symboliser le contact, oui c'est pas ouf
         foreach (Collider collider in colliders) {
             if (collider.tag == "Cube" || collider.tag == "Ennemi") {
+                return true;
+            }
+        }
+        
+        // Ou que la boule elle-même entre en contact avec un ennemi
+        colliders = Physics.OverlapSphere(centre, rayon);
+        foreach (Collider collider in colliders) {
+            if (collider.tag == "Ennemi") {
                 return true;
             }
         }
