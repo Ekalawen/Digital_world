@@ -52,10 +52,10 @@ public class CubeMapScript : MapManagerScript {
 		remplirFace(0, 4, 7, 3, pos); // coté 3
 		remplirFace(0, 1, 5, 4, pos); // sol !
 		remplirFace(1, 2, 6, 5, pos); // coté 4
-		//remplirFace(2, 3, 7, 6); // plafond !
+        remplirFace(2, 3, 7, 6, pos); // plafond !
 
-		// On veut créer des passerelles entre les sources ! <3
-		List<CubeScript> sources = new List<CubeScript>();
+        // On veut créer des passerelles entre les sources ! <3
+        List<CubeScript> sources = new List<CubeScript>();
 		int nbSources = 0;
 		foreach (GameObject go in cubes) {
 			CubeScript c = go.GetComponent<CubeScript> () as CubeScript;				

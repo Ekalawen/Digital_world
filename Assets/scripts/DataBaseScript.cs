@@ -67,9 +67,10 @@ public class DataBaseScript : MonoBehaviour {
     // Tant qu'il reste des lumières, les sondes sont dans l'état WAITING ou TRACKING
     // Quand il ne reste plus de lumières, les sondes passent dans l'état RUSHING ou DEFENDING
     void majEtatDataBase() {
-		// On regarde si il reste des lumières
+        // On regarde si il reste des lumières
         // Si il n'en reste plus, on passe en état de défense !
-		if (mapManager.nbLumieres <= 0) {
+        mapManager = GameObject.Find("MapManager").GetComponent<MapManagerScript>();
+        if (mapManager.nbLumieres <= 0) {
             // Si on vient juste de perdre toutes les lumières ...
 			if (!plusDeLumieres) {
                 setUpDefense();                

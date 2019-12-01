@@ -99,8 +99,9 @@ public class ConsoleScript : MonoBehaviour {
 			importantText.text = "";
 		}
 
-		// On conseille d'appuyer sur TAB si le joueur galère a trouver des orbes
-		if(mapManager.nbLumieres > 0) {
+        // On conseille d'appuyer sur TAB si le joueur galère a trouver des orbes
+        mapManager = GameObject.Find("MapManager").GetComponent<MapManagerScript>();
+        if (mapManager.nbLumieres > 0) {
 			if (Time.timeSinceLevelLoad - lastOrbeAttrapee > 30) {
 				lastOrbeAttrapee = Time.timeSinceLevelLoad;
 				ajouterMessage ("On peut te géolocaliser les Datas si tu appuies sur E !", TypeText.ALLY_TEXT);
