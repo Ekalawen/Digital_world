@@ -1,36 +1,29 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class MapManager : MonoBehaviour {
-	//////////////////////////////////////////////////////////////////////////////////////
-	// ENUMERATION
-	//////////////////////////////////////////////////////////////////////////////////////
 
 	// public enum TypeMap {CUBE_MAP, PLAINE_MAP, LABYRINTHE_MAP, GROUND_MAP, EMPTY_MAP, TUTORIAL_MAP}; // Plus vraiment utile ! :D
-
-	//////////////////////////////////////////////////////////////////////////////////////
-	// ATTRIBUTS PUBLIQUES
-	//////////////////////////////////////////////////////////////////////////////////////
 
 	public GameObject cubePrefab; // On récupère ce qu'est un cube !
 	public GameObject lumierePrefab; // On récupère les lumières !
 	public GameObject ennemiPrefabs; // On récupère un ennemi !
+
 	public int tailleMap; // La taille de la map, en largeur, hauteur et profondeur
-	// Plus vraiment utile : public TypeMap typeMap; // Le type de la map, Cube, Plains ...
-	public List<Cube.ThemeCube> themeCube; // Le thème, cad la couleur de la map !
-	public float frequenceSources; // La frequence qu'un cube soit une source
-	public float distanceSourcesMax; // La distance de coloration d'une source
 
-	//////////////////////////////////////////////////////////////////////////////////////
-	// ATTRIBUTS PRIVÉES
-	//////////////////////////////////////////////////////////////////////////////////////
+    private Cube[,,] cubesRegular; // Toutes les positions entières dans [0, tailleMap]
+    private List<Cube> cubesNonRegular; // Toutes les autres positions (non-entières)
+    [HideInInspector] public List<MapElement> mapElements;
+    [HideInInspector]
+    public List<Lumiere> lumieres;
 
-	protected List<GameObject> cubes;
-	[HideInInspector]
-	public int nbLumieres;
+    // To remove !
 	[HideInInspector]
 	public bool lumieresAttrapees;
+
+    // To move
 	[HideInInspector]
 	public int nbEnnemis;
 
@@ -38,77 +31,209 @@ public class MapManager : MonoBehaviour {
 	// METHODES
 	//////////////////////////////////////////////////////////////////////////////////////
 
-	protected void Start() {
-	}
-
     public virtual void Initialize() {
 		// Initialisation
 		name = "MapManager";
-		cubes = new List<GameObject>();
+        mapElements = new List<MapElement>();
+        cubesRegular = new Cube[tailleMap + 1, tailleMap + 1, tailleMap + 1];
+        for (int i = 0; i <= tailleMap; i++)
+            for (int j = 0; j <= tailleMap; j++)
+                for (int k = 0; k <= tailleMap; k++)
+                    cubesRegular[i, j, k] = null;
+        cubesNonRegular = new List<Cube>();
+
 		lumieresAttrapees = false;
-
-		// On définit nos cubes
-		Cube.probaSource = frequenceSources;
-		Cube.distSourceMax = distanceSourcesMax;
-
-		// On charge le thème de la map
-		Cube.theme = new List<Cube.ThemeCube>();
-		foreach(Cube.ThemeCube theme in themeCube) {
-			if(theme == Cube.ThemeCube.RANDOM) {
-				System.Array values = System.Enum.GetValues(typeof(Cube.ThemeCube));
-				int indiceTheme = Random.Range(0, values.Length - 1);
-				Cube.theme.Add((Cube.ThemeCube) values.GetValue(indiceTheme));
-			} else {
-				Cube.theme.Add(theme);
-			}
-		}
 
 		// Ce sont les classes qui hériteront de cette classe qui créeront leur propre map !
     }
 
-	// Remplit un mur qui part d'un point de départ dans 2 directions avec une certaine taille selon les 2 directions
-	// C'est clair ? Non ? Bah lit le code <3
-	protected void remplirFace(Vector3 depart, Vector3 direction1, int taille1, Vector3 direction2, int taille2) {
-		// On remplit tout
-		for(int i = 0; i < taille1; i++) {
-			for(int j = 0; j < taille2; j++) {
-				if(!(i == 0 && j ==0)) {
-					Vector3 pos = depart + direction1 * i + direction2 * j;
-					cubes.Add(Instantiate(cubePrefab, pos, Quaternion.identity) as GameObject);
-				}
-			}
-		}
-		// Plus la première case
-		cubes.Add(Instantiate(cubePrefab, depart, Quaternion.identity) as GameObject);
-	}
+    private void AddCube(Cube cube) {
+        Vector3 pos = cube.transform.position;
+        if (IsInRegularMap(pos) && MathTools.IsRounded(pos)) {
+            if (GetCubeAt(pos) == null) {
+                cubesRegular[(int)pos.x, (int)pos.y, (int)pos.z] = cube;
+            }
+        } else {
+            cubesNonRegular.Add(cube);
+            cube.bIsRegular = false;
+        }
+    }
 
-	// Génère un pont qui part d'un point de départ dans une direction et sur une certaine distance !
-	public void remplirBridge(Vector3 depart, Vector3 direction, int distance) {
-		for(int i = 0; i < distance; i++) {
-			Vector3 pos = depart + direction * i;
-			cubes.Add(Instantiate(cubePrefab, pos, Quaternion.identity) as GameObject);
-		}
-	}
+    public Cube AddCube(Vector3 pos) {
+        if (GetCubeAt(pos) != null) // Si il y a déjà un cube à cette position, on ne fait rien !
+            return null;
+        Cube cube = Instantiate(cubePrefab, pos, Quaternion.identity).GetComponent<Cube>();
+        AddCube(cube);
+        return cube;
+    }
 
-	// Génère un cube plein qui part d'un point de départ et qui va dans 3 directions avec 3 distances !
-	protected void remplirCubePlein(Vector3 depart, Vector3 dir1, int dist1, Vector3 dir2, int dist2, Vector3 dir3, int dist3) {
-		// On remplit tout
-		for(int i = 0; i < dist1; i++) {
-			for(int j = 0; j < dist2; j++) {
-				for(int k = 0; k < dist3; k++) {
-					if(!(i == 0 && j == 0 && k == 0)) {
-						Vector3 pos = depart + dir1 * i + dir2 * j + dir3 * k;
-						cubes.Add(Instantiate(cubePrefab, pos, Quaternion.identity) as GameObject);
-					}
-				}
-			}
-		}
-		// Plus la première case
-		cubes.Add(Instantiate(cubePrefab, depart, Quaternion.identity) as GameObject);
-	}
+    private void DestroyImmediateCube(Cube cube) {
+        foreach(MapElement mapElement in mapElements) {
+            mapElement.OnDeleteCube(cube);
+        }
+        DestroyImmediate(cube.gameObject);
+    }
+
+    public void DeleteCubesAt(Vector3 pos) {
+        if(IsInRegularMap(pos) && MathTools.IsRounded(pos)) {
+            DestroyImmediateCube(cubesRegular[(int)pos.x, (int)pos.y, (int)pos.z]);
+            cubesRegular[(int)pos.x, (int)pos.y, (int)pos.z] = null;
+        } else {
+            Cube cubeToDestroy = null;
+            foreach(Cube cube in cubesNonRegular) {
+                if(cube.transform.position == pos) {
+                    cubeToDestroy = cube;
+                    break;
+                }
+            }
+            cubesNonRegular.Remove(cubeToDestroy);
+            DestroyImmediateCube(cubeToDestroy);
+        }
+    }
+
+    public void DeleteCube(Cube cube) {
+        if(cube != null)
+            DeleteCubesAt(cube.transform.position);
+    }
+
+    public void DeleteCubesInSphere(Vector3 center, float radius) {
+        int xMin = (int)Mathf.Floor(center.x - radius);
+        int xMax = (int)Mathf.Ceil(center.x + radius);
+        int yMin = (int)Mathf.Floor(center.y - radius);
+        int yMax = (int)Mathf.Ceil(center.y + radius);
+        int zMin = (int)Mathf.Floor(center.z - radius);
+        int zMax = (int)Mathf.Ceil(center.z + radius);
+        for(int i = xMin; i <= xMax; i++) {
+            for(int j = yMin; j <= yMax; j++) {
+                for(int k = zMin; k <= zMax; k++) {
+                    if(Vector3.Distance(new Vector3( i, j, k ), center) <= radius) {
+                        if (cubesRegular[i, j, k] != null) {
+                            DestroyImmediateCube(cubesRegular[i, j, k]);
+                            cubesRegular[i, j, k] = null;
+                        }
+                    }
+                }
+            }
+        }
+        List<Cube> cubesToDestroy = new List<Cube>();
+        foreach (Cube cube in cubesNonRegular) {
+            if (Vector3.Distance(cube.transform.position, center) <= radius) {
+                cubesToDestroy.Add(cube);
+                break;
+            }
+        }
+        foreach(Cube cubeToDestroy in cubesToDestroy) {
+            cubesNonRegular.Remove(cubeToDestroy);
+            DestroyImmediateCube(cubeToDestroy);
+        }
+    }
+
+    public void DeleteCubesInBox(Vector3 center, Vector3 halfExtents) {
+        int xMin = (int)Mathf.Ceil(center.x - halfExtents.x);
+        int xMax = (int)Mathf.Floor(center.x + halfExtents.x);
+        int yMin = (int)Mathf.Ceil(center.y - halfExtents.y);
+        int yMax = (int)Mathf.Floor(center.y + halfExtents.y);
+        int zMin = (int)Mathf.Ceil(center.z - halfExtents.z);
+        int zMax = (int)Mathf.Floor(center.z + halfExtents.z);
+        for (int i = xMin; i <= xMax; i++) {
+            for (int j = yMin; j <= yMax; j++) {
+                for (int k = zMin; k <= zMax; k++) {
+                    if (cubesRegular[i, j, k] != null) {
+                        DestroyImmediateCube(cubesRegular[i, j, k]);
+                        cubesRegular[i, j, k] = null;
+                    }
+                }
+            }
+        }
+        List<Cube> cubesToDestroy = new List<Cube>();
+        foreach (Cube cube in cubesNonRegular) {
+            Vector3 pos = cube.transform.position;
+            if (Mathf.Abs(center.x - pos.x) <= halfExtents.x
+             && Mathf.Abs(center.y - pos.y) <= halfExtents.y
+             && Mathf.Abs(center.z - pos.z) <= halfExtents.z) {
+                cubesToDestroy.Add(cube);
+                break;
+            }
+        }
+        foreach (Cube cubeToDestroy in cubesToDestroy)
+        {
+            cubesNonRegular.Remove(cubeToDestroy);
+            DestroyImmediateCube(cubeToDestroy);
+        }
+    }
+
+    public Cube GetCubeAt(Vector3 pos) {
+        if (IsInRegularMap(pos) && MathTools.IsRounded(pos)) {
+            return cubesRegular[(int)pos.x, (int)pos.y, (int)pos.z];
+        } else {
+            foreach (Cube cube in cubesNonRegular) {
+                if (cube.transform.position == pos) {
+                    return cube;
+                }
+            }
+        }
+        return null;
+    }
+
+    public List<Cube> GetCubesInSphere(Vector3 center, float radius) {
+        List<Cube> cubes = new List<Cube>();
+        int xMin = (int)Mathf.Floor(center.x - radius);
+        int xMax = (int)Mathf.Ceil(center.x + radius);
+        int yMin = (int)Mathf.Floor(center.y - radius);
+        int yMax = (int)Mathf.Ceil(center.y + radius);
+        int zMin = (int)Mathf.Floor(center.z - radius);
+        int zMax = (int)Mathf.Ceil(center.z + radius);
+        for (int i = xMin; i <= xMax; i++) {
+            for (int j = yMin; j <= yMax; j++) {
+                for (int k = zMin; k <= zMax; k++) {
+                    Vector3 pos = new Vector3(i, j, k);
+                    if (IsInRegularMap(pos) && Vector3.Distance(pos, center) <= radius) {
+                        if (cubesRegular[i, j, k] != null) {
+                            cubes.Add(cubesRegular[i, j, k]);
+                        }
+                    }
+                }
+            }
+        }
+        foreach (Cube cube in cubesNonRegular) {
+            if (Vector3.Distance(cube.transform.position, center) <= radius) {
+                cubes.Add(cube);
+            }
+        }
+        return cubes;
+    }
+
+    public List<Cube> GetCubesInBox(Vector3 center, Vector3 halfExtents) {
+        List<Cube> cubes = new List<Cube>();
+        int xMin = (int)Mathf.Ceil(center.x - halfExtents.x);
+        int xMax = (int)Mathf.Floor(center.x + halfExtents.x);
+        int yMin = (int)Mathf.Ceil(center.y - halfExtents.y);
+        int yMax = (int)Mathf.Floor(center.y + halfExtents.y);
+        int zMin = (int)Mathf.Ceil(center.z - halfExtents.z);
+        int zMax = (int)Mathf.Floor(center.z + halfExtents.z);
+        for (int i = xMin; i <= xMax; i++) {
+            for (int j = yMin; j <= yMax; j++) {
+                for (int k = zMin; k <= zMax; k++) {
+                    if (cubesRegular[i, j, k] != null) {
+                        cubes.Add(cubesRegular[i, j, k]);
+                    }
+                }
+            }
+        }
+        foreach (Cube cube in cubesNonRegular) {
+            Vector3 pos = cube.transform.position;
+            if (Mathf.Abs(center.x - pos.x) <= halfExtents.x
+             && Mathf.Abs(center.y - pos.y) <= halfExtents.y
+             && Mathf.Abs(center.z - pos.z) <= halfExtents.z)
+            {
+                cubes.Add(cube);
+            }
+        }
+        return cubes;
+    }
 
 	// Crée un mur constitué de cubes entre les 4 coins que constitue les indices
-	protected void remplirFace(int indVertx1, int indVertx2, int indVertx3, int indVertx4, Vector3[] pos) {
+	protected void RemplirFace(int indVertx1, int indVertx2, int indVertx3, int indVertx4, Vector3[] pos) {
 		Vector3 depart = pos [indVertx1];
 		//Vector3 arrivee = pos [indVertx4];
 		Vector3 pas1 = (pos [indVertx2] - depart) / tailleMap;
@@ -124,10 +249,16 @@ public class MapManager : MonoBehaviour {
 				float decalageMax = 0.1f;
 				Vector3 directionDecalage = Vector3.Cross (pas1, pas2);
 				directionDecalage.Normalize ();
-				//instance.transform.Translate (directionDecalage * Random.Range (-decalageMax, decalageMax));
+                //instance.transform.Translate (directionDecalage * Random.Range (-decalageMax, decalageMax));
 
-				cubes.Add (instance);
+                AddCube(instance.GetComponent<Cube>());
 			}
 		}
 	}
+
+    public bool IsInRegularMap(Vector3 pos) {
+        return 0 <= pos.x && pos.x <= tailleMap
+        && 0 <= pos.y && pos.y <= tailleMap
+        && 0 <= pos.z && pos.z <= tailleMap;
+    }
 }

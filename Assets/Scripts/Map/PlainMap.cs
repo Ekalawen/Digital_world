@@ -21,16 +21,11 @@ public class PlainMap : MapManager {
 	// METHODES
 	//////////////////////////////////////////////////////////////////////////////////////
 
-	public void Start() {
-		base.Start();
-	}
-
     public override void Initialize() {
         base.Initialize();
 		
 		generatePlainsMap(tailleX, tailleY, pas, hauteurMax);
     }
-
 
     // Génère une map avec une plaine interpolé
     void generatePlainsMap(int tailleX, int tailleY, int pas, float hauteurMax) {
@@ -51,7 +46,7 @@ public class PlainMap : MapManager {
 
 		// On instancie tous les cubes
 		foreach(Vector3 pos in positions) {
-			cubes.Add(Instantiate(cubePrefab, pos, Quaternion.identity) as GameObject);
+			AddCube(pos);
 		}
 
 		// Puis on crée tous les arbres
@@ -123,7 +118,7 @@ public class PlainMap : MapManager {
 	void generateTronc(Vector3 racine, Vector3 cime) {
 		Vector3 dir = Vector3.Normalize(cime - racine);
 		int dist = (int)Vector3.Magnitude(cime - racine) + 1;
-		remplirBridge(racine, dir, dist);
+        Pont pont = new Pont(racine, dir, dist);
 	}
 
 	// Génère un pallier, tout simplement ! =)
@@ -139,8 +134,8 @@ public class PlainMap : MapManager {
 		// On trouve le centre du pallier
 		Vector3 coinPallier = cime - direction1 * distance1 / 2 - direction2 * distance2 / 2;
 
-		// Puis on peut créer notre face ! <3
-		remplirFace(coinPallier, direction1, distance1 + 1, direction2, distance2 + 1);
+        // Puis on peut créer notre face ! <3
+        Mur mur = new Mur(coinPallier, direction1, distance1 + 1, direction2, distance2 + 1);
 	}
 
 	// Génère un pallier, tout simplement ! =)
@@ -187,7 +182,7 @@ public class PlainMap : MapManager {
 
 		// On instancie tous les cubes
 		foreach(Vector3 pos in positions) {
-			cubes.Add(Instantiate(cubePrefab, pos, Quaternion.identity) as GameObject);
+            AddCube(pos);
 		}
 	}
 

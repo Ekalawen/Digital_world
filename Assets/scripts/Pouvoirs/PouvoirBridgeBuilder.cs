@@ -68,15 +68,10 @@ public class PouvoirBridgeBuilder : IPouvoir {
 
         // Détruire les autres cubes qui sont autour de lui et qui ne sont pas des cubes de ponts !
         if (isDestructive) {
-            Collider[] colliders = Physics.OverlapSphere(position, rayonDestruction);
-            foreach (Collider collider in colliders)
-            {
-                if (collider.tag == "Cube")
-                {
-                    if (!collider.gameObject.GetComponent<Cube>().isBridgeCube)
-                    {
-                        DestroyImmediate(collider.gameObject);
-                    }
+            List<Cube> cubes = gm.map.GetCubesInSphere(position, rayonDestruction);
+            foreach(Cube cube in cubes) {
+                if (!cube.bIsRegular) {
+                    DestroyImmediate(cube.gameObject);
                 }
             }
         }

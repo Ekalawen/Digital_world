@@ -10,9 +10,11 @@ using UnityEngine;
 public abstract class IPouvoir : MonoBehaviour {
 
     protected bool pouvoirAvailable;
+    protected GameManager gm;
 
     public void Start() {
         pouvoirAvailable = true;
+        gm = FindObjectOfType<GameManager>();
     }
 
     // La fonction appelée lorsque le joueur appui sur une touche

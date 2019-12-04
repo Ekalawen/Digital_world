@@ -79,7 +79,7 @@ public class Console : MonoBehaviour {
 	public void PremiersMessages() {
 		AjouterMessage ("Chargement de la Matrix ...", TypeText.BASIC_TEXT);
 		AjouterMessage ("Détection des Bases de Données ...", TypeText.BASIC_TEXT);
-		AjouterMessageImportant (mapManager.nbLumieres + " Datas trouvées ! À vous de jouer !", TypeText.ALLY_TEXT, 5);
+		AjouterMessageImportant (mapManager.lumieres.Count + " Datas trouvées ! À vous de jouer !", TypeText.ALLY_TEXT, 5);
 		AjouterMessage ("DÉTECTION INTRUSION ...", TypeText.ENNEMI_TEXT);
 		AjouterMessage ("ANTI-VIRUS ACTIVÉS DANS 5 SECONDES !", TypeText.ENNEMI_TEXT);
 		AjouterMessage ("On détecte " + mapManager.nbEnnemis + " Sondes !", TypeText.ALLY_TEXT);
@@ -104,7 +104,7 @@ public class Console : MonoBehaviour {
 
         // On conseille d'appuyer sur TAB si le joueur galère a trouver des orbes
         mapManager = GameObject.Find("MapManager").GetComponent<MapManager>();
-        if (mapManager.nbLumieres > 0) {
+        if (mapManager.lumieres.Count > 0) {
 			if (Time.timeSinceLevelLoad - timeLastLumiereAttrapee > 30) {
 				timeLastLumiereAttrapee = Time.timeSinceLevelLoad;
 				AjouterMessage ("On peut te géolocaliser les Datas si tu appuies sur E !", TypeText.ALLY_TEXT);
@@ -313,7 +313,7 @@ public class Console : MonoBehaviour {
 
 	// Quand le joueur lance les trails
 	public void EnvoyerTrails() {
-		int nbLumieresRestantes = mapManager.nbLumieres;
+		int nbLumieresRestantes = mapManager.lumieres.Count;
 		if(nbLumieresRestantes > 0) {
 			AjouterMessage ("On t'envoie les données ! Il te restes " + nbLumieresRestantes + " Objectifs !", Console.TypeText.ALLY_TEXT);
 		} else {

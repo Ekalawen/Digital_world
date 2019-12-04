@@ -74,7 +74,7 @@ public class DataBase : MonoBehaviour {
         // On regarde si il reste des lumières
         // Si il n'en reste plus, on passe en état de défense !
         mapManager = GameObject.Find("MapManager").GetComponent<MapManager>();
-        if (mapManager.nbLumieres <= 0) {
+        if (mapManager.lumieres.Count <= 0) {
             // Si on vient juste de perdre toutes les lumières ...
 			if (!plusDeLumieres) {
                 setUpDefense();                

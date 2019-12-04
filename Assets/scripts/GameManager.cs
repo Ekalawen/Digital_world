@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour {
 	public GameObject pointeurPrefabs; // Pour avoir un visuel du centre de l'écran
 	public GameObject dataBasePrefabs; // Pour créer l'IA chargé de supervisé les ennemis !
 	public GameObject mapManagerPrefabs; // Pour gérer la map !
+	public GameObject ColorManagerPrefabs; // Pour gérer les couleurs !
 
     //////////////////////////////////////////////////////////////////////////////////////
     // ATTRIBUTS PRIVÉES
@@ -36,6 +37,8 @@ public class GameManager : MonoBehaviour {
 	public Console console;
 	[HideInInspector]
 	public DataBase dataBase;
+	[HideInInspector]
+	public ColorManager colorManager;
     [HideInInspector]
     public bool partieDejaTerminee = false;
     [HideInInspector]
@@ -53,8 +56,9 @@ public class GameManager : MonoBehaviour {
 		// On crée ce dont on a besoin
 		map = Instantiate(mapManagerPrefabs).GetComponent<MapManager>();
         player = Instantiate(playerPrefabs).GetComponent<Player>();
-		dataBase = Instantiate (dataBasePrefabs).GetComponent<DataBase>();
-		console = Instantiate (consolePrefabs).GetComponent<Console>();
+		dataBase = Instantiate(dataBasePrefabs).GetComponent<DataBase>();
+		console = Instantiate(consolePrefabs).GetComponent<Console>();
+		colorManager = Instantiate(ColorManagerPrefabs).GetComponent<ColorManager>();
 
         Initialize();
 	}
@@ -65,6 +69,7 @@ public class GameManager : MonoBehaviour {
         player.Initialize(new Vector3(map.tailleMap / 2, map.tailleMap * 2, map.tailleMap / 2), new Vector2(180, 0));
         dataBase.Initialize();
         console.Initialize();
+        colorManager.Initialize();
     }
 
 	// Update is called once per frame
@@ -87,7 +92,7 @@ public class GameManager : MonoBehaviour {
 		}
 
 		// Si on a attrapé toutes les lumières
-		if (!map.lumieresAttrapees && map.nbLumieres <= 0) {
+		if (!map.lumieresAttrapees && map.lumieres.Count <= 0) {
 			map.lumieresAttrapees = true;
 			// On affiche un message dans la consolePrefabs !
 			console.ToutesLesLumieresAttrapees();
