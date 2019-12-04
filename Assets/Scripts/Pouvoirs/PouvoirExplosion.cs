@@ -44,7 +44,8 @@ public class PouvoirExplosion : IPouvoir {
         Collider[] colliders = Physics.OverlapSphere(centreExplosion, rayonExplosion);
         foreach (Collider collider in colliders) {
             if (collider.tag == "Cube") {
-                DestroyImmediate(collider.gameObject);
+                gm.map.DeleteCube(collider.gameObject.GetComponent<Cube>());
+                //DestroyImmediate(collider.gameObject);
             } else if(collider.tag == "Ennemi") {
                 // Vector3 directionPoussee = (collider.gameObject.transform.position - centreExplosion).normalized;
                 Vector3 directionPoussee = (collider.gameObject.transform.position - transform.parent.transform.position).normalized;

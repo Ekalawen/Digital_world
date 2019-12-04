@@ -12,9 +12,7 @@ public class CubeMap : MapManager {
 
 	[HideInInspector] public int volumeMap;
 
-    public override void Initialize() {
-        base.Initialize();
-		
+    protected override void GenerateMap() {
 		volumeMap = (int) Mathf.Pow (tailleMap, 3);
 		GenerateCubeMap();
     }

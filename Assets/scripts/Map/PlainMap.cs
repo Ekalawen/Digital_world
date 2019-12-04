@@ -21,9 +21,7 @@ public class PlainMap : MapManager {
 	// METHODES
 	//////////////////////////////////////////////////////////////////////////////////////
 
-    public override void Initialize() {
-        base.Initialize();
-		
+    protected override void GenerateMap() {
 		generatePlainsMap(tailleX, tailleY, pas, hauteurMax);
     }
 
@@ -188,10 +186,10 @@ public class PlainMap : MapManager {
 
 	// Crée un trou pour que le joueur puisse monter et descendre de l'arbre !
 	void ouvrirCime(Vector3 cime) {
-		Collider[] cubesProches = Physics.OverlapSphere(cime, 1f);
-		foreach(Collider c in cubesProches) {
-			DestroyImmediate(c.gameObject);
-		}
+        List<Cube> cubes = GetCubesInSphere(cime, 1f);
+        foreach(Cube cube in cubes) {
+            DeleteCube(cube);
+        }
 	}	
 
 }

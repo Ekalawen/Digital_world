@@ -13,6 +13,7 @@ public class ColorManager : MonoBehaviour {
     // Il faudra changer ça, les sources ne sont pas forcément des cubes !?
 	public float frequenceSources; // La frequence qu'un emplacement soit une source
 	public Vector2 porteeSourceRange; // La range de distance de coloration d'une source
+    public float cubeLuminosityMax; // Le maximum de luminosité d'un cube (pour éviter d'éblouir le joueur)
 
     protected MapManager map;
 
@@ -20,7 +21,18 @@ public class ColorManager : MonoBehaviour {
 
     public void Initialize() {
         map = FindObjectOfType<MapManager>();
+
+        // Si c'est random, alors on relance ! :)
+        for (int i = 0; i < themes.Count; i++) {
+            if (themes[i] == ColorSource.ThemeSource.RANDOM)
+            {
+                System.Array enumValues = System.Enum.GetValues(typeof(ColorSource.ThemeSource));
+                themes[i] = (ColorSource.ThemeSource)enumValues.GetValue(Random.Range(0, (int)ColorSource.ThemeSource.RANDOM));
+            }
+        }
+
         GenerateColorSources();
+        CheckCubeSaturation();
     }
 
     protected void GenerateColorSources() {
@@ -46,12 +58,6 @@ public class ColorManager : MonoBehaviour {
 
         // On choisit notre thème parmis nos thème
         ColorSource.ThemeSource themeChoisi = themes[Random.Range(0, themes.Count)];
-
-        // Si c'est random, alors on relance ! :)
-        if(themeChoisi == ColorSource.ThemeSource.RANDOM) {
-            System.Array enumValues = System.Enum.GetValues(typeof(ColorSource.ThemeSource));
-            themeChoisi = (ColorSource.ThemeSource)enumValues.GetValue(Random.Range(0, (int)ColorSource.ThemeSource.RANDOM));
-        }
 
 		// Puis on l'applique !
 		switch (themeChoisi) {
@@ -80,4 +86,28 @@ public class ColorManager : MonoBehaviour {
 		}
 		return c;
 	}
+
+    protected void CheckCubeSaturation() {
+        List<Cube> cubes = map.GetAllCubes();
+
+        foreach(Cube cube in cubes) {
+            while(cube.GetLuminosity() > cubeLuminosityMax) {
+                RemoveClosestSource(cube.transform.position);
+            }
+        }
+    }
+
+    protected void RemoveClosestSource(Vector3 pos) {
+        float distMin = Vector3.Distance(pos, sources[0].transform.position);
+        ColorSource closest = sources[0];
+        foreach(ColorSource source in sources) {
+            float dist = Vector3.Distance(pos, source.transform.position);
+            if(dist < distMin) {
+                distMin = dist;
+                closest = source;
+            }
+        }
+        sources.Remove(closest);
+        closest.Delete();
+    }
 }

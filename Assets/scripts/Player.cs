@@ -17,7 +17,7 @@ public class Player : MonoBehaviour {
     /////////////////////////////////////////////////////////////////////////////////////
 
     public static Player _instance;
-    public IPouvoir pouvoir; // Le pouvoir du personnage =)
+    public GameObject pouvoirPrefab; // Le pouvoir du personnage =)
 	public float vitesseDeplacement; // la vitesse de déplacement horizontale
 	public float vitesseSaut; // la vitesse d'élévation du saut
 	public float dureeSaut; // la durée totale d'un saut
@@ -36,6 +36,8 @@ public class Player : MonoBehaviour {
 	public GameObject personnage;
 	[HideInInspector]
 	public CharacterController controller;
+	[HideInInspector]
+	public IPouvoir pouvoir;
 	[HideInInspector]
 	public Console console;
 	[HideInInspector]
@@ -94,6 +96,9 @@ public class Player : MonoBehaviour {
 		Cursor.visible = false;
 
         console = GameObject.FindObjectOfType<Console>();
+
+        if(pouvoirPrefab != null)
+            pouvoir = Instantiate(pouvoirPrefab, parent: this.transform).GetComponent<IPouvoir>();
     }
 
     void ChoseStartingPosition() {
@@ -127,7 +132,8 @@ public class Player : MonoBehaviour {
 
         // Lorsque le joueur clique avec sa souris
         if(Input.GetMouseButtonDown(0)) {
-            pouvoir.tryUsePouvoir();
+            if(pouvoir != null)
+                pouvoir.tryUsePouvoir();
         }
 	}
 

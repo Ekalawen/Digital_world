@@ -59,6 +59,7 @@ public class GameManager : MonoBehaviour {
 		dataBase = Instantiate(dataBasePrefabs).GetComponent<DataBase>();
 		console = Instantiate(consolePrefabs).GetComponent<Console>();
 		colorManager = Instantiate(ColorManagerPrefabs).GetComponent<ColorManager>();
+        pointeur = Instantiate(pointeurPrefabs);
 
         Initialize();
 	}

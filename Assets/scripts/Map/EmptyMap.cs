@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class EmptyMap : MapManager {
-
-	// Nothing to do XD
-
+    protected override void GenerateMap() {
+    }
 }

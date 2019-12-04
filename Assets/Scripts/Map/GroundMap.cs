@@ -5,9 +5,7 @@ using UnityEngine;
 // Permet de générer une map avec un sol plat, pratique pour tester des trucs !
 public class GroundMap : MapManager {
 
-    public override void Initialize() {
-        base.Initialize();
-
+    protected override void GenerateMap() {
         generateGroundMap();
     }
 

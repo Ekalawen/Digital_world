@@ -15,7 +15,6 @@ public class PouvoirBridgeBuilder : IPouvoir {
     public bool isDestructive; // Permet de savoir si ce pouvoir détruit les autres cubes ou pas !
     public float rayonDestruction; // Le rayon de destruction autour duquel on détruit les cubes pour pouvoir passe =)
 
-
     protected override void usePouvoir() {
         Vector3 pointSource; // Le départ du pont
         Vector3 pointCible; // La fin du pont
@@ -31,23 +30,23 @@ public class PouvoirBridgeBuilder : IPouvoir {
                 pointCible = hit.collider.transform.position;
 
                 // Puis on lance sa création, si tout s'est bien passé !
-                StartCoroutine(buildBridge(pointSource, pointCible));
+                StartCoroutine(BuildBridge(pointSource, pointCible));
 
             } else {
-                cibleInvalide();
+                CibleInvalide();
             }
         } else {
-            cibleInvalide();
+            CibleInvalide();
         }
 
     }
 
-    void cibleInvalide() {
+    void CibleInvalide() {
         // On informe que ce n'est pas une cible valide !
         Console.Instance.PouvoirBridgeBuilderInvalide();
     }
 
-    IEnumerator buildBridge(Vector3 pointSource, Vector3 pointCible) {
+    IEnumerator BuildBridge(Vector3 pointSource, Vector3 pointCible) {
         // On calcule la direction
         Vector3 bridgeDirection = (pointCible - pointSource).normalized;
 
@@ -56,22 +55,24 @@ public class PouvoirBridgeBuilder : IPouvoir {
 
         // Pour chaque cube, on le crée avec un interval !
         for(int i = 0; i < nbCubes; i++) {
-            buildCube(pointSource + i * bridgeDirection, Quaternion.LookRotation(bridgeDirection, Vector3.up));
+            BuildCube(pointSource + i * bridgeDirection, Quaternion.LookRotation(bridgeDirection, Vector3.up));
             yield return new WaitForSeconds(vitessePropagationCubes);
         }
     }
 
     // On construit un cube !
-    void buildCube(Vector3 position, Quaternion orientation) {
+    void BuildCube(Vector3 position, Quaternion orientation) {
         // Créer le cube
-        Instantiate(cubePrefab, position, orientation);
+        Cube cube = Instantiate(cubePrefab, position, orientation).GetComponent<Cube>();
+        gm.map.AddCube(position, orientation);
+        cube.RegisterCubeToSources();
 
         // Détruire les autres cubes qui sont autour de lui et qui ne sont pas des cubes de ponts !
         if (isDestructive) {
             List<Cube> cubes = gm.map.GetCubesInSphere(position, rayonDestruction);
-            foreach(Cube cube in cubes) {
-                if (!cube.bIsRegular) {
-                    DestroyImmediate(cube.gameObject);
+            foreach(Cube c in cubes) {
+                if (c.bIsRegular) {
+                    gm.map.DeleteCube(c);
                 }
             }
         }

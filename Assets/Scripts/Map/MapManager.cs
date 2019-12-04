@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MapManager : MonoBehaviour {
+public abstract class MapManager : MonoBehaviour {
 
 	// public enum TypeMap {CUBE_MAP, PLAINE_MAP, LABYRINTHE_MAP, GROUND_MAP, EMPTY_MAP, TUTORIAL_MAP}; // Plus vraiment utile ! :D
 
@@ -18,6 +18,8 @@ public class MapManager : MonoBehaviour {
     [HideInInspector] public List<MapElement> mapElements;
     [HideInInspector]
     public List<Lumiere> lumieres;
+    [HideInInspector]
+    public GameManager gm;
 
     // To remove !
 	[HideInInspector]
@@ -31,9 +33,10 @@ public class MapManager : MonoBehaviour {
 	// METHODES
 	//////////////////////////////////////////////////////////////////////////////////////
 
-    public virtual void Initialize() {
+    public void Initialize() {
 		// Initialisation
 		name = "MapManager";
+        gm = FindObjectOfType<GameManager>();
         mapElements = new List<MapElement>();
         cubesRegular = new Cube[tailleMap + 1, tailleMap + 1, tailleMap + 1];
         for (int i = 0; i <= tailleMap; i++)
@@ -44,12 +47,19 @@ public class MapManager : MonoBehaviour {
 
 		lumieresAttrapees = false;
 
-		// Ce sont les classes qui hériteront de cette classe qui créeront leur propre map !
+        // Ici les classes qui hériteront de cette classe pourront faire leur génération !
+        GenerateMap();
+
+        // Puis on régule la map pour s'assurer que tout va bien :)
     }
+
+    protected abstract void GenerateMap();
 
     private void AddCube(Cube cube) {
         Vector3 pos = cube.transform.position;
-        if (IsInRegularMap(pos) && MathTools.IsRounded(pos)) {
+        if (cube.transform.rotation == Quaternion.identity
+         && IsInRegularMap(pos)
+         && MathTools.IsRounded(pos)) {
             if (GetCubeAt(pos) == null) {
                 cubesRegular[(int)pos.x, (int)pos.y, (int)pos.z] = cube;
             }
@@ -59,10 +69,10 @@ public class MapManager : MonoBehaviour {
         }
     }
 
-    public Cube AddCube(Vector3 pos) {
+    public Cube AddCube(Vector3 pos, Quaternion quaternion = new Quaternion()) {
         if (GetCubeAt(pos) != null) // Si il y a déjà un cube à cette position, on ne fait rien !
             return null;
-        Cube cube = Instantiate(cubePrefab, pos, Quaternion.identity).GetComponent<Cube>();
+        Cube cube = Instantiate(cubePrefab, pos, quaternion).GetComponent<Cube>();
         AddCube(cube);
         return cube;
     }
@@ -260,5 +270,15 @@ public class MapManager : MonoBehaviour {
         return 0 <= pos.x && pos.x <= tailleMap
         && 0 <= pos.y && pos.y <= tailleMap
         && 0 <= pos.z && pos.z <= tailleMap;
+    }
+
+    public List<Cube> GetAllCubes() {
+        List<Cube> allCubes = cubesNonRegular;
+        for (int i = 0; i <= tailleMap; i++)
+            for (int j = 0; j <= tailleMap; j++)
+                for (int k = 0; k <= tailleMap; k++)
+                    if (cubesRegular[i, j, k] != null)
+                        allCubes.Add(cubesRegular[i, j, k]);
+        return allCubes;
     }
 }

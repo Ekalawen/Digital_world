@@ -17,9 +17,7 @@ public class TutorialMap : MapManager {
 	// METHODES
 	//////////////////////////////////////////////////////////////////////////////////////
 
-    public override void Initialize() {
-        base.Initialize();
-		
+    protected override void GenerateMap() {
 		generateTutorialMap();
     }
 
