@@ -51,6 +51,7 @@ public abstract class MapManager : MonoBehaviour {
         GenerateMap();
 
         // Puis on régule la map pour s'assurer que tout va bien :)
+        PrintCubesNumbers();
     }
 
     protected abstract void GenerateMap();
@@ -273,12 +274,37 @@ public abstract class MapManager : MonoBehaviour {
     }
 
     public List<Cube> GetAllCubes() {
-        List<Cube> allCubes = cubesNonRegular;
+        List<Cube> allCubes = new List<Cube>();
         for (int i = 0; i <= tailleMap; i++)
             for (int j = 0; j <= tailleMap; j++)
                 for (int k = 0; k <= tailleMap; k++)
                     if (cubesRegular[i, j, k] != null)
                         allCubes.Add(cubesRegular[i, j, k]);
+        foreach (Cube cube in cubesNonRegular)
+            allCubes.Add(cube);
         return allCubes;
+    }
+
+    public void PrintCubesNumbers() {
+        int nbCubesRegular = 0;
+        for (int i = 0; i <= tailleMap; i++) {
+            for (int j = 0; j <= tailleMap; j++) {
+                for (int k = 0; k <= tailleMap; k++) {
+                    if (cubesRegular[i, j, k] != null) {
+                        nbCubesRegular++;
+                        if(cubesNonRegular.Contains(cubesRegular[i, j, k])) {
+                            Debug.Log("PROBLEME !");
+                        }
+                    }
+                }
+            }
+        }
+        Debug.Log("Nombre cubes regular = " + nbCubesRegular);
+        int nbCubesNonRegularNonNull = 0;
+        foreach (Cube cube in cubesNonRegular)
+            if (cube != null)
+                nbCubesNonRegularNonNull++;
+        Debug.Log("Nombre cubes non-regular = " + cubesNonRegular.Count);
+        Debug.Log("Nombre cubes non-regular NULL = " + (cubesNonRegular.Count - nbCubesNonRegularNonNull));
     }
 }

@@ -63,14 +63,13 @@ public class PouvoirBridgeBuilder : IPouvoir {
     // On construit un cube !
     void BuildCube(Vector3 position, Quaternion orientation) {
         // Créer le cube
-        Cube cube = Instantiate(cubePrefab, position, orientation).GetComponent<Cube>();
-        gm.map.AddCube(position, orientation);
-        cube.RegisterCubeToSources();
+        Cube cube = gm.map.AddCube(position, orientation);
+        cube.RegisterCubeToColorSources();
 
         // Détruire les autres cubes qui sont autour de lui et qui ne sont pas des cubes de ponts !
         if (isDestructive) {
             List<Cube> cubes = gm.map.GetCubesInSphere(position, rayonDestruction);
-            foreach(Cube c in cubes) {
+            foreach (Cube c in cubes) {
                 if (c.bIsRegular) {
                     gm.map.DeleteCube(c);
                 }
