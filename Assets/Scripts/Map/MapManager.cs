@@ -13,8 +13,8 @@ public abstract class MapManager : MonoBehaviour {
 
 	public int tailleMap; // La taille de la map, en largeur, hauteur et profondeur
 
-    private Cube[,,] cubesRegular; // Toutes les positions entières dans [0, tailleMap]
-    private List<Cube> cubesNonRegular; // Toutes les autres positions (non-entières)
+    protected Cube[,,] cubesRegular; // Toutes les positions entières dans [0, tailleMap]
+    protected List<Cube> cubesNonRegular; // Toutes les autres positions (non-entières)
     [HideInInspector] public List<MapElement> mapElements;
     [HideInInspector]
     public List<Lumiere> lumieres;
@@ -163,7 +163,6 @@ public abstract class MapManager : MonoBehaviour {
              && Mathf.Abs(center.y - pos.y) <= halfExtents.y
              && Mathf.Abs(center.z - pos.z) <= halfExtents.z) {
                 cubesToDestroy.Add(cube);
-                break;
             }
         }
         foreach (Cube cubeToDestroy in cubesToDestroy)

@@ -28,19 +28,21 @@ public class CubeMap : MapManager {
         int N = mapContainer.GetCubes().Count;
         float P = proportionSourcePont;
         int nbSources = (int)Mathf.Round(GaussianGenerator.Next(N * P, N * P * (P - 1), 0, N));
-        for (int i = 0; i < nbSources; i++)
+        for (int i = 0; i < 0; i++)
         {
             Cube cube = mapContainer.GetCubes()[Random.Range(0, N)];
             sourcesPonts.Add(cube);
         }
         // Puis on les relis 2 à 2
+        sourcesPonts.Add(cubesRegular[0, 0, 0]);
+        sourcesPonts.Add(cubesRegular[tailleMap, tailleMap, tailleMap]);
         GeneratePont(sourcesPonts);
 
         // On veut générer des caves dangeureuses :3
         int tailleMaxCave = tailleMap / 2;
         int volumeCaveMoyen = (int)Mathf.Pow((tailleMaxCave + tailleMinCave) / 2.0f, 3);
         int nbCaves = (int)Mathf.Ceil(proportionCaves * volumeMap / volumeCaveMoyen);
-        List<Cave> caves = GenerateCaves(nbCaves, tailleMinCave, tailleMaxCave);
+        List<Cave> caves = GenerateCaves(1, tailleMinCave, tailleMaxCave);
 
         // Puis on ajoute des lumières à l'intérieur des caves !
         foreach (Cave cave in caves) {
@@ -58,9 +60,10 @@ public class CubeMap : MapManager {
 			size.z = Random.Range(tailleMinCave, tailleMaxCave + 1);
 
             // On définit sa position sur la carte
-            Vector3 position = new Vector3(Random.Range(2, tailleMap - size.x - 1),
-                Random.Range(2, tailleMap - size.y - 1),
-                Random.Range(2, tailleMap - size.z - 1));
+            //Vector3 position = new Vector3(Random.Range(2, tailleMap - size.x - 1),
+            //    Random.Range(2, tailleMap - size.y - 1),
+            //    Random.Range(2, tailleMap - size.z - 1));
+            Vector3 position = new Vector3(tailleMap / 3, tailleMap / 3, tailleMap / 3);
 
             Cave cave = new Cave(position, size, bMakeSpaceArround: true, bDigInside: true);
             caves.Add(cave);
