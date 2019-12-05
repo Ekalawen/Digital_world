@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -305,5 +304,41 @@ public abstract class MapManager : MonoBehaviour {
                 nbCubesNonRegularNonNull++;
         Debug.Log("Nombre cubes non-regular = " + cubesNonRegular.Count);
         Debug.Log("Nombre cubes non-regular NULL = " + (cubesNonRegular.Count - nbCubesNonRegularNonNull));
+    }
+
+    public Vector3 GetFreeSphereLocation(float radius) {
+        Vector3 center = new Vector3(Random.Range(1.0f, (float)tailleMap),
+                                     Random.Range(1.0f, (float)tailleMap),
+                                     Random.Range(1.0f, (float)tailleMap));
+        int k = 0; int kmax = 5000;
+        while(GetCubesInSphere(center, radius).Count > 0 && k <= kmax) {
+            center = new Vector3(Random.Range(1.0f, (float)tailleMap),
+                                     Random.Range(1.0f, (float)tailleMap),
+                                     Random.Range(1.0f, (float)tailleMap));
+            k++;
+        }
+        if (k > kmax)
+            Debug.LogError("ATTENTION ON A PAS TROUVE DE LOCATION !!!");
+        return center;
+    }
+
+    public Vector3 GetFreeBoxLocation(Vector3 halfExtents) {
+        Vector3 center = new Vector3(Random.Range(1.0f, (float)tailleMap),
+                                     Random.Range(1.0f, (float)tailleMap),
+                                     Random.Range(1.0f, (float)tailleMap));
+        int k = 0; int kmax = 5000;
+        while(GetCubesInBox(center, halfExtents).Count > 0 && k <= kmax) {
+            center = new Vector3(Random.Range(1.0f, (float)tailleMap),
+                                     Random.Range(1.0f, (float)tailleMap),
+                                     Random.Range(1.0f, (float)tailleMap));
+            k++;
+        }
+        if (k > kmax)
+            Debug.LogError("ATTENTION ON A PAS TROUVE DE LOCATION !!!");
+        return center;
+    }
+
+    public Vector3 GetCenter() {
+        return Vector3.one * tailleMap / 2.0f;
     }
 }

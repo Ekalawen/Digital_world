@@ -67,7 +67,11 @@ public class GameManager : MonoBehaviour {
     protected virtual void Initialize() {
         // Puis on les initialises !
         map.Initialize();
-        player.Initialize(new Vector3(map.tailleMap / 2, map.tailleMap * 2, map.tailleMap / 2), new Vector2(180, 0));
+        //player.Initialize(new Vector3(map.tailleMap / 2, map.tailleMap * 2, map.tailleMap / 2), new Vector2(180, 0));
+        Vector3 position = map.GetFreeSphereLocation(1.5f);
+        Vector3 direction = Vector3.ProjectOnPlane((map.GetCenter() - position), Vector3.up).normalized;
+        float angle = Vector3.SignedAngle(Vector3.forward, direction, Vector3.up);
+        player.Initialize(position, new Vector2(0, angle));
         dataBase.Initialize();
         console.Initialize();
         colorManager.Initialize();
