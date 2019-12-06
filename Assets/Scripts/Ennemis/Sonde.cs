@@ -220,7 +220,7 @@ public class Sonde : MonoBehaviour {
 			// Si c'est le cas, on l'envoie ballader !
 			Vector3 directionPoussee = hit.collider.transform.position - transform.position;
 			directionPoussee.Normalize ();
-			hit.collider.GetComponent<Player> ().etrePoussee (directionPoussee * puissancePoussee, tempsPouseePersonnage);
+			hit.collider.GetComponent<Player> ().EtrePoussee (directionPoussee * puissancePoussee, tempsPouseePersonnage);
 
 			// Et on affiche un message dans la console !
 			if (!gameManager.partieDejaTerminee) {

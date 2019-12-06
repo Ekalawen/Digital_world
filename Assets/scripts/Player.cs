@@ -106,11 +106,11 @@ public class Player : MonoBehaviour {
 
     void Update () {
         // On met à jour la caméra
-        updateCamera();
+        UpdateCamera();
 
         // Puis on met à jour la position du joueur
-        updateMouvement();
-        updateLastNotContactEnnemi();
+        UpdateMouvement();
+        UpdateLastNotContactEnnemi();
 
 		// On regarde si le joueur a appuyé sur E
 		if (Input.GetKeyDown (KeyCode.E)) {
@@ -138,7 +138,7 @@ public class Player : MonoBehaviour {
 	}
 
     // Utilisé pour gérer la caméra
-    void updateCamera() {
+    void UpdateCamera() {
 		// On oriente notre personnage dans dans le sens de la souris
 		xRot -= Input.GetAxis ("Mouse Y") * sensibilite; // mouvement caméra haut-bad
 		yRot += Input.GetAxis ("Mouse X") * sensibilite; // mouvement personnage axe 
@@ -149,7 +149,7 @@ public class Player : MonoBehaviour {
     }
 
     // On met à jour le mouvement du joueur
-    void updateMouvement() {
+    void UpdateMouvement() {
         // Si le temps est freeze, on ne se déplace pas !
         if(GameManager.Instance.timeFreezed) {
             return;
@@ -174,11 +174,11 @@ public class Player : MonoBehaviour {
 		EtatPersonnage etatAvant = etat;
 
 		// On trouve l'état du personnage
-		getEtatPersonnage();
+		GetEtatPersonnage();
 
 		// Si on a fait un grand saut, on le dit
-		detecterGrandSaut(etatAvant);
-		majHauteurMaxSaut();
+		DetecterGrandSaut(etatAvant);
+		MajHauteurMaxSaut();
 
 		// En fonction de l'état du personnage, on applique le mouvement correspondant !
 		switch (etat) {
@@ -188,7 +188,8 @@ public class Player : MonoBehaviour {
 				debutSaut = Time.timeSinceLevelLoad;
 				pointDebutSaut = transform.position;
 				origineSaut = EtatPersonnage.AU_SOL;
-				StartCoroutine (stopJump (debutSaut));
+				StartCoroutine (StopJump (debutSaut));
+                move = ApplyJumpMouvement(move);
 			} else {
 				// Petit débuggage pour empêcher l'alternance entre AU_SOL et EN_CHUTE !
 				move.y -= gravite;
@@ -196,10 +197,7 @@ public class Player : MonoBehaviour {
 			break;
 
 		case EtatPersonnage.EN_SAUT:
-			float percentSaut = (Time.timeSinceLevelLoad - debutSaut) / dureeSaut;
-			if (percentSaut <= dureeEfficaciteSaut) {
-				move.y += vitesseSaut;
-			}
+            move = ApplyJumpMouvement(move);
 			break;
 
 		case EtatPersonnage.EN_CHUTE:
@@ -220,12 +218,10 @@ public class Player : MonoBehaviour {
 				pointDebutSaut = transform.position;
 				origineSaut = EtatPersonnage.AU_MUR;
 				normaleOrigineSaut = normaleMur;
-				StartCoroutine (stopJump (debutSaut));
+				StartCoroutine (StopJump (debutSaut));
+                move = ApplyJumpMouvement(move);
 			} else if (Input.GetButton ("Jump")) { // On a le droit de terminer son saut lorsqu'on touche un mur
-				float pourcentageSaut = (Time.timeSinceLevelLoad - debutSaut) / dureeSaut;
-				if (pourcentageSaut <= dureeEfficaciteSaut) {
-					move.y += vitesseSaut;
-				}
+                move = ApplyJumpMouvement(move);
 			}
 			// Si ça fait trop longtemps qu'on est sur le mur
 			// Ou que l'on s'éloigne trop du mur on tombe
@@ -256,10 +252,11 @@ public class Player : MonoBehaviour {
 		}
 
 		controller.Move (move * Time.deltaTime);
+        Debug.Log(etat);
     }
 
     // Permet de savoir la dernière fois qu'il a été en contact avec un ennemi !
-    void updateLastNotContactEnnemi() {
+    void UpdateLastNotContactEnnemi() {
 		// On vérifie qu'il n'est pas en contact avec un ennemy !
 		Collider[] colliders = Physics.OverlapSphere (transform.position, 1f);
 		bool pasTouchee = true;
@@ -274,8 +271,9 @@ public class Player : MonoBehaviour {
     }
 
 	// Pour mettre à jour l'état du personnage !
-	void getEtatPersonnage() {
+	void GetEtatPersonnage() {
 		if (etat != EtatPersonnage.AU_MUR) {
+            int currentFrame = Time.frameCount;
 			if (controller.isGrounded) {
 				//if((controller.collisionFlags & CollisionFlags.Below) != 0) {
 				etat = EtatPersonnage.AU_SOL;
@@ -287,7 +285,7 @@ public class Player : MonoBehaviour {
 		}
 	}
 
-	IEnumerator stopJump(float debut) {
+	IEnumerator StopJump(float debut) {
 		while (Time.timeSinceLevelLoad - debut < dureeSaut && Input.GetButton ("Jump")) {
 			yield return null;
 		}
@@ -299,7 +297,7 @@ public class Player : MonoBehaviour {
 		}
 	}
 
-	void detecterGrandSaut(EtatPersonnage etatAvant) {
+	void DetecterGrandSaut(EtatPersonnage etatAvant) {
 		if((etatAvant == EtatPersonnage.EN_CHUTE || etatAvant == EtatPersonnage.EN_SAUT || etatAvant == EtatPersonnage.AU_MUR)
 		&& (etat == EtatPersonnage.AU_SOL || etat == EtatPersonnage.AU_MUR)) {
 			float hauteurSaut = hauteurMaxSaut - transform.position.y;
@@ -344,13 +342,13 @@ public class Player : MonoBehaviour {
 		}
 	}
 
-	public void etrePoussee(Vector3 directionPoussee, float tempsDeLaPousee) {
+	public void EtrePoussee(Vector3 directionPoussee, float tempsDeLaPousee) {
 		pousee = directionPoussee;
 		tempsPousee = tempsDeLaPousee;
 		debutPousee = Time.timeSinceLevelLoad;
 	}
 
-	public void majHauteurMaxSaut() {
+	public void MajHauteurMaxSaut() {
 		if(etat == EtatPersonnage.EN_SAUT || etat == EtatPersonnage.EN_CHUTE) {
 			if(transform.position.y > hauteurMaxSaut) {
 				hauteurMaxSaut = transform.position.y;
@@ -359,5 +357,14 @@ public class Player : MonoBehaviour {
 			hauteurMaxSaut = transform.position.y;
 		}
 	}
+
+    protected Vector3 ApplyJumpMouvement(Vector3 move) {
+        float percentSaut = (Time.timeSinceLevelLoad - debutSaut) / dureeSaut;
+        if (percentSaut <= dureeEfficaciteSaut) {
+            move.y += vitesseSaut;
+        }
+        return move;
+    }
 }
+
 
