@@ -7,21 +7,7 @@ using UnityEngine.UI;
 // Elle gérera notemment tous les affichages dans le Terminal du personnage.
 public class Console : MonoBehaviour {
 
-    /// Reference to this script
-    /// See http://clearcutgames.net/home/?p=437 for singleton pattern.
-    // Returns _instance if it exists, otherwise create one and set it has current _instance
-    static Console _instance;
-    public static Console Instance { get { return _instance ?? (_instance = new GameObject().AddComponent<Console>()); } }
-
-	//////////////////////////////////////////////////////////////////////////////////////
-	// ENUMERATION
-	//////////////////////////////////////////////////////////////////////////////////////
-
 	public enum TypeText {BASIC_TEXT, ENNEMI_TEXT, ALLY_TEXT};
-
-	//////////////////////////////////////////////////////////////////////////////////////
-	// ATTRIBUTS PUBLIQUES
-	//////////////////////////////////////////////////////////////////////////////////////
 
 	public Color basicColor; // La couleur avec laquelle on écrit la plupart du temps
 	public Color ennemiColor; // La couleur des messages ennemis
@@ -32,10 +18,6 @@ public class Console : MonoBehaviour {
 	public float probaPhraseRandom; // La probabilité de générer une phrase aléatoire dans la console
 	public Text importantText; // Là où l'on affiche les informations importantes
 
-	//////////////////////////////////////////////////////////////////////////////////////
-	// ATTRIBUTS PRIVEES
-	//////////////////////////////////////////////////////////////////////////////////////
-
 	[HideInInspector]
 	public GameManager gameManager;
 	[HideInInspector]
@@ -43,20 +25,12 @@ public class Console : MonoBehaviour {
 	[HideInInspector]
 	public GameObject player;
 	[HideInInspector]
-	public DataBase dataBase;
+	public EventManager eventManager;
 	private List<GameObject> lines; // Les lignes de la console, constitués d'un RectTransform et d'un Text
 	private List<int> numLines; // Les numéros de lignes
 	private float lastTimeImportantText;
 	private float tempsImportantText;
 	private float timeLastLumiereAttrapee; // Le dernier temps auquel le joueur n'a pas attrapé d'Orbe
-
-	//////////////////////////////////////////////////////////////////////////////////////
-	// METHODES
-	//////////////////////////////////////////////////////////////////////////////////////
-
-    void Awake() {
-        if (!_instance) { _instance = this; }
-    }
 
 	void Start () {
 	}
@@ -70,7 +44,7 @@ public class Console : MonoBehaviour {
 		numLines = new List<int> ();
 		player = GameObject.Find ("Joueur");
 		importantText.text = "";
-		dataBase = GameObject.Find("DataBase").GetComponent<DataBase>();
+		eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
 
 		// Les premiers messages
 		PremiersMessages();
@@ -312,14 +286,19 @@ public class Console : MonoBehaviour {
 	}
 
 	// Quand le joueur lance les trails
-	public void EnvoyerTrails() {
+	public void RunLocalisation() {
 		int nbLumieresRestantes = mapManager.lumieres.Count;
 		if(nbLumieresRestantes > 0) {
-			AjouterMessage ("On t'envoie les données ! Il te restes " + nbLumieresRestantes + " Objectifs !", Console.TypeText.ALLY_TEXT);
+			AjouterMessage ("On t'envoie les données ! Il te restes " + nbLumieresRestantes + " objectifs !", Console.TypeText.ALLY_TEXT);
 		} else {
 			AjouterMessage ("On a hacké toute la base, faut s'enfuir maintenant !", Console.TypeText.ALLY_TEXT);
 		}
 	}
+
+    // Quand on essaye de faire une localisation alors qu'on peut pas !
+    public void FailLocalisation() {
+		AjouterMessage ("Ils brouillent le réseau, objectifs introuvables !", Console.TypeText.ALLY_TEXT);
+    }
 
 	// Quand le joueur attérit d'un grand saut
 	public void GrandSaut(float hauteurSaut) {

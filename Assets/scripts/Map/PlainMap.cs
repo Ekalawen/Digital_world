@@ -44,7 +44,7 @@ public class PlainMap : MapManager {
 
 		// On instancie tous les cubes
 		foreach(Vector3 pos in positions) {
-			AddCube(pos);
+			AddCube(pos, Cube.CubeType.NORMAL);
 		}
 
 		// Puis on crée tous les arbres
@@ -180,7 +180,7 @@ public class PlainMap : MapManager {
 
 		// On instancie tous les cubes
 		foreach(Vector3 pos in positions) {
-            AddCube(pos);
+            AddCube(pos, Cube.CubeType.NORMAL);
 		}
 	}
 

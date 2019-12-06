@@ -7,6 +7,8 @@ public abstract class MapManager : MonoBehaviour {
 	// public enum TypeMap {CUBE_MAP, PLAINE_MAP, LABYRINTHE_MAP, GROUND_MAP, EMPTY_MAP, TUTORIAL_MAP}; // Plus vraiment utile ! :D
 
 	public GameObject cubePrefab; // On récupère ce qu'est un cube !
+	public GameObject deathCubePrefab; // On récupère ce qu'est qu'un cube de la mort ! :)
+	public GameObject indestructibleCubePrefab; // On récupère ce qu'est qu'un cube indestructible ! :)
 	public GameObject lumierePrefab; // On récupère les lumières !
 	public GameObject ennemiPrefabs; // On récupère un ennemi !
 
@@ -71,12 +73,24 @@ public abstract class MapManager : MonoBehaviour {
         }
     }
 
-    public Cube AddCube(Vector3 pos, Quaternion quaternion = new Quaternion()) {
+    public Cube AddCube(Vector3 pos, Cube.CubeType cubeType, Quaternion quaternion = new Quaternion()) {
         if (GetCubeAt(pos) != null) // Si il y a déjà un cube à cette position, on ne fait rien !
             return null;
-        Cube cube = Instantiate(cubePrefab, pos, quaternion).GetComponent<Cube>();
+        Cube cube = Instantiate(GetPrefab(cubeType), pos, quaternion).GetComponent<Cube>();
         AddCube(cube);
         return cube;
+    }
+
+    protected GameObject GetPrefab(Cube.CubeType cubeType) {
+        switch(cubeType) {
+            case Cube.CubeType.NORMAL:
+                return cubePrefab;
+            case Cube.CubeType.DEATH:
+                return deathCubePrefab;
+            case Cube.CubeType.INDESTRUCTIBLE:
+                return indestructibleCubePrefab;
+        }
+        return null;
     }
 
     private void DestroyImmediateCube(Cube cube) {
@@ -356,5 +370,16 @@ public abstract class MapManager : MonoBehaviour {
 
     protected void LinkUnreachableLumiereToRest() {
         // TODO !
+    }
+
+
+    public List<Vector3> GetAllEmptyPositions() {
+        List<Vector3> allPos = new List<Vector3>();
+        for (int i = 0; i <= tailleMap; i++)
+            for (int j = 0; j <= tailleMap; j++)
+                for (int k = 0; k <= tailleMap; k++)
+                    if (cubesRegular[i, j, k] == null)
+                        allPos.Add(new Vector3(i, j, k));
+        return allPos;
     }
 }

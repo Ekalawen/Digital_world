@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour {
     public GameObject playerPrefabs; // On récupère le personnage !
 	public GameObject consolePrefabs; // On récupère la console !
 	public GameObject pointeurPrefabs; // Pour avoir un visuel du centre de l'écran
-	public GameObject dataBasePrefabs; // Pour créer l'IA chargé de supervisé les ennemis !
+	public GameObject eventManagerPrefabs; // Pour créer l'IA chargé de supervisé les ennemis !
 	public GameObject mapManagerPrefabs; // Pour gérer la map !
 	public GameObject colorManagerPrefabs; // Pour gérer les couleurs !
 	public GameObject soundManagerPrefabs; // Pour gérer les sons et musiques !
@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour {
 	[HideInInspector]
 	public Console console;
 	[HideInInspector]
-	public DataBase dataBase;
+	public EventManager eventManager;
 	[HideInInspector]
 	public ColorManager colorManager;
 	[HideInInspector]
@@ -59,7 +59,7 @@ public class GameManager : MonoBehaviour {
 		// On crée ce dont on a besoin
 		map = Instantiate(mapManagerPrefabs).GetComponent<MapManager>();
         player = Instantiate(playerPrefabs).GetComponent<Player>();
-		dataBase = Instantiate(dataBasePrefabs).GetComponent<DataBase>();
+		eventManager = Instantiate(eventManagerPrefabs).GetComponent<EventManager>();
 		console = Instantiate(consolePrefabs).GetComponent<Console>();
 		colorManager = Instantiate(colorManagerPrefabs).GetComponent<ColorManager>();
         pointeur = Instantiate(pointeurPrefabs);
@@ -76,9 +76,10 @@ public class GameManager : MonoBehaviour {
         Vector3 direction = Vector3.ProjectOnPlane((map.GetCenter() - position), Vector3.up).normalized;
         float angle = Vector3.SignedAngle(Vector3.forward, direction, Vector3.up);
         player.Initialize(position, new Vector2(0, angle));
-        dataBase.Initialize();
+        eventManager.Initialize();
         console.Initialize();
         colorManager.Initialize();
+        soundManager.Initialize();
     }
 
 	// Update is called once per frame
@@ -139,7 +140,7 @@ public class GameManager : MonoBehaviour {
 		return false;
 	}
 
-	IEnumerator QuitInSeconds(int tps) {
+    public IEnumerator QuitInSeconds(int tps) {
 		yield return new WaitForSeconds (tps);
 		// QuitGame ();
 		RevenirAuMenu();
@@ -162,7 +163,7 @@ public class GameManager : MonoBehaviour {
 		Object.Destroy(map);
 		Object.Destroy(player);
 		Object.Destroy(console);
-		Object.Destroy(dataBase);
+		Object.Destroy(eventManager);
 		Object.Destroy(this);
 
 		Cursor.lockState = CursorLockMode.None;

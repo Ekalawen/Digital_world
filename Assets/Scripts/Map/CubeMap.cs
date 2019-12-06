@@ -39,14 +39,17 @@ public class CubeMap : MapManager {
         // On veut générer des caves dangeureuses :3
         // Qui possèderont des lumières !
         int tailleMaxCave = tailleMap / 2;
-        int volumeCaveMoyen = (int)Mathf.Pow((tailleMaxCave + tailleMinCave) / 2.0f, 3);
-        int nbCaves = (int)Mathf.Ceil(proportionCaves * volumeMap / volumeCaveMoyen);
-        List<Cave> caves = GenerateCaves(nbCaves, tailleMinCave, tailleMaxCave, bWithLumieres: true);
+        //int volumeCaveMoyen = (int)Mathf.Pow((tailleMaxCave + tailleMinCave) / 2.0f, 3);
+        //int nbCaves = (int)Mathf.Ceil(proportionCaves * volumeMap / volumeCaveMoyen);
+        List<Cave> caves = GenerateCaves(proportionCaves, tailleMinCave, tailleMaxCave, bWithLumieres: true);
     }
 
-	List<Cave> GenerateCaves(int nbCaves, int tailleMinCave, int tailleMaxCave, bool bWithLumieres) {
+	List<Cave> GenerateCaves(float proportionCaves, int tailleMinCave, int tailleMaxCave, bool bWithLumieres) {
         List<Cave> caves = new List<Cave>();
-		for (int k = 0; k < nbCaves; k++) {
+        float currentProportion = 0.0f;
+        float volumeCaves = 0;
+        while(currentProportion < proportionCaves) {
+		//for (int k = 0; k < nbCaves; k++) {
             // On définit la taille de la cave
             Vector3Int size = Vector3Int.zero;
 			size.x = Random.Range(tailleMinCave, tailleMaxCave + 1);
@@ -63,6 +66,9 @@ public class CubeMap : MapManager {
 
             // On y rajoute la lumière !
             cave.AddOneLumiereInside();
+
+            volumeCaves += cave.GetVolume();
+            currentProportion = volumeCaves / GetVolume();
 		}
 
         return caves;
@@ -102,5 +108,9 @@ public class CubeMap : MapManager {
 			return false;
 		}
 	}
+
+    public float GetVolume() {
+        return (float)(tailleMap - 1) * (tailleMap - 1) * (tailleMap - 1);
+    }
 
 }

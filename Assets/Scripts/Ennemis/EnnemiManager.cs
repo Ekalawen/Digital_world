@@ -4,6 +4,16 @@ using UnityEngine;
 
 public class EnnemiManager : MonoBehaviour {
 
+
+	//// public enum EtatDataBase {NORMAL, DEFENDING};
+
+	////public GameObject ennemiPrefabs; // On récupère un ennemi !
+
+	//[HideInInspector]
+	//public List<Sonde> sondes; // Elle connait tous les drones !
+	//[HideInInspector]
+	//public Sonde.EtatEnnemi etatDrones; // Permet de donner des ordres aux drones
+
     /// <summary>
     ///  TODO ==> Reprendre ce code !
     /// </summary>

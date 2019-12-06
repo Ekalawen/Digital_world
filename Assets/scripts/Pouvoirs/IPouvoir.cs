@@ -10,6 +10,7 @@ using UnityEngine;
 public abstract class IPouvoir : MonoBehaviour {
 
     protected bool pouvoirAvailable;
+    protected bool freezePouvoir = false;
     protected GameManager gm;
 
     public void Start() {
@@ -19,11 +20,15 @@ public abstract class IPouvoir : MonoBehaviour {
 
     // La fonction appelée lorsque le joueur appui sur une touche
     public void tryUsePouvoir() {
-        if(pouvoirAvailable) {
-            usePouvoir();
+        if(pouvoirAvailable && !freezePouvoir) {
+            UsePouvoir();
         }
     }
 
     // La véritable fonction qui appelle le pouvoir
-    protected abstract void usePouvoir();
+    protected abstract void UsePouvoir();
+
+    public void FreezePouvoir() {
+        freezePouvoir = true;
+    }
 }

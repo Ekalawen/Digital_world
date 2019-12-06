@@ -15,7 +15,7 @@ public class PouvoirBridgeBuilder : IPouvoir {
     public bool isDestructive; // Permet de savoir si ce pouvoir détruit les autres cubes ou pas !
     public float rayonDestruction; // Le rayon de destruction autour duquel on détruit les cubes pour pouvoir passe =)
 
-    protected override void usePouvoir() {
+    protected override void UsePouvoir() {
         Vector3 pointSource; // Le départ du pont
         Vector3 pointCible; // La fin du pont
 
@@ -43,7 +43,7 @@ public class PouvoirBridgeBuilder : IPouvoir {
 
     void CibleInvalide() {
         // On informe que ce n'est pas une cible valide !
-        Console.Instance.PouvoirBridgeBuilderInvalide();
+        gm.console.PouvoirBridgeBuilderInvalide();
     }
 
     IEnumerator BuildBridge(Vector3 pointSource, Vector3 pointCible) {
@@ -63,8 +63,11 @@ public class PouvoirBridgeBuilder : IPouvoir {
     // On construit un cube !
     void BuildCube(Vector3 position, Quaternion orientation) {
         // Créer le cube
-        Cube cube = gm.map.AddCube(position, orientation);
+        Cube cube = gm.map.AddCube(position, Cube.CubeType.NORMAL, orientation);
         cube.RegisterCubeToColorSources();
+        AudioSource source = cube.gameObject.AddComponent<AudioSource>();
+        source.spatialBlend = 1.0f;
+        gm.soundManager.PlayCreateCubeClip(source);
 
         // Détruire les autres cubes qui sont autour de lui et qui ne sont pas des cubes de ponts !
         if (isDestructive) {

@@ -11,7 +11,7 @@ public class CubeEnsemble : MapElement {
     }
 
     protected Cube CreateCube(Vector3 pos) {
-        Cube cube = map.AddCube(pos);
+        Cube cube = map.AddCube(pos, Cube.CubeType.NORMAL);
         if (cube != null) {
             cubes.Add(cube);
         }

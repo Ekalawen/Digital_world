@@ -33,7 +33,7 @@ public class Sonde : MonoBehaviour {
 	[HideInInspector]
 	public CharacterController controller;
 	[HideInInspector]
-	public DataBase dataBase; // La dataBase qui envoie les ordres
+	public EventManager dataBase; // La dataBase qui envoie les ordres
 	[HideInInspector]
 	public Console console; // la console
 	[HideInInspector]
@@ -58,14 +58,14 @@ public class Sonde : MonoBehaviour {
 		gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 		player = GameObject.Find ("Joueur");
 		controller = this.GetComponent<CharacterController> ();
-        dataBase = DataBase.Instance;
+        //dataBase = EventManager.Instance;
 		console = GameObject.Find ("Console").GetComponent<Console> ();
 		etat = EtatEnnemi.WAITING;
 		lastPositionSeen = transform.position;
 		vitesse = Mathf.Exp(Random.Range (Mathf.Log(vitesseMin), Mathf.Log(vitesseMax)));
 
-        // L'ennemi doit se renseigner auprès de la database !
-        dataBase.sondes.Add(this);
+        //// L'ennemi doit se renseigner auprès de la database !
+        //dataBase.sondes.Add(this);
 	}
 	
 	// Update is called once per frame
@@ -154,11 +154,11 @@ public class Sonde : MonoBehaviour {
 
     // On récupère l'état dans lequel doit être notre sonde
     void getEtat() {
-        DataBase.EtatDataBase etatDataBase = dataBase.demanderOrdre();
-        switch(etatDataBase) {
-            case DataBase.EtatDataBase.NORMAL:
+        //EventManager.EtatDataBase etatDataBase = dataBase.DemanderOrdre();
+        //switch(etatDataBase) {
+        //    case EventManager.EtatDataBase.NORMAL:
                 // On regarde si le joueur est visible
-                if(Time.timeSinceLevelLoad >= 10f && isPlayerVisible(etatDataBase)) {
+                if(Time.timeSinceLevelLoad >= 10f && IsPlayerVisible(/*etatDataBase*/)) {
                     // Si la sonde vient juste de le repérer, on l'annonce
                     if (etat == EtatEnnemi.WAITING) {
                         console.JoueurDetecte(name);
@@ -171,33 +171,33 @@ public class Sonde : MonoBehaviour {
                     }
                     etat = EtatEnnemi.WAITING;
                 }
-                break;
-            case DataBase.EtatDataBase.DEFENDING:
-                // On regarde si le joueur est visible
-                if(isPlayerVisible(etatDataBase)) {
-                    // Si la sonde vient juste de le repérer, on l'annonce
-                    if (etat == EtatEnnemi.DEFENDING) {
-                        console.JoueurDetecte(name);
-                    }
-                    etat = EtatEnnemi.RUSHING;
-                } else {
-                    // Si la sonde vient juste de perdre sa trace, on l'annonce
-                    if (etat == EtatEnnemi.RUSHING) {
-                        console.JoueurPerduDeVue(name);
-                    }
-                    etat = EtatEnnemi.DEFENDING;
-                }
-                break;
-        }
+        //        break;
+        //    case EventManager.EtatDataBase.DEFENDING:
+        //        // On regarde si le joueur est visible
+        //        if(IsPlayerVisible(etatDataBase)) {
+        //            // Si la sonde vient juste de le repérer, on l'annonce
+        //            if (etat == EtatEnnemi.DEFENDING) {
+        //                console.JoueurDetecte(name);
+        //            }
+        //            etat = EtatEnnemi.RUSHING;
+        //        } else {
+        //            // Si la sonde vient juste de perdre sa trace, on l'annonce
+        //            if (etat == EtatEnnemi.RUSHING) {
+        //                console.JoueurPerduDeVue(name);
+        //            }
+        //            etat = EtatEnnemi.DEFENDING;
+        //        }
+        //        break;
+        //}
     }
 
     // Permet de savoir si la sonde voit le joueur
-    public bool isPlayerVisible(DataBase.EtatDataBase etatDataBase) {
+    public bool IsPlayerVisible(/*EventManager.EtatDataBase etatDataBase*/) {
         // On calcul la distance de détection
         float distance = distanceDeDetection;
-        if(etatDataBase == DataBase.EtatDataBase.DEFENDING) {
-            distance *= coefficiantDeRushDistanceDeDetection;
-        }
+        //if(etatDataBase == EventManager.EtatDataBase.DEFENDING) {
+        //    distance *= coefficiantDeRushDistanceDeDetection;
+        //}
 
         // Si l'ennemie est suffisament proche et qu'il est visible !
         RaycastHit hit;

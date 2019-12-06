@@ -16,7 +16,7 @@ public class PouvoirExplosion : IPouvoir {
     public float tempsDeLaPoussee; // Le temps pendant lequel les ennemis sont poussés !
 
 
-    protected override void usePouvoir() {
+    protected override void UsePouvoir() {
         // On ne peut pas faire 10 000 explosions à la fois ^^
         // Bah avec cette version on peut :D
 

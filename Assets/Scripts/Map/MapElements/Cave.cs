@@ -56,6 +56,7 @@ public class Cave : CubeEnsemble
         }
         foreach(Lumiere lumiereToDelete in lumieresToDeletes) {
             map.lumieres.Remove(lumiereToDelete);
+            Object.DestroyImmediate(lumiereToDelete.gameObject);
         }
     }
 
@@ -179,5 +180,9 @@ public class Cave : CubeEnsemble
                 }
             }
         }
+    }
+
+    public float GetVolume() {
+        return (float)nbCubesParAxe[0] * nbCubesParAxe[1] * nbCubesParAxe[2];
     }
 }

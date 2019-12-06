@@ -61,7 +61,9 @@ public class Player : MonoBehaviour {
 	private float debutPousee; // Le début de la poussée
 	private float tempsPousee; // Le temps pendant lequel le personnage reçoit cette poussée
 
-	[HideInInspector]
+    private bool bCanUseLocalisation = true;
+
+    [HideInInspector]
 	public float lastNotContactEnnemy; // Le dernier temps où il ne touchait pas d'ennemi, utilisé pour la fin du jeu
 
     private AudioSource audioSource;
@@ -114,23 +116,8 @@ public class Player : MonoBehaviour {
         UpdateMouvement();
         UpdateLastNotContactEnnemi();
 
-		// On regarde si le joueur a appuyé sur E
-		if (Input.GetKeyDown (KeyCode.E)) {
-			// On trace les rayons ! =)
-			GameObject[] lumieres = GameObject.FindGameObjectsWithTag ("Objectif");
-			for (int i = 0; i < lumieres.Length; i++) {
-				//Vector3 departRayons = transform.position - 0.5f * camera.transform.forward + 0.5f * Vector3.up;
-				Vector3 departRayons = transform.position + 0.5f * Vector3.up;
-				GameObject tr = Instantiate (trail, departRayons, Quaternion.identity) as GameObject;
-				tr.GetComponent<Trail> ().setTarget (lumieres [i].transform.position);
-			}
-
-			// Un petit message
-			console.EnvoyerTrails();
-
-			// Et on certifie qu'on a appuyé sur E
-			console.UpdateLastLumiereAttrapee();
-		}
+        // On regarde si le joueur a appuyé sur E
+        TryUseLumiereLocalisation();
 
         // Lorsque le joueur clique avec sa souris
         if(Input.GetMouseButtonDown(0)) {
@@ -245,7 +232,6 @@ public class Player : MonoBehaviour {
 		}
 
 		controller.Move (move * Time.deltaTime);
-        Debug.Log(etat);
     }
 
     // Permet de savoir la dernière fois qu'il a été en contact avec un ennemi !
@@ -305,6 +291,11 @@ public class Player : MonoBehaviour {
 
 	void OnControllerColliderHit(ControllerColliderHit hit) {
 
+        if(hit.gameObject.GetComponent<DeathCube>() != null) {
+            Debug.Log("Looooooooooooooooose ! :'(");
+            gm.eventManager.LoseGame();
+        }
+
 		// On regarde si le personnage s'accroche à un mur !
 		// Pour ça il doit être dans les airs !
 		// Et il ne doit PAS être en train d'appuyer sur SHIFT
@@ -340,8 +331,8 @@ public class Player : MonoBehaviour {
         debutMur = Time.timeSinceLevelLoad;
         normaleMur = hit.normal;
         pointMur = hit.point;
-        if(etat != previousEtat)
-            gm.soundManager.PlayGripClip(audioSource);
+        //if(etat != previousEtat)
+        //    gm.soundManager.PlayGripClip(audioSource);
     }
 
 	public void EtrePoussee(Vector3 directionPoussee, float tempsDeLaPousee) {
@@ -382,6 +373,34 @@ public class Player : MonoBehaviour {
         }
         gm.soundManager.PlayJumpClip(audioSource);
         StartCoroutine (StopJump (debutSaut));
+    }
+
+    protected void TryUseLumiereLocalisation() {
+		if (Input.GetKeyDown (KeyCode.E)) {
+            if (!bCanUseLocalisation) {
+                gm.console.FailLocalisation();
+                gm.soundManager.PlayFailActionClip();
+                return;
+            }
+			// On trace les rayons ! =)
+			GameObject[] lumieres = GameObject.FindGameObjectsWithTag ("Objectif");
+			for (int i = 0; i < lumieres.Length; i++) {
+				//Vector3 departRayons = transform.position - 0.5f * camera.transform.forward + 0.5f * Vector3.up;
+				Vector3 departRayons = transform.position + 0.5f * Vector3.up;
+				GameObject tr = Instantiate (trail, departRayons, Quaternion.identity) as GameObject;
+				tr.GetComponent<Trail> ().setTarget (lumieres [i].transform.position);
+			}
+
+			// Un petit message
+			console.RunLocalisation();
+
+			// Et on certifie qu'on a appuyé sur E
+			console.UpdateLastLumiereAttrapee();
+		}
+    }
+
+    public void FreezeLocalisation() {
+        bCanUseLocalisation = false;
     }
 }
 
