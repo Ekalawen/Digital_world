@@ -51,6 +51,8 @@ public abstract class MapManager : MonoBehaviour {
 
         // Puis on régule la map pour s'assurer que tout va bien :)
         PrintCubesNumbers();
+        //LocaliseCubeOnLumieres();
+        LinkUnreachableLumiereToRest();
     }
 
     protected abstract void GenerateMap();
@@ -340,5 +342,19 @@ public abstract class MapManager : MonoBehaviour {
 
     public Vector3 GetCenter() {
         return Vector3.one * tailleMap / 2.0f;
+    }
+
+    protected void LocaliseCubeOnLumieres() {
+        foreach(Lumiere lum in lumieres) {
+            Cube cubeOn = GetCubeAt(lum.transform.position);
+            if(cubeOn != null) {
+                cubeOn.SetColor(Color.white);
+                Debug.Log("Une lumiere dans un cube !");
+            }
+        }
+    }
+
+    protected void LinkUnreachableLumiereToRest() {
+        // TODO !
     }
 }

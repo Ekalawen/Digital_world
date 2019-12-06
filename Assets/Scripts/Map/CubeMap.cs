@@ -37,18 +37,14 @@ public class CubeMap : MapManager {
         GeneratePont(sourcesPonts);
 
         // On veut générer des caves dangeureuses :3
+        // Qui possèderont des lumières !
         int tailleMaxCave = tailleMap / 2;
         int volumeCaveMoyen = (int)Mathf.Pow((tailleMaxCave + tailleMinCave) / 2.0f, 3);
         int nbCaves = (int)Mathf.Ceil(proportionCaves * volumeMap / volumeCaveMoyen);
-        List<Cave> caves = GenerateCaves(nbCaves, tailleMinCave, tailleMaxCave);
-
-        // Puis on ajoute des lumières à l'intérieur des caves !
-        foreach (Cave cave in caves) {
-            cave.AddOneLumiereInside();
-        }
+        List<Cave> caves = GenerateCaves(nbCaves, tailleMinCave, tailleMaxCave, bWithLumieres: true);
     }
 
-	List<Cave> GenerateCaves(int nbCaves, int tailleMinCave, int tailleMaxCave) {
+	List<Cave> GenerateCaves(int nbCaves, int tailleMinCave, int tailleMaxCave, bool bWithLumieres) {
         List<Cave> caves = new List<Cave>();
 		for (int k = 0; k < nbCaves; k++) {
             // On définit la taille de la cave
@@ -64,6 +60,9 @@ public class CubeMap : MapManager {
 
             Cave cave = new Cave(position, size, bMakeSpaceArround: false, bDigInside: true);
             caves.Add(cave);
+
+            // On y rajoute la lumière !
+            cave.AddOneLumiereInside();
 		}
 
         return caves;

@@ -150,19 +150,19 @@ public class Cave : CubeEnsemble
 
     public void AddOneLumiereInside() {
         // On cherche une case où créer un objectif !
-        Vector3 posObjectif = new Vector3(
+        Vector3 posLumiere = new Vector3(
             Random.Range(1, nbCubesParAxe.x - 1),
             Random.Range(1, nbCubesParAxe.y - 1), 
             Random.Range(1, nbCubesParAxe.z - 1));
-        while (cubeMatrix[(int)posObjectif.x, (int)posObjectif.y, (int)posObjectif.z] != null)
+        while (cubeMatrix[(int)posLumiere.x, (int)posLumiere.y, (int)posLumiere.z] != null)
         {
-            posObjectif = new Vector3(
+            posLumiere = new Vector3(
                 Random.Range(1, nbCubesParAxe.x - 1),
                 Random.Range(1, nbCubesParAxe.y - 1), 
                 Random.Range(1, nbCubesParAxe.z - 1));
         }
-        posObjectif += depart;
-        Lumiere lumiere = GameObject.Instantiate(map.lumierePrefab, posObjectif, Quaternion.identity).GetComponent<Lumiere>();
+        posLumiere += depart;
+        Lumiere lumiere = GameObject.Instantiate(map.lumierePrefab, posLumiere, Quaternion.identity).GetComponent<Lumiere>();
         map.lumieres.Add(lumiere);
     }
 
