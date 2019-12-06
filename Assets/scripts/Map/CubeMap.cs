@@ -44,7 +44,7 @@ public class CubeMap : MapManager {
 
         // Puis on ajoute des lumières à l'intérieur des caves !
         foreach (Cave cave in caves) {
-            cave.AddLumiereInside();
+            cave.AddOneLumiereInside();
         }
     }
 
@@ -58,11 +58,11 @@ public class CubeMap : MapManager {
 			size.z = Random.Range(tailleMinCave, tailleMaxCave + 1);
 
             // On définit sa position sur la carte
-            Vector3 position = new Vector3(Random.Range(2, tailleMap - size.x - 1),
-                Random.Range(2, tailleMap - size.y - 1),
-                Random.Range(2, tailleMap - size.z - 1));
+            Vector3 position = new Vector3(Random.Range(1, tailleMap - size.x),
+                Random.Range(1, tailleMap - size.y),
+                Random.Range(1, tailleMap - size.z));
 
-            Cave cave = new Cave(position, size, bMakeSpaceArround: true, bDigInside: true);
+            Cave cave = new Cave(position, size, bMakeSpaceArround: false, bDigInside: true);
             caves.Add(cave);
 		}
 

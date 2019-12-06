@@ -148,14 +148,36 @@ public class Cave : CubeEnsemble
         cubeMatrix[(int)pointsActuel.x, (int)pointsActuel.y, (int)pointsActuel.z] = null;
 	}
 
-    public void AddLumiereInside() {
+    public void AddOneLumiereInside() {
         // On cherche une case où créer un objectif !
-        Vector3 posObjectif = new Vector3(Random.Range(0, nbCubesParAxe.x), Random.Range(0, nbCubesParAxe.y), Random.Range(0, nbCubesParAxe.z));
-        while (cubeMatrix[(int)posObjectif.x, (int)posObjectif.y, (int)posObjectif.z] != null) {
-            posObjectif = new Vector3(Random.Range(0, nbCubesParAxe.x), Random.Range(0, nbCubesParAxe.y), Random.Range(0, nbCubesParAxe.z));
+        Vector3 posObjectif = new Vector3(
+            Random.Range(1, nbCubesParAxe.x - 1),
+            Random.Range(1, nbCubesParAxe.y - 1), 
+            Random.Range(1, nbCubesParAxe.z - 1));
+        while (cubeMatrix[(int)posObjectif.x, (int)posObjectif.y, (int)posObjectif.z] != null)
+        {
+            posObjectif = new Vector3(
+                Random.Range(1, nbCubesParAxe.x - 1),
+                Random.Range(1, nbCubesParAxe.y - 1), 
+                Random.Range(1, nbCubesParAxe.z - 1));
         }
         posObjectif += depart;
         Lumiere lumiere = GameObject.Instantiate(map.lumierePrefab, posObjectif, Quaternion.identity).GetComponent<Lumiere>();
         map.lumieres.Add(lumiere);
+    }
+
+    public void AddAllLumiereInside() {
+        for (int i = 0; i < nbCubesParAxe.x; i++) {
+            for (int j = 0; j < nbCubesParAxe.y; j++) {
+                for (int k = 0; k < nbCubesParAxe.z; k++) {
+                    if(cubeMatrix[i, j, k] == null) {
+                        Vector3 posObjectif = new Vector3(i, j, k);
+                        posObjectif += depart;
+                        Lumiere lumiere = GameObject.Instantiate(map.lumierePrefab, posObjectif, Quaternion.identity).GetComponent<Lumiere>();
+                        map.lumieres.Add(lumiere);
+                    }
+                }
+            }
+        }
     }
 }
