@@ -63,14 +63,14 @@ public class Player : MonoBehaviour {
 
 	[HideInInspector]
 	public float lastNotContactEnnemy; // Le dernier temps où il ne touchait pas d'ennemi, utilisé pour la fin du jeu
-	[HideInInspector]
+
+    private AudioSource audioSource;
+    private GameManager gm;
+
 
 	//////////////////////////////////////////////////////////////////////////////////////
 	// METHODES
 	//////////////////////////////////////////////////////////////////////////////////////
-
-	void Start () {
-	}
 
     public void Initialize(Vector3 position, Vector2 orientationXY) {
         // On récupère le personnage
@@ -78,6 +78,8 @@ public class Player : MonoBehaviour {
         personnage.name = "Joueur";
 		controller = personnage.GetComponent<CharacterController> ();
 		camera = personnage.transform.GetChild(0).GetComponent<Camera>() as Camera;
+        audioSource = GetComponentInChildren<AudioSource>();
+        gm = FindObjectOfType<GameManager>();
 
         //ChoseStartingPosition();
         transform.position = position;
@@ -184,11 +186,7 @@ public class Player : MonoBehaviour {
 		switch (etat) {
 		case EtatPersonnage.AU_SOL:
 			if (Input.GetButton ("Jump")) {
-				etat = EtatPersonnage.EN_SAUT;
-				debutSaut = Time.timeSinceLevelLoad;
-				pointDebutSaut = transform.position;
-				origineSaut = EtatPersonnage.AU_SOL;
-				StartCoroutine (StopJump (debutSaut));
+                Jump(from: EtatPersonnage.AU_SOL);
                 move = ApplyJumpMouvement(move);
 			} else {
 				// Petit débuggage pour empêcher l'alternance entre AU_SOL et EN_CHUTE !
@@ -213,12 +211,7 @@ public class Player : MonoBehaviour {
 				normaleOrigineSaut = normaleMur;
 			// On peut encore sauter quand on est au mur ! 
 			} else if (Input.GetButtonDown ("Jump")) { // Mais il faut appuyer à nouveau !
-				etat = EtatPersonnage.EN_SAUT;
-				debutSaut = Time.timeSinceLevelLoad;
-				pointDebutSaut = transform.position;
-				origineSaut = EtatPersonnage.AU_MUR;
-				normaleOrigineSaut = normaleMur;
-				StartCoroutine (StopJump (debutSaut));
+                Jump(from: EtatPersonnage.AU_MUR);
                 move = ApplyJumpMouvement(move);
 			} else if (Input.GetButton ("Jump")) { // On a le droit de terminer son saut lorsqu'on touche un mur
                 move = ApplyJumpMouvement(move);
@@ -275,8 +268,11 @@ public class Player : MonoBehaviour {
 		if (etat != EtatPersonnage.AU_MUR) {
             int currentFrame = Time.frameCount;
 			if (controller.isGrounded) {
-				//if((controller.collisionFlags & CollisionFlags.Below) != 0) {
+                //if((controller.collisionFlags & CollisionFlags.Below) != 0) {
+                EtatPersonnage previousEtat = etat;
 				etat = EtatPersonnage.AU_SOL;
+                if (etat != previousEtat)
+                    gm.soundManager.PlayLandClip(audioSource);
 			} else {
 				if (etat != EtatPersonnage.EN_SAUT) {
 					etat = EtatPersonnage.EN_CHUTE;
@@ -327,20 +323,26 @@ public class Player : MonoBehaviour {
 					// Si la normale est au moins un peu à l'horizontale !
 					Vector3 nProject = Vector3.ProjectOnPlane (n, Vector3.up);
 					if (Mathf.Abs (Vector3.Angle (n, nProject)) < 45f) {
-
-						/*// Si on détecte une collision avec un mur, on peut s'aggriper si l'angle entre la normale
-						// au mur et le vecteur (pointDepartSaut/mur) est inférieur à 45°
-						Vector3 direction = pointDebutSaut - hit.point;
-						Vector3 directionProject = Vector3.ProjectOnPlane(direction, Vector3.up);
-						if (Mathf.Abs (Vector3.Angle (nProject, directionProject)) < 45f) {*/
-							etat = EtatPersonnage.AU_MUR; // YEAH !!!
-							debutMur = Time.timeSinceLevelLoad;
-							normaleMur = n;
-							pointMur = hit.point;
+                        /*// Si on détecte une collision avec un mur, on peut s'aggriper si l'angle entre la normale
+                        // au mur et le vecteur (pointDepartSaut/mur) est inférieur à 45°
+                        Vector3 direction = pointDebutSaut - hit.point;
+                        Vector3 directionProject = Vector3.ProjectOnPlane(direction, Vector3.up);
+                        if (Mathf.Abs (Vector3.Angle (nProject, directionProject)) < 45f) {*/
+                        GripOn(hit);
 					}
 				}
 		}
 	}
+
+    protected void GripOn(ControllerColliderHit hit) {
+        EtatPersonnage previousEtat = etat;
+        etat = EtatPersonnage.AU_MUR; // YEAH !!!
+        debutMur = Time.timeSinceLevelLoad;
+        normaleMur = hit.normal;
+        pointMur = hit.point;
+        if(etat != previousEtat)
+            gm.soundManager.PlayGripClip(audioSource);
+    }
 
 	public void EtrePoussee(Vector3 directionPoussee, float tempsDeLaPousee) {
 		pousee = directionPoussee;
@@ -364,6 +366,22 @@ public class Player : MonoBehaviour {
             move.y += vitesseSaut;
         }
         return move;
+    }
+
+    protected void Jump(EtatPersonnage from) {
+        etat = EtatPersonnage.EN_SAUT;
+        debutSaut = Time.timeSinceLevelLoad;
+        pointDebutSaut = transform.position;
+        if (from == EtatPersonnage.AU_SOL) {
+            origineSaut = EtatPersonnage.AU_SOL;
+        } else if (from == EtatPersonnage.AU_MUR) {
+            origineSaut = EtatPersonnage.AU_MUR;
+            normaleOrigineSaut = normaleMur;
+        } else {
+            Debug.Log("On saute depuis un endroit non autorisé !");
+        }
+        gm.soundManager.PlayJumpClip(audioSource);
+        StartCoroutine (StopJump (debutSaut));
     }
 }
 

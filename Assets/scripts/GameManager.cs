@@ -21,7 +21,8 @@ public class GameManager : MonoBehaviour {
 	public GameObject pointeurPrefabs; // Pour avoir un visuel du centre de l'écran
 	public GameObject dataBasePrefabs; // Pour créer l'IA chargé de supervisé les ennemis !
 	public GameObject mapManagerPrefabs; // Pour gérer la map !
-	public GameObject ColorManagerPrefabs; // Pour gérer les couleurs !
+	public GameObject colorManagerPrefabs; // Pour gérer les couleurs !
+	public GameObject soundManagerPrefabs; // Pour gérer les sons et musiques !
 
     //////////////////////////////////////////////////////////////////////////////////////
     // ATTRIBUTS PRIVÉES
@@ -39,6 +40,8 @@ public class GameManager : MonoBehaviour {
 	public DataBase dataBase;
 	[HideInInspector]
 	public ColorManager colorManager;
+	[HideInInspector]
+	public SoundManager soundManager;
     [HideInInspector]
     public bool partieDejaTerminee = false;
     [HideInInspector]
@@ -58,8 +61,9 @@ public class GameManager : MonoBehaviour {
         player = Instantiate(playerPrefabs).GetComponent<Player>();
 		dataBase = Instantiate(dataBasePrefabs).GetComponent<DataBase>();
 		console = Instantiate(consolePrefabs).GetComponent<Console>();
-		colorManager = Instantiate(ColorManagerPrefabs).GetComponent<ColorManager>();
+		colorManager = Instantiate(colorManagerPrefabs).GetComponent<ColorManager>();
         pointeur = Instantiate(pointeurPrefabs);
+        soundManager = Instantiate(soundManagerPrefabs).GetComponent<SoundManager>();
 
         Initialize();
 	}
