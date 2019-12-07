@@ -109,9 +109,4 @@ public class CubeMap : MapManager {
 			return false;
 		}
 	}
-
-    public float GetVolume() {
-        return (float)(tailleMap - 1) * (tailleMap - 1) * (tailleMap - 1);
-    }
-
 }

@@ -477,6 +477,6 @@ public abstract class MapManager : MonoBehaviour {
     }
 
     public float GetVolume() {
-        return tailleMap * tailleMap * tailleMap;
+        return (float)(tailleMap - 1) * (tailleMap - 1) * (tailleMap - 1);
     }
 }

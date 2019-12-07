@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using UnityEngine.EventSystems;
+using UnityEngine.Rendering.PostProcessing;
 
 public class Player : MonoBehaviour {
 
@@ -27,6 +28,9 @@ public class Player : MonoBehaviour {
 	public float dureeMur; // le temps que l'on peut rester accroché au mur
 	public float distanceMurMax; // la distance maximale de laquelle on peut s'éloigner du mur
 	public GameObject trail; // Les trails à tracer quand le personnage est perdu !
+
+    public float changeTimeVignette = 0.1f;
+    public float intensityVignette = 0.4f;
 
 	//////////////////////////////////////////////////////////////////////////////////////
 	// ATTRIBUTS PRIVÉES
@@ -231,7 +235,42 @@ public class Player : MonoBehaviour {
 			break;
 		}
 
+        UpdatePostProcessingMovement(etatAvant);
+
 		controller.Move (move * Time.deltaTime);
+        Debug.Log(etat);
+    }
+
+    Coroutine coroutine = null;
+    protected void UpdatePostProcessingMovement(EtatPersonnage previousState) {
+        if(previousState != EtatPersonnage.AU_MUR && etat == EtatPersonnage.AU_MUR) {
+            // Activer !
+            if(coroutine != null)
+                StopCoroutine(coroutine);
+            coroutine = StartCoroutine(SetVignette(intensityVignette));
+        } else if (previousState == EtatPersonnage.AU_MUR && etat != EtatPersonnage.AU_MUR) {
+            // Désactiver !
+            if(coroutine != null)
+                StopCoroutine(coroutine);
+            coroutine = StartCoroutine(SetVignette(0.0f));
+        }
+    }
+
+    IEnumerator SetVignette(float targetValue) {
+        PostProcessVolume volume = camera.GetComponentInChildren<PostProcessVolume>();
+        Vignette vignette = volume.profile.GetSetting<Vignette>();
+
+        float debut = Time.timeSinceLevelLoad;
+        float current = Time.timeSinceLevelLoad;
+        float amountNeeded = targetValue - vignette.intensity;
+
+        while(Time.timeSinceLevelLoad - debut < changeTimeVignette) {
+            float percentToAdd = (Time.timeSinceLevelLoad - current) / changeTimeVignette;
+            float newValue = vignette.intensity + percentToAdd * amountNeeded;
+            vignette.intensity.Override(newValue);
+            current = Time.timeSinceLevelLoad;
+            yield return null;
+        }
     }
 
     // Permet de savoir la dernière fois qu'il a été en contact avec un ennemi !
@@ -309,11 +348,11 @@ public class Player : MonoBehaviour {
 				// Si on vient d'un mur, on vérifie que la normale du mur précédent est suffisamment différente de la normale actuelle !
 				Vector3 n = hit.normal;
 				if(origineSaut == EtatPersonnage.AU_SOL
-					|| (origineSaut == EtatPersonnage.AU_MUR && Vector3.Angle(normaleOrigineSaut, n) > 10)) {
+                || (origineSaut == EtatPersonnage.AU_MUR && Vector3.Angle(normaleOrigineSaut, n) > 10)) {
 
 					// Si la normale est au moins un peu à l'horizontale !
 					Vector3 nProject = Vector3.ProjectOnPlane (n, Vector3.up);
-					if (Mathf.Abs (Vector3.Angle (n, nProject)) < 45f) {
+					if (nProject != Vector3.zero && Mathf.Abs(Vector3.Angle (n, nProject)) < 45f) {
                         /*// Si on détecte une collision avec un mur, on peut s'aggriper si l'angle entre la normale
                         // au mur et le vecteur (pointDepartSaut/mur) est inférieur à 45°
                         Vector3 direction = pointDebutSaut - hit.point;
@@ -331,6 +370,7 @@ public class Player : MonoBehaviour {
         debutMur = Time.timeSinceLevelLoad;
         normaleMur = hit.normal;
         pointMur = hit.point;
+        UpdatePostProcessingMovement(previousEtat);
         //if(etat != previousEtat)
         //    gm.soundManager.PlayGripClip(audioSource);
     }
