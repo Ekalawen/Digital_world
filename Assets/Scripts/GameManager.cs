@@ -16,13 +16,14 @@ public class GameManager : MonoBehaviour {
     // ATTRIBUTS PUBLIQUES
     //////////////////////////////////////////////////////////////////////////////////////
 
-    public GameObject playerPrefabs; // On récupère le personnage !
-	public GameObject consolePrefabs; // On récupère la console !
-	public GameObject pointeurPrefabs; // Pour avoir un visuel du centre de l'écran
-	public GameObject eventManagerPrefabs; // Pour créer l'IA chargé de supervisé les ennemis !
-	public GameObject mapManagerPrefabs; // Pour gérer la map !
-	public GameObject colorManagerPrefabs; // Pour gérer les couleurs !
-	public GameObject soundManagerPrefabs; // Pour gérer les sons et musiques !
+    public GameObject playerPrefab; // On récupère le personnage !
+	public GameObject consolePrefab; // On récupère la console !
+	public GameObject pointeurPrefab; // Pour avoir un visuel du centre de l'écran
+	public GameObject eventManagerPrefab; // Pour créer l'IA chargé de supervisé les ennemis !
+	public GameObject mapManagerPrefab; // Pour gérer la map !
+	public GameObject colorManagerPrefab; // Pour gérer les couleurs !
+	public GameObject ennemiManagerPrefab; // Pour gérer les ennemis !
+	public GameObject soundManagerPrefab; // Pour gérer les sons et musiques !
 
     //////////////////////////////////////////////////////////////////////////////////////
     // ATTRIBUTS PRIVÉES
@@ -41,6 +42,8 @@ public class GameManager : MonoBehaviour {
 	[HideInInspector]
 	public ColorManager colorManager;
 	[HideInInspector]
+	public EnnemiManager ennemiManager;
+	[HideInInspector]
 	public SoundManager soundManager;
     [HideInInspector]
     public bool partieDejaTerminee = false;
@@ -57,13 +60,14 @@ public class GameManager : MonoBehaviour {
 
     void Start () {
 		// On crée ce dont on a besoin
-		map = Instantiate(mapManagerPrefabs).GetComponent<MapManager>();
-        player = Instantiate(playerPrefabs).GetComponent<Player>();
-		eventManager = Instantiate(eventManagerPrefabs).GetComponent<EventManager>();
-		console = Instantiate(consolePrefabs).GetComponent<Console>();
-		colorManager = Instantiate(colorManagerPrefabs).GetComponent<ColorManager>();
-        pointeur = Instantiate(pointeurPrefabs);
-        soundManager = Instantiate(soundManagerPrefabs).GetComponent<SoundManager>();
+		map = Instantiate(mapManagerPrefab).GetComponent<MapManager>();
+        player = Instantiate(playerPrefab).GetComponent<Player>();
+		eventManager = Instantiate(eventManagerPrefab).GetComponent<EventManager>();
+		console = Instantiate(consolePrefab).GetComponent<Console>();
+		colorManager = Instantiate(colorManagerPrefab).GetComponent<ColorManager>();
+        pointeur = Instantiate(pointeurPrefab);
+        ennemiManager = Instantiate(ennemiManagerPrefab).GetComponent<EnnemiManager>();
+        soundManager = Instantiate(soundManagerPrefab).GetComponent<SoundManager>();
 
         Initialize();
 	}
@@ -77,8 +81,9 @@ public class GameManager : MonoBehaviour {
         float angle = Vector3.SignedAngle(Vector3.forward, direction, Vector3.up);
         player.Initialize(position, new Vector2(0, angle));
         eventManager.Initialize();
-        console.Initialize();
         colorManager.Initialize();
+        ennemiManager.Initialize();
+        console.Initialize();
         soundManager.Initialize();
     }
 

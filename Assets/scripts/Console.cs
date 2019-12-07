@@ -19,7 +19,7 @@ public class Console : MonoBehaviour {
 	public Text importantText; // Là où l'on affiche les informations importantes
 
 	[HideInInspector]
-	public GameManager gameManager;
+	public GameManager gm;
 	[HideInInspector]
 	public MapManager mapManager;
 	[HideInInspector]
@@ -38,7 +38,7 @@ public class Console : MonoBehaviour {
     public void Initialize() {
 		// Initialisation des variables
 		name = "Console";
-		gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+		gm = GameObject.Find("GameManager").GetComponent<GameManager>();
 		mapManager = GameObject.Find("MapManager").GetComponent<MapManager>();
 		lines = new List<GameObject> ();
 		numLines = new List<int> ();
@@ -56,7 +56,7 @@ public class Console : MonoBehaviour {
 		AjouterMessageImportant (mapManager.lumieres.Count + " Datas trouvées ! À vous de jouer !", TypeText.ALLY_TEXT, 5);
 		AjouterMessage ("DÉTECTION INTRUSION ...", TypeText.ENNEMI_TEXT);
 		AjouterMessage ("ANTI-VIRUS ACTIVÉS DANS 5 SECONDES !", TypeText.ENNEMI_TEXT);
-		AjouterMessage ("On détecte " + mapManager.nbEnnemis + " Sondes !", TypeText.ALLY_TEXT);
+		AjouterMessage ("On détecte " + gm.ennemiManager.sondes.Count + " Sondes !", TypeText.ALLY_TEXT);
 	}
 	
 	void Update () {

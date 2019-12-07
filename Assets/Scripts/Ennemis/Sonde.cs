@@ -4,15 +4,7 @@ using UnityEngine;
 
 public class Sonde : MonoBehaviour {
 
-	//////////////////////////////////////////////////////////////////////////////////////
-	// ENUMERATION
-	//////////////////////////////////////////////////////////////////////////////////////
-
 	public enum EtatEnnemi {WAITING, TRACKING, DEFENDING, RUSHING};
-
-	//////////////////////////////////////////////////////////////////////////////////////
-	// ATTRIBUTS PUBLIQUES
-	//////////////////////////////////////////////////////////////////////////////////////
 
 	public float vitesseMin; // On veut une vitesse aléatoire comprise
 	public float vitesseMax; // entre min et max !
@@ -21,51 +13,29 @@ public class Sonde : MonoBehaviour {
 	public float distanceDeDetection; // La distance à partir de laquelle le probe peut pourchasser l'ennemi
 	public float coefficiantDeRushVitesse; // Le multiplicateur de vitesse lorsque les drones rushs
 	public float coefficiantDeRushDistanceDeDetection; // Le multiplicateur de la portée de détection quand on est en rush
+    public float tempsInactifDebutJeu; // Le temps pendant lequel la sonde n'agira pas en début de partie
 
-	//////////////////////////////////////////////////////////////////////////////////////
-	// ATTRIBUTS PRIVÉES
-	//////////////////////////////////////////////////////////////////////////////////////
-
-	[HideInInspector]
-	public GameManager gameManager;
-	[HideInInspector]
-	public GameObject player;
+	protected GameManager gm;
+	protected Player player;
 	[HideInInspector]
 	public CharacterController controller;
-	[HideInInspector]
-	public EventManager dataBase; // La dataBase qui envoie les ordres
-	[HideInInspector]
-	public Console console; // la console
-	[HideInInspector]
-	private EtatEnnemi etat;
-	private Vector3 lastPositionSeen; // La dernière position à laquelle le joueur a été vu !
-	private float vitesse;
-    [HideInInspector]
-    public Vector3 positionGrilleDefense; // La position de la grille de défense !
+	protected EtatEnnemi etat;
+	protected Vector3 lastPositionSeen; // La dernière position à laquelle le joueur a été vu !
+	protected float vitesse;
 
 	private Vector3 pousee; // Lorsque le personnage est poussé
 	private float debutPousee; // Le début de la poussée
 	private float tempsPousee; // Le temps pendant lequel le personnage reçoit cette poussée
 
-
-	//////////////////////////////////////////////////////////////////////////////////////
-	// METHODES
-	//////////////////////////////////////////////////////////////////////////////////////
-
 	void Start () {
 		// Initialisation
 		name = "Sonde_" + Random.Range (0, 9999);
-		gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-		player = GameObject.Find ("Joueur");
+		gm = GameObject.Find("GameManager").GetComponent<GameManager>();
+        player = gm.player;
 		controller = this.GetComponent<CharacterController> ();
-        //dataBase = EventManager.Instance;
-		console = GameObject.Find ("Console").GetComponent<Console> ();
 		etat = EtatEnnemi.WAITING;
 		lastPositionSeen = transform.position;
-		vitesse = Mathf.Exp(Random.Range (Mathf.Log(vitesseMin), Mathf.Log(vitesseMax)));
-
-        //// L'ennemi doit se renseigner auprès de la database !
-        //dataBase.sondes.Add(this);
+		vitesse = Mathf.Exp(Random.Range(Mathf.Log(vitesseMin), Mathf.Log(vitesseMax)));
 	}
 	
 	// Update is called once per frame
@@ -75,76 +45,32 @@ public class Sonde : MonoBehaviour {
             return;
         }
 
-        getEtat();
+        GetEtat();
 
-		// Tant que l'ennemi n'est pas visible et/ou trop proche, on reste sur place
-		// Sinon on le pourchasse !
-		Vector3 direction;
-		Vector3 finalMouvement;
-		switch (etat) {
-		case EtatEnnemi.WAITING:
-			// On va là où on a vu le joueur pour la dernière fois !
-			direction = lastPositionSeen - transform.position;
-			direction.Normalize ();
+        // Tant que l'ennemi n'est pas visible et/ou trop proche, on reste sur place
+        // Sinon on le pourchasse !
+        if (Time.timeSinceLevelLoad >= tempsInactifDebutJeu) {
+            switch (etat) {
+                case EtatEnnemi.WAITING:
+                    // On va là où on a vu le joueur pour la dernière fois !
+                    Vector3 move = Move(lastPositionSeen);
 
-			// Si c'est trop long, on ajuste
-			if (Vector3.Magnitude(direction * vitesse * Time.deltaTime) > Vector3.Magnitude(lastPositionSeen - transform.position)) {
-				finalMouvement = lastPositionSeen - transform.position;
-			} else {
-				finalMouvement = direction * vitesse * Time.deltaTime;
-			}
-			controller.Move(finalMouvement);
+                    // Si le mouvement est trop petit, c'est que l'on est bloqué, donc on arrête le mouvement en lui ordonnant d'aller sur place
+                    if (Vector3.Magnitude(move) <= 0.001f && Vector3.Magnitude(move) != 0f)
+                    {
+                        lastPositionSeen = transform.position;
+                    }
+                    break;
 
-			// Si le mouvement est trop petit, c'est que l'on est bloqué, donc on arrête le mouvement
-			if(Vector3.Magnitude(finalMouvement) <= 0.001f && Vector3.Magnitude(finalMouvement) != 0f) {
-				lastPositionSeen = transform.position;
-			}
-			break;
+                case EtatEnnemi.TRACKING:
+                    // Les ennemis se déplacent toujours vers le joueur de façon tout à fait linéaire !		
+                    Move(player.transform.position);
 
-		case EtatEnnemi.TRACKING:
-			// Les ennemis se déplacent toujours vers le joueur de façon tout à fait linéaire !		
-			direction = player.transform.position - transform.position;
-			direction.Normalize ();
-
-			controller.Move (direction* vitesse * Time.deltaTime);
-			// Et on retient la position actuelle du joueur !
-			lastPositionSeen = player.transform.position;
-			break;
-
-		case EtatEnnemi.DEFENDING:
-            // En défensif, dès qu'on perd le joueur de vue, on rentre à la maison :D
-            // On va tout en haut pour empêcher le joueur de sortir !
-            Vector3 cible = positionGrilleDefense;
-            direction = cible - transform.position;
-			direction.Normalize ();
-			direction *= coefficiantDeRushVitesse;
-
-			// Si c'est trop long, on ajuste
-			if (Vector3.Magnitude(direction * vitesse * Time.deltaTime) > Vector3.Magnitude(cible - transform.position)) {
-				finalMouvement = cible - transform.position;
-			} else {
-				finalMouvement = direction * vitesse * Time.deltaTime;
-			}
-			controller.Move(finalMouvement);
-
-			// Si le mouvement est trop petit, c'est que l'on est bloqué, donc on arrête le mouvement
-			if(Vector3.Magnitude(finalMouvement) <= 0.01f && Vector3.Magnitude(finalMouvement) != 0f) {
-				Debug.Log("On arrête les petits mouvements");
-				lastPositionSeen = transform.position;
-			}
-			break;
-
-		case EtatEnnemi.RUSHING:
-			// Les ennemis se déplacent toujours vers le joueur de façon tout à fait linéaire !		
-			direction = player.transform.position - transform.position;
-			direction.Normalize ();
-			direction*= coefficiantDeRushVitesse;
-
-			controller.Move (direction* vitesse * Time.deltaTime);
-			// Et on retient la position actuelle du joueur !
-			lastPositionSeen = player.transform.position;
-			break;
-		}
+                    // Et on retient la position actuelle du joueur !
+                    lastPositionSeen = player.transform.position;
+                    break;
+            }
+        }
 
         // On pousse !
 		if (Time.timeSinceLevelLoad - debutPousee < tempsPousee) {
@@ -153,64 +79,32 @@ public class Sonde : MonoBehaviour {
 	}
 
     // On récupère l'état dans lequel doit être notre sonde
-    void getEtat() {
-        //EventManager.EtatDataBase etatDataBase = dataBase.DemanderOrdre();
-        //switch(etatDataBase) {
-        //    case EventManager.EtatDataBase.NORMAL:
-                // On regarde si le joueur est visible
-                if(Time.timeSinceLevelLoad >= 10f && IsPlayerVisible(/*etatDataBase*/)) {
-                    // Si la sonde vient juste de le repérer, on l'annonce
-                    if (etat == EtatEnnemi.WAITING) {
-                        console.JoueurDetecte(name);
-                    }
-                    etat = EtatEnnemi.TRACKING;
-                } else {
-                    // Si la sonde vient juste de perdre sa trace, on l'annonce
-                    if (etat == EtatEnnemi.TRACKING) {
-                        console.JoueurPerduDeVue(name);
-                    }
-                    etat = EtatEnnemi.WAITING;
-                }
-        //        break;
-        //    case EventManager.EtatDataBase.DEFENDING:
-        //        // On regarde si le joueur est visible
-        //        if(IsPlayerVisible(etatDataBase)) {
-        //            // Si la sonde vient juste de le repérer, on l'annonce
-        //            if (etat == EtatEnnemi.DEFENDING) {
-        //                console.JoueurDetecte(name);
-        //            }
-        //            etat = EtatEnnemi.RUSHING;
-        //        } else {
-        //            // Si la sonde vient juste de perdre sa trace, on l'annonce
-        //            if (etat == EtatEnnemi.RUSHING) {
-        //                console.JoueurPerduDeVue(name);
-        //            }
-        //            etat = EtatEnnemi.DEFENDING;
-        //        }
-        //        break;
-        //}
-    }
-
-    // Permet de savoir si la sonde voit le joueur
-    public bool IsPlayerVisible(/*EventManager.EtatDataBase etatDataBase*/) {
-        // On calcul la distance de détection
-        float distance = distanceDeDetection;
-        //if(etatDataBase == EventManager.EtatDataBase.DEFENDING) {
-        //    distance *= coefficiantDeRushDistanceDeDetection;
-        //}
-
-        // Si l'ennemie est suffisament proche et qu'il est visible !
-        RaycastHit hit;
-        Ray ray = new Ray (transform.position, player.transform.position - transform.position);
-        if(Physics.Raycast(ray, out hit, distance) && hit.collider.name == "Joueur") {
-            return true;
+    void GetEtat() {
+        if(IsPlayerVisible()) {
+            EtatEnnemi previousEtat = etat;
+            etat = EtatEnnemi.TRACKING;
+            // Si la sonde vient juste de le repérer, on l'annonce
+            if(etat != previousEtat)
+                gm.console.JoueurDetecte(name);
         } else {
-            return false;
+            EtatEnnemi previousEtat = etat;
+            etat = EtatEnnemi.WAITING;
+            // Si la sonde vient juste de perdre sa trace, on l'annonce
+            if (etat != previousEtat)
+                gm.console.JoueurPerduDeVue(name);
         }
     }
 
+    // Permet de savoir si la sonde voit le joueur
+    public bool IsPlayerVisible() {
+        // Si l'ennemie est suffisament proche et qu'il est visible !
+        RaycastHit hit;
+        Ray ray = new Ray (transform.position, player.transform.position - transform.position);
+        return Physics.Raycast(ray, out hit, distanceDeDetection) && hit.collider.name == "Joueur";
+    }
+
 	// Permet de savoir si le drone est en mouvement
-	public bool isMoving() {
+	public bool IsMoving() {
 		return (etat == EtatEnnemi.TRACKING || etat == EtatEnnemi.RUSHING) || Vector3.Distance(lastPositionSeen, transform.position) > 1f;
 	}
 
@@ -219,20 +113,34 @@ public class Sonde : MonoBehaviour {
 		if (hit.collider.name == "Joueur") {
 			// Si c'est le cas, on l'envoie ballader !
 			Vector3 directionPoussee = hit.collider.transform.position - transform.position;
-			directionPoussee.Normalize ();
-			hit.collider.GetComponent<Player> ().EtrePoussee (directionPoussee * puissancePoussee, tempsPouseePersonnage);
+			directionPoussee.Normalize();
+            player.EtrePoussee(directionPoussee * puissancePoussee, tempsPouseePersonnage);
 
 			// Et on affiche un message dans la console !
-			if (!gameManager.partieDejaTerminee) {
-				console.JoueurTouche();
+			if (!gm.partieDejaTerminee) {
+				gm.console.JoueurTouche();
 			}
 		}
 	}
 
     // Permet à d'autres éléments de pousser la sonde
-	public void etrePoussee(Vector3 directionPoussee, float tempsDeLaPousee) {
+	public void EtrePoussee(Vector3 directionPoussee, float tempsDeLaPousee) {
 		pousee = directionPoussee;
 		tempsPousee = tempsDeLaPousee;
 		debutPousee = Time.timeSinceLevelLoad;
 	}
+
+    protected Vector3 Move(Vector3 target) {
+        Vector3 direction = (target - transform.position).normalized;
+        Vector3 finalMouvement = direction * vitesse * Time.deltaTime;
+
+        // Si c'est trop long, on ajuste
+        if (Vector3.Magnitude(finalMouvement) > Vector3.Distance(transform.position, target)) {
+            finalMouvement = target - transform.position;
+        }
+
+        controller.Move(finalMouvement);
+
+        return finalMouvement;
+    }
 }

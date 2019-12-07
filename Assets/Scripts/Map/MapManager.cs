@@ -475,4 +475,8 @@ public abstract class MapManager : MonoBehaviour {
                         allPos.Add(new Vector3(i, j, k));
         return allPos;
     }
+
+    public float GetVolume() {
+        return tailleMap * tailleMap * tailleMap;
+    }
 }

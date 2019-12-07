@@ -5,24 +5,30 @@ using UnityEngine;
 public class EnnemiManager : MonoBehaviour {
 
 
-	//// public enum EtatDataBase {NORMAL, DEFENDING};
+    //// public enum EtatDataBase {NORMAL, DEFENDING};
 
-	////public GameObject ennemiPrefabs; // On récupère un ennemi !
+    public GameObject sondePrefab; // On récupère la sonde !
+    public float proportionSondes;
 
-	//[HideInInspector]
-	//public List<Sonde> sondes; // Elle connait tous les drones !
-	//[HideInInspector]
-	//public Sonde.EtatEnnemi etatDrones; // Permet de donner des ordres aux drones
+    [HideInInspector]
+    public List<Sonde> sondes; // Elle connait toutes les sondes
 
-    /// <summary>
-    ///  TODO ==> Reprendre ce code !
-    /// </summary>
-	//void generateEnnemies() {
-	//	nbEnnemis = (int) Mathf.Ceil(volumeMap * proportionEnnemis);
-	//	for (int i = 0; i < nbEnnemis; i++) {
-	//		Vector3 posEnnemi = new Vector3 (Random.Range (1f, tailleMap - 1f), Random.Range (1f, tailleMap - 1f), Random.Range (1f, tailleMap - 1f)); 
-	//		Instantiate (ennemiPrefabs, posEnnemi, Quaternion.identity);
-	//	}
-	//}
+    protected GameManager gm;
+
+    public void Initialize() {
+        gm = GameManager.Instance;
+
+        GenerateEnnemies();
+    }
+
+    void GenerateEnnemies() {
+        sondes = new List<Sonde>();
+        int nbSondes = (int)Mathf.Ceil(gm.map.GetVolume() * proportionSondes);
+        for (int i = 0; i < nbSondes; i++) {
+            Vector3 posSonde = gm.map.GetFreeSphereLocation(1.0f);
+            Sonde sonde = Instantiate(sondePrefab, posSonde, Quaternion.identity).GetComponent<Sonde>();
+            sondes.Add(sonde);
+        }
+    }
 
 }

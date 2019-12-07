@@ -9,6 +9,7 @@ public class GameManagerTutorial : GameManager {
         player.Initialize(new Vector3(5, 5, 5), new Vector2(0, 90));
         eventManager.Initialize();
         console.Initialize();
+        //ennemiManager.Initialize();
         soundManager.Initialize();
     }
 }
