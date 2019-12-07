@@ -28,6 +28,7 @@ public class CubeMap : MapManager {
         int N = mapContainer.GetCubes().Count;
         float P = proportionSourcePont;
         int nbSources = (int)Mathf.Round(GaussianGenerator.Next(N * P, N * P * (P - 1), 0, N));
+        Debug.Log("nombre de sources de ponts = " + nbSources);
         for (int i = 0; i < nbSources; i++)
         {
             Cube cube = mapContainer.GetCubes()[Random.Range(0, N)];

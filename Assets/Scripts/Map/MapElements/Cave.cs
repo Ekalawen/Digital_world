@@ -103,15 +103,17 @@ public class Cave : CubeEnsemble
         ptsCibles.Remove(depart);
         while (ptsCibles.Count > 0) {
             Vector3 debutChemin = ptsAtteints[Random.Range(0, ptsAtteints.Count)];
+            //Vector3 debutChemin = ptsAtteints[0];
             Vector3 finChemin = ptsCibles[Random.Range(0, ptsCibles.Count)];
-            RelierChemin(debutChemin, finChemin);
+            RelierChemin(cubeMatrix, map, debutChemin, finChemin);
             ptsCibles.Remove(finChemin);
             ptsAtteints.Add(finChemin);
+            //ptsAtteints[0] = finChemin;
         }
     }
 
 	// Le but de cette fonction est de creuser un tunel allant de debutChemin a finChemin !
-	protected void RelierChemin(Vector3 debutChemin, Vector3 finChemin) {
+	public static void RelierChemin(Cube[,,] cubeMatrix, MapManager map, Vector3 debutChemin, Vector3 finChemin) {
 		Vector3 pointsActuel = debutChemin;
 		while (pointsActuel != finChemin) {
 			// On creuse
@@ -163,8 +165,7 @@ public class Cave : CubeEnsemble
                 Random.Range(1, nbCubesParAxe.z - 1));
         }
         posLumiere += depart;
-        Lumiere lumiere = GameObject.Instantiate(map.lumierePrefab, posLumiere, Quaternion.identity).GetComponent<Lumiere>();
-        map.lumieres.Add(lumiere);
+        map.CreateLumiere(posLumiere, Lumiere.LumiereType.NORMAL);
     }
 
     public void AddAllLumiereInside() {
@@ -172,10 +173,9 @@ public class Cave : CubeEnsemble
             for (int j = 0; j < nbCubesParAxe.y; j++) {
                 for (int k = 0; k < nbCubesParAxe.z; k++) {
                     if(cubeMatrix[i, j, k] == null) {
-                        Vector3 posObjectif = new Vector3(i, j, k);
-                        posObjectif += depart;
-                        Lumiere lumiere = GameObject.Instantiate(map.lumierePrefab, posObjectif, Quaternion.identity).GetComponent<Lumiere>();
-                        map.lumieres.Add(lumiere);
+                        Vector3 posLumiere = new Vector3(i, j, k);
+                        posLumiere += depart;
+                        map.CreateLumiere(posLumiere, Lumiere.LumiereType.NORMAL);
                     }
                 }
             }

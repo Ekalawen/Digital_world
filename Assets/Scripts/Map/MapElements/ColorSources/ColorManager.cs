@@ -24,10 +24,13 @@ public class ColorManager : MonoBehaviour {
 
         // Si c'est random, alors on relance ! :)
         for (int i = 0; i < themes.Count; i++) {
-            if (themes[i] == ColorSource.ThemeSource.RANDOM)
-            {
+            if (themes[i] == ColorSource.ThemeSource.RANDOM) {
                 System.Array enumValues = System.Enum.GetValues(typeof(ColorSource.ThemeSource));
                 themes[i] = (ColorSource.ThemeSource)enumValues.GetValue(Random.Range(0, (int)ColorSource.ThemeSource.RANDOM));
+                while (themes[i] == ColorSource.ThemeSource.NOIR) { // On veut pas du noir ! x)
+                    enumValues = System.Enum.GetValues(typeof(ColorSource.ThemeSource));
+                    themes[i] = (ColorSource.ThemeSource)enumValues.GetValue(Random.Range(0, (int)ColorSource.ThemeSource.RANDOM));
+                }
             }
         }
 

@@ -6,7 +6,6 @@ using UnityEngine;
 // Cela va de la coordination des Drones, à la génération d'évenements néffastes.
 public class EventManager : MonoBehaviour {
 
-    public GameObject finalLightPrefab;
     public float endGameDuration = 20.0f;
     public float endGameFrameRate = 0.2f;
 
@@ -39,7 +38,7 @@ public class EventManager : MonoBehaviour {
         while(Vector3.Distance(gm.player.transform.position, posLumiere) >= gm.map.tailleMap * 0.9f) {
             posLumiere = map.GetFreeSphereLocation(minRadius);
         }
-        Lumiere finalLight = Instantiate(finalLightPrefab, posLumiere, Quaternion.identity).GetComponent<Lumiere>();
+        Lumiere finalLight = map.CreateLumiere(posLumiere, Lumiere.LumiereType.FINAL); // Attention à la position qui est arrondi ici !
 
         gm.player.FreezeLocalisation();
 

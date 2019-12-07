@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System.Linq;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,6 +11,7 @@ public abstract class MapManager : MonoBehaviour {
 	public GameObject deathCubePrefab; // On récupère ce qu'est qu'un cube de la mort ! :)
 	public GameObject indestructibleCubePrefab; // On récupère ce qu'est qu'un cube indestructible ! :)
 	public GameObject lumierePrefab; // On récupère les lumières !
+	public GameObject lumiereFinalePrefab; // On récupère les lumières finales !
 	public GameObject ennemiPrefabs; // On récupère un ennemi !
 
 	public int tailleMap; // La taille de la map, en largeur, hauteur et profondeur
@@ -257,6 +259,27 @@ public abstract class MapManager : MonoBehaviour {
         return cubes;
     }
 
+    public Lumiere CreateLumiere(Vector3 pos, Lumiere.LumiereType type) {
+        // On arrondie les positions pour être à une valeur entière :)
+        // C'EST TRES IMPORTANT QUE CES POSITIONS SOIENT ENTIERES !!! (pour vérifier qu'elles sont accessibles)
+        pos = MathTools.Round(pos);
+
+        Lumiere lumiere = GameObject.Instantiate(GetPrefab(type), pos, Quaternion.identity).GetComponent<Lumiere>();
+        lumieres.Add(lumiere);
+        return lumiere;
+    }
+
+    protected GameObject GetPrefab(Lumiere.LumiereType type) {
+        switch(type)
+        {
+            case Lumiere.LumiereType.NORMAL:
+                return lumierePrefab;
+            case Lumiere.LumiereType.FINAL:
+                return lumiereFinalePrefab;
+        }
+        return null;
+    }
+
 	// Crée un mur constitué de cubes entre les 4 coins que constitue les indices
 	protected void RemplirFace(int indVertx1, int indVertx2, int indVertx3, int indVertx4, Vector3[] pos) {
 		Vector3 depart = pos [indVertx1];
@@ -369,9 +392,79 @@ public abstract class MapManager : MonoBehaviour {
     }
 
     protected void LinkUnreachableLumiereToRest() {
-        // TODO !
+        // Trouver un point accessible
+        Vector3 reachablePoint = MathTools.Round(GetFreeBoxLocation(Vector3.one * 1.0f));
+        while(cubesRegular[(int)reachablePoint.x, (int)reachablePoint.y, (int)reachablePoint.z] != null) {
+            reachablePoint = MathTools.Round(GetFreeBoxLocation(Vector3.one * 1.0f));
+        }
+
+        // Propager ce point à travers tout le niveau
+        List<Vector3> reachableArea = PropagateInFreeSpace(reachablePoint);
+
+        // Vérifier si les lumières sont dans cette zone, si elles ne le sont pas, elles sont inaccessibles
+        foreach(Lumiere lumiere in lumieres) {
+            if(!reachableArea.Contains(lumiere.transform.position)) {
+                // Les linker au reste
+                // Trouver la case de la zone la plus proche d'elle
+                Debug.Log("On tente de libérer une lumière inaccessible !");
+                Vector3 posLumiere = lumiere.transform.position;
+                Vector3 closestPosition = reachableArea.Aggregate( // Tout est normal :)
+                    System.Tuple.Create(Vector3.zero, float.PositiveInfinity),
+                    delegate (System.Tuple<Vector3, float> best, Vector3 next) {
+                        float dist = Vector3.Distance(posLumiere, next);
+                        return dist < best.Item2 ? System.Tuple.Create(next, dist) : best;
+                    },
+                    (result) => result.Item1);
+                // Les relier ! :)
+                Cave.RelierChemin(cubesRegular, this, posLumiere, closestPosition);
+            }
+        }
+
     }
 
+    public List<Vector3> PropagateInFreeSpace(Vector3 startPos) {
+        startPos = MathTools.Round(startPos);
+
+        Stack<Vector3> open = new Stack<Vector3>();
+        Stack<Vector3> closed = new Stack<Vector3>();
+
+        open.Push(startPos);
+        while(open.Count > 0) {
+            Vector3 current = open.Pop();
+            List<Vector3> voisins = GetVoisinsLibres(current);
+            foreach (Vector3 v in voisins) {
+                if(!open.Contains(v) && !closed.Contains(v))
+                    open.Push(v);
+            }
+            closed.Push(current);
+        }
+
+        return new List<Vector3>(closed);
+    }
+
+    protected List<Vector3> GetVoisinsLibres(Vector3 pos) {
+        List<Vector3> res = new List<Vector3>();
+        int i = (int)pos.x, j = (int)pos.y, k = (int)pos.z;
+        // DROITE
+        if (IsInRegularMap(new Vector3(i + 1, j, k)) && cubesRegular[i + 1, j, k] == null)
+            res.Add(new Vector3(i + 1, j, k));
+        // GAUCHE
+        if (IsInRegularMap(new Vector3(i - 1, j, k)) && cubesRegular[i - 1, j, k] == null)
+            res.Add(new Vector3(i - 1, j, k));
+        // HAUT
+        if (IsInRegularMap(new Vector3(i, j + 1, k)) && cubesRegular[i, j + 1, k] == null)
+            res.Add(new Vector3(i, j + 1, k));
+        // BAS
+        if (IsInRegularMap(new Vector3(i, j - 1, k)) && cubesRegular[i, j - 1, k] == null)
+            res.Add(new Vector3(i, j - 1, k));
+        // DEVANT
+        if (IsInRegularMap(new Vector3(i, j, k + 1)) && cubesRegular[i, j, k + 1] == null)
+            res.Add(new Vector3(i, j, k + 1));
+        // DERRIRE
+        if (IsInRegularMap(new Vector3(i, j, k - 1)) && cubesRegular[i, j, k - 1] == null)
+            res.Add(new Vector3(i, j, k - 1));
+        return res;
+    }
 
     public List<Vector3> GetAllEmptyPositions() {
         List<Vector3> allPos = new List<Vector3>();

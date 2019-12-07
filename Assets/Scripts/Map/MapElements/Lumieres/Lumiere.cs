@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class Lumiere : MonoBehaviour {
 
+    public enum LumiereType { NORMAL, FINAL };
+
+    public LumiereType type;
+
     protected GameManager gm;
     protected AudioSource source;
 
