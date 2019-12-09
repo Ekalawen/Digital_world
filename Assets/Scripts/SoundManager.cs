@@ -10,6 +10,7 @@ public class SoundManager : MonoBehaviour {
     public List<AudioClip> createCubeClips;
     public List<AudioClip> getLumiereClips;
     public List<AudioClip> failActionClips;
+    public List<AudioClip> hitClips;
 
     public List<AudioClip> normalMusics;
     public List<AudioClip> endGameMusics;
@@ -35,6 +36,10 @@ public class SoundManager : MonoBehaviour {
     }
     public void PlayFailActionClip() {
         PlayClipsOnSource(failActionClips, instantSource);
+    }
+    public void PlayHitClip(AudioSource source) {
+        if(!source.isPlaying)
+            PlayClipsOnSource(hitClips, source);
     }
     public void PlayGetLumiereClip(Vector3 pos) {
         AudioSource source = new GameObject().AddComponent<AudioSource>();

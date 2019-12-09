@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour {
 	public GameObject colorManagerPrefab; // Pour gérer les couleurs !
 	public GameObject ennemiManagerPrefab; // Pour gérer les ennemis !
 	public GameObject soundManagerPrefab; // Pour gérer les sons et musiques !
+    public GameObject postProcessManagerPrefab; // Pour gérer les posteffects !
 
     //////////////////////////////////////////////////////////////////////////////////////
     // ATTRIBUTS PRIVÉES
@@ -45,6 +46,8 @@ public class GameManager : MonoBehaviour {
 	public EnnemiManager ennemiManager;
 	[HideInInspector]
 	public SoundManager soundManager;
+    [HideInInspector]
+    public PostProcessManager postProcessManager;
     [HideInInspector]
     public bool partieDejaTerminee = false;
     [HideInInspector]
@@ -68,6 +71,7 @@ public class GameManager : MonoBehaviour {
         pointeur = Instantiate(pointeurPrefab);
         ennemiManager = Instantiate(ennemiManagerPrefab).GetComponent<EnnemiManager>();
         soundManager = Instantiate(soundManagerPrefab).GetComponent<SoundManager>();
+        postProcessManager = Instantiate(postProcessManagerPrefab).GetComponent<PostProcessManager>();
 
         Initialize();
 	}
@@ -85,6 +89,7 @@ public class GameManager : MonoBehaviour {
         ennemiManager.Initialize();
         console.Initialize();
         soundManager.Initialize();
+        postProcessManager.Initialize();
     }
 
 	// Update is called once per frame

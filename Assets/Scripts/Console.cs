@@ -320,4 +320,9 @@ public class Console : MonoBehaviour {
     public void PouvoirBridgeBuilderInvalide() {
         AjouterMessageImportant("Ce n'est pas une cible valide !", TypeText.ENNEMI_TEXT, 1f);
     }
+
+    // Lorsque le joueur rentre dans l'EndGame
+    public void StartEndGame() {
+        AjouterMessageImportant("Faut trouver la sortie maintenant !", TypeText.ALLY_TEXT, 1f);
+    }
 }

@@ -29,9 +29,6 @@ public class Player : MonoBehaviour {
 	public float distanceMurMax; // la distance maximale de laquelle on peut s'éloigner du mur
 	public GameObject trail; // Les trails à tracer quand le personnage est perdu !
 
-    public float changeTimeVignette = 0.1f;
-    public float intensityVignette = 0.4f;
-
 	//////////////////////////////////////////////////////////////////////////////////////
 	// ATTRIBUTS PRIVÉES
 	//////////////////////////////////////////////////////////////////////////////////////
@@ -235,42 +232,9 @@ public class Player : MonoBehaviour {
 			break;
 		}
 
-        UpdatePostProcessingMovement(etatAvant);
+        gm.postProcessManager.UpdateGripEffect(etatAvant);
 
 		controller.Move (move * Time.deltaTime);
-        Debug.Log(etat);
-    }
-
-    Coroutine coroutine = null;
-    protected void UpdatePostProcessingMovement(EtatPersonnage previousState) {
-        if(previousState != EtatPersonnage.AU_MUR && etat == EtatPersonnage.AU_MUR) {
-            // Activer !
-            if(coroutine != null)
-                StopCoroutine(coroutine);
-            coroutine = StartCoroutine(SetVignette(intensityVignette));
-        } else if (previousState == EtatPersonnage.AU_MUR && etat != EtatPersonnage.AU_MUR) {
-            // Désactiver !
-            if(coroutine != null)
-                StopCoroutine(coroutine);
-            coroutine = StartCoroutine(SetVignette(0.0f));
-        }
-    }
-
-    IEnumerator SetVignette(float targetValue) {
-        PostProcessVolume volume = camera.GetComponentInChildren<PostProcessVolume>();
-        Vignette vignette = volume.profile.GetSetting<Vignette>();
-
-        float debut = Time.timeSinceLevelLoad;
-        float current = Time.timeSinceLevelLoad;
-        float amountNeeded = targetValue - vignette.intensity;
-
-        while(Time.timeSinceLevelLoad - debut < changeTimeVignette) {
-            float percentToAdd = (Time.timeSinceLevelLoad - current) / changeTimeVignette;
-            float newValue = vignette.intensity + percentToAdd * amountNeeded;
-            vignette.intensity.Override(newValue);
-            current = Time.timeSinceLevelLoad;
-            yield return null;
-        }
     }
 
     // Permet de savoir la dernière fois qu'il a été en contact avec un ennemi !
@@ -370,7 +334,7 @@ public class Player : MonoBehaviour {
         debutMur = Time.timeSinceLevelLoad;
         normaleMur = hit.normal;
         pointMur = hit.point;
-        UpdatePostProcessingMovement(previousEtat);
+        gm.postProcessManager.UpdateGripEffect(previousEtat);
         //if(etat != previousEtat)
         //    gm.soundManager.PlayGripClip(audioSource);
     }
@@ -441,6 +405,10 @@ public class Player : MonoBehaviour {
 
     public void FreezeLocalisation() {
         bCanUseLocalisation = false;
+    }
+
+    public EtatPersonnage GetEtat() {
+        return etat;
     }
 }
 

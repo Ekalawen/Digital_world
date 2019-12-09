@@ -111,17 +111,27 @@ public class Sonde : MonoBehaviour {
 	// On vérifie si on a touché le joueur !!!
 	void OnControllerColliderHit(ControllerColliderHit hit) {
 		if (hit.collider.name == "Joueur") {
-			// Si c'est le cas, on l'envoie ballader !
-			Vector3 directionPoussee = hit.collider.transform.position - transform.position;
-			directionPoussee.Normalize();
-            player.EtrePoussee(directionPoussee * puissancePoussee, tempsPouseePersonnage);
-
-			// Et on affiche un message dans la console !
-			if (!gm.partieDejaTerminee) {
-				gm.console.JoueurTouche();
-			}
+            HitPlayer();
 		}
 	}
+
+    protected void HitPlayer() {
+        // Si c'est le cas, on l'envoie ballader !
+        Vector3 directionPoussee = player.transform.position - transform.position;
+        directionPoussee.Normalize();
+        player.EtrePoussee(directionPoussee * puissancePoussee, tempsPouseePersonnage);
+
+        // Le son
+        gm.soundManager.PlayHitClip(GetComponentInChildren<AudioSource>());
+
+        // Effet de vignette rouge
+        gm.postProcessManager.UpdateHitEffect();
+
+        // Et on affiche un message dans la console !
+        if (!gm.partieDejaTerminee) {
+            gm.console.JoueurTouche();
+        }
+    }
 
     // Permet à d'autres éléments de pousser la sonde
 	public void EtrePoussee(Vector3 directionPoussee, float tempsDeLaPousee) {

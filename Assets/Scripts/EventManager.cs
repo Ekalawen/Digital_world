@@ -31,9 +31,11 @@ public class EventManager : MonoBehaviour {
 
     protected void StartEndGame() {
         isEndGameStarted = true;
+
         // On crée la finaleLight
         float minRadius = 0.5f + Mathf.Sqrt(3) / 2.0f; // La demi taille de la sphère + la demi-diagonale d'un cube
         Vector3 posLumiere = map.GetFreeSphereLocation(minRadius);
+
         // On évite que la lumière soit trop loin, car sinon on peut insta-die !
         while(Vector3.Distance(gm.player.transform.position, posLumiere) >= gm.map.tailleMap * 0.9f) {
             posLumiere = map.GetFreeSphereLocation(minRadius);
@@ -41,6 +43,8 @@ public class EventManager : MonoBehaviour {
         Lumiere finalLight = map.CreateLumiere(posLumiere, Lumiere.LumiereType.FINAL); // Attention à la position qui est arrondi ici !
 
         gm.player.FreezeLocalisation();
+
+        gm.console.StartEndGame();
 
         // On lance la création des blocks de la mort !
         Coroutine coroutine = StartCoroutine(FillMapWithDeathCubes(finalLight.transform.position));

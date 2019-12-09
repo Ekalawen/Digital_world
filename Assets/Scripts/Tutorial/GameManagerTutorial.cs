@@ -11,5 +11,6 @@ public class GameManagerTutorial : GameManager {
         console.Initialize();
         //ennemiManager.Initialize();
         soundManager.Initialize();
+        postProcessManager.Initialize();
     }
 }
