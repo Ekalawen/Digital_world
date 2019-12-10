@@ -57,6 +57,7 @@ public class Player : MonoBehaviour {
 	private float debutMur; // le timing où le personnage a commencé à s'accrocher au mur !
 	private Vector3 normaleMur; // la normale au mur sur lequel le personnage est accroché !
 	private Vector3 pointMur; // un point du mur sur lequel le personnage est accroché ! En effet, la normale ne suffit pas :p
+    private float dureeMurRestante; // Le temps qu'il nous reste à être accroché au mur (utile pour les shifts qui peuvent nous décrocher)
 
 	private Vector3 pousee; // Lorsque le personnage est poussé
 	private float debutPousee; // Le début de la poussée
@@ -180,6 +181,7 @@ public class Player : MonoBehaviour {
 				// Petit débuggage pour empêcher l'alternance entre AU_SOL et EN_CHUTE !
 				move.y -= gravite;
 			}
+            dureeMurRestante = dureeMur;
 			break;
 
 		case EtatPersonnage.EN_SAUT:
@@ -197,22 +199,25 @@ public class Player : MonoBehaviour {
 				pointDebutSaut = transform.position;
 				origineSaut = EtatPersonnage.AU_SOL;
 				normaleOrigineSaut = normaleMur;
+                dureeMurRestante = dureeMurRestante - (Time.timeSinceLevelLoad - debutMur);
 			// On peut encore sauter quand on est au mur ! 
 			} else if (Input.GetButtonDown ("Jump")) { // Mais il faut appuyer à nouveau !
                 Jump(from: EtatPersonnage.AU_MUR);
                 move = ApplyJumpMouvement(move);
+                dureeMurRestante = dureeMur;
 			} else if (Input.GetButton ("Jump")) { // On a le droit de terminer son saut lorsqu'on touche un mur
                 move = ApplyJumpMouvement(move);
 			}
 			// Si ça fait trop longtemps qu'on est sur le mur
 			// Ou que l'on s'éloigne trop du mur on tombe
 			float distanceMur = ((transform.position - pointMur) - Vector3.ProjectOnPlane ((transform.position - pointMur), normaleMur)).magnitude; // pourtant c'est clair non ? Fais un dessins si tu comprends pas <3
-			if ((Time.timeSinceLevelLoad - debutMur) >= dureeMur
+			if ((Time.timeSinceLevelLoad - debutMur) >= dureeMurRestante
 			    || distanceMur >= distanceMurMax) {
 				etat = EtatPersonnage.EN_CHUTE;
 				pointDebutSaut = transform.position;
 				origineSaut = EtatPersonnage.AU_MUR;
 				normaleOrigineSaut = normaleMur;
+                dureeMurRestante = dureeMur;
 			}
 			// Et on veut aussi vérifier que le mur continue encore à nos cotés !
 			// Pour ça on va lancer un rayon ! <3
@@ -224,6 +229,7 @@ public class Player : MonoBehaviour {
 				pointDebutSaut = transform.position;
 				origineSaut = EtatPersonnage.AU_MUR;
 				normaleOrigineSaut = normaleMur;
+                dureeMurRestante = dureeMur;
 			}
 
 			break;

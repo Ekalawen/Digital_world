@@ -32,6 +32,7 @@ public class ColorManager : MonoBehaviour {
                     themes[i] = (ColorSource.ThemeSource)enumValues.GetValue(Random.Range(0, (int)ColorSource.ThemeSource.RANDOM));
                 }
             }
+            Debug.Log(themes[i]);
         }
 
         GenerateColorSources();
@@ -92,6 +93,7 @@ public class ColorManager : MonoBehaviour {
 
     protected void CheckCubeSaturation() {
         List<Cube> cubes = map.GetAllCubes();
+        MathTools.Shuffle(cubes);
 
         foreach(Cube cube in cubes) {
             while(cube.GetLuminosity() > cubeLuminosityMax) {

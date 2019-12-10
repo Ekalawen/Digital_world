@@ -49,7 +49,7 @@ public class CubeMap : MapManager {
         List<Cave> caves = new List<Cave>();
         float currentProportion = 0.0f;
         float volumeCaves = 0;
-        while(currentProportion < 0.00001) {
+        while(currentProportion < proportionCaves) {
 		//for (int k = 0; k < nbCaves; k++) {
             // On définit la taille de la cave
             Vector3Int size = Vector3Int.zero;
