@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Panel : MonoBehaviour {
+public class PanelSeeker : MonoBehaviour {
 
     //////////////////////////////////////////////////////////////////////////////////////
     // ATTRIBUTS PUBLIQUES
@@ -17,13 +17,13 @@ public class Panel : MonoBehaviour {
     //////////////////////////////////////////////////////////////////////////////////////
 
     [HideInInspector]
-    public MenuBackground menu; // un pointeur vers le menu
+    public MenuBackgroundSeeker menu; // un pointeur vers le menu
     [HideInInspector]
     public int x; // Sa position dans l'écran, en terme de position par cube
     [HideInInspector]
     public int y;
     [HideInInspector]
-    public List<Panel> semblables; // Les Panels semblables dont il cherchera à se rapprocher
+    public List<PanelSeeker> semblables; // Les Panels semblables dont il cherchera à se rapprocher
     [HideInInspector]
     public bool isMoving; // Permet de savoir que notre cube est en train de bouger, donc il ne peut pas être bougé à son tour
     [HideInInspector]
@@ -59,7 +59,7 @@ public class Panel : MonoBehaviour {
 
         // On récupère le barycentre de nos semblables
         int xbar = 0, ybar = 0, n = 0;
-        foreach(Panel semblable in semblables)
+        foreach(PanelSeeker semblable in semblables)
         {
             if(!semblable.fixe) {
                 xbar += semblable.x;
@@ -105,7 +105,7 @@ public class Panel : MonoBehaviour {
             return true; // On a réussi à bouger ! :D
         } else {
             // On force quelqu'un à bouger ! =)
-            Panel victime = menu.getPanelXY(xdest, ydest);
+            PanelSeeker victime = menu.getPanelXY(xdest, ydest);
             if(!victime.fixe && !victime.isMoving && victime.forceMove(x, y)) {
                 // Si elle a réussi à bouger, alors on peut bouger à notre tour ! =)
                 menu.positions[xdest, ydest] = 1;
@@ -174,7 +174,7 @@ public class Panel : MonoBehaviour {
         return aBouge;
     }
 
-    public void tryAddSemblable(Panel autre)
+    public void tryAddSemblable(PanelSeeker autre)
     {
         Color notreCouleur = gameObject.GetComponent<Image>().color;
         float distance = distanceCouleur(notreCouleur, autre.gameObject.GetComponent<Image>().color);
@@ -208,7 +208,7 @@ public class Panel : MonoBehaviour {
     void fixerPosition() {
         // On récupère le barycentre de nos semblables
         int xbar = 0, ybar = 0, n = 0;
-        foreach(Panel semblable in semblables)
+        foreach(PanelSeeker semblable in semblables)
         {
             if(!semblable.fixe) {
                 xbar += semblable.x;

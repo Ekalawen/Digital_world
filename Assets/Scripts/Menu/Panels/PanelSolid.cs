@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PanelMethode2 : MonoBehaviour {
+public class PanelSolid : MonoBehaviour {
 
     //////////////////////////////////////////////////////////////////////////////////////
     // ATTRIBUTS PUBLIQUES
@@ -17,7 +17,7 @@ public class PanelMethode2 : MonoBehaviour {
     //////////////////////////////////////////////////////////////////////////////////////
 
     [HideInInspector]
-    public MenuBackgroundMethode2 menu; // un pointeur vers le menu
+    public MenuBackgroundSolid menu; // un pointeur vers le menu
     [HideInInspector]
     public int x; // Sa position dans l'écran, en terme de position par cube
     [HideInInspector]

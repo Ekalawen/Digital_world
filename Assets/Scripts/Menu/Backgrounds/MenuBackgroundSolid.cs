@@ -9,10 +9,10 @@ using UnityEngine.UI;
 // Si la place est libre ils iront.
 // Si il y a quelqu'un il recevra alors l'ordre de bouger à son tour pour libérer la place ! :D
 // Et ça serait trop bien que chaque cube aille vers le barycentre de sa propre couleur ! :D
-public class MenuBackgroundMethode3 : MonoBehaviour {
+public class MenuBackgroundSolid : MonoBehaviour {
 
 	//////////////////////////////////////////////////////////////////////////////////////
-	// ATTRIBUTS PUBLIQUES
+	// ATTRIBUTS PUBLICS
 	//////////////////////////////////////////////////////////////////////////////////////
 
 	public GameObject cubePrefabs; // Les petits cubes à faire apparaître à l'écran <3 (ce sont en fait des panels :/)
@@ -20,20 +20,18 @@ public class MenuBackgroundMethode3 : MonoBehaviour {
 	public int size; // La taille des petits cubes
 
 	//////////////////////////////////////////////////////////////////////////////////////
-	// ATTRIBUTS PRIVÉES
+	// ATTRIBUTS PRIVÉS
 	//////////////////////////////////////////////////////////////////////////////////////
-
-    [HideInInspector]
-	public int nbX; // Le nombre de petits cubes en large
+    // y a pas un soucis entre la notion de "privé" ci-dessus et la quantité de "public" ci-dessous ? :p
+   
+	protected int nbX; // Le nombre de petits cubes en large
+    public int NbX { get { return nbX; } set { nbX = value; } }
     [HideInInspector]
 	public int nbY; // Le nombre de petits cubes en hauteur
     [HideInInspector]
 	public int nbCubes; // Le nombre total de cubes
     [HideInInspector]
 	public List<GameObject> cubes; // Tous les petits cubes ! <3
-    [HideInInspector]
-	public PanelMethode3[,] positions; // les positions
-
 
 	//////////////////////////////////////////////////////////////////////////////////////
 	// METHODES
@@ -45,23 +43,21 @@ public class MenuBackgroundMethode3 : MonoBehaviour {
 		nbY = (int) (rect.rect.height / size) + 2; // +2 pour être vraiment sur que ça dépasse de tous les cotés !
 		nbCubes = (int) (nbX * nbY); // On prend toutes les places possibles
 		cubes = new List<GameObject>();
-		positions = new PanelMethode3[nbX, nbY];
 
 		// Puis on ajoute tous les cubes ! <3
 		for(int i = 0; i < nbCubes; i++) {
 			// On instancie notre cube
 			GameObject monCube = Instantiate(cubePrefabs) as GameObject;
-            monCube.GetComponent<PanelMethode3>().menu = this;
+            monCube.GetComponent<PanelSolid>().menu = this;
 
 			// On lui donne cette position
 			int x = i / nbY;
 			int y = i % nbY;
-            monCube.GetComponent<PanelMethode3>().x = x;
-            monCube.GetComponent<PanelMethode3>().y = y;
-			positions[x, y] = monCube.GetComponent<PanelMethode3>();
+            monCube.GetComponent<PanelSolid>().x = x;
+            monCube.GetComponent<PanelSolid>().y = y;
 
-			// On lui donne la couleur noire !
-			monCube.GetComponent<Image>().color = Color.black;
+			// On lui donne également une couleur aléatoire !
+			monCube.GetComponent<Image>().color = Color.HSVToRGB(Random.Range(0f, 1f), 1f, Random.Range(0.7f, 0.7f));
 
 			// On set son parent
 			monCube.transform.SetParent(this.transform);
@@ -83,18 +79,14 @@ public class MenuBackgroundMethode3 : MonoBehaviour {
 		return x >= 0 && y >= 0 && x < nbX && y < nbY;
 	}
 
-	public PanelMethode3 getPanelXY(int x, int y ) {
-		return positions[x, y];
+	public PanelSolid getPanelXY(int x, int y ) {
+		foreach (GameObject g in cubes)
+		{
+			PanelSolid p = g.GetComponent<PanelSolid>();
+			if(p.x == x && p.y == y) {
+				return p;
+			}
+		}
+		return null;
 	}
-
-    public void SetParameters(float probaSource, int distanceSource, float decroissanceSource) {
-        for(int i = 0; i < nbX; i++) {
-            for(int j = 0; j < nbY; j++) {
-                positions[i, j].isSource = (Random.Range(0.0f, 1.0f) < probaSource);
-                positions[i, j].probaSource = probaSource;
-                positions[i, j].distanceSource = distanceSource;
-                positions[i, j].decroissanceSource = decroissanceSource;
-            }
-        }
-    }
 }

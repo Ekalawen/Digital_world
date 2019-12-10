@@ -7,12 +7,13 @@ public class MenuLevel : MonoBehaviour {
 
     public string levelSceneName;
     public MenuLevelSelector menuLevelSelector;
-    public MenuBackgroundMethode3 menuBouncingBackground;
+    public MenuBackgroundBouncing menuBouncingBackground;
 
     // Les propriétés du background de ce level
     public float probaSource = 0.00035f; // La probabilité d'être une source
     public int distanceSource = 8; // La distance d'action de la source
     public float decroissanceSource = 0.01f; // La vitesse de décroissance de la source
+    public List<ColorSource.ThemeSource> themes; // Les couleurs des sources :)
 
     private void Update() {
 		// Si on appui sur Echap on quitte
@@ -22,7 +23,7 @@ public class MenuLevel : MonoBehaviour {
     }
 
     private void OnEnable() {
-        menuBouncingBackground.SetParameters(probaSource, distanceSource, decroissanceSource);
+        menuBouncingBackground.SetParameters(probaSource, distanceSource, decroissanceSource, themes);
     }
 
     public void Play() {

@@ -9,7 +9,7 @@ using UnityEngine.UI;
 // Si la place est libre ils iront.
 // Si il y a quelqu'un il recevra alors l'ordre de bouger à son tour pour libérer la place ! :D
 // Et ça serait trop bien que chaque cube aille vers le barycentre de sa propre couleur ! :D
-public class MenuBackgroundMethode3 : MonoBehaviour {
+public class MenuBackgroundSeeker : MonoBehaviour {
 
 	//////////////////////////////////////////////////////////////////////////////////////
 	// ATTRIBUTS PUBLIQUES
@@ -18,6 +18,7 @@ public class MenuBackgroundMethode3 : MonoBehaviour {
 	public GameObject cubePrefabs; // Les petits cubes à faire apparaître à l'écran <3 (ce sont en fait des panels :/)
 	public RectTransform rect; // la taille de la zone à remplir
 	public int size; // La taille des petits cubes
+	public float proportionCubes; // La quantité de petits cubes !
 
 	//////////////////////////////////////////////////////////////////////////////////////
 	// ATTRIBUTS PRIVÉES
@@ -32,8 +33,7 @@ public class MenuBackgroundMethode3 : MonoBehaviour {
     [HideInInspector]
 	public List<GameObject> cubes; // Tous les petits cubes ! <3
     [HideInInspector]
-	public PanelMethode3[,] positions; // les positions
-
+	public int[,] positions; // Les positions de tous les cubes. 1 il y a quelqu'un, 0 il n'y a personne
 
 	//////////////////////////////////////////////////////////////////////////////////////
 	// METHODES
@@ -43,25 +43,27 @@ public class MenuBackgroundMethode3 : MonoBehaviour {
 		// Initialisations
 		nbX = (int) (rect.rect.width / size) + 2; // +2 pour être vraiment sur que ça dépasse de tous les cotés !
 		nbY = (int) (rect.rect.height / size) + 2; // +2 pour être vraiment sur que ça dépasse de tous les cotés !
-		nbCubes = (int) (nbX * nbY); // On prend toutes les places possibles
+		nbCubes = (int) (nbX * nbY * proportionCubes);
+		positions = new int[nbX, nbY];
 		cubes = new List<GameObject>();
-		positions = new PanelMethode3[nbX, nbY];
 
 		// Puis on ajoute tous les cubes ! <3
 		for(int i = 0; i < nbCubes; i++) {
 			// On instancie notre cube
 			GameObject monCube = Instantiate(cubePrefabs) as GameObject;
-            monCube.GetComponent<PanelMethode3>().menu = this;
+            monCube.GetComponent<PanelSeeker>().menu = this;
+
+			// On cherche une position innocupée
+			int x;
+			int y;
+			while(positions[x = Random.Range(0, nbX-1), y = Random.Range(0, nbY-1)] == 1);
+            monCube.GetComponent<PanelSeeker>().x = x;
+            monCube.GetComponent<PanelSeeker>().y = y;
 
 			// On lui donne cette position
-			int x = i / nbY;
-			int y = i % nbY;
-            monCube.GetComponent<PanelMethode3>().x = x;
-            monCube.GetComponent<PanelMethode3>().y = y;
-			positions[x, y] = monCube.GetComponent<PanelMethode3>();
 
-			// On lui donne la couleur noire !
-			monCube.GetComponent<Image>().color = Color.black;
+			// On lui donne également une couleur aléatoire !
+			monCube.GetComponent<Image>().color = Color.HSVToRGB(Random.Range(0f, 1f), 1f, Random.Range(0.5f, 0.5f));
 
 			// On set son parent
 			monCube.transform.SetParent(this.transform);
@@ -76,6 +78,19 @@ public class MenuBackgroundMethode3 : MonoBehaviour {
 
 			// Et on l'ajoute à notre liste
 			cubes.Add(monCube);
+			positions[x, y] = 1;
+		}
+
+        // On cherche les n plus proches voisins colorimétriques de nos cubes
+		for(int i = 0; i < cubes.Count; i++) {
+			PanelSeeker cube = cubes[i].GetComponent<PanelSeeker>();
+			cube.semblables = new List<PanelSeeker>();
+			for(int j = 0; j < cubes.Count; j++) {
+				if(j != i) {
+					PanelSeeker autreCube = cubes[j].GetComponent<PanelSeeker>();
+					cube.tryAddSemblable(autreCube);
+				}
+			}
 		}
 	}
 	
@@ -83,18 +98,14 @@ public class MenuBackgroundMethode3 : MonoBehaviour {
 		return x >= 0 && y >= 0 && x < nbX && y < nbY;
 	}
 
-	public PanelMethode3 getPanelXY(int x, int y ) {
-		return positions[x, y];
+	public PanelSeeker getPanelXY(int x, int y ) {
+		foreach (GameObject g in cubes)
+		{
+			PanelSeeker p = g.GetComponent<PanelSeeker>();
+			if(p.x == x && p.y == y) {
+				return p;
+			}
+		}
+		return null;
 	}
-
-    public void SetParameters(float probaSource, int distanceSource, float decroissanceSource) {
-        for(int i = 0; i < nbX; i++) {
-            for(int j = 0; j < nbY; j++) {
-                positions[i, j].isSource = (Random.Range(0.0f, 1.0f) < probaSource);
-                positions[i, j].probaSource = probaSource;
-                positions[i, j].distanceSource = distanceSource;
-                positions[i, j].decroissanceSource = decroissanceSource;
-            }
-        }
-    }
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 public class MenuLevelSelector : MonoBehaviour {
 
     public GameObject menuInitial;
-    public MenuBackgroundMethode3 menuBouncingBackground;
+    public MenuBackgroundBouncing menuBouncingBackground;
     public List<GameObject> levels;
 
     protected int levelIndice = 0;
@@ -50,9 +50,13 @@ public class MenuLevelSelector : MonoBehaviour {
             levels[i].SetActive(false);
         }
         menuInitial.SetActive(true);
-        float probaSource = Random.Range(0.0035f, 0.0001f);
+        float probaSource = Random.Range(0.00002f, 0.0035f);
         int distanceSource = Random.Range(1, 12);
         float decroissanceSource = Random.Range(0.002f, 0.02f);
-        menuBouncingBackground.SetParameters(probaSource, distanceSource, decroissanceSource);
+        List<ColorSource.ThemeSource> themes = new List<ColorSource.ThemeSource>();
+        int nbThemes = Random.Range(1, 4);
+        for(int i = 0; i < nbThemes; i++)
+            themes.Add(ColorManager.GetRandomTheme());
+        menuBouncingBackground.SetParameters(probaSource, distanceSource, decroissanceSource, themes);
     }
 }

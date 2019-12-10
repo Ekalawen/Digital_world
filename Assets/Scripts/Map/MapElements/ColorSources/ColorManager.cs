@@ -52,16 +52,16 @@ public class ColorManager : MonoBehaviour {
             Vector3Int pos = new Vector3Int(Random.Range(0, map.tailleMap), Random.Range(0, map.tailleMap), Random.Range(0, map.tailleMap));
             GameObject go = GameObject.Instantiate(colorSourcePrefab, pos, Quaternion.identity);
             ColorSource source = go.GetComponent<ColorSource>();
-            source.Initialize(GetColor(), Random.Range(porteeSourceRange[0], porteeSourceRange[1]));
+            source.Initialize(GetColor(themes), Random.Range(porteeSourceRange[0], porteeSourceRange[1]));
             sources.Add(go.GetComponent<ColorSource>());
         }
     }
 
-	private Color GetColor() {
+	public static Color GetColor(List<ColorSource.ThemeSource> currentThemes) {
 		Color c;
 
         // On choisit notre thème parmis nos thème
-        ColorSource.ThemeSource themeChoisi = themes[Random.Range(0, themes.Count)];
+        ColorSource.ThemeSource themeChoisi = currentThemes[Random.Range(0, currentThemes.Count)];
 
 		// Puis on l'applique !
 		switch (themeChoisi) {
@@ -83,6 +83,8 @@ public class ColorManager : MonoBehaviour {
 				c = Color.HSVToRGB(0f, 0f, 0.6f); break;
 			case ColorSource.ThemeSource.NOIR:
 				c = Color.HSVToRGB(0f, 0f, 0.001f); break;
+			case ColorSource.ThemeSource.RANDOM:
+                c = Color.HSVToRGB(Random.Range(0f, 1f), 1f, 1f); break;
 			default:
 				c = Color.black;
 				Debug.Log("Je ne connais pas ce thème !");
@@ -114,5 +116,10 @@ public class ColorManager : MonoBehaviour {
         }
         sources.Remove(closest);
         closest.Delete();
+    }
+
+    public static ColorSource.ThemeSource GetRandomTheme() {
+        System.Array enumValues = System.Enum.GetValues(typeof(ColorSource.ThemeSource));
+        return (ColorSource.ThemeSource)enumValues.GetValue(Random.Range(0, enumValues.Length));
     }
 }

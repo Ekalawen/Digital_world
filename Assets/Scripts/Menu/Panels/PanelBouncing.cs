@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PanelMethode3 : MonoBehaviour {
+public class PanelBouncing : MonoBehaviour {
 
     //////////////////////////////////////////////////////////////////////////////////////
     // ATTRIBUTS PUBLIQUES
@@ -12,13 +12,14 @@ public class PanelMethode3 : MonoBehaviour {
     public float probaSource; // La probabilité d'être une source
     public int distanceSource; // La distance d'action de la source
     public float decroissanceSource; // La vitesse de décroissance de la source
+    public List<ColorSource.ThemeSource> themes; // Les thèmes pour choisir la couleur des sources
 
     //////////////////////////////////////////////////////////////////////////////////////
     // ATTRIBUTS PRIVEES
     //////////////////////////////////////////////////////////////////////////////////////
 
     [HideInInspector]
-    public MenuBackgroundMethode3 menu; // un pointeur vers le menu
+    public MenuBackgroundBouncing menu; // un pointeur vers le menu
     [HideInInspector]
     public int x; // Sa position dans l'écran, en terme de position par cube
     [HideInInspector]
@@ -32,28 +33,30 @@ public class PanelMethode3 : MonoBehaviour {
     // METHODES
     //////////////////////////////////////////////////////////////////////////////////////
 
-    void Start()
-    {
+    void Start() {
         // Initialisation
         isSource = false;
+
+        if (themes == null)
+            themes = new List<ColorSource.ThemeSource> { ColorSource.ThemeSource.RANDOM };
     }
 
     void Update () {
         // Si c'est une source on fait décroître sa couleur
         if(isSource) {
-            decroitreCouleur();
+            DecroitreCouleur();
         }
 
         // Si on est pas une source, on a une petite chance de le devenir ! =)
         if(!isSource && Random.Range(0f, 1f) < probaSource) {
-            becameSource();
+            BecameSource();
         }
 
         // On met à jour la couleur
-        setColor();
+        SetColor();
 	}
 
-    void decroitreCouleur() {
+    void DecroitreCouleur() {
         float h, s, v;
         Color.RGBToHSV(couleurSource, out h, out s, out v);
         v = v - decroissanceSource;
@@ -64,12 +67,13 @@ public class PanelMethode3 : MonoBehaviour {
         }
     }
 
-    void becameSource() {
+    void BecameSource() {
         isSource = true;
-		couleurSource = Color.HSVToRGB(Random.Range(0f, 1f), 1f, 1f);
+        couleurSource = ColorManager.GetColor(themes);
+		//couleurSource = Color.HSVToRGB(Random.Range(0f, 1f), 1f, 1f);
     }
     
-    void setColor() {
+    void SetColor() {
         // On initialise la couleur
         Color couleur = Color.black;
 
@@ -77,8 +81,8 @@ public class PanelMethode3 : MonoBehaviour {
         for(int i = x - distanceSource; i <= x + distanceSource; i++) {
             for(int j = y - distanceSource; j <= y + distanceSource; j++) {
                 if(menu.isIn(i, j)) {
-                    PanelMethode3 p = menu.getPanelXY(i, j);
-                    int distance = distanceCarre(p);
+                    PanelBouncing p = menu.getPanelXY(i, j);
+                    int distance = DistanceCarre(p);
                     if(p.isSource && distance <= distanceSource) {
                         float coefDistance = (float)distance / (float)distanceSource;
                         couleur.r += p.couleurSource.r * (1 - coefDistance);
@@ -93,7 +97,7 @@ public class PanelMethode3 : MonoBehaviour {
         GetComponent<Image>().color = couleur;
     }
 
-    int distanceCarre(PanelMethode3 p) {
+    int DistanceCarre(PanelBouncing p) {
         return (int) (Mathf.Abs(p.x - x) + Mathf.Abs(p.y - y));
     }
 }
