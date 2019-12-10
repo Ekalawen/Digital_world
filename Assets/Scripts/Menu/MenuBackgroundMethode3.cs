@@ -86,4 +86,15 @@ public class MenuBackgroundMethode3 : MonoBehaviour {
 	public PanelMethode3 getPanelXY(int x, int y ) {
 		return positions[x, y];
 	}
+
+    public void SetParameters(float probaSource, int distanceSource, float decroissanceSource) {
+        for(int i = 0; i < nbX; i++) {
+            for(int j = 0; j < nbY; j++) {
+                positions[i, j].isSource = (Random.Range(0.0f, 1.0f) < probaSource);
+                positions[i, j].probaSource = probaSource;
+                positions[i, j].distanceSource = distanceSource;
+                positions[i, j].decroissanceSource = decroissanceSource;
+            }
+        }
+    }
 }

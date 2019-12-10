@@ -5,17 +5,23 @@ using UnityEngine.SceneManagement;
 
 public class MenuManager : MonoBehaviour {
 
+    public MenuLevelSelector menuLevelSelector;
+
 	void Update() {
 		// Si on appui sur Echap on quitte
-		if(Input.GetKey(KeyCode.Escape)) {
+		if(Input.GetKeyDown(KeyCode.Escape)) {
 			OnQuitterPress();
+		}
+		// Si on appui sur Entrée, on joue !
+		if(Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter)) {
+			OnPlayPress();
 		}
 	}
 
 	// Lorsqu'on appui sur le bouton jouer
 	public void OnPlayPress() {
 		Debug.Log("On a appuyé sur Play !");
-		SceneManager.LoadScene("first_scene");
+        menuLevelSelector.Run();
 	}
 
 	// Lorsqu'on appui sur le bouton tutoriel
