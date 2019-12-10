@@ -40,8 +40,6 @@ public class CubeMap : MapManager {
         // On veut générer des caves dangeureuses :3
         // Qui possèderont des lumières !
         int tailleMaxCave = tailleMap / 2;
-        //int volumeCaveMoyen = (int)Mathf.Pow((tailleMaxCave + tailleMinCave) / 2.0f, 3);
-        //int nbCaves = (int)Mathf.Ceil(proportionCaves * volumeMap / volumeCaveMoyen);
         List<Cave> caves = GenerateCaves(proportionCaves, tailleMinCave, tailleMaxCave, bWithLumieres: true);
     }
 
@@ -76,7 +74,7 @@ public class CubeMap : MapManager {
 	}
 
 	// Génère des ponts entre les sources ! =)
-	void GeneratePont(List<Cube> sources) {
+	protected void GeneratePont(List<Cube> sources) {
         while(sources.Count >= 2) {
 			// On récupère les deux sources qui nous intéressent
 			int n = Random.Range (0, sources.Count);

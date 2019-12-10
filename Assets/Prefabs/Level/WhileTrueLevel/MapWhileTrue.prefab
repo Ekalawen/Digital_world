@@ -1,6 +1,41 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &6406004073022886087
+--- !u!114 &-6915133377956666442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6498686096948096338}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a68223c60d28ca940b2591cbe02ac4fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cubePrefab: {fileID: 1586838666760998, guid: 166cc3691555747479ad6b1623980374, type: 3}
+  deathCubePrefab: {fileID: 2395129675549742871, guid: f9f021dbe336f9c48a7ceff109b1537b,
+    type: 3}
+  indestructibleCubePrefab: {fileID: 1586838666760998, guid: 166cc3691555747479ad6b1623980374,
+    type: 3}
+  lumierePrefab: {fileID: 92096758339111740, guid: ed7e41e7d6a0b33418291580a6285ef2,
+    type: 3}
+  lumiereFinalePrefab: {fileID: 6995409226328054440, guid: 9e97ff21fbd4e324b866d7002d438e06,
+    type: 3}
+  ennemiPrefabs: {fileID: 1252573298759596, guid: d49852f29496f46858edc6834aef370d,
+    type: 3}
+  tailleMap: 12
+  lumieres: []
+  gm: {fileID: 0}
+  lumieresAttrapees: 0
+  nbEnnemis: 0
+  proportionCaves: 0
+  proportionSourcePont: 0
+  tailleMinCave: 6
+  nbLumieresPerCaves: 0
+  volumeMap: 0
+  nbCaves: 1
+  nbPonts: 25
+--- !u!1001 &6496987865494209856
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -9,7 +44,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1698300190402578, guid: 129f4eb78691940da993d749688543fd, type: 3}
       propertyPath: m_Name
-      value: CubeMapFirstLevel
+      value: MapWhileTrue
       objectReference: {fileID: 0}
     - target: {fileID: 4913549307214802, guid: 129f4eb78691940da993d749688543fd, type: 3}
       propertyPath: m_LocalPosition.x
@@ -55,25 +90,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 114991096836358190, guid: 129f4eb78691940da993d749688543fd,
-        type: 3}
-      propertyPath: tailleMap
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 114991096836358190, guid: 129f4eb78691940da993d749688543fd,
-        type: 3}
-      propertyPath: proportionCaves
-      value: 0.3
-      objectReference: {fileID: 0}
-    - target: {fileID: 114991096836358190, guid: 129f4eb78691940da993d749688543fd,
-        type: 3}
-      propertyPath: nbLumieresPerCaves
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 114991096836358190, guid: 129f4eb78691940da993d749688543fd,
-        type: 3}
-      propertyPath: proportionSourcePont
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 114991096836358190, guid: 129f4eb78691940da993d749688543fd, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 129f4eb78691940da993d749688543fd, type: 3}
+--- !u!1 &6498686096948096338 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1698300190402578, guid: 129f4eb78691940da993d749688543fd,
+    type: 3}
+  m_PrefabInstance: {fileID: 6496987865494209856}
+  m_PrefabAsset: {fileID: 0}

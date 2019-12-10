@@ -95,16 +95,19 @@ public abstract class MapManager : MonoBehaviour {
         return null;
     }
 
-    private void DestroyImmediateCube(Cube cube) {
+    private void DestroyImmediateCube(Cube cube, bool bJustInactive = false) {
         foreach(MapElement mapElement in mapElements) {
             mapElement.OnDeleteCube(cube);
         }
-        DestroyImmediate(cube.gameObject);
+        if (bJustInactive)
+            cube.gameObject.SetActive(false);
+        else
+            Destroy(cube.gameObject);
     }
 
-    public void DeleteCubesAt(Vector3 pos) {
+    public void DeleteCubesAt(Vector3 pos, bool bJustInactive = false) {
         if(IsInRegularMap(pos) && MathTools.IsRounded(pos)) {
-            DestroyImmediateCube(cubesRegular[(int)pos.x, (int)pos.y, (int)pos.z]);
+            DestroyImmediateCube(cubesRegular[(int)pos.x, (int)pos.y, (int)pos.z], bJustInactive);
             cubesRegular[(int)pos.x, (int)pos.y, (int)pos.z] = null;
         } else {
             Cube cubeToDestroy = null;
@@ -115,13 +118,13 @@ public abstract class MapManager : MonoBehaviour {
                 }
             }
             cubesNonRegular.Remove(cubeToDestroy);
-            DestroyImmediateCube(cubeToDestroy);
+            DestroyImmediateCube(cubeToDestroy, bJustInactive);
         }
     }
 
-    public void DeleteCube(Cube cube) {
+    public void DeleteCube(Cube cube, bool bJustInactive = false) {
         if(cube != null)
-            DeleteCubesAt(cube.transform.position);
+            DeleteCubesAt(cube.transform.position, bJustInactive);
     }
 
     public void DeleteCubesInSphere(Vector3 center, float radius) {

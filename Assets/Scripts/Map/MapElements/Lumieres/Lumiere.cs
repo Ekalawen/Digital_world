@@ -27,7 +27,7 @@ public class Lumiere : MonoBehaviour {
 			// Et on certifie qu'on a bien attrapé une orbe
 			gm.console.UpdateLastLumiereAttrapee();
 
-            gm.eventManager.OnLumiereCaptured();
+            gm.eventManager.OnLumiereCaptured(type);
 
             gm.soundManager.PlayGetLumiereClip(transform.position);
 		}

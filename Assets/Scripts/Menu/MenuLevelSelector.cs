@@ -16,10 +16,10 @@ public class MenuLevelSelector : MonoBehaviour {
             Back();
 		}
         // Les cotes pour changer de niveau
-		if(Input.GetKeyDown(KeyCode.RightArrow)) {
+		if(Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D)) {
             Next();
 		}
-		if(Input.GetKeyDown(KeyCode.LeftArrow)) {
+		if(Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.Q)) {
             Previous();
 		}
     }
