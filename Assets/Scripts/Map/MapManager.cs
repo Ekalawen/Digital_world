@@ -479,4 +479,12 @@ public abstract class MapManager : MonoBehaviour {
     public float GetVolume() {
         return (float)(tailleMap - 1) * (tailleMap - 1) * (tailleMap - 1);
     }
+
+    public bool IsLumiereAt(Vector3 pos) {
+        foreach(Lumiere lumiere in lumieres) {
+            if (lumiere.transform.position == pos)
+                return true;
+        }
+        return false;
+    }
 }

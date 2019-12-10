@@ -6,9 +6,9 @@ using UnityEngine;
 public class CubeMap : MapManager {
 
 	public float proportionCaves;
-	public float proportionEnnemis; // La quantité d'ennemies relativement à la taille de la carte
     public float proportionSourcePont;
     public int tailleMinCave = 3;
+    public int nbLumieresPerCaves = 1;
 
 	[HideInInspector] public int volumeMap;
 
@@ -66,7 +66,7 @@ public class CubeMap : MapManager {
             caves.Add(cave);
 
             // On y rajoute la lumière !
-            cave.AddOneLumiereInside();
+            cave.AddNLumiereInside(nbLumieresPerCaves);
 
             volumeCaves += cave.GetVolume();
             currentProportion = volumeCaves / GetVolume();

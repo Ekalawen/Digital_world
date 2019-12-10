@@ -151,21 +151,23 @@ public class Cave : CubeEnsemble
         cubeMatrix[(int)pointsActuel.x, (int)pointsActuel.y, (int)pointsActuel.z] = null;
 	}
 
-    public void AddOneLumiereInside() {
-        // On cherche une case où créer un objectif !
-        Vector3 posLumiere = new Vector3(
-            Random.Range(1, nbCubesParAxe.x - 1),
-            Random.Range(1, nbCubesParAxe.y - 1), 
-            Random.Range(1, nbCubesParAxe.z - 1));
-        while (cubeMatrix[(int)posLumiere.x, (int)posLumiere.y, (int)posLumiere.z] != null)
-        {
-            posLumiere = new Vector3(
+    public void AddNLumiereInside(int nbLumieresToAdd) {
+        for (int i = 0; i < nbLumieresToAdd; i++) {
+            // On cherche une case où créer un objectif !
+            Vector3 posLumiere = new Vector3(
                 Random.Range(1, nbCubesParAxe.x - 1),
-                Random.Range(1, nbCubesParAxe.y - 1), 
+                Random.Range(1, nbCubesParAxe.y - 1),
                 Random.Range(1, nbCubesParAxe.z - 1));
+            while (cubeMatrix[(int)posLumiere.x, (int)posLumiere.y, (int)posLumiere.z] != null
+              && map.IsLumiereAt(posLumiere)) {
+                posLumiere = new Vector3(
+                    Random.Range(1, nbCubesParAxe.x - 1),
+                    Random.Range(1, nbCubesParAxe.y - 1),
+                    Random.Range(1, nbCubesParAxe.z - 1));
+            }
+            posLumiere += depart;
+            map.CreateLumiere(posLumiere, Lumiere.LumiereType.NORMAL);
         }
-        posLumiere += depart;
-        map.CreateLumiere(posLumiere, Lumiere.LumiereType.NORMAL);
     }
 
     public void AddAllLumiereInside() {
