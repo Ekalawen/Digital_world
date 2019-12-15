@@ -8,6 +8,7 @@ public class CubeMap : MapManager {
 	public float proportionCaves;
     public float proportionSourcePont;
     public int tailleMinCave = 3;
+    public int tailleMaxCave = 10;
     public int nbLumieresPerCaves = 1;
 
 	[HideInInspector] public int volumeMap;
@@ -39,11 +40,10 @@ public class CubeMap : MapManager {
 
         // On veut générer des caves dangeureuses :3
         // Qui possèderont des lumières !
-        int tailleMaxCave = tailleMap / 2;
-        List<Cave> caves = GenerateCaves(proportionCaves, tailleMinCave, tailleMaxCave, bWithLumieres: true);
+        List<Cave> caves = GenerateCaves(proportionCaves, bWithLumieres: true);
     }
 
-	List<Cave> GenerateCaves(float proportionCaves, int tailleMinCave, int tailleMaxCave, bool bWithLumieres) {
+	List<Cave> GenerateCaves(float proportionCaves, bool bWithLumieres) {
         List<Cave> caves = new List<Cave>();
         float currentProportion = 0.0f;
         float volumeCaves = 0;

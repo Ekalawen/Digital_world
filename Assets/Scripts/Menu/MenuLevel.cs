@@ -17,7 +17,9 @@ public class MenuLevel : MonoBehaviour {
 
     private void Update() {
 		// Si on appui sur Echap on quitte
-		if(Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter)) {
+		if(Input.GetKeyDown(KeyCode.Return)
+        || Input.GetKeyDown(KeyCode.KeypadEnter)
+        || Input.GetKeyDown(KeyCode.Space)) {
             Play();
 		}
     }

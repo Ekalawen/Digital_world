@@ -13,7 +13,9 @@ public class MenuManager : MonoBehaviour {
 			OnQuitterPress();
 		}
 		// Si on appui sur Entrée, on joue !
-		if(Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter)) {
+		if(Input.GetKeyDown(KeyCode.Return)
+        || Input.GetKeyDown(KeyCode.KeypadEnter)
+        || Input.GetKeyDown(KeyCode.Space)) {
 			OnPlayPress();
 		}
 	}
