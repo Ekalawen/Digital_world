@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Sonde : MonoBehaviour {
+public class Sonde : Character {
 
 	public enum EtatEnnemi {WAITING, TRACKING, DEFENDING, RUSHING};
 
 	public float vitesseMin; // On veut une vitesse aléatoire comprise
 	public float vitesseMax; // entre min et max !
-	public float puissancePoussee; // La force avec laquelle on va pousser le joueur en cas de contact !
-	public float tempsPouseePersonnage; // Le temps pendant lequel le personnage est poussé !
+	public float distancePoussee; // La distance sur laquelle on va pousser le personnage !
+	public float tempsPoussee; // Le temps pendant lequel le personnage est poussé !
 	public float distanceDeDetection; // La distance à partir de laquelle le probe peut pourchasser l'ennemi
 	public float coefficiantDeRushVitesse; // Le multiplicateur de vitesse lorsque les drones rushs
 	public float coefficiantDeRushDistanceDeDetection; // Le multiplicateur de la portée de détection quand on est en rush
@@ -17,17 +17,13 @@ public class Sonde : MonoBehaviour {
 
 	protected GameManager gm;
 	protected Player player;
-	[HideInInspector]
-	public CharacterController controller;
 	protected EtatEnnemi etat;
 	protected Vector3 lastPositionSeen; // La dernière position à laquelle le joueur a été vu !
 	protected float vitesse;
+    protected Poussee pousseeCurrent;
 
-	private Vector3 pousee; // Lorsque le personnage est poussé
-	private float debutPousee; // Le début de la poussée
-	private float tempsPousee; // Le temps pendant lequel le personnage reçoit cette poussée
-
-	void Start () {
+	public override void Start () {
+        base.Start();
 		// Initialisation
 		name = "Sonde_" + Random.Range (0, 9999);
 		gm = GameObject.Find("GameManager").GetComponent<GameManager>();
@@ -72,10 +68,7 @@ public class Sonde : MonoBehaviour {
             }
         }
 
-        // On pousse !
-		if (Time.timeSinceLevelLoad - debutPousee < tempsPousee) {
-            controller.Move(pousee * Time.deltaTime);
-		}
+        ApplyPoussees();
 	}
 
     // On récupère l'état dans lequel doit être notre sonde
@@ -117,9 +110,13 @@ public class Sonde : MonoBehaviour {
 
     protected void HitPlayer() {
         // Si c'est le cas, on l'envoie ballader !
+        if (pousseeCurrent != null && !pousseeCurrent.IsOver()) {
+            pousseeCurrent.Stop();
+        }
         Vector3 directionPoussee = player.transform.position - transform.position;
         directionPoussee.Normalize();
-        player.EtrePoussee(directionPoussee * puissancePoussee, tempsPouseePersonnage);
+        pousseeCurrent = new Poussee(directionPoussee, tempsPoussee, distancePoussee);
+        player.AddPoussee(pousseeCurrent);
 
         // Le son
         gm.soundManager.PlayHitClip(GetComponentInChildren<AudioSource>());
@@ -132,13 +129,6 @@ public class Sonde : MonoBehaviour {
             gm.console.JoueurTouche();
         }
     }
-
-    // Permet à d'autres éléments de pousser la sonde
-	public void EtrePoussee(Vector3 directionPoussee, float tempsDeLaPousee) {
-		pousee = directionPoussee;
-		tempsPousee = tempsDeLaPousee;
-		debutPousee = Time.timeSinceLevelLoad;
-	}
 
     protected Vector3 Move(Vector3 target) {
         Vector3 direction = (target - transform.position).normalized;

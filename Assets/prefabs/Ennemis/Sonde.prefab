@@ -108,15 +108,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f243d8073c58410c950182cd53bc568, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  controller: {fileID: 0}
   vitesseMin: 1
   vitesseMax: 3
-  puissancePoussee: 20
-  tempsPouseePersonnage: 1
+  distancePoussee: 10
+  tempsPoussee: 0.5
   distanceDeDetection: 10
   coefficiantDeRushVitesse: 1.8
   coefficiantDeRushDistanceDeDetection: 1
-  tempsInactifDebutJeu: 0
-  controller: {fileID: 0}
+  tempsInactifDebutJeu: 3
 --- !u!143 &143727705574006242
 CharacterController:
   m_ObjectHideFlags: 0

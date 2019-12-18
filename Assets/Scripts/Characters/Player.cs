@@ -5,7 +5,7 @@ using System;
 using UnityEngine.EventSystems;
 using UnityEngine.Rendering.PostProcessing;
 
-public class Player : MonoBehaviour {
+public class Player : Character {
 
 	//////////////////////////////////////////////////////////////////////////////////////
 	// ENUMERATION
@@ -36,13 +36,11 @@ public class Player : MonoBehaviour {
 	[HideInInspector]
 	public GameObject personnage;
 	[HideInInspector]
-	public CharacterController controller;
-	[HideInInspector]
 	public IPouvoir pouvoir;
 	[HideInInspector]
 	public Console console;
 	[HideInInspector]
-	public Camera camera;
+	public new Camera camera;
 	private float xRot, yRot;
 	private float currentRotationX, currentRotationY;
 	private float xRotV, yRotV;
@@ -59,10 +57,6 @@ public class Player : MonoBehaviour {
 	private Vector3 pointMur; // un point du mur sur lequel le personnage est accroché ! En effet, la normale ne suffit pas :p
     private float dureeMurRestante; // Le temps qu'il nous reste à être accroché au mur (utile pour les shifts qui peuvent nous décrocher)
 
-	private Vector3 pousee; // Lorsque le personnage est poussé
-	private float debutPousee; // Le début de la poussée
-	private float tempsPousee; // Le temps pendant lequel le personnage reçoit cette poussée
-
     private bool bCanUseLocalisation = true;
 
     [HideInInspector]
@@ -72,9 +66,13 @@ public class Player : MonoBehaviour {
     private GameManager gm;
 
 
-	//////////////////////////////////////////////////////////////////////////////////////
-	// METHODES
-	//////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////
+    // METHODES
+    //////////////////////////////////////////////////////////////////////////////////////
+
+    public override void Start() {
+        base.Start();
+    }
 
     public void Initialize(Vector3 position, Vector2 orientationXY) {
         // On récupère le personnage
@@ -156,10 +154,8 @@ public class Player : MonoBehaviour {
 		// On applique la vitesse au déplacement
 		move *= vitesseDeplacement;
 
-		// On applique la poussee si le personnage en a une !
-		if (Time.timeSinceLevelLoad - debutPousee < tempsPousee) {
-			move += pousee;
-		}
+        // On applique les poussées !
+        ApplyPoussees();
 
 		// On retient l'état d'avant
 		EtatPersonnage etatAvant = etat;
@@ -344,12 +340,6 @@ public class Player : MonoBehaviour {
         //if(etat != previousEtat)
         //    gm.soundManager.PlayGripClip(audioSource);
     }
-
-	public void EtrePoussee(Vector3 directionPoussee, float tempsDeLaPousee) {
-		pousee = directionPoussee;
-		tempsPousee = tempsDeLaPousee;
-		debutPousee = Time.timeSinceLevelLoad;
-	}
 
 	public void MajHauteurMaxSaut() {
 		if(etat == EtatPersonnage.EN_SAUT || etat == EtatPersonnage.EN_CHUTE) {

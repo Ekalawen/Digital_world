@@ -12,7 +12,7 @@ public class PouvoirExplosion : IPouvoir {
     public float distanceBlast; // La distance du tir
     public float porteeExplosion; // La distance maximale de l'explosion
     public float tempsIncantationExplosion; // Le temps avant que l'explosion ait lieu !
-    public float puissanceDePoussee; // La puissance avec laquelle les ennemis sont poussés !
+    public float distanceDePoussee; // La puissance avec laquelle les ennemis sont poussés !
     public float tempsDeLaPoussee; // Le temps pendant lequel les ennemis sont poussés !
 
 
@@ -49,8 +49,9 @@ public class PouvoirExplosion : IPouvoir {
             } else if(collider.tag == "Ennemi") {
                 // Vector3 directionPoussee = (collider.gameObject.transform.position - centreExplosion).normalized;
                 Vector3 directionPoussee = (collider.gameObject.transform.position - transform.parent.transform.position).normalized;
-                float tempsDeLaPousseeFinal = Mathf.Max(0.2f, tempsDeLaPoussee * ratioTemps);
-                collider.gameObject.GetComponent<Sonde>().EtrePoussee(directionPoussee * puissanceDePoussee, tempsDeLaPousseeFinal);
+                //float tempsDeLaPousseeFinal = Mathf.Max(0.2f, tempsDeLaPoussee * ratioTemps);
+                float tempsDeLaPousseeFinal = tempsDeLaPoussee;
+                collider.gameObject.GetComponent<Sonde>().AddPoussee(new Poussee(directionPoussee, tempsDeLaPousseeFinal, distanceDePoussee));
             }
         }
 
