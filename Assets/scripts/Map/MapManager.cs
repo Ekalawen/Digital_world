@@ -109,6 +109,8 @@ public abstract class MapManager : MonoBehaviour {
     }
 
     private void DestroyImmediateCube(Cube cube, bool bJustInactive = false) {
+        if (cube == null)
+            return;
         foreach(MapElement mapElement in mapElements) {
             mapElement.OnDeleteCube(cube);
         }
@@ -377,6 +379,22 @@ public abstract class MapManager : MonoBehaviour {
         return center;
     }
 
+    public Vector3 GetFreeRoundedLocation() {
+        Vector3 center = MathTools.Round(new Vector3(Random.Range(1.0f, (float)tailleMap),
+                                     Random.Range(1.0f, (float)tailleMap),
+                                     Random.Range(1.0f, (float)tailleMap)));
+        int k = 0; int kmax = 5000;
+        while(GetCubesInSphere(center, 0.5f).Count > 0 && k <= kmax) {
+            center = MathTools.Round(new Vector3(Random.Range(1.0f, (float)tailleMap),
+                                     Random.Range(1.0f, (float)tailleMap),
+                                     Random.Range(1.0f, (float)tailleMap)));
+            k++;
+        }
+        if (k > kmax)
+            Debug.LogError("ATTENTION ON A PAS TROUVE DE LOCATION !!!");
+        return center;
+    }
+
     public Vector3 GetFreeBoxLocation(Vector3 halfExtents) {
         Vector3 center = new Vector3(Random.Range(1.0f, (float)tailleMap),
                                      Random.Range(1.0f, (float)tailleMap),
@@ -504,13 +522,13 @@ public abstract class MapManager : MonoBehaviour {
         return false;
     }
 
-    public List<Vector3> GetPath(Vector3 start, Vector3 end) {
+    public List<Vector3> GetPath(Vector3 start, Vector3 end, List<Vector3> posToDodge, bool bIsRandom = false) {
         List<Vector3> path = new List<Vector3>();
 
         start = MathTools.Round(start);
         end = MathTools.Round(end);
 
-        if (!IsInRegularMap(end))
+        if (!IsInRegularMap(end) || posToDodge.Contains(end) || cubesRegular[(int)end.x, (int)end.y, (int)end.z] != null)
             return null;
 
         List<Node> closed = new List<Node>();
@@ -532,6 +550,15 @@ public abstract class MapManager : MonoBehaviour {
             }
 
             List<Vector3> voisins = GetVoisinsLibres(current.pos);
+            // On évite les pos à dodge ! :)
+            for(int i = 0; i < voisins.Count; i++) {
+                if (posToDodge.Contains(voisins[i])) {
+                    voisins.RemoveAt(i);
+                    i--;
+                }
+            }
+            if (bIsRandom)
+                MathTools.Shuffle(voisins);
             foreach(Vector3 voisin in voisins) {
                 bool contain = false;
                 foreach(Node n in closed) {
@@ -561,6 +588,7 @@ public abstract class MapManager : MonoBehaviour {
             closed.Add(current);
         }
 
+        Debug.Log("Path failed !!!!");
         return null;
     }
 }

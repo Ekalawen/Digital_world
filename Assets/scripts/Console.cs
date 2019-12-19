@@ -56,7 +56,7 @@ public class Console : MonoBehaviour {
 		AjouterMessageImportant (mapManager.lumieres.Count + " Datas trouvées ! À vous de jouer !", TypeText.ALLY_TEXT, 5);
 		AjouterMessage ("DÉTECTION INTRUSION ...", TypeText.ENNEMI_TEXT);
 		AjouterMessage ("ANTI-VIRUS ACTIVÉS DANS 5 SECONDES !", TypeText.ENNEMI_TEXT);
-		AjouterMessage ("On détecte " + gm.ennemiManager.sondes.Count + " Sondes !", TypeText.ALLY_TEXT);
+		AjouterMessage ("On détecte " + gm.ennemiManager.ennemis.Count + " Ennemis !", TypeText.ALLY_TEXT);
 	}
 	
 	void Update () {

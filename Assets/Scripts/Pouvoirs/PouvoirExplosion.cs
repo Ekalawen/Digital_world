@@ -51,7 +51,7 @@ public class PouvoirExplosion : IPouvoir {
                 Vector3 directionPoussee = (collider.gameObject.transform.position - transform.parent.transform.position).normalized;
                 //float tempsDeLaPousseeFinal = Mathf.Max(0.2f, tempsDeLaPoussee * ratioTemps);
                 float tempsDeLaPousseeFinal = tempsDeLaPoussee;
-                collider.gameObject.GetComponent<Sonde>().AddPoussee(new Poussee(directionPoussee, tempsDeLaPousseeFinal, distanceDePoussee));
+                collider.gameObject.GetComponent<Ennemi>().AddPoussee(new Poussee(directionPoussee, tempsDeLaPousseeFinal, distanceDePoussee));
             }
         }
 

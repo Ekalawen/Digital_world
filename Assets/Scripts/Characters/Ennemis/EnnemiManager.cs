@@ -4,14 +4,11 @@ using UnityEngine;
 
 public class EnnemiManager : MonoBehaviour {
 
-
-    //// public enum EtatDataBase {NORMAL, DEFENDING};
-
-    public GameObject sondePrefab; // On récupère la sonde !
-    public float proportionSondes;
+    public List<GameObject> ennemisPrefabs; // On récupère les ennemis !
+    public List<int> nbEnnemis;
 
     [HideInInspector]
-    public List<Sonde> sondes; // Elle connait toutes les sondes
+    public List<Ennemi> ennemis; // Elle connait toutes les sondes
 
     protected GameManager gm;
 
@@ -22,13 +19,24 @@ public class EnnemiManager : MonoBehaviour {
     }
 
     void GenerateEnnemies() {
-        sondes = new List<Sonde>();
-        int nbSondes = (int)Mathf.Ceil(gm.map.GetVolume() * proportionSondes);
-        for (int i = 0; i < nbSondes; i++) {
-            Vector3 posSonde = gm.map.GetFreeSphereLocation(1.0f);
-            Sonde sonde = Instantiate(sondePrefab, posSonde, Quaternion.identity).GetComponent<Sonde>();
-            sondes.Add(sonde);
+        ennemis = new List<Ennemi>();
+        for(int i = 0; i < ennemisPrefabs.Count; i++) {
+            GameObject ennemiPrefab = ennemisPrefabs[i];
+            int nbEnnemi = nbEnnemis[i];
+            for (int j = 0; j < nbEnnemi; j++) {
+                Vector3 pos = gm.map.GetFreeRoundedLocation();
+                //Vector3 pos = gm.map.GetFreeSphereLocation(1.0f);
+                Ennemi ennemi = Instantiate(ennemiPrefab, pos, Quaternion.identity).GetComponent<Ennemi>();
+                ennemis.Add(ennemi);
+            }
         }
     }
 
+    public List<Vector3> GetAllRoundedEnnemisPositions() {
+        List<Vector3> res = new List<Vector3>();
+        foreach(Ennemi ennemi in ennemis) {
+            res.Add(MathTools.Round(ennemi.transform.position));
+        }
+        return res;
+    }
 }
