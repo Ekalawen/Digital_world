@@ -3,6 +3,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+class Node {
+    public Vector3 pos;
+    public float cout, heuristique;
+    public Node parent;
+
+    public Node(Vector3 pos, float cout, float heuristique, Node parent) {
+        this.pos = pos;
+        this.cout = cout;
+        this.heuristique = heuristique;
+        this.parent = parent;
+    }
+}
+
 public abstract class MapManager : MonoBehaviour {
 
 	// public enum TypeMap {CUBE_MAP, PLAINE_MAP, LABYRINTHE_MAP, GROUND_MAP, EMPTY_MAP, TUTORIAL_MAP}; // Plus vraiment utile ! :D
@@ -489,5 +502,65 @@ public abstract class MapManager : MonoBehaviour {
                 return true;
         }
         return false;
+    }
+
+    public List<Vector3> GetPath(Vector3 start, Vector3 end) {
+        List<Vector3> path = new List<Vector3>();
+
+        start = MathTools.Round(start);
+        end = MathTools.Round(end);
+
+        if (!IsInRegularMap(end))
+            return null;
+
+        List<Node> closed = new List<Node>();
+        List<Node> opened = new List<Node>();
+        opened.Add(new Node(start, 0, 0, null));
+
+        while(opened.Count > 0) {
+            Node current = opened[opened.Count - 1];
+            opened.RemoveAt(opened.Count - 1);
+
+            if(current.pos == end) {
+                while(current.pos != start) {
+                    path.Add(current.pos);
+                    current = current.parent;
+                }
+                path.Add(current.pos);
+                path.Reverse();
+                return path;
+            }
+
+            List<Vector3> voisins = GetVoisinsLibres(current.pos);
+            foreach(Vector3 voisin in voisins) {
+                bool contain = false;
+                foreach(Node n in closed) {
+                    if (n.pos == voisin)
+                        contain = true;
+                }
+                foreach(Node n in opened) {
+                    if (n.pos == voisin)
+                        contain = true;
+                }
+                if (contain)
+                    continue;
+                float distanceToGoal = Vector3.Distance(voisin, end);
+                Node node = new Node(voisin, current.cout + 1, current.cout + 1 + distanceToGoal, current);
+
+                for(int i = 0; i <= opened.Count; i++) {
+                    if (i == opened.Count) {
+                        opened.Add(node);
+                        break;
+                    } else if (opened[i].heuristique < node.heuristique) {
+                        opened.Insert(i, node);
+                        break;
+                    }
+                }
+            }
+
+            closed.Add(current);
+        }
+
+        return null;
     }
 }
