@@ -406,6 +406,11 @@ public class Player : Character {
     public EtatPersonnage GetEtat() {
         return etat;
     }
+
+    public override void ApplyPoussees() {
+        base.ApplyPoussees();
+        gm.postProcessManager.SetBlur(poussees.Count > 0);
+    }
 }
 
 

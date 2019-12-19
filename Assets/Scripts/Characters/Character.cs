@@ -18,7 +18,7 @@ public class Character : MonoBehaviour {
         poussees.Add(poussee);
     }
 
-    public void ApplyPoussees() {
+    public virtual void ApplyPoussees() {
         for(int i = 0; i < poussees.Count; i++) {
             if(poussees[i].IsOver()) {
                 poussees.RemoveAt(i);

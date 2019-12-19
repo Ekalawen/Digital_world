@@ -13,6 +13,8 @@ public class PostProcessManager : MonoBehaviour {
     public float intensityHit= 0.4f;
     public PostProcessVolume hitVolume;
 
+    public PostProcessVolume pousseeVolume;
+
     protected Coroutine gripCoroutine = null;
     protected Coroutine hitCoroutine1 = null;
     protected Coroutine hitCoroutine2 = null;
@@ -68,6 +70,12 @@ public class PostProcessManager : MonoBehaviour {
             current = Time.timeSinceLevelLoad;
             yield return null;
         }
+    }
+
+    public void SetBlur(bool state) {
+        pousseeVolume.gameObject.SetActive(state);
+        //MotionBlur blur = pousseeVolume.profile.GetSetting<MotionBlur>();
+        //blur.active = state;
     }
 
 }
