@@ -591,4 +591,18 @@ public abstract class MapManager : MonoBehaviour {
         Debug.Log("Path failed !!!!");
         return null;
     }
+
+    public List<Vector3> GetAllLumieresPositions() {
+        List<Vector3> res = new List<Vector3>();
+        foreach (Lumiere lumiere in lumieres)
+            res.Add(lumiere.transform.position);
+        return res;
+    }
+
+    public List<Vector3> GetAllNonRegularCubePos() {
+        List<Vector3> res = new List<Vector3>();
+        foreach (Cube cube in cubesNonRegular)
+            res.Add(cube.transform.position);
+        return res;
+    }
 }

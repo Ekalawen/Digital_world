@@ -81,7 +81,7 @@ public class Console : MonoBehaviour {
         if (mapManager.lumieres.Count > 0) {
 			if (Time.timeSinceLevelLoad - timeLastLumiereAttrapee > 30) {
 				timeLastLumiereAttrapee = Time.timeSinceLevelLoad;
-				AjouterMessage ("On peut te géolocaliser les Datas si tu appuies sur E !", TypeText.ALLY_TEXT);
+				AjouterMessage ("On peut te géolocaliser les Datas si tu appuies sur E ou A !", TypeText.ALLY_TEXT);
 			}
 		}
 
@@ -310,6 +310,11 @@ public class Console : MonoBehaviour {
 		} else {
 			AjouterMessage ("On a hacké toute la base, faut s'enfuir maintenant !", Console.TypeText.ALLY_TEXT);
 		}
+	}
+
+	// Quand le joueur lance la détection
+	public void RunDetection(Vector3 position) {
+        AjouterMessage ("Ok on l'a trouvé, va en " + position + " !", Console.TypeText.ALLY_TEXT);
 	}
 
     // Quand on essaye de faire une localisation alors qu'on peut pas !

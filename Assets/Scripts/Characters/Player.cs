@@ -28,6 +28,7 @@ public class Player : Character {
 	public float dureeMur; // le temps que l'on peut rester accroché au mur
 	public float distanceMurMax; // la distance maximale de laquelle on peut s'éloigner du mur
 	public GameObject trail; // Les trails à tracer quand le personnage est perdu !
+	public GameObject lumierePathPrefab; // Les lumières à placer quand le personnage fait une détection !
 
 	//////////////////////////////////////////////////////////////////////////////////////
 	// ATTRIBUTS PRIVÉES
@@ -41,23 +42,23 @@ public class Player : Character {
 	public Console console;
 	[HideInInspector]
 	public new Camera camera;
-	private float xRot, yRot;
-	private float currentRotationX, currentRotationY;
-	private float xRotV, yRotV;
-	private float lookSmoothDamp = 0.0f;
+	protected float xRot, yRot;
+	protected float currentRotationX, currentRotationY;
+	protected float xRotV, yRotV;
+	protected float lookSmoothDamp = 0.0f;
 
-	private EtatPersonnage etat; // l'état du personnage
-	private float debutSaut; // le timing où le personnage a débuté son dernier saut !
-	private Vector3 pointDebutSaut; // le point de départ du saut !
-	private EtatPersonnage origineSaut; // Permet de savoir depuis où (le sol ou un mur) le personnage a sauté !
-	private Vector3 normaleOrigineSaut; // La normale au plan du mur duquel le personnage a sauté
-	private float hauteurMaxSaut; // La hauteur maximale d'un saut !
-	private float debutMur; // le timing où le personnage a commencé à s'accrocher au mur !
-	private Vector3 normaleMur; // la normale au mur sur lequel le personnage est accroché !
-	private Vector3 pointMur; // un point du mur sur lequel le personnage est accroché ! En effet, la normale ne suffit pas :p
-    private float dureeMurRestante; // Le temps qu'il nous reste à être accroché au mur (utile pour les shifts qui peuvent nous décrocher)
+	protected EtatPersonnage etat; // l'état du personnage
+	protected float debutSaut; // le timing où le personnage a débuté son dernier saut !
+	protected Vector3 pointDebutSaut; // le point de départ du saut !
+	protected EtatPersonnage origineSaut; // Permet de savoir depuis où (le sol ou un mur) le personnage a sauté !
+	protected Vector3 normaleOrigineSaut; // La normale au plan du mur duquel le personnage a sauté
+	protected float hauteurMaxSaut; // La hauteur maximale d'un saut !
+	protected float debutMur; // le timing où le personnage a commencé à s'accrocher au mur !
+	protected Vector3 normaleMur; // la normale au mur sur lequel le personnage est accroché !
+	protected Vector3 pointMur; // un point du mur sur lequel le personnage est accroché ! En effet, la normale ne suffit pas :p
+    protected float dureeMurRestante; // Le temps qu'il nous reste à être accroché au mur (utile pour les shifts qui peuvent nous décrocher)
 
-    private bool bCanUseLocalisation = true;
+    protected bool bCanUseLocalisation = true;
 
     [HideInInspector]
 	public float lastNotContactEnnemy; // Le dernier temps où il ne touchait pas d'ennemi, utilisé pour la fin du jeu
@@ -118,6 +119,9 @@ public class Player : Character {
 
         // On regarde si le joueur a appuyé sur E
         TryUseLumiereLocalisation();
+
+        // On regarde si le joueur a appuyé sur A
+        TryUseDetection();
 
         // Lorsque le joueur clique avec sa souris
         if(Input.GetMouseButtonDown(0)) {
@@ -397,6 +401,58 @@ public class Player : Character {
 			// Et on certifie qu'on a appuyé sur E
 			console.UpdateLastLumiereAttrapee();
 		}
+    }
+
+    protected void TryUseDetection() {
+		if (Input.GetKeyDown (KeyCode.A)) {
+            // Penser à ajouter les autres objectifs intéressants !
+            List<Vector3> positions = gm.map.GetAllLumieresPositions();
+
+            if (!bCanUseLocalisation || positions.Count == 0) {
+                gm.console.FailLocalisation();
+                gm.soundManager.PlayFailActionClip();
+                return;
+            }
+
+            // On choisit la position la plus proche
+            Vector3 nearestPosition = positions[0];
+            float distMin = Vector3.Distance(nearestPosition, transform.position);
+            foreach(Vector3 position in positions) {
+                float dist = Vector3.Distance(position, transform.position);
+                if(dist < distMin) {
+                    distMin = dist;
+                    nearestPosition = position;
+                }
+            }
+
+            // On trace le chemin
+            List<Vector3> posToDodge = gm.map.GetAllNonRegularCubePos();
+            for (int i = 0; i < posToDodge.Count; i++)
+                posToDodge[i] = MathTools.Round(posToDodge[i]);
+            List<Vector3> path = gm.map.GetPath(transform.position, nearestPosition, posToDodge, bIsRandom: true);
+            if (path != null)
+                StartCoroutine(DrawPath(path));
+            else
+                Debug.Log("Objectif inaccessible en " + nearestPosition + " !");
+
+			// Un petit message
+			console.RunDetection(nearestPosition);
+		}
+    }
+
+    protected IEnumerator DrawPath(List<Vector3> path) {
+        int nbSpheresByNodes = 4;
+        for(int i = 0; i < path.Count - 1; i++) {
+            Vector3 current = path[i];
+            Vector3 next = path[i + 1];
+            for(int j = 0; j < nbSpheresByNodes - 1; j++) {
+                Vector3 direction = next - current;
+                Vector3 pos = current + direction / nbSpheresByNodes * (j + 1);
+                GameObject go = Instantiate(lumierePathPrefab, pos, Quaternion.identity);
+                Destroy(go, 1.0f);
+                yield return new WaitForSeconds(0.1f);
+            }
+        }
     }
 
     public void FreezeLocalisation() {
