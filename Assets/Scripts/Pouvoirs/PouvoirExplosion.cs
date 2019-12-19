@@ -9,6 +9,7 @@ using UnityEngine;
 public class PouvoirExplosion : IPouvoir {
 
     public GameObject redSpherePrefab; // La boule unitaire de couleur qui permet de visualiser la portée de l'explosion
+    public GameObject explosionParticlesPrefab; // Le système de particules de l'explosion !
     public float distanceBlast; // La distance du tir
     public float porteeExplosion; // La distance maximale de l'explosion
     public float tempsIncantationExplosion; // Le temps avant que l'explosion ait lieu !
@@ -44,8 +45,17 @@ public class PouvoirExplosion : IPouvoir {
         Collider[] colliders = Physics.OverlapSphere(centreExplosion, rayonExplosion);
         foreach (Collider collider in colliders) {
             if (collider.tag == "Cube") {
-                gm.map.DeleteCube(collider.gameObject.GetComponent<Cube>());
-                //DestroyImmediate(collider.gameObject);
+                Cube cube = collider.gameObject.GetComponent<Cube>();
+                GameObject go = Instantiate(explosionParticlesPrefab, cube.transform.position, Quaternion.identity);
+                ParticleSystem particle = go.GetComponent<ParticleSystem>();
+                ParticleSystemRenderer psr = go.GetComponent<ParticleSystemRenderer>();
+                Material mat = psr.material;
+                Material newMaterial = new Material(mat);
+                newMaterial.color = cube.GetColor();
+                psr.material = newMaterial;
+                float particuleTime = particle.main.duration;
+                Destroy(go, particuleTime);
+                gm.map.DeleteCube(cube);
             } else if(collider.tag == "Ennemi") {
                 // Vector3 directionPoussee = (collider.gameObject.transform.position - centreExplosion).normalized;
                 Vector3 directionPoussee = (collider.gameObject.transform.position - transform.parent.transform.position).normalized;
