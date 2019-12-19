@@ -13,6 +13,7 @@ public class SoundManager : MonoBehaviour {
     public List<AudioClip> hitClips;
     public List<AudioClip> emissionTracerClips;
     public List<AudioClip> detectionClips;
+    public List<AudioClip> timeOutClips;
 
     public List<AudioClip> normalMusics;
     public List<AudioClip> endGameMusics;
@@ -38,6 +39,9 @@ public class SoundManager : MonoBehaviour {
     }
     public void PlayFailActionClip() {
         PlayClipsOnSource(failActionClips, instantSource);
+    }
+    public void PlayTimeOutClip() {
+        PlayClipsOnSource(timeOutClips, instantSource);
     }
     public void PlayDetectionClip(AudioSource source) {
         source.spatialBlend = 0.5f;

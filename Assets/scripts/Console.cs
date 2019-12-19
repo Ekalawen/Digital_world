@@ -223,7 +223,7 @@ public class Console : MonoBehaviour {
 	}
 
 	// Lorsque le joueur réussi à s'échapper
-	public void JoueurEchappe() {
+	public void WinGame() {
 		AjouterMessage ("NOOOOOOOOOOOOOOOOOON ...", Console.TypeText.ENNEMI_TEXT);
 		AjouterMessage ("J'ai échouée ...", Console.TypeText.ENNEMI_TEXT);
 		AjouterMessageImportant ("NOUS AVONS RÉUSSI !!!", Console.TypeText.ALLY_TEXT, 5);
@@ -232,7 +232,7 @@ public class Console : MonoBehaviour {
 
 	// Text de récompense
 	IEnumerator Recompenser() {
-		yield return new WaitForSeconds (2);
+		yield return new WaitForSeconds (3);
 		string message;
 		while (true) {
 			message = "";
@@ -250,14 +250,31 @@ public class Console : MonoBehaviour {
 	}
 
 	// Lorsque le joueur a été bloqué par les drones
-	public void JoueurCapture() {
-		AjouterMessageImportant ("MENACE ÉLIMINÉE !", Console.TypeText.ENNEMI_TEXT, 5);
-		StartCoroutine (SeMoquer ());
+	public void LoseGame(EventManager.DeathReason reason) {
+        switch(reason) {
+            case EventManager.DeathReason.CAPTURED:
+                AjouterMessageImportant ("MENACE CAPTURÉ !", Console.TypeText.ENNEMI_TEXT, 5);
+                AjouterMessage("Cause de la mort : Capturé !", Console.TypeText.ENNEMI_TEXT);
+                break;
+            case EventManager.DeathReason.FALL_OUT:
+                AjouterMessageImportant ("MENACE ÉJECTÉE !", Console.TypeText.ENNEMI_TEXT, 5);
+                AjouterMessage("Cause de la mort : Éjecté !", Console.TypeText.ENNEMI_TEXT);
+                break;
+            case EventManager.DeathReason.TIME_OUT:
+                AjouterMessageImportant ("MENACE DÉSYNCHRONISÉ !", Console.TypeText.ENNEMI_TEXT, 5);
+                AjouterMessage("Cause de la mort : Désynchronisé !", Console.TypeText.ENNEMI_TEXT);
+                break;
+            case EventManager.DeathReason.TOUCHED_DEATH_CUBE:
+                AjouterMessageImportant ("MENACE ÉLIMINÉE !", Console.TypeText.ENNEMI_TEXT, 5);
+                AjouterMessage("Cause de la mort : Cube de la mort !", Console.TypeText.ENNEMI_TEXT);
+                break;
+        }
+		StartCoroutine (SeMoquer());
 	}
 
 	// On se moque de lui
 	IEnumerator SeMoquer() {
-		yield return new WaitForSeconds (2);
+		yield return new WaitForSeconds (3);
 		string message;
 		while (true) {
 			message = "";

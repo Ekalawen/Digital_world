@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour {
 	public GameObject ennemiManagerPrefab; // Pour gérer les ennemis !
 	public GameObject soundManagerPrefab; // Pour gérer les sons et musiques !
     public GameObject postProcessManagerPrefab; // Pour gérer les posteffects !
+    public GameObject timerManagerPrefab; // Pour gérer le timer !
 
     //////////////////////////////////////////////////////////////////////////////////////
     // ATTRIBUTS PRIVÉES
@@ -49,6 +50,8 @@ public class GameManager : MonoBehaviour {
     [HideInInspector]
     public PostProcessManager postProcessManager;
     [HideInInspector]
+    public TimerManager timerManager;
+    [HideInInspector]
     public bool partieDejaTerminee = false;
     [HideInInspector]
     public bool timeFreezed = false;
@@ -72,6 +75,7 @@ public class GameManager : MonoBehaviour {
         ennemiManager = Instantiate(ennemiManagerPrefab).GetComponent<EnnemiManager>();
         soundManager = Instantiate(soundManagerPrefab).GetComponent<SoundManager>();
         postProcessManager = Instantiate(postProcessManagerPrefab).GetComponent<PostProcessManager>();
+        timerManager = Instantiate(timerManagerPrefab).GetComponent<TimerManager>();
 
         Initialize();
 	}
@@ -90,6 +94,7 @@ public class GameManager : MonoBehaviour {
         console.Initialize();
         soundManager.Initialize();
         postProcessManager.Initialize();
+        timerManager.Initialize();
     }
 
 	// Update is called once per frame
@@ -130,10 +135,11 @@ public class GameManager : MonoBehaviour {
 		if (player.transform.position.y < -10) {
 			// Si le joueur a perdu ...
 			if (!map.lumieresAttrapees) {
-				console.JoueurEjecte();
+				//console.JoueurEjecte();
+                console.LoseGame(EventManager.DeathReason.FALL_OUT);
 			// Si le joueur a gagné !
 			} else {
-				console.JoueurEchappe();
+				console.WinGame();
 			}
 			return true;
 		}
@@ -142,7 +148,7 @@ public class GameManager : MonoBehaviour {
 		// C'est donc qu'il s'est fait conincé !
 		// Debug.Log("lastnotcontact = "+ player.GetComponent<Personnage>().lastNotContactEnnemy);
 		if (Time.timeSinceLevelLoad - player.GetComponent<Player>().lastNotContactEnnemy >= 5f) {
-			console.JoueurCapture();
+			console.LoseGame(EventManager.DeathReason.CAPTURED);
 			player.vitesseDeplacement = 0; // On immobilise le joueur
 			player.vitesseSaut = 0; // On immobilise le joueur
 			return true;

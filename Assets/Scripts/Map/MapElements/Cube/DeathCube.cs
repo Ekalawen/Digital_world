@@ -9,7 +9,7 @@ public class DeathCube : Cube {
         GameManager gm = GameManager.Instance;
         Vector3 playerPos = gm.player.transform.position;
         if(Vector3.Distance(playerPos, transform.position) <= Mathf.Sqrt(2)) {
-            gm.eventManager.LoseGame();
+            gm.eventManager.LoseGame(EventManager.DeathReason.TOUCHED_DEATH_CUBE);
         }
     }
 

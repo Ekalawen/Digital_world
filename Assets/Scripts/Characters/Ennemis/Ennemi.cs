@@ -8,10 +8,13 @@ public abstract class Ennemi : Character {
 	public float vitesseMax; // entre min et max !
     public float tempsInactifDebutJeu; // Le temps pendant lequel la sonde n'agira pas en début de partie
 	public float distanceDeDetection; // La distance à partir de laquelle le probe peut pourchasser l'ennemi
+    public float timeMalusOnHit = 5.0f; // Le temps que perd le joueur lorsqu'il se fait touché !
+    public float timeBetweenTwoHits = 1.0f;
 
 	protected GameManager gm;
 	protected Player player;
 	protected float vitesse;
+    protected float lastTimeHit;
 
 	public override void Start () {
         base.Start();
@@ -19,6 +22,7 @@ public abstract class Ennemi : Character {
         player = gm.player;
 		controller = this.GetComponent<CharacterController> ();
 		vitesse = Mathf.Exp(Random.Range(Mathf.Log(vitesseMin), Mathf.Log(vitesseMax)));
+        lastTimeHit = Time.timeSinceLevelLoad;
 	}
 
 	public virtual void Update () {
@@ -56,4 +60,14 @@ public abstract class Ennemi : Character {
 
         return finalMouvement;
     }
+
+    protected virtual void HitPlayer() {
+        HitPlayerSpecific();
+        if(Time.timeSinceLevelLoad - lastTimeHit > timeBetweenTwoHits) {
+            lastTimeHit = Time.timeSinceLevelLoad;
+            gm.timerManager.AddTime(-timeMalusOnHit);
+        }
+    }
+
+    protected abstract void HitPlayerSpecific();
 }

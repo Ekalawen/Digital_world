@@ -7,6 +7,7 @@ public class Lumiere : MonoBehaviour {
     public enum LumiereType { NORMAL, FINAL };
 
     public LumiereType type;
+    public float timeBonus = 10.0f;
 
     protected GameManager gm;
     protected AudioSource source;
@@ -30,6 +31,8 @@ public class Lumiere : MonoBehaviour {
             gm.eventManager.OnLumiereCaptured(type);
 
             gm.soundManager.PlayGetLumiereClip(transform.position);
+
+            gm.timerManager.AddTime(timeBonus);
 		}
 	}
 }

@@ -140,7 +140,7 @@ public class Tracer : Ennemi {
 		}
 	}
 
-    protected void HitPlayer() {
+    protected override void HitPlayerSpecific() {
     }
 
     protected void SetState(TracerState newState) {

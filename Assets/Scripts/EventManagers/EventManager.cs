@@ -6,6 +6,8 @@ using UnityEngine;
 // Cela va de la coordination des Drones, à la génération d'évenements néffastes.
 public class EventManager : MonoBehaviour {
 
+    public enum DeathReason { TIME_OUT, CAPTURED, FALL_OUT, TOUCHED_DEATH_CUBE };
+
     public float endGameDuration = 20.0f;
     public float endGameFrameRate = 0.2f;
 
@@ -14,6 +16,7 @@ public class EventManager : MonoBehaviour {
     protected Coroutine coroutineDeathCubesCreation;
     protected bool isEndGameStarted = false;
     protected List<Cube> deathCubes;
+    protected bool gameIsEnded = false;
 
     public void Initialize() {
 		// Initialisation
@@ -84,25 +87,37 @@ public class EventManager : MonoBehaviour {
         }
     }
 
-    public void LoseGame() {
-        StopCoroutine(coroutineDeathCubesCreation);
+    public void LoseGame(DeathReason reason) {
+        if (gameIsEnded)
+            return;
+        gameIsEnded = true;
+        if(coroutineDeathCubesCreation != null)
+            StopCoroutine(coroutineDeathCubesCreation);
 
         gm.timeFreezed = true;
         gm.player.pouvoir.FreezePouvoir();
 
-        gm.console.JoueurCapture();
+        gm.console.LoseGame(reason);
 
         StartCoroutine(gm.QuitInSeconds(7));
     }
 
     public void WinGame() {
-        StopCoroutine(coroutineDeathCubesCreation);
+        if (gameIsEnded)
+            return;
+        gameIsEnded = true;
+        if(coroutineDeathCubesCreation != null)
+            StopCoroutine(coroutineDeathCubesCreation);
 
         gm.timeFreezed = true;
         gm.player.pouvoir.FreezePouvoir();
 
-        gm.console.JoueurEchappe();
+        gm.console.WinGame();
 
         StartCoroutine(gm.QuitInSeconds(7));
+    }
+
+    public bool IsGameOver() {
+        return gameIsEnded;
     }
 }

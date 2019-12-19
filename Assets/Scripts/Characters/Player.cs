@@ -298,7 +298,7 @@ public class Player : Character {
 
         if(hit.gameObject.GetComponent<DeathCube>() != null) {
             Debug.Log("Looooooooooooooooose ! :'(");
-            gm.eventManager.LoseGame();
+            gm.eventManager.LoseGame(EventManager.DeathReason.TOUCHED_DEATH_CUBE);
         }
 
 		// On regarde si le personnage s'accroche à un mur !

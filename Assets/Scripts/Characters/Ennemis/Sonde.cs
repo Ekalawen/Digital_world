@@ -84,7 +84,7 @@ public class Sonde : Ennemi {
 		}
 	}
 
-    protected void HitPlayer() {
+    protected override void HitPlayerSpecific() {
         // Si c'est le cas, on l'envoie ballader !
         if (pousseeCurrent != null && !pousseeCurrent.IsOver()) {
             pousseeCurrent.Stop();
