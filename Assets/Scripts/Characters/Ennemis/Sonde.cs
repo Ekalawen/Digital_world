@@ -59,8 +59,10 @@ public class Sonde : Ennemi {
             EtatSonde previousEtat = etat;
             etat = EtatSonde.TRACKING;
             // Si la sonde vient juste de le repérer, on l'annonce
-            if(etat != previousEtat)
+            if (etat != previousEtat && lastPositionSeen == transform.position) {
                 gm.console.JoueurDetecte(name);
+                gm.soundManager.PlayDetectionClip(GetComponentInChildren<AudioSource>());
+            }
         } else {
             EtatSonde previousEtat = etat;
             etat = EtatSonde.WAITING;

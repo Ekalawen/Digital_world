@@ -20,6 +20,10 @@ public class Poussee {
         this.lastTimeApplied = debut;
     }
 
+    public static Poussee CreatePoussee(Vector3 direction, float duree, float puissance) {
+        return new Poussee(direction, duree, puissance * duree);
+    }
+
     public bool IsOver() {
         return Time.timeSinceLevelLoad - debut > duree;
     }
@@ -40,5 +44,9 @@ public class Poussee {
     public void Stop() {
         debut = Time.timeSinceLevelLoad - duree;
         lastTimeApplied = debut;
+    }
+
+    public void Redirect(Vector3 direction) {
+        this.direction = direction.normalized;
     }
 }

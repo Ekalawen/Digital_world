@@ -6,8 +6,12 @@ public class Tracer : Ennemi {
 
     public enum TracerState { WAITING, RUSHING, EMITING };
 
+    public float dureeEmiting = 4.0f;
+    public float rangeEmiting = 5.0f;
+    public float forceEmiting = 1.0f;
     public float dureePauseEntreNodes = 0.1f;
     public GameObject explosionParticlesPrefab;
+    public Material emissiveMaterial;
 
     protected TracerState state;
     protected List<Vector3> path;
@@ -18,10 +22,17 @@ public class Tracer : Ennemi {
     protected float debutStuck;
     protected float dureeMaxStuck = 0.1f;
 
+    protected Material normalMaterial;
+    protected ParticleSystem emitionParticleSystem;
+    protected float debutEmiting;
+    protected Poussee pousseeEmiting = null;
+
     public override void Start() {
         base.Start();
-        state = TracerState.WAITING;
+        SetState(TracerState.WAITING);
         lastTimePause = Time.timeSinceLevelLoad;
+        emitionParticleSystem = GetComponentInChildren<ParticleSystem>(includeInactive: true);
+        normalMaterial = gameObject.GetComponent<MeshRenderer>().material;
     }
 
     public override void UpdateSpecific () {
@@ -37,7 +48,7 @@ public class Tracer : Ennemi {
                     lastTimePause = Time.timeSinceLevelLoad;
                 }
                 if(path.Count == 0) {
-                    state = TracerState.WAITING;
+                    SetState(TracerState.EMITING);
                     return;
                 }
 
@@ -47,6 +58,25 @@ public class Tracer : Ennemi {
 
                     // On essaye de se débloquer si on est bloqué !
                     TryUnStuck();
+                }
+                break;
+            case TracerState.EMITING:
+                float distance = Vector3.Distance(transform.position, player.transform.position);
+                if (distance <= rangeEmiting + 0.5f) {
+                    if (pousseeEmiting == null) {
+                        Vector3 direction = transform.position - player.transform.position;
+                        float dureeRestante = dureeEmiting - (Time.timeSinceLevelLoad - debutEmiting);
+                        pousseeEmiting = Poussee.CreatePoussee(direction, dureeRestante, forceEmiting);
+                        player.AddPoussee(pousseeEmiting);
+                    } else {
+                        Vector3 direction = transform.position - player.transform.position;
+                        pousseeEmiting.Redirect(direction);
+                    }
+                } else {
+                    if(pousseeEmiting != null) {
+                        pousseeEmiting.Stop();
+                        pousseeEmiting = null;
+                    }
                 }
                 break;
         }
@@ -69,7 +99,7 @@ public class Tracer : Ennemi {
     void GetEtat() {
         if(state == TracerState.WAITING) {
             if (IsPlayerVisible()) {
-                state = TracerState.RUSHING;
+                SetState(TracerState.RUSHING);
                 ComputePath(player.transform.position);
             }
         }
@@ -81,7 +111,7 @@ public class Tracer : Ennemi {
         List<Vector3> posToDodge = gm.ennemiManager.GetAllRoundedEnnemisPositions();
         path = gm.map.GetPath(start, end, posToDodge, bIsRandom: true);
         if(path == null) {
-            state = TracerState.WAITING;
+            SetState(TracerState.EMITING);
         }
     }
 
@@ -111,5 +141,35 @@ public class Tracer : Ennemi {
 	}
 
     protected void HitPlayer() {
+    }
+
+    protected void SetState(TracerState newState) {
+        TracerState oldState = state;
+        state = newState;
+        if(newState == TracerState.EMITING && oldState != TracerState.EMITING) {
+            StartCoroutine(StartEmiting());
+        }
+        if (newState != TracerState.EMITING)
+            pousseeEmiting = null;
+        if (newState == TracerState.RUSHING && oldState != TracerState.RUSHING)
+            gm.soundManager.PlayDetectionClip(GetComponentInChildren<AudioSource>());
+    }
+
+    protected IEnumerator StartEmiting() {
+        debutEmiting = Time.timeSinceLevelLoad;
+        emitionParticleSystem.gameObject.SetActive(true);
+        ParticleSystem.ShapeModule shape = emitionParticleSystem.shape;
+        shape.radius = rangeEmiting;
+        GetComponent<MeshRenderer>().material = emissiveMaterial;
+        gm.soundManager.PlayEmissionTracerClip(GetComponentInChildren<AudioSource>(), dureeEmiting);
+
+        yield return new WaitForSeconds(dureeEmiting);
+
+        StopEmiting();
+    }
+    protected void StopEmiting() {
+        emitionParticleSystem.gameObject.SetActive(false);
+        GetComponent<MeshRenderer>().material = normalMaterial;
+        SetState(TracerState.WAITING);
     }
 }

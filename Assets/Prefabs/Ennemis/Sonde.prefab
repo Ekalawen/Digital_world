@@ -111,12 +111,12 @@ MonoBehaviour:
   controller: {fileID: 0}
   vitesseMin: 1
   vitesseMax: 3
+  tempsInactifDebutJeu: 3
+  distanceDeDetection: 10
   distancePoussee: 10
   tempsPoussee: 0.5
-  distanceDeDetection: 10
   coefficiantDeRushVitesse: 1.8
   coefficiantDeRushDistanceDeDetection: 1
-  tempsInactifDebutJeu: 3
 --- !u!143 &143727705574006242
 CharacterController:
   m_ObjectHideFlags: 0
@@ -301,7 +301,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0

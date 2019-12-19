@@ -11,6 +11,8 @@ public class SoundManager : MonoBehaviour {
     public List<AudioClip> getLumiereClips;
     public List<AudioClip> failActionClips;
     public List<AudioClip> hitClips;
+    public List<AudioClip> emissionTracerClips;
+    public List<AudioClip> detectionClips;
 
     public List<AudioClip> normalMusics;
     public List<AudioClip> endGameMusics;
@@ -37,6 +39,15 @@ public class SoundManager : MonoBehaviour {
     public void PlayFailActionClip() {
         PlayClipsOnSource(failActionClips, instantSource);
     }
+    public void PlayDetectionClip(AudioSource source) {
+        source.spatialBlend = 0.5f;
+        PlayClipsOnSource(detectionClips, source);
+    }
+    public void PlayEmissionTracerClip(AudioSource source, float duree) {
+        source.spatialBlend = 1.0f;
+        PlayClipsOnSource(emissionTracerClips, source);
+        StartCoroutine(StopClipIn(source, duree));
+    }
     public void PlayHitClip(AudioSource source) {
         if(!source.isPlaying)
             PlayClipsOnSource(hitClips, source);
@@ -55,6 +66,11 @@ public class SoundManager : MonoBehaviour {
         AudioClip clip = clips[Random.Range(0, clips.Count)];
             source.clip = clip;
         source.Play();
+    }
+
+    protected IEnumerator StopClipIn(AudioSource source, float duree) {
+        yield return new WaitForSeconds(duree);
+        source.Stop();
     }
 
 }
