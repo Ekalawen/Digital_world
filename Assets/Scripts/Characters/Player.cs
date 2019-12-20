@@ -7,18 +7,17 @@ using UnityEngine.Rendering.PostProcessing;
 
 public class Player : Character {
 
-	//////////////////////////////////////////////////////////////////////////////////////
-	// ENUMERATION
-	//////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////
+    // ENUMERATION
+    //////////////////////////////////////////////////////////////////////////////////////
 
-	public enum EtatPersonnage {AU_SOL, EN_SAUT, EN_CHUTE, AU_MUR, AU_POTEAU};
+    public enum EtatPersonnage { AU_SOL, EN_SAUT, EN_CHUTE, AU_MUR, AU_POTEAU };
 
     //////////////////////////////////////////////////////////////////////////////////////
     // ATTRIBUTS PUBLIQUES
     /////////////////////////////////////////////////////////////////////////////////////
 
     public static Player _instance;
-    public GameObject pouvoirPrefab; // Le pouvoir du personnage =)
 	public float vitesseDeplacement; // la vitesse de déplacement horizontale
 	public float vitesseSaut; // la vitesse d'élévation du saut
 	public float dureeSaut; // la durée totale d'un saut
@@ -27,17 +26,17 @@ public class Player : Character {
 	public float sensibilite; // la sensibilité de la souris
 	public float dureeMur; // le temps que l'on peut rester accroché au mur
 	public float distanceMurMax; // la distance maximale de laquelle on peut s'éloigner du mur
-	public GameObject trail; // Les trails à tracer quand le personnage est perdu !
-	public GameObject lumierePathPrefab; // Les lumières à placer quand le personnage fait une détection !
 
+    public GameObject pouvoirAPrefab; // Le pouvoir de la touche A (souvent la détection)
+    public GameObject pouvoirEPrefab; // Le pouvoir de la touche E (souvent la localisation)
+    public GameObject pouvoirLeftBoutonPrefab; // Le pouvoir du bouton gauche de la souris
+    public GameObject pouvoirRightBoutonPrefab; // Le pouvoir du bouton droit de la souris
 	//////////////////////////////////////////////////////////////////////////////////////
 	// ATTRIBUTS PRIVÉES
 	//////////////////////////////////////////////////////////////////////////////////////
 
 	[HideInInspector]
 	public GameObject personnage;
-	[HideInInspector]
-	public IPouvoir pouvoir;
 	[HideInInspector]
 	public Console console;
 	[HideInInspector]
@@ -58,6 +57,10 @@ public class Player : Character {
 	protected Vector3 pointMur; // un point du mur sur lequel le personnage est accroché ! En effet, la normale ne suffit pas :p
     protected float dureeMurRestante; // Le temps qu'il nous reste à être accroché au mur (utile pour les shifts qui peuvent nous décrocher)
 
+    protected IPouvoir pouvoirA; // Le pouvoir de la touche A (souvent la détection)
+    protected IPouvoir pouvoirE; // Le pouvoir de la touche E (souvent la localisation)
+    protected IPouvoir pouvoirLeftBouton; // Le pouvoir du bouton gauche de la souris
+    protected IPouvoir pouvoirRightBouton; // Le pouvoir du bouton droit de la souris
     protected bool bCanUseLocalisation = true;
 
     [HideInInspector]
@@ -103,8 +106,14 @@ public class Player : Character {
 
         console = GameObject.FindObjectOfType<Console>();
 
-        if(pouvoirPrefab != null)
-            pouvoir = Instantiate(pouvoirPrefab, parent: this.transform).GetComponent<IPouvoir>();
+        if(pouvoirAPrefab != null)
+            pouvoirA = Instantiate(pouvoirAPrefab, parent: this.transform).GetComponent<IPouvoir>();
+        if(pouvoirEPrefab != null)
+            pouvoirE = Instantiate(pouvoirEPrefab, parent: this.transform).GetComponent<IPouvoir>();
+        if(pouvoirLeftBoutonPrefab != null)
+            pouvoirLeftBouton = Instantiate(pouvoirLeftBoutonPrefab, parent: this.transform).GetComponent<IPouvoir>();
+        if(pouvoirRightBoutonPrefab != null)
+            pouvoirRightBouton = Instantiate(pouvoirRightBoutonPrefab, parent: this.transform).GetComponent<IPouvoir>();
     }
 
     void ChoseStartingPosition() {
@@ -118,17 +127,8 @@ public class Player : Character {
         UpdateMouvement();
         UpdateLastNotContactEnnemi();
 
-        // On regarde si le joueur a appuyé sur E
-        TryUseLumiereLocalisation();
-
-        // On regarde si le joueur a appuyé sur A
-        TryUseDetection();
-
-        // Lorsque le joueur clique avec sa souris
-        if(Input.GetMouseButtonDown(0)) {
-            if(pouvoir != null)
-                pouvoir.tryUsePouvoir();
-        }
+        // On vérifie si le joueur a utilisé l'un de ses pouvoirs ! :)
+        TryUsePouvoirs();
 	}
 
     // Utilisé pour gérer la caméra
@@ -380,84 +380,34 @@ public class Player : Character {
         StartCoroutine (StopJump (debutSaut));
     }
 
-    protected void TryUseLumiereLocalisation() {
-		if (Input.GetKeyDown (KeyCode.E)) {
-            if (!bCanUseLocalisation) {
-                gm.console.FailLocalisation();
-                gm.soundManager.PlayFailActionClip();
-                return;
-            }
-			// On trace les rayons ! =)
-			GameObject[] lumieres = GameObject.FindGameObjectsWithTag ("Objectif");
-			for (int i = 0; i < lumieres.Length; i++) {
-				//Vector3 departRayons = transform.position - 0.5f * camera.transform.forward + 0.5f * Vector3.up;
-				Vector3 departRayons = transform.position + 0.5f * Vector3.up;
-				GameObject tr = Instantiate (trail, departRayons, Quaternion.identity) as GameObject;
-				tr.GetComponent<Trail> ().setTarget (lumieres [i].transform.position);
-			}
-
-			// Un petit message
-			console.RunLocalisation();
-
-			// Et on certifie qu'on a appuyé sur E
-			console.UpdateLastLumiereAttrapee();
-		}
-    }
-
-    protected void TryUseDetection() {
-		if (Input.GetKeyDown (KeyCode.A)) {
-            // Penser à ajouter les autres objectifs intéressants !
-            List<Vector3> positions = gm.map.GetAllLumieresPositions();
-
-            if (!bCanUseLocalisation || positions.Count == 0) {
-                gm.console.FailLocalisation();
-                gm.soundManager.PlayFailActionClip();
-                return;
-            }
-
-            // On choisit la position la plus proche
-            Vector3 nearestPosition = positions[0];
-            float distMin = Vector3.Distance(nearestPosition, transform.position);
-            foreach(Vector3 position in positions) {
-                float dist = Vector3.Distance(position, transform.position);
-                if(dist < distMin) {
-                    distMin = dist;
-                    nearestPosition = position;
-                }
-            }
-
-            // On trace le chemin
-            List<Vector3> posToDodge = gm.map.GetAllNonRegularCubePos();
-            for (int i = 0; i < posToDodge.Count; i++)
-                posToDodge[i] = MathTools.Round(posToDodge[i]);
-            List<Vector3> path = gm.map.GetPath(transform.position, nearestPosition, posToDodge, bIsRandom: true);
-            if (path != null)
-                StartCoroutine(DrawPath(path));
-            else
-                Debug.Log("Objectif inaccessible en " + nearestPosition + " !");
-
-			// Un petit message
-			console.RunDetection(nearestPosition);
-		}
-    }
-
-    protected IEnumerator DrawPath(List<Vector3> path) {
-        int nbSpheresByNodes = 4;
-        for(int i = 0; i < path.Count - 1; i++) {
-            Vector3 current = path[i];
-            Vector3 next = path[i + 1];
-            for(int j = 0; j < nbSpheresByNodes; j++) {
-                Vector3 direction = next - current;
-                Vector3 pos = current + direction / nbSpheresByNodes * (j + 1);
-                GameObject go = Instantiate(lumierePathPrefab, pos, Quaternion.identity);
-                Destroy(go, 1.0f);
-                yield return new WaitForSeconds(0.1f);
-            }
-        }
+    protected void TryUsePouvoirs() {
+        // A
+        if(Input.GetKeyDown(KeyCode.A))
+            pouvoirA?.TryUsePouvoir();
+        // E
+        if(Input.GetKeyDown(KeyCode.E))
+            pouvoirE?.TryUsePouvoir();
+        // Click Gauche
+        if(Input.GetMouseButtonDown(0))
+            pouvoirLeftBouton?.TryUsePouvoir();
+        // Click Droit
+        if(Input.GetMouseButtonDown(1))
+            pouvoirRightBouton?.TryUsePouvoir();
     }
 
     public void FreezeLocalisation() {
         bCanUseLocalisation = false;
+    }
+
+    public void FreezePouvoirs() {
+        pouvoirA?.FreezePouvoir();
+        pouvoirE?.FreezePouvoir();
+        pouvoirLeftBouton?.FreezePouvoir();
+        pouvoirRightBouton?.FreezePouvoir();
+    }
+
+    public bool CanUseLocalisation() {
+        return bCanUseLocalisation;
     }
 
     public EtatPersonnage GetEtat() {

@@ -95,7 +95,8 @@ public class EventManager : MonoBehaviour {
             StopCoroutine(coroutineDeathCubesCreation);
 
         gm.timeFreezed = true;
-        gm.player.pouvoir.FreezePouvoir();
+
+        gm.player.FreezePouvoirs();
 
         gm.console.LoseGame(reason);
 
@@ -110,7 +111,7 @@ public class EventManager : MonoBehaviour {
             StopCoroutine(coroutineDeathCubesCreation);
 
         gm.timeFreezed = true;
-        gm.player.pouvoir.FreezePouvoir();
+        gm.player.FreezePouvoirs();
 
         gm.console.WinGame();
 

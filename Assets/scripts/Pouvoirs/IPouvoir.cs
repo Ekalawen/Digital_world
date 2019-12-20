@@ -9,20 +9,35 @@ using UnityEngine;
 /// </summary>
 public abstract class IPouvoir : MonoBehaviour {
 
+    public float cooldown = 0.0f;
+    public float timerMalus = 0.0f;
+
     protected bool pouvoirAvailable;
     protected bool freezePouvoir = false;
     protected GameManager gm;
+    protected Player player;
+    protected Timer cooldownTimer;
 
     public void Start() {
         pouvoirAvailable = true;
         gm = FindObjectOfType<GameManager>();
+        player = gm.player;
+        cooldownTimer = new Timer(cooldown);
+        cooldownTimer.Enable();
     }
 
     // La fonction appelée lorsque le joueur appui sur une touche
-    public void tryUsePouvoir() {
-        if(pouvoirAvailable && !freezePouvoir) {
+    public void TryUsePouvoir() {
+        if(pouvoirAvailable && !freezePouvoir && cooldownTimer.IsOver()) {
+            cooldownTimer.Reset();
+            ApplyTimerMalus();
             UsePouvoir();
         }
+    }
+
+    protected virtual void ApplyTimerMalus() {
+        if (timerMalus != 0.0f)
+            gm.timerManager.AddTime(-timerMalus);
     }
 
     // La véritable fonction qui appelle le pouvoir
