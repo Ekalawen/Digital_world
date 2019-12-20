@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class MenuLevelSelector : MonoBehaviour {
 
+    public static string LEVEL_INDICE_KEY = "levelIndiceKey";
+    public static string LEVEL_INDICE_MUST_BE_USED_KEY = "levelIndiceMustBeUsedKey";
+
     public GameObject menuInitial;
     public List<GameObject> levels;
 
@@ -23,7 +26,8 @@ public class MenuLevelSelector : MonoBehaviour {
 		}
     }
 
-    public void Run() {
+    public void Run(int indice = 0) {
+        levelIndice = indice;
         menuInitial.SetActive(false);
         Play(levelIndice);
     }
@@ -50,5 +54,10 @@ public class MenuLevelSelector : MonoBehaviour {
         }
         menuInitial.SetActive(true);
         menuInitial.GetComponent<MenuManager>().SetRandomBackground();
+    }
+
+    public void SaveLevelIndice() {
+        PlayerPrefs.SetInt(LEVEL_INDICE_KEY, levelIndice);
+        PlayerPrefs.Save();
     }
 }

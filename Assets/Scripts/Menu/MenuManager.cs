@@ -9,7 +9,15 @@ public class MenuManager : MonoBehaviour {
     public MenuOptions menuOptions;
     public MenuBackgroundBouncing menuBouncingBackground;
 
-	void Update() {
+    private void Start() {
+        if (PlayerPrefs.GetString(MenuLevelSelector.LEVEL_INDICE_MUST_BE_USED_KEY) == "True") {
+            int levelIndice = PlayerPrefs.GetInt(MenuLevelSelector.LEVEL_INDICE_KEY);
+            PlayerPrefs.SetString(MenuLevelSelector.LEVEL_INDICE_MUST_BE_USED_KEY, "False");
+            menuLevelSelector.Run(levelIndice);
+        }
+    }
+
+    void Update() {
 		// Si on appui sur Echap on quitte
 		if(Input.GetKeyDown(KeyCode.Escape)) {
 			OnQuitterPress();

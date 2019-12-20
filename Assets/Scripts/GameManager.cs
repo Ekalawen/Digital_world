@@ -182,6 +182,8 @@ public class GameManager : MonoBehaviour {
 		Object.Destroy(eventManager);
 		Object.Destroy(this);
 
+        PlayerPrefs.SetString(MenuLevelSelector.LEVEL_INDICE_MUST_BE_USED_KEY, "True");
+
 		Cursor.lockState = CursorLockMode.None;
 		Cursor.visible = true;
 		SceneManager.LoadScene("MenuScene");

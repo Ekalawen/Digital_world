@@ -29,6 +29,7 @@ public class MenuLevel : MonoBehaviour {
     }
 
     public void Play() {
+        menuLevelSelector.SaveLevelIndice();
 		SceneManager.LoadScene(levelSceneName);
     }
 
