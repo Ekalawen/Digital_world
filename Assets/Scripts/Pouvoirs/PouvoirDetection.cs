@@ -59,7 +59,7 @@ public class PouvoirDetection : IPouvoir {
     }
 
     protected override void ApplyTimerMalus() {
-        float timeMalus = gm.timerManager.GetRemainingTime() / 2;
+        float timeMalus = gm.timerManager.GetRemainingTime() / 3;
         gm.timerManager.AddTime(-timeMalus);
     }
 

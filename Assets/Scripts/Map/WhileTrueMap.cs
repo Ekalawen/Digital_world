@@ -57,4 +57,8 @@ public class WhileTrueMap : CubeMap {
 
         return caves;
 	}
+
+    protected override void FixNbLumieres() {
+        // On veut pas fixer ! :)
+    }
 }

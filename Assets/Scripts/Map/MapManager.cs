@@ -28,6 +28,7 @@ public abstract class MapManager : MonoBehaviour {
 	public GameObject ennemiPrefabs; // On récupère un ennemi !
 
 	public int tailleMap; // La taille de la map, en largeur, hauteur et profondeur
+	public int nbLumieresInitial; // Le nombre de lumières lors de la création de la map
 
     protected Cube[,,] cubesRegular; // Toutes les positions entières dans [0, tailleMap]
     protected List<Cube> cubesNonRegular; // Toutes les autres positions (non-entières)
@@ -69,6 +70,7 @@ public abstract class MapManager : MonoBehaviour {
         // Puis on régule la map pour s'assurer que tout va bien :)
         PrintCubesNumbers();
         //LocaliseCubeOnLumieres();
+        FixNbLumieres();
         LinkUnreachableLumiereToRest();
     }
 
@@ -277,6 +279,21 @@ public abstract class MapManager : MonoBehaviour {
         return cubes;
     }
 
+    public List<Cube> GetCubesInLocation(Vector3 roundedLocation) {
+        List<Cube> cubes = new List<Cube>();
+        roundedLocation = MathTools.Round(roundedLocation);
+        Cube cubeRegular = cubesRegular[(int)roundedLocation.x, (int)roundedLocation.y, (int)roundedLocation.z];
+        if (cubeRegular != null)
+            cubes.Add(cubeRegular);
+        foreach (Cube cube in cubesNonRegular) {
+            Vector3 pos = cube.transform.position;
+            if(Vector3.Distance(pos, roundedLocation) <= 0.5 + Mathf.Sqrt(2.0f) / 2.0f) {
+                cubes.Add(cube);
+            }
+        }
+        return cubes;
+    }
+
     public Lumiere CreateLumiere(Vector3 pos, Lumiere.LumiereType type) {
         // On arrondie les positions pour être à une valeur entière :)
         // C'EST TRES IMPORTANT QUE CES POSITIONS SOIENT ENTIERES !!! (pour vérifier qu'elles sont accessibles)
@@ -380,14 +397,14 @@ public abstract class MapManager : MonoBehaviour {
     }
 
     public Vector3 GetFreeRoundedLocation() {
-        Vector3 center = MathTools.Round(new Vector3(Random.Range(1.0f, (float)tailleMap),
-                                     Random.Range(1.0f, (float)tailleMap),
-                                     Random.Range(1.0f, (float)tailleMap)));
+        Vector3 center = MathTools.Round(new Vector3(Random.Range(1.0f, (float)tailleMap - 1),
+                                     Random.Range(1.0f, (float)tailleMap - 1),
+                                     Random.Range(1.0f, (float)tailleMap - 1)));
         int k = 0; int kmax = 5000;
-        while(GetCubesInSphere(center, 0.5f).Count > 0 && k <= kmax) {
-            center = MathTools.Round(new Vector3(Random.Range(1.0f, (float)tailleMap),
-                                     Random.Range(1.0f, (float)tailleMap),
-                                     Random.Range(1.0f, (float)tailleMap)));
+        while(GetCubesInLocation(center).Count > 0 && k <= kmax) {
+            center = MathTools.Round(new Vector3(Random.Range(1.0f, (float)tailleMap - 1),
+                                     Random.Range(1.0f, (float)tailleMap - 1),
+                                     Random.Range(1.0f, (float)tailleMap - 1)));
             k++;
         }
         if (k > kmax)
@@ -604,5 +621,24 @@ public abstract class MapManager : MonoBehaviour {
         foreach (Cube cube in cubesNonRegular)
             res.Add(cube.transform.position);
         return res;
+    }
+
+    protected virtual void FixNbLumieres() {
+        if(lumieres.Count > nbLumieresInitial) {
+            int nbLumieresToDelete = lumieres.Count - nbLumieresInitial;
+            for(int i = 0; i < nbLumieresToDelete; i++) {
+                int indiceLumiere = Random.Range(0, lumieres.Count);
+                Destroy(lumieres[indiceLumiere].gameObject);
+                lumieres.RemoveAt(indiceLumiere);
+            }
+        }
+
+        if(lumieres.Count < nbLumieresInitial) {
+            int nbLumieresToAdd = nbLumieresInitial - lumieres.Count;
+            for(int i = 0; i < nbLumieresToAdd; i++) {
+                Vector3 posLumiere = GetFreeRoundedLocation();
+                CreateLumiere(posLumiere, Lumiere.LumiereType.NORMAL);
+            }
+        }
     }
 }
