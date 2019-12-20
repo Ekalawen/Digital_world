@@ -83,6 +83,7 @@ public class Player : Character {
 		camera = personnage.transform.GetChild(0).GetComponent<Camera>() as Camera;
         audioSource = GetComponentInChildren<AudioSource>();
         gm = FindObjectOfType<GameManager>();
+        sensibilite = PlayerPrefs.GetFloat(MenuOptions.MOUSE_SPEED_KEY);
 
         //ChoseStartingPosition();
         transform.position = position;

@@ -21,6 +21,7 @@ public class ColorManager : MonoBehaviour {
 
     public void Initialize() {
         map = FindObjectOfType<MapManager>();
+        cubeLuminosityMax = PlayerPrefs.GetFloat(MenuOptions.LUMINOSITY_KEY);
 
         // Si c'est random, alors on relance ! :)
         for (int i = 0; i < themes.Count; i++) {
@@ -98,7 +99,7 @@ public class ColorManager : MonoBehaviour {
         MathTools.Shuffle(cubes);
 
         foreach(Cube cube in cubes) {
-            while(cube.GetLuminosity() > cubeLuminosityMax) {
+            while(cube.GetLuminosity() > cubeLuminosityMax + 0.0001f) { // Car la luminosité n'est jamais à vraiment 0
                 RemoveClosestSource(cube.transform.position);
             }
         }

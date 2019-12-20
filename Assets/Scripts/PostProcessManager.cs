@@ -27,6 +27,9 @@ public class PostProcessManager : MonoBehaviour {
     }
 
     public void UpdateGripEffect(Player.EtatPersonnage previousState) {
+        if (PlayerPrefs.GetString(MenuOptions.GRIP_KEY) == "False")
+            return;
+
         Player.EtatPersonnage etat = gm.player.GetEtat();
         if(previousState != Player.EtatPersonnage.AU_MUR && etat == Player.EtatPersonnage.AU_MUR) {
             // Activer !

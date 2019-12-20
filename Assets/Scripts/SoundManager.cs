@@ -22,6 +22,7 @@ public class SoundManager : MonoBehaviour {
     public AudioSource instantSource;
 
     public void Initialize() {
+        globalSource.volume = PlayerPrefs.GetFloat(MenuOptions.MUSIC_VOLUME_KEY);
         PlayClipsOnSource(normalMusics, globalSource);
     }
 
@@ -67,6 +68,8 @@ public class SoundManager : MonoBehaviour {
     }
 
     protected void PlayClipsOnSource(List<AudioClip> clips, AudioSource source) {
+        if(source != globalSource)
+            source.volume = PlayerPrefs.GetFloat(MenuOptions.SOUND_VOLUME_KEY);
         AudioClip clip = clips[Random.Range(0, clips.Count)];
             source.clip = clip;
         source.Play();

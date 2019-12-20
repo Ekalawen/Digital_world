@@ -12,13 +12,14 @@ public class MenuOptions : MonoBehaviour {
     public Slider sliderSon;
     public Slider sliderMouse;
     public Slider sliderLuminosity;
+    public Toggle toggleGrip;
 
-    protected string gripKey = "gripKey";
-    protected string mouseSpeedKey = "mouseSpeedKey";
-    protected string luminosityKey = "luminosityKey";
-    protected string lastLevelKey = "lastLevelKey";
-    protected string musicVolumeKey = "musicVolumeKey";
-    protected string soundVolumeKey = "soundVolumeKey";
+    public static string MUSIC_VOLUME_KEY = "musicVolumeKey";
+    public static string SOUND_VOLUME_KEY = "soundVolumeKey";
+    public static string MOUSE_SPEED_KEY = "mouseSpeedKey";
+    public static string LUMINOSITY_KEY = "luminosityKey";
+    public static string GRIP_KEY = "gripKey";
+    public static string LAST_LEVEL_KEY = "lastLevelKey";
 
     public void Run() {
         float probaSource = 0.03f;
@@ -31,11 +32,11 @@ public class MenuOptions : MonoBehaviour {
         menuOptions.SetActive(true);
         menuInitial.SetActive(false);
 
-        OnMusicVolumeChange(PlayerPrefs.GetFloat(musicVolumeKey));
-        OnSoundVolumeChange(PlayerPrefs.GetFloat(soundVolumeKey));
-        OnMouseSpeedChange(PlayerPrefs.GetFloat(mouseSpeedKey));
-        OnLuminosityChange(PlayerPrefs.GetFloat(luminosityKey));
-        OnGripActivationPress(PlayerPrefs.GetString(gripKey) == "true");
+        OnMusicVolumeChange(PlayerPrefs.GetFloat(MUSIC_VOLUME_KEY));
+        OnSoundVolumeChange(PlayerPrefs.GetFloat(SOUND_VOLUME_KEY));
+        OnMouseSpeedChange(PlayerPrefs.GetFloat(MOUSE_SPEED_KEY));
+        OnLuminosityChange(PlayerPrefs.GetFloat(LUMINOSITY_KEY));
+        OnGripActivationPress(PlayerPrefs.GetString(GRIP_KEY) == "True");
     }
 
     private void Update() {
@@ -53,30 +54,35 @@ public class MenuOptions : MonoBehaviour {
     }
 
     public void OnMusicVolumeChange(float newVal) {
-        PlayerPrefs.SetFloat(musicVolumeKey, newVal);
+        PlayerPrefs.SetFloat(MUSIC_VOLUME_KEY, newVal);
         sliderMusic.value = newVal;
+        sliderMusic.GetComponent<SliderScript>().OnChange(newVal);
     }
 
     public void OnSoundVolumeChange(float newVal) {
-        PlayerPrefs.SetFloat(soundVolumeKey, newVal);
+        PlayerPrefs.SetFloat(SOUND_VOLUME_KEY, newVal);
         sliderSon.value = newVal;
+        sliderSon.GetComponent<SliderScript>().OnChange(newVal);
     }
 
     public void OnMouseSpeedChange(float newVal) {
-        PlayerPrefs.SetFloat(mouseSpeedKey, newVal);
+        PlayerPrefs.SetFloat(MOUSE_SPEED_KEY, newVal);
         sliderMouse.value = newVal;
+        sliderMouse.GetComponent<SliderScript>().OnChange(newVal);
     }
 
     public void OnLuminosityChange(float newVal) {
-        PlayerPrefs.SetFloat(luminosityKey, newVal);
+        PlayerPrefs.SetFloat(LUMINOSITY_KEY, newVal);
         sliderLuminosity.value = newVal;
+        sliderLuminosity.GetComponent<SliderScript>().OnChange(newVal);
     }
 
     public void OnGripActivationPress(bool active) {
-        PlayerPrefs.SetString(gripKey, active.ToString());
+        PlayerPrefs.SetString(GRIP_KEY, active.ToString());
+        toggleGrip.isOn = active;
     }
 
     public void RememberLastLevel(int indiceLevel) {
-        PlayerPrefs.SetInt(lastLevelKey, indiceLevel);
+        PlayerPrefs.SetInt(LAST_LEVEL_KEY, indiceLevel);
     }
 }
