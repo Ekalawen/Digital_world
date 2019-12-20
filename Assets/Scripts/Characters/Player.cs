@@ -445,7 +445,7 @@ public class Player : Character {
         for(int i = 0; i < path.Count - 1; i++) {
             Vector3 current = path[i];
             Vector3 next = path[i + 1];
-            for(int j = 0; j < nbSpheresByNodes - 1; j++) {
+            for(int j = 0; j < nbSpheresByNodes; j++) {
                 Vector3 direction = next - current;
                 Vector3 pos = current + direction / nbSpheresByNodes * (j + 1);
                 GameObject go = Instantiate(lumierePathPrefab, pos, Quaternion.identity);

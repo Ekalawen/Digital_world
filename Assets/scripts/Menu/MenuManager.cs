@@ -6,6 +6,8 @@ using UnityEngine.SceneManagement;
 public class MenuManager : MonoBehaviour {
 
     public MenuLevelSelector menuLevelSelector;
+    public MenuOptions menuOptions;
+    public MenuBackgroundBouncing menuBouncingBackground;
 
 	void Update() {
 		// Si on appui sur Echap on quitte
@@ -35,6 +37,7 @@ public class MenuManager : MonoBehaviour {
 	// Lorsqu'on appui sur le bouton options
 	public void OnOptionPress() {
 		Debug.Log("On a appuyé sur Option !");
+        menuOptions.Run();
 	}
 
 	// Lorsqu'on appui sur le bouton quitter
@@ -54,4 +57,15 @@ public class MenuManager : MonoBehaviour {
 			Application.Quit();
 		#endif
 	}
+
+    public void SetRandomBackground() {
+        float probaSource = Random.Range(0.00002f, 0.0035f);
+        int distanceSource = Random.Range(1, 12);
+        float decroissanceSource = Random.Range(0.002f, 0.02f);
+        List<ColorSource.ThemeSource> themes = new List<ColorSource.ThemeSource>();
+        int nbThemes = Random.Range(1, 4);
+        for(int i = 0; i < nbThemes; i++)
+            themes.Add(ColorManager.GetRandomTheme());
+        menuBouncingBackground.SetParameters(probaSource, distanceSource, decroissanceSource, themes);
+    }
 }
