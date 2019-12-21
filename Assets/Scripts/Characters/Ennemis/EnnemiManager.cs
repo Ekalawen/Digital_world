@@ -39,4 +39,12 @@ public class EnnemiManager : MonoBehaviour {
         }
         return res;
     }
+
+    public bool IsPlayerFollowed() {
+        foreach(Ennemi ennemi in ennemis) {
+            if (!ennemi.IsInactive())
+                return true;
+        }
+        return false;
+    }
 }

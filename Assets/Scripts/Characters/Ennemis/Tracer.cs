@@ -172,4 +172,8 @@ public class Tracer : Ennemi {
         GetComponent<MeshRenderer>().material = normalMaterial;
         SetState(TracerState.WAITING);
     }
+
+    public override bool IsInactive() {
+        return state == TracerState.WAITING;
+    }
 }

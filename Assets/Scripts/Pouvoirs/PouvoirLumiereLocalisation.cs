@@ -6,12 +6,12 @@ public class PouvoirLumiereLocalisation : IPouvoir {
 
 	public GameObject trail; // Les trails à tracer quand le personnage est perdu !
 
-    protected override void UsePouvoir() {
+    protected override bool UsePouvoir() {
 		if (Input.GetKeyDown (KeyCode.E)) {
             if (!player.CanUseLocalisation()) {
                 gm.console.FailLocalisation();
                 gm.soundManager.PlayFailActionClip();
-                return;
+                return false;
             }
 
 			// On trace les rayons ! =)
@@ -29,5 +29,7 @@ public class PouvoirLumiereLocalisation : IPouvoir {
 			// Et on certifie qu'on a appuyé sur E
 			gm.console.UpdateLastLumiereAttrapee();
 		}
+
+        return true;
     }
 }

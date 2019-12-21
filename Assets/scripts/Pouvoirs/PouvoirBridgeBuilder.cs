@@ -15,7 +15,7 @@ public class PouvoirBridgeBuilder : IPouvoir {
     public bool isDestructive; // Permet de savoir si ce pouvoir détruit les autres cubes ou pas !
     public float rayonDestruction; // Le rayon de destruction autour duquel on détruit les cubes pour pouvoir passe =)
 
-    protected override void UsePouvoir() {
+    protected override bool UsePouvoir() {
         Vector3 pointSource; // Le départ du pont
         Vector3 pointCible; // La fin du pont
 
@@ -34,11 +34,14 @@ public class PouvoirBridgeBuilder : IPouvoir {
 
             } else {
                 CibleInvalide();
+                return false;
             }
         } else {
             CibleInvalide();
+            return false;
         }
 
+        return true;
     }
 
     void CibleInvalide() {

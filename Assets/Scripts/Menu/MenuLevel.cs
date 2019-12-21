@@ -2,12 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MenuLevel : MonoBehaviour {
+
+    public static string LEVEL_NAME_KEY = "levelNameKey";
 
     public string levelSceneName;
     public MenuLevelSelector menuLevelSelector;
     public MenuBackgroundBouncing menuBouncingBackground;
+    public Text textLevelName; 
 
     // Les propriétés du background de ce level
     public float probaSource = 0.00035f; // La probabilité d'être une source
@@ -30,6 +34,7 @@ public class MenuLevel : MonoBehaviour {
 
     public void Play() {
         menuLevelSelector.SaveLevelIndice();
+        PlayerPrefs.SetString(LEVEL_NAME_KEY, textLevelName.text);
 		SceneManager.LoadScene(levelSceneName);
     }
 

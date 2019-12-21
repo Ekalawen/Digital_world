@@ -66,8 +66,16 @@ public abstract class Ennemi : Character {
         if(Time.timeSinceLevelLoad - lastTimeHit > timeBetweenTwoHits) {
             lastTimeHit = Time.timeSinceLevelLoad;
             gm.timerManager.AddTime(-timeMalusOnHit);
+            // Et on affiche un message dans la console !
+            if (!gm.partieDejaTerminee) {
+                gm.console.JoueurTouche();
+            }
+            // Le son
+            gm.soundManager.PlayHitClip(GetComponentInChildren<AudioSource>());
         }
     }
 
     protected abstract void HitPlayerSpecific();
+
+    public abstract bool IsInactive();
 }

@@ -29,9 +29,10 @@ public abstract class IPouvoir : MonoBehaviour {
     // La fonction appelée lorsque le joueur appui sur une touche
     public void TryUsePouvoir() {
         if(pouvoirAvailable && !freezePouvoir && cooldownTimer.IsOver()) {
-            cooldownTimer.Reset();
-            ApplyTimerMalus();
-            UsePouvoir();
+            if(UsePouvoir()) {
+                cooldownTimer.Reset();
+                ApplyTimerMalus();
+            }
         }
     }
 
@@ -41,7 +42,7 @@ public abstract class IPouvoir : MonoBehaviour {
     }
 
     // La véritable fonction qui appelle le pouvoir
-    protected abstract void UsePouvoir();
+    protected abstract bool UsePouvoir();
 
     public void FreezePouvoir() {
         freezePouvoir = true;

@@ -21,16 +21,17 @@ public class Console : MonoBehaviour {
 	[HideInInspector]
 	public GameManager gm;
 	[HideInInspector]
-	public MapManager mapManager;
+	public MapManager map;
 	[HideInInspector]
 	public GameObject player;
 	[HideInInspector]
 	public EventManager eventManager;
-	private List<GameObject> lines; // Les lignes de la console, constitués d'un RectTransform et d'un Text
-	private List<int> numLines; // Les numéros de lignes
-	private float lastTimeImportantText;
-	private float tempsImportantText;
-	private float timeLastLumiereAttrapee; // Le dernier temps auquel le joueur n'a pas attrapé d'Orbe
+	protected List<GameObject> lines; // Les lignes de la console, constitués d'un RectTransform et d'un Text
+	protected List<int> numLines; // Les numéros de lignes
+	protected float lastTimeImportantText;
+	protected float tempsImportantText;
+	protected float timeLastLumiereAttrapee; // Le dernier temps auquel le joueur n'a pas attrapé d'Orbe
+    protected bool playerIsFollowed = false; // C'est pas vrai, mais c'est pour que l'algo fonctionne ^^
 
 	void Start () {
 	}
@@ -38,31 +39,36 @@ public class Console : MonoBehaviour {
     public void Initialize() {
 		// Initialisation des variables
 		name = "Console";
-		gm = GameObject.Find("GameManager").GetComponent<GameManager>();
-		mapManager = GameObject.Find("MapManager").GetComponent<MapManager>();
+        gm = GameManager.Instance;
+        map = gm.map;
 		lines = new List<GameObject> ();
 		numLines = new List<int> ();
-		player = GameObject.Find ("Joueur");
+        player = gm.player.gameObject;
 		importantText.text = "";
-		eventManager = GameObject.Find("EventManager").GetComponent<EventManager>();
+        eventManager = gm.eventManager;
 
 		// Les premiers messages
 		PremiersMessages();
     }
 
 	public void PremiersMessages() {
-		AjouterMessage ("Chargement de la Matrix ...", TypeText.BASIC_TEXT);
-		AjouterMessage ("Détection des Bases de Données ...", TypeText.BASIC_TEXT);
-		AjouterMessageImportant (mapManager.lumieres.Count + " Datas trouvées ! À vous de jouer !", TypeText.ALLY_TEXT, 5);
-		AjouterMessage ("DÉTECTION INTRUSION ...", TypeText.ENNEMI_TEXT);
-		AjouterMessage ("ANTI-VIRUS ACTIVÉS DANS 5 SECONDES !", TypeText.ENNEMI_TEXT);
-		AjouterMessage ("On détecte " + gm.ennemiManager.ennemis.Count + " Ennemis !", TypeText.ALLY_TEXT);
+        string levelName = PlayerPrefs.GetString(MenuLevel.LEVEL_NAME_KEY);
+		AjouterMessage ("Niveau : " + levelName, TypeText.BASIC_TEXT);
+		AjouterMessage ("Initialisation de la Matrix ...", TypeText.BASIC_TEXT);
+		AjouterMessageImportant (map.lumieres.Count + " Datas trouvées !", TypeText.ALLY_TEXT, 5);
+		AjouterMessage (gm.ennemiManager.ennemis.Count + " Ennemis détectés !", TypeText.ALLY_TEXT);
+
+		//AjouterMessage ("Chargement de la Matrix ...", TypeText.BASIC_TEXT);
+		//AjouterMessage ("Détection des Bases de Données ...", TypeText.BASIC_TEXT);
+		//AjouterMessageImportant (map.lumieres.Count + " Datas trouvées ! À vous de jouer !", TypeText.ALLY_TEXT, 5);
+		//AjouterMessage ("DÉTECTION INTRUSION ...", TypeText.ENNEMI_TEXT);
+		//AjouterMessage ("ANTI-VIRUS ACTIVÉS DANS 5 SECONDES !", TypeText.ENNEMI_TEXT);
+		//AjouterMessage ("On détecte " + gm.ennemiManager.ennemis.Count + " Ennemis !", TypeText.ALLY_TEXT);
 	}
 	
 	void Update () {
 		// On regarde si le joueur n'est pas trop haut en altitude
-		if (Time.timeSinceLevelLoad >= 10f
-		&& player.transform.position.y > mapManager.tailleMap + 3) {
+		if (player.transform.position.y > map.tailleMap + 3) {
 			AjouterMessage ("Altitude critique !", TypeText.BASIC_TEXT);
 		}
 
@@ -77,23 +83,35 @@ public class Console : MonoBehaviour {
 		}
 
         // On conseille d'appuyer sur TAB si le joueur galère a trouver des orbes
-        mapManager = GameObject.Find("MapManager").GetComponent<MapManager>();
-        if (mapManager.lumieres.Count > 0) {
-			if (Time.timeSinceLevelLoad - timeLastLumiereAttrapee > 30) {
+        if (map.lumieres.Count > 0) {
+			if (Time.timeSinceLevelLoad - timeLastLumiereAttrapee > 25) {
 				timeLastLumiereAttrapee = Time.timeSinceLevelLoad;
 				AjouterMessage ("On peut te géolocaliser les Datas si tu appuies sur E ou A !", TypeText.ALLY_TEXT);
 			}
 		}
 
+        // On détecte si le joueur est safe ou pas !
+        if (!gm.eventManager.IsGameOver()) {
+            bool oldState = playerIsFollowed;
+            playerIsFollowed = gm.ennemiManager.IsPlayerFollowed();
+            Debug.Log(playerIsFollowed);
+            if (playerIsFollowed && !oldState) {
+                JoueurDetecte();
+            }
+            if (!playerIsFollowed && oldState) {
+                SemerEnnemis();
+            }
+        }
 	}
 
 	public void UpdateLastLumiereAttrapee() {
 		timeLastLumiereAttrapee = Time.timeSinceLevelLoad;
 	}
 
-	public void AjouterMessageImportant(string message, TypeText type, float tempsAffichage) {
+	public void AjouterMessageImportant(string message, TypeText type, float tempsAffichage, bool bAfficherInConsole = true) {
 		// Déjà on affiche le message dans la console
-		AjouterMessage (message, type);
+        if(bAfficherInConsole)
+            AjouterMessage (message, type);
 
 		// Et en plus on l'affiche en gros !
 		importantText.text = message;
@@ -187,20 +205,30 @@ public class Console : MonoBehaviour {
 		phrases.Add ("Tu as oublié les touches ? RTFM !");
 		phrases.Add ("Récursif ou Itératif ?");
 		phrases.Add ("POO = Parfaite Optimisation Originelle");
-		phrases.Add ("Il y a " + mapManager.nbEnnemis + " Sondes à votre recherche.");
+		phrases.Add ("Il y a " + map.nbEnnemis + " Sondes à votre recherche.");
 
 		string phrase = phrases [Random.Range (0, phrases.Count)];
 		AjouterMessage (phrase, TypeText.BASIC_TEXT);
 	}
 
-	// Lorsqu'une sonde repère le joueur
-	public void JoueurDetecte(string nomDetecteur) {
-		AjouterMessage (nomDetecteur + " vous a détecté, je sais où vous êtes.", Console.TypeText.ENNEMI_TEXT);
+	// Lorsqu'un ennemi repère le joueur
+	public void JoueurDetecte() {
+        AjouterMessageImportant ("DÉTECTÉ !", Console.TypeText.ENNEMI_TEXT, 2, bAfficherInConsole: false);
+		AjouterMessage ("Je vous ai détecté, je sais où vous êtes !", Console.TypeText.ENNEMI_TEXT);
+	}
+	//public void JoueurDetecte(string nomDetecteur) {
+		//AjouterMessage (nomDetecteur + " vous a détecté, je sais où vous êtes.", Console.TypeText.ENNEMI_TEXT);
+	//}
+
+	// Quand le joueur réussit à semer toutes les sondes
+	public void SemerEnnemis() {
+		AjouterMessageImportant ("DISSIMULÉ !", TypeText.ALLY_TEXT, 2f, bAfficherInConsole: false);
+		AjouterMessage("On les a semés, on est plus suivi !", TypeText.ALLY_TEXT);
 	}
 	
 	// Lorsqu'une sonde perd le joueur de vue
 	public void JoueurPerduDeVue(string nomDetecteur) {
-		AjouterMessage ("On a déconnecté " + nomDetecteur + ".", Console.TypeText.ALLY_TEXT);
+		//AjouterMessage ("On a déconnecté " + nomDetecteur + ".", Console.TypeText.ALLY_TEXT);
 	}
 
 	// Lorsque le joueur est touché
@@ -293,7 +321,7 @@ public class Console : MonoBehaviour {
 
 	// Quand on attrape une lumière
 	public void AttraperLumiere(int nbLumieresRestantes) {
-		AjouterMessage ("ON A DES INFOS !", Console.TypeText.ALLY_TEXT);
+		//AjouterMessage ("ON A DES INFOS !", Console.TypeText.ALLY_TEXT);
 		if (nbLumieresRestantes > 0) {
 			AjouterMessageImportant ("Plus que " + nbLumieresRestantes + " !", Console.TypeText.ALLY_TEXT, 2);
 		} else {
@@ -304,7 +332,7 @@ public class Console : MonoBehaviour {
 
 	// Quand le joueur lance les trails
 	public void RunLocalisation() {
-		int nbLumieresRestantes = mapManager.lumieres.Count;
+		int nbLumieresRestantes = map.lumieres.Count;
 		if(nbLumieresRestantes > 0) {
 			AjouterMessage ("On t'envoie les données ! Il te restes " + nbLumieresRestantes + " objectifs !", Console.TypeText.ALLY_TEXT);
 		} else {
@@ -326,11 +354,6 @@ public class Console : MonoBehaviour {
 	public void GrandSaut(float hauteurSaut) {
 		AjouterMessage("Wow quel saut ! " + ((int) hauteurSaut) + " mètres !", Console.TypeText.BASIC_TEXT);
 		AjouterMessage("duree = " + Time.timeSinceLevelLoad, TypeText.BASIC_TEXT);
-	}
-
-	// Quand le joueur réussit à semer toutes les sondes
-	public void SemerSondes() {
-		AjouterMessageImportant ("On les a semés, on est plus suivi !", TypeText.ALLY_TEXT, 2f);
 	}
 
 	// Quand le joueur se fait voir au début par les sondes !

@@ -6,7 +6,7 @@ public class PouvoirDetection : IPouvoir {
 
 	public GameObject lumierePathPrefab; // Les lumières à placer quand le personnage fait une détection !
 
-    protected override void UsePouvoir() {
+    protected override bool UsePouvoir() {
 		if (Input.GetKeyDown (KeyCode.A)) {
             // Penser à ajouter les autres objectifs intéressants !
             List<Vector3> positions = gm.map.GetAllLumieresPositions();
@@ -14,7 +14,7 @@ public class PouvoirDetection : IPouvoir {
             if (!player.CanUseLocalisation() || positions.Count == 0) {
                 gm.console.FailLocalisation();
                 gm.soundManager.PlayFailActionClip();
-                return;
+                return false;
             }
 
             // On choisit la position la plus proche
@@ -41,6 +41,8 @@ public class PouvoirDetection : IPouvoir {
 			// Un petit message
 			gm.console.RunDetection(nearestPosition);
 		}
+
+        return true;
     }
 
     protected IEnumerator DrawPath(List<Vector3> path) {

@@ -14,6 +14,7 @@ public class Sonde : Ennemi {
 	protected EtatSonde etat;
 	protected Vector3 lastPositionSeen; // La dernière position à laquelle le joueur a été vu !
     protected Poussee pousseeCurrent;
+    protected Vector3 lastPosition;
 
 	public override void Start () {
         base.Start();
@@ -36,9 +37,12 @@ public class Sonde : Ennemi {
                 // On va là où on a vu le joueur pour la dernière fois !
                 Vector3 move = Move(lastPositionSeen);
 
-                // Si le mouvement est trop petit, c'est que l'on est bloqué, donc on arrête le mouvement en lui ordonnant d'aller sur place
-                if (Vector3.Magnitude(move) <= 0.001f && Vector3.Magnitude(move) != 0f)
-                {
+                // Si le mouvement est trop petit, c'est que l'on est arrivé, donc on arrête le mouvement en lui ordonnant d'aller sur place
+                if (Vector3.Magnitude(move) <= 0.001f && Vector3.Magnitude(move) != 0f) {
+                    lastPositionSeen = transform.position;
+                }
+                // Si on arrive plus à bouger, on s'arrête :)
+                if(Vector3.Distance(transform.position, lastPosition) <= 0.001f) {
                     lastPositionSeen = transform.position;
                 }
                 break;
@@ -51,6 +55,7 @@ public class Sonde : Ennemi {
                 lastPositionSeen = player.transform.position;
                 break;
         }
+        lastPosition = transform.position;
 	}
 
     // On récupère l'état dans lequel doit être notre sonde
@@ -60,7 +65,8 @@ public class Sonde : Ennemi {
             etat = EtatSonde.TRACKING;
             // Si la sonde vient juste de le repérer, on l'annonce
             if (etat != previousEtat && lastPositionSeen == transform.position) {
-                gm.console.JoueurDetecte(name);
+                //gm.console.JoueurDetecte(name);
+                //gm.console.JoueurDetecte();
                 gm.soundManager.PlayDetectionClip(GetComponentInChildren<AudioSource>());
             }
         } else {
@@ -94,16 +100,11 @@ public class Sonde : Ennemi {
         pousseeCurrent = new Poussee(directionPoussee, tempsPoussee, distancePoussee);
         player.AddPoussee(pousseeCurrent);
 
-        // Le son
-        gm.soundManager.PlayHitClip(GetComponentInChildren<AudioSource>());
-
         // Effet de vignette rouge
         gm.postProcessManager.UpdateHitEffect();
-
-        // Et on affiche un message dans la console !
-        if (!gm.partieDejaTerminee) {
-            gm.console.JoueurTouche();
-        }
     }
 
+    public override bool IsInactive() {
+        return etat == EtatSonde.WAITING && lastPositionSeen == transform.position;
+    }
 }

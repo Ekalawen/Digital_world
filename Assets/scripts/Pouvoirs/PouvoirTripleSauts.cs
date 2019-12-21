@@ -19,12 +19,14 @@ public class PouvoirTripleSauts : IPouvoir {
 
     private GameObject blueSphere; // La sphère une fois allumée
 
-    protected override void UsePouvoir() {
+    protected override bool UsePouvoir() {
         // Freezer le temps
         pouvoirAvailable = false;
         GameManager.Instance.timeFreezed = true;
         // Faire un dash et attendre qu'il se termine
         StartCoroutine(PerformDash(nbDashs));
+
+        return true;
     }
 
     IEnumerator PerformDash(int dashsRestants) {
