@@ -13,17 +13,19 @@ public class MenuLevelSelector : MonoBehaviour {
     protected int levelIndice = 0;
 
     private void Update() {
-		// Si on appui sur Echap on quitte
-		if(Input.GetKeyDown(KeyCode.Escape)) {
-            Back();
-		}
-        // Les cotes pour changer de niveau
-		if(Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D)) {
-            Next();
-		}
-		if(Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.Q)) {
-            Previous();
-		}
+        // Si on appui sur Echap on quitte
+        if (!MenuManager.DISABLE_HOTKEYS) {
+            if (Input.GetKeyDown(KeyCode.Escape)) {
+                Back();
+            }
+            // Les cotes pour changer de niveau
+            if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D)) {
+                Next();
+            }
+            if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.Q)) {
+                Previous();
+            }
+        }
     }
 
     public void Run(int indice = 0) {

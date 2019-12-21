@@ -41,7 +41,7 @@ public class MenuOptions : MonoBehaviour {
 
     private void Update() {
 		// Si on appui sur Echap on quitte
-		if(Input.GetKeyDown(KeyCode.Escape)) {
+		if(!MenuManager.DISABLE_HOTKEYS && Input.GetKeyDown(KeyCode.Escape)) {
             Back();
 		}
     }

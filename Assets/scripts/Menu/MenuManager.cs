@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class MenuManager : MonoBehaviour {
 
+    public static bool DISABLE_HOTKEYS = false;
+
     public MenuLevelSelector menuLevelSelector;
     public MenuOptions menuOptions;
     public MenuBackgroundBouncing menuBouncingBackground;
@@ -19,13 +21,13 @@ public class MenuManager : MonoBehaviour {
 
     void Update() {
 		// Si on appui sur Echap on quitte
-		if(Input.GetKeyDown(KeyCode.Escape)) {
+		if(!DISABLE_HOTKEYS && Input.GetKeyDown(KeyCode.Escape)) {
 			OnQuitterPress();
 		}
 		// Si on appui sur Entrée, on joue !
-		if(Input.GetKeyDown(KeyCode.Return)
+		if(!DISABLE_HOTKEYS && (Input.GetKeyDown(KeyCode.Return)
         || Input.GetKeyDown(KeyCode.KeypadEnter)
-        || Input.GetKeyDown(KeyCode.Space)) {
+        || Input.GetKeyDown(KeyCode.Space))) {
 			OnPlayPress();
 		}
 	}
