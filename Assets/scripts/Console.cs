@@ -12,11 +12,16 @@ public class Console : MonoBehaviour {
 	public Color basicColor; // La couleur avec laquelle on écrit la plupart du temps
 	public Color ennemiColor; // La couleur des messages ennemis
 	public Color allyColor; // La couleur des messages alliées
+	public string basicPrefix; // Le préfixe à mettre devant chaque message basic
+	public string ennemiPrefix; // Le préfixe à mettre devant chaque message ennemi
+	public string allyPrefix; // Le préfixe à mettre devant chaque message allié
 	public Font font; // La police de charactère des messages
 	public GameObject textContainer; // Là où l'on va afficher les lignes
 	public int tailleTexte; // La taille du texte affiché
-	public float probaPhraseRandom; // La probabilité de générer une phrase aléatoire dans la console
+	public Vector2 tempsAvantPhraseRandom; // Le temps avant de générer une phrase aléatoire dans la console
+	public Vector2 tempsAvantConseiller; // Le temps avant de générer un conseil
 	public Text importantText; // Là où l'on affiche les informations importantes
+	public List<string> conseils; // Les conseils à dispenser au joueur !
 
 	[HideInInspector]
 	public GameManager gm;
@@ -32,6 +37,8 @@ public class Console : MonoBehaviour {
 	protected float tempsImportantText;
 	protected float timeLastLumiereAttrapee; // Le dernier temps auquel le joueur n'a pas attrapé d'Orbe
     protected bool playerIsFollowed = false; // C'est pas vrai, mais c'est pour que l'algo fonctionne ^^
+    protected Timer timerPhraseRandom;
+    protected Timer timerConseiller;
 
 	void Start () {
 	}
@@ -49,12 +56,14 @@ public class Console : MonoBehaviour {
 
 		// Les premiers messages
 		PremiersMessages();
+        timerPhraseRandom = new Timer(Random.Range(tempsAvantPhraseRandom.x, tempsAvantPhraseRandom.y));
+        timerConseiller = new Timer(Random.Range(tempsAvantConseiller.x, tempsAvantConseiller.y));
     }
 
 	public void PremiersMessages() {
         string levelName = PlayerPrefs.GetString(MenuLevel.LEVEL_NAME_KEY);
-		AjouterMessage ("Niveau : " + levelName, TypeText.BASIC_TEXT);
-		AjouterMessage ("Initialisation de la Matrix ...", TypeText.BASIC_TEXT);
+		AjouterMessage ("[Niveau]: " + levelName, TypeText.BASIC_TEXT, bUsePrefix: false);
+		AjouterMessage ("[Niveau]: Initialisation de la Matrix ...", TypeText.BASIC_TEXT, bUsePrefix: false);
 		AjouterMessageImportant (map.lumieres.Count + " Datas trouvées !", TypeText.ALLY_TEXT, 5);
 		AjouterMessage (gm.ennemiManager.ennemis.Count + " Ennemis détectés !", TypeText.ALLY_TEXT);
 
@@ -72,13 +81,20 @@ public class Console : MonoBehaviour {
 			AjouterMessage ("Altitude critique !", TypeText.BASIC_TEXT);
 		}
 
-		// On lance des phrases random desfois !
-		if (Random.Range (0f, 1f) < probaPhraseRandom) {
-			LancerPhraseRandom ();
-		}
+        //// On lance des phrases random desfois !
+        //if (timerPhraseRandom.IsOver()) {
+        //	LancerPhraseRandom ();
+        //  timerPhraseRandom = new Timer(Random.Range(tempsAvantPhraseRandom.x, tempsAvantPhraseRandom.y));
+        //}
 
-		// On efface l'important texte si ça fait suffisamment longtemps qu'il est affiché
-		if (Time.timeSinceLevelLoad - lastTimeImportantText > tempsImportantText) {
+        // On lance des conseils !
+        if (timerConseiller.IsOver()) {
+            Conseiller();
+            timerConseiller = new Timer(Random.Range(tempsAvantConseiller.x, tempsAvantConseiller.y));
+        }
+
+        // On efface l'important texte si ça fait suffisamment longtemps qu'il est affiché
+        if (Time.timeSinceLevelLoad - lastTimeImportantText > tempsImportantText) {
 			importantText.text = "";
 		}
 
@@ -94,7 +110,6 @@ public class Console : MonoBehaviour {
         if (!gm.eventManager.IsGameOver()) {
             bool oldState = playerIsFollowed;
             playerIsFollowed = gm.ennemiManager.IsPlayerFollowed();
-            Debug.Log(playerIsFollowed);
             if (playerIsFollowed && !oldState) {
                 JoueurDetecte();
             }
@@ -130,7 +145,22 @@ public class Console : MonoBehaviour {
 		tempsImportantText = tempsAffichage;
 	}
 
-	public void AjouterMessage(string message, TypeText type) {
+	public void AjouterMessage(string message, TypeText type, bool bUsePrefix = true) {
+        // On préfixe ! :)
+        if (bUsePrefix) {
+            switch (type) {
+                case TypeText.ALLY_TEXT:
+                    message = allyPrefix + message;
+                    break;
+                case TypeText.BASIC_TEXT:
+                    message = basicPrefix + message;
+                    break;
+                case TypeText.ENNEMI_TEXT:
+                    message = ennemiPrefix + message;
+                    break;
+            }
+        }
+
 		// On crée le nouveau texte !
 		GameObject newText = new GameObject(message, typeof(RectTransform));
 
@@ -147,7 +177,6 @@ public class Console : MonoBehaviour {
 
 		// On définit le texte
 		Text text = newText.AddComponent<Text> ();
-		text.text = message;
 		text.font = font;
 		text.alignment = TextAnchor.LowerLeft;
 		text.fontSize = tailleTexte;
@@ -187,6 +216,17 @@ public class Console : MonoBehaviour {
 		// On l'ajoute à la liste de lines !
 		lines.Add(newText);
 		numLines.Add (1);
+
+        // On s'assure que le message rentre dans la console ! <3
+        int weightMax = 290;
+        for(int i = 0; i < message.Length; i++) {
+            text.text = message.Substring(0, i);
+            if(text.preferredWidth > weightMax) {
+                AjouterMessage(message.Substring(i, message.Length - i), type, bUsePrefix: false);
+                return;
+            }
+        }
+        text.text = message;
 	}
 
 	void LancerPhraseRandom() {
@@ -211,8 +251,16 @@ public class Console : MonoBehaviour {
 		AjouterMessage (phrase, TypeText.BASIC_TEXT);
 	}
 
-	// Lorsqu'un ennemi repère le joueur
-	public void JoueurDetecte() {
+    protected void Conseiller() {
+        if (conseils.Count == 0)
+            return;
+
+		string phrase = conseils[Random.Range (0, conseils.Count)];
+		AjouterMessage(phrase, TypeText.BASIC_TEXT);
+    }
+
+    // Lorsqu'un ennemi repère le joueur
+    public void JoueurDetecte() {
         AjouterMessageImportant ("DÉTECTÉ !", Console.TypeText.ENNEMI_TEXT, 2, bAfficherInConsole: false);
 		AjouterMessage ("Je vous ai détecté, je sais où vous êtes !", Console.TypeText.ENNEMI_TEXT);
 	}

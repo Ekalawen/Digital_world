@@ -195,15 +195,20 @@ MonoBehaviour:
   basicColor: {r: 0, g: 1, b: 0, a: 1}
   ennemiColor: {r: 1, g: 0, b: 0, a: 1}
   allyColor: {r: 0, g: 1, b: 1, a: 1}
+  basicPrefix: '[Conseil]: '
+  ennemiPrefix: '[Ennemi]: '
+  allyPrefix: "[Alli\xE9]: "
   font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
   textContainer: {fileID: 1968408244200114}
   tailleTexte: 12
-  probaPhraseRandom: 0.002
+  tempsAvantPhraseRandom: {x: 3, y: 15}
+  tempsAvantConseiller: {x: 3, y: 15}
   importantText: {fileID: 114709004779769668}
-  gameManager: {fileID: 0}
-  mapManager: {fileID: 0}
+  conseils: []
+  gm: {fileID: 0}
+  map: {fileID: 0}
   player: {fileID: 0}
-  dataBase: {fileID: 0}
+  eventManager: {fileID: 0}
 --- !u!1 &1968408244200114
 GameObject:
   m_ObjectHideFlags: 0
