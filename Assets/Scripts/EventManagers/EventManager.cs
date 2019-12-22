@@ -115,6 +115,12 @@ public class EventManager : MonoBehaviour {
 
         gm.console.WinGame();
 
+        // On retient que l'on a gagné ce niveau une fois de plus !
+        string key = PlayerPrefs.GetString(MenuLevel.LEVEL_NAME_KEY) + "nbVictoires";
+        int newValue = PlayerPrefs.HasKey(key) ? PlayerPrefs.GetInt(key) + 1 : 1;
+        Debug.Log("key = " + key + " newValue = " + newValue);
+        PlayerPrefs.SetInt(key, newValue);
+
         StartCoroutine(gm.QuitInSeconds(7));
     }
 
