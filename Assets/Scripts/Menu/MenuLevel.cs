@@ -45,6 +45,9 @@ public class MenuLevel : MonoBehaviour {
 
     private void OnEnable() {
         menuBouncingBackground.SetParameters(probaSource, distanceSource, decroissanceSource, themes);
+
+        string key = textLevelName.text + "currentInputField";
+        inputFieldNext.text = PlayerPrefs.GetString(key);
     }
 
     public void Play() {
@@ -74,6 +77,13 @@ public class MenuLevel : MonoBehaviour {
             texteExplicatifDonneesHackes.Run();
         } else {
             texteExplicatifDonneesHackesSuccess.Run();
+        }
+    }
+
+    public void SaveNextInputField() {
+        if (inputFieldNext.text == nextPassword) {
+            string key = textLevelName.text + "currentInputField";
+            PlayerPrefs.SetString(key, inputFieldNext.text);
         }
     }
 }
