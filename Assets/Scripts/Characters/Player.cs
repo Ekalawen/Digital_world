@@ -376,11 +376,15 @@ public class Player : Character {
         } else {
             Debug.Log("On saute depuis un endroit non autorisé !");
         }
-        gm.soundManager.PlayJumpClip(audioSource);
+        if (!gm.eventManager.IsGameOver()) {
+            gm.soundManager.PlayJumpClip(audioSource);
+        }
         StartCoroutine (StopJump (debutSaut));
     }
 
     protected void TryUsePouvoirs() {
+        if (gm.eventManager.IsGameOver())
+            return;
         // A
         if(Input.GetKeyDown(KeyCode.A))
             pouvoirA?.TryUsePouvoir();

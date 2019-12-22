@@ -12,6 +12,8 @@ public class Tracer : Ennemi {
     public float dureePauseEntreNodes = 0.1f;
     public GameObject explosionParticlesPrefab;
     public Material emissiveMaterial;
+    public AudioSource audioSourceEmiting;
+    public AudioSource audioSourceHit;
 
     protected TracerState state;
     protected List<Vector3> path;
@@ -72,6 +74,7 @@ public class Tracer : Ennemi {
                         Vector3 direction = transform.position - player.transform.position;
                         pousseeEmiting.Redirect(direction);
                     }
+                    HitPlayer();
                 } else {
                     if(pousseeEmiting != null) {
                         pousseeEmiting.Stop();
@@ -135,9 +138,9 @@ public class Tracer : Ennemi {
             }
         }
 
-		if (player != null) {
-            HitPlayer();
-		}
+		//if (player != null) {
+        //    HitPlayer();
+		//}
 	}
 
     protected override void HitPlayerSpecific() {
@@ -152,7 +155,7 @@ public class Tracer : Ennemi {
         if (newState != TracerState.EMITING)
             pousseeEmiting = null;
         if (newState == TracerState.RUSHING && oldState != TracerState.RUSHING)
-            gm.soundManager.PlayDetectionClip(GetComponentInChildren<AudioSource>());
+            gm.soundManager.PlayDetectionClip(GetMainSource());
     }
 
     protected IEnumerator StartEmiting() {
@@ -161,7 +164,7 @@ public class Tracer : Ennemi {
         ParticleSystem.ShapeModule shape = emitionParticleSystem.shape;
         shape.radius = rangeEmiting;
         GetComponent<MeshRenderer>().material = emissiveMaterial;
-        gm.soundManager.PlayEmissionTracerClip(GetComponentInChildren<AudioSource>(), dureeEmiting);
+        gm.soundManager.PlayEmissionTracerClip(audioSourceEmiting, dureeEmiting);
 
         yield return new WaitForSeconds(dureeEmiting);
 
@@ -175,5 +178,17 @@ public class Tracer : Ennemi {
 
     public override bool IsInactive() {
         return state == TracerState.WAITING;
+    }
+
+    public override AudioSource GetMainSource() {
+        return audioSourceHit;
+    }
+    public override void PlayHitSound() {
+        gm.soundManager.PlayHitTracerClip(GetMainSource());
+    }
+    public override void DisplayHitMessage() {
+        if (!gm.partieDejaTerminee) {
+            gm.console.JoueurToucheTracer();
+        }
     }
 }

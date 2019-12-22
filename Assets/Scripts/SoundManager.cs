@@ -11,6 +11,7 @@ public class SoundManager : MonoBehaviour {
     public List<AudioClip> getLumiereClips;
     public List<AudioClip> failActionClips;
     public List<AudioClip> hitClips;
+    public List<AudioClip> hitTracerClips;
     public List<AudioClip> emissionTracerClips;
     public List<AudioClip> detectionClips;
     public List<AudioClip> timeOutClips;
@@ -56,6 +57,9 @@ public class SoundManager : MonoBehaviour {
     public void PlayHitClip(AudioSource source) {
         if(!source.isPlaying)
             PlayClipsOnSource(hitClips, source);
+    }
+    public void PlayHitTracerClip(AudioSource source) {
+        PlayClipsOnSource(hitTracerClips, source);
     }
     public void PlayGetLumiereClip(Vector3 pos) {
         AudioSource source = new GameObject().AddComponent<AudioSource>();

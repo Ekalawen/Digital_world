@@ -33,6 +33,8 @@ public class MenuLevelSelector : MonoBehaviour {
     }
 
     public void Previous() {
+        if (levelIndice == 0)
+            return;
         levelIndice = (levelIndice == 0) ? levels.Count - 1 : levelIndice - 1;
         Play(levelIndice);
     }

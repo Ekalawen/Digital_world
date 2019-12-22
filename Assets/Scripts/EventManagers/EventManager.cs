@@ -42,12 +42,13 @@ public class EventManager : MonoBehaviour {
         isEndGameStarted = true;
 
         // On crée la finaleLight
-        float minRadius = 0.5f + Mathf.Sqrt(3) / 2.0f; // La demi taille de la sphère + la demi-diagonale d'un cube
-        Vector3 posLumiere = map.GetFreeSphereLocation(minRadius);
+        //float minRadius = 0.5f + Mathf.Sqrt(3) / 2.0f; // La demi taille de la sphère + la demi-diagonale d'un cube
+        //Vector3 posLumiere = map.GetFreeSphereLocation(minRadius);
+        Vector3 posLumiere = map.GetFreeRoundedLocation();
 
         // On évite que la lumière soit trop loin, car sinon on peut insta-die !
         while(Vector3.Distance(gm.player.transform.position, posLumiere) >= gm.map.tailleMap * 0.9f) {
-            posLumiere = map.GetFreeSphereLocation(minRadius);
+            posLumiere = map.GetFreeRoundedLocation();
         }
         Lumiere finalLight = map.CreateLumiere(posLumiere, Lumiere.LumiereType.FINAL); // Attention à la position qui est arrondi ici !
 
@@ -62,9 +63,10 @@ public class EventManager : MonoBehaviour {
     protected IEnumerator FillMapWithDeathCubes(Vector3 centerPos) {
         List<Vector3> allEmptyPositions = map.GetAllEmptyPositions();
 
+        Vector3 playerPos = gm.player.transform.position;
         allEmptyPositions.Sort(delegate (Vector3 A, Vector3 B) {
-            float distToA = Vector3.Distance(A, centerPos);
-            float distToB = Vector3.Distance(B, centerPos);
+            float distToA = Mathf.Min(Vector3.Distance(A, centerPos), Vector3.Distance(A, playerPos));
+            float distToB = Mathf.Min(Vector3.Distance(B, centerPos), Vector3.Distance(B, playerPos));
             return distToB.CompareTo(distToA);
         });
 

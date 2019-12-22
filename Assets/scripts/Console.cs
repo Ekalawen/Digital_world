@@ -280,8 +280,16 @@ public class Console : MonoBehaviour {
 	}
 
 	// Lorsque le joueur est touché
-	public void JoueurTouche() {
-		AjouterMessageImportant ("TOUCHÉ ! Je vais vous avoir !", Console.TypeText.ENNEMI_TEXT, 1);
+	public void JoueurToucheSonde() {
+		AjouterMessageImportant ("TOUCHÉ !", Console.TypeText.ENNEMI_TEXT, 1, bAfficherInConsole: false);
+        AjouterMessage("TOUCHÉ par une Sonde !", Console.TypeText.ENNEMI_TEXT);
+		//AjouterMessageImportant ("TOUCHÉ ! Je vais vous avoir !", Console.TypeText.ENNEMI_TEXT, 1);
+	}
+
+	// Lorsque le joueur est touché
+	public void JoueurToucheTracer() {
+		AjouterMessageImportant ("TOUCHÉ !", Console.TypeText.ENNEMI_TEXT, 1, bAfficherInConsole: false);
+        AjouterMessage("TOUCHÉ par un Tracer !", Console.TypeText.ENNEMI_TEXT);
 	}
 
 	// Lorsque toutes les lumieres ont été attrapés
