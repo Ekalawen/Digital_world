@@ -138,10 +138,10 @@ public class Tracer : Ennemi {
             }
         }
 
-		//if (player != null) {
-        //    HitPlayer();
-		//}
-	}
+        if (player != null) {
+            HitPlayer();
+        }
+    }
 
     protected override void HitPlayerSpecific() {
     }

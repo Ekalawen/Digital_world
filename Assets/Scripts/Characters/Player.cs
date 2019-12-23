@@ -125,6 +125,8 @@ public class Player : Character {
 
         // Puis on met à jour la position du joueur
         UpdateMouvement();
+
+        // Test pour savoir si on s'est fait capturé par un ennemi !
         UpdateLastNotContactEnnemi();
 
         // On vérifie si le joueur a utilisé l'un de ses pouvoirs ! :)
@@ -178,9 +180,6 @@ public class Player : Character {
 			if (Input.GetButton ("Jump")) {
                 Jump(from: EtatPersonnage.AU_SOL);
                 move = ApplyJumpMouvement(move);
-			} else {
-				// Petit débuggage pour empêcher l'alternance entre AU_SOL et EN_CHUTE !
-				move.y -= gravite;
 			}
             dureeMurRestante = dureeMur;
 			break;
@@ -190,7 +189,7 @@ public class Player : Character {
 			break;
 
 		case EtatPersonnage.EN_CHUTE:
-			move.y -= gravite;
+			//move.y -= gravite;
 			break;
 
 		case EtatPersonnage.AU_MUR:
@@ -208,7 +207,9 @@ public class Player : Character {
                 dureeMurRestante = dureeMur;
 			} else if (Input.GetButton ("Jump")) { // On a le droit de terminer son saut lorsqu'on touche un mur
                 move = ApplyJumpMouvement(move);
-			}
+			} else {
+                move = gm.gravityManager.CounterGravity(move);
+            }
 			// Si ça fait trop longtemps qu'on est sur le mur
 			// Ou que l'on s'éloigne trop du mur on tombe
 			float distanceMur = ((transform.position - pointMur) - Vector3.ProjectOnPlane ((transform.position - pointMur), normaleMur)).magnitude; // pourtant c'est clair non ? Fais un dessins si tu comprends pas <3
@@ -220,6 +221,7 @@ public class Player : Character {
 				normaleOrigineSaut = normaleMur;
                 dureeMurRestante = dureeMur;
 			}
+
 			// Et on veut aussi vérifier que le mur continue encore à nos cotés !
 			// Pour ça on va lancer un rayon ! <3
 			Ray ray = new Ray (transform.position, -normaleMur);
@@ -238,6 +240,8 @@ public class Player : Character {
 			// C'est possible de rajouter ça quand on voudra =)
 			break;
 		}
+
+        move = gm.gravityManager.ApplyGravity(move);
 
         gm.postProcessManager.UpdateGripEffect(etatAvant);
 
@@ -359,8 +363,10 @@ public class Player : Character {
     protected Vector3 ApplyJumpMouvement(Vector3 move) {
         float percentSaut = (Time.timeSinceLevelLoad - debutSaut) / dureeSaut;
         if (percentSaut <= dureeEfficaciteSaut) {
-            move.y += vitesseSaut;
+            move = gm.gravityManager.MoveOppositeDirectionOfGravity(move, vitesseSaut);
+            //move.y += vitesseSaut;
         }
+        move = gm.gravityManager.CounterGravity(move);
         return move;
     }
 

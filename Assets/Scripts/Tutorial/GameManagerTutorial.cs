@@ -13,5 +13,6 @@ public class GameManagerTutorial : GameManager {
         soundManager.Initialize();
         postProcessManager.Initialize();
         timerManager.Initialize();
+        gravityManager.Initialize();
     }
 }

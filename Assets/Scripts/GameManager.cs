@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour {
 	public GameObject soundManagerPrefab; // Pour gérer les sons et musiques !
     public GameObject postProcessManagerPrefab; // Pour gérer les posteffects !
     public GameObject timerManagerPrefab; // Pour gérer le timer !
+    public GameObject gravityManagerPrefab; // Pour gérer la gravité !
 
     //////////////////////////////////////////////////////////////////////////////////////
     // ATTRIBUTS PRIVÉES
@@ -52,6 +53,8 @@ public class GameManager : MonoBehaviour {
     [HideInInspector]
     public TimerManager timerManager;
     [HideInInspector]
+    public GravityManager gravityManager;
+    [HideInInspector]
     public bool partieDejaTerminee = false;
     [HideInInspector]
     public bool timeFreezed = false;
@@ -76,6 +79,7 @@ public class GameManager : MonoBehaviour {
         soundManager = Instantiate(soundManagerPrefab).GetComponent<SoundManager>();
         postProcessManager = Instantiate(postProcessManagerPrefab).GetComponent<PostProcessManager>();
         timerManager = Instantiate(timerManagerPrefab).GetComponent<TimerManager>();
+        gravityManager = Instantiate(gravityManagerPrefab).GetComponent<GravityManager>();
 
         Initialize();
 	}
@@ -95,6 +99,7 @@ public class GameManager : MonoBehaviour {
         soundManager.Initialize();
         postProcessManager.Initialize();
         timerManager.Initialize();
+        gravityManager.Initialize();
     }
 
 	// Update is called once per frame
