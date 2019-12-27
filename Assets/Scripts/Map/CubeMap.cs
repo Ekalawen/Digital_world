@@ -41,6 +41,17 @@ public class CubeMap : MapManager {
         // On veut générer des caves dangeureuses :3
         // Qui possèderont des lumières !
         List<Cave> caves = GenerateCaves(proportionCaves, bWithLumieres: true);
+
+        //public GameObject gravityZonePrefab;
+        //// Générer des gravityZones
+        //for(int i = 0; i < 5; i++) {
+        //    Vector3 pos = GetRoundedLocation();
+        //    Vector3 halfExtents = new Vector3(Random.Range(6, 6),
+        //        Random.Range(6, 6),
+        //        Random.Range(6, 6)) + Vector3.one * 0.49f;
+        //    GravityZone zone = Instantiate(gravityZonePrefab, pos, Quaternion.identity).GetComponent<GravityZone>();
+        //    zone.Resize(pos, halfExtents);
+        //}
     }
 
 	List<Cave> GenerateCaves(float proportionCaves, bool bWithLumieres) {
@@ -56,9 +67,9 @@ public class CubeMap : MapManager {
 			size.z = Random.Range(tailleMinCave, tailleMaxCave + 1);
 
             // On définit sa position sur la carte
-            Vector3 position = new Vector3(Random.Range(1, tailleMap - size.x),
-                Random.Range(1, tailleMap - size.y),
-                Random.Range(1, tailleMap - size.z));
+            Vector3 position = new Vector3(Random.Range(2, tailleMap - size.x),
+                Random.Range(2, tailleMap - size.y),
+                Random.Range(2, tailleMap - size.z));
 
             Cave cave = new Cave(position, size, bMakeSpaceArround: false, bDigInside: true);
             caves.Add(cave);

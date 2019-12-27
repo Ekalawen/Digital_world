@@ -380,6 +380,13 @@ public abstract class MapManager : MonoBehaviour {
         Debug.Log("Nombre cubes non-regular NULL = " + (cubesNonRegular.Count - nbCubesNonRegularNonNull));
     }
 
+    public Vector3 GetRoundedLocation() {
+        int x = Random.Range(1, tailleMap);
+        int y = Random.Range(1, tailleMap);
+        int z = Random.Range(1, tailleMap);
+        return new Vector3(x, y, z);
+    }
+
     public Vector3 GetFreeSphereLocation(float radius) {
         Vector3 center = new Vector3(Random.Range(1.0f, (float)tailleMap),
                                      Random.Range(1.0f, (float)tailleMap),

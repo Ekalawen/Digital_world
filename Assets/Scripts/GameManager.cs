@@ -69,6 +69,7 @@ public class GameManager : MonoBehaviour {
 
     void Start () {
 		// On crée ce dont on a besoin
+        gravityManager = Instantiate(gravityManagerPrefab).GetComponent<GravityManager>();
 		map = Instantiate(mapManagerPrefab).GetComponent<MapManager>();
         player = Instantiate(playerPrefab).GetComponent<Player>();
 		eventManager = Instantiate(eventManagerPrefab).GetComponent<EventManager>();
@@ -79,7 +80,6 @@ public class GameManager : MonoBehaviour {
         soundManager = Instantiate(soundManagerPrefab).GetComponent<SoundManager>();
         postProcessManager = Instantiate(postProcessManagerPrefab).GetComponent<PostProcessManager>();
         timerManager = Instantiate(timerManagerPrefab).GetComponent<TimerManager>();
-        gravityManager = Instantiate(gravityManagerPrefab).GetComponent<GravityManager>();
 
         Initialize();
 	}

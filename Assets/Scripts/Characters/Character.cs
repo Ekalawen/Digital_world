@@ -18,6 +18,10 @@ public class Character : MonoBehaviour {
         poussees.Add(poussee);
     }
 
+    public void RemoveAllPoussees() {
+        poussees.Clear();
+    }
+
     public virtual void ApplyPoussees() {
         for(int i = 0; i < poussees.Count; i++) {
             if(poussees[i].IsOver()) {

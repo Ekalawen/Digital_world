@@ -5,6 +5,7 @@ using UnityEngine;
 public class GameManagerTutorial : GameManager {
 
     protected override void Initialize() {
+        gravityManager.Initialize();
         map.Initialize();
         player.Initialize(new Vector3(5, 5, 5), new Vector2(0, 90));
         eventManager.Initialize();
@@ -13,6 +14,5 @@ public class GameManagerTutorial : GameManager {
         soundManager.Initialize();
         postProcessManager.Initialize();
         timerManager.Initialize();
-        gravityManager.Initialize();
     }
 }

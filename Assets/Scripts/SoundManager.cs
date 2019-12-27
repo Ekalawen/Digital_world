@@ -54,8 +54,8 @@ public class SoundManager : MonoBehaviour {
         PlayClipsOnSource(emissionTracerClips, source);
         StartCoroutine(StopClipIn(source, duree));
     }
-    public void PlayHitClip(AudioSource source) {
-        if(!source.isPlaying)
+    public void PlayHitClip(AudioSource source, bool priority = false) {
+        if(!source.isPlaying || priority)
             PlayClipsOnSource(hitClips, source);
     }
     public void PlayHitTracerClip(AudioSource source) {

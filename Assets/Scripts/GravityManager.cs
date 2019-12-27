@@ -19,15 +19,22 @@ public class GravityManager : MonoBehaviour {
     protected Timer timer;
 
     public void Update() {
-        if (timer.IsOver()) {
-            SetGravity(GetRandomDirection(), gravityIntensity);
-            timer.Reset();
-        }
+        //if (timer.IsOver()) {
+        //    SetGravity(GetRandomDirection(), gravityIntensity);
+        //    timer.Reset();
+        //}
     }
 
     public static Direction GetRandomDirection() {
         System.Array enumValues = System.Enum.GetValues(typeof(Direction));
         return (Direction)enumValues.GetValue(Random.Range(0, enumValues.Length));
+    }
+
+    public static Direction GetRandomDirection(Direction differentFrom) {
+        Direction dir = GetRandomDirection();
+        while(dir == differentFrom)
+            dir = GetRandomDirection();
+        return dir;
     }
 
     public void Initialize() {
@@ -48,17 +55,16 @@ public class GravityManager : MonoBehaviour {
         return initialMovement - DirToVec(gravityDirection) * intensityMovement;
     }
 
-    public void SetGravity(Direction gravityDirection, float gravityIntensity) {
-        float angle = Vector3.Angle(DirToVec(this.gravityDirection), DirToVec(gravityDirection));
-        Vector3 axe = Vector3.Cross(DirToVec(this.gravityDirection), DirToVec(gravityDirection));
+    public void SetGravity(Direction newGravityDirection, float newGravityIntensity) {
+        float angle = Vector3.Angle(DirToVec(gravityDirection), DirToVec(newGravityDirection));
+        Vector3 axe = Vector3.Cross(DirToVec(gravityDirection), DirToVec(newGravityDirection));
         if (axe.magnitude == 0)
             axe = gm.player.camera.transform.forward;
-        this.gravityDirection = gravityDirection;
-        this.gravityIntensity = gravityIntensity;
+
+        gravityDirection = newGravityDirection;
+        gravityIntensity = newGravityIntensity;
 
         gm.player.bSetUpRotation = false;
-        Camera camera = gm.player.camera;
-        //camera.transform.RotateAround(camera.transform.position, camera.transform.forward, 180);
         StartCoroutine(RotateCamera(axe, angle));
     }
 
@@ -101,7 +107,7 @@ public class GravityManager : MonoBehaviour {
         return -Forward();
     }
 
-    public Vector3 DirToVec(Direction dir) {
+    public static Vector3 DirToVec(Direction dir) {
         List<Vector3> list = new List<Vector3>();
         list.Add(Vector3.up);
         list.Add(Vector3.down);
@@ -112,7 +118,7 @@ public class GravityManager : MonoBehaviour {
         return list[(int)dir];
     }
 
-    public Direction OppositeDir(Direction dir) {
+    public static Direction OppositeDir(Direction dir) {
         switch(dir) {
             case Direction.HAUT:
                 return Direction.BAS;

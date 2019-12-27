@@ -68,8 +68,9 @@ public class Player : Character {
     [HideInInspector]
 	public float lastNotContactEnnemy; // Le dernier temps où il ne touchait pas d'ennemi, utilisé pour la fin du jeu
 
-    private AudioSource audioSource;
-    private GameManager gm;
+    [HideInInspector]
+    public AudioSource audioSource;
+    protected GameManager gm;
 
 
     //////////////////////////////////////////////////////////////////////////////////////
@@ -309,7 +310,8 @@ public class Player : Character {
             controller.skinWidth * 1.1f);
         Vector3 up = gm.gravityManager.Up();
         foreach(RaycastHit hit in hits) {
-            if (hit.collider.gameObject.tag == "Player")
+            if (hit.collider.gameObject.tag == "Player"
+             || hit.collider.gameObject.tag == "Trigger")
                 continue;
             Vector3 n = hit.normal;
             float angle = Vector3.Angle(n, up);
