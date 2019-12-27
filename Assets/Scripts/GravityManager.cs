@@ -58,8 +58,9 @@ public class GravityManager : MonoBehaviour {
     public void SetGravity(Direction newGravityDirection, float newGravityIntensity) {
         float angle = Vector3.Angle(DirToVec(gravityDirection), DirToVec(newGravityDirection));
         Vector3 axe = Vector3.Cross(DirToVec(gravityDirection), DirToVec(newGravityDirection));
-        if (axe.magnitude == 0)
+        if (axe.magnitude == 0) {
             axe = gm.player.camera.transform.forward;
+        }
 
         gravityDirection = newGravityDirection;
         gravityIntensity = newGravityIntensity;
@@ -139,18 +140,18 @@ public class GravityManager : MonoBehaviour {
     public float GetHigh(Vector3 pos) {
         switch(gravityDirection) {
             case Direction.HAUT:
-                return gm.map.tailleMap - pos.y;
+                return gm.map.tailleMap.y - pos.y;
             case Direction.BAS:
                 return pos.y;
             // FONCTION A VERIFIER A PARTIR D'ICI !!
             case Direction.GAUCHE:
                 return pos.x;
             case Direction.DROITE:
-                return gm.map.tailleMap - pos.x;
+                return gm.map.tailleMap.x - pos.x;
             case Direction.AVANT:
                 return pos.z;
             case Direction.ARRIERE:
-                return gm.map.tailleMap - pos.z;
+                return gm.map.tailleMap.z - pos.z;
         }
         throw new System.Exception("Erreur dans GetHigh()");
     }

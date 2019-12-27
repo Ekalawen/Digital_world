@@ -77,7 +77,7 @@ public class Console : MonoBehaviour {
 	
 	void Update () {
 		// On regarde si le joueur n'est pas trop haut en altitude
-		if (player.transform.position.y > map.tailleMap + 3) {
+		if (player.transform.position.y > map.tailleMap.y + 3) {
 			AjouterMessage ("Altitude critique !", TypeText.BASIC_TEXT);
 		}
 

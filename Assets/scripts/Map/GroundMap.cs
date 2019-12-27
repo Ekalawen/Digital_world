@@ -14,6 +14,6 @@ public class GroundMap : MapManager {
         Vector3 depart = Vector3.zero;
         Vector3 direction1 = Vector3.right;
         Vector3 direction2 = Vector3.forward;
-        Mur mur = new Mur(depart, direction1, tailleMap, direction2, tailleMap);
+        Mur mur = new Mur(depart, direction1, tailleMap.x, direction2, tailleMap.z);
 	}
 }

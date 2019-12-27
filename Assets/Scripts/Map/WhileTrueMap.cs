@@ -8,13 +8,13 @@ public class WhileTrueMap : CubeMap {
     public int nbPonts = 50;
 
     protected override void GenerateMap() {
-		volumeMap = (int) Mathf.Pow (tailleMap, 3);
+        volumeMap = tailleMap.x * tailleMap.y * tailleMap.z;
 		GenerateWhileTrueMap();
     }
 
     private void GenerateWhileTrueMap() {
         // On crée le contour de la map !
-        MapContainer mapContainer = new MapContainer(Vector3.zero, new Vector3(tailleMap, tailleMap, tailleMap));
+        MapContainer mapContainer = new MapContainer(Vector3.zero, new Vector3(tailleMap.x, tailleMap.y, tailleMap.z));
 
         // On veut créer des passerelles entre les sources ! <3
         // On définit les cubes qui seront à l'origine de passerelles
@@ -44,9 +44,9 @@ public class WhileTrueMap : CubeMap {
 			size.z = Random.Range(tailleMinCave, tailleMaxCave + 1);
 
             // On définit sa position sur la carte
-            Vector3 position = new Vector3(Random.Range(2, tailleMap - size.x - 1),
+            Vector3 position = new Vector3(Random.Range(2, tailleMap.x - size.x - 1),
                 2, // On le force à être atteignable en sautant =)
-                Random.Range(2, tailleMap - size.z - 1));
+                Random.Range(2, tailleMap.z - size.z - 1));
 
             Cave cave = new Cave(position, size, bMakeSpaceArround: true, bDigInside: true);
             caves.Add(cave);

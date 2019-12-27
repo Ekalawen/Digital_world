@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class TimerManager : MonoBehaviour {
 
     public float initialTime = 40.0f;
+    public bool isInfinitTime = false;
     public Text displayText;
     public GameObject movingTextPrefab;
     public float dureeMoving = 2.0f;
@@ -60,7 +61,10 @@ public class TimerManager : MonoBehaviour {
     }
 
     public float GetRemainingTime() {
-        return totalTime - (Time.timeSinceLevelLoad - debutTime);
+        if (!isInfinitTime)
+            return totalTime - (Time.timeSinceLevelLoad - debutTime);
+        else
+            return 99999.99f;
     }
 
     public void AddTime(float time) {

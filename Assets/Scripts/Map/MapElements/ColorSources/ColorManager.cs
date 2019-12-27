@@ -5,6 +5,7 @@ using UnityEngine;
 public class ColorManager : MonoBehaviour {
 
     public GameObject colorSourcePrefab;
+    public bool bGenerateInCubes = false;
 
 	// On peut choisir le thème du cube =)
 	// 0.0 = automne, 0.1 = jaune, 0.3 = vert, O.5 = bleu, 0.65 = violet, 0.8 = rose, 0.9 = rouge
@@ -36,13 +37,16 @@ public class ColorManager : MonoBehaviour {
             Debug.Log(themes[i]);
         }
 
-        GenerateColorSources();
+        if (!bGenerateInCubes)
+            GenerateColorSources(map.tailleMap);
+        else
+            GenerateColorSourcesInCubes();
         CheckCubeSaturation();
     }
 
-    protected void GenerateColorSources() {
+    public void GenerateColorSources(Vector3Int size) {
         // On calcul le nombre de sources
-        int N = map.tailleMap * map.tailleMap * map.tailleMap;
+        int N = size.x * size.y * size.z;
         float P = frequenceSources;
         float mean = N * P;
         float variance = N * P * (1.0f - P);
@@ -50,7 +54,32 @@ public class ColorManager : MonoBehaviour {
 
         // Puis on les réparties ! C'est pas grâve si plusieurs sources sont au même endroit !
         for(int i = 0; i < nbSources; i++) {
-            Vector3Int pos = new Vector3Int(Random.Range(0, map.tailleMap), Random.Range(0, map.tailleMap), Random.Range(0, map.tailleMap));
+            Vector3Int pos = new Vector3Int(Random.Range(0, size.x), Random.Range(0, size.y), Random.Range(0, size.z));
+            GameObject go = GameObject.Instantiate(colorSourcePrefab, pos, Quaternion.identity);
+            ColorSource source = go.GetComponent<ColorSource>();
+            source.Initialize(GetColor(themes), Random.Range(porteeSourceRange[0], porteeSourceRange[1]));
+            sources.Add(go.GetComponent<ColorSource>());
+        }
+    }
+
+    public void GenerateColorSourcesInCubes() {
+        // On calcul le nombre de sources
+        List<Cube> cubes = map.GetAllCubes();
+        List<Vector3> possiblesPos = new List<Vector3>();
+        foreach (Cube cube in cubes) possiblesPos.Add(cube.transform.position);
+        int N = possiblesPos.Count;
+        float P = frequenceSources;
+        float mean = N * P;
+        float variance = N * P * (1.0f - P);
+        int nbSources = (int)GaussianGenerator.Next(mean, variance, 0, N);
+        Debug.Log("nbSources = " + nbSources);
+
+        // Puis on les réparties ! C'est pas grâve si plusieurs sources sont au même endroit !
+        for(int i = 0; i < nbSources; i++) {
+            int indice = Random.Range(0, N);
+            Vector3 pos = possiblesPos[indice];
+            possiblesPos.RemoveAt(indice);
+            N--;
             GameObject go = GameObject.Instantiate(colorSourcePrefab, pos, Quaternion.identity);
             ColorSource source = go.GetComponent<ColorSource>();
             source.Initialize(GetColor(themes), Random.Range(porteeSourceRange[0], porteeSourceRange[1]));
@@ -94,7 +123,7 @@ public class ColorManager : MonoBehaviour {
 		return c;
 	}
 
-    protected void CheckCubeSaturation() {
+    public void CheckCubeSaturation() {
         List<Cube> cubes = map.GetAllCubes();
         MathTools.Shuffle(cubes);
 

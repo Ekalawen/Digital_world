@@ -14,14 +14,14 @@ public class CubeMap : MapManager {
 	[HideInInspector] public int volumeMap;
 
     protected override void GenerateMap() {
-		volumeMap = (int) Mathf.Pow (tailleMap, 3);
+        volumeMap = (int)GetVolume();
 		GenerateCubeMap();
     }
 
     // Crée une map en forme de Cube
     void GenerateCubeMap() {
         // On crée le contour de la map !
-        MapContainer mapContainer = new MapContainer(Vector3.zero, new Vector3(tailleMap, tailleMap, tailleMap));
+        MapContainer mapContainer = new MapContainer(Vector3.zero, new Vector3(tailleMap.x, tailleMap.y, tailleMap.z));
 
         // On veut créer des passerelles entre les sources ! <3
         // On définit les cubes qui seront à l'origine de passerelles
@@ -67,9 +67,9 @@ public class CubeMap : MapManager {
 			size.z = Random.Range(tailleMinCave, tailleMaxCave + 1);
 
             // On définit sa position sur la carte
-            Vector3 position = new Vector3(Random.Range(2, tailleMap - size.x),
-                Random.Range(2, tailleMap - size.y),
-                Random.Range(2, tailleMap - size.z));
+            Vector3 position = new Vector3(Random.Range(2, tailleMap.x - size.x),
+                Random.Range(2, tailleMap.y - size.y),
+                Random.Range(2, tailleMap.z - size.z));
 
             Cave cave = new Cave(position, size, bMakeSpaceArround: false, bDigInside: true);
             caves.Add(cave);
@@ -108,11 +108,11 @@ public class CubeMap : MapManager {
 	bool BridgeInWall(Vector3 debut, Vector3 fin) {
         // TO DO AGAIN car ça ne sera plus à jour !
 		if((debut.x == 0 && fin.x == 0)
-			|| (debut.x == tailleMap && fin.x == tailleMap)
+			|| (debut.x == tailleMap.x && fin.x == tailleMap.x)
 			|| (debut.y == 0 && fin.y == 0)
-			|| (debut.y == tailleMap && fin.y == tailleMap)
+			|| (debut.y == tailleMap.y && fin.y == tailleMap.y)
 			|| (debut.z == 0 && fin.z == 0)
-			|| (debut.z == tailleMap && fin.z == tailleMap)) {
+			|| (debut.z == tailleMap.z && fin.z == tailleMap.z)) {
 			return true;
 		} else {
 			return false;

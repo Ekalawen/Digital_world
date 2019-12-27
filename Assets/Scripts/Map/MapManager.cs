@@ -27,7 +27,8 @@ public abstract class MapManager : MonoBehaviour {
 	public GameObject lumiereFinalePrefab; // On récupère les lumières finales !
 	public GameObject ennemiPrefabs; // On récupère un ennemi !
 
-	public int tailleMap; // La taille de la map, en largeur, hauteur et profondeur
+    public bool bDoFinalChecks = true;
+    public Vector3Int tailleMap; // La taille de la map, en largeur, hauteur et profondeur
 	public int nbLumieresInitial; // Le nombre de lumières lors de la création de la map
 
     protected Cube[,,] cubesRegular; // Toutes les positions entières dans [0, tailleMap]
@@ -55,10 +56,10 @@ public abstract class MapManager : MonoBehaviour {
 		name = "MapManager";
         gm = FindObjectOfType<GameManager>();
         mapElements = new List<MapElement>();
-        cubesRegular = new Cube[tailleMap + 1, tailleMap + 1, tailleMap + 1];
-        for (int i = 0; i <= tailleMap; i++)
-            for (int j = 0; j <= tailleMap; j++)
-                for (int k = 0; k <= tailleMap; k++)
+        cubesRegular = new Cube[tailleMap.x + 1, tailleMap.y + 1, tailleMap.z + 1];
+        for (int i = 0; i <= tailleMap.x; i++)
+            for (int j = 0; j <= tailleMap.y; j++)
+                for (int k = 0; k <= tailleMap.z; k++)
                     cubesRegular[i, j, k] = null;
         cubesNonRegular = new List<Cube>();
 
@@ -70,8 +71,10 @@ public abstract class MapManager : MonoBehaviour {
         // Puis on régule la map pour s'assurer que tout va bien :)
         PrintCubesNumbers();
         //LocaliseCubeOnLumieres();
-        FixNbLumieres();
-        LinkUnreachableLumiereToRest();
+        if (bDoFinalChecks) {
+            FixNbLumieres();
+            LinkUnreachableLumiereToRest();
+        }
     }
 
     protected abstract void GenerateMap();
@@ -154,7 +157,8 @@ public abstract class MapManager : MonoBehaviour {
         for(int i = xMin; i <= xMax; i++) {
             for(int j = yMin; j <= yMax; j++) {
                 for(int k = zMin; k <= zMax; k++) {
-                    if(Vector3.Distance(new Vector3( i, j, k ), center) <= radius) {
+                    Vector3 v = new Vector3(i, j, k);
+                    if(Vector3.Distance(v, center) <= radius && IsInRegularMap(v)) {
                         if (cubesRegular[i, j, k] != null) {
                             DestroyImmediateCube(cubesRegular[i, j, k]);
                             cubesRegular[i, j, k] = null;
@@ -186,9 +190,11 @@ public abstract class MapManager : MonoBehaviour {
         for (int i = xMin; i <= xMax; i++) {
             for (int j = yMin; j <= yMax; j++) {
                 for (int k = zMin; k <= zMax; k++) {
-                    if (cubesRegular[i, j, k] != null) {
-                        DestroyImmediateCube(cubesRegular[i, j, k]);
-                        cubesRegular[i, j, k] = null;
+                    if (IsInRegularMap(new Vector3(i, j, k))) {
+                        if (cubesRegular[i, j, k] != null) {
+                            DestroyImmediateCube(cubesRegular[i, j, k]);
+                            cubesRegular[i, j, k] = null;
+                        }
                     }
                 }
             }
@@ -282,7 +288,9 @@ public abstract class MapManager : MonoBehaviour {
     public List<Cube> GetCubesInLocation(Vector3 roundedLocation) {
         List<Cube> cubes = new List<Cube>();
         roundedLocation = MathTools.Round(roundedLocation);
-        Cube cubeRegular = cubesRegular[(int)roundedLocation.x, (int)roundedLocation.y, (int)roundedLocation.z];
+        Cube cubeRegular = null;
+        if(IsInRegularMap(roundedLocation))
+            cubeRegular = cubesRegular[(int)roundedLocation.x, (int)roundedLocation.y, (int)roundedLocation.z];
         if (cubeRegular != null)
             cubes.Add(cubeRegular);
         foreach (Cube cube in cubesNonRegular) {
@@ -315,41 +323,41 @@ public abstract class MapManager : MonoBehaviour {
         return null;
     }
 
-	// Crée un mur constitué de cubes entre les 4 coins que constitue les indices
-	protected void RemplirFace(int indVertx1, int indVertx2, int indVertx3, int indVertx4, Vector3[] pos) {
-		Vector3 depart = pos [indVertx1];
-		//Vector3 arrivee = pos [indVertx4];
-		Vector3 pas1 = (pos [indVertx2] - depart) / tailleMap;
-		Vector3 pas2 = (pos [indVertx4] - depart) / tailleMap;
+	//// Crée un mur constitué de cubes entre les 4 coins que constitue les indices
+	//protected void RemplirFace(int indVertx1, int indVertx2, int indVertx3, int indVertx4, Vector3[] pos) {
+	//	Vector3 depart = pos [indVertx1];
+	//	//Vector3 arrivee = pos [indVertx4];
+	//	Vector3 pas1 = (pos [indVertx2] - depart) / tailleMap;
+	//	Vector3 pas2 = (pos [indVertx4] - depart) / tailleMap;
 
-		for (int i = 0; i <= tailleMap; i++) {
-			for (int j = 0; j <= tailleMap; j++) {
-				Vector3 actuel = depart + pas1 * i + pas2 * j;
-				GameObject instance = Instantiate (cubePrefab, actuel, Quaternion.identity) as GameObject;
+	//	for (int i = 0; i <= tailleMap; i++) {
+	//		for (int j = 0; j <= tailleMap; j++) {
+	//			Vector3 actuel = depart + pas1 * i + pas2 * j;
+	//			GameObject instance = Instantiate (cubePrefab, actuel, Quaternion.identity) as GameObject;
 
-				// On va un peu décaler les cubes pour créer du relief !
-				//float decalageMax = personnage.GetComponent<CharacterController>().stepOffset / 2;
-				float decalageMax = 0.1f;
-				Vector3 directionDecalage = Vector3.Cross (pas1, pas2);
-				directionDecalage.Normalize ();
-                //instance.transform.Translate (directionDecalage * Random.Range (-decalageMax, decalageMax));
+	//			// On va un peu décaler les cubes pour créer du relief !
+	//			//float decalageMax = personnage.GetComponent<CharacterController>().stepOffset / 2;
+	//			float decalageMax = 0.1f;
+	//			Vector3 directionDecalage = Vector3.Cross (pas1, pas2);
+	//			directionDecalage.Normalize ();
+ //               //instance.transform.Translate (directionDecalage * Random.Range (-decalageMax, decalageMax));
 
-                AddCube(instance.GetComponent<Cube>());
-			}
-		}
-	}
+ //               AddCube(instance.GetComponent<Cube>());
+	//		}
+	//	}
+	//}
 
     public bool IsInRegularMap(Vector3 pos) {
-        return 0 <= pos.x && pos.x <= tailleMap
-        && 0 <= pos.y && pos.y <= tailleMap
-        && 0 <= pos.z && pos.z <= tailleMap;
+        return 0 <= pos.x && pos.x <= tailleMap.x
+        && 0 <= pos.y && pos.y <= tailleMap.y
+        && 0 <= pos.z && pos.z <= tailleMap.z;
     }
 
     public List<Cube> GetAllCubes() {
         List<Cube> allCubes = new List<Cube>();
-        for (int i = 0; i <= tailleMap; i++)
-            for (int j = 0; j <= tailleMap; j++)
-                for (int k = 0; k <= tailleMap; k++)
+        for (int i = 0; i <= tailleMap.x; i++)
+            for (int j = 0; j <= tailleMap.y; j++)
+                for (int k = 0; k <= tailleMap.z; k++)
                     if (cubesRegular[i, j, k] != null)
                         allCubes.Add(cubesRegular[i, j, k]);
         foreach (Cube cube in cubesNonRegular)
@@ -359,9 +367,9 @@ public abstract class MapManager : MonoBehaviour {
 
     public void PrintCubesNumbers() {
         int nbCubesRegular = 0;
-        for (int i = 0; i <= tailleMap; i++) {
-            for (int j = 0; j <= tailleMap; j++) {
-                for (int k = 0; k <= tailleMap; k++) {
+        for (int i = 0; i <= tailleMap.x; i++) {
+            for (int j = 0; j <= tailleMap.y; j++) {
+                for (int k = 0; k <= tailleMap.z; k++) {
                     if (cubesRegular[i, j, k] != null) {
                         nbCubesRegular++;
                         if(cubesNonRegular.Contains(cubesRegular[i, j, k])) {
@@ -381,21 +389,21 @@ public abstract class MapManager : MonoBehaviour {
     }
 
     public Vector3 GetRoundedLocation() {
-        int x = Random.Range(1, tailleMap);
-        int y = Random.Range(1, tailleMap);
-        int z = Random.Range(1, tailleMap);
+        int x = Random.Range(1, tailleMap.x);
+        int y = Random.Range(1, tailleMap.y);
+        int z = Random.Range(1, tailleMap.z);
         return new Vector3(x, y, z);
     }
 
     public Vector3 GetFreeSphereLocation(float radius) {
-        Vector3 center = new Vector3(Random.Range(1.0f, (float)tailleMap),
-                                     Random.Range(1.0f, (float)tailleMap),
-                                     Random.Range(1.0f, (float)tailleMap));
+        Vector3 center = new Vector3(Random.Range(1.0f, (float)tailleMap.x),
+                                     Random.Range(1.0f, (float)tailleMap.y),
+                                     Random.Range(1.0f, (float)tailleMap.z));
         int k = 0; int kmax = 5000;
         while(GetCubesInSphere(center, radius).Count > 0 && k <= kmax) {
-            center = new Vector3(Random.Range(1.0f, (float)tailleMap),
-                                     Random.Range(1.0f, (float)tailleMap),
-                                     Random.Range(1.0f, (float)tailleMap));
+            center = new Vector3(Random.Range(1.0f, (float)tailleMap.x),
+                                     Random.Range(1.0f, (float)tailleMap.y),
+                                     Random.Range(1.0f, (float)tailleMap.z));
             k++;
         }
         if (k > kmax)
@@ -404,14 +412,14 @@ public abstract class MapManager : MonoBehaviour {
     }
 
     public Vector3 GetFreeRoundedLocation() {
-        Vector3 center = MathTools.Round(new Vector3(Random.Range(1.0f, (float)tailleMap - 1),
-                                     Random.Range(1.0f, (float)tailleMap - 1),
-                                     Random.Range(1.0f, (float)tailleMap - 1)));
+        Vector3 center = MathTools.Round(new Vector3(Random.Range(1.0f, (float)tailleMap.x - 1),
+                                     Random.Range(1.0f, (float)tailleMap.y - 1),
+                                     Random.Range(1.0f, (float)tailleMap.z - 1)));
         int k = 0; int kmax = 5000;
         while(GetCubesInLocation(center).Count > 0 && k <= kmax) {
-            center = MathTools.Round(new Vector3(Random.Range(1.0f, (float)tailleMap - 1),
-                                     Random.Range(1.0f, (float)tailleMap - 1),
-                                     Random.Range(1.0f, (float)tailleMap - 1)));
+            center = MathTools.Round(new Vector3(Random.Range(1.0f, (float)tailleMap.x - 1),
+                                     Random.Range(1.0f, (float)tailleMap.y - 1),
+                                     Random.Range(1.0f, (float)tailleMap.z - 1)));
             k++;
         }
         if (k > kmax)
@@ -420,14 +428,14 @@ public abstract class MapManager : MonoBehaviour {
     }
 
     public Vector3 GetFreeBoxLocation(Vector3 halfExtents) {
-        Vector3 center = new Vector3(Random.Range(1.0f, (float)tailleMap),
-                                     Random.Range(1.0f, (float)tailleMap),
-                                     Random.Range(1.0f, (float)tailleMap));
+        Vector3 center = new Vector3(Random.Range(1.0f, (float)tailleMap.x),
+                                     Random.Range(1.0f, (float)tailleMap.y),
+                                     Random.Range(1.0f, (float)tailleMap.z));
         int k = 0; int kmax = 5000;
         while(GetCubesInBox(center, halfExtents).Count > 0 && k <= kmax) {
-            center = new Vector3(Random.Range(1.0f, (float)tailleMap),
-                                     Random.Range(1.0f, (float)tailleMap),
-                                     Random.Range(1.0f, (float)tailleMap));
+            center = new Vector3(Random.Range(1.0f, (float)tailleMap.x),
+                                     Random.Range(1.0f, (float)tailleMap.y),
+                                     Random.Range(1.0f, (float)tailleMap.z));
             k++;
         }
         if (k > kmax)
@@ -436,7 +444,7 @@ public abstract class MapManager : MonoBehaviour {
     }
 
     public Vector3 GetCenter() {
-        return Vector3.one * tailleMap / 2.0f;
+        return new Vector3(tailleMap.x, tailleMap.y, tailleMap.z) / 2.0f;
     }
 
     protected void LocaliseCubeOnLumieres() {
@@ -526,16 +534,16 @@ public abstract class MapManager : MonoBehaviour {
 
     public List<Vector3> GetAllEmptyPositions() {
         List<Vector3> allPos = new List<Vector3>();
-        for (int i = 0; i <= tailleMap; i++)
-            for (int j = 0; j <= tailleMap; j++)
-                for (int k = 0; k <= tailleMap; k++)
+        for (int i = 0; i <= tailleMap.x; i++)
+            for (int j = 0; j <= tailleMap.y; j++)
+                for (int k = 0; k <= tailleMap.z; k++)
                     if (cubesRegular[i, j, k] == null)
                         allPos.Add(new Vector3(i, j, k));
         return allPos;
     }
 
     public float GetVolume() {
-        return (float)(tailleMap - 1) * (tailleMap - 1) * (tailleMap - 1);
+        return (float)(tailleMap.x - 1) * (tailleMap.y - 1) * (tailleMap.z - 1);
     }
 
     public bool IsLumiereAt(Vector3 pos) {

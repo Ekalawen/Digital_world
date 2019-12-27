@@ -31,6 +31,7 @@ public class Player : Character {
     public GameObject pouvoirEPrefab; // Le pouvoir de la touche E (souvent la localisation)
     public GameObject pouvoirLeftBoutonPrefab; // Le pouvoir du bouton gauche de la souris
     public GameObject pouvoirRightBoutonPrefab; // Le pouvoir du bouton droit de la souris
+	public new Camera camera; // La camera du joueur !
 	//////////////////////////////////////////////////////////////////////////////////////
 	// ATTRIBUTS PRIVÉES
 	//////////////////////////////////////////////////////////////////////////////////////
@@ -39,8 +40,6 @@ public class Player : Character {
 	public GameObject personnage;
 	[HideInInspector]
 	public Console console;
-	[HideInInspector]
-	public new Camera camera;
 	protected float xRot, yRot;
     [HideInInspector]
     public bool bSetUpRotation;
@@ -86,7 +85,6 @@ public class Player : Character {
         personnage = gameObject;
         personnage.name = "Joueur";
 		controller = personnage.GetComponent<CharacterController> ();
-		camera = personnage.transform.GetChild(0).GetComponent<Camera>() as Camera;
         audioSource = GetComponentInChildren<AudioSource>();
         gm = FindObjectOfType<GameManager>();
         sensibilite = PlayerPrefs.GetFloat(MenuOptions.MOUSE_SPEED_KEY);
@@ -96,8 +94,10 @@ public class Player : Character {
         transform.position = position;
 
         // On regarde là où on nous dit de regarder
-        xRot = orientationXY.x;
-        yRot = orientationXY.y;
+        Vector3 up = gm.gravityManager.Up();
+        Vector3 cameraRight = camera.transform.right;
+        camera.transform.RotateAround(camera.transform.position, cameraRight, orientationXY.x);
+        camera.transform.RotateAround(camera.transform.position, up, orientationXY.y);
 
 		pointDebutSaut = transform.position;
 
