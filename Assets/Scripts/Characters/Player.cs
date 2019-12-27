@@ -195,8 +195,22 @@ public class Player : Character {
 		Vector3 move = new Vector3 (Input.GetAxis ("Horizontal"), 0, Input.GetAxis ("Vertical"));
         move = camera.transform.TransformDirection (move);
         float magnitude = move.magnitude;
-        move = Vector3.ProjectOnPlane(move, gm.gravityManager.Up());
-        move = move.normalized * magnitude;
+
+        // On va à l'horizontale si il y a de la gravité, sinon on peut "nager"
+        if (gm.gravityManager.HasGravity()) {
+            move = Vector3.ProjectOnPlane(move, gm.gravityManager.Up());
+            move = move.normalized * magnitude;
+        } else {
+            // On peut descendre avec Shift
+            if(Input.GetKey(KeyCode.LeftShift)) {
+                move += gm.gravityManager.Down();
+            }
+
+            // Et monter avec space
+            if(Input.GetKey(KeyCode.Space)) {
+                move += gm.gravityManager.Up();
+            }
+        }
 
         // On applique la vitesse au déplacement
         move *= vitesseDeplacement;
@@ -217,7 +231,7 @@ public class Player : Character {
 		// En fonction de l'état du personnage, on applique le mouvement correspondant !
 		switch (etat) {
 		case EtatPersonnage.AU_SOL:
-			if (Input.GetButton ("Jump")) {
+			if (Input.GetButton ("Jump") && gm.gravityManager.HasGravity()) {
                 Jump(from: EtatPersonnage.AU_SOL);
                 move = ApplyJumpMouvement(move);
 			}
@@ -241,7 +255,7 @@ public class Player : Character {
 				normaleOrigineSaut = normaleMur;
                 dureeMurRestante = dureeMurRestante - (Time.timeSinceLevelLoad - debutMur);
 			// On peut encore sauter quand on est au mur ! 
-			} else if (Input.GetButtonDown ("Jump")) { // Mais il faut appuyer à nouveau !
+			} else if (Input.GetButtonDown ("Jump") && gm.gravityManager.HasGravity()) { // Mais il faut appuyer à nouveau !
                 Jump(from: EtatPersonnage.AU_MUR);
                 move = ApplyJumpMouvement(move);
                 dureeMurRestante = dureeMur;

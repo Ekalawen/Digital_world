@@ -26,7 +26,7 @@ public class GravityZone : ZoneCubique {
         if (other.gameObject.tag == "Player") {
             // Si le joueur veut renter du coté du "down" on le repousse !
             Player player = other.gameObject.GetComponent<Player>();
-            if(IsBelow(player)) {
+            if(IsBelow(player) && intensity > 0.0f) {
                 Vector3 dirPoussee = GravityManager.DirToVec(direction);
                 player.RemoveAllPoussees();
                 player.AddPoussee(new Poussee(dirPoussee, 0.2f, 3.0f));

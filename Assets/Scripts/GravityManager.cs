@@ -154,4 +154,8 @@ public class GravityManager : MonoBehaviour {
         }
         throw new System.Exception("Erreur dans GetHigh()");
     }
+
+    public bool HasGravity() {
+        return gravityIntensity > 0.0f;
+    }
 }
