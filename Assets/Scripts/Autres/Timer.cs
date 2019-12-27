@@ -23,4 +23,8 @@ public class Timer {
     public void Enable() {
         debut = Time.timeSinceLevelLoad - duree;
     }
+
+    public float GetAvancement() {
+        return (Time.timeSinceLevelLoad - debut) / duree;
+    }
 }

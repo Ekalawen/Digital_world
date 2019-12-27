@@ -49,6 +49,7 @@ public class PouvoirExplosion : IPouvoir {
             if (collider.tag == "Cube") {
                 Cube cube = collider.gameObject.GetComponent<Cube>();
                 GameObject go = Instantiate(explosionParticlesPrefab, cube.transform.position, Quaternion.identity);
+                go.transform.up = gm.gravityManager.Up();
                 ParticleSystem particle = go.GetComponent<ParticleSystem>();
                 ParticleSystemRenderer psr = go.GetComponent<ParticleSystemRenderer>();
                 Material mat = psr.material;

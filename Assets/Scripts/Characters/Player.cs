@@ -42,12 +42,12 @@ public class Player : Character {
 	[HideInInspector]
 	public new Camera camera;
 	protected float xRot, yRot;
-	protected float currentRotationX, currentRotationY;
-	protected float xRotV, yRotV;
-	protected float lookSmoothDamp = 0.0f;
+    [HideInInspector]
+    public bool bSetUpRotation;
 
 	protected EtatPersonnage etat; // l'état du personnage
-	protected float debutSaut; // le timing où le personnage a débuté son dernier saut !
+    protected bool isGrounded;
+    protected float debutSaut; // le timing où le personnage a débuté son dernier saut !
 	protected Vector3 pointDebutSaut; // le point de départ du saut !
 	protected EtatPersonnage origineSaut; // Permet de savoir depuis où (le sol ou un mur) le personnage a sauté !
 	protected Vector3 normaleOrigineSaut; // La normale au plan du mur duquel le personnage a sauté
@@ -62,6 +62,8 @@ public class Player : Character {
     protected IPouvoir pouvoirLeftBouton; // Le pouvoir du bouton gauche de la souris
     protected IPouvoir pouvoirRightBouton; // Le pouvoir du bouton droit de la souris
     protected bool bCanUseLocalisation = true;
+
+    protected Quaternion originaleRotation;
 
     [HideInInspector]
 	public float lastNotContactEnnemy; // Le dernier temps où il ne touchait pas d'ennemi, utilisé pour la fin du jeu
@@ -87,6 +89,7 @@ public class Player : Character {
         audioSource = GetComponentInChildren<AudioSource>();
         gm = FindObjectOfType<GameManager>();
         sensibilite = PlayerPrefs.GetFloat(MenuOptions.MOUSE_SPEED_KEY);
+        originaleRotation = camera.transform.localRotation;
 
         //ChoseStartingPosition();
         transform.position = position;
@@ -135,13 +138,49 @@ public class Player : Character {
 
     // Utilisé pour gérer la caméra
     void UpdateCamera() {
-		// On oriente notre personnage dans dans le sens de la souris
-		xRot -= Input.GetAxis ("Mouse Y") * sensibilite; // mouvement caméra haut-bad
-		yRot += Input.GetAxis ("Mouse X") * sensibilite; // mouvement personnage axe 
-		xRot = Mathf.Clamp(xRot, -90, 90);
-		currentRotationX = xRot; // Mathf.SmoothDamp (currentRotationX, xRot, ref xRotV, lookSmoothDamp);
-		currentRotationY = yRot; // Mathf.SmoothDamp (currentRotationY, yRot, ref yRotV, lookSmoothDamp);
-		camera.transform.rotation = Quaternion.Euler (currentRotationX, currentRotationY, 0);// mouvement caméra haut-bas
+        // On mesure la rotation que l'on veut faire
+        xRot = -Input.GetAxis("Mouse Y") * sensibilite;
+        yRot = Input.GetAxis("Mouse X") * sensibilite;
+        Vector3 currentRotation = new Vector3(xRot, yRot, 0);
+
+        // On précalcul les principaux vecteurs
+        Vector3 up = gm.gravityManager.Up();
+        Vector3 right = gm.gravityManager.Right();
+        Vector3 cameraRight = camera.transform.right;
+
+        // On retient l'orientation que l'on avait avant
+        Quaternion rotationAvant = camera.transform.rotation;
+        Vector3 forwardAvant = camera.transform.forward;
+
+        // On tourne
+        camera.transform.RotateAround(camera.transform.position, cameraRight, currentRotation.x);
+        camera.transform.RotateAround(camera.transform.position, up, currentRotation.y);
+
+        // Si on a dépassé le up avec la rotation, alors la rotation est remise "en arrière"
+        float tresholdAngle = 0.01f; // degrées, et le plus petit possible pour que l'on ne s'en rende pas compte :3
+        float dot = Vector3.Dot(camera.transform.forward, up);
+        Vector3 cross1 = Vector3.Cross(forwardAvant, up);
+        Vector3 cross2 = Vector3.Cross(camera.transform.forward, up);
+        if (Vector3.Dot(cross1, cross2) < 0) { // Si ils ne sont pas dans le même sens !
+            float angle = Vector3.Angle(up * Mathf.Sign(dot), camera.transform.forward);
+            float halfAngle = tresholdAngle / 2.0f;
+            camera.transform.forward = Quaternion.AngleAxis(Mathf.Sign(dot) * (angle + halfAngle), cross2) * camera.transform.forward;
+        }
+
+        // On remet le up dans le bon sens si on peut, sinon on cap le vecteur au treshold !
+        Vector3 tresholdVector = Quaternion.AngleAxis(tresholdAngle, right) * up;
+        float tresholdDot = Vector3.Dot(tresholdVector, up);
+        if (Mathf.Abs(dot) <= Mathf.Abs(tresholdDot)) {
+            if(bSetUpRotation)
+                camera.transform.LookAt(camera.transform.position + camera.transform.forward, up);
+        } else {
+            Vector3 axe = Vector3.Cross(up * Mathf.Sign(dot), camera.transform.forward);
+            Vector3 recherche = Quaternion.AngleAxis(tresholdAngle, axe) * up * Mathf.Sign(dot);
+            if (bSetUpRotation)
+                camera.transform.LookAt(camera.transform.position + recherche, up);
+            else
+                camera.transform.forward = camera.transform.position + recherche;
+        }
     }
 
     // On met à jour le mouvement du joueur
@@ -152,14 +191,14 @@ public class Player : Character {
         }
 
 		// On récupère le mouvement dans le sens de l'orientation du personnage
-		Vector3 move = Vector3.zero;
-		move = new Vector3 (Input.GetAxis ("Horizontal"), 0, Input.GetAxis ("Vertical"));
-		camera.transform.rotation = Quaternion.Euler (0, currentRotationY, 0);// mouvement caméra haut-bas
-		move = camera.transform.TransformDirection (move);
-		camera.transform.rotation = Quaternion.Euler (currentRotationX, currentRotationY, 0);// mouvement caméra haut-bas
+		Vector3 move = new Vector3 (Input.GetAxis ("Horizontal"), 0, Input.GetAxis ("Vertical"));
+        move = camera.transform.TransformDirection (move);
+        float magnitude = move.magnitude;
+        move = Vector3.ProjectOnPlane(move, gm.gravityManager.Up());
+        move = move.normalized * magnitude;
 
-		// On applique la vitesse au déplacement
-		move *= vitesseDeplacement;
+        // On applique la vitesse au déplacement
+        move *= vitesseDeplacement;
 
         // On applique les poussées !
         ApplyPoussees();
@@ -263,12 +302,30 @@ public class Player : Character {
 		}
     }
 
-	// Pour mettre à jour l'état du personnage !
-	void GetEtatPersonnage() {
+    protected bool IsGrounded() {
+        RaycastHit[] hits = Physics.SphereCastAll(transform.position,
+            transform.localScale.x / 2.0f,
+            gm.gravityManager.Down(), 
+            controller.skinWidth * 1.1f);
+        Vector3 up = gm.gravityManager.Up();
+        foreach(RaycastHit hit in hits) {
+            if (hit.collider.gameObject.tag == "Player")
+                continue;
+            Vector3 n = hit.normal;
+            float angle = Vector3.Angle(n, up);
+            if (Mathf.Abs(angle) <= 45f) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Pour mettre à jour l'état du personnage !
+    void GetEtatPersonnage() {
+        isGrounded = IsGrounded();
 		if (etat != EtatPersonnage.AU_MUR) {
             int currentFrame = Time.frameCount;
-			if (controller.isGrounded) {
-                //if((controller.collisionFlags & CollisionFlags.Below) != 0) {
+			if (isGrounded) {
                 EtatPersonnage previousEtat = etat;
 				etat = EtatPersonnage.AU_SOL;
                 if (etat != previousEtat)
@@ -296,7 +353,7 @@ public class Player : Character {
 	void DetecterGrandSaut(EtatPersonnage etatAvant) {
 		if((etatAvant == EtatPersonnage.EN_CHUTE || etatAvant == EtatPersonnage.EN_SAUT || etatAvant == EtatPersonnage.AU_MUR)
 		&& (etat == EtatPersonnage.AU_SOL || etat == EtatPersonnage.AU_MUR)) {
-			float hauteurSaut = hauteurMaxSaut - transform.position.y;
+            float hauteurSaut = hauteurMaxSaut - gm.gravityManager.GetHigh(transform.position);
 			if(hauteurSaut > 7) {
 				console.GrandSaut(hauteurSaut);
 			}
@@ -325,8 +382,9 @@ public class Player : Character {
 				if(origineSaut == EtatPersonnage.AU_SOL
                 || (origineSaut == EtatPersonnage.AU_MUR && Vector3.Angle(normaleOrigineSaut, n) > 10)) {
 
-					// Si la normale est au moins un peu à l'horizontale !
-					Vector3 nProject = Vector3.ProjectOnPlane (n, Vector3.up);
+                    // Si la normale est au moins un peu à l'horizontale !
+                    Vector3 up = gm.gravityManager.Up();
+					Vector3 nProject = Vector3.ProjectOnPlane (n, up);
 					if (nProject != Vector3.zero && Mathf.Abs(Vector3.Angle (n, nProject)) < 45f) {
                         /*// Si on détecte une collision avec un mur, on peut s'aggriper si l'angle entre la normale
                         // au mur et le vecteur (pointDepartSaut/mur) est inférieur à 45°
@@ -352,11 +410,11 @@ public class Player : Character {
 
 	public void MajHauteurMaxSaut() {
 		if(etat == EtatPersonnage.EN_SAUT || etat == EtatPersonnage.EN_CHUTE) {
-			if(transform.position.y > hauteurMaxSaut) {
-				hauteurMaxSaut = transform.position.y;
+			if(gm.gravityManager.GetHigh(transform.position) > hauteurMaxSaut) {
+                hauteurMaxSaut = gm.gravityManager.GetHigh(transform.position);
 			}
 		} else {
-			hauteurMaxSaut = transform.position.y;
+            hauteurMaxSaut = gm.gravityManager.GetHigh(transform.position);
 		}
 	}
 
@@ -365,8 +423,10 @@ public class Player : Character {
         if (percentSaut <= dureeEfficaciteSaut) {
             move = gm.gravityManager.MoveOppositeDirectionOfGravity(move, vitesseSaut);
             //move.y += vitesseSaut;
+        } else {
+            move = gm.gravityManager.MoveOppositeDirectionOfGravity(move, gm.gravityManager.gravityIntensity);
         }
-        move = gm.gravityManager.CounterGravity(move);
+        //move = gm.gravityManager.CounterGravity(move);
         return move;
     }
 
