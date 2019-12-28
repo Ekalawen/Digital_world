@@ -57,4 +57,10 @@ public class MenuLevelSelector : MonoBehaviour {
         PlayerPrefs.SetInt(LEVEL_INDICE_KEY, levelIndice);
         PlayerPrefs.Save();
     }
+
+    public void CleanLevelIndice() {
+        PlayerPrefs.SetInt(LEVEL_INDICE_KEY, -1);
+        PlayerPrefs.SetString(LEVEL_INDICE_MUST_BE_USED_KEY, "False");
+        PlayerPrefs.Save();
+    }
 }

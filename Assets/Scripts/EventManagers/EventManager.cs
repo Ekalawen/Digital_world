@@ -38,7 +38,7 @@ public class EventManager : MonoBehaviour {
         }
     }
 
-    protected void StartEndGame() {
+    protected virtual void StartEndGame() {
         isEndGameStarted = true;
 
         // On crée la finaleLight

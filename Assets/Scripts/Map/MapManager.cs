@@ -671,11 +671,23 @@ public abstract class MapManager : MonoBehaviour {
     protected void GetAllAlreadyExistingCubesAndLumieres() {
         Cube[] newCubes = FindObjectsOfType<Cube>();
         foreach(Cube cube in newCubes) {
+            if(!cube.transform.IsChildOf(cubesFolder.transform)) {
+                Transform maxParent = cube.transform.parent;
+                while (maxParent.parent != null)
+                    maxParent = maxParent.parent;
+                maxParent.SetParent(cubesFolder.transform);
+            }
             AddCube(cube);
         }
 
         Lumiere[] newLumieres = FindObjectsOfType<Lumiere>();
         foreach(Lumiere lumiere in newLumieres) {
+            if(!lumiere.transform.IsChildOf(lumieresFolder.transform)) {
+                Transform maxParent = lumiere.transform.parent;
+                while (maxParent.parent != null)
+                    maxParent = maxParent.parent;
+                maxParent.SetParent(lumieresFolder.transform);
+            }
             lumieres.Add(lumiere);
         }
     }

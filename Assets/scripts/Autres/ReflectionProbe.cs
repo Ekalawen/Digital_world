@@ -31,7 +31,9 @@ public class ReflectionProbe : MonoBehaviour {
 	}
 
 	void Update () {
-		// On ne s'update que si le joueur est suffisamment proche !
+        // On ne s'update que si le joueur est suffisamment proche !
+        if (player == null)
+            player = GameManager.Instance.player.gameObject;
 		if (Vector3.Distance (player.transform.position, transform.position) < distanceDeRafraichissement) {
 			// On ne refraichit qu'une frame sur frequenceDeRafraichissement
 			dernierRafraichissement = (dernierRafraichissement + 1) % frequenceDeRafraichissement;

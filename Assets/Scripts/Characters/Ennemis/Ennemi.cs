@@ -62,8 +62,8 @@ public abstract class Ennemi : Character {
     }
 
     protected virtual void HitPlayer() {
-        HitPlayerSpecific();
         if(Time.timeSinceLevelLoad - lastTimeHit > timeBetweenTwoHits) {
+            HitPlayerSpecific();
             lastTimeHit = Time.timeSinceLevelLoad;
             gm.timerManager.AddTime(-timeMalusOnHit);
             DisplayHitMessage();

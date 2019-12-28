@@ -57,6 +57,12 @@ public class EnnemiManager : MonoBehaviour {
     protected void GetAllAlreadyExistingEnnemis() {
         Ennemi[] newEnnemis = FindObjectsOfType<Ennemi>();
         foreach (Ennemi ennemi in newEnnemis) {
+            if(!ennemi.transform.IsChildOf(ennemisFolder.transform)) {
+                Transform maxParent = ennemi.transform.parent;
+                while (maxParent.parent != null)
+                    maxParent = maxParent.parent;
+                maxParent.SetParent(ennemisFolder.transform);
+            }
             ennemis.Add(ennemi);
         }
     }

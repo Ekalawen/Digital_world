@@ -15,7 +15,8 @@ public class MenuManager : MonoBehaviour {
         if (PlayerPrefs.GetString(MenuLevelSelector.LEVEL_INDICE_MUST_BE_USED_KEY) == "True") {
             int levelIndice = PlayerPrefs.GetInt(MenuLevelSelector.LEVEL_INDICE_KEY);
             PlayerPrefs.SetString(MenuLevelSelector.LEVEL_INDICE_MUST_BE_USED_KEY, "False");
-            menuLevelSelector.Run(levelIndice);
+            if(levelIndice != -1) // Pour le tutoriel
+                menuLevelSelector.Run(levelIndice);
         }
     }
 
@@ -41,6 +42,8 @@ public class MenuManager : MonoBehaviour {
 	// Lorsqu'on appui sur le bouton tutoriel
 	public void OnTutorialPress() {
 		Debug.Log("On a appuyé sur Tutoriel !");
+        menuLevelSelector.CleanLevelIndice();
+        PlayerPrefs.SetString(MenuLevel.LEVEL_NAME_KEY, "Tutoriel");
 		SceneManager.LoadScene("TutorialScene");
 	}
 
