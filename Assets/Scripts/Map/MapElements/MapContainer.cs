@@ -16,6 +16,10 @@ public class MapContainer : CubeEnsemble {
         GenerateMapContainer();
     }
 
+    public override string GetName() {
+        return "MapContainer";
+    }
+
     protected void GenerateMapContainer() {
         // Haut
         Mur mur = new Mur(origin + Vector3.up * nbCubesParAxe[2],

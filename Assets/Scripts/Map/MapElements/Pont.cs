@@ -8,6 +8,10 @@ public class Pont : CubeEnsemble {
     public Vector3 direction;
     public int nbCubes;
 
+    public override string GetName() {
+        return "Pont";
+    }
+
     public Pont(Vector3 depart, Vector3 direction, int nbCubes) : base() {
         this.depart = depart;
         this.direction = direction;

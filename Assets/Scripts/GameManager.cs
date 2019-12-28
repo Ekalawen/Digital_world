@@ -55,6 +55,8 @@ public class GameManager : MonoBehaviour {
     [HideInInspector]
     public GravityManager gravityManager;
     [HideInInspector]
+    public GameObject managerFolder;
+    [HideInInspector]
     public bool partieDejaTerminee = false;
     [HideInInspector]
     public bool timeFreezed = false;
@@ -68,18 +70,19 @@ public class GameManager : MonoBehaviour {
     }
 
     void Start () {
-		// On crée ce dont on a besoin
-        gravityManager = Instantiate(gravityManagerPrefab).GetComponent<GravityManager>();
-		map = Instantiate(mapManagerPrefab).GetComponent<MapManager>();
-        player = Instantiate(playerPrefab).GetComponent<Player>();
-		eventManager = Instantiate(eventManagerPrefab).GetComponent<EventManager>();
-		console = Instantiate(consolePrefab).GetComponent<Console>();
-		colorManager = Instantiate(colorManagerPrefab).GetComponent<ColorManager>();
-        pointeur = Instantiate(pointeurPrefab);
-        ennemiManager = Instantiate(ennemiManagerPrefab).GetComponent<EnnemiManager>();
-        soundManager = Instantiate(soundManagerPrefab).GetComponent<SoundManager>();
-        postProcessManager = Instantiate(postProcessManagerPrefab).GetComponent<PostProcessManager>();
-        timerManager = Instantiate(timerManagerPrefab).GetComponent<TimerManager>();
+        // On crée ce dont on a besoin
+        managerFolder = new GameObject("Managers");
+        gravityManager = Instantiate(gravityManagerPrefab, managerFolder.transform).GetComponent<GravityManager>();
+		map = Instantiate(mapManagerPrefab, managerFolder.transform).GetComponent<MapManager>();
+        player = Instantiate(playerPrefab, managerFolder.transform).GetComponent<Player>();
+		eventManager = Instantiate(eventManagerPrefab, managerFolder.transform).GetComponent<EventManager>();
+		console = Instantiate(consolePrefab, managerFolder.transform).GetComponent<Console>();
+		colorManager = Instantiate(colorManagerPrefab, managerFolder.transform).GetComponent<ColorManager>();
+        pointeur = Instantiate(pointeurPrefab, managerFolder.transform);
+        ennemiManager = Instantiate(ennemiManagerPrefab, managerFolder.transform).GetComponent<EnnemiManager>();
+        soundManager = Instantiate(soundManagerPrefab, managerFolder.transform).GetComponent<SoundManager>();
+        postProcessManager = Instantiate(postProcessManagerPrefab, managerFolder.transform).GetComponent<PostProcessManager>();
+        timerManager = Instantiate(timerManagerPrefab, managerFolder.transform).GetComponent<TimerManager>();
 
         Initialize();
 	}

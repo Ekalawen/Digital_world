@@ -2,16 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CubeEnsemble : MapElement {
+public abstract class CubeEnsemble : MapElement {
 
     protected List<Cube> cubes;
+    protected GameObject cubesEnsembleFolder;
 
     protected CubeEnsemble() : base() {
         cubes = new List<Cube>();
+        cubesEnsembleFolder = new GameObject(GetName());
+        cubesEnsembleFolder.transform.SetParent(map.cubesFolder.transform);
     }
 
+    public abstract string GetName();
+
     protected Cube CreateCube(Vector3 pos) {
-        Cube cube = map.AddCube(pos, Cube.CubeType.NORMAL);
+        Cube cube = map.AddCube(pos, Cube.CubeType.NORMAL, Quaternion.identity, cubesEnsembleFolder.transform);
         if (cube != null) {
             cubes.Add(cube);
         }

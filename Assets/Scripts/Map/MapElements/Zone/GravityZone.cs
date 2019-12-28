@@ -9,12 +9,11 @@ public class GravityZone : ZoneCubique {
     public bool bUseRandomDirection = false;
     public float intensity = 5.0f;
 
-    protected GameManager gm;
     protected GravityManager.Direction oldDirection;
     protected float oldIntensity;
 
-    public void Start() {
-        gm = GameManager.Instance;
+    protected override void Start() {
+        base.Start();
         oldDirection = gm.gravityManager.initialGravityDirection;
         oldIntensity = gm.gravityManager.initialGravityIntensity;
         if(bUseRandomDirection) {

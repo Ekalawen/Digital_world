@@ -11,9 +11,15 @@ public class EnnemiManager : MonoBehaviour {
     public List<Ennemi> ennemis; // Elle connait toutes les sondes
 
     protected GameManager gm;
+    [HideInInspector]
+    public GameObject ennemisFolder;
 
     public void Initialize() {
         gm = GameManager.Instance;
+        ennemisFolder = new GameObject("Ennemis");
+
+        // On récupère tous les ennemis qui pourraient déjà exister dans la map !
+        GetAllAlreadyExistingEnnemis();
 
         GenerateEnnemies();
     }
@@ -26,7 +32,7 @@ public class EnnemiManager : MonoBehaviour {
             for (int j = 0; j < nbEnnemi; j++) {
                 Vector3 pos = gm.map.GetFreeRoundedLocation();
                 //Vector3 pos = gm.map.GetFreeSphereLocation(1.0f);
-                Ennemi ennemi = Instantiate(ennemiPrefab, pos, Quaternion.identity).GetComponent<Ennemi>();
+                Ennemi ennemi = Instantiate(ennemiPrefab, pos, Quaternion.identity, ennemisFolder.transform).GetComponent<Ennemi>();
                 ennemis.Add(ennemi);
             }
         }
@@ -47,4 +53,12 @@ public class EnnemiManager : MonoBehaviour {
         }
         return false;
     }
+
+    protected void GetAllAlreadyExistingEnnemis() {
+        Ennemi[] newEnnemis = FindObjectsOfType<Ennemi>();
+        foreach (Ennemi ennemi in newEnnemis) {
+            ennemis.Add(ennemi);
+        }
+    }
+
 }

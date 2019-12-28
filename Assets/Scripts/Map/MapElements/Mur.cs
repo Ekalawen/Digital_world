@@ -21,6 +21,10 @@ public class Mur : CubeEnsemble {
         GenererMur();
     }
 
+    public override string GetName() {
+        return "Mur";
+    }
+
     public static Mur CreateMurWithPoints(Vector3 depart, Vector3 arriveeDirection1, int nbCubesInDirection1,
                                                           Vector3 arriveeDirection2, int nbCubesInDirection2)
     {

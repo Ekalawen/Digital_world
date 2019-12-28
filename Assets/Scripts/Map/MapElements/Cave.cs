@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Cave : CubeEnsemble
-{
+public class Cave : CubeEnsemble {
 
     public Vector3 depart;
     public Vector3Int nbCubesParAxe;
@@ -18,6 +17,10 @@ public class Cave : CubeEnsemble
         GenererCubePlein();
         if (bDigInside)
             GeneratePaths();
+    }
+
+    public override string GetName() {
+        return "Cave";
     }
 
     // Génère un cube plein qui part d'un point de départ et qui va dans 3 directions avec 3 distances !

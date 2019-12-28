@@ -37,6 +37,8 @@ public abstract class MapManager : MonoBehaviour {
     [HideInInspector]
     public List<Lumiere> lumieres;
     [HideInInspector]
+    public GameObject mapFolder, cubesFolder, lumieresFolder;
+    [HideInInspector]
     public GameManager gm;
 
     // To remove !
@@ -53,8 +55,13 @@ public abstract class MapManager : MonoBehaviour {
 
     public void Initialize() {
 		// Initialisation
-		name = "MapManager";
         gm = FindObjectOfType<GameManager>();
+		name = "MapManager";
+        mapFolder = new GameObject("Map");
+        cubesFolder = new GameObject("Cubes");
+        cubesFolder.transform.SetParent(mapFolder.transform);
+        lumieresFolder = new GameObject("Lumieres");
+        lumieresFolder.transform.SetParent(mapFolder.transform);
         mapElements = new List<MapElement>();
         cubesRegular = new Cube[tailleMap.x + 1, tailleMap.y + 1, tailleMap.z + 1];
         for (int i = 0; i <= tailleMap.x; i++)
@@ -64,6 +71,9 @@ public abstract class MapManager : MonoBehaviour {
         cubesNonRegular = new List<Cube>();
 
 		lumieresAttrapees = false;
+
+        // Récupérer tous les cubes et toutes les lumières qui pourraient déjà exister avant la création de la map !
+        GetAllAlreadyExistingCubesAndLumieres();
 
         // Ici les classes qui hériteront de cette classe pourront faire leur génération !
         GenerateMap();
@@ -93,10 +103,11 @@ public abstract class MapManager : MonoBehaviour {
         }
     }
 
-    public Cube AddCube(Vector3 pos, Cube.CubeType cubeType, Quaternion quaternion = new Quaternion()) {
+    public Cube AddCube(Vector3 pos, Cube.CubeType cubeType, Quaternion quaternion = new Quaternion(), Transform parent = null) {
         if (GetCubeAt(pos) != null) // Si il y a déjà un cube à cette position, on ne fait rien !
             return null;
-        Cube cube = Instantiate(GetPrefab(cubeType), pos, quaternion).GetComponent<Cube>();
+        Transform newParent = (parent == null) ? cubesFolder.transform : parent;
+        Cube cube = Instantiate(GetPrefab(cubeType), pos, quaternion, newParent).GetComponent<Cube>();
         AddCube(cube);
         return cube;
     }
@@ -307,7 +318,7 @@ public abstract class MapManager : MonoBehaviour {
         // C'EST TRES IMPORTANT QUE CES POSITIONS SOIENT ENTIERES !!! (pour vérifier qu'elles sont accessibles)
         pos = MathTools.Round(pos);
 
-        Lumiere lumiere = GameObject.Instantiate(GetPrefab(type), pos, Quaternion.identity).GetComponent<Lumiere>();
+        Lumiere lumiere = GameObject.Instantiate(GetPrefab(type), pos, Quaternion.identity, lumieresFolder.transform).GetComponent<Lumiere>();
         lumieres.Add(lumiere);
         return lumiere;
     }
@@ -654,6 +665,18 @@ public abstract class MapManager : MonoBehaviour {
                 Vector3 posLumiere = GetFreeRoundedLocation();
                 CreateLumiere(posLumiere, Lumiere.LumiereType.NORMAL);
             }
+        }
+    }
+
+    protected void GetAllAlreadyExistingCubesAndLumieres() {
+        Cube[] newCubes = FindObjectsOfType<Cube>();
+        foreach(Cube cube in newCubes) {
+            AddCube(cube);
+        }
+
+        Lumiere[] newLumieres = FindObjectsOfType<Lumiere>();
+        foreach(Lumiere lumiere in newLumieres) {
+            lumieres.Add(lumiere);
         }
     }
 }

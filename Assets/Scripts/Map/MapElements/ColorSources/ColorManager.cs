@@ -17,11 +17,14 @@ public class ColorManager : MonoBehaviour {
     public float cubeLuminosityMax; // Le maximum de luminosité d'un cube (pour éviter d'éblouir le joueur)
 
     protected MapManager map;
+    [HideInInspector]
+    public GameObject colorSourceFolder;
 
     [HideInInspector] public List<ColorSource> sources;
 
     public void Initialize() {
         map = FindObjectOfType<MapManager>();
+        colorSourceFolder = new GameObject("ColorSources");
         cubeLuminosityMax = PlayerPrefs.GetFloat(MenuOptions.LUMINOSITY_KEY);
 
         // Si c'est random, alors on relance ! :)
@@ -55,7 +58,7 @@ public class ColorManager : MonoBehaviour {
         // Puis on les réparties ! C'est pas grâve si plusieurs sources sont au même endroit !
         for(int i = 0; i < nbSources; i++) {
             Vector3Int pos = new Vector3Int(Random.Range(0, size.x), Random.Range(0, size.y), Random.Range(0, size.z));
-            GameObject go = GameObject.Instantiate(colorSourcePrefab, pos, Quaternion.identity);
+            GameObject go = GameObject.Instantiate(colorSourcePrefab, pos, Quaternion.identity, colorSourceFolder.transform);
             ColorSource source = go.GetComponent<ColorSource>();
             source.Initialize(GetColor(themes), Random.Range(porteeSourceRange[0], porteeSourceRange[1]));
             sources.Add(go.GetComponent<ColorSource>());
@@ -80,7 +83,7 @@ public class ColorManager : MonoBehaviour {
             Vector3 pos = possiblesPos[indice];
             possiblesPos.RemoveAt(indice);
             N--;
-            GameObject go = GameObject.Instantiate(colorSourcePrefab, pos, Quaternion.identity);
+            GameObject go = GameObject.Instantiate(colorSourcePrefab, pos, Quaternion.identity, colorSourceFolder.transform);
             ColorSource source = go.GetComponent<ColorSource>();
             source.Initialize(GetColor(themes), Random.Range(porteeSourceRange[0], porteeSourceRange[1]));
             sources.Add(go.GetComponent<ColorSource>());

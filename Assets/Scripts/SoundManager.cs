@@ -15,12 +15,13 @@ public class SoundManager : MonoBehaviour {
     public List<AudioClip> emissionTracerClips;
     public List<AudioClip> detectionClips;
     public List<AudioClip> timeOutClips;
+    public List<AudioClip> receivedMessageClips;
 
     public List<AudioClip> normalMusics;
     public List<AudioClip> endGameMusics;
 
     public AudioSource globalSource;
-    public AudioSource instantSource;
+    public AudioSource instantSource; // La source à utiliser pour des clips de courte durée non-spatialisé
 
     public void Initialize() {
         globalSource.volume = PlayerPrefs.GetFloat(MenuOptions.MUSIC_VOLUME_KEY);
@@ -44,6 +45,9 @@ public class SoundManager : MonoBehaviour {
     }
     public void PlayTimeOutClip() {
         PlayClipsOnSource(timeOutClips, instantSource);
+    }
+    public void PlayReceivedMessageClip() {
+        PlayClipsOnSource(receivedMessageClips, instantSource);
     }
     public void PlayDetectionClip(AudioSource source) {
         source.spatialBlend = 0.5f;

@@ -4,6 +4,12 @@ using UnityEngine;
 
 public abstract class ZoneCubique : MonoBehaviour {
 
+    protected GameManager gm;
+
+    protected virtual void Start() {
+        gm = GameManager.Instance;
+    }
+
     public void Resize(Vector3 center, Vector3 halfExtents) {
         transform.localScale = halfExtents * 2;
         transform.position = center;
