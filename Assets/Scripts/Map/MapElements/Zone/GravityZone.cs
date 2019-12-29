@@ -60,4 +60,5 @@ public class GravityZone : ZoneCubique {
         posBox -= Vector3.Project(transform.localScale / 2.3f, axe).magnitude;
         return posPlayer < posBox;
     }
+
 }

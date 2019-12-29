@@ -431,4 +431,11 @@ public class Console : MonoBehaviour {
 			AjouterMessage ("Altitude critique !", TypeText.BASIC_TEXT);
 		}
     }
+
+    // Message lorsqu'un event de gravité se déclenche !
+    public void GravityEventMessage(GravityManager.Direction direction, float intensité) {
+        AjouterMessageImportant("Changement de gravité !", TypeText.BASIC_TEXT, 2, bAfficherInConsole: false);
+        float pourcentage = intensité / 5.0f * 100.0f;
+        AjouterMessage("Gravité : direction = " + direction.ToString() + " intensité = " + pourcentage.ToString("N2") + "%", TypeText.BASIC_TEXT);
+    }
 }

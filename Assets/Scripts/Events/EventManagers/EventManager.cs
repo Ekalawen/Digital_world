@@ -11,18 +11,29 @@ public class EventManager : MonoBehaviour {
     public float endGameDuration = 20.0f;
     public float endGameFrameRate = 0.2f;
 
+    public List<GameObject> randomEventsPrefabs;
+
     protected GameManager gm;
 	protected MapManager map;
     protected Coroutine coroutineDeathCubesCreation;
     protected bool isEndGameStarted = false;
     protected List<Cube> deathCubes;
     protected bool gameIsEnded = false;
+    protected List<RandomEvent> randomEvents;
+    protected GameObject randomEventsFolder;
 
     public void Initialize() {
 		// Initialisation
 		name = "EventManager";
         gm = FindObjectOfType<GameManager>();
 		map = GameObject.Find("MapManager").GetComponent<MapManager>();
+        randomEventsFolder = new GameObject("Events");
+
+        randomEvents = new List<RandomEvent>();
+        foreach(GameObject randomEventPrefab in randomEventsPrefabs) {
+            RandomEvent randomEvent = Instantiate(randomEventPrefab, randomEventsFolder.transform).GetComponent<RandomEvent>();
+            randomEvents.Add(randomEvent);
+        }
     }
 
     public virtual void OnLumiereCaptured(Lumiere.LumiereType type) {

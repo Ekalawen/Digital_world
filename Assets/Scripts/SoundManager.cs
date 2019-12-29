@@ -16,6 +16,7 @@ public class SoundManager : MonoBehaviour {
     public List<AudioClip> detectionClips;
     public List<AudioClip> timeOutClips;
     public List<AudioClip> receivedMessageClips;
+    public List<AudioClip> eventStartClips;
 
     public List<AudioClip> normalMusics;
     public List<AudioClip> endGameMusics;
@@ -49,6 +50,12 @@ public class SoundManager : MonoBehaviour {
     public void PlayReceivedMessageClip() {
         PlayClipsOnSource(receivedMessageClips, instantSource);
     }
+    public void PlayEventStartClip() {
+        PlayClipsOnSource(eventStartClips, instantSource);
+    }
+    public void PlayEventEndClip() {
+        PlayClipsOnSource(eventStartClips, instantSource, bReverse: true);
+    }
     public void PlayDetectionClip(AudioSource source) {
         source.spatialBlend = 0.5f;
         PlayClipsOnSource(detectionClips, source);
@@ -75,11 +82,18 @@ public class SoundManager : MonoBehaviour {
         PlayClipsOnSource(endGameMusics, globalSource);
     }
 
-    protected void PlayClipsOnSource(List<AudioClip> clips, AudioSource source) {
+    protected void PlayClipsOnSource(List<AudioClip> clips, AudioSource source, bool bReverse = false) {
         if(source != globalSource)
             source.volume = PlayerPrefs.GetFloat(MenuOptions.SOUND_VOLUME_KEY);
         AudioClip clip = clips[Random.Range(0, clips.Count)];
-            source.clip = clip;
+        source.clip = clip;
+        if(bReverse) {
+            source.timeSamples = source.clip.samples - 1;
+            source.pitch = -1;
+        } else {
+            source.pitch = 1;
+            source.timeSamples = 0;
+        }
         source.Play();
     }
 

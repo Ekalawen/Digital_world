@@ -188,7 +188,7 @@ public class GameManager : MonoBehaviour {
 		Object.Destroy(player);
 		Object.Destroy(console);
 		Object.Destroy(eventManager);
-		Object.Destroy(this);
+		Object.Destroy(this); 
 
         PlayerPrefs.SetString(MenuLevelSelector.LEVEL_INDICE_MUST_BE_USED_KEY, "True");
 
