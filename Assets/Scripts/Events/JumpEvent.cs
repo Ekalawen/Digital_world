@@ -44,14 +44,15 @@ public class JumpEvent : RandomEvent {
 
     protected IEnumerator AfficherMessagesPreventifs() {
         float dureeAttente = delaisAvantJump / (3f + 1f);
-        gm.console.AjouterMessageImportant("JUMP ...", Console.TypeText.ENNEMI_TEXT, dureeAttente);
+        gm.console.AjouterMessageImportant("JUMP ...", Console.TypeText.ENNEMI_TEXT, dureeAttente, bAfficherInConsole: false);
+        gm.console.AjouterMessage("JUMP !", Console.TypeText.ENNEMI_TEXT);
         yield return new WaitForSeconds(dureeAttente);
-        gm.console.AjouterMessageImportant("3", Console.TypeText.ENNEMI_TEXT, dureeAttente);
+        gm.console.AjouterMessageImportant("3", Console.TypeText.ENNEMI_TEXT, dureeAttente, bAfficherInConsole: false);
         yield return new WaitForSeconds(dureeAttente);
-        gm.console.AjouterMessageImportant("2", Console.TypeText.ENNEMI_TEXT, dureeAttente);
+        gm.console.AjouterMessageImportant("2", Console.TypeText.ENNEMI_TEXT, dureeAttente, bAfficherInConsole: false);
         yield return new WaitForSeconds(dureeAttente);
-        gm.console.AjouterMessageImportant("1", Console.TypeText.ENNEMI_TEXT, dureeAttente);
+        gm.console.AjouterMessageImportant("1", Console.TypeText.ENNEMI_TEXT, dureeAttente, bAfficherInConsole: false);
         yield return new WaitForSeconds(dureeAttente);
-        gm.console.AjouterMessageImportant("JUMP !", Console.TypeText.ENNEMI_TEXT, dureeAttente);
+        gm.console.AjouterMessageImportant("JUMP !", Console.TypeText.ENNEMI_TEXT, dureeAttente, bAfficherInConsole: false);
     }
 }

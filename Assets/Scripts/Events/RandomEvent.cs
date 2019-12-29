@@ -10,29 +10,40 @@ public abstract class RandomEvent : MonoBehaviour {
     public float varianceDuree = 0.0f;
     public bool bPlayEndSound = true;
 
+    protected bool bEventIsOn = false;
+    protected float dureeCourante;
     protected Timer timer;
     protected GameManager gm;
 
     protected virtual void Start() {
         gm = GameManager.Instance;
-        timer = new Timer(GaussianGenerator.Next(esperanceApparition, varianceApparition));
+        timer = new Timer(NextTime());
     }
 
     protected void Update() {
         if(timer.IsOver()) {
-            StartEvent();
-            gm.soundManager.PlayEventStartClip();
-            StartEventConsoleMessage();
-            StartCoroutine(CEndEvent());
-            timer = new Timer(GaussianGenerator.Next(esperanceApparition, varianceApparition));
+            if (!bEventIsOn) {
+                bEventIsOn = true;
+                dureeCourante = GaussianGenerator.Next(esperanceDuree, varianceDuree, 0.0f, 2 * esperanceDuree);
+                StartEvent();
+                gm.soundManager.PlayEventStartClip();
+                StartEventConsoleMessage();
+                StartCoroutine(CEndEvent());
+            }
+            timer = new Timer(NextTime());
         }
     }
 
     protected IEnumerator CEndEvent() {
-        yield return new WaitForSeconds(GaussianGenerator.Next(esperanceDuree, varianceDuree));
+        yield return new WaitForSeconds(dureeCourante);
+        bEventIsOn = false;
         EndEvent();
         if(bPlayEndSound)
             gm.soundManager.PlayEventEndClip();
+    }
+
+    protected float NextTime() {
+        return GaussianGenerator.Next(esperanceApparition, varianceApparition, 0.0f, 2 * esperanceApparition);
     }
 
     public abstract void StartEvent();
