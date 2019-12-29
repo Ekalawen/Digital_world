@@ -85,4 +85,15 @@ public class MenuOptions : MonoBehaviour {
     public void RememberLastLevel(int indiceLevel) {
         PlayerPrefs.SetInt(LAST_LEVEL_KEY, indiceLevel);
     }
+
+    public void ReinitialiserSauvegardes() {
+        PlayerPrefs.DeleteAll();
+        OnMusicVolumeChange(1.0f);
+        OnSoundVolumeChange(1.0f);
+        OnMouseSpeedChange(1.81f);
+        OnLuminosityChange(1.1f);
+        OnGripActivationPress(true);
+        PlayerPrefs.SetString(MenuManager.FIRST_TIME_CONNEXION_KEY, "Done !");
+        PlayerPrefs.Save();
+    }
 }

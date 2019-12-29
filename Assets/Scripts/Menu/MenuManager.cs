@@ -6,12 +6,18 @@ using UnityEngine.SceneManagement;
 public class MenuManager : MonoBehaviour {
 
     public static bool DISABLE_HOTKEYS = false;
+    public static string FIRST_TIME_CONNEXION_KEY = "firstTimeConnexionKey";
 
     public MenuLevelSelector menuLevelSelector;
     public MenuOptions menuOptions;
     public MenuBackgroundBouncing menuBouncingBackground;
 
     private void Start() {
+        // On réinitialise les player prefs si c'est la première fois que l'on se connecte !
+        if(!PlayerPrefs.HasKey(FIRST_TIME_CONNEXION_KEY)) {
+            menuOptions.ReinitialiserSauvegardes();
+        }
+
         if (PlayerPrefs.GetString(MenuLevelSelector.LEVEL_INDICE_MUST_BE_USED_KEY) == "True") {
             int levelIndice = PlayerPrefs.GetInt(MenuLevelSelector.LEVEL_INDICE_KEY);
             PlayerPrefs.SetString(MenuLevelSelector.LEVEL_INDICE_MUST_BE_USED_KEY, "False");
