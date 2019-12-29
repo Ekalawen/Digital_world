@@ -8,6 +8,7 @@ public abstract class RandomEvent : MonoBehaviour {
     public float varianceApparition = 4.0f;
     public float esperanceDuree = 5.0f;
     public float varianceDuree = 0.0f;
+    public bool bPlayEndSound = true;
 
     protected Timer timer;
     protected GameManager gm;
@@ -30,7 +31,8 @@ public abstract class RandomEvent : MonoBehaviour {
     protected IEnumerator CEndEvent() {
         yield return new WaitForSeconds(GaussianGenerator.Next(esperanceDuree, varianceDuree));
         EndEvent();
-        gm.soundManager.PlayEventEndClip();
+        if(bPlayEndSound)
+            gm.soundManager.PlayEventEndClip();
     }
 
     public abstract void StartEvent();

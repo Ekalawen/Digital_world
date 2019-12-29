@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1848378137720066
+--- !u!1 &6732515167519668042
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,42 +8,46 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4331339866297836}
-  - component: {fileID: 114622475871070300}
+  - component: {fileID: 8324963730128950416}
+  - component: {fileID: 434724694136790626}
   m_Layer: 0
-  m_Name: EventManager
+  m_Name: JumpEvent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4331339866297836
+--- !u!4 &8324963730128950416
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1848378137720066}
+  m_GameObject: {fileID: 6732515167519668042}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 10.085759, y: 2.0455532, z: 2.874931}
+  m_LocalPosition: {x: 189.11864, y: -3.1216393, z: 8.094868}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114622475871070300
+--- !u!114 &434724694136790626
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1848378137720066}
+  m_GameObject: {fileID: 6732515167519668042}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f312fb1fb444244ccbf1e0b1606defc8, type: 3}
+  m_Script: {fileID: 11500000, guid: 3eb43c8f516fb5f4e8f40313580157e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  endGameDuration: 20
-  endGameFrameRate: 0.1
-  randomEventsPrefabs:
-  - {fileID: 6732515167519668042, guid: 7192feb52978e364eb0a7b57aaec7a56, type: 3}
+  esperanceApparition: 15
+  varianceApparition: 4
+  esperanceDuree: 5
+  varianceDuree: 0
+  bPlayEndSound: 0
+  delaisAvantJump: 1.5
+  timeMalus: 10
+  dureeStun: 5

@@ -44,7 +44,7 @@ public abstract class IPouvoir : MonoBehaviour {
     // La véritable fonction qui appelle le pouvoir
     protected abstract bool UsePouvoir();
 
-    public void FreezePouvoir() {
-        freezePouvoir = true;
+    public void FreezePouvoir(bool value = true) {
+        freezePouvoir = value;
     }
 }

@@ -61,6 +61,8 @@ public class Player : Character {
     protected IPouvoir pouvoirLeftBouton; // Le pouvoir du bouton gauche de la souris
     protected IPouvoir pouvoirRightBouton; // Le pouvoir du bouton droit de la souris
     protected bool bCanUseLocalisation = true;
+    [HideInInspector]
+    public bool bIsStun = false;
 
     protected Quaternion originaleRotation;
 
@@ -191,24 +193,28 @@ public class Player : Character {
             return;
         }
 
-		// On récupère le mouvement dans le sens de l'orientation du personnage
-		Vector3 move = new Vector3 (Input.GetAxis ("Horizontal"), 0, Input.GetAxis ("Vertical"));
-        move = camera.transform.TransformDirection (move);
-        float magnitude = move.magnitude;
+        // On récupère le mouvement dans le sens de l'orientation du personnage
+        Vector3 move = Vector3.zero;
 
-        // On va à l'horizontale si il y a de la gravité, sinon on peut "nager"
-        if (gm.gravityManager.HasGravity()) {
-            move = Vector3.ProjectOnPlane(move, gm.gravityManager.Up());
-            move = move.normalized * magnitude;
-        } else {
-            // On peut descendre avec Shift
-            if(Input.GetKey(KeyCode.LeftShift)) {
-                move += gm.gravityManager.Down();
-            }
+        if (!bIsStun) {
+            move = new Vector3 (Input.GetAxis ("Horizontal"), 0, Input.GetAxis ("Vertical"));
+            move = camera.transform.TransformDirection(move);
+            float magnitude = move.magnitude;
 
-            // Et monter avec space
-            if(Input.GetKey(KeyCode.Space)) {
-                move += gm.gravityManager.Up();
+            // On va à l'horizontale si il y a de la gravité, sinon on peut "nager"
+            if (gm.gravityManager.HasGravity()) {
+                move = Vector3.ProjectOnPlane(move, gm.gravityManager.Up());
+                move = move.normalized * magnitude;
+            } else {
+                // On peut descendre avec Shift
+                if (Input.GetKey(KeyCode.LeftShift)) {
+                    move += gm.gravityManager.Down();
+                }
+
+                // Et monter avec space
+                if (Input.GetKey(KeyCode.Space)) {
+                    move += gm.gravityManager.Up();
+                }
             }
         }
 
@@ -228,72 +234,86 @@ public class Player : Character {
 		DetecterGrandSaut(etatAvant);
 		MajHauteurMaxSaut();
 
-		// En fonction de l'état du personnage, on applique le mouvement correspondant !
-		switch (etat) {
-		case EtatPersonnage.AU_SOL:
-			if (Input.GetButton ("Jump") && gm.gravityManager.HasGravity()) {
-                Jump(from: EtatPersonnage.AU_SOL);
-                move = ApplyJumpMouvement(move);
-			}
-            dureeMurRestante = dureeMur;
-			break;
+        // En fonction de l'état du personnage, on applique le mouvement correspondant !
+        if (!bIsStun)
+        {
+            switch (etat)
+            {
+                case EtatPersonnage.AU_SOL:
+                    if (Input.GetButton("Jump") && gm.gravityManager.HasGravity())
+                    {
+                        Jump(from: EtatPersonnage.AU_SOL);
+                        move = ApplyJumpMouvement(move);
+                    }
+                    dureeMurRestante = dureeMur;
+                    break;
 
-		case EtatPersonnage.EN_SAUT:
-            move = ApplyJumpMouvement(move);
-			break;
+                case EtatPersonnage.EN_SAUT:
+                    move = ApplyJumpMouvement(move);
+                    break;
 
-		case EtatPersonnage.EN_CHUTE:
-			//move.y -= gravite;
-			break;
+                case EtatPersonnage.EN_CHUTE:
+                    //move.y -= gravite;
+                    break;
 
-		case EtatPersonnage.AU_MUR:
-			// On peut se décrocher du mur en appuyant sur shift
-			if (Input.GetKey (KeyCode.LeftShift)) {
-				etat = EtatPersonnage.EN_CHUTE;
-				pointDebutSaut = transform.position;
-				origineSaut = EtatPersonnage.AU_SOL;
-				normaleOrigineSaut = normaleMur;
-                dureeMurRestante = dureeMurRestante - (Time.timeSinceLevelLoad - debutMur);
-			// On peut encore sauter quand on est au mur ! 
-			} else if (Input.GetButtonDown ("Jump") && gm.gravityManager.HasGravity()) { // Mais il faut appuyer à nouveau !
-                Jump(from: EtatPersonnage.AU_MUR);
-                move = ApplyJumpMouvement(move);
-                dureeMurRestante = dureeMur;
-			} else if (Input.GetButton ("Jump")) { // On a le droit de terminer son saut lorsqu'on touche un mur
-                move = ApplyJumpMouvement(move);
-			} else {
-                move = gm.gravityManager.CounterGravity(move);
+                case EtatPersonnage.AU_MUR:
+                    // On peut se décrocher du mur en appuyant sur shift
+                    if (Input.GetKey(KeyCode.LeftShift))
+                    {
+                        etat = EtatPersonnage.EN_CHUTE;
+                        pointDebutSaut = transform.position;
+                        origineSaut = EtatPersonnage.AU_SOL;
+                        normaleOrigineSaut = normaleMur;
+                        dureeMurRestante = dureeMurRestante - (Time.timeSinceLevelLoad - debutMur);
+                        // On peut encore sauter quand on est au mur ! 
+                    }
+                    else if (Input.GetButtonDown("Jump") && gm.gravityManager.HasGravity())
+                    { // Mais il faut appuyer à nouveau !
+                        Jump(from: EtatPersonnage.AU_MUR);
+                        move = ApplyJumpMouvement(move);
+                        dureeMurRestante = dureeMur;
+                    }
+                    else if (Input.GetButton("Jump"))
+                    { // On a le droit de terminer son saut lorsqu'on touche un mur
+                        move = ApplyJumpMouvement(move);
+                    }
+                    else
+                    {
+                        move = gm.gravityManager.CounterGravity(move);
+                    }
+                    // Si ça fait trop longtemps qu'on est sur le mur
+                    // Ou que l'on s'éloigne trop du mur on tombe
+                    float distanceMur = ((transform.position - pointMur) - Vector3.ProjectOnPlane((transform.position - pointMur), normaleMur)).magnitude; // pourtant c'est clair non ? Fais un dessins si tu comprends pas <3
+                    if ((Time.timeSinceLevelLoad - debutMur) >= dureeMurRestante
+                        || distanceMur >= distanceMurMax)
+                    {
+                        etat = EtatPersonnage.EN_CHUTE;
+                        pointDebutSaut = transform.position;
+                        origineSaut = EtatPersonnage.AU_MUR;
+                        normaleOrigineSaut = normaleMur;
+                        dureeMurRestante = dureeMur;
+                    }
+
+                    // Et on veut aussi vérifier que le mur continue encore à nos cotés !
+                    // Pour ça on va lancer un rayon ! <3
+                    Ray ray = new Ray(transform.position, -normaleMur);
+                    RaycastHit hit; // là où l'on récupère l'information du ray !
+                    if (!Physics.Raycast(ray, out hit, distanceMurMax) || hit.collider.tag != "Cube")
+                    {
+                        // En fait il faudrait passer en mode AU_POTEAU ici !
+                        etat = EtatPersonnage.EN_CHUTE;
+                        pointDebutSaut = transform.position;
+                        origineSaut = EtatPersonnage.AU_MUR;
+                        normaleOrigineSaut = normaleMur;
+                        dureeMurRestante = dureeMur;
+                    }
+
+                    break;
+                case EtatPersonnage.AU_POTEAU:
+                    // C'est possible de rajouter ça quand on voudra =)
+                    break;
             }
-			// Si ça fait trop longtemps qu'on est sur le mur
-			// Ou que l'on s'éloigne trop du mur on tombe
-			float distanceMur = ((transform.position - pointMur) - Vector3.ProjectOnPlane ((transform.position - pointMur), normaleMur)).magnitude; // pourtant c'est clair non ? Fais un dessins si tu comprends pas <3
-			if ((Time.timeSinceLevelLoad - debutMur) >= dureeMurRestante
-			    || distanceMur >= distanceMurMax) {
-				etat = EtatPersonnage.EN_CHUTE;
-				pointDebutSaut = transform.position;
-				origineSaut = EtatPersonnage.AU_MUR;
-				normaleOrigineSaut = normaleMur;
-                dureeMurRestante = dureeMur;
-			}
-
-			// Et on veut aussi vérifier que le mur continue encore à nos cotés !
-			// Pour ça on va lancer un rayon ! <3
-			Ray ray = new Ray (transform.position, -normaleMur);
-			RaycastHit hit; // là où l'on récupère l'information du ray !
-			if (!Physics.Raycast (ray, out hit, distanceMurMax) || hit.collider.tag != "Cube") {
-				// En fait il faudrait passer en mode AU_POTEAU ici !
-				etat = EtatPersonnage.EN_CHUTE;
-				pointDebutSaut = transform.position;
-				origineSaut = EtatPersonnage.AU_MUR;
-				normaleOrigineSaut = normaleMur;
-                dureeMurRestante = dureeMur;
-			}
-
-			break;
-		case EtatPersonnage.AU_POTEAU:
-			// C'est possible de rajouter ça quand on voudra =)
-			break;
-		}
+        }
 
         move = gm.gravityManager.ApplyGravity(move);
 
@@ -485,11 +505,11 @@ public class Player : Character {
         bCanUseLocalisation = false;
     }
 
-    public void FreezePouvoirs() {
-        pouvoirA?.FreezePouvoir();
-        pouvoirE?.FreezePouvoir();
-        pouvoirLeftBouton?.FreezePouvoir();
-        pouvoirRightBouton?.FreezePouvoir();
+    public void FreezePouvoirs(bool value = true) {
+        pouvoirA?.FreezePouvoir(value);
+        pouvoirE?.FreezePouvoir(value);
+        pouvoirLeftBouton?.FreezePouvoir(value);
+        pouvoirRightBouton?.FreezePouvoir(value);
     }
 
     public bool CanUseLocalisation() {

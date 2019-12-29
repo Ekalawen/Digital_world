@@ -65,9 +65,9 @@ public class SoundManager : MonoBehaviour {
         PlayClipsOnSource(emissionTracerClips, source);
         StartCoroutine(StopClipIn(source, duree));
     }
-    public void PlayHitClip(AudioSource source, bool priority = false) {
+    public void PlayHitClip(AudioSource source, bool priority = false, bool bReverse = false) {
         if(!source.isPlaying || priority)
-            PlayClipsOnSource(hitClips, source);
+            PlayClipsOnSource(hitClips, source, bReverse);
     }
     public void PlayHitTracerClip(AudioSource source) {
         PlayClipsOnSource(hitTracerClips, source);
