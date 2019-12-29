@@ -89,12 +89,13 @@ public class GameManager : MonoBehaviour {
 
     protected virtual void Initialize() {
         // Puis on les initialises !
+        gravityManager.Initialize();
         map.Initialize();
         //player.Initialize(new Vector3(map.tailleMap / 2, map.tailleMap * 2, map.tailleMap / 2), new Vector2(180, 0));
         Vector3 position = map.GetFreeSphereLocation(1.5f);
         Vector3 direction = Vector3.ProjectOnPlane((map.GetCenter() - position), Vector3.up).normalized;
         float angle = Vector3.SignedAngle(Vector3.forward, direction, Vector3.up);
-        player.Initialize(position, new Vector2(0, angle));
+        player.Initialize(position, new Vector2(90, angle));
         eventManager.Initialize();
         colorManager.Initialize();
         ennemiManager.Initialize();
@@ -102,7 +103,6 @@ public class GameManager : MonoBehaviour {
         soundManager.Initialize();
         postProcessManager.Initialize();
         timerManager.Initialize();
-        gravityManager.Initialize();
     }
 
 	// Update is called once per frame

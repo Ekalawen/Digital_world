@@ -24,15 +24,20 @@ public class JumpEvent : RandomEvent {
 
         if(gm.player.GetEtat() != Player.EtatPersonnage.EN_CHUTE
         && gm.player.GetEtat() != Player.EtatPersonnage.EN_SAUT) {
-
-            gm.timerManager.AddTime(-timeMalus);
-            gm.player.FreezePouvoirs(true);
-            gm.player.bIsStun = true;
-
-            gm.soundManager.PlayHitClip(gm.soundManager.instantSource);
-
-            StartCoroutine(UnStun());
+            Stun();
+        } else {
+            gm.soundManager.PlayJumpSuccessClip();
         }
+    }
+
+    protected virtual void Stun() {
+        gm.timerManager.AddTime(-timeMalus);
+        gm.player.FreezePouvoirs(true);
+        gm.player.bIsStun = true;
+
+        gm.soundManager.PlayHitClip(gm.soundManager.instantSource);
+
+        StartCoroutine(UnStun());
     }
 
     protected IEnumerator UnStun() {

@@ -57,10 +57,11 @@ public class EventManager : MonoBehaviour {
         //Vector3 posLumiere = map.GetFreeSphereLocation(minRadius);
         Vector3 posLumiere = map.GetFreeRoundedLocation();
 
-        // On évite que la lumière soit trop loin, car sinon on peut insta-die !
+        // On évite que la lumière soit trop proche
         float moyenneTailleMap = (gm.map.tailleMap.x + gm.map.tailleMap.y + gm.map.tailleMap.z) / 3.0f;
-        while(Vector3.Distance(gm.player.transform.position, posLumiere) >= moyenneTailleMap * 0.9f) {
+        while(Vector3.Distance(gm.player.transform.position, posLumiere) <= moyenneTailleMap * 0.9f) {
             posLumiere = map.GetFreeRoundedLocation();
+            moyenneTailleMap *= 0.95f; // Pour éviter qu'il n'y ait aucune zone atteignable x)
         }
         Lumiere finalLight = map.CreateLumiere(posLumiere, Lumiere.LumiereType.FINAL); // Attention à la position qui est arrondi ici !
 

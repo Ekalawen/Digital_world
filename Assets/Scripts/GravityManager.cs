@@ -40,7 +40,9 @@ public class GravityManager : MonoBehaviour {
     public void Initialize() {
         gm = GameManager.Instance;
         timer = new Timer(5);
-        SetGravity(initialGravityDirection, initialGravityIntensity);
+        //SetGravity(initialGravityDirection, initialGravityIntensity);
+        gravityDirection = initialGravityDirection;
+        gravityIntensity = initialGravityIntensity;
     }
 
     public Vector3 ApplyGravity(Vector3 initialMovement) {

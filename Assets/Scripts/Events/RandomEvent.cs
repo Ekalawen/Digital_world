@@ -11,7 +11,7 @@ public abstract class RandomEvent : MonoBehaviour {
     public bool bPlayEndSound = true;
 
     protected bool bEventIsOn = false;
-    protected float dureeCourante;
+    protected float dureeCourante = 0.0f;
     protected Timer timer;
     protected GameManager gm;
 
@@ -21,7 +21,7 @@ public abstract class RandomEvent : MonoBehaviour {
     }
 
     protected void Update() {
-        if(timer.IsOver()) {
+        if(timer.IsOver() && !gm.eventManager.IsGameOver()) {
             if (!bEventIsOn) {
                 bEventIsOn = true;
                 dureeCourante = GaussianGenerator.Next(esperanceDuree, varianceDuree, 0.0f, 2 * esperanceDuree);
@@ -43,7 +43,7 @@ public abstract class RandomEvent : MonoBehaviour {
     }
 
     protected float NextTime() {
-        return GaussianGenerator.Next(esperanceApparition, varianceApparition, 0.0f, 2 * esperanceApparition);
+        return GaussianGenerator.Next(esperanceApparition, varianceApparition, 0.0f, 2 * esperanceApparition) + dureeCourante;
     }
 
     public abstract void StartEvent();

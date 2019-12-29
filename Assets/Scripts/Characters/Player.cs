@@ -64,8 +64,6 @@ public class Player : Character {
     [HideInInspector]
     public bool bIsStun = false;
 
-    protected Quaternion originaleRotation;
-
     [HideInInspector]
 	public float lastNotContactEnnemy; // Le dernier temps où il ne touchait pas d'ennemi, utilisé pour la fin du jeu
 
@@ -90,9 +88,7 @@ public class Player : Character {
         audioSource = GetComponentInChildren<AudioSource>();
         gm = FindObjectOfType<GameManager>();
         sensibilite = PlayerPrefs.GetFloat(MenuOptions.MOUSE_SPEED_KEY);
-        originaleRotation = camera.transform.localRotation;
 
-        //ChoseStartingPosition();
         transform.position = position;
 
         // On regarde là où on nous dit de regarder
@@ -345,6 +341,7 @@ public class Player : Character {
         Vector3 up = gm.gravityManager.Up();
         foreach(RaycastHit hit in hits) {
             if (hit.collider.gameObject.tag == "Player"
+             || hit.collider.gameObject.tag == "Objectif"
              || hit.collider.gameObject.tag == "Trigger")
                 continue;
             Vector3 n = hit.normal;

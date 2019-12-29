@@ -28,6 +28,7 @@ public class Tracer : Ennemi {
     protected ParticleSystem emitionParticleSystem;
     protected float debutEmiting;
     protected Poussee pousseeEmiting = null;
+    protected Coroutine emitingCoroutine = null;
 
     public override void Start() {
         base.Start();
@@ -102,10 +103,18 @@ public class Tracer : Ennemi {
     void GetEtat() {
         if(state == TracerState.WAITING) {
             if (IsPlayerVisible()) {
-                SetState(TracerState.RUSHING);
-                ComputePath(player.transform.position);
+                DetectPlayer();
             }
         }
+    }
+
+    public void DetectPlayer() {
+        if (emitingCoroutine != null) {
+            StopCoroutine(emitingCoroutine);
+            StopEmiting();
+        }
+        SetState(TracerState.RUSHING);
+        ComputePath(player.transform.position);
     }
 
     void ComputePath(Vector3 end) {
@@ -150,7 +159,7 @@ public class Tracer : Ennemi {
         TracerState oldState = state;
         state = newState;
         if(newState == TracerState.EMITING && oldState != TracerState.EMITING) {
-            StartCoroutine(StartEmiting());
+            emitingCoroutine = StartCoroutine(StartEmiting());
         }
         if (newState != TracerState.EMITING)
             pousseeEmiting = null;

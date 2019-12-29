@@ -443,4 +443,9 @@ public class Console : MonoBehaviour {
     public void BlackoutMessage() {
         AjouterMessageImportant("Blackout !", TypeText.ENNEMI_TEXT, 2);
     }
+
+    // Lorsque l'on alerte les tracers !
+    public void AlerterTracers() {
+        AjouterMessageImportant("Tracers Alertés !", TypeText.ENNEMI_TEXT, 2);
+    }
 }

@@ -8,7 +8,7 @@ public class EventManagerTutoriel : EventManager {
 
     protected override void StartEndGame() {
         isEndGameStarted = true;
-        gm.player.FreezeLocalisation();
+        //gm.player.FreezeLocalisation();
         gm.console.StartEndGame();
 
         // On va juste faire poper la final light !

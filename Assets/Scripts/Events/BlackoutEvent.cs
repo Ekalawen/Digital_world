@@ -20,7 +20,7 @@ public class BlackoutEvent : RandomEvent {
     }
 
     protected IEnumerator BlinkStart() {
-        if (nbBlinksStarts % 2 == 0)
+        if (nbBlinksStarts % 2 == 0) // Il ne faut pas que l'on éteigne 2 fois d'affilé les lumières à la fin !
             nbBlinksStarts++;
         float dureeBlink = dureeCourante * pourcentageBlinkStart;
         List<float> timings = new List<float>();
@@ -28,8 +28,6 @@ public class BlackoutEvent : RandomEvent {
             timings.Add(Random.Range(0.0f, dureeBlink));
         }
         timings.Sort();
-        for (int i = 0; i < nbBlinksStarts; i++)
-            Debug.Log(timings[i]);
         bool shouldSwitchOff = true;
         for(int i = 0; i < nbBlinksStarts - 1; i++) {
             float duree = timings[i + 1] - timings[i];
