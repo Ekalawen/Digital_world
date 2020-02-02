@@ -4,7 +4,8 @@ using UnityEngine;
 
 // Le but de la DataBase est de gérer le comportement de tout ce qui entrave le joueur.
 // Cela va de la coordination des Drones, à la génération d'évenements néffastes.
-public class EventManager : MonoBehaviour {
+public class EventManager : MonoBehaviour
+{
 
     public enum DeathReason { TIME_OUT, CAPTURED, FALL_OUT, TOUCHED_DEATH_CUBE };
 
@@ -14,7 +15,7 @@ public class EventManager : MonoBehaviour {
     public List<GameObject> randomEventsPrefabs;
 
     protected GameManager gm;
-	protected MapManager map;
+    protected MapManager map;
     protected Coroutine coroutineDeathCubesCreation;
     protected bool isEndGameStarted = false;
     protected List<Cube> deathCubes;
@@ -22,34 +23,42 @@ public class EventManager : MonoBehaviour {
     protected List<RandomEvent> randomEvents;
     protected GameObject randomEventsFolder;
 
-    public void Initialize() {
-		// Initialisation
-		name = "EventManager";
+    public void Initialize()
+    {
+        // Initialisation
+        name = "EventManager";
         gm = FindObjectOfType<GameManager>();
-		map = GameObject.Find("MapManager").GetComponent<MapManager>();
+        map = GameObject.Find("MapManager").GetComponent<MapManager>();
         randomEventsFolder = new GameObject("Events");
 
         randomEvents = new List<RandomEvent>();
-        foreach(GameObject randomEventPrefab in randomEventsPrefabs) {
+        foreach (GameObject randomEventPrefab in randomEventsPrefabs)
+        {
             RandomEvent randomEvent = Instantiate(randomEventPrefab, randomEventsFolder.transform).GetComponent<RandomEvent>();
             randomEvents.Add(randomEvent);
         }
     }
 
-    public virtual void OnLumiereCaptured(Lumiere.LumiereType type) {
-        if (type == Lumiere.LumiereType.NORMAL) {
+    public virtual void OnLumiereCaptured(Lumiere.LumiereType type)
+    {
+        if (type == Lumiere.LumiereType.NORMAL)
+        {
             int nbLumieres = map.lumieres.Count;
-            if (nbLumieres == 0 && !isEndGameStarted) {
+            if (nbLumieres == 0 && !isEndGameStarted)
+            {
                 gm.soundManager.PlayEndGameMusic();
                 StartEndGame();
             }
-        } else if (type == Lumiere.LumiereType.FINAL) {
+        }
+        else if (type == Lumiere.LumiereType.FINAL)
+        {
             Debug.Log("WIIIIIIIIIIINNNNNNNNNNNN !!!!!!!!");
             gm.eventManager.WinGame();
         }
     }
 
-    protected virtual void StartEndGame() {
+    protected virtual void StartEndGame()
+    {
         isEndGameStarted = true;
 
         // On crée la finaleLight
@@ -59,7 +68,8 @@ public class EventManager : MonoBehaviour {
 
         // On évite que la lumière soit trop proche
         float moyenneTailleMap = (gm.map.tailleMap.x + gm.map.tailleMap.y + gm.map.tailleMap.z) / 3.0f;
-        while(Vector3.Distance(gm.player.transform.position, posLumiere) <= moyenneTailleMap * 0.9f) {
+        while (Vector3.Distance(gm.player.transform.position, posLumiere) <= moyenneTailleMap * 0.9f)
+        {
             posLumiere = map.GetFreeRoundedLocation();
             moyenneTailleMap *= 0.95f; // Pour éviter qu'il n'y ait aucune zone atteignable x)
         }
@@ -73,24 +83,48 @@ public class EventManager : MonoBehaviour {
         coroutineDeathCubesCreation = StartCoroutine(FillMapWithDeathCubes(finalLight.transform.position));
     }
 
-    protected IEnumerator FillMapWithDeathCubes(Vector3 centerPos) {
+    protected IEnumerator FillMapWithDeathCubes(Vector3 centerPos)
+    {
         List<Vector3> allEmptyPositions = map.GetAllEmptyPositions();
 
         Vector3 playerPos = gm.player.transform.position;
-        allEmptyPositions.Sort(delegate (Vector3 A, Vector3 B) {
-            float distToA = Mathf.Min(Vector3.Distance(A, centerPos), Vector3.Distance(A, playerPos));
-            float distToB = Mathf.Min(Vector3.Distance(B, centerPos), Vector3.Distance(B, playerPos));
-            return distToB.CompareTo(distToA);
-        });
 
         float nbTimings = endGameDuration / endGameFrameRate;
         int nbCubesToDestroy = (int)(allEmptyPositions.Count / nbTimings);
         AudioSource source = new GameObject().AddComponent<AudioSource>();
         source.spatialBlend = 1.0f;
         deathCubes = new List<Cube>();
-        for(int i = 0; i < allEmptyPositions.Count; i+= nbCubesToDestroy) {
+        while (allEmptyPositions.Count > 0)
+        {
+            allEmptyPositions.Sort(delegate (Vector3 A, Vector3 B) {
+                float distToA = Mathf.Min(Vector3.Distance(A, centerPos), Vector3.Distance(A, playerPos));
+                float distToB = Mathf.Min(Vector3.Distance(B, centerPos), Vector3.Distance(B, playerPos));
+                return distToB.CompareTo(distToA);
+            });
+
             Vector3 barycentre = Vector3.zero;
-            for(int j = i; j < (int)Mathf.Min(i + nbCubesToDestroy, allEmptyPositions.Count); j++) {
+            int nbCubesDestroyed = (int)Mathf.Min(nbCubesToDestroy, allEmptyPositions.Count);
+            for (int i = 0; i < nbCubesDestroyed; i++)
+            {
+                Cube cube = map.AddCube(allEmptyPositions[i], Cube.CubeType.DEATH);
+                deathCubes.Add(cube);
+                barycentre += allEmptyPositions[i];
+            }
+            for (int i = 0; i < nbCubesDestroyed; i++)
+            {
+                allEmptyPositions.RemoveAt(0);
+            }
+
+            barycentre /= nbCubesDestroyed;
+            source.transform.position = barycentre;
+            gm.soundManager.PlayCreateCubeClip(source);
+            yield return new WaitForSeconds(endGameFrameRate);
+        }
+        for (int i = 0; i < allEmptyPositions.Count; i += nbCubesToDestroy)
+        {
+            Vector3 barycentre = Vector3.zero;
+            for (int j = i; j < (int)Mathf.Min(i + nbCubesToDestroy, allEmptyPositions.Count); j++)
+            {
                 Cube cube = map.AddCube(allEmptyPositions[j], Cube.CubeType.DEATH);
                 deathCubes.Add(cube);
                 barycentre += allEmptyPositions[j];
@@ -102,11 +136,12 @@ public class EventManager : MonoBehaviour {
         }
     }
 
-    public void LoseGame(DeathReason reason) {
+    public void LoseGame(DeathReason reason)
+    {
         if (gameIsEnded)
             return;
         gameIsEnded = true;
-        if(coroutineDeathCubesCreation != null)
+        if (coroutineDeathCubesCreation != null)
             StopCoroutine(coroutineDeathCubesCreation);
 
         gm.timeFreezed = true;
@@ -118,11 +153,12 @@ public class EventManager : MonoBehaviour {
         StartCoroutine(gm.QuitInSeconds(7));
     }
 
-    public void WinGame() {
+    public void WinGame()
+    {
         if (gameIsEnded)
             return;
         gameIsEnded = true;
-        if(coroutineDeathCubesCreation != null)
+        if (coroutineDeathCubesCreation != null)
             StopCoroutine(coroutineDeathCubesCreation);
 
         gm.timeFreezed = true;
@@ -139,7 +175,8 @@ public class EventManager : MonoBehaviour {
         StartCoroutine(gm.QuitInSeconds(7));
     }
 
-    public bool IsGameOver() {
+    public bool IsGameOver()
+    {
         return gameIsEnded;
     }
 }

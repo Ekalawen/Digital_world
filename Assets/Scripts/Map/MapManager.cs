@@ -25,7 +25,6 @@ public abstract class MapManager : MonoBehaviour {
 	public GameObject indestructibleCubePrefab; // On récupère ce qu'est qu'un cube indestructible ! :)
 	public GameObject lumierePrefab; // On récupère les lumières !
 	public GameObject lumiereFinalePrefab; // On récupère les lumières finales !
-	public GameObject ennemiPrefabs; // On récupère un ennemi !
 
     public bool bDoFinalChecks = true;
     public Vector3Int tailleMap; // La taille de la map, en largeur, hauteur et profondeur
