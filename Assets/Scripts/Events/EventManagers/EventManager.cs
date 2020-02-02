@@ -4,8 +4,7 @@ using UnityEngine;
 
 // Le but de la DataBase est de gérer le comportement de tout ce qui entrave le joueur.
 // Cela va de la coordination des Drones, à la génération d'évenements néffastes.
-public class EventManager : MonoBehaviour
-{
+public class EventManager : MonoBehaviour {
 
     public enum DeathReason { TIME_OUT, CAPTURED, FALL_OUT, TOUCHED_DEATH_CUBE };
 

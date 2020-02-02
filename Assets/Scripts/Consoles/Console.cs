@@ -22,6 +22,7 @@ public class Console : MonoBehaviour {
 	public Vector2 tempsAvantConseiller; // Le temps avant de générer un conseil
 	public Text importantText; // Là où l'on affiche les informations importantes
 	public List<string> conseils; // Les conseils à dispenser au joueur !
+    public List<TimedMessage> timedMessages;
 
 	[HideInInspector]
 	public GameManager gm;
@@ -112,6 +113,16 @@ public class Console : MonoBehaviour {
             }
             if (!playerIsFollowed && oldState) {
                 SemerEnnemis();
+            }
+        }
+
+        // On lance les messages timed
+        for(int i = 0; i < timedMessages.Count; i++) {
+            TimedMessage timedMessage = timedMessages[i];
+            if(Time.timeSinceLevelLoad > timedMessage.timing) {
+                AjouterMessageImportant(timedMessage.message, timedMessage.type, timedMessage.duree);
+                timedMessages.Remove(timedMessage);
+                i--;
             }
         }
 	}
