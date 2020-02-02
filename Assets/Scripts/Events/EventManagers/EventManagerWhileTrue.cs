@@ -5,6 +5,7 @@ using UnityEngine;
 public class EventManagerWhileTrue : EventManager {
 
     public int nbLumieresFinales = 10;
+    public List<string> messagesAChaqueLumiere;
 
     protected int nbLumieresFinalesAttrappees = 0;
 
@@ -23,6 +24,8 @@ public class EventManagerWhileTrue : EventManager {
                 StopCoroutine(coroutineDeathCubesCreation);
                 DestroyAllDeathCubes();
                 StartEndGame();
+                if(messagesAChaqueLumiere.Count > 0)
+                    gm.console.AjouterMessageImportant(messagesAChaqueLumiere[nbLumieresFinalesAttrappees - 1], Console.TypeText.ALLY_TEXT, 2f);
             }
         }
     }

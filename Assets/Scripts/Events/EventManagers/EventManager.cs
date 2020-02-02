@@ -83,8 +83,7 @@ public class EventManager : MonoBehaviour
         coroutineDeathCubesCreation = StartCoroutine(FillMapWithDeathCubes(finalLight.transform.position));
     }
 
-    protected IEnumerator FillMapWithDeathCubes(Vector3 centerPos)
-    {
+    protected IEnumerator FillMapWithDeathCubes(Vector3 centerPos) {
         List<Vector3> allEmptyPositions = map.GetAllEmptyPositions();
 
         Vector3 playerPos = gm.player.transform.position;
@@ -94,8 +93,9 @@ public class EventManager : MonoBehaviour
         AudioSource source = new GameObject().AddComponent<AudioSource>();
         source.spatialBlend = 1.0f;
         deathCubes = new List<Cube>();
-        while (allEmptyPositions.Count > 0)
-        {
+
+        while (allEmptyPositions.Count > 0) {
+            playerPos = gm.player.transform.position;
             allEmptyPositions.Sort(delegate (Vector3 A, Vector3 B) {
                 float distToA = Mathf.Min(Vector3.Distance(A, centerPos), Vector3.Distance(A, playerPos));
                 float distToB = Mathf.Min(Vector3.Distance(B, centerPos), Vector3.Distance(B, playerPos));

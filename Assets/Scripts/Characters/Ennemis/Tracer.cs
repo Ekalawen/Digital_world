@@ -134,16 +134,17 @@ public class Tracer : Ennemi {
 
         if(cube != null) {
             if (!cube.bIsRegular) {
-                GameObject go = Instantiate(explosionParticlesPrefab, cube.transform.position, Quaternion.identity);
-                ParticleSystem particle = go.GetComponent<ParticleSystem>();
-                ParticleSystemRenderer psr = go.GetComponent<ParticleSystemRenderer>();
-                Material mat = psr.material;
-                Material newMaterial = new Material(mat);
-                newMaterial.color = cube.GetColor();
-                psr.material = newMaterial;
-                float particuleTime = particle.main.duration;
-                Destroy(go, particuleTime);
-                gm.map.DeleteCube(cube);
+                cube.Explode();
+                //GameObject go = Instantiate(explosionParticlesPrefab, cube.transform.position, Quaternion.identity);
+                //ParticleSystem particle = go.GetComponent<ParticleSystem>();
+                //ParticleSystemRenderer psr = go.GetComponent<ParticleSystemRenderer>();
+                //Material mat = psr.material;
+                //Material newMaterial = new Material(mat);
+                //newMaterial.color = cube.GetColor();
+                //psr.material = newMaterial;
+                //float particuleTime = particle.main.duration;
+                //Destroy(go, particuleTime);
+                //gm.map.DeleteCube(cube);
             }
         }
 

@@ -37,6 +37,7 @@ public abstract class MapManager : MonoBehaviour {
     public List<Lumiere> lumieres;
     [HideInInspector]
     public GameObject mapFolder, cubesFolder, lumieresFolder;
+    protected Cube.CubeType currentCubeTypeUsed = Cube.CubeType.NORMAL;
     [HideInInspector]
     public GameManager gm;
 
@@ -689,5 +690,9 @@ public abstract class MapManager : MonoBehaviour {
             }
             lumieres.Add(lumiere);
         }
+    }
+
+    public Cube.CubeType GetCurrentCubeType() {
+        return currentCubeTypeUsed;
     }
 }

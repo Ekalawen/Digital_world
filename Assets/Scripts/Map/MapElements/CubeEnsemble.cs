@@ -16,7 +16,7 @@ public abstract class CubeEnsemble : MapElement {
     public abstract string GetName();
 
     protected Cube CreateCube(Vector3 pos) {
-        Cube cube = map.AddCube(pos, Cube.CubeType.NORMAL, Quaternion.identity, cubesEnsembleFolder.transform);
+        Cube cube = map.AddCube(pos, map.GetCurrentCubeType(), Quaternion.identity, cubesEnsembleFolder.transform);
         if (cube != null) {
             cubes.Add(cube);
         }

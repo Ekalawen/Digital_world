@@ -48,17 +48,18 @@ public class PouvoirExplosion : IPouvoir {
         foreach (Collider collider in colliders) {
             if (collider.tag == "Cube") {
                 Cube cube = collider.gameObject.GetComponent<Cube>();
-                GameObject go = Instantiate(explosionParticlesPrefab, cube.transform.position, Quaternion.identity);
-                go.transform.up = gm.gravityManager.Up();
-                ParticleSystem particle = go.GetComponent<ParticleSystem>();
-                ParticleSystemRenderer psr = go.GetComponent<ParticleSystemRenderer>();
-                Material mat = psr.material;
-                Material newMaterial = new Material(mat);
-                newMaterial.color = cube.GetColor();
-                psr.material = newMaterial;
-                float particuleTime = particle.main.duration;
-                Destroy(go, particuleTime);
-                gm.map.DeleteCube(cube);
+                cube.Explode();
+                //GameObject go = Instantiate(explosionParticlesPrefab, cube.transform.position, Quaternion.identity);
+                //go.transform.up = gm.gravityManager.Up();
+                //ParticleSystem particle = go.GetComponent<ParticleSystem>();
+                //ParticleSystemRenderer psr = go.GetComponent<ParticleSystemRenderer>();
+                //Material mat = psr.material;
+                //Material newMaterial = new Material(mat);
+                //newMaterial.color = cube.GetColor();
+                //psr.material = newMaterial;
+                //float particuleTime = particle.main.duration;
+                //Destroy(go, particuleTime);
+                //gm.map.DeleteCube(cube);
             } else if(collider.tag == "Ennemi") {
                 // Vector3 directionPoussee = (collider.gameObject.transform.position - centreExplosion).normalized;
                 Vector3 directionPoussee = (collider.gameObject.transform.position - transform.parent.transform.position).normalized;

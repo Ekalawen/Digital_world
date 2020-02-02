@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // Permet de générer une carte pleine de spikes !
-public class FullSpikesMap : MapManager
-{
+public class FullSpikesMap : MapManager {
 
     public int offsetBetweenSpikes = 1;
     public bool bGoToEnd = false;
@@ -22,9 +21,11 @@ public class FullSpikesMap : MapManager
     void GenerateFullSpikesMap()
     {
         // On crée le contour de la map !
+        currentCubeTypeUsed = Cube.CubeType.INDESTRUCTIBLE;
         MapContainer mapContainer = new MapContainer(Vector3.zero, new Vector3(tailleMap.x, tailleMap.y, tailleMap.z));
 
         // On crée les 6 bases de spikes, une pour chaque mur
+        currentCubeTypeUsed = Cube.CubeType.NORMAL;
         List<Spikes> spikesGenerators = new List<Spikes>();
         foreach (Mur mur in mapContainer.GetMurs()) {
             Spikes spikes = Spikes.GenerateSpikesFromMur(mur, offsetBetweenSpikes, bGoToEnd, spikesMaxRange, GetCenter());
