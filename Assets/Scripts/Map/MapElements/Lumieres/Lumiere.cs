@@ -12,7 +12,7 @@ public class Lumiere : MonoBehaviour {
     protected GameManager gm;
     protected AudioSource source;
 
-    protected void Start () {
+    protected virtual void Start () {
         //ParticleSystem ps = GetComponent<ParticleSystem> ();
         gm = FindObjectOfType<GameManager>();
         source = GetComponentInChildren<AudioSource>();
