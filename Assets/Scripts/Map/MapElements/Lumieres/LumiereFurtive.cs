@@ -127,8 +127,13 @@ public class LumiereFurtive : Lumiere {
         List<Vector3> allEmptyLocations = gm.map.GetAllEmptyPositions();
         while(allEmptyLocations.Count > 1) {
             int ind = Random.Range(0, allEmptyLocations.Count);
-            if (!IsInPlayerSight(allEmptyLocations[ind], player))
-                return allEmptyLocations[ind];
+            if (!IsInPlayerSight(allEmptyLocations[ind], player)) {
+                RaycastHit hit;
+                Vector3 direction = allEmptyLocations[ind] - transform.position;
+                Ray ray = new Ray (transform.position, direction);
+                if(!Physics.Raycast(ray, out hit, direction.magnitude))
+                    return allEmptyLocations[ind];
+            }
             allEmptyLocations.RemoveAt(ind);
         }
         return allEmptyLocations[0];
@@ -136,34 +141,37 @@ public class LumiereFurtive : Lumiere {
 
     protected Vector3 GetOtherObjectifVisible() {
         List<Vector3> allEmptyLocations = gm.map.GetAllEmptyPositions();
-        List<Vector3> allInvisibleLocations = new List<Vector3>();
+
+        Vector3 bestPos = transform.position;
+        float minDist = float.PositiveInfinity;
+
         foreach(Vector3 pos in allEmptyLocations) {
-            if (!IsInPlayerSight(pos, player))
-                allInvisibleLocations.Add(pos);
-        }
-        if(allInvisibleLocations.Count > 0) {
-            float minDist = Vector3.Distance(allInvisibleLocations[0], transform.position);
-            Vector3 bestPos = allInvisibleLocations[0];
-            for(int i = 1; i < allInvisibleLocations.Count; i++) {
-                float dist = Vector3.Distance(allInvisibleLocations[i], transform.position);
-                if(dist < minDist) {
+            Vector3 direction = pos - transform.position;
+            float dist = direction.magnitude;
+            if (dist < minDist) {
+                RaycastHit hit;
+                Ray ray = new Ray(transform.position, direction);
+                if (!IsInPlayerSight(pos, player) && !Physics.Raycast(ray, out hit, dist)) {
                     minDist = dist;
-                    bestPos = allInvisibleLocations[i];
+                    bestPos = pos;
                 }
             }
-            return bestPos;
-        } else {
-            float maxDist = Vector3.Distance(allEmptyLocations[0], player.transform.position);
-            Vector3 bestPos = allEmptyLocations[0];
-            for(int i = 1; i < allEmptyLocations.Count; i++) {
-                float dist = Vector3.Distance(allEmptyLocations[i], player.transform.position);
-                if(dist > maxDist) {
-                    maxDist = dist;
-                    bestPos = allEmptyLocations[i];
-                }
-            }
+        }
+
+        if(minDist < float.PositiveInfinity) {
             return bestPos;
         }
+
+        float maxDist = Vector3.Distance(allEmptyLocations[0], player.transform.position);
+        bestPos = allEmptyLocations[0];
+        for(int i = 1; i < allEmptyLocations.Count; i++) {
+            float dist = Vector3.Distance(allEmptyLocations[i], player.transform.position);
+            if(dist > maxDist) {
+                maxDist = dist;
+                bestPos = allEmptyLocations[i];
+            }
+        }
+        return bestPos;
     }
 
     public void AddPoussee(Poussee poussee) {
