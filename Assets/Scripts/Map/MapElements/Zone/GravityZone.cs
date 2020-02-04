@@ -29,7 +29,7 @@ public class GravityZone : ZoneCubique {
                 Vector3 dirPoussee = GravityManager.DirToVec(direction);
                 player.RemoveAllPoussees();
                 player.AddPoussee(new Poussee(dirPoussee, 0.2f, 3.0f));
-                gm.soundManager.PlayHitClip(player.audioSource, priority: true);
+                gm.soundManager.PlayHitClip(player.transform.position);
                 Debug.Log("IS BELOW !!");
                 return;
             }

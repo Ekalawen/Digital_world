@@ -80,7 +80,7 @@ public abstract class Ennemi : Character {
 
     public virtual void PlayHitSound() {
         if(!gm.eventManager.IsGameOver())
-            gm.soundManager.PlayHitClip(GetMainSource());
+            gm.soundManager.PlayHitClip(transform.position);
     }
 
     public virtual AudioSource GetMainSource() {

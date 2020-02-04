@@ -67,7 +67,7 @@ public class Sonde : Ennemi {
             if (etat != previousEtat && lastPositionSeen == transform.position) {
                 //gm.console.JoueurDetecte(name);
                 //gm.console.JoueurDetecte();
-                gm.soundManager.PlayDetectionClip(GetComponentInChildren<AudioSource>());
+                gm.soundManager.PlayDetectionClip(transform.position, transform);
             }
         } else {
             EtatSonde previousEtat = etat;

@@ -362,7 +362,7 @@ public class Player : Character {
                 EtatPersonnage previousEtat = etat;
 				etat = EtatPersonnage.AU_SOL;
                 if (etat != previousEtat)
-                    gm.soundManager.PlayLandClip(audioSource);
+                    gm.soundManager.PlayLandClip(transform.position);
 			} else {
 				if (etat != EtatPersonnage.EN_SAUT) {
 					etat = EtatPersonnage.EN_CHUTE;
@@ -478,7 +478,7 @@ public class Player : Character {
             Debug.Log("On saute depuis un endroit non autorisé !");
         }
         if (!gm.eventManager.IsGameOver()) {
-            gm.soundManager.PlayJumpClip(audioSource);
+            gm.soundManager.PlayJumpClip(transform.position);
         }
         StartCoroutine (StopJump (debutSaut));
     }

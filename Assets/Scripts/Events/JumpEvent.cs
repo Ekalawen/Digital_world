@@ -35,7 +35,7 @@ public class JumpEvent : RandomEvent {
         gm.player.FreezePouvoirs(true);
         gm.player.bIsStun = true;
 
-        gm.soundManager.PlayHitClip(gm.soundManager.instantSource);
+        gm.soundManager.PlayJumpEventStunClip();
 
         StartCoroutine(UnStun());
     }
@@ -44,7 +44,7 @@ public class JumpEvent : RandomEvent {
         yield return new WaitForSeconds(dureeStun);
         gm.player.FreezePouvoirs(false);
         gm.player.bIsStun = false;
-        gm.soundManager.PlayHitClip(gm.soundManager.instantSource, priority: false, bReverse: true);
+        gm.soundManager.PlayJumpEventUnStunClip();
     }
 
     protected IEnumerator AfficherMessagesPreventifs() {

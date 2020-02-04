@@ -165,7 +165,7 @@ public class Tracer : Ennemi {
         if (newState != TracerState.EMITING)
             pousseeEmiting = null;
         if (newState == TracerState.RUSHING && oldState != TracerState.RUSHING)
-            gm.soundManager.PlayDetectionClip(GetMainSource());
+            gm.soundManager.PlayDetectionClip(transform.position, transform);
     }
 
     protected IEnumerator StartEmiting() {
@@ -174,7 +174,7 @@ public class Tracer : Ennemi {
         ParticleSystem.ShapeModule shape = emitionParticleSystem.shape;
         shape.radius = rangeEmiting;
         GetComponent<MeshRenderer>().material = emissiveMaterial;
-        gm.soundManager.PlayEmissionTracerClip(audioSourceEmiting, dureeEmiting);
+        gm.soundManager.PlayEmissionTracerClip(transform.position, transform, dureeEmiting);
 
         yield return new WaitForSeconds(dureeEmiting);
 
@@ -194,7 +194,7 @@ public class Tracer : Ennemi {
         return audioSourceHit;
     }
     public override void PlayHitSound() {
-        gm.soundManager.PlayHitTracerClip(GetMainSource());
+        gm.soundManager.PlayHitTracerClip(transform.position, transform);
     }
     public override void DisplayHitMessage() {
         if (!gm.partieDejaTerminee) {

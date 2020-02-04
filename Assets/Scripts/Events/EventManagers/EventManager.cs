@@ -116,7 +116,7 @@ public class EventManager : MonoBehaviour {
 
             barycentre /= nbCubesDestroyed;
             source.transform.position = barycentre;
-            gm.soundManager.PlayCreateCubeClip(source);
+            gm.soundManager.PlayCreateCubeClip(barycentre);
             yield return new WaitForSeconds(endGameFrameRate);
         }
         for (int i = 0; i < allEmptyPositions.Count; i += nbCubesToDestroy)
@@ -130,7 +130,7 @@ public class EventManager : MonoBehaviour {
             }
             barycentre /= nbCubesToDestroy;
             source.transform.position = barycentre;
-            gm.soundManager.PlayCreateCubeClip(source);
+            gm.soundManager.PlayCreateCubeClip(barycentre);
             yield return new WaitForSeconds(endGameFrameRate);
         }
     }
