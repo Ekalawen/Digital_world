@@ -83,10 +83,6 @@ public abstract class Ennemi : Character {
             gm.soundManager.PlayHitClip(transform.position);
     }
 
-    public virtual AudioSource GetMainSource() {
-        return GetComponentInChildren<AudioSource>();
-    }
-
     protected abstract void HitPlayerSpecific();
 
     public abstract bool IsInactive();

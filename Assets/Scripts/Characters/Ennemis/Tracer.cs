@@ -12,8 +12,6 @@ public class Tracer : Ennemi {
     public float dureePauseEntreNodes = 0.1f;
     public GameObject explosionParticlesPrefab;
     public Material emissiveMaterial;
-    public AudioSource audioSourceEmiting;
-    public AudioSource audioSourceHit;
 
     protected TracerState state;
     protected List<Vector3> path;
@@ -190,9 +188,6 @@ public class Tracer : Ennemi {
         return state == TracerState.WAITING;
     }
 
-    public override AudioSource GetMainSource() {
-        return audioSourceHit;
-    }
     public override void PlayHitSound() {
         gm.soundManager.PlayHitTracerClip(transform.position, transform);
     }

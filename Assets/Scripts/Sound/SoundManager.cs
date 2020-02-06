@@ -25,9 +25,6 @@ public class SoundManager : MonoBehaviour {
     public AudioClipParams normalMusics;
     public AudioClipParams endGameMusics;
 
-    //public AudioSource globalSource;
-    //public AudioSource instantSource; // La source à utiliser pour des clips de courte durée non-spatialisé
-
     protected Transform globalSoundsFolder;
     protected List<AudioSource> availableSources;
     protected List<AudioSource> usedSources;

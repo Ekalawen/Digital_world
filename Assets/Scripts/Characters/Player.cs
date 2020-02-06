@@ -67,8 +67,6 @@ public class Player : Character {
     [HideInInspector]
 	public float lastNotContactEnnemy; // Le dernier temps où il ne touchait pas d'ennemi, utilisé pour la fin du jeu
 
-    [HideInInspector]
-    public AudioSource audioSource;
     protected GameManager gm;
 
 
@@ -85,7 +83,6 @@ public class Player : Character {
         personnage = gameObject;
         personnage.name = "Joueur";
 		controller = personnage.GetComponent<CharacterController> ();
-        audioSource = GetComponentInChildren<AudioSource>();
         gm = FindObjectOfType<GameManager>();
         sensibilite = PlayerPrefs.GetFloat(MenuOptions.MOUSE_SPEED_KEY);
 

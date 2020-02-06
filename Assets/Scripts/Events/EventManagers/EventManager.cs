@@ -89,8 +89,6 @@ public class EventManager : MonoBehaviour {
 
         float nbTimings = endGameDuration / endGameFrameRate;
         int nbCubesToDestroy = (int)(allEmptyPositions.Count / nbTimings);
-        AudioSource source = new GameObject().AddComponent<AudioSource>();
-        source.spatialBlend = 1.0f;
         deathCubes = new List<Cube>();
 
         while (allEmptyPositions.Count > 0) {
@@ -115,7 +113,6 @@ public class EventManager : MonoBehaviour {
             }
 
             barycentre /= nbCubesDestroyed;
-            source.transform.position = barycentre;
             gm.soundManager.PlayCreateCubeClip(barycentre);
             yield return new WaitForSeconds(endGameFrameRate);
         }
@@ -129,7 +126,6 @@ public class EventManager : MonoBehaviour {
                 barycentre += allEmptyPositions[j];
             }
             barycentre /= nbCubesToDestroy;
-            source.transform.position = barycentre;
             gm.soundManager.PlayCreateCubeClip(barycentre);
             yield return new WaitForSeconds(endGameFrameRate);
         }

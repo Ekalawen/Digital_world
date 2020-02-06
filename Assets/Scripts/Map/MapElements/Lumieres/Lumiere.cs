@@ -10,12 +10,10 @@ public class Lumiere : MonoBehaviour {
     public float timeBonus = 10.0f;
 
     protected GameManager gm;
-    protected AudioSource source;
 
     protected virtual void Start () {
         //ParticleSystem ps = GetComponent<ParticleSystem> ();
         gm = FindObjectOfType<GameManager>();
-        source = GetComponentInChildren<AudioSource>();
 	}
 
 	// Si le joueur nous touche, on disparait !

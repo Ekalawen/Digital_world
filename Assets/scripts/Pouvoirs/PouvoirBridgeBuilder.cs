@@ -68,8 +68,6 @@ public class PouvoirBridgeBuilder : IPouvoir {
         // Créer le cube
         Cube cube = gm.map.AddCube(position, Cube.CubeType.NORMAL, orientation);
         cube.RegisterCubeToColorSources();
-        AudioSource source = cube.gameObject.AddComponent<AudioSource>();
-        source.spatialBlend = 1.0f;
         gm.soundManager.PlayCreateCubeClip(position);
 
         // Détruire les autres cubes qui sont autour de lui et qui ne sont pas des cubes de ponts !
