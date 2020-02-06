@@ -64,8 +64,6 @@ public class LumiereFurtive : Lumiere {
                 float maxAngle = 50;
                 angle = Mathf.Min(maxAngle, angle);
                 float coefRapprochementAxe = 1.0f / Mathf.Max(angle / maxAngle, 0.2f);
-                Debug.Log("angle " + angle);
-                Debug.Log("coef = " + coefRapprochementAxe);
 
                 if(Vector3.Distance(posObjectifVisible, transform.position) <= 0.1f
                 || IsInPlayerSight(posObjectifVisible, player)) {

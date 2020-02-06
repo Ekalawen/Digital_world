@@ -85,6 +85,7 @@ public class Player : Character {
 		controller = personnage.GetComponent<CharacterController> ();
         gm = FindObjectOfType<GameManager>();
         sensibilite = PlayerPrefs.GetFloat(MenuOptions.MOUSE_SPEED_KEY);
+        bSetUpRotation = true;
 
         transform.position = position;
 
@@ -166,10 +167,12 @@ public class Player : Character {
         // On remet le up dans le bon sens si on peut, sinon on cap le vecteur au treshold !
         Vector3 tresholdVector = Quaternion.AngleAxis(tresholdAngle, right) * up;
         float tresholdDot = Vector3.Dot(tresholdVector, up);
+        Debug.Log("bSetUpRotation = " + bSetUpRotation);
         if (Mathf.Abs(dot) <= Mathf.Abs(tresholdDot)) {
-            if(bSetUpRotation)
+            if (bSetUpRotation)
                 camera.transform.LookAt(camera.transform.position + camera.transform.forward, up);
         } else {
+            Debug.Log("PING !");
             Vector3 axe = Vector3.Cross(up * Mathf.Sign(dot), camera.transform.forward);
             Vector3 recherche = Quaternion.AngleAxis(tresholdAngle, axe) * up * Mathf.Sign(dot);
             if (bSetUpRotation)
