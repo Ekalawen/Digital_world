@@ -253,7 +253,12 @@ public class Console : MonoBehaviour {
 		phrases.Add ("Tu as oublié les touches ? RTFM !");
 		phrases.Add ("Récursif ou Itératif ?");
 		phrases.Add ("POO = Parfaite Optimisation Originelle");
-		phrases.Add ("Il y a " + map.nbEnnemis + " Sondes à votre recherche.");
+        phrases.Add (gm.ennemiManager.ennemis.Count + " Ennemis détectés !");
+        //for(int i = 0; i < gm.ennemiManager.nbEnnemis.Count; i++) {
+        //    int nbEnnemis = gm.ennemiManager.nbEnnemis[i];
+        //    string ennemisName = gm.ennemiManager.ennemisPrefabs[i].name;
+        //    phrases.Add ("Il y a " + nbEnnemis + " " + ennemisName + " à votre recherche.");
+        //}
 
 		string phrase = phrases [Random.Range (0, phrases.Count)];
 		AjouterMessage (phrase, TypeText.BASIC_TEXT);

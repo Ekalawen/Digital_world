@@ -41,14 +41,6 @@ public abstract class MapManager : MonoBehaviour {
     [HideInInspector]
     public GameManager gm;
 
-    // To remove !
-	[HideInInspector]
-	public bool lumieresAttrapees;
-
-    // To move
-	[HideInInspector]
-	public int nbEnnemis;
-
 	//////////////////////////////////////////////////////////////////////////////////////
 	// METHODES
 	//////////////////////////////////////////////////////////////////////////////////////
@@ -69,8 +61,6 @@ public abstract class MapManager : MonoBehaviour {
                 for (int k = 0; k <= tailleMap.z; k++)
                     cubesRegular[i, j, k] = null;
         cubesNonRegular = new List<Cube>();
-
-		lumieresAttrapees = false;
 
         // Récupérer tous les cubes et toutes les lumières qui pourraient déjà exister avant la création de la map !
         GetAllAlreadyExistingCubesAndLumieres();

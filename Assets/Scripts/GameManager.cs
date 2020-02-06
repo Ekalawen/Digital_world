@@ -124,13 +124,6 @@ public class GameManager : MonoBehaviour {
 			}
 		}
 
-		// Si on a attrapé toutes les lumières
-		if (!map.lumieresAttrapees && map.lumieres.Count <= 0) {
-			map.lumieresAttrapees = true;
-			// On affiche un message dans la consolePrefabs !
-			console.ToutesLesLumieresAttrapees();
-		}
-
 		// Si c'est la fin de la partie, on quitte après 7 secondes !
 		if (!partieDejaTerminee && PartieTermine ()) {
 			partieDejaTerminee = true;
@@ -142,7 +135,7 @@ public class GameManager : MonoBehaviour {
 		// Si le joueur est tombé du cube ...
 		if (player.transform.position.y < -10) {
 			// Si le joueur a perdu ...
-			if (!map.lumieresAttrapees) {
+			if (map.lumieres.Count > 0) {
 				//console.JoueurEjecte();
                 console.LoseGame(EventManager.DeathReason.FALL_OUT);
 			// Si le joueur a gagné !
