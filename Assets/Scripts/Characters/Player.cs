@@ -167,7 +167,6 @@ public class Player : Character {
         // On remet le up dans le bon sens si on peut, sinon on cap le vecteur au treshold !
         Vector3 tresholdVector = Quaternion.AngleAxis(tresholdAngle, right) * up;
         float tresholdDot = Vector3.Dot(tresholdVector, up);
-        Debug.Log("bSetUpRotation = " + bSetUpRotation);
         if (Mathf.Abs(dot) <= Mathf.Abs(tresholdDot)) {
             if (bSetUpRotation)
                 camera.transform.LookAt(camera.transform.position + camera.transform.forward, up);
