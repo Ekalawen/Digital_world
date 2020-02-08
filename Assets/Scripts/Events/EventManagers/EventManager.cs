@@ -63,15 +63,7 @@ public class EventManager : MonoBehaviour {
         // On crée la finaleLight
         //float minRadius = 0.5f + Mathf.Sqrt(3) / 2.0f; // La demi taille de la sphère + la demi-diagonale d'un cube
         //Vector3 posLumiere = map.GetFreeSphereLocation(minRadius);
-        Vector3 posLumiere = map.GetFreeRoundedLocation();
-
-        // On évite que la lumière soit trop proche
-        float moyenneTailleMap = (gm.map.tailleMap.x + gm.map.tailleMap.y + gm.map.tailleMap.z) / 3.0f;
-        while (Vector3.Distance(gm.player.transform.position, posLumiere) <= moyenneTailleMap * 0.9f)
-        {
-            posLumiere = map.GetFreeRoundedLocation();
-            moyenneTailleMap *= 0.95f; // Pour éviter qu'il n'y ait aucune zone atteignable x)
-        }
+        Vector3 posLumiere = map.GetFarRoundedLocation(gm.player.transform.position);
         Lumiere finalLight = map.CreateLumiere(posLumiere, Lumiere.LumiereType.FINAL); // Attention à la position qui est arrondi ici !
 
         gm.player.FreezeLocalisation();

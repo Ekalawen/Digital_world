@@ -464,4 +464,9 @@ public class Console : MonoBehaviour {
     public void AlerterTracers() {
         AjouterMessageImportant("Tracers Alertés !", TypeText.ENNEMI_TEXT, 2);
     }
+
+    // Lorsque l'on capture la première lumière dans la map Analyze
+    public void AnalyzeLevelDeuxiemeSalve() {
+        AjouterMessageImportant("On les a alertés et ils ont répliqué les Datas !", TypeText.ALLY_TEXT, 3);
+    }
 }

@@ -685,4 +685,30 @@ public abstract class MapManager : MonoBehaviour {
     public Cube.CubeType GetCurrentCubeType() {
         return currentCubeTypeUsed;
     }
+
+    public Vector3 GetFarRoundedLocation(Vector3 farFromThis) {
+        Vector3 farPos = GetFreeRoundedLocation();
+
+        // On évite que la lumière soit trop proche
+        float moyenneTailleMap = (gm.map.tailleMap.x + gm.map.tailleMap.y + gm.map.tailleMap.z) / 3.0f;
+        while (Vector3.Distance(farFromThis, farPos) <= moyenneTailleMap * 0.9f) {
+            farPos = GetFreeRoundedLocation();
+            moyenneTailleMap *= 0.95f; // Pour éviter qu'il n'y ait aucune zone atteignable x)
+        }
+
+        return farPos;
+    }
+
+    public List<Vector3> GetAllInsidedCorners() {
+        List<Vector3> corners = new List<Vector3>();
+        corners.Add(new Vector3(1, 1, 1));
+        corners.Add(new Vector3(tailleMap.x - 1, 1, 1));
+        corners.Add(new Vector3(1, tailleMap.y - 1, 1));
+        corners.Add(new Vector3(1, 1, tailleMap.z - 1));
+        corners.Add(new Vector3(tailleMap.x - 1, tailleMap.y - 1, 1));
+        corners.Add(new Vector3(tailleMap.x - 1, 1, tailleMap.z - 1));
+        corners.Add(new Vector3(1, tailleMap.y - 1, tailleMap.z - 1));
+        corners.Add(new Vector3(tailleMap.x - 1, tailleMap.y - 1, tailleMap.z - 1));
+        return corners;
+    }
 }

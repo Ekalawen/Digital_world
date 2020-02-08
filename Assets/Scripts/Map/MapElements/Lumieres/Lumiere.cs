@@ -20,11 +20,14 @@ public class Lumiere : MonoBehaviour {
 	protected virtual void OnTriggerEnter(Collider hit) {
 		if (hit.gameObject.name == "Joueur"){
             gm.map.lumieres.Remove(this);
-            gm.console.AttraperLumiere(gm.map.lumieres.Count);
 			Destroy (this.gameObject);
 
 			// Et on certifie qu'on a bien attrapé une orbe
+            gm.console.AttraperLumiere(gm.map.lumieres.Count);
+
 			gm.console.UpdateLastLumiereAttrapee();
+
+            OnTriggerEnterSpecific();
 
             gm.eventManager.OnLumiereCaptured(type);
 
@@ -33,4 +36,7 @@ public class Lumiere : MonoBehaviour {
             gm.timerManager.AddTime(timeBonus);
 		}
 	}
+
+    protected virtual void OnTriggerEnterSpecific() {
+    }
 }
