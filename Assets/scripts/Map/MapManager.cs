@@ -354,6 +354,12 @@ public abstract class MapManager : MonoBehaviour {
         && 0 <= pos.z && pos.z <= tailleMap.z;
     }
 
+    public bool IsInInsidedRegularMap(Vector3 pos) {
+        return 1 <= pos.x && pos.x < tailleMap.x
+        && 1 <= pos.y && pos.y < tailleMap.y
+        && 1 <= pos.z && pos.z < tailleMap.z;
+    }
+
     public List<Cube> GetAllCubes() {
         List<Cube> allCubes = new List<Cube>();
         for (int i = 0; i <= tailleMap.x; i++)
@@ -460,7 +466,8 @@ public abstract class MapManager : MonoBehaviour {
 
     protected void LinkUnreachableLumiereToRest() {
         // Trouver un point accessible
-        Vector3 reachablePoint = MathTools.Round(GetFreeBoxLocation(Vector3.one * 1.0f));
+        Vector3 reachablePoint = MathTools.Round(GetFreeRoundedLocation());
+        //Vector3 reachablePoint = MathTools.Round(GetFreeBoxLocation(Vector3.one * 1.0f));
         while(cubesRegular[(int)reachablePoint.x, (int)reachablePoint.y, (int)reachablePoint.z] != null) {
             reachablePoint = MathTools.Round(GetFreeBoxLocation(Vector3.one * 1.0f));
         }
@@ -509,6 +516,10 @@ public abstract class MapManager : MonoBehaviour {
         return new List<Vector3>(closed);
     }
 
+    protected bool HasVoinsinsLibres(Vector3 pos) {
+        return GetVoisinsLibres(pos).Count > 0;
+    }
+
     protected List<Vector3> GetVoisinsLibres(Vector3 pos) {
         List<Vector3> res = new List<Vector3>();
         int i = (int)pos.x, j = (int)pos.y, k = (int)pos.z;
@@ -531,6 +542,14 @@ public abstract class MapManager : MonoBehaviour {
         if (IsInRegularMap(new Vector3(i, j, k - 1)) && cubesRegular[i, j, k - 1] == null)
             res.Add(new Vector3(i, j, k - 1));
         return res;
+    }
+
+    protected List<Vector3Int> GetVoisinsLibresInt(Vector3Int pos) {
+        List<Vector3> v3 = GetVoisinsLibres(pos);
+        List<Vector3Int> v3I = new List<Vector3Int>();
+        foreach (Vector3 v in v3)
+            v3I.Add(MathTools.RoundToInt(v));
+        return v3I;
     }
 
     public List<Vector3> GetAllEmptyPositions() {

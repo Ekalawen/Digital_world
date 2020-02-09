@@ -67,8 +67,7 @@ public class MapContainer : CubeEnsemble
     //public List<Cube> GetCoins() {
     //}
 
-    public List<Mur> GetMurs()
-    {
+    public List<Mur> GetMurs() {
         return murs;
     }
 }

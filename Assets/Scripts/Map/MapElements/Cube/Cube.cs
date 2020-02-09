@@ -8,6 +8,7 @@ public class Cube : MonoBehaviour {
 
     public CubeType type;
     public GameObject explosionParticlesPrefab;
+    public bool bIsDestructible = true;
 
     [HideInInspector] public bool bIsRegular = true;
     protected GameManager gm;
@@ -55,5 +56,9 @@ public class Cube : MonoBehaviour {
         float particuleTime = particle.main.duration;
         Destroy(go, particuleTime);
         gm.map.DeleteCube(this);
+    }
+
+    public bool IsDestructible() {
+        return bIsDestructible;
     }
 }

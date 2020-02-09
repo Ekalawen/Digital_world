@@ -1,22 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &529183167093797629
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2395129675549742871}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 38316a5960595254991d723fe92be6ec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  type: 1
-  explosionParticlesPrefab: {fileID: 0}
-  bIsDestructible: 0
-  bIsRegular: 1
---- !u!1001 &2393828709941363761
+--- !u!1001 &405499940882162375
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -25,7 +9,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1586838666760998, guid: 166cc3691555747479ad6b1623980374, type: 3}
       propertyPath: m_Name
-      value: DeathCube
+      value: IndestructibleCube
       objectReference: {fileID: 0}
     - target: {fileID: 4869158071224186, guid: 166cc3691555747479ad6b1623980374, type: 3}
       propertyPath: m_LocalPosition.x
@@ -71,22 +55,15 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 23504440395747002, guid: 166cc3691555747479ad6b1623980374,
+    - target: {fileID: 114048159739252504, guid: 166cc3691555747479ad6b1623980374,
         type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: efd0bb9bade57f5458dabf0a48a2fafb, type: 2}
+      propertyPath: bIsDestructible
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 114048159739252504, guid: 166cc3691555747479ad6b1623980374,
         type: 3}
       propertyPath: type
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 114048159739252504, guid: 166cc3691555747479ad6b1623980374, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 166cc3691555747479ad6b1623980374, type: 3}
---- !u!1 &2395129675549742871 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1586838666760998, guid: 166cc3691555747479ad6b1623980374,
-    type: 3}
-  m_PrefabInstance: {fileID: 2393828709941363761}
-  m_PrefabAsset: {fileID: 0}

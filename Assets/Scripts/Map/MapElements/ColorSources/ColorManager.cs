@@ -15,6 +15,7 @@ public class ColorManager : MonoBehaviour {
 	public float frequenceSources; // La frequence qu'un emplacement soit une source
 	public Vector2 porteeSourceRange; // La range de distance de coloration d'une source
     public float cubeLuminosityMax; // Le maximum de luminosité d'un cube (pour éviter d'éblouir le joueur)
+    public bool bUseOwnLuminosity = false; // De base on utilise la luminosité des PlayerPrefs !
 
     protected MapManager map;
     [HideInInspector]
@@ -25,7 +26,7 @@ public class ColorManager : MonoBehaviour {
     public void Initialize() {
         map = FindObjectOfType<MapManager>();
         colorSourceFolder = new GameObject("ColorSources");
-        cubeLuminosityMax = PlayerPrefs.GetFloat(MenuOptions.LUMINOSITY_KEY);
+        cubeLuminosityMax = bUseOwnLuminosity ? cubeLuminosityMax : PlayerPrefs.GetFloat(MenuOptions.LUMINOSITY_KEY);
 
         // Si c'est random, alors on relance ! :)
         for (int i = 0; i < themes.Count; i++) {
