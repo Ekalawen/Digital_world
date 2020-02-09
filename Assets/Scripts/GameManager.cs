@@ -108,8 +108,8 @@ public class GameManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		// Si on a appuyé sur la touche Escape, on quitte le jeu !
-		if (Input.GetKey ("escape")) {
+        // Si on a appuyé sur la touche Escape, on quitte le jeu !
+        if (Input.GetKey ("escape")) {
 			RevenirAuMenu();
 		}
 

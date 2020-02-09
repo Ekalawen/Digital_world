@@ -5,6 +5,7 @@ using UnityEngine.Rendering.PostProcessing;
 
 public class PostProcessManager : MonoBehaviour {
 
+    public float skyboxRotationSpeed = 25.0f;
     public float changeTimeGrip = 0.075f;
     public float intensityGrip = 0.315f;
     public PostProcessVolume gripVolume;
@@ -25,6 +26,12 @@ public class PostProcessManager : MonoBehaviour {
         gm = GameManager.Instance;
         camera = gm.player.camera;
     }
+
+    public void Update() {
+        // On fait tourner la skybox !
+        RenderSettings.skybox.SetFloat("_Rotation", Time.time * skyboxRotationSpeed);
+    }
+
 
     public void UpdateGripEffect(Player.EtatPersonnage previousState) {
         if (PlayerPrefs.GetString(MenuOptions.GRIP_KEY) == "False")

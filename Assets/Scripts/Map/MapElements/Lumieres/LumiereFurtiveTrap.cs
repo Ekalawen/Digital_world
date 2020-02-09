@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class LumiereFurtiveTrap : LumiereFurtive {
 
-    public int indiceEnnemiGeneratedInEnnemiManager;
+    public GameObject ennemiToGeneratePrefab;
     public float timeBeforeEnnemisActivation = 3.0f;
     public GameObject lumiereGeneratedPrefab;
     public int nbLumieresToGenerate = 1;
@@ -16,7 +16,7 @@ public class LumiereFurtiveTrap : LumiereFurtive {
         List<Vector3> allCorners = gm.map.GetAllInsidedCorners();
         allCorners.Add(gm.map.GetCenter());
         foreach(Vector3 corner in allCorners) {
-            Ennemi ennemi = gm.ennemiManager.GenerateEnnemiFromIndice(indiceEnnemiGeneratedInEnnemiManager, corner);
+            Ennemi ennemi = gm.ennemiManager.GenerateEnnemiFromPrefab(ennemiToGeneratePrefab, corner);
             ennemi.tempsInactifDebutJeu = Time.timeSinceLevelLoad + timeBeforeEnnemisActivation;
         }
 

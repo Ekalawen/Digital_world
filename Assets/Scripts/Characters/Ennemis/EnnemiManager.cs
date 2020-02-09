@@ -67,12 +67,8 @@ public class EnnemiManager : MonoBehaviour {
         }
     }
 
-    public Ennemi GenerateEnnemiFromIndice(int ennemiIndice, Vector3 pos) {
-        if(ennemiIndice < 0 || ennemiIndice >= ennemisPrefabs.Count) {
-            Debug.LogError("Mauvais indice lors de la génération d'un ennemi ! ennemiIndice = " + ennemiIndice);
-            return null;
-        }
-        Ennemi ennemi = Instantiate(ennemisPrefabs[ennemiIndice], pos, Quaternion.identity, ennemisFolder.transform).GetComponent<Ennemi>();
+    public Ennemi GenerateEnnemiFromPrefab(GameObject ennemiPrefab, Vector3 pos) {
+        Ennemi ennemi = Instantiate(ennemiPrefab, pos, Quaternion.identity, ennemisFolder.transform).GetComponent<Ennemi>();
         ennemis.Add(ennemi);
         return ennemi;
     }
