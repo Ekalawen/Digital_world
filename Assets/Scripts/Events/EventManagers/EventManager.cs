@@ -58,6 +58,7 @@ public class EventManager : MonoBehaviour {
         }
     }
 
+
     protected virtual void StartEndGame()
     {
         isEndGameStarted = true;
