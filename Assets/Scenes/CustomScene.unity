@@ -32,13 +32,13 @@ RenderSettings:
   m_FlareFadeSpeed: 3
   m_HaloTexture: {fileID: 0}
   m_SpotCookie: {fileID: 10001, guid: 0000000000000000e000000000000000, type: 0}
-  m_DefaultReflectionMode: 0
+  m_DefaultReflectionMode: 1
   m_DefaultReflectionResolution: 128
   m_ReflectionBounces: 1
-  m_ReflectionIntensity: 1
-  m_CustomReflection: {fileID: 0}
+  m_ReflectionIntensity: 0.6
+  m_CustomReflection: {fileID: 8900000, guid: acc8bd2c54fd7884babec9447de5424d, type: 3}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 0.6}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -228,10 +228,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1924877929756090, guid: 2f044af0d329a42599a07ccb83e3f05c, type: 3}
-      propertyPath: m_Name
-      value: GameManager
-      objectReference: {fileID: 0}
     - target: {fileID: 4967802568132008, guid: 2f044af0d329a42599a07ccb83e3f05c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 69.30453
@@ -287,6 +283,10 @@ PrefabInstance:
       propertyPath: myNewTexture
       value: 
       objectReference: {fileID: 8900000, guid: 5fd23db43d3079749a1cd22ae1370c02, type: 3}
+    - target: {fileID: 1924877929756090, guid: 2f044af0d329a42599a07ccb83e3f05c, type: 3}
+      propertyPath: m_Name
+      value: GameManager
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2f044af0d329a42599a07ccb83e3f05c, type: 3}
 --- !u!1001 &617626975
