@@ -10,6 +10,7 @@ public class EventManager : MonoBehaviour {
 
     public float endGameDuration = 20.0f;
     public float endGameFrameRate = 0.2f;
+    public bool bNoEndgame = false;
 
     public List<GameObject> randomEventsPrefabs;
 
@@ -43,16 +44,17 @@ public class EventManager : MonoBehaviour {
         if (type == Lumiere.LumiereType.NORMAL)
         {
             int nbLumieres = map.lumieres.Count;
-            if (nbLumieres == 0 && !isEndGameStarted)
-            {
-                gm.soundManager.PlayEndGameMusic();
-                StartEndGame();
+            if (nbLumieres == 0 && !isEndGameStarted) {
+                if (!bNoEndgame) {
+                    gm.soundManager.PlayEndGameMusic();
+                    StartEndGame();
+                } else {
+                    WinGame();
+                }
             }
         }
-        else if (type == Lumiere.LumiereType.FINAL)
-        {
-            Debug.Log("WIIIIIIIIIIINNNNNNNNNNNN !!!!!!!!");
-            gm.eventManager.WinGame();
+        else if (type == Lumiere.LumiereType.FINAL) {
+            WinGame();
         }
     }
 
@@ -140,8 +142,7 @@ public class EventManager : MonoBehaviour {
         StartCoroutine(gm.QuitInSeconds(7));
     }
 
-    public void WinGame()
-    {
+    public void WinGame() {
         if (gameIsEnded)
             return;
         gameIsEnded = true;
@@ -151,6 +152,7 @@ public class EventManager : MonoBehaviour {
         gm.timeFreezed = true;
         gm.player.FreezePouvoirs();
 
+        Debug.Log("WIIIIIIIIIIINNNNNNNNNNNN !!!!!!!!");
         gm.console.WinGame();
 
         // On retient que l'on a gagné ce niveau une fois de plus !
