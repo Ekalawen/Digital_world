@@ -18,6 +18,9 @@ public class TexteExplicatif : MonoBehaviour {
         if(titleTextSource != null && titleTextTarget != null)
             titleTextTarget.text = titleTextSource.text;
         firstFrame = true;
+
+        //mainText.font.lineHeight;
+        //mainText.text.
     }
 
     private void Update() {
