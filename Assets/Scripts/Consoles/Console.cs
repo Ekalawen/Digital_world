@@ -469,4 +469,9 @@ public class Console : MonoBehaviour {
     public void AnalyzeLevelDeuxiemeSalve() {
         AjouterMessageImportant("On les a alertés et ils ont répliqué les Datas !", TypeText.ALLY_TEXT, 3);
     }
+
+    // Lorsque le joueur tombe, typiquement dans le tutoriel !
+    public void SavedFromFalling() {
+        AjouterMessageImportant("Attention à ne être éjecté la prochaine fois !", TypeText.ALLY_TEXT, 3);
+    }
 }

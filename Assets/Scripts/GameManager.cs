@@ -125,36 +125,10 @@ public class GameManager : MonoBehaviour {
 		}
 
 		// Si c'est la fin de la partie, on quitte après 7 secondes !
-		if (!partieDejaTerminee && PartieTermine ()) {
+		if (!partieDejaTerminee && eventManager.PartieTermine()) {
 			partieDejaTerminee = true;
 			StartCoroutine (QuitInSeconds(7));
 		}
-	}
-
-	bool PartieTermine() {
-		// Si le joueur est tombé du cube ...
-		if (player.transform.position.y < -10) {
-			// Si le joueur a perdu ...
-			if (map.lumieres.Count > 0) {
-				//console.JoueurEjecte();
-                console.LoseGame(EventManager.DeathReason.FALL_OUT);
-			// Si le joueur a gagné !
-			} else {
-				console.WinGame();
-			}
-			return true;
-		}
-
-		// Ou qu'il est en contact avec un ennemiPrefabs depuis plus de 5 secondes
-		// C'est donc qu'il s'est fait conincé !
-		// Debug.Log("lastnotcontact = "+ player.GetComponent<Personnage>().lastNotContactEnnemy);
-		if (Time.timeSinceLevelLoad - player.GetComponent<Player>().lastNotContactEnnemy >= 5f) {
-			console.LoseGame(EventManager.DeathReason.CAPTURED);
-			player.vitesseDeplacement = 0; // On immobilise le joueur
-			player.vitesseSaut = 0; // On immobilise le joueur
-			return true;
-		}
-		return false;
 	}
 
     public IEnumerator QuitInSeconds(int tps) {

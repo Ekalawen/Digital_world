@@ -4,10 +4,10 @@ using UnityEngine;
 
 // Le but de la DataBase est de gérer le comportement de tout ce qui entrave le joueur.
 // Cela va de la coordination des Drones, à la génération d'évenements néffastes.
-public class EventManager : MonoBehaviour {
-
+public class EventManager : MonoBehaviour { 
     public enum DeathReason { TIME_OUT, CAPTURED, FALL_OUT, TOUCHED_DEATH_CUBE };
 
+    public float ejectionTreshold = -10.0f;
     public float endGameDuration = 20.0f;
     public float endGameFrameRate = 0.2f;
     public bool bNoEndgame = false;
@@ -165,8 +165,34 @@ public class EventManager : MonoBehaviour {
         StartCoroutine(gm.QuitInSeconds(7));
     }
 
-    public bool IsGameOver()
-    {
+    public bool IsGameOver() {
         return gameIsEnded;
     }
+
+	public bool PartieTermine() {
+		// Si le joueur est tombé du cube ...
+		if (gm.player.transform.position.y < ejectionTreshold) {
+			// Si le joueur a perdu ...
+			if (map.lumieres.Count > 0) {
+				//console.JoueurEjecte();
+                gm.console.LoseGame(EventManager.DeathReason.FALL_OUT);
+			// Si le joueur a gagné !
+			} else {
+				gm.console.WinGame();
+			}
+			return true;
+		}
+
+		// Ou qu'il est en contact avec un ennemiPrefabs depuis plus de 5 secondes
+		// C'est donc qu'il s'est fait conincé !
+		// Debug.Log("lastnotcontact = "+ player.GetComponent<Personnage>().lastNotContactEnnemy);
+		if (Time.timeSinceLevelLoad - gm.player.GetComponent<Player>().lastNotContactEnnemy >= 5f) {
+			gm.console.LoseGame(EventManager.DeathReason.CAPTURED);
+			gm.player.vitesseDeplacement = 0; // On immobilise le joueur
+			gm.player.vitesseSaut = 0; // On immobilise le joueur
+			return true;
+		}
+		return false;
+	}
+
 }

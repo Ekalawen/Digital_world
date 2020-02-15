@@ -71,17 +71,32 @@ public class GravityManager : MonoBehaviour {
         StartCoroutine(RotateCamera(axe, angle));
     }
 
+    public void LookAt(Vector3 newDirection) {
+        Vector3 currentDirection = gm.player.camera.transform.forward;
+        float angle = Vector3.Angle(currentDirection, newDirection);
+        Vector3 axe = Vector3.Cross(currentDirection, newDirection);
+        if (axe.magnitude == 0) {
+            return;
+        }
+
+        StartCoroutine(RotateCamera(axe, angle));
+    }
+
     protected IEnumerator RotateCamera(Vector3 axe, float angle) {
         Timer t = new Timer(dureeGravityTransition);
         Camera camera = gm.player.camera;
         float currentAvancement = 0;
+        float totalPortion = 0.0f;
         while (!t.IsOver()) {
             float portion = t.GetAvancement() - currentAvancement;
+            totalPortion += portion;
             currentAvancement = t.GetAvancement();
             float value = angle * portion;
             camera.transform.RotateAround(camera.transform.position, axe, value);
             yield return null;
         }
+        float finalValue = angle * (1.0f - totalPortion);
+        camera.transform.RotateAround(camera.transform.position, axe, finalValue);
         gm.player.bSetUpRotation = true;
     }
 
