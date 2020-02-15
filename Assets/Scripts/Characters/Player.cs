@@ -486,17 +486,33 @@ public class Player : Character {
         if (gm.eventManager.IsGameOver())
             return;
         // A
-        if(Input.GetKeyDown(KeyCode.A))
-            pouvoirA?.TryUsePouvoir();
+        if(Input.GetKeyDown(KeyCode.A)) {
+            if (pouvoirA != null)
+                pouvoirA.TryUsePouvoir();
+            else
+                gm.soundManager.PlayNotFoundPouvoirClip();
+        }
         // E
-        if(Input.GetKeyDown(KeyCode.E))
-            pouvoirE?.TryUsePouvoir();
+        if(Input.GetKeyDown(KeyCode.E)) {
+            if (pouvoirE != null)
+                pouvoirE.TryUsePouvoir();
+            else
+                gm.soundManager.PlayNotFoundPouvoirClip();
+        }
         // Click Gauche
-        if(Input.GetMouseButtonDown(0))
-            pouvoirLeftBouton?.TryUsePouvoir();
+        if(Input.GetMouseButtonDown(0)) {
+            if (pouvoirLeftBouton != null)
+                pouvoirLeftBouton.TryUsePouvoir();
+            else
+                gm.soundManager.PlayNotFoundPouvoirClip();
+        }
         // Click Droit
-        if(Input.GetMouseButtonDown(1))
-            pouvoirRightBouton?.TryUsePouvoir();
+        if(Input.GetMouseButtonDown(1)) {
+            if (pouvoirRightBouton != null)
+                pouvoirRightBouton.TryUsePouvoir();
+            else
+                gm.soundManager.PlayNotFoundPouvoirClip();
+        }
     }
 
     public void FreezeLocalisation() {

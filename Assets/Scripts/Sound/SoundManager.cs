@@ -21,6 +21,9 @@ public class SoundManager : MonoBehaviour {
     public AudioClipParams jumpSuccessClips;
     public AudioClipParams jumpEventStunClips;
     public AudioClipParams jumpEventUnStunClips;
+    public AudioClipParams activationPouvoirClips;
+    public AudioClipParams deniedPouvoirClips;
+    public AudioClipParams notFoundPouvoirClips;
 
     public AudioClipParams normalMusics;
     public AudioClipParams endGameMusics;
@@ -123,6 +126,15 @@ public class SoundManager : MonoBehaviour {
     }
     public void PlayJumpEventUnStunClip() {
         PlayClipsOnSource(jumpEventUnStunClips);
+    }
+    public void PlayActivationPouvoirClip(AudioClipParams audioClip = null) {
+        PlayClipsOnSource((audioClip == null) ? activationPouvoirClips : audioClip);
+    }
+    public void PlayDeniedPouvoirClip() {
+        PlayClipsOnSource(deniedPouvoirClips);
+    }
+    public void PlayNotFoundPouvoirClip() {
+        PlayClipsOnSource(notFoundPouvoirClips);
     }
 
     //protected void PlayClipsOnSource(List<AudioClip> clips, AudioSource source, bool bReverse = false) {

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4825563985713288727}
   - component: {fileID: 4825563985713288726}
   m_Layer: 0
-  m_Name: PouvoirDestructionRay
+  m_Name: PouvoirDestructionRayUnitaire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45,5 +45,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cooldown: 0.5
   timerMalus: 10
+  activationAudioClips:
+    relativeVolume: 1
+    spatialBlend: 1
+    bReverse: 0
+    bIsMusic: 0
+    bLoop: 0
+    clips:
+    - {fileID: 8300000, guid: 2ad59f2ef1a9b824380848c6b0abf32b, type: 3}
   porteeRay: 1000
   bDestroyAllCubes: 0

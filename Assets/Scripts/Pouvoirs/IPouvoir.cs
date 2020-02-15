@@ -12,6 +12,8 @@ public abstract class IPouvoir : MonoBehaviour {
     public float cooldown = 0.0f;
     public float timerMalus = 0.0f;
 
+    public AudioClipParams activationAudioClips;
+
     protected bool pouvoirAvailable;
     protected bool freezePouvoir = false;
     protected GameManager gm;
@@ -32,6 +34,9 @@ public abstract class IPouvoir : MonoBehaviour {
             if(UsePouvoir()) {
                 cooldownTimer.Reset();
                 ApplyTimerMalus();
+                gm.soundManager.PlayActivationPouvoirClip((activationAudioClips.clips.Count > 0) ? activationAudioClips : null);
+            } else {
+                gm.soundManager.PlayDeniedPouvoirClip();
             }
         }
     }
