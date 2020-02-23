@@ -4,26 +4,32 @@ using UnityEngine;
 
 public class Arbre : CubeEnsemble {
 
+    public Vector3 racinePosition; // Le départ de l'arbre !
     public int nbPalliers; // On génère un certain nombre de palliers (entre 2 et 8 de base)
     public Vector2Int taillePallierRange; // La taille en largeur des palliers (entre 3 et 10 de base)
     public Vector2Int hauteurPallierRange; // La hauteur d'un pallier (entre 8 et 20 de base)
     public int pasPdcPallier; // La distance entre les pdc dans un pallier (3 de base)
     public float hauteurPdcPallier; // La hauteur des pdc dans un pallier (3f de base)
 
-    public List<Pont> ponts;
-    //public List<Pallier> palliers;
+    public List<Pont> ponts = new List<Pont>();
+    public List<SurfaceInterpolante> palliers = new List<SurfaceInterpolante>();
 
     public Arbre(
+        Vector3 racinePosition,
         Vector2Int nbPalliersRange,
         Vector2Int taillePallierRange,
         Vector2Int hauteurPallierRange,
         int pasPdcPallier,
         float hauteurPdcPallier) {
+
+        this.racinePosition = racinePosition;
         this.nbPalliers = MathTools.RandBetween(nbPalliersRange);
         this.taillePallierRange = taillePallierRange;
         this.hauteurPallierRange = hauteurPallierRange;
         this.pasPdcPallier = pasPdcPallier;
         this.hauteurPdcPallier = hauteurPdcPallier;
+
+        GenerateArbre();
     }
 
     public override string GetName() {
@@ -32,7 +38,8 @@ public class Arbre : CubeEnsemble {
 
 	// Génère un arbre ! <3
 	// Les arbres sont des structures verticales que le joueur devra escalader pour récupérer la récompense à son sommet ! <3
-	void GenerateArbre(Vector3 racine) {
+	void GenerateArbre() {
+        Vector3 racine = racinePosition;
 		// Pour chaque pallier
 		for(int i = 0; i < nbPalliers; i++) {
             // On définit la taille de notre pallier =)
@@ -57,19 +64,19 @@ public class Arbre : CubeEnsemble {
 			//generatePallier(cime, taillePallier);
 			GeneratePallierLagrange(cime, taillePallier);
 
-			// On ouvre au niveau de la cime pour que le joueur puisse passer !
-			if(i != 0) {
-				OuvrirCime(racine);
-			}
+            OuvrirCime(cime);
+            GameObject.Instantiate(map.lumierePrefab, cime, Quaternion.identity);
 
 			// Puis la cime devient la nouvelle racine !
 			racine = cime;
-		}
-		OuvrirCime(racine);
-	}
 
-	// Génère un tronc enre une racine et une cime
-	Pont GenerateTronc(Vector3 racine, Vector3 cime) {
+            // On monte pour ne pas se prendre l'autre pont directement dans la tête en arrivant !
+            racine.y += 3;
+		}
+    }
+
+    // Génère un tronc enre une racine et une cime
+    Pont GenerateTronc(Vector3 racine, Vector3 cime) {
 		Vector3 dir = Vector3.Normalize(cime - racine);
 		int dist = (int)Vector3.Magnitude(cime - racine) + 1;
         Pont pont = new Pont(racine, dir, dist);
@@ -102,47 +109,49 @@ public class Arbre : CubeEnsemble {
 
 		// On génère les points de contrôle !
 		// Il faudra régler le pas !
-		Vector3[,] pdc = PlainMap.GeneratePointsDeControle(distance1, distance2, hauteurPdcPallier, pasPdcPallier);
+		Vector3[,] pdc = SurfaceInterpolante.GeneratePointsDeControle(
+            new Vector2Int(distance1, distance2),
+            hauteurPdcPallier,
+            pasPdcPallier);
 
-		// On récupère les positions de tous les cubes
-		List<Vector3> positions = Interpolation.SurfaceInterpolante(pdc, 1f / pasPdcPallier);
+        // On récupère les positions de tous les cubes
+        SurfaceInterpolante surface = new SurfaceInterpolante(
+            pdc,
+            pasPdcPallier,
+            new Vector2(distance1, distance2),
+            false);
+        palliers.Add(surface);
+        Vector3[,] positions = surface.GetAllPositions();
 
-        // On dénormalise !
-        float distMin = float.PositiveInfinity;
-        float yOffset = 0f;
-		for(int i = 0; i < positions.Count; i++) {
-            // On récupère la hauteur du centre
-            float dist = Vector2.Distance(new Vector2(positions[i].x, positions[i].z), new Vector2(0.5f, 0.5f));
-            if (dist < distMin) {
-                distMin = dist;
-                yOffset = positions[i].y;
-            }
+        int ind1PosCentrale = positions.GetLength(0) / 2;
+        int ind2PosCentrale = positions.GetLength(1) / 2;
+        Vector3 posCentrale = positions[ind1PosCentrale, ind2PosCentrale];
+        Vector3 coinPallier = cimePosition - posCentrale;
+        coinPallier.y += 1;
+        surface.AddOffset(coinPallier);
 
-			Vector3 tmp = positions[i];
-			tmp.x *= distance1;
-			tmp.z *= distance2;
-			positions[i] = tmp;
-		}
-
-		// On décale tous les points de contrôle pour être au bon endroit
-		Vector3 coinPallier = cimePosition - Vector3.right * distance1 / 2 - Vector3.forward * distance2 / 2;
-		for(int i = 0; i < positions.Count; i++) {
-			Vector3 tmp = coinPallier + positions[i];
-            tmp.y -= yOffset;
-			positions[i] = tmp;
-		}
-
-		// On instancie tous les cubes
-		foreach(Vector3 pos in positions) {
-            CreateCube(pos);
-		}
+        surface.GenerateCubes();
 	}
 
 	// Crée un trou pour que le joueur puisse monter et descendre de l'arbre !
 	void OuvrirCime(Vector3 cime) {
-        List<Cube> cubes = map.GetCubesInSphere(cime, 1f);
+        List<Cube> cubes = map.GetCubesInSphere(cime, 2.0f);
         foreach(Cube cube in cubes) {
-            map.DeleteCube(cube);
+            if(!IsInPonts(cube))
+                map.DeleteCube(cube);
+            else if (Vector3.Distance(cime, cube.transform.position) <= 1.0f)
+                map.DeleteCube(cube);
         }
 	}	
+
+    protected bool IsInPonts(Cube cube) {
+        foreach(Pont pont in ponts) {
+            foreach(Cube other in pont.GetCubes()) {
+                if(other == cube) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }
