@@ -17,6 +17,13 @@ public class Interpolation {
 		int n = pdc.GetLength(0);
 		int m = pdc.GetLength(1);
 
+        //Debug.Log("pdc = ");
+        //for(int i = 0; i < n; i++) {
+        //    for(int j = 0; j < m; j++) {
+        //        Debug.Log(pdc[i, j]);
+        //    }
+        //}
+
 		// On récupère la base de la grille
 		float bugX = (n-1) / pas + 1;
 		float bugY = (m-1) / pas + 1;

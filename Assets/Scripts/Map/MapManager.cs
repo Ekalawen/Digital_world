@@ -730,4 +730,14 @@ public abstract class MapManager : MonoBehaviour {
         corners.Add(new Vector3(tailleMap.x - 1, tailleMap.y - 1, tailleMap.z - 1));
         return corners;
     }
+
+    public virtual Vector3 GetPlayerStartPosition() {
+        return GetFreeRoundedLocation();
+    }
+
+    public virtual Vector2 GetPlayerStartOrientationXY(Vector3 playerStartPosition) {
+        Vector3 direction = Vector3.ProjectOnPlane((GetCenter() - playerStartPosition), Vector3.up).normalized;
+        float angle = Vector3.SignedAngle(Vector3.forward, direction, Vector3.up);
+        return new Vector2(90, angle);
+    }
 }

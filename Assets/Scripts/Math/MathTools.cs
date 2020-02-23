@@ -40,4 +40,8 @@ public static class MathTools
             ts[r] = tmp;
         }
     }
+
+    public static int RandBetween(Vector2Int range) {
+        return Random.Range(range.x, range.y + 1);
+    }
 }

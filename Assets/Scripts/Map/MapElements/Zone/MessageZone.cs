@@ -6,6 +6,8 @@ public class MessageZone : ZoneCubique {
 
     public string message;
     public Console.TypeText typeTexte;
+    public bool isImportant = false;
+    public bool isImportantOnly = false;
     public float frequence = 5.0f;
     public bool useSound = false;
 
@@ -35,7 +37,10 @@ public class MessageZone : ZoneCubique {
     }
 
     public void DisplayMessage() {
-        gm.console.AjouterMessage(message, typeTexte);
+        if(isImportant)
+            gm.console.AjouterMessageImportant(message, typeTexte, 2.0f, !isImportantOnly);
+        else
+            gm.console.AjouterMessage(message, typeTexte);
         if(useSound)
             gm.soundManager.PlayReceivedMessageClip();
         timer.Reset();

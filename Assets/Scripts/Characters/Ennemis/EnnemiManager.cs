@@ -59,6 +59,8 @@ public class EnnemiManager : MonoBehaviour {
         foreach (Ennemi ennemi in newEnnemis) {
             if(!ennemi.transform.IsChildOf(ennemisFolder.transform)) {
                 Transform maxParent = ennemi.transform.parent;
+                if (maxParent == null)
+                    maxParent = ennemi.transform;
                 while (maxParent.parent != null)
                     maxParent = maxParent.parent;
                 maxParent.SetParent(ennemisFolder.transform);

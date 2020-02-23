@@ -92,10 +92,9 @@ public class GameManager : MonoBehaviour {
         gravityManager.Initialize();
         map.Initialize();
         //player.Initialize(new Vector3(map.tailleMap / 2, map.tailleMap * 2, map.tailleMap / 2), new Vector2(180, 0));
-        Vector3 position = map.GetFreeRoundedLocation();
-        Vector3 direction = Vector3.ProjectOnPlane((map.GetCenter() - position), Vector3.up).normalized;
-        float angle = Vector3.SignedAngle(Vector3.forward, direction, Vector3.up);
-        player.Initialize(position, new Vector2(90, angle));
+        Vector3 playerPosition = map.GetPlayerStartPosition();
+        Vector2 playerOrientationXY = map.GetPlayerStartOrientationXY(playerPosition);
+        player.Initialize(playerPosition, playerOrientationXY);
         eventManager.Initialize();
         colorManager.Initialize();
         ennemiManager.Initialize();
