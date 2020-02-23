@@ -17,13 +17,15 @@ public class PouvoirLumiereLocalisation : IPouvoir {
 			// On trace les rayons ! =)
 			GameObject[] lumieres = GameObject.FindGameObjectsWithTag ("Objectif");
 			for (int i = 0; i < lumieres.Length; i++) {
-				//Vector3 departRayons = transform.position - 0.5f * camera.transform.forward + 0.5f * Vector3.up;
-				Vector3 departRayons = player.transform.position + 0.5f * Vector3.up;
+                //Vector3 departRayons = transform.position - 0.5f * camera.transform.forward + 0.5f * Vector3.up;
+                Vector3 departRayons = player.transform.position + 0.5f * gm.gravityManager.Up();
                 Vector3 derriere = player.transform.position - player.camera.transform.forward.normalized;
                 Vector3 devant = player.transform.position + player.camera.transform.forward.normalized;
                 Vector3 target = lumieres[i].transform.position;
 				GameObject tr = Instantiate (trailPrefab, derriere, Quaternion.identity) as GameObject;
                 tr.GetComponent<Trail>().SetTarget(lumieres[i].transform.position);
+
+                //// Tentative de BezierTrails !
                 //BezierTrail trail = tr.GetComponent<BezierTrail>();
                 //Debug.Log("count = " + trail.curve.pointCount);
                 //Debug.DrawRay(derriere, devant - derriere, Color.red);
