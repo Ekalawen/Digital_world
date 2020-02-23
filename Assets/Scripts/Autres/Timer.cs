@@ -27,4 +27,8 @@ public class Timer {
     public float GetAvancement() {
         return (Time.timeSinceLevelLoad - debut) / duree;
     }
+
+    public float GetElapsedTime() {
+        return Time.timeSinceLevelLoad - debut;
+    }
 }

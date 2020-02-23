@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4913549307214802}
-  - component: {fileID: 114597651940545052}
+  - component: {fileID: 6183901060518557564}
   m_Layer: 0
-  m_Name: PlainMap
+  m_Name: PlateMap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -31,7 +31,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114597651940545052
+--- !u!114 &6183901060518557564
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -40,7 +40,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1698300190402578}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8abd4759f8e404ee4a680e733d8fdf34, type: 3}
+  m_Script: {fileID: 11500000, guid: c6e6cea264464374c9b345a990e6a5b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   cubePrefab: {fileID: 1586838666760998, guid: 166cc3691555747479ad6b1623980374, type: 3}
@@ -53,16 +53,11 @@ MonoBehaviour:
   lumiereFinalePrefab: {fileID: 6995409226328054440, guid: 9e97ff21fbd4e324b866d7002d438e06,
     type: 3}
   bDoFinalChecks: 1
-  tailleMap: {x: 20, y: 10, z: 20}
-  nbLumieresInitial: 5
+  tailleMap: {x: 60, y: 2, z: 60}
+  nbLumieresInitial: 10
   lumieres: []
   mapFolder: {fileID: 0}
   cubesFolder: {fileID: 0}
   lumieresFolder: {fileID: 0}
   gm: {fileID: 0}
-  tailleX: 20
-  tailleZ: 20
-  ecartsPdc: 5
-  hauteurMax: 10
-  nbArbres: 1
-  roundCubesPositions: 1
+  taille: {x: 60, y: 60}

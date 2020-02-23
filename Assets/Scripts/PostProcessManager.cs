@@ -14,6 +14,12 @@ public class PostProcessManager : MonoBehaviour {
     public float intensityHit= 0.4f;
     public PostProcessVolume hitVolume;
 
+    public bool useScan = false;
+    public float scanRange = 10.0f;
+    public float scanFrequence = 2.0f;
+    public float scanSpeed = 15.0f;
+    public float scanWidth = 2.0f;
+
     public PostProcessVolume pousseeVolume;
 
     protected Coroutine gripCoroutine = null;
@@ -25,13 +31,37 @@ public class PostProcessManager : MonoBehaviour {
     public void Initialize() {
         gm = GameManager.Instance;
         camera = gm.player.camera;
+
+        ScanInitialize();
     }
 
     public void Update() {
         // On fait tourner la skybox !
         RenderSettings.skybox.SetFloat("_Rotation", Time.time * skyboxRotationSpeed);
+
+        OnlyRenderScannableCubes();
     }
 
+    protected void ScanInitialize() {
+        if (!useScan)
+            return;
+        foreach(Cube cube in gm.map.GetAllCubes()) {
+            cube.gameObject.SetActive(false);
+        }
+    }
+
+    protected void OnlyRenderScannableCubes() {
+        if (!useScan)
+            return;
+
+        // On active ce qui est proche du joueur
+        Vector3 center = gm.player.transform.position;
+        foreach(Cube cube in gm.map.GetCubesInSphere(center, scanRange * 2)) { // * 2 pour être sur que la vitesse ne nous carotte pas x)
+            cube.gameObject.SetActive(Vector3.Distance(center, cube.transform.position) <= scanRange);
+        }
+
+        // Puis on applique les scans !
+    }
 
     public void UpdateGripEffect(Player.EtatPersonnage previousState) {
         if (PlayerPrefs.GetString(MenuOptions.GRIP_KEY) == "False")
