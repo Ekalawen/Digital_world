@@ -24,6 +24,8 @@ public class SoundManager : MonoBehaviour {
     public AudioClipParams activationPouvoirClips;
     public AudioClipParams deniedPouvoirClips;
     public AudioClipParams notFoundPouvoirClips;
+    public AudioClipParams victoryClips;
+    public AudioClipParams defeatClips;
 
     public AudioClipParams normalMusics;
     public AudioClipParams endGameMusics;
@@ -135,6 +137,12 @@ public class SoundManager : MonoBehaviour {
     }
     public void PlayNotFoundPouvoirClip() {
         PlayClipsOnSource(notFoundPouvoirClips);
+    }
+    public void PlayVictoryClip() {
+        PlayClipsOnSource(victoryClips);
+    }
+    public void PlayDefeatClip() {
+        PlayClipsOnSource(defeatClips);
     }
 
     //protected void PlayClipsOnSource(List<AudioClip> clips, AudioSource source, bool bReverse = false) {

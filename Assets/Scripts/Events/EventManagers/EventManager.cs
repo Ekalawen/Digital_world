@@ -140,6 +140,8 @@ public class EventManager : MonoBehaviour {
 
         gm.console.LoseGame(reason);
 
+        gm.soundManager.PlayDefeatClip();
+
         // On retient que l'on a fait un essaie !
         string key = PlayerPrefs.GetString(MenuLevel.LEVEL_NAME_KEY) + MenuLevel.NB_TRIES_KEY;
         int newValue = PlayerPrefs.HasKey(key) ? PlayerPrefs.GetInt(key) + 1 : 1;
@@ -160,6 +162,8 @@ public class EventManager : MonoBehaviour {
 
         Debug.Log("WIIIIIIIIIIINNNNNNNNNNNN !!!!!!!!");
         gm.console.WinGame();
+
+        gm.soundManager.PlayVictoryClip();
 
         // On retient que l'on a gagné ce niveau une fois de plus !
         string key = PlayerPrefs.GetString(MenuLevel.LEVEL_NAME_KEY) + MenuLevel.NB_WINS_KEY;
