@@ -140,6 +140,11 @@ public class EventManager : MonoBehaviour {
 
         gm.console.LoseGame(reason);
 
+        // On retient que l'on a fait un essaie !
+        string key = PlayerPrefs.GetString(MenuLevel.LEVEL_NAME_KEY) + MenuLevel.NB_TRIES_KEY;
+        int newValue = PlayerPrefs.HasKey(key) ? PlayerPrefs.GetInt(key) + 1 : 1;
+        PlayerPrefs.SetInt(key, newValue);
+
         StartCoroutine(gm.QuitInSeconds(7));
     }
 
@@ -157,10 +162,18 @@ public class EventManager : MonoBehaviour {
         gm.console.WinGame();
 
         // On retient que l'on a gagné ce niveau une fois de plus !
-        string key = PlayerPrefs.GetString(MenuLevel.LEVEL_NAME_KEY) + "nbVictoires";
+        string key = PlayerPrefs.GetString(MenuLevel.LEVEL_NAME_KEY) + MenuLevel.NB_WINS_KEY;
         int newValue = PlayerPrefs.HasKey(key) ? PlayerPrefs.GetInt(key) + 1 : 1;
         Debug.Log("key = " + key + " newValue = " + newValue);
         PlayerPrefs.SetInt(key, newValue);
+
+        // On retient que notre meilleur score s'il est meilleur !
+        key = PlayerPrefs.GetString(MenuLevel.LEVEL_NAME_KEY) + MenuLevel.HIGHEST_SCORE_KEY;
+        float newValueScore = PlayerPrefs.HasKey(key) ?
+            Mathf.Max(PlayerPrefs.GetFloat(key), gm.timerManager.GetRemainingTime()) :
+            gm.timerManager.GetRemainingTime();
+        Debug.Log("keyScore = " + key + " newValueScore = " + newValueScore);
+        PlayerPrefs.SetFloat(key, newValueScore);
 
         StartCoroutine(gm.QuitInSeconds(7));
     }

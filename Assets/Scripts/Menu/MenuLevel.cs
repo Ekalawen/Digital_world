@@ -7,6 +7,10 @@ using UnityEngine.UI;
 public class MenuLevel : MonoBehaviour {
 
     public static string LEVEL_NAME_KEY = "levelNameKey";
+    public static string CURRENT_INPUT_FIELD_KEY = "currentInputField";
+    public static string NB_WINS_KEY = "nbVictoires";
+    public static string NB_TRIES_KEY = "nbTries";
+    public static string HIGHEST_SCORE_KEY = "highestScore";
 
     public string levelSceneName;
     public MenuLevelSelector menuLevelSelector;
@@ -17,6 +21,7 @@ public class MenuLevel : MonoBehaviour {
     public TexteExplicatif texteExplicatifPasswdError;
     public TexteExplicatif texteExplicatifDonneesHackes;
     public TexteExplicatif texteExplicatifDonneesHackesSuccess;
+    public Text score_nbTries, score_nbWins, score_winrate, score_highestScore;
 
     // Les propriétés du background de ce level
     public float probaSource = 0.00035f; // La probabilité d'être une source
@@ -45,8 +50,9 @@ public class MenuLevel : MonoBehaviour {
 
     private void OnEnable() {
         menuBouncingBackground.SetParameters(probaSource, distanceSource, decroissanceSource, themes);
+        ReadScores();
 
-        string key = textLevelName.text + "currentInputField";
+        string key = textLevelName.text + CURRENT_INPUT_FIELD_KEY;
         inputFieldNext.text = PlayerPrefs.GetString(key);
     }
 
@@ -71,7 +77,7 @@ public class MenuLevel : MonoBehaviour {
 
     public void OpenDonneesHackes() {
         // Changer le texte des données hackés en fonction du nombre de fois où l'on a gagné ce niveau !
-        string key = textLevelName.text + "nbVictoires";
+        string key = textLevelName.text + NB_WINS_KEY;
         int nbVictoires = PlayerPrefs.HasKey(key) ? PlayerPrefs.GetInt(key) : 0;
         if (nbVictoires == 0) {
             texteExplicatifDonneesHackes.Run();
@@ -82,8 +88,48 @@ public class MenuLevel : MonoBehaviour {
 
     public void SaveNextInputField() {
         if (inputFieldNext.text == nextPassword) {
-            string key = textLevelName.text + "currentInputField";
+            string key = textLevelName.text + CURRENT_INPUT_FIELD_KEY;
             PlayerPrefs.SetString(key, inputFieldNext.text);
         }
+    }
+
+    protected void ReadScores() {
+        score_nbWins.text = ChangeLastWord(score_nbWins.text, GetNbWins().ToString());
+        score_nbTries.text = ChangeLastWord(score_nbTries.text, GetNbTries().ToString());
+        string winrateString = (100.0f * GetWinrate()).ToString("N2") + "%";
+        score_winrate.text = ChangeLastWord(score_winrate.text, winrateString);
+        string highestScoreString = (HasHighestScore()) ? GetHighestScore().ToString("N2") : "null";
+        score_highestScore.text = ChangeLastWord(score_highestScore.text, highestScoreString);
+    }
+
+    public int GetNbWins() {
+        string key = textLevelName.text + NB_WINS_KEY;
+        return PlayerPrefs.HasKey(key) ? PlayerPrefs.GetInt(key) : 0;
+    }
+
+    public int GetNbTries() {
+        string key = textLevelName.text + NB_TRIES_KEY;
+        return PlayerPrefs.HasKey(key) ? PlayerPrefs.GetInt(key) : 0;
+    }
+
+    public float GetWinrate() {
+        return (float)GetNbWins() / ((float)GetNbWins() + (float)GetNbTries());
+    }
+
+
+    public bool HasHighestScore() {
+        string key = textLevelName.text + HIGHEST_SCORE_KEY;
+        return PlayerPrefs.HasKey(key);
+    }
+
+    public float GetHighestScore() {
+        string key = textLevelName.text + HIGHEST_SCORE_KEY;
+        return PlayerPrefs.HasKey(key) ? PlayerPrefs.GetFloat(key) : 0.0f;
+    }
+
+    public static string ChangeLastWord(string str, string lastWordReplacement) {
+        string[] splited = str.Split(' ');
+        splited[splited.Length - 1] = lastWordReplacement;
+        return string.Join(" ", splited);
     }
 }
