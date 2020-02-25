@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour {
     public GameObject timerManagerPrefab; // Pour gérer le timer !
     public GameObject gravityManagerPrefab; // Pour gérer la gravité !
     public GameObject scanManagerPrefab; // Pour gérer les scans !
+    public GameObject historyManagerPrefab; // Pour retenir des infos sur la partie !
 
     //////////////////////////////////////////////////////////////////////////////////////
     // ATTRIBUTS PRIVÉES
@@ -58,6 +59,8 @@ public class GameManager : MonoBehaviour {
     [HideInInspector]
     public ScanManager scanManager;
     [HideInInspector]
+    public HistoryManager historyManager;
+    [HideInInspector]
     public GameObject managerFolder;
     [HideInInspector]
     public bool partieDejaTerminee = false;
@@ -87,6 +90,7 @@ public class GameManager : MonoBehaviour {
         postProcessManager = Instantiate(postProcessManagerPrefab, managerFolder.transform).GetComponent<PostProcessManager>();
         timerManager = Instantiate(timerManagerPrefab, managerFolder.transform).GetComponent<TimerManager>();
         scanManager = Instantiate(scanManagerPrefab, managerFolder.transform).GetComponent<ScanManager>();
+        historyManager = Instantiate(historyManagerPrefab, managerFolder.transform).GetComponent<HistoryManager>();
 
         Initialize();
 	}
@@ -107,14 +111,15 @@ public class GameManager : MonoBehaviour {
         postProcessManager.Initialize();
         timerManager.Initialize();
         scanManager.Initialize();
+        historyManager.Initialize();
     }
 
 	// Update is called once per frame
 	void Update () {
 
         // Si on a appuyé sur la touche Escape, on quitte le jeu !
-        if (Input.GetKey ("escape")) {
-			RevenirAuMenu();
+        if (Input.GetKey (KeyCode.Escape)) {
+			QuitterPartie();
 		}
 
 		// Si on a appuyé sur F1 on récupère la souris, ou on la cache ! :D
@@ -138,11 +143,10 @@ public class GameManager : MonoBehaviour {
     public IEnumerator QuitInSeconds(int tps) {
 		yield return new WaitForSeconds (tps);
 		// QuitGame ();
-		RevenirAuMenu();
+		QuitterPartie();
 	}
 
-	public void QuitGame()
-	{
+	public void QuitGame() {
 		// save any game data here
 		#if UNITY_EDITOR
 			// Application.Quit() does not work in the editor so
@@ -153,7 +157,7 @@ public class GameManager : MonoBehaviour {
 		#endif
 	}
 
-	public void RevenirAuMenu() {
+	public void QuitterPartie() {
 		// On détruit tout !
 		Object.Destroy(map);
 		Object.Destroy(player);
@@ -165,6 +169,11 @@ public class GameManager : MonoBehaviour {
 
 		Cursor.lockState = CursorLockMode.None;
 		Cursor.visible = true;
-		SceneManager.LoadScene("MenuScene");
+
+        if(eventManager.IsWin()) {
+            SceneManager.LoadScene("RewardScene");
+        } else {
+            SceneManager.LoadScene("MenuScene");
+        }
 	}
 }

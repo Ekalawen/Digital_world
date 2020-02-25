@@ -18,6 +18,7 @@ public class TimerManager : MonoBehaviour {
     protected float debutTime;
     protected GameManager gm;
     protected float lastTimeSoundTimeOut;
+    protected Timer gameTimer;
 
     public void Initialize() {
 		// Initialisation
@@ -26,6 +27,7 @@ public class TimerManager : MonoBehaviour {
         debutTime = Time.timeSinceLevelLoad;
         totalTime = initialTime;
         lastTimeSoundTimeOut = Time.timeSinceLevelLoad;
+        gameTimer = new Timer(0.0f);
     }
 
     private void Update() {
@@ -95,5 +97,9 @@ public class TimerManager : MonoBehaviour {
             yield return null;
         }
         Destroy(t.gameObject);
+    }
+
+    public float GetElapsedTime() {
+        return gameTimer.GetElapsedTime();
     }
 }

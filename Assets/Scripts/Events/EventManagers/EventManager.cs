@@ -20,6 +20,7 @@ public class EventManager : MonoBehaviour {
     protected bool isEndGameStarted = false;
     protected List<Cube> deathCubes;
     protected bool gameIsEnded = false;
+    protected bool gameIsWin = false;
     protected List<RandomEvent> randomEvents;
     protected GameObject randomEventsFolder;
 
@@ -154,6 +155,7 @@ public class EventManager : MonoBehaviour {
         if (gameIsEnded)
             return;
         gameIsEnded = true;
+        gameIsWin = true;
         if (coroutineDeathCubesCreation != null)
             StopCoroutine(coroutineDeathCubesCreation);
 
@@ -212,4 +214,7 @@ public class EventManager : MonoBehaviour {
 		return false;
 	}
 
+    public bool IsWin() {
+        return gameIsWin;
+    }
 }
