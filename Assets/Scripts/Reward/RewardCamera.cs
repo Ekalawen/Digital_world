@@ -32,4 +32,8 @@ public class RewardCamera : MonoBehaviour {
 
         transform.LookAt(center, Vector3.up);
     }
+
+    public Vector3 GetCenter() {
+        return center;
+    }
 }

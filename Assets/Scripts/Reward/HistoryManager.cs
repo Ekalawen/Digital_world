@@ -22,6 +22,8 @@ public class HistoryManager : MonoBehaviour {
     protected GameManager gm;
     [HideInInspector]
     public Vector3Int mapSize;
+    [HideInInspector]
+    public List<ColorSource.ThemeSource> themes;
     protected List<TimedVector3> playerPositions;
     protected Timer echantillonnageTimer;
 
@@ -35,6 +37,7 @@ public class HistoryManager : MonoBehaviour {
         playerPositions = new List<TimedVector3>();
         echantillonnageTimer = new Timer(frequenceEchantillonnagePositions);
         mapSize = gm.map.tailleMap;
+        themes = gm.colorManager.themes;
     }
 
     public void Update() {

@@ -31,4 +31,8 @@ public class Timer {
     public float GetElapsedTime() {
         return Time.timeSinceLevelLoad - debut;
     }
+
+    public float GetDuree() {
+        return duree;
+    }
 }
