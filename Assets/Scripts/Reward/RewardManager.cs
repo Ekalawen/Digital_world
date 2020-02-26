@@ -7,7 +7,8 @@ public class RewardManager : MonoBehaviour {
 
     public GameObject trailPrefab;
     public RewardCamera rewardCamera;
-    public float delayBetweenTrails = 1.0f;
+    public float delayBetweenTrails = 10.0f;
+    public float durationReward = 10.0f;
 
     protected HistoryManager hm;
     protected List<TimedVector3> playerPositions;
@@ -16,10 +17,12 @@ public class RewardManager : MonoBehaviour {
     protected Timer rewardTimer;
     protected float trailDurationTime;
     protected float maxDistPoints, minDistPoints;
+    protected float accelerationCoefficiant;
 
     public void Start() {
         hm = HistoryManager.Instance;
         playerPositions = hm.GetPositions();
+        accelerationCoefficiant = durationReward / playerPositions[playerPositions.Count - 1].time;
 
         playerCurve = new LinearCurve();
 
@@ -28,6 +31,8 @@ public class RewardManager : MonoBehaviour {
         minDistPoints = float.PositiveInfinity;
         for(int i = 0; i < playerPositions.Count; i++) {
             TimedVector3 tpos = playerPositions[i];
+            tpos.time *= accelerationCoefficiant;
+            playerPositions[i] = tpos;
             playerCurve.AddPoint(tpos.position);
             if(i < playerPositions.Count - 1) {
                 float dist = Vector3.Distance(tpos.position, playerPositions[i + 1].position);
