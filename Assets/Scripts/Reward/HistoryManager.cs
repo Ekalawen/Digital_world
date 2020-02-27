@@ -12,13 +12,17 @@ public struct TimedVector3 {
     }
 }
 
-public struct CharacterHistory {
-    public Character character;
-    public List<TimedVector3> timedPositions;
+public struct ObjectHistory {
+    public MonoBehaviour obj;
+    public List<TimedVector3> positions;
 
-    public CharacterHistory(Character character) {
-        this.character = character;
-        timedPositions = new List<TimedVector3>();
+    public ObjectHistory(MonoBehaviour character) {
+        this.obj = character;
+        positions = new List<TimedVector3>();
+    }
+
+    public float LastTime() {
+        return positions[positions.Count - 1].time;
     }
 }
 
@@ -34,8 +38,9 @@ public class HistoryManager : MonoBehaviour {
     public Vector3Int mapSize;
     [HideInInspector]
     public List<ColorSource.ThemeSource> themes;
-    protected CharacterHistory playerHistory;
-    protected List<CharacterHistory> ennemisHistory;
+    protected ObjectHistory playerHistory;
+    protected List<ObjectHistory> ennemisHistory;
+    protected List<ObjectHistory> lumieresHistory;
     protected Timer echantillonnageTimer;
 
     private void Awake() {
@@ -45,10 +50,15 @@ public class HistoryManager : MonoBehaviour {
 
     public void Initialize() {
         gm = GameManager.Instance;
-        playerHistory = new CharacterHistory(gm.player);
-        ennemisHistory = new List<CharacterHistory>();
+
+        playerHistory = new ObjectHistory(gm.player);
+        ennemisHistory = new List<ObjectHistory>();
+        lumieresHistory = new List<ObjectHistory>();
         foreach (Ennemi ennemi in gm.ennemiManager.ennemis)
-            ennemisHistory.Add(new CharacterHistory(ennemi));
+            ennemisHistory.Add(new ObjectHistory(ennemi));
+        foreach(Lumiere lumiere in gm.map.lumieres)
+            lumieresHistory.Add(new ObjectHistory(lumiere));
+
         echantillonnageTimer = new Timer(frequenceEchantillonnagePositions);
         mapSize = gm.map.tailleMap;
         themes = gm.colorManager.themes;
@@ -57,6 +67,7 @@ public class HistoryManager : MonoBehaviour {
     public void Update() {
         EchantillonnerPositionPlayer();
         EchantillonnerPositionsEnnemis();
+        EchantillonnerPositionsLumieres();
 
         if(echantillonnageTimer.IsOver())
             echantillonnageTimer.Reset();
@@ -65,25 +76,41 @@ public class HistoryManager : MonoBehaviour {
     protected void EchantillonnerPositionPlayer() {
         if(!gm.eventManager.IsWin() && echantillonnageTimer.IsOver()) {
             TimedVector3 tpos = new TimedVector3(gm.player.transform.position, gm.timerManager.GetElapsedTime());
-            playerHistory.timedPositions.Add(tpos);
+            playerHistory.positions.Add(tpos);
         }
     }
 
     protected void EchantillonnerPositionsEnnemis() {
         if(!gm.eventManager.IsWin() && echantillonnageTimer.IsOver()) {
             for(int i = 0; i < ennemisHistory.Count; i++) {
-                CharacterHistory ch = ennemisHistory[i];
-                TimedVector3 tpos = new TimedVector3(ch.character.transform.position, gm.timerManager.GetElapsedTime());
-                ch.timedPositions.Add(tpos);
+                ObjectHistory ch = ennemisHistory[i];
+                TimedVector3 tpos = new TimedVector3(ch.obj.transform.position, gm.timerManager.GetElapsedTime());
+                ch.positions.Add(tpos);
             }
         }
     }
 
-    public CharacterHistory GetPlayerHistory() {
+    protected void EchantillonnerPositionsLumieres() {
+        if(!gm.eventManager.IsWin() && echantillonnageTimer.IsOver()) {
+            for(int i = 0; i < lumieresHistory.Count; i++) {
+                ObjectHistory ch = lumieresHistory[i];
+                if (ch.obj != null) {
+                    TimedVector3 tpos = new TimedVector3(ch.obj.transform.position, gm.timerManager.GetElapsedTime());
+                    ch.positions.Add(tpos);
+                }
+            }
+        }
+    }
+
+    public ObjectHistory GetPlayerHistory() {
         return playerHistory;
     }
 
-    public List<CharacterHistory> GetEnnemisHistory() {
+    public List<ObjectHistory> GetEnnemisHistory() {
         return ennemisHistory;
+    }
+
+    public List<ObjectHistory> GetLumieresHistory() {
+        return lumieresHistory;
     }
 }

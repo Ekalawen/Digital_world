@@ -14,10 +14,10 @@ public class RewardCamera : MonoBehaviour {
         hm = HistoryManager.Instance;
 
         center = Vector3.zero;
-        foreach (TimedVector3 tpos in hm.GetPlayerHistory().timedPositions) {
+        foreach (TimedVector3 tpos in hm.GetPlayerHistory().positions) {
             center += tpos.position;
         }
-        center /= hm.GetPlayerHistory().timedPositions.Count;
+        center /= hm.GetPlayerHistory().positions.Count;
 
         Vector3Int tailleMap = hm.mapSize;
         distance = (tailleMap.x + tailleMap.y + tailleMap.z) / 3.0f;

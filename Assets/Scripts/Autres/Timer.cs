@@ -35,4 +35,8 @@ public class Timer {
     public float GetDuree() {
         return duree;
     }
+
+    public float GetRemainingTime() {
+        return debut + duree - Time.timeSinceLevelLoad;
+    }
 }
