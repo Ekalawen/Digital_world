@@ -8,13 +8,13 @@ public class RewardManager : MonoBehaviour {
     public GameObject trailPrefab;
     public RewardCamera rewardCamera;
     public float delayBetweenTrails = 10.0f;
-    public float durationReward = 10.0f;
+    public float durationTrail = 10.0f;
 
     protected HistoryManager hm;
     protected List<TimedVector3> playerPositions;
     protected Curve playerCurve;
     protected TrailRenderer trail;
-    protected Timer rewardTimer;
+    protected Timer trailTimer, delayTrailTimer;
     protected float trailDurationTime;
     protected float maxDistPoints, minDistPoints;
     protected float accelerationCoefficiant;
@@ -22,7 +22,7 @@ public class RewardManager : MonoBehaviour {
     public void Start() {
         hm = HistoryManager.Instance;
         playerPositions = hm.GetPositions();
-        accelerationCoefficiant = durationReward / playerPositions[playerPositions.Count - 1].time;
+        accelerationCoefficiant = durationTrail / playerPositions[playerPositions.Count - 1].time;
 
         playerCurve = new LinearCurve();
 
@@ -41,22 +41,27 @@ public class RewardManager : MonoBehaviour {
             }
         }
 
-
         trailDurationTime = playerPositions[playerPositions.Count - 1].time;
-        rewardTimer = new Timer(trailDurationTime + delayBetweenTrails);
+        trailTimer = new Timer(trailDurationTime);
+        delayTrailTimer = new Timer(delayBetweenTrails);
 
-        trail = CreateTrail();
+        StartCoroutine(UpdateTrails());
+    }
+
+    protected IEnumerator UpdateTrails() {
+        while(true) {
+            trail = CreateTrail();
+            trailTimer.Reset();
+            yield return new WaitForSeconds(trailTimer.GetDuree());
+
+            delayTrailTimer.Reset();
+            yield return new WaitForSeconds(delayTrailTimer.GetDuree());
+        }
     }
 
     public void Update() {
-        if (rewardTimer.IsOver()) {
-            rewardTimer.Reset();
-            trail = CreateTrail();
-        }
-
-        float avancement = rewardTimer.GetAvancement();
+        float avancement = trailTimer.GetAvancement();
         trail.transform.position = playerCurve.GetAvancement(avancement);
-
         TestExit();
     }
 
