@@ -43,8 +43,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a716f646f31ca7498dad390d688bb4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trailPrefab: {fileID: 1168935213390774, guid: 0a35bfab77d3b724cb4935c589f3c4fe,
+  playerTrailPrefab: {fileID: 1168935213390774, guid: 0a35bfab77d3b724cb4935c589f3c4fe,
+    type: 3}
+  ennemiTrailPrefab: {fileID: 7525071127418206719, guid: 8f948c9cd14eb8f409f4c651cfa77aa0,
     type: 3}
   rewardCamera: {fileID: 0}
   delayBetweenTrails: 2
-  durationTrail: 10
+  durationTrailMinimum: 10
+  durationTrailDivider: 1.2
+  pourcentageEnnemiTrailTime: 0.2

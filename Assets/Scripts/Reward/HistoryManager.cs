@@ -12,6 +12,16 @@ public struct TimedVector3 {
     }
 }
 
+public struct CharacterHistory {
+    public Character character;
+    public List<TimedVector3> timedPositions;
+
+    public CharacterHistory(Character character) {
+        this.character = character;
+        timedPositions = new List<TimedVector3>();
+    }
+}
+
 public class HistoryManager : MonoBehaviour {
 
     static HistoryManager _instance;
@@ -24,7 +34,8 @@ public class HistoryManager : MonoBehaviour {
     public Vector3Int mapSize;
     [HideInInspector]
     public List<ColorSource.ThemeSource> themes;
-    protected List<TimedVector3> playerPositions;
+    protected CharacterHistory playerHistory;
+    protected List<CharacterHistory> ennemisHistory;
     protected Timer echantillonnageTimer;
 
     private void Awake() {
@@ -34,21 +45,45 @@ public class HistoryManager : MonoBehaviour {
 
     public void Initialize() {
         gm = GameManager.Instance;
-        playerPositions = new List<TimedVector3>();
+        playerHistory = new CharacterHistory(gm.player);
+        ennemisHistory = new List<CharacterHistory>();
+        foreach (Ennemi ennemi in gm.ennemiManager.ennemis)
+            ennemisHistory.Add(new CharacterHistory(ennemi));
         echantillonnageTimer = new Timer(frequenceEchantillonnagePositions);
         mapSize = gm.map.tailleMap;
         themes = gm.colorManager.themes;
     }
 
     public void Update() {
+        EchantillonnerPositionPlayer();
+        EchantillonnerPositionsEnnemis();
+
+        if(echantillonnageTimer.IsOver())
+            echantillonnageTimer.Reset();
+    }
+
+    protected void EchantillonnerPositionPlayer() {
         if(!gm.eventManager.IsWin() && echantillonnageTimer.IsOver()) {
             TimedVector3 tpos = new TimedVector3(gm.player.transform.position, gm.timerManager.GetElapsedTime());
-            playerPositions.Add(tpos);
-            echantillonnageTimer.Reset();
+            playerHistory.timedPositions.Add(tpos);
         }
     }
 
-    public List<TimedVector3> GetPositions() {
-        return playerPositions;
+    protected void EchantillonnerPositionsEnnemis() {
+        if(!gm.eventManager.IsWin() && echantillonnageTimer.IsOver()) {
+            for(int i = 0; i < ennemisHistory.Count; i++) {
+                CharacterHistory ch = ennemisHistory[i];
+                TimedVector3 tpos = new TimedVector3(ch.character.transform.position, gm.timerManager.GetElapsedTime());
+                ch.timedPositions.Add(tpos);
+            }
+        }
+    }
+
+    public CharacterHistory GetPlayerHistory() {
+        return playerHistory;
+    }
+
+    public List<CharacterHistory> GetEnnemisHistory() {
+        return ennemisHistory;
     }
 }

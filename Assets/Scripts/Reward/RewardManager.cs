@@ -5,52 +5,73 @@ using UnityEngine.SceneManagement;
 
 public class RewardManager : MonoBehaviour {
 
-    public GameObject trailPrefab;
+    public GameObject playerTrailPrefab;
+    public GameObject ennemiTrailPrefab;
     public RewardCamera rewardCamera;
     public float delayBetweenTrails = 10.0f;
-    public float durationTrail = 10.0f;
+    public float durationTrailMinimum = 10.0f;
+    public float durationTrailLogarithmer = 10.0f;
+    public float pourcentageEnnemiTrailTime = 0.2f;
 
     protected HistoryManager hm;
-    protected List<TimedVector3> playerPositions;
+    protected CharacterHistory playerHistory;
+    protected List<CharacterHistory> ennemisHistory;
     protected Curve playerCurve;
-    protected TrailRenderer trail;
+    protected List<Curve> ennemisCurves;
+    protected float durationTrail;
+    protected TrailRenderer playerTrail;
+    protected List<TrailRenderer> ennemisTrails;
     protected Timer trailTimer, delayTrailTimer;
-    protected float trailDurationTime;
-    protected float maxDistPoints, minDistPoints;
+    protected float playerTrailDurationTime;
+    protected float ennemiTrailDurationTime;
     protected float accelerationCoefficiant;
 
     public void Start() {
         hm = HistoryManager.Instance;
-        playerPositions = hm.GetPositions();
-        accelerationCoefficiant = durationTrail / playerPositions[playerPositions.Count - 1].time;
+        playerHistory = hm.GetPlayerHistory();
+        ennemisHistory = hm.GetEnnemisHistory();
+
+        float dureeGame = playerHistory.timedPositions[playerHistory.timedPositions.Count - 1].time;
+        durationTrail = ComputeDurationTrail(dureeGame);
+        accelerationCoefficiant = durationTrail / dureeGame;
 
         playerCurve = new LinearCurve();
-
-
-        maxDistPoints = 0;
-        minDistPoints = float.PositiveInfinity;
-        for(int i = 0; i < playerPositions.Count; i++) {
-            TimedVector3 tpos = playerPositions[i];
-            tpos.time *= accelerationCoefficiant;
-            playerPositions[i] = tpos;
-            playerCurve.AddPoint(tpos.position);
-            if(i < playerPositions.Count - 1) {
-                float dist = Vector3.Distance(tpos.position, playerPositions[i + 1].position);
-                minDistPoints = Mathf.Min(minDistPoints, dist);
-                maxDistPoints = Mathf.Max(maxDistPoints, dist);
-            }
+        ennemisCurves = new List<Curve>();
+        ennemisTrails = new List<TrailRenderer>();
+        for(int i = 0; i < ennemisHistory.Count; i++) {
+            ennemisCurves.Add(new LinearCurve());
         }
 
-        trailDurationTime = playerPositions[playerPositions.Count - 1].time;
-        trailTimer = new Timer(trailDurationTime);
+        playerCurve = CreateCurveFromHistory(playerHistory);
+        for (int i = 0; i < ennemisHistory.Count; i++)
+            ennemisCurves[i] = CreateCurveFromHistory(ennemisHistory[i]);
+
+        playerTrailDurationTime = durationTrail;
+        ennemiTrailDurationTime = playerTrailDurationTime * pourcentageEnnemiTrailTime;
+        trailTimer = new Timer(playerTrailDurationTime);
         delayTrailTimer = new Timer(delayBetweenTrails);
 
         StartCoroutine(UpdateTrails());
     }
 
+    protected Curve CreateCurveFromHistory(CharacterHistory history) {
+        Curve curve = new LinearCurve();
+        for(int i = 0; i < history.timedPositions.Count; i++) {
+            TimedVector3 tpos = history.timedPositions[i];
+            tpos.time *= accelerationCoefficiant;
+            history.timedPositions[i] = tpos;
+            curve.AddPoint(tpos.position);
+        }
+        return curve;
+    }
+
     protected IEnumerator UpdateTrails() {
         while(true) {
-            trail = CreateTrail();
+            playerTrail = CreateTrail(playerTrailPrefab, playerCurve[0], playerTrailDurationTime, ColorManager.GetColor(hm.themes));
+            ennemisTrails = new List<TrailRenderer>();
+            foreach(Curve curve in ennemisCurves) {
+                ennemisTrails.Add(CreateTrail(ennemiTrailPrefab, curve[0], ennemiTrailDurationTime, Color.red));
+            }
             trailTimer.Reset();
             yield return new WaitForSeconds(trailTimer.GetDuree());
 
@@ -61,14 +82,17 @@ public class RewardManager : MonoBehaviour {
 
     public void Update() {
         float avancement = trailTimer.GetAvancement();
-        trail.transform.position = playerCurve.GetAvancement(avancement);
+        playerTrail.transform.position = playerCurve.GetAvancement(avancement);
+        for(int i = 0; i < ennemisTrails.Count; i++) {
+            ennemisTrails[i].transform.position = ennemisCurves[i].GetAvancement(avancement);
+        }
         TestExit();
     }
 
-    protected TrailRenderer CreateTrail() {
-        TrailRenderer trail = Instantiate(trailPrefab, playerCurve[0], Quaternion.identity).GetComponent<TrailRenderer>();
-        trail.time = trailDurationTime;
-        trail.startColor = ColorManager.GetColor(hm.themes);
+    protected TrailRenderer CreateTrail(GameObject prefab, Vector3 position, float duration, Color color) {
+        TrailRenderer trail = Instantiate(prefab, position, Quaternion.identity).GetComponent<TrailRenderer>();
+        trail.time = duration;
+        trail.startColor = color;
         return trail;
     }
 
@@ -81,5 +105,12 @@ public class RewardManager : MonoBehaviour {
             //Destroy(HistoryManager.Instance.gameObject);
             SceneManager.LoadScene("MenuScene");
 		}
+    }
+    protected float ComputeDurationTrail(float dureeGame) {
+        if (dureeGame <= durationTrailMinimum)
+            return dureeGame;
+        else {
+            return Mathf.Max(durationTrailMinimum, Mathf.Log(dureeGame, durationTrailLogarithmer));
+        }
     }
 }

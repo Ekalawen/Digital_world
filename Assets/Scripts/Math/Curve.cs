@@ -25,6 +25,7 @@ public abstract class Curve {
         float interval = 1.0f / points.Count;
 
         int indPoint = (int)Mathf.Floor(t / interval);
+        indPoint = (int)Mathf.Min(indPoint, points.Count - 1);
 
         float pointT = (t - (indPoint * interval)) / interval;
 

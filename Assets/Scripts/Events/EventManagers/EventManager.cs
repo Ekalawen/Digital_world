@@ -178,7 +178,6 @@ public class EventManager : MonoBehaviour {
         float newValueScore = PlayerPrefs.HasKey(key) ?
             Mathf.Max(PlayerPrefs.GetFloat(key), gm.timerManager.GetRemainingTime()) :
             gm.timerManager.GetRemainingTime();
-        Debug.Log("keyScore = " + key + " newValueScore = " + newValueScore);
         PlayerPrefs.SetFloat(key, newValueScore);
 
         StartCoroutine(gm.QuitInSeconds(7));

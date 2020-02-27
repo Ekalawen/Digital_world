@@ -110,7 +110,6 @@ public class PostProcessManager : MonoBehaviour {
             current = Time.timeSinceLevelLoad;
             yield return null;
         }
-        Debug.Log("targetValue = " + targetValue);
         vignette.intensity.Override(targetValue);
     }
 
