@@ -42,6 +42,7 @@ public class HistoryManager : MonoBehaviour {
     protected List<ObjectHistory> ennemisHistory;
     protected List<ObjectHistory> lumieresHistory;
     protected Timer echantillonnageTimer;
+    protected float dureeGame;
 
     private void Awake() {
         if (!_instance) { _instance = this; }
@@ -112,5 +113,12 @@ public class HistoryManager : MonoBehaviour {
 
     public List<ObjectHistory> GetLumieresHistory() {
         return lumieresHistory;
+    }
+
+    public float GetDureeGame() {
+        return dureeGame;
+    }
+    public void SetDureeGame(float duree) {
+        this.dureeGame = duree;
     }
 }

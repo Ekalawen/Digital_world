@@ -137,6 +137,8 @@ public class EventManager : MonoBehaviour {
 
         gm.timeFreezed = true;
 
+        gm.historyManager.SetDureeGame(gm.timerManager.GetElapsedTime());
+
         gm.player.FreezePouvoirs();
 
         gm.console.LoseGame(reason);
@@ -161,6 +163,8 @@ public class EventManager : MonoBehaviour {
 
         gm.timeFreezed = true;
         gm.player.FreezePouvoirs();
+
+        gm.historyManager.SetDureeGame(gm.timerManager.GetElapsedTime());
 
         Debug.Log("WIIIIIIIIIIINNNNNNNNNNNN !!!!!!!!");
         gm.console.WinGame();
