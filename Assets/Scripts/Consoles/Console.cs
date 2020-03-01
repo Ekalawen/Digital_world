@@ -3,6 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+public struct TimerMessage {
+    public TimedMessage message;
+    public Timer timer;
+
+    public TimerMessage(TimedMessage timedMessage) {
+        this.message = timedMessage;
+        this.timer = new Timer(timedMessage.timing);
+    }
+}
+
 // La Console a pour but de gérer l'interface graphique de l'utilisateur.
 // Elle gérera notemment tous les affichages dans le Terminal du personnage.
 public class Console : MonoBehaviour {
@@ -40,11 +50,12 @@ public class Console : MonoBehaviour {
     protected bool playerIsFollowed = false; // C'est pas vrai, mais c'est pour que l'algo fonctionne ^^
     protected Timer timerPhraseRandom;
     protected Timer timerConseiller;
+    protected List<TimerMessage> timersMessages;
 
 	void Start () {
 	}
 
-    public void Initialize() {
+    public virtual void Initialize() {
 		// Initialisation des variables
 		name = "Console";
         gm = GameManager.Instance;
@@ -59,6 +70,16 @@ public class Console : MonoBehaviour {
 		PremiersMessages();
         timerPhraseRandom = new Timer(Random.Range(tempsAvantPhraseRandom.x, tempsAvantPhraseRandom.y));
         timerConseiller = new Timer(Random.Range(tempsAvantConseiller.x, tempsAvantConseiller.y));
+
+        // Setup les timers des timedMessages
+        InitTimersMessages();
+    }
+
+    protected void InitTimersMessages() {
+        timersMessages = new List<TimerMessage>();
+        foreach(TimedMessage tm in timedMessages) {
+            timersMessages.Add(new TimerMessage(tm));
+        }
     }
 
 	public virtual void PremiersMessages() {
@@ -75,36 +96,30 @@ public class Console : MonoBehaviour {
 		//AjouterMessage ("ANTI-VIRUS ACTIVÉS DANS 5 SECONDES !", TypeText.ENNEMI_TEXT);
 		//AjouterMessage ("On détecte " + gm.ennemiManager.ennemis.Count + " Ennemis !", TypeText.ALLY_TEXT);
 	}
-	
-	void Update () {
-        AltitudeCritique();
 
-        //// On lance des phrases random desfois !
-        //if (timerPhraseRandom.IsOver()) {
-        //	LancerPhraseRandom ();
-        //  timerPhraseRandom = new Timer(Random.Range(tempsAvantPhraseRandom.x, tempsAvantPhraseRandom.y));
-        //}
-
-        // On lance des conseils !
+    protected void LancerConseils() {
         if (timerConseiller.IsOver()) {
             Conseiller();
             timerConseiller = new Timer(Random.Range(tempsAvantConseiller.x, tempsAvantConseiller.y));
         }
+    }
 
-        // On efface l'important texte si ça fait suffisamment longtemps qu'il est affiché
+    protected void EffacerImportantText() {
         if (Time.timeSinceLevelLoad - lastTimeImportantText > tempsImportantText) {
 			importantText.text = "";
 		}
+    }
 
-        // On conseille d'appuyer sur TAB si le joueur galère a trouver des orbes
+    protected void ConseillerUtiliserDetection() {
         if (map.GetLumieres().Count > 0) {
 			if (Time.timeSinceLevelLoad - timeLastLumiereAttrapee > 25) {
 				timeLastLumiereAttrapee = Time.timeSinceLevelLoad;
 				AjouterMessage ("On peut te géolocaliser les Datas si tu appuies sur E ou A !", TypeText.ALLY_TEXT);
 			}
 		}
+    }
 
-        // On détecte si le joueur est safe ou pas !
+    protected void DetectPlayerSafeOrNot() {
         if (!gm.eventManager.IsGameOver()) {
             bool oldState = playerIsFollowed;
             playerIsFollowed = gm.ennemiManager.IsPlayerFollowed();
@@ -115,16 +130,43 @@ public class Console : MonoBehaviour {
                 SemerEnnemis();
             }
         }
+    }
 
-        // On lance les messages timed
-        for(int i = 0; i < timedMessages.Count; i++) {
-            TimedMessage timedMessage = timedMessages[i];
-            if(Time.timeSinceLevelLoad > timedMessage.timing) {
-                AjouterMessageImportant(timedMessage.message, timedMessage.type, timedMessage.duree);
-                timedMessages.Remove(timedMessage);
+    protected virtual void RunTimedMessages() {
+        for(int i = 0; i < timersMessages.Count; i++) {
+            TimerMessage timerMessage = timersMessages[i];
+            if(timerMessage.timer.IsOver()) {
+                AjouterMessageImportant(timerMessage.message.message, timerMessage.message.type, timerMessage.message.duree);
+                timersMessages.Remove(timerMessage);
+                timedMessages.Remove(timerMessage.message);
                 i--;
             }
         }
+    }
+	
+	protected virtual void Update () {
+        AltitudeCritique();
+
+        //// On lance des phrases random desfois !
+        //if (timerPhraseRandom.IsOver()) {
+        //	LancerPhraseRandom ();
+        //  timerPhraseRandom = new Timer(Random.Range(tempsAvantPhraseRandom.x, tempsAvantPhraseRandom.y));
+        //}
+
+        // On lance des conseils !
+        LancerConseils();
+
+        // On efface l'important texte si ça fait suffisamment longtemps qu'il est affiché
+        EffacerImportantText();
+
+        // On conseille d'appuyer sur TAB si le joueur galère a trouver des orbes
+        ConseillerUtiliserDetection();
+
+        // On détecte si le joueur est safe ou pas !
+        DetectPlayerSafeOrNot();
+
+        // On lance les messages timed
+        RunTimedMessages();
 	}
 
 	public void UpdateLastLumiereAttrapee() {
@@ -202,7 +244,38 @@ public class Console : MonoBehaviour {
 			break;
 		}
 
-		// On augmente tous les numéros de lignes
+        // On augmente tous les numéros de lignes
+        AddBlankLine();
+
+		// Et on met à jour leur hauteur d'affichage en conséquence !
+		for (int i = 0; i < lines.Count; i++) {
+			lines [i].GetComponent<RectTransform> ().anchoredPosition = new Vector2 (150, (tailleTexte + 2) * numLines [i]);
+		}
+
+		// On l'ajoute à la liste de lines !
+		lines.Add(newText);
+		numLines.Add (1);
+
+        // On s'assure que le message rentre dans la console ! <3
+        int weightMax = 280;
+        for(int i = 0; i < message.Length; i++) {
+            text.text = message.Substring(0, i);
+            if(text.preferredWidth > weightMax) {
+                string nextMessage = message.Substring(i, message.Length - i);
+                if(gm != null)
+                    gm.historyManager.AddConsoleMessage(new TimedMessage(text.text, type, gm.timerManager.GetElapsedTime(), 0.0f));
+                AjouterMessage(nextMessage, type, bUsePrefix: false);
+                return;
+            }
+        }
+        text.text = message;
+
+        // On sauvegarde le message si celui-ci a été sauvegardé ! :3
+        if(gm != null)
+            gm.historyManager.AddConsoleMessage(new TimedMessage(message, type, gm.timerManager.GetElapsedTime(), 0.0f));
+	}
+
+    public void AddBlankLine() {
 		List<int> toDelete = new List<int>();
 		for (int i = 0; i < numLines.Count; i++) {
 			numLines [i] += 1;
@@ -215,27 +288,12 @@ public class Console : MonoBehaviour {
 			Destroy (lines [i]);
 			lines.RemoveAt (i);
 		}
+    }
 
-		// Et on met à jour leur hauteur d'affichage en conséquence !
-		for (int i = 0; i < lines.Count; i++) {
-			lines [i].GetComponent<RectTransform> ().anchoredPosition = new Vector2 (150, (tailleTexte + 2) * numLines [i]);
-		}
-
-		// On l'ajoute à la liste de lines !
-		lines.Add(newText);
-		numLines.Add (1);
-
-        // On s'assure que le message rentre dans la console ! <3
-        int weightMax = 290;
-        for(int i = 0; i < message.Length; i++) {
-            text.text = message.Substring(0, i);
-            if(text.preferredWidth > weightMax) {
-                AjouterMessage(message.Substring(i, message.Length - i), type, bUsePrefix: false);
-                return;
-            }
-        }
-        text.text = message;
-	}
+    public void CleanAllLines() {
+        while (numLines.Count > 0)
+            AddBlankLine();
+    }
 
 	void LancerPhraseRandom() {
 		List<string> phrases = new List<string> ();

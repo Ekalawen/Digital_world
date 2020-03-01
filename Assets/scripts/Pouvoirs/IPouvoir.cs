@@ -25,7 +25,7 @@ public abstract class IPouvoir : MonoBehaviour {
         gm = FindObjectOfType<GameManager>();
         player = gm.player;
         cooldownTimer = new Timer(cooldown);
-        cooldownTimer.Enable();
+        cooldownTimer.SetOver();
     }
 
     // La fonction appelée lorsque le joueur appui sur une touche

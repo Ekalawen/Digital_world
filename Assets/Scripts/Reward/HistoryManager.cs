@@ -42,6 +42,7 @@ public class HistoryManager : MonoBehaviour {
     protected ObjectHistory playerHistory;
     protected List<ObjectHistory> ennemisHistory;
     protected List<ObjectHistory> lumieresHistory;
+    protected List<TimedMessage> timedMessages;
     protected Timer echantillonnageTimer;
     protected float dureeGame;
 
@@ -58,11 +59,8 @@ public class HistoryManager : MonoBehaviour {
             ennemisHistory = new List<ObjectHistory>();
         if(lumieresHistory == null)
             lumieresHistory = new List<ObjectHistory>();
-
-        //foreach (Ennemi ennemi in gm.ennemiManager.ennemis)
-        //    ennemisHistory.Add(new ObjectHistory(ennemi));
-        //foreach(Lumiere lumiere in gm.map.GetLumieres())
-        //    lumieresHistory.Add(new ObjectHistory(lumiere));
+        if(timedMessages == null)
+            timedMessages = new List<TimedMessage>();
 
         echantillonnageTimer = new Timer(frequenceEchantillonnagePositions);
         mapSize = gm.map.tailleMap;
@@ -136,5 +134,15 @@ public class HistoryManager : MonoBehaviour {
         if(ennemisHistory == null)
             ennemisHistory = new List<ObjectHistory>();
         ennemisHistory.Add(new ObjectHistory(ennemi));
+    }
+
+    public void AddConsoleMessage(TimedMessage timedMessage) {
+        if (timedMessages == null)
+            timedMessages = new List<TimedMessage>();
+        timedMessages.Add(timedMessage);
+    }
+
+    public List<TimedMessage> GetTimedMessages() {
+        return timedMessages;
     }
 }

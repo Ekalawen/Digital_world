@@ -5,22 +5,33 @@ using UnityEngine.SceneManagement;
 
 public class RewardManager : MonoBehaviour {
 
+    static RewardManager _instance;
+    public static RewardManager Instance { get { return _instance ?? (_instance = new GameObject().AddComponent<RewardManager>()); } }
+
     public GameObject playerTrailPrefab;
     public GameObject ennemiTrailPrefab;
     public GameObject lumiereObjectPrefab;
-    public RewardCamera rewardCamera;
+    public GameObject consolePrefab; // On récupère la console !
     public float delayBetweenTrails = 10.0f;
     public float durationTrailMinimum = 10.0f;
     public float durationTrailLogarithmer = 10.0f;
     public float pourcentageEnnemiTrailTime = 0.2f;
 
+    protected Transform displayersFolder;
     protected RewardTrailThemeDisplayer playerDisplayer;
     protected List<RewardTrailDisplayer> ennemisDisplayers;
     protected List<RewardLumiereDisplayer> lumieresDisplayers;
 
     protected HistoryManager hm;
+	protected RewardConsole console;
+
+    void Awake() {
+        if (!_instance) { _instance = this; }
+    }
 
     public void Start() {
+        displayersFolder = new GameObject("Displayers").transform;
+
         hm = HistoryManager.Instance;
         ObjectHistory playerHistory = hm.GetPlayerHistory();
         List<ObjectHistory> ennemisHistory = hm.GetEnnemisHistory();
@@ -31,14 +42,13 @@ public class RewardManager : MonoBehaviour {
         float accelerationCoefficiant = dureeReward / dureeGame;
         Debug.Log("DureeGame = " + dureeGame + " DureeReward = " + dureeReward + " Acceleration = " + accelerationCoefficiant);
 
-        List<ObjectHistory> allHistorys = new List<ObjectHistory>();
-        allHistorys.Add(playerHistory);
-        allHistorys.AddRange(ennemisHistory);
-        allHistorys.AddRange(lumieresHistory);
-        foreach(ObjectHistory oh in allHistorys) {
-            Debug.Log("start = " + oh.positions[0].time + " end = " + oh.LastTime());
-        }
-        Debug.Log("NB LUMIERES A LA BASE = " + lumieresHistory.Count);
+        //List<ObjectHistory> allHistorys = new List<ObjectHistory>();
+        //allHistorys.Add(playerHistory);
+        //allHistorys.AddRange(ennemisHistory);
+        //allHistorys.AddRange(lumieresHistory);
+        //foreach(ObjectHistory oh in allHistorys) {
+        //    Debug.Log("start = " + oh.positions[0].time + " end = " + oh.LastTime());
+        //}
 
         float playerTrailDurationTime = dureeReward;
         float ennemiTrailDurationTime = playerTrailDurationTime * pourcentageEnnemiTrailTime;
@@ -59,6 +69,16 @@ public class RewardManager : MonoBehaviour {
             displayer.Initialize(lumiereObjectPrefab, history, dureeReward, delayBetweenTrails, accelerationCoefficiant);
             lumieresDisplayers.Add(displayer);
         }
+
+        // On lance la console ! :)
+        console = Instantiate(consolePrefab).GetComponent<RewardConsole>();
+        console.timedMessages = new List<TimedMessage>();
+        foreach (TimedMessage tm in hm.GetTimedMessages()) {
+            tm.timing *= accelerationCoefficiant;
+            console.timedMessages.Add(tm);
+        }
+        console.Initialize();
+        console.SetDureeReward(dureeReward, delayBetweenTrails);
     }
 
     public void Update() {
@@ -69,9 +89,7 @@ public class RewardManager : MonoBehaviour {
         // Si on a appuyé sur la touche Escape, on revient au menu !
         if (Input.GetKey (KeyCode.Escape) 
          || Input.GetKey(KeyCode.KeypadEnter)
-         || Input.GetKey(KeyCode.Return)
-         || Input.GetMouseButton(0)) {
-            //Destroy(HistoryManager.Instance.gameObject);
+         || Input.GetKey(KeyCode.Return)) {
             SceneManager.LoadScene("MenuScene");
 		}
     }
@@ -82,5 +100,9 @@ public class RewardManager : MonoBehaviour {
         else {
             return Mathf.Max(durationTrailMinimum, Mathf.Log(dureeGame, durationTrailLogarithmer));
         }
+    }
+
+    public Transform GetDisplayersFolder() {
+        return displayersFolder;
     }
 }

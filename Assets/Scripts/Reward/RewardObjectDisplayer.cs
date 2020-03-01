@@ -15,6 +15,7 @@ public class RewardObjectDisplayer : MonoBehaviour {
     protected GameObject obj;
     protected Timer durationTimer;
     protected Timer delayTimer;
+    protected Transform displayerFolder;
 
     public virtual void Initialize(GameObject prefab, ObjectHistory history, float duration, float delay, float acceleration) {
         this.prefab = prefab;
@@ -29,14 +30,15 @@ public class RewardObjectDisplayer : MonoBehaviour {
         this.durationTimer = new Timer(duration - delayBeforeSpawning - delayBeforeEnd);
         this.delayTimer = new Timer(delay);
 
+        this.displayerFolder = RewardManager.Instance.GetDisplayersFolder();
+
         StartCoroutine(UpdateObject());
     }
 
     public virtual void ResetObject() {
         if (obj != null)
             Destroy(obj.gameObject);
-        obj = GameObject.Instantiate(prefab, curve[0], Quaternion.identity);
-        Debug.Log("Reset obj " + prefab.name);
+        obj = GameObject.Instantiate(prefab, curve[0], Quaternion.identity, displayerFolder);
     }
 
     protected Curve CreateCurveFromHistory() {
