@@ -23,8 +23,7 @@ public class LumiereFurtiveTrap : LumiereFurtive {
         // Ainsi qu'une autre lumiere furtive ! (mais juste furtive cette fois-ci ^^)
         for (int i = 0; i < nbLumieresToGenerate; i++) {
             Vector3 posLumiere = gm.map.GetFarRoundedLocation(gm.player.transform.position);
-            Lumiere lumiere = GameObject.Instantiate(lumiereGeneratedPrefab, posLumiere, Quaternion.identity, gm.map.lumieresFolder.transform).GetComponent<Lumiere>();
-            gm.map.lumieres.Add(lumiere);
+            gm.map.CreateLumiere(posLumiere, LumiereType.SPECIAL);
         }
 
         gm.console.AnalyzeLevelDeuxiemeSalve();

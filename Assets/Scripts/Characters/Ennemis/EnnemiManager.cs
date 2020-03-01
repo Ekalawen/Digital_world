@@ -32,8 +32,9 @@ public class EnnemiManager : MonoBehaviour {
             for (int j = 0; j < nbEnnemi; j++) {
                 Vector3 pos = gm.map.GetFreeRoundedLocation();
                 //Vector3 pos = gm.map.GetFreeSphereLocation(1.0f);
-                Ennemi ennemi = Instantiate(ennemiPrefab, pos, Quaternion.identity, ennemisFolder.transform).GetComponent<Ennemi>();
-                ennemis.Add(ennemi);
+                //Ennemi ennemi = Instantiate(ennemiPrefab, pos, Quaternion.identity, ennemisFolder.transform).GetComponent<Ennemi>();
+                //ennemis.Add(ennemi);
+                GenerateEnnemiFromPrefab(ennemiPrefab, pos);
             }
         }
     }
@@ -72,6 +73,9 @@ public class EnnemiManager : MonoBehaviour {
     public Ennemi GenerateEnnemiFromPrefab(GameObject ennemiPrefab, Vector3 pos) {
         Ennemi ennemi = Instantiate(ennemiPrefab, pos, Quaternion.identity, ennemisFolder.transform).GetComponent<Ennemi>();
         ennemis.Add(ennemi);
+
+        gm.historyManager.AddEnnemiHistory(ennemi);
+
         return ennemi;
     }
 }

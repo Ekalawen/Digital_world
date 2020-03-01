@@ -78,6 +78,7 @@ public class GameManager : MonoBehaviour {
     void Start () {
         // On crée ce dont on a besoin
         managerFolder = new GameObject("Managers");
+        timerManager = Instantiate(timerManagerPrefab, managerFolder.transform).GetComponent<TimerManager>();
         gravityManager = Instantiate(gravityManagerPrefab, managerFolder.transform).GetComponent<GravityManager>();
 		map = Instantiate(mapManagerPrefab, managerFolder.transform).GetComponent<MapManager>();
         player = Instantiate(playerPrefab, managerFolder.transform).GetComponent<Player>();
@@ -88,7 +89,6 @@ public class GameManager : MonoBehaviour {
         ennemiManager = Instantiate(ennemiManagerPrefab, managerFolder.transform).GetComponent<EnnemiManager>();
         soundManager = Instantiate(soundManagerPrefab, managerFolder.transform).GetComponent<SoundManager>();
         postProcessManager = Instantiate(postProcessManagerPrefab, managerFolder.transform).GetComponent<PostProcessManager>();
-        timerManager = Instantiate(timerManagerPrefab, managerFolder.transform).GetComponent<TimerManager>();
         scanManager = Instantiate(scanManagerPrefab, managerFolder.transform).GetComponent<ScanManager>();
         historyManager = Instantiate(historyManagerPrefab, managerFolder.transform).GetComponent<HistoryManager>();
 
@@ -97,9 +97,9 @@ public class GameManager : MonoBehaviour {
 
     protected virtual void Initialize() {
         // Puis on les initialises !
+        timerManager.Initialize();
         gravityManager.Initialize();
         map.Initialize();
-        //player.Initialize(new Vector3(map.tailleMap / 2, map.tailleMap * 2, map.tailleMap / 2), new Vector2(180, 0));
         Vector3 playerPosition = map.GetPlayerStartPosition();
         Vector2 playerOrientationXY = map.GetPlayerStartOrientationXY(playerPosition);
         player.Initialize(playerPosition, playerOrientationXY);
@@ -109,7 +109,6 @@ public class GameManager : MonoBehaviour {
         console.Initialize();
         soundManager.Initialize();
         postProcessManager.Initialize();
-        timerManager.Initialize();
         scanManager.Initialize();
         historyManager.Initialize();
     }

@@ -65,7 +65,7 @@ public class Console : MonoBehaviour {
         string levelName = PlayerPrefs.GetString(MenuLevel.LEVEL_NAME_KEY);
 		AjouterMessage ("[Niveau]: " + levelName, TypeText.BASIC_TEXT, bUsePrefix: false);
 		AjouterMessage ("[Niveau]: Initialisation de la Matrix ...", TypeText.BASIC_TEXT, bUsePrefix: false);
-		AjouterMessageImportant (map.lumieres.Count + " Datas trouvées !", TypeText.ALLY_TEXT, 5);
+		AjouterMessageImportant (map.GetLumieres().Count + " Datas trouvées !", TypeText.ALLY_TEXT, 5);
 		AjouterMessage (gm.ennemiManager.ennemis.Count + " Ennemis détectés !", TypeText.ALLY_TEXT);
 
 		//AjouterMessage ("Chargement de la Matrix ...", TypeText.BASIC_TEXT);
@@ -97,7 +97,7 @@ public class Console : MonoBehaviour {
 		}
 
         // On conseille d'appuyer sur TAB si le joueur galère a trouver des orbes
-        if (map.lumieres.Count > 0) {
+        if (map.GetLumieres().Count > 0) {
 			if (Time.timeSinceLevelLoad - timeLastLumiereAttrapee > 25) {
 				timeLastLumiereAttrapee = Time.timeSinceLevelLoad;
 				AjouterMessage ("On peut te géolocaliser les Datas si tu appuies sur E ou A !", TypeText.ALLY_TEXT);
@@ -401,7 +401,7 @@ public class Console : MonoBehaviour {
 
 	// Quand le joueur lance les trails
 	public void RunLocalisation() {
-		int nbLumieresRestantes = map.lumieres.Count;
+		int nbLumieresRestantes = map.GetLumieres().Count;
 		if(nbLumieresRestantes > 0) {
 			AjouterMessage ("On t'envoie les données ! Il te restes " + nbLumieresRestantes + " objectifs !", Console.TypeText.ALLY_TEXT);
 		} else {

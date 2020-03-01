@@ -13,15 +13,16 @@ public class RewardCamera : MonoBehaviour {
     private void Start() {
         hm = HistoryManager.Instance;
 
-        center = Vector3.zero;
-        foreach (TimedVector3 tpos in hm.GetPlayerHistory().positions) {
-            center += tpos.position;
-        }
-        center /= hm.GetPlayerHistory().positions.Count;
+        //center = Vector3.zero;
+        //foreach (TimedVector3 tpos in hm.GetPlayerHistory().positions) {
+        //    center += tpos.position;
+        //}
+        //center /= hm.GetPlayerHistory().positions.Count;
+        center = (Vector3)hm.mapSize / 2.0f;
 
         Vector3Int tailleMap = hm.mapSize;
         distance = (tailleMap.x + tailleMap.y + tailleMap.z) / 3.0f;
-        transform.position = new Vector3(distance * Mathf.Sqrt(3), distance / 2, 0);
+        transform.position = new Vector3(distance * Mathf.Sqrt(3), hm.mapSize.y / 2, 0);
     }
 
     private void Update() {

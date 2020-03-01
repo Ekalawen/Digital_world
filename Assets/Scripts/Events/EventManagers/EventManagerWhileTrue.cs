@@ -11,7 +11,7 @@ public class EventManagerWhileTrue : EventManager {
 
     public override void OnLumiereCaptured(Lumiere.LumiereType type) {
         if (type == Lumiere.LumiereType.NORMAL) {
-            int nbLumieres = map.lumieres.Count;
+            int nbLumieres = map.GetLumieres().Count;
             if (nbLumieres == 0 && !isEndGameStarted) {
                 gm.soundManager.PlayEndGameMusic();
                 StartEndGame();

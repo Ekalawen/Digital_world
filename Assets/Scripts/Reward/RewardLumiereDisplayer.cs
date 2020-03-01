@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class RewardLumiereDisplayer : RewardObjectDisplayer {
 
-    public void Initialize(GameObject prefab, ObjectHistory history, float duration, float delay, float acceleration) {
-        base.Initialize(prefab, history, duration, delay, acceleration);
+    public override void ResetObject() {
+        base.ResetObject();
+        Debug.Log("On LightCreation = \n" + Environment.StackTrace);
     }
 
     public override void Update() {
@@ -13,8 +15,11 @@ public class RewardLumiereDisplayer : RewardObjectDisplayer {
             return;
         float lastTime = history.LastTime();
         float avancement = durationTimer.GetAvancement();
-        if (avancement > (lastTime / duration) / acceleration) {
-            Destroy(obj);
+        //Debug.Log("dureeReward = " + duration + " avancement = " + avancement + " lastTime = " + lastTime + " acceleration = " + acceleration);
+        //if (avancement >= (lastTime / duration) * acceleration) {
+        if (avancement > 1.0f) {
+            Debug.Log("DESTORYED !!!");
+            Destroy(obj.gameObject);
             obj = null;
         } else {
             obj.transform.position = curve.GetAvancement(avancement);

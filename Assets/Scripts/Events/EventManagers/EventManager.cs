@@ -44,7 +44,7 @@ public class EventManager : MonoBehaviour {
     {
         if (type == Lumiere.LumiereType.NORMAL)
         {
-            int nbLumieres = map.lumieres.Count;
+            int nbLumieres = map.GetLumieres().Count;
             if (nbLumieres == 0 && !isEndGameStarted) {
                 if (!bNoEndgame) {
                     gm.soundManager.PlayEndGameMusic();
@@ -195,7 +195,7 @@ public class EventManager : MonoBehaviour {
 		// Si le joueur est tombé du cube ...
 		if (gm.player.transform.position.y < ejectionTreshold) {
 			// Si le joueur a perdu ...
-			if (map.lumieres.Count > 0) {
+			if (map.GetLumieres().Count > 0) {
 				//console.JoueurEjecte();
                 gm.console.LoseGame(EventManager.DeathReason.FALL_OUT);
 			// Si le joueur a gagné !

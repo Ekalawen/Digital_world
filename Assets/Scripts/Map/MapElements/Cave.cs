@@ -48,7 +48,7 @@ public class Cave : CubeEnsemble {
 
         // Et toutes les lumières
         List<Lumiere> lumieresToDeletes = new List<Lumiere>();
-        foreach(Lumiere lumiere in map.lumieres) {
+        foreach(Lumiere lumiere in map.GetLumieres()) {
             Vector3 posL = lumiere.transform.position;
             if(Mathf.Abs(center.x - posL.x) <= halfSize.x
             && Mathf.Abs(center.y - posL.y) <= halfSize.y
@@ -58,7 +58,7 @@ public class Cave : CubeEnsemble {
             }
         }
         foreach(Lumiere lumiereToDelete in lumieresToDeletes) {
-            map.lumieres.Remove(lumiereToDelete);
+            map.RemoveLumiere(lumiereToDelete);
             Object.DestroyImmediate(lumiereToDelete.gameObject);
         }
     }

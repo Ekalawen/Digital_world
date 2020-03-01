@@ -24,6 +24,7 @@ public abstract class MapManager : MonoBehaviour {
 	public GameObject deathCubePrefab; // On récupère ce qu'est qu'un cube de la mort ! :)
 	public GameObject indestructibleCubePrefab; // On récupère ce qu'est qu'un cube indestructible ! :)
 	public GameObject lumierePrefab; // On récupère les lumières !
+	public GameObject lumiereSpecialePrefab; // On récupère les lumières !
 	public GameObject lumiereFinalePrefab; // On récupère les lumières finales !
 
     public bool bDoFinalChecks = true;
@@ -34,7 +35,7 @@ public abstract class MapManager : MonoBehaviour {
     protected List<Cube> cubesNonRegular; // Toutes les autres positions (non-entières)
     [HideInInspector] public List<MapElement> mapElements;
     [HideInInspector]
-    public List<Lumiere> lumieres;
+    protected List<Lumiere> lumieres;
     [HideInInspector]
     public GameObject mapFolder, cubesFolder, lumieresFolder;
     protected Cube.CubeType currentCubeTypeUsed = Cube.CubeType.NORMAL;
@@ -55,6 +56,7 @@ public abstract class MapManager : MonoBehaviour {
         lumieresFolder = new GameObject("Lumieres");
         lumieresFolder.transform.SetParent(mapFolder.transform);
         mapElements = new List<MapElement>();
+        lumieres = new List<Lumiere>();
         cubesRegular = new Cube[tailleMap.x + 1, tailleMap.y + 1, tailleMap.z + 1];
         for (int i = 0; i <= tailleMap.x; i++)
             for (int j = 0; j <= tailleMap.y; j++)
@@ -310,6 +312,9 @@ public abstract class MapManager : MonoBehaviour {
 
         Lumiere lumiere = GameObject.Instantiate(GetPrefab(type), pos, Quaternion.identity, lumieresFolder.transform).GetComponent<Lumiere>();
         lumieres.Add(lumiere);
+
+        gm.historyManager.AddLumiereHistory(lumiere);
+
         return lumiere;
     }
 
@@ -318,6 +323,8 @@ public abstract class MapManager : MonoBehaviour {
         {
             case Lumiere.LumiereType.NORMAL:
                 return lumierePrefab;
+            case Lumiere.LumiereType.SPECIAL:
+                return lumiereSpecialePrefab;
             case Lumiere.LumiereType.FINAL:
                 return lumiereFinalePrefab;
         }
@@ -739,5 +746,13 @@ public abstract class MapManager : MonoBehaviour {
         Vector3 direction = Vector3.ProjectOnPlane((GetCenter() - playerStartPosition), Vector3.up).normalized;
         float angle = Vector3.SignedAngle(Vector3.forward, direction, Vector3.up);
         return new Vector2(90, angle);
+    }
+
+    public List<Lumiere> GetLumieres() {
+        return lumieres;
+    }
+
+    public void RemoveLumiere(Lumiere lumiere) {
+        lumieres.Remove(lumiere);
     }
 }

@@ -9,7 +9,7 @@ public class Timer {
 
     public Timer(float duree) {
         this.duree = duree;
-        debut = Time.timeSinceLevelLoad;
+        this.debut = Time.timeSinceLevelLoad;
     }
 
     public bool IsOver() {

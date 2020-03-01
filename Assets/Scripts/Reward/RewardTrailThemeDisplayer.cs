@@ -18,6 +18,7 @@ public class RewardTrailThemeDisplayer : RewardTrailDisplayer {
 
     public override void Update() {
         base.Update();
-        trail.time = durationTimer.GetRemainingTime();
+        if(trail != null)
+            trail.time = durationTimer.GetRemainingTime();
     }
 }

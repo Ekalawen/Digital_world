@@ -63,7 +63,7 @@ public class BlackoutEvent : RandomEvent {
         RenderSettings.ambientIntensity = ambientIntensity;
         RenderSettings.reflectionIntensity = reflectionIntensity;
 
-        foreach(Lumiere lumiere in gm.map.lumieres) {
+        foreach(Lumiere lumiere in gm.map.GetLumieres()) {
             StartCoroutine(SwitchOffLight(lumiere, duree));
         }
     }

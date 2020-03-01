@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Lumiere : MonoBehaviour {
 
-    public enum LumiereType { NORMAL, FINAL };
+    public enum LumiereType { NORMAL, FINAL, SPECIAL };
 
     public LumiereType type;
     public float timeBonus = 10.0f;
@@ -19,11 +19,11 @@ public class Lumiere : MonoBehaviour {
 	// Si le joueur nous touche, on disparait !
 	protected virtual void OnTriggerEnter(Collider hit) {
 		if (hit.gameObject.name == "Joueur"){
-            gm.map.lumieres.Remove(this);
+            gm.map.RemoveLumiere(this);
 			Destroy (this.gameObject);
 
 			// Et on certifie qu'on a bien attrapé une orbe
-            gm.console.AttraperLumiere(gm.map.lumieres.Count);
+            gm.console.AttraperLumiere(gm.map.GetLumieres().Count);
 
 			gm.console.UpdateLastLumiereAttrapee();
 

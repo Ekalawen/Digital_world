@@ -16,9 +16,10 @@ public struct ObjectHistory {
     public MonoBehaviour obj;
     public List<TimedVector3> positions;
 
-    public ObjectHistory(MonoBehaviour character) {
-        this.obj = character;
+    public ObjectHistory(MonoBehaviour obj) {
+        this.obj = obj;
         positions = new List<TimedVector3>();
+        positions.Add(new TimedVector3(obj.transform.position, GameManager.Instance.timerManager.GetElapsedTime()));
     }
 
     public float LastTime() {
@@ -53,12 +54,15 @@ public class HistoryManager : MonoBehaviour {
         gm = GameManager.Instance;
 
         playerHistory = new ObjectHistory(gm.player);
-        ennemisHistory = new List<ObjectHistory>();
-        lumieresHistory = new List<ObjectHistory>();
-        foreach (Ennemi ennemi in gm.ennemiManager.ennemis)
-            ennemisHistory.Add(new ObjectHistory(ennemi));
-        foreach(Lumiere lumiere in gm.map.lumieres)
-            lumieresHistory.Add(new ObjectHistory(lumiere));
+        if(ennemisHistory == null)
+            ennemisHistory = new List<ObjectHistory>();
+        if(lumieresHistory == null)
+            lumieresHistory = new List<ObjectHistory>();
+
+        //foreach (Ennemi ennemi in gm.ennemiManager.ennemis)
+        //    ennemisHistory.Add(new ObjectHistory(ennemi));
+        //foreach(Lumiere lumiere in gm.map.GetLumieres())
+        //    lumieresHistory.Add(new ObjectHistory(lumiere));
 
         echantillonnageTimer = new Timer(frequenceEchantillonnagePositions);
         mapSize = gm.map.tailleMap;
@@ -120,5 +124,17 @@ public class HistoryManager : MonoBehaviour {
     }
     public void SetDureeGame(float duree) {
         this.dureeGame = duree;
+    }
+
+    public void AddLumiereHistory(Lumiere lumiere) {
+        if (lumieresHistory == null)
+            lumieresHistory = new List<ObjectHistory>();
+        lumieresHistory.Add(new ObjectHistory(lumiere));
+    }
+
+    public void AddEnnemiHistory(Ennemi ennemi) {
+        if(ennemisHistory == null)
+            ennemisHistory = new List<ObjectHistory>();
+        ennemisHistory.Add(new ObjectHistory(ennemi));
     }
 }

@@ -27,26 +27,36 @@ public class RewardManager : MonoBehaviour {
         List<ObjectHistory> lumieresHistory = hm.GetLumieresHistory();
 
         float dureeGame = hm.GetDureeGame();
-        float durationTrail = ComputeDurationTrail(dureeGame);
-        float accelerationCoefficiant = durationTrail / dureeGame;
+        float dureeReward = ComputeDurationTrail(dureeGame);
+        float accelerationCoefficiant = dureeReward / dureeGame;
+        Debug.Log("DureeGame = " + dureeGame + " DureeReward = " + dureeReward + " Acceleration = " + accelerationCoefficiant);
 
-        float playerTrailDurationTime = durationTrail;
+        List<ObjectHistory> allHistorys = new List<ObjectHistory>();
+        allHistorys.Add(playerHistory);
+        allHistorys.AddRange(ennemisHistory);
+        allHistorys.AddRange(lumieresHistory);
+        foreach(ObjectHistory oh in allHistorys) {
+            Debug.Log("start = " + oh.positions[0].time + " end = " + oh.LastTime());
+        }
+        Debug.Log("NB LUMIERES A LA BASE = " + lumieresHistory.Count);
+
+        float playerTrailDurationTime = dureeReward;
         float ennemiTrailDurationTime = playerTrailDurationTime * pourcentageEnnemiTrailTime;
 
         playerDisplayer = gameObject.AddComponent<RewardTrailThemeDisplayer>();
-        playerDisplayer.Initialize(playerTrailPrefab, playerHistory, dureeGame, delayBetweenTrails, accelerationCoefficiant, hm.themes);
+        playerDisplayer.Initialize(playerTrailPrefab, playerHistory, dureeReward, delayBetweenTrails, accelerationCoefficiant, hm.themes);
 
         ennemisDisplayers = new List<RewardTrailDisplayer>();
         foreach(ObjectHistory history in ennemisHistory) {
             RewardTrailDisplayer displayer = gameObject.AddComponent<RewardTrailDisplayer>();
-            displayer.Initialize(ennemiTrailPrefab, history, dureeGame, delayBetweenTrails, accelerationCoefficiant, ennemiTrailDurationTime, Color.red);
+            displayer.Initialize(ennemiTrailPrefab, history, dureeReward, delayBetweenTrails, accelerationCoefficiant, ennemiTrailDurationTime, Color.red);
             ennemisDisplayers.Add(displayer);
         }
 
         lumieresDisplayers = new List<RewardLumiereDisplayer>();
         foreach(ObjectHistory history in lumieresHistory) {
             RewardLumiereDisplayer displayer = gameObject.AddComponent<RewardLumiereDisplayer>();
-            displayer.Initialize(lumiereObjectPrefab, history, dureeGame, delayBetweenTrails, accelerationCoefficiant);
+            displayer.Initialize(lumiereObjectPrefab, history, dureeReward, delayBetweenTrails, accelerationCoefficiant);
             lumieresDisplayers.Add(displayer);
         }
     }

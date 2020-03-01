@@ -23,7 +23,8 @@ public class RewardTrailDisplayer : RewardObjectDisplayer {
 
     public override void Update() {
         base.Update();
-        trail.time = Mathf.Min(trailDuration, durationTimer.GetRemainingTime());
+        if(trail != null)
+            trail.time = Mathf.Min(trailDuration, durationTimer.GetRemainingTime());
     }
 
     public void SetColor(Color color) {
