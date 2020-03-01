@@ -538,6 +538,11 @@ public class Player : Character {
         base.ApplyPoussees();
         gm.postProcessManager.SetBlur(poussees.Count > 0);
     }
+
+    public void ResetGrip() {
+        // Permet de s'accrocher à nouveau à un mur !
+        origineSaut = EtatPersonnage.AU_SOL;
+    }
 }
 
 

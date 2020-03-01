@@ -99,9 +99,13 @@ public class Sonde : Ennemi {
         directionPoussee.Normalize();
         pousseeCurrent = new Poussee(directionPoussee, tempsPoussee, distancePoussee);
         player.AddPoussee(pousseeCurrent);
+        player.ResetGrip(); // Pour que le joueur puisse à nouveau s'accrocher aux murs !
 
         // Effet de vignette rouge
         gm.postProcessManager.UpdateHitEffect();
+    }
+
+    protected override void HitContinuousPlayerSpecific() {
     }
 
     public override bool IsInactive() {

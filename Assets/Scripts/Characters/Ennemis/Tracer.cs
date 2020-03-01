@@ -154,6 +154,9 @@ public class Tracer : Ennemi {
     protected override void HitPlayerSpecific() {
     }
 
+    protected override void HitContinuousPlayerSpecific() {
+    }
+
     protected void SetState(TracerState newState) {
         TracerState oldState = state;
         state = newState;
