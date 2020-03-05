@@ -11,6 +11,7 @@ public class MenuLevel : MonoBehaviour {
     public static string NB_WINS_KEY = "nbVictoires";
     public static string NB_TRIES_KEY = "nbTries";
     public static string HIGHEST_SCORE_KEY = "highestScore";
+    public static string TRACE_KEY = "trace";
 
     public string levelSceneName;
     public MenuLevelSelector menuLevelSelector;
@@ -18,6 +19,7 @@ public class MenuLevel : MonoBehaviour {
     public Text textLevelName;
     public InputField inputFieldNext;
     public string nextPassword = "passwd";
+    public TexteExplicatif texteInformations;
     public TexteExplicatif texteExplicatifPasswdError;
     public TexteExplicatif texteExplicatifDonneesHackes;
     public TexteExplicatif texteExplicatifDonneesHackesSuccess;
@@ -75,6 +77,10 @@ public class MenuLevel : MonoBehaviour {
         menuLevelSelector.Back();
     }
 
+    public void OpenInformations() {
+        texteInformations.Run(GetNbWins());
+    }
+
     public void OpenDonneesHackes() {
         // Changer le texte des données hackés en fonction du nombre de fois où l'on a gagné ce niveau !
         string key = textLevelName.text + NB_WINS_KEY;
@@ -116,7 +122,6 @@ public class MenuLevel : MonoBehaviour {
         return (float)GetNbWins() / ((float)GetNbWins() + (float)GetNbTries());
     }
 
-
     public bool HasHighestScore() {
         string key = textLevelName.text + HIGHEST_SCORE_KEY;
         return PlayerPrefs.HasKey(key);
@@ -131,5 +136,20 @@ public class MenuLevel : MonoBehaviour {
         string[] splited = str.Split(' ');
         splited[splited.Length - 1] = lastWordReplacement;
         return string.Join(" ", splited);
+    }
+
+    public string GetTrace() {
+        string key = textLevelName.text + TRACE_KEY;
+        if (!PlayerPrefs.HasKey(key))
+            InitTrace();
+        return PlayerPrefs.GetString(key);
+    }
+
+    protected void InitTrace() {
+        string trace = Trace.GenerateTrace();
+        print(trace);
+
+        string key = textLevelName.text + TRACE_KEY;
+        PlayerPrefs.SetString(key, trace);
     }
 }

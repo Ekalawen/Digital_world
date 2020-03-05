@@ -1,26 +1,36 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class TexteExplicatif : MonoBehaviour {
 
+    public static string ROOT_REPOSITORY = "Assets/Texts/";
+    public static string ROOT_LEVELS_REPOSITORY = ROOT_REPOSITORY + "Levels/";
+
     public GameObject content;
     public Text titleTextSource;
     public Text titleTextTarget;
     public Text mainText;
+    public bool useTextPath = false;
+    public string textPath;
 
     protected bool firstFrame;
+    protected TresholdText tresholdText;
 
-    public void Run() {
+    public void Run(int textTreshold = 0) {
         content.SetActive(true);
         DisableHotkeys();
         if(titleTextSource != null && titleTextTarget != null)
             titleTextTarget.text = titleTextSource.text;
         firstFrame = true;
 
-        //mainText.font.lineHeight;
-        //mainText.text.
+        if (useTextPath) {
+            tresholdText = new TresholdText(textPath);
+            mainText.text = GetTextFromPath(textTreshold);
+        }
     }
 
     private void Update() {
@@ -43,5 +53,9 @@ public class TexteExplicatif : MonoBehaviour {
     protected IEnumerator CEnableHotkeysNextFrame() {
         yield return new WaitForEndOfFrame();
         EnableHotkeys();
+    }
+
+    protected string GetTextFromPath(int textTreshold) {
+        return tresholdText.GetUnderTresholdFragmentsString(textTreshold);
     }
 }
