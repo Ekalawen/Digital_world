@@ -163,5 +163,13 @@ public class MenuLevel : MonoBehaviour {
         texteExplicatifDonneesHackes.SetRootPath(rootPath);
         texteExplicatifDonneesHackesSuccess.SetRootPath(rootPath);
         texteExplicatifDonneesHackesSuccess.AddReplacement("%Trace%", GetTrace());
+        texteExplicatifDonneesHackesSuccess.AddReplacement("Passes ", "<color=blue>Passes</color> ");
+        texteExplicatifDonneesHackesSuccess.AddReplacement("Passe ", "<color=blue>Passe</color> ");
+        texteExplicatifDonneesHackesSuccess.AddReplacement("Passes ", "<color=blue>Passes</color>.");
+        texteExplicatifDonneesHackesSuccess.AddReplacement("Passe ", "<color=blue>Passe</color>.");
+        texteExplicatifDonneesHackesSuccess.AddReplacement("Traces ", "<color=blue>Traces</color> ");
+        texteExplicatifDonneesHackesSuccess.AddReplacement("Trace ", "<color=blue>Trace</color> ");
+        texteExplicatifDonneesHackesSuccess.AddReplacement("Traces.", "<color=blue>Traces</color>.");
+        texteExplicatifDonneesHackesSuccess.AddReplacement("Trace.", "<color=blue>Trace</color>.");
     }
 }
