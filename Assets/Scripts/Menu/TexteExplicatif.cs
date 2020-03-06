@@ -19,6 +19,7 @@ public class TexteExplicatif : MonoBehaviour {
 
     protected bool firstFrame;
     protected TresholdText tresholdText;
+    protected string rootPath = "";
 
     public void Run(int textTreshold = 0) {
         content.SetActive(true);
@@ -28,7 +29,7 @@ public class TexteExplicatif : MonoBehaviour {
         firstFrame = true;
 
         if (useTextPath) {
-            tresholdText = new TresholdText(textPath);
+            tresholdText = new TresholdText(rootPath + textPath);
             mainText.text = GetTextFromPath(textTreshold);
         }
     }
@@ -57,5 +58,9 @@ public class TexteExplicatif : MonoBehaviour {
 
     protected string GetTextFromPath(int textTreshold) {
         return tresholdText.GetUnderTresholdFragmentsString(textTreshold);
+    }
+
+    public void SetRootPath(string path) {
+        rootPath = path;
     }
 }

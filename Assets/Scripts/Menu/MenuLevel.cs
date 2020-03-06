@@ -14,6 +14,7 @@ public class MenuLevel : MonoBehaviour {
     public static string TRACE_KEY = "trace";
 
     public string levelSceneName;
+    public string levelFolderName;
     public MenuLevelSelector menuLevelSelector;
     public MenuBackgroundBouncing menuBouncingBackground;
     public Text textLevelName;
@@ -53,6 +54,8 @@ public class MenuLevel : MonoBehaviour {
     private void OnEnable() {
         menuBouncingBackground.SetParameters(probaSource, distanceSource, decroissanceSource, themes);
         ReadScores();
+
+        InitTextesExplicatifs();
 
         string key = textLevelName.text + CURRENT_INPUT_FIELD_KEY;
         inputFieldNext.text = PlayerPrefs.GetString(key);
@@ -151,5 +154,13 @@ public class MenuLevel : MonoBehaviour {
 
         string key = textLevelName.text + TRACE_KEY;
         PlayerPrefs.SetString(key, trace);
+    }
+
+    protected void InitTextesExplicatifs() {
+        string rootPath = "Assets/Texts/Levels/" + levelFolderName + "/";
+        texteInformations.SetRootPath(rootPath);
+        texteExplicatifPasswdError.SetRootPath(rootPath);
+        texteExplicatifDonneesHackes.SetRootPath(rootPath);
+        texteExplicatifDonneesHackesSuccess.SetRootPath(rootPath);
     }
 }
