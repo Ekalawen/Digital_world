@@ -1,4 +1,51 @@
 ###New Fragment###
-#FragmentTreshold= 0
-Vous avez réussi !
-Le mot de passe est "passwd" !
+#FragmentTreshold= 1
+<color=green>Pallier n°1 :</color>
+Vous avez réussi ! Félicitation !
+Pour accéder à un niveau suivant, vous devez trouver le bon mot de passe.
+
+Chaque fois que vous terminerez le niveau, vous débloquerez de nouveaux palliers qui vous donneront davantage d'indices.
+
+Chaque mot de passe est constitué de deux parties. Le <color=blue>Passe</color> et la <color=blue>Trace</color>. Vous devez être en possession des deux pour reconstituer le mot de passe.
+
+Prochain pallier à 2 victoires.
+
+
+###New Fragment###
+#FragmentTreshold= 2
+<color=green>Pallier n°2 :</color>
+Le <color=blue>Passe</color> est le résultat d'une énigme qui vous est donné lorsque vous réussissez le niveau pour la première fois. L'énigme peut sembler difficile au début. Mais chaque pallier vous donnera des indices pour vous aider à résoudre cette énigme. N'hésitez pas à tenter beaucoup de solutions !
+
+La <color=blue>Trace</color> est constitué de 4 caractères, 2 bits (0 ou 1) puis 2 caractères héxadécimaux (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, A, B, C, D, E, ou F). Elle vous ait également donné lorsque vous réussissez le niveau pour la première fois.
+
+Le mot de passe est la concaténation sans séparation de la <color=blue>Passe</color> et de la <color=blue>Trace</color>.  Par exemple, si <color=blue>Passe</color> = Matrice et <color=blue>Trace</color> = 10B4 alors le mot de passe sera Matrice10B4.
+
+Prochain pallier à 3 victoires.
+
+
+###New Fragment###
+#FragmentTreshold= 3
+<color=green>Pallier n°3 :</color>
+<color=blue>Passe</color> : Je suis éponyme de ce niveau.
+
+<color=blue>Trace</color> : %Trace%
+
+Prochain pallier à 4 victoires.
+
+
+###New Fragment###
+#FragmentTreshold= 4
+<color=green>Pallier n°4 :</color>
+Indice : Tous les <color=blue>Passes</color> de tous les niveaux seront toujours en minuscules et sans espaces !
+
+<color=blue>Passe</color> : Éponyme signifie le titre.
+
+Prochain pallier à 4 victoires.
+
+
+###New Fragment###
+#FragmentTreshold= 5
+<color=green>Pallier n°5 (dernier pallier) :</color>
+<color=blue>Passe</color> : helloworld!
+
+

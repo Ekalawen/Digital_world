@@ -89,9 +89,9 @@ public class MenuLevel : MonoBehaviour {
         string key = textLevelName.text + NB_WINS_KEY;
         int nbVictoires = PlayerPrefs.HasKey(key) ? PlayerPrefs.GetInt(key) : 0;
         if (nbVictoires == 0) {
-            texteExplicatifDonneesHackes.Run();
+            texteExplicatifDonneesHackes.Run(GetNbWins());
         } else {
-            texteExplicatifDonneesHackesSuccess.Run();
+            texteExplicatifDonneesHackesSuccess.Run(GetNbWins());
         }
     }
 

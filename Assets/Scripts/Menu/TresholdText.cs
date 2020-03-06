@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 
 public class TresholdFragment {
@@ -29,6 +30,7 @@ public class TresholdText {
     public TresholdText(string path) {
         this.path = path;
         ComputeFragments();
+        RevertTresholdOrderFragments();
 
         foreach (TresholdFragment fragment in fragments)
             Debug.Log(fragment);
@@ -96,5 +98,9 @@ public class TresholdText {
 
     public string GetOverTresholdFragmentsString(int treshold) {
         return GetStringFromFragments(GetOverTresholdFragments(treshold));
+    }
+
+    protected void RevertTresholdOrderFragments() {
+        fragments = fragments.OrderBy(fragment => -fragment.treshold).ToList();
     }
 }
