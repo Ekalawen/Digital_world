@@ -20,6 +20,7 @@ public class TexteExplicatif : MonoBehaviour {
     protected bool firstFrame;
     protected TresholdText tresholdText;
     protected string rootPath = "";
+    protected List<Tuple<string, string>> replacementList = new List<Tuple<string, string>>();
 
     public void Run(int textTreshold = 0) {
         content.SetActive(true);
@@ -30,7 +31,8 @@ public class TexteExplicatif : MonoBehaviour {
 
         if (useTextPath) {
             tresholdText = new TresholdText(rootPath + textPath);
-            mainText.text = GetTextFromPath(textTreshold);
+            string newText = UseReplacementList(GetTextFromPath(textTreshold));
+            mainText.text = newText;
         }
     }
 
@@ -62,5 +64,18 @@ public class TexteExplicatif : MonoBehaviour {
 
     public void SetRootPath(string path) {
         rootPath = path;
+    }
+
+    public void AddReplacement(string source, string cible) {
+        replacementList.Add(new Tuple<string, string>(source, cible));
+    }
+
+    public string UseReplacementList(string text) {
+        foreach(Tuple<string, string> replacement in replacementList) {
+            string source = replacement.Item1;
+            string cible = replacement.Item2;
+            text = text.Replace(source, cible);
+        }
+        return text;
     }
 }

@@ -162,5 +162,6 @@ public class MenuLevel : MonoBehaviour {
         texteExplicatifPasswdError.SetRootPath(rootPath);
         texteExplicatifDonneesHackes.SetRootPath(rootPath);
         texteExplicatifDonneesHackesSuccess.SetRootPath(rootPath);
+        texteExplicatifDonneesHackesSuccess.AddReplacement("%Trace%", GetTrace());
     }
 }
