@@ -5,12 +5,20 @@ using UnityEngine.SceneManagement;
 
 public class MenuManager : MonoBehaviour {
 
+    static MenuManager _instance;
+    public static MenuManager Instance { get { return _instance ?? (_instance = new GameObject().AddComponent<MenuManager>()); } }
+
     public static bool DISABLE_HOTKEYS = false;
     public static string FIRST_TIME_CONNEXION_KEY = "firstTimeConnexionKey";
 
     public MenuLevelSelector menuLevelSelector;
     public MenuOptions menuOptions;
     public MenuBackgroundBouncing menuBouncingBackground;
+    public TexteExplicatif popup;
+
+    void Awake() {
+        if (!_instance) { _instance = this; }
+    }
 
     private void Start() {
         // On réinitialise les player prefs si c'est la première fois que l'on se connecte !
@@ -86,5 +94,10 @@ public class MenuManager : MonoBehaviour {
         for(int i = 0; i < nbThemes; i++)
             themes.Add(ColorManager.GetRandomTheme());
         menuBouncingBackground.SetParameters(probaSource, distanceSource, decroissanceSource, themes);
+    }
+
+    public void RunPopup(string title, string text) {
+        popup.SetText(title, text);
+        popup.Run();
     }
 }

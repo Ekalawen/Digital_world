@@ -13,6 +13,7 @@ public class MenuLevel : MonoBehaviour {
     public static string NB_TRIES_KEY = "nbTries";
     public static string HIGHEST_SCORE_KEY = "highestScore";
     public static string TRACE_KEY = "trace";
+    public static string HAS_JUST_WIN_KEY = "hasJustWin";
     public static string SUPER_CHEATED_PASSWORD = "lecreateurdecejeuestmonuniquedieuetmaitre";
 
     public string levelSceneName;
@@ -58,6 +59,8 @@ public class MenuLevel : MonoBehaviour {
         ReadScores();
 
         InitTextesExplicatifs();
+
+        DisplayPopupUnlockNewTreshold();
 
         string key = textLevelName.text + CURRENT_INPUT_FIELD_KEY;
         inputFieldNext.text = PlayerPrefs.GetString(key);
@@ -186,5 +189,25 @@ public class MenuLevel : MonoBehaviour {
         texteExplicatifDonneesHackesSuccess.AddReplacement("%Passe%", nextPassword);
         texteExplicatifDonneesHackesSuccess.AddReplacementEvaluator(@"Passes?", evaluator);
         texteExplicatifDonneesHackesSuccess.AddReplacementEvaluator(@"Traces?", evaluator);
+    }
+
+    public bool HasJustWin() {
+        string key = PlayerPrefs.GetString(LEVEL_NAME_KEY) + HAS_JUST_WIN_KEY;
+        return PlayerPrefs.HasKey(key) && PlayerPrefs.GetString(key) == "True";
+    }
+
+    public void SetNotJustWin() {
+        string key = PlayerPrefs.GetString(LEVEL_NAME_KEY) + HAS_JUST_WIN_KEY;
+        PlayerPrefs.SetString(key, "False");
+    }
+
+    protected void DisplayPopupUnlockNewTreshold() {
+        if (HasJustWin()) {
+            List<int> tresholds = texteExplicatifDonneesHackesSuccess.GetAllTresholds();
+            if(tresholds.Contains(GetNbWins())) {
+                MenuManager.Instance.RunPopup("Pallier débloqué !", "Félicitation ! Vous venez de débloquer le pallier des " + GetNbWins() + " victoire" + ((GetNbWins() > 1) ? "s" : "") + "!\nAllez le consulter dans les Données Hackées !");
+            }
+            SetNotJustWin();
+        }
     }
 }

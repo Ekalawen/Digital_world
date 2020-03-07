@@ -184,6 +184,10 @@ public class EventManager : MonoBehaviour {
             gm.timerManager.GetRemainingTime();
         PlayerPrefs.SetFloat(key, newValueScore);
 
+        // On retient que l'on vient de gagner !
+        key = PlayerPrefs.GetString(MenuLevel.LEVEL_NAME_KEY) + MenuLevel.HAS_JUST_WIN_KEY;
+        PlayerPrefs.SetString(key, "True");
+
         StartCoroutine(gm.QuitInSeconds(7));
     }
 

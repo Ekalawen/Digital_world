@@ -18,11 +18,27 @@ public class TexteExplicatif : MonoBehaviour {
     public bool useTextPath = false;
     public string textPath;
 
+    public Color color;
+    public Button doneButton;
+    public Image fondSombre;
+
     protected bool firstFrame;
     protected TresholdText tresholdText;
     protected string rootPath = "";
     protected List<Tuple<string, string>> replacementList = new List<Tuple<string, string>>();
     protected List<Tuple<string, MatchEvaluator>> replacementListEvaluator = new List<Tuple<string, MatchEvaluator>>();
+
+    public void Start() {
+        InitColor();
+
+        if (useTextPath) {
+            InitTresholdText();
+        }
+    }
+
+    protected void InitTresholdText() {
+        tresholdText = new TresholdText(rootPath + textPath);
+    }
 
     public void Run(int textTreshold = 0) {
         content.SetActive(true);
@@ -32,18 +48,27 @@ public class TexteExplicatif : MonoBehaviour {
         firstFrame = true;
 
         if (useTextPath) {
-            tresholdText = new TresholdText(rootPath + textPath);
             string newText = UseReplacementList(GetTextFromPath(textTreshold));
             mainText.text = newText;
         }
     }
 
+    public void SetText(string newTitle, string newText) {
+        titleTextTarget.text = newTitle;
+        mainText.text = newText;
+    }
+
     private void Update() {
-        if(!firstFrame && content.activeInHierarchy && Input.anyKeyDown) {
-            content.SetActive(false);
-            EnableHotkeys();
+        if(!firstFrame && content.activeInHierarchy
+        && (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return))) {
+            Disable();
         }
         firstFrame = false;
+    }
+
+    public void Disable() {
+        content.SetActive(false);
+        EnableHotkeys();
     }
 
     public void DisableHotkeys() {
@@ -88,5 +113,22 @@ public class TexteExplicatif : MonoBehaviour {
             text = Regex.Replace(text, source, evaluator);
         }
         return text;
+    }
+
+    protected void InitColor() {
+        fondSombre.color = color;
+        Color saturated = color;
+        saturated.a = 1.0f;
+        doneButton.GetComponent<Image>().color = saturated;
+    }
+
+    public List<int> GetAllTresholds() {
+        if(useTextPath) {
+            if (tresholdText == null)
+                InitTresholdText();
+            return tresholdText.GetAllTresholds();
+        } else {
+            return new List<int>();
+        }
     }
 }

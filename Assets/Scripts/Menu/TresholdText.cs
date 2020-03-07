@@ -100,4 +100,12 @@ public class TresholdText {
     protected void RevertTresholdOrderFragments() {
         fragments = fragments.OrderBy(fragment => -fragment.treshold).ToList();
     }
+
+    public List<int> GetAllTresholds() {
+        List<int> tresholds = new List<int>();
+        foreach(TresholdFragment fragment in fragments) {
+            tresholds.Add(fragment.treshold);
+        }
+        return tresholds;
+    }
 }
