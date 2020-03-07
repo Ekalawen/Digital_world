@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -156,20 +157,21 @@ public class MenuLevel : MonoBehaviour {
         PlayerPrefs.SetString(key, trace);
     }
 
+    public static string SurroundWithBlueColor(Match match) {
+        return "<color=blue>" + match.Value + "</color>";
+    }
+
     protected void InitTextesExplicatifs() {
         string rootPath = "Assets/Texts/Levels/" + levelFolderName + "/";
         texteInformations.SetRootPath(rootPath);
         texteExplicatifPasswdError.SetRootPath(rootPath);
         texteExplicatifDonneesHackes.SetRootPath(rootPath);
         texteExplicatifDonneesHackesSuccess.SetRootPath(rootPath);
+
+        MatchEvaluator evaluator = new MatchEvaluator(SurroundWithBlueColor);
         texteExplicatifDonneesHackesSuccess.AddReplacement("%Trace%", GetTrace());
-        texteExplicatifDonneesHackesSuccess.AddReplacement("Passes ", "<color=blue>Passes</color> ");
-        texteExplicatifDonneesHackesSuccess.AddReplacement("Passe ", "<color=blue>Passe</color> ");
-        texteExplicatifDonneesHackesSuccess.AddReplacement("Passes ", "<color=blue>Passes</color>.");
-        texteExplicatifDonneesHackesSuccess.AddReplacement("Passe ", "<color=blue>Passe</color>.");
-        texteExplicatifDonneesHackesSuccess.AddReplacement("Traces ", "<color=blue>Traces</color> ");
-        texteExplicatifDonneesHackesSuccess.AddReplacement("Trace ", "<color=blue>Trace</color> ");
-        texteExplicatifDonneesHackesSuccess.AddReplacement("Traces.", "<color=blue>Traces</color>.");
-        texteExplicatifDonneesHackesSuccess.AddReplacement("Trace.", "<color=blue>Trace</color>.");
+        texteExplicatifDonneesHackesSuccess.AddReplacement("%Passe%", nextPassword);
+        texteExplicatifDonneesHackesSuccess.AddReplacementEvaluator(@"Passes?", evaluator);
+        texteExplicatifDonneesHackesSuccess.AddReplacementEvaluator(@"Traces?", evaluator);
     }
 }

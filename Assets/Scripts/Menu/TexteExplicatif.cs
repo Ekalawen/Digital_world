@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,6 +22,7 @@ public class TexteExplicatif : MonoBehaviour {
     protected TresholdText tresholdText;
     protected string rootPath = "";
     protected List<Tuple<string, string>> replacementList = new List<Tuple<string, string>>();
+    protected List<Tuple<string, MatchEvaluator>> replacementListEvaluator = new List<Tuple<string, MatchEvaluator>>();
 
     public void Run(int textTreshold = 0) {
         content.SetActive(true);
@@ -70,11 +72,20 @@ public class TexteExplicatif : MonoBehaviour {
         replacementList.Add(new Tuple<string, string>(source, cible));
     }
 
+    public void AddReplacementEvaluator(string source, MatchEvaluator cible) {
+        replacementListEvaluator.Add(new Tuple<string, MatchEvaluator>(source, cible));
+    }
+
     public string UseReplacementList(string text) {
         foreach(Tuple<string, string> replacement in replacementList) {
             string source = replacement.Item1;
             string cible = replacement.Item2;
             text = text.Replace(source, cible);
+        }
+        foreach(Tuple<string, MatchEvaluator> replacement in replacementListEvaluator) {
+            string source = replacement.Item1;
+            MatchEvaluator evaluator = replacement.Item2;
+            text = Regex.Replace(text, source, evaluator);
         }
         return text;
     }
