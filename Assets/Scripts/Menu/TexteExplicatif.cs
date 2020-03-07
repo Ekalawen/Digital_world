@@ -60,7 +60,7 @@ public class TexteExplicatif : MonoBehaviour {
 
     private void Update() {
         if(!firstFrame /*&& content.activeInHierarchy*/
-        && (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return))) {
+        && (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.Space))) {
             Disable();
         }
         firstFrame = false;
