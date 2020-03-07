@@ -13,6 +13,7 @@ public class MenuLevel : MonoBehaviour {
     public static string NB_TRIES_KEY = "nbTries";
     public static string HIGHEST_SCORE_KEY = "highestScore";
     public static string TRACE_KEY = "trace";
+    public static string SUPER_CHEATED_PASSWORD = "lecreateurdecejeuestmonuniquedieuetmaitre";
 
     public string levelSceneName;
     public string levelFolderName;
@@ -69,11 +70,15 @@ public class MenuLevel : MonoBehaviour {
     }
 
     public void Next() {
-        if (inputFieldNext.text == nextPassword)
+        if (inputFieldNext.text == GetPassword()) {
             menuLevelSelector.Next();
-        else
+        } else if (inputFieldNext.text == SUPER_CHEATED_PASSWORD) {
+            menuLevelSelector.Next();
+        } else {
             texteExplicatifPasswdError.Run();
+        }
     }
+
     public void Previous() {
         menuLevelSelector.Previous();
     }
@@ -97,7 +102,7 @@ public class MenuLevel : MonoBehaviour {
     }
 
     public void SaveNextInputField() {
-        if (inputFieldNext.text == nextPassword) {
+        if (inputFieldNext.text == GetPassword() || inputFieldNext.text == SUPER_CHEATED_PASSWORD) {
             string key = textLevelName.text + CURRENT_INPUT_FIELD_KEY;
             PlayerPrefs.SetString(key, inputFieldNext.text);
         }
@@ -155,6 +160,14 @@ public class MenuLevel : MonoBehaviour {
 
         string key = textLevelName.text + TRACE_KEY;
         PlayerPrefs.SetString(key, trace);
+    }
+
+    public string GetPasse() {
+        return nextPassword;
+    }
+
+    public string GetPassword() {
+        return GetPasse() + GetTrace();
     }
 
     public static string SurroundWithBlueColor(Match match) {

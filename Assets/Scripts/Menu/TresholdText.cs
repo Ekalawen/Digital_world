@@ -31,9 +31,6 @@ public class TresholdText {
         this.path = path;
         ComputeFragments();
         RevertTresholdOrderFragments();
-
-        foreach (TresholdFragment fragment in fragments)
-            Debug.Log(fragment);
     }
 
     protected void ComputeFragments() {
