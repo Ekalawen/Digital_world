@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 
 [Serializable]
-public class TimedMessage {
+public class TimedMessage : MonoBehaviour {
     public string message = "Je suis un message qui apparaitra au bout de 5 secondes !";
     public Console.TypeText type = Console.TypeText.ALLY_TEXT;
     public float timing = 5f;
