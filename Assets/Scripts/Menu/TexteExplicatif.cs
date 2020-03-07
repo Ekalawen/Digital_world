@@ -59,7 +59,7 @@ public class TexteExplicatif : MonoBehaviour {
     }
 
     private void Update() {
-        if(!firstFrame && content.activeInHierarchy
+        if(!firstFrame /*&& content.activeInHierarchy*/
         && (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return))) {
             Disable();
         }
@@ -67,8 +67,8 @@ public class TexteExplicatif : MonoBehaviour {
     }
 
     public void Disable() {
+        EnableHotkeysNextFrame();
         content.SetActive(false);
-        EnableHotkeys();
     }
 
     public void DisableHotkeys() {

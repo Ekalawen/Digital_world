@@ -14,6 +14,7 @@ public class MenuLevel : MonoBehaviour {
     public static string HIGHEST_SCORE_KEY = "highestScore";
     public static string TRACE_KEY = "trace";
     public static string HAS_JUST_WIN_KEY = "hasJustWin";
+    public static string HAS_ALREADY_DISCOVER_LEVEL_KEY = "hasAlreadyDiscoverLevel";
     public static string SUPER_CHEATED_PASSWORD = "lecreateurdecejeuestmonuniquedieuetmaitre";
 
     public string levelSceneName;
@@ -58,21 +59,24 @@ public class MenuLevel : MonoBehaviour {
         menuBouncingBackground.SetParameters(probaSource, distanceSource, decroissanceSource, themes);
         ReadScores();
 
+        MenuManager.DISABLE_HOTKEYS = false;
         InitTextesExplicatifs();
 
+        DisplayPopupUnlockLevel();
         DisplayPopupUnlockNewTreshold();
 
-        string key = textLevelName.text + CURRENT_INPUT_FIELD_KEY;
+        string key = GetName() + CURRENT_INPUT_FIELD_KEY;
         inputFieldNext.text = PlayerPrefs.GetString(key);
     }
 
     public void Play() {
         menuLevelSelector.SaveLevelIndice();
-        PlayerPrefs.SetString(LEVEL_NAME_KEY, textLevelName.text);
+        PlayerPrefs.SetString(LEVEL_NAME_KEY, GetName());
 		SceneManager.LoadScene(levelSceneName);
     }
 
     public void Next() {
+        Debug.Log("MenuLevel.Next()");
         if (inputFieldNext.text == GetPassword()) {
             menuLevelSelector.Next();
         } else if (inputFieldNext.text == SUPER_CHEATED_PASSWORD) {
@@ -80,6 +84,11 @@ public class MenuLevel : MonoBehaviour {
         } else {
             texteExplicatifPasswdError.Run();
         }
+    }
+
+    public void NextIfEnter() {
+        if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return))
+            Next();
     }
 
     public void Previous() {
@@ -165,6 +174,10 @@ public class MenuLevel : MonoBehaviour {
         PlayerPrefs.SetString(key, trace);
     }
 
+    public string GetName() {
+        return textLevelName.text;
+    }
+
     public string GetPasse() {
         return nextPassword;
     }
@@ -192,12 +205,12 @@ public class MenuLevel : MonoBehaviour {
     }
 
     public bool HasJustWin() {
-        string key = PlayerPrefs.GetString(LEVEL_NAME_KEY) + HAS_JUST_WIN_KEY;
+        string key = GetName() + HAS_JUST_WIN_KEY;
         return PlayerPrefs.HasKey(key) && PlayerPrefs.GetString(key) == "True";
     }
 
     public void SetNotJustWin() {
-        string key = PlayerPrefs.GetString(LEVEL_NAME_KEY) + HAS_JUST_WIN_KEY;
+        string key = GetName() + HAS_JUST_WIN_KEY;
         PlayerPrefs.SetString(key, "False");
     }
 
@@ -209,5 +222,22 @@ public class MenuLevel : MonoBehaviour {
             }
             SetNotJustWin();
         }
+    }
+    
+    protected void DisplayPopupUnlockLevel() {
+        if (!HasAlreadyDiscoverLevel()) {
+            MenuManager.Instance.RunPopup("Niveau débloqué !", "Félicitation ! Vous venez de débloquer le niveau " + GetName() + " !\nContinuez comme ça !\nEt Happy Hacking ! :)");
+            SetAlreadyDiscoverLevel();
+        }
+    }
+
+    public bool HasAlreadyDiscoverLevel() {
+        string key = GetName() + HAS_ALREADY_DISCOVER_LEVEL_KEY;
+        return PlayerPrefs.HasKey(key) && PlayerPrefs.GetString(key) == "True";
+    }
+
+    public void SetAlreadyDiscoverLevel() {
+        string key = GetName() + HAS_ALREADY_DISCOVER_LEVEL_KEY;
+        PlayerPrefs.SetString(key, "True");
     }
 }
