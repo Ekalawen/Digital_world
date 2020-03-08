@@ -4,6 +4,8 @@ using UnityEngine;
 
 public abstract class Item : MonoBehaviour {
 
+    public bool shouldRepop = false;
+
     protected GameManager gm;
 
     void Start() {
@@ -22,6 +24,9 @@ public abstract class Item : MonoBehaviour {
 
     public virtual void Disappear() {
         gm.itemManager.RemoveItem(this);
+        if (shouldRepop) {
+            gm.itemManager.PopItem(gameObject);
+        }
         Destroy(this.gameObject);
     }
 }
