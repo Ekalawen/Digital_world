@@ -9,6 +9,7 @@ public class SoundManager : MonoBehaviour {
     public AudioClipParams gripClips;
     public AudioClipParams createCubeClips;
     public AudioClipParams getLumiereClips;
+    public AudioClipParams getItemClips;
     public AudioClipParams failActionClips;
     public AudioClipParams hitClips;
     public AudioClipParams hitTracerClips;
@@ -119,6 +120,9 @@ public class SoundManager : MonoBehaviour {
     public void PlayGetLumiereClip(Vector3 pos) {
         //source.spatialBlend = 1.0f;
         PlayClipsOnSource(getLumiereClips, pos);
+    }
+    public void PlayGetItemClip(Vector3 pos) {
+        PlayClipsOnSource(getItemClips, pos);
     }
     public void PlayEndGameMusic() {
         PlayClipsOnSource(endGameMusics);

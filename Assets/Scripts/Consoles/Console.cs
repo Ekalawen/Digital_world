@@ -263,7 +263,7 @@ public class Console : MonoBehaviour {
             if(text.preferredWidth > weightMax) {
                 string nextMessage = message.Substring(i, message.Length - i);
                 if(gm != null)
-                    gm.historyManager.AddConsoleMessage(new TimedMessage(text.text, type, gm.timerManager.GetElapsedTime(), 0.0f));
+                    AddTimedMessageToHistory(text.text, type, gm.timerManager.GetElapsedTime(), 0.0f);
                 AjouterMessage(nextMessage, type, bUsePrefix: false);
                 return;
             }
@@ -271,9 +271,15 @@ public class Console : MonoBehaviour {
         text.text = message;
 
         // On sauvegarde le message si celui-ci a été sauvegardé ! :3
-        if(gm != null)
-            gm.historyManager.AddConsoleMessage(new TimedMessage(message, type, gm.timerManager.GetElapsedTime(), 0.0f));
+        if (gm != null)
+            AddTimedMessageToHistory(message, type, gm.timerManager.GetElapsedTime(), 0.0f);
 	}
+
+    public void AddTimedMessageToHistory(string message, Console.TypeText type, float time, float duree) {
+        TimedMessage tm = new GameObject().AddComponent<TimedMessage>();
+        tm.Initialize(message, type, time, duree);
+        gm.historyManager.AddConsoleMessage(tm);
+    }
 
     public void AddBlankLine() {
 		List<int> toDelete = new List<int>();

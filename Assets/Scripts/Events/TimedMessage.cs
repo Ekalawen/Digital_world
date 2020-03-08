@@ -10,7 +10,7 @@ public class TimedMessage : MonoBehaviour {
     public float timing = 5f;
     public float duree = 2f;
 
-    public TimedMessage(string message, Console.TypeText type, float timing, float duree) {
+    public void Initialize(string message, Console.TypeText type, float timing, float duree) {
         this.message = message;
         this.type = type;
         this.timing = timing;

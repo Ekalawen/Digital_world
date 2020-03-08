@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour {
 	public GameObject mapManagerPrefab; // Pour gérer la map !
 	public GameObject colorManagerPrefab; // Pour gérer les couleurs !
 	public GameObject ennemiManagerPrefab; // Pour gérer les ennemis !
+	public GameObject itemManagerPrefab; // Pour gérer les items !
 	public GameObject soundManagerPrefab; // Pour gérer les sons et musiques !
     public GameObject postProcessManagerPrefab; // Pour gérer les posteffects !
     public GameObject timerManagerPrefab; // Pour gérer le timer !
@@ -48,6 +49,8 @@ public class GameManager : MonoBehaviour {
 	public ColorManager colorManager;
 	[HideInInspector]
 	public EnnemiManager ennemiManager;
+	[HideInInspector]
+	public ItemManager itemManager;
 	[HideInInspector]
 	public SoundManager soundManager;
     [HideInInspector]
@@ -87,6 +90,7 @@ public class GameManager : MonoBehaviour {
 		colorManager = Instantiate(colorManagerPrefab, managerFolder.transform).GetComponent<ColorManager>();
         pointeur = Instantiate(pointeurPrefab, managerFolder.transform);
         ennemiManager = Instantiate(ennemiManagerPrefab, managerFolder.transform).GetComponent<EnnemiManager>();
+        itemManager = Instantiate(itemManagerPrefab, managerFolder.transform).GetComponent<ItemManager>();
         soundManager = Instantiate(soundManagerPrefab, managerFolder.transform).GetComponent<SoundManager>();
         postProcessManager = Instantiate(postProcessManagerPrefab, managerFolder.transform).GetComponent<PostProcessManager>();
         scanManager = Instantiate(scanManagerPrefab, managerFolder.transform).GetComponent<ScanManager>();
@@ -106,6 +110,7 @@ public class GameManager : MonoBehaviour {
         eventManager.Initialize();
         colorManager.Initialize();
         ennemiManager.Initialize();
+        itemManager.Initialize();
         console.Initialize();
         soundManager.Initialize();
         postProcessManager.Initialize();
