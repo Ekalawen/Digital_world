@@ -135,7 +135,8 @@ public class EventManager : MonoBehaviour {
         if (coroutineDeathCubesCreation != null)
             StopCoroutine(coroutineDeathCubesCreation);
 
-        gm.timeFreezed = true;
+        if(reason != DeathReason.FALL_OUT)
+            gm.timeFreezed = true;
 
         gm.historyManager.SetDureeGame(gm.timerManager.GetElapsedTime());
 
@@ -200,8 +201,9 @@ public class EventManager : MonoBehaviour {
 		if (gm.player.transform.position.y < ejectionTreshold) {
 			// Si le joueur a perdu ...
 			if (map.GetLumieres().Count > 0) {
-				//console.JoueurEjecte();
-                gm.console.LoseGame(EventManager.DeathReason.FALL_OUT);
+                //console.JoueurEjecte();
+                LoseGame(EventManager.DeathReason.FALL_OUT);
+                //gm.console.LoseGame(EventManager.DeathReason.FALL_OUT);
 			// Si le joueur a gagné !
 			} else {
 				gm.console.WinGame();
@@ -213,9 +215,10 @@ public class EventManager : MonoBehaviour {
 		// C'est donc qu'il s'est fait conincé !
 		// Debug.Log("lastnotcontact = "+ player.GetComponent<Personnage>().lastNotContactEnnemy);
 		if (Time.timeSinceLevelLoad - gm.player.GetComponent<Player>().lastNotContactEnnemy >= 5f) {
-			gm.console.LoseGame(EventManager.DeathReason.CAPTURED);
-			gm.player.vitesseDeplacement = 0; // On immobilise le joueur
-			gm.player.vitesseSaut = 0; // On immobilise le joueur
+            LoseGame(EventManager.DeathReason.CAPTURED);
+			//gm.console.LoseGame(EventManager.DeathReason.CAPTURED);
+			//gm.player.vitesseDeplacement = 0; // On immobilise le joueur
+			//gm.player.vitesseSaut = 0; // On immobilise le joueur
 			return true;
 		}
 		return false;
