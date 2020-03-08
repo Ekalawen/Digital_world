@@ -11,7 +11,7 @@ public class RewardTrailDisplayer : RewardObjectDisplayer {
     public void Initialize(GameObject prefab, ObjectHistory history, float duration, float delay, float acceleration, float trailDuration, Color color) {
         this.color = color;
         this.trailDuration = trailDuration;
-        base.Initialize(prefab, history, duration, delay, acceleration);
+        base.Initialize(prefab, history, duration, delay, acceleration, 1.0f);
     }
 
     public override void ResetObject() {

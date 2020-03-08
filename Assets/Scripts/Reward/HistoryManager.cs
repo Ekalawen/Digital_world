@@ -14,12 +14,14 @@ public struct TimedVector3 {
 
 public struct ObjectHistory {
     public MonoBehaviour obj;
+    public GameObject prefab; // Only used for items !
     public List<TimedVector3> positions;
 
     public ObjectHistory(MonoBehaviour obj) {
         this.obj = obj;
         positions = new List<TimedVector3>();
         positions.Add(new TimedVector3(obj.transform.position, GameManager.Instance.timerManager.GetElapsedTime()));
+        prefab = null;
     }
 
     public float LastTime() {
@@ -42,6 +44,7 @@ public class HistoryManager : MonoBehaviour {
     protected ObjectHistory playerHistory;
     protected List<ObjectHistory> ennemisHistory;
     protected List<ObjectHistory> lumieresHistory;
+    protected List<ObjectHistory> itemsHistory;
     protected List<TimedMessage> timedMessages;
     protected Timer echantillonnageTimer;
     protected float dureeGame;
@@ -59,6 +62,8 @@ public class HistoryManager : MonoBehaviour {
             ennemisHistory = new List<ObjectHistory>();
         if(lumieresHistory == null)
             lumieresHistory = new List<ObjectHistory>();
+        if(itemsHistory == null)
+            itemsHistory = new List<ObjectHistory>();
         if(timedMessages == null)
             timedMessages = new List<TimedMessage>();
 
@@ -71,6 +76,7 @@ public class HistoryManager : MonoBehaviour {
         EchantillonnerPositionPlayer();
         EchantillonnerPositionsEnnemis();
         EchantillonnerPositionsLumieres();
+        EchantillonnerPositionsItems();
 
         if(echantillonnageTimer.IsOver())
             echantillonnageTimer.Reset();
@@ -105,6 +111,18 @@ public class HistoryManager : MonoBehaviour {
         }
     }
 
+    protected void EchantillonnerPositionsItems() {
+        if(!gm.eventManager.IsWin() && echantillonnageTimer.IsOver()) {
+            for(int i = 0; i < itemsHistory.Count; i++) {
+                ObjectHistory ch = itemsHistory[i];
+                if (ch.obj != null) {
+                    TimedVector3 tpos = new TimedVector3(ch.obj.transform.position, gm.timerManager.GetElapsedTime());
+                    ch.positions.Add(tpos);
+                }
+            }
+        }
+    }
+
     public ObjectHistory GetPlayerHistory() {
         return playerHistory;
     }
@@ -115,6 +133,10 @@ public class HistoryManager : MonoBehaviour {
 
     public List<ObjectHistory> GetLumieresHistory() {
         return lumieresHistory;
+    }
+
+    public List<ObjectHistory> GetItemsHistory() {
+        return itemsHistory;
     }
 
     public float GetDureeGame() {
@@ -128,6 +150,14 @@ public class HistoryManager : MonoBehaviour {
         if (lumieresHistory == null)
             lumieresHistory = new List<ObjectHistory>();
         lumieresHistory.Add(new ObjectHistory(lumiere));
+    }
+
+    public void AddItemHistory(Item item, GameObject itemPrefab) {
+        if (itemsHistory == null)
+            itemsHistory = new List<ObjectHistory>();
+        ObjectHistory history = new ObjectHistory(item);
+        history.prefab = itemPrefab;
+        itemsHistory.Add(history);
     }
 
     public void AddEnnemiHistory(Ennemi ennemi) {

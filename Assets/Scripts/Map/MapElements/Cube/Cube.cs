@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Cube : MonoBehaviour {
 
-    public enum CubeType { NORMAL, DEATH, INDESTRUCTIBLE };
+    public enum CubeType { NORMAL, DEATH, INDESTRUCTIBLE, SPECIAL };
 
     public CubeType type;
     public GameObject explosionParticlesPrefab;

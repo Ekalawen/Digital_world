@@ -16,11 +16,13 @@ public class RewardManager : MonoBehaviour {
     public float durationTrailMinimum = 10.0f;
     public float durationTrailLogarithmer = 10.0f;
     public float pourcentageEnnemiTrailTime = 0.2f;
+    public float pointDisplayerScaleFactor = 0.2f;
 
     protected Transform displayersFolder;
     protected RewardTrailThemeDisplayer playerDisplayer;
     protected List<RewardTrailDisplayer> ennemisDisplayers;
-    protected List<RewardLumiereDisplayer> lumieresDisplayers;
+    protected List<RewardPointDisplayer> lumieresDisplayers;
+    protected List<RewardPointDisplayer> itemsDisplayers;
 
     protected HistoryManager hm;
 	protected RewardConsole console;
@@ -36,19 +38,12 @@ public class RewardManager : MonoBehaviour {
         ObjectHistory playerHistory = hm.GetPlayerHistory();
         List<ObjectHistory> ennemisHistory = hm.GetEnnemisHistory();
         List<ObjectHistory> lumieresHistory = hm.GetLumieresHistory();
+        List<ObjectHistory> itemsHistory = hm.GetItemsHistory();
 
         float dureeGame = hm.GetDureeGame();
         float dureeReward = ComputeDurationTrail(dureeGame);
         float accelerationCoefficiant = dureeReward / dureeGame;
         Debug.Log("DureeGame = " + dureeGame + " DureeReward = " + dureeReward + " Acceleration = " + accelerationCoefficiant);
-
-        //List<ObjectHistory> allHistorys = new List<ObjectHistory>();
-        //allHistorys.Add(playerHistory);
-        //allHistorys.AddRange(ennemisHistory);
-        //allHistorys.AddRange(lumieresHistory);
-        //foreach(ObjectHistory oh in allHistorys) {
-        //    Debug.Log("start = " + oh.positions[0].time + " end = " + oh.LastTime());
-        //}
 
         float playerTrailDurationTime = dureeReward;
         float ennemiTrailDurationTime = playerTrailDurationTime * pourcentageEnnemiTrailTime;
@@ -63,11 +58,18 @@ public class RewardManager : MonoBehaviour {
             ennemisDisplayers.Add(displayer);
         }
 
-        lumieresDisplayers = new List<RewardLumiereDisplayer>();
+        lumieresDisplayers = new List<RewardPointDisplayer>();
         foreach(ObjectHistory history in lumieresHistory) {
-            RewardLumiereDisplayer displayer = gameObject.AddComponent<RewardLumiereDisplayer>();
-            displayer.Initialize(lumiereObjectPrefab, history, dureeReward, delayBetweenTrails, accelerationCoefficiant);
+            RewardPointDisplayer displayer = gameObject.AddComponent<RewardPointDisplayer>();
+            displayer.Initialize(lumiereObjectPrefab, history, dureeReward, delayBetweenTrails, accelerationCoefficiant, pointDisplayerScaleFactor);
             lumieresDisplayers.Add(displayer);
+        }
+
+        itemsDisplayers = new List<RewardPointDisplayer>();
+        foreach(ObjectHistory history in itemsHistory) {
+            RewardPointDisplayer displayer = gameObject.AddComponent<RewardPointDisplayer>();
+            displayer.Initialize(history.prefab, history, dureeReward, delayBetweenTrails, accelerationCoefficiant, pointDisplayerScaleFactor);
+            itemsDisplayers.Add(displayer);
         }
 
         // On lance la console ! :)

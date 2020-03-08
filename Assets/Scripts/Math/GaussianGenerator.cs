@@ -30,4 +30,23 @@ public class GaussianGenerator {
         } while (x < min || x > max);
         return x;
     }
+
+    // /!\ Attention cette fonction BOUSILLE PEUT-ETRE la liste !!!
+    public static List<T> SelectSomeProportionOf<T>(List<T> l, float proportion) {
+        List<T> res = new List<T>();
+        int N = l.Count;
+        float P = proportion;
+        float mean = N * P;
+        float variance = N * P * (1.0f - P);
+        int nbSelected = (int)GaussianGenerator.Next(mean, variance, 0, N);
+        nbSelected = (int)Mathf.Clamp(nbSelected, 0.0f, N);
+
+        for(int i = 0; i < nbSelected; i++) {
+            int ind = Random.Range(0, l.Count);
+            res.Add(l[ind]);
+            l.RemoveAt(ind);
+        }
+
+        return res;
+    }
 }

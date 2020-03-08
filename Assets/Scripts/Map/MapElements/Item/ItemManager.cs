@@ -37,10 +37,11 @@ public class ItemManager : MonoBehaviour {
 
     public Item GenerateItemFromPrefab(GameObject itemPrefab, Vector3 pos) {
         Item item = Instantiate(itemPrefab, pos, Quaternion.identity, itemsFolder.transform).GetComponent<Item>();
+        item.SetPrefab(itemPrefab);
         items.Add(item);
 
-        //// Ca pour le moment c'est en standby ! :)
-        //gm.historyManager.AddItemHistory(item);
+        // Ca pour le moment c'est en standby ! :)
+        gm.historyManager.AddItemHistory(item, itemPrefab);
 
         return item;
     }

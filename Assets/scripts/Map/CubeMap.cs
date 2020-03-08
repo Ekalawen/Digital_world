@@ -10,6 +10,7 @@ public class CubeMap : MapManager {
     public int tailleMinCave = 3;
     public int tailleMaxCave = 10;
     public int nbLumieresPerCaves = 1;
+    public bool caveOffsetSides = true;
 
 	[HideInInspector] public int volumeMap;
 
@@ -19,22 +20,14 @@ public class CubeMap : MapManager {
     }
 
     // Crée une map en forme de Cube
-    void GenerateCubeMap() {
+    protected virtual void GenerateCubeMap() {
         // On crée le contour de la map !
         MapContainer mapContainer = new MapContainer(Vector3.zero, new Vector3(tailleMap.x, tailleMap.y, tailleMap.z));
 
         // On veut créer des passerelles entre les sources ! <3
         // On définit les cubes qui seront à l'origine de passerelles
-        List<Cube> sourcesPonts = new List<Cube>();
-        int N = mapContainer.GetCubes().Count;
-        float P = proportionSourcePont;
-        int nbSources = (int)Mathf.Round(GaussianGenerator.Next(N * P, N * P * (P - 1), 0, N));
-        Debug.Log("nombre de sources de ponts = " + nbSources);
-        for (int i = 0; i < nbSources; i++)
-        {
-            Cube cube = mapContainer.GetCubes()[Random.Range(0, N)];
-            sourcesPonts.Add(cube);
-        }
+        List<Cube> sourcesPonts = GenerateSourcesPonts(mapContainer);
+
         // Puis on les relis 2 à 2
         GeneratePont(sourcesPonts);
 
@@ -54,7 +47,7 @@ public class CubeMap : MapManager {
     }
     //public GameObject gravityZonePrefab;
 
-	List<Cave> GenerateCaves(float proportionCaves, bool bWithLumieres) {
+	protected List<Cave> GenerateCaves(float proportionCaves, bool bWithLumieres) {
         List<Cave> caves = new List<Cave>();
         float currentProportion = 0.0f;
         float volumeCaves = 0;
@@ -67,9 +60,7 @@ public class CubeMap : MapManager {
 			size.z = Random.Range(tailleMinCave, tailleMaxCave + 1);
 
             // On définit sa position sur la carte
-            Vector3 position = new Vector3(Random.Range(2, tailleMap.x - size.x),
-                Random.Range(2, tailleMap.y - size.y),
-                Random.Range(2, tailleMap.z - size.z));
+            Vector3 position = GetPositionCave(size);
 
             Cave cave = new Cave(position, size, bMakeSpaceArround: false, bDigInside: true);
             caves.Add(cave);
@@ -118,4 +109,30 @@ public class CubeMap : MapManager {
 			return false;
 		}
 	}
+
+    protected List<Cube> GenerateSourcesPonts(MapContainer mapContainer) {
+        List<Cube> sourcesPonts = new List<Cube>();
+        int N = mapContainer.GetCubes().Count;
+        float P = proportionSourcePont;
+        int nbSources = (int)Mathf.Round(GaussianGenerator.Next(N * P, N * P * (P - 1), 0, N));
+        Debug.Log("nombre de sources de ponts = " + nbSources);
+        for (int i = 0; i < nbSources; i++)
+        {
+            Cube cube = mapContainer.GetCubes()[Random.Range(0, N)];
+            sourcesPonts.Add(cube);
+        }
+        return sourcesPonts;
+    }
+
+    protected virtual Vector3 GetPositionCave(Vector3Int sizeCave) {
+        if (caveOffsetSides) {
+            return new Vector3(Random.Range(2, tailleMap.x - sizeCave.x),
+                Random.Range(2, tailleMap.y - sizeCave.y),
+                Random.Range(2, tailleMap.z - sizeCave.z));
+        } else {
+            return new Vector3(Random.Range(0, tailleMap.x - sizeCave.x + 2),
+                Random.Range(0, tailleMap.y - sizeCave.y + 2),
+                Random.Range(0, tailleMap.z - sizeCave.z + 2));
+        }
+    }
 }

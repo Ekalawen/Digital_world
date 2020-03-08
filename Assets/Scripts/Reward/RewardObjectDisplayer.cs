@@ -16,8 +16,9 @@ public class RewardObjectDisplayer : MonoBehaviour {
     protected Timer durationTimer;
     protected Timer delayTimer;
     protected Transform displayerFolder;
+    protected float scaleFactor;
 
-    public virtual void Initialize(GameObject prefab, ObjectHistory history, float duration, float delay, float acceleration) {
+    public virtual void Initialize(GameObject prefab, ObjectHistory history, float duration, float delay, float acceleration, float scaleFactor) {
         this.prefab = prefab;
         this.history = history;
         this.duration = duration;
@@ -26,6 +27,7 @@ public class RewardObjectDisplayer : MonoBehaviour {
         this.curve = CreateCurveFromHistory();
         this.delayBeforeSpawning = history.positions[0].time;// / acceleration;
         this.delayBeforeEnd = duration - history.LastTime();
+        this.scaleFactor = scaleFactor;
 
         this.durationTimer = new Timer(duration - delayBeforeSpawning - delayBeforeEnd);
         this.delayTimer = new Timer(delay);

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class RewardLumiereDisplayer : RewardObjectDisplayer {
+public class RewardPointDisplayer : RewardObjectDisplayer {
 
     public override void Update() {
         if (obj == null)
@@ -16,6 +16,11 @@ public class RewardLumiereDisplayer : RewardObjectDisplayer {
         } else {
             obj.transform.position = curve.GetAvancement(avancement);
         }
+    }
+
+    public override void ResetObject() {
+        base.ResetObject();
+        obj.transform.localScale = Vector3.one * scaleFactor;
     }
 }
 

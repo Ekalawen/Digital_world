@@ -7,6 +7,7 @@ public abstract class Item : MonoBehaviour {
     public bool shouldRepop = false;
 
     protected GameManager gm;
+    protected GameObject itemPrefab;
 
     void Start() {
         gm = GameManager.Instance;
@@ -25,8 +26,12 @@ public abstract class Item : MonoBehaviour {
     public virtual void Disappear() {
         gm.itemManager.RemoveItem(this);
         if (shouldRepop) {
-            gm.itemManager.PopItem(gameObject);
+            gm.itemManager.PopItem(itemPrefab);
         }
         Destroy(this.gameObject);
+    }
+
+    public void SetPrefab(GameObject prefab) {
+        itemPrefab = prefab;
     }
 }
