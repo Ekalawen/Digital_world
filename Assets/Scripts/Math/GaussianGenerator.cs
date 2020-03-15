@@ -49,4 +49,15 @@ public class GaussianGenerator {
 
         return res;
     }
+
+    public static List<T> SelectSomeProportionOfNaiveMethod<T>(List<T> l, float proportion) {
+        List<T> res = new List<T>();
+
+        for(int i = 0; i < l.Count; i++) {
+            if(Random.Range(0.0f, 1.0f) < proportion)
+                res.Add(l[i]);
+        }
+
+        return res;
+    }
 }

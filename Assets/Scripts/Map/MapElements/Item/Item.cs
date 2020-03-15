@@ -9,7 +9,7 @@ public abstract class Item : MonoBehaviour {
     protected GameManager gm;
     protected GameObject itemPrefab;
 
-    void Start() {
+    protected virtual void Start() {
         gm = GameManager.Instance;
     }
 

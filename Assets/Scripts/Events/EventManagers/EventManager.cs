@@ -196,9 +196,13 @@ public class EventManager : MonoBehaviour {
         return gameIsEnded;
     }
 
+    protected virtual bool IsPlayerEjected() {
+        return gm.player.transform.position.y < ejectionTreshold;
+    }
+
 	public bool PartieTermine() {
 		// Si le joueur est tombé du cube ...
-		if (gm.player.transform.position.y < ejectionTreshold) {
+		if (IsPlayerEjected()) {
 			// Si le joueur a perdu ...
 			if (map.GetLumieres().Count > 0) {
                 //console.JoueurEjecte();

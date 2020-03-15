@@ -1,0 +1,74 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5600080639895813435
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 323203983345647892}
+  - component: {fileID: 1140333974042038929}
+  m_Layer: 0
+  m_Name: MapBlackAndWhite
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &323203983345647892
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5600080639895813435}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1140333974042038929
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5600080639895813435}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e451b4a3c9abfe48a996e6bd3b8df57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cubePrefab: {fileID: 1586838666760998, guid: 166cc3691555747479ad6b1623980374, type: 3}
+  deathCubePrefab: {fileID: 2395129675549742871, guid: f9f021dbe336f9c48a7ceff109b1537b,
+    type: 3}
+  indestructibleCubePrefab: {fileID: 5258206117986786698, guid: 59eabebacf5bee041af6092d83beba5e,
+    type: 3}
+  specialCubePrefab: {fileID: 6212672584027134960, guid: 0ec368df515ab7940a27c189b3218f22,
+    type: 3}
+  lumierePrefab: {fileID: 1106701525400260, guid: e464862985a8e4bb3a14bf8d90846952,
+    type: 3}
+  lumiereSpecialePrefab: {fileID: 0}
+  lumiereFinalePrefab: {fileID: 6995409226328054440, guid: 9e97ff21fbd4e324b866d7002d438e06,
+    type: 3}
+  bDoFinalChecks: 1
+  tailleMap: {x: 15, y: 20, z: 15}
+  nbLumieresInitial: 15
+  useRandomFilling: 0
+  minDistanceRandomFilling: 2
+  proportionRandomFilling: 0.02
+  sizeCubeRandomFilling: 1
+  mapFolder: {fileID: 0}
+  cubesFolder: {fileID: 0}
+  lumieresFolder: {fileID: 0}
+  gm: {fileID: 0}
+  tailleX: 15
+  tailleZ: 15
+  ecartsPdc: 5
+  hauteurMax: 8
+  nbArbres: 0
+  roundCubesPositions: 1

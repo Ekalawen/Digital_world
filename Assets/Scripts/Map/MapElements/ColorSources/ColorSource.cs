@@ -25,11 +25,7 @@ public class ColorSource : MonoBehaviour {
         }
 
         // Met à jour la couleurs de tous les cubes à portée !
-        foreach(Cube cube in cubesInRange) {
-            float distance = Vector3.Distance(cube.transform.position, this.transform.position);
-            float affaiblissement = 1f - distance / range;
-            cube.AddColor(color * affaiblissement);
-        }
+        AddColor();
     }
 
     public void AddCube(Cube cube) {
@@ -42,11 +38,37 @@ public class ColorSource : MonoBehaviour {
     }
 
     public void Delete() {
-        foreach(Cube cube in cubesInRange) {
-            float distance = Vector3.Distance(cube.transform.position, this.transform.position);
-            float affaiblissement = 1f - distance / range;
-            cube.AddColor(-1.0f * color * affaiblissement);
-        }
+        RemoveColor();
         DestroyImmediate(gameObject);
+    }
+
+    protected void AddColor() {
+        foreach(Cube cube in cubesInRange) {
+            if (cube != null) {
+                float distance = Vector3.Distance(cube.transform.position, this.transform.position);
+                float affaiblissement = 1f - distance / range;
+                cube.AddColor(color * affaiblissement);
+            }
+        }
+    }
+
+    protected void RemoveColor() {
+        foreach(Cube cube in cubesInRange) {
+            if (cube != null) {
+                float distance = Vector3.Distance(cube.transform.position, this.transform.position);
+                float affaiblissement = 1f - distance / range;
+                cube.AddColor(-1.0f * color * affaiblissement);
+            }
+        }
+    }
+
+    public void ChangeColor(Color newColor) {
+        RemoveColor();
+        color = newColor;
+        AddColor();
+    }
+
+    public void InverseColor() {
+        ChangeColor(new Color(1.0f - color.r, 1.0f - color.g, 1.0f - color.b));
     }
 }

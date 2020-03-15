@@ -8,7 +8,7 @@ public class DeathCube : Cube {
         base.Start();
         GameManager gm = GameManager.Instance;
         Vector3 playerPos = gm.player.transform.position;
-        if(Vector3.Distance(playerPos, transform.position) <= Mathf.Sqrt(2)) {
+        if(gm.player.DoubleCheckInteractWithCube(this)) {
             gm.eventManager.LoseGame(EventManager.DeathReason.TOUCHED_DEATH_CUBE);
         }
     }
@@ -16,9 +16,14 @@ public class DeathCube : Cube {
     public override void RegisterCubeToColorSources() {
     }
 
-    public override void AddColor(Color addedColor) {
-    }
+    //public override void AddColor(Color addedColor) {
+    //}
 
-    public override void SetColor(Color newColor) {
+    //public override void SetColor(Color newColor) {
+    //}
+
+    public override void InteractWithPlayer() {
+        Debug.Log("Looooooooooooooooose ! :'(");
+        gm.eventManager.LoseGame(EventManager.DeathReason.TOUCHED_DEATH_CUBE);
     }
 }

@@ -19,4 +19,8 @@ public class BrisableCube : Cube {
         yield return new WaitForSeconds(dureeBeforeDestruction);
         Explode();
     }
+
+    public override void InteractWithPlayer() {
+        DestroyInSeconds();
+    }
 }

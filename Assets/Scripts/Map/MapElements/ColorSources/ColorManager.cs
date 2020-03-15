@@ -2,6 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+public struct SavedTheme {
+    public string key;
+    public List<ColorSource.ThemeSource> themes;
+}
+[System.Serializable]
+public struct SavedColor {
+    public string key;
+    public Color color;
+}
+
 public class ColorManager : MonoBehaviour {
 
     public GameObject colorSourcePrefab;
@@ -10,12 +21,14 @@ public class ColorManager : MonoBehaviour {
 	// On peut choisir le thème du cube =)
 	// 0.0 = automne, 0.1 = jaune, 0.3 = vert, O.5 = bleu, 0.65 = violet, 0.8 = rose, 0.9 = rouge
 	public List<ColorSource.ThemeSource> themes; // Le thème, cad la couleur de la map !
+	public List<SavedTheme> savedThemes; // Utile si on a besoin d'autres thèmes à d'autres moments !
 
     // Il faudra changer ça, les sources ne sont pas forcément des cubes !?
 	public float frequenceSources; // La frequence qu'un emplacement soit une source
 	public Vector2 porteeSourceRange; // La range de distance de coloration d'une source
     public float cubeLuminosityMax; // Le maximum de luminosité d'un cube (pour éviter d'éblouir le joueur)
     public bool bUseOwnLuminosity = false; // De base on utilise la luminosité des PlayerPrefs !
+    public List<SavedColor> savedColors; // Utile si on a besoin de certaines couleurs à certains moments dans le jeu !
 
     protected MapManager map;
     [HideInInspector]
@@ -23,7 +36,7 @@ public class ColorManager : MonoBehaviour {
 
     [HideInInspector] public List<ColorSource> sources;
 
-    public void Initialize() {
+    public virtual void Initialize() {
         map = FindObjectOfType<MapManager>();
         colorSourceFolder = new GameObject("ColorSources");
         cubeLuminosityMax = bUseOwnLuminosity ? cubeLuminosityMax : PlayerPrefs.GetFloat(MenuOptions.LUMINOSITY_KEY);
@@ -84,11 +97,15 @@ public class ColorManager : MonoBehaviour {
             Vector3 pos = possiblesPos[indice];
             possiblesPos.RemoveAt(indice);
             N--;
-            GameObject go = GameObject.Instantiate(colorSourcePrefab, pos, Quaternion.identity, colorSourceFolder.transform);
-            ColorSource source = go.GetComponent<ColorSource>();
-            source.Initialize(GetColor(themes), Random.Range(porteeSourceRange[0], porteeSourceRange[1]));
-            sources.Add(go.GetComponent<ColorSource>());
+            GenerateColorSourceAt(pos);
         }
+    }
+
+    public void GenerateColorSourceAt(Vector3 position) {
+        GameObject go = Instantiate(colorSourcePrefab, position, Quaternion.identity, colorSourceFolder.transform);
+        ColorSource source = go.GetComponent<ColorSource>();
+        source.Initialize(GetColor(themes), Random.Range(porteeSourceRange[0], porteeSourceRange[1]));
+        sources.Add(go.GetComponent<ColorSource>());
     }
 
 	public static Color GetColor(List<ColorSource.ThemeSource> currentThemes) {
@@ -155,5 +172,42 @@ public class ColorManager : MonoBehaviour {
     public static ColorSource.ThemeSource GetRandomTheme() {
         System.Array enumValues = System.Enum.GetValues(typeof(ColorSource.ThemeSource));
         return (ColorSource.ThemeSource)enumValues.GetValue(Random.Range(0, enumValues.Length));
+    }
+
+    public static Color InterpolateColors(Color c1, Color c2, float avancement = 0.5f) {
+        return (1 - avancement) * c1 + avancement * c2;
+    }
+
+    public List<ColorSource> GetAllColorSources() {
+        return sources;
+    }
+
+    public void ChangeTheme(List<ColorSource.ThemeSource> newThemes) {
+        themes = newThemes;
+        foreach(ColorSource source in sources) {
+            source.ChangeColor(GetColor(themes));
+        }
+    }
+
+    public List<ColorSource.ThemeSource> GetSavedTheme(string key) {
+        foreach(SavedTheme theme in savedThemes) {
+            if (theme.key == key)
+                return theme.themes;
+        }
+        Debug.LogError("Le theme " + key + " n'a pas été trouvé dans les savedThemes !");
+        return null;
+    }
+
+    public Color GetSavedColor(string key) {
+        foreach(SavedColor color in savedColors) {
+            if (color.key == key)
+                return color.color;
+        }
+        Debug.LogError("La couleur " + key + " n'a pas été trouvé dans les savedColors !");
+        return Color.magenta;
+    }
+
+    public static bool AreSameThemes(List<ColorSource.ThemeSource> t1, List<ColorSource.ThemeSource> t2) {
+        return MathTools.AreListEqual(t1, t2);
     }
 }

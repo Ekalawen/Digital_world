@@ -84,7 +84,7 @@ public class GameManager : MonoBehaviour {
         timerManager = Instantiate(timerManagerPrefab, managerFolder.transform).GetComponent<TimerManager>();
         gravityManager = Instantiate(gravityManagerPrefab, managerFolder.transform).GetComponent<GravityManager>();
 		map = Instantiate(mapManagerPrefab, managerFolder.transform).GetComponent<MapManager>();
-        player = Instantiate(playerPrefab, managerFolder.transform).GetComponent<Player>();
+        player = Instantiate(playerPrefab).GetComponent<Player>();
 		eventManager = Instantiate(eventManagerPrefab, managerFolder.transform).GetComponent<EventManager>();
 		console = Instantiate(consolePrefab, managerFolder.transform).GetComponent<Console>();
 		colorManager = Instantiate(colorManagerPrefab, managerFolder.transform).GetComponent<ColorManager>();

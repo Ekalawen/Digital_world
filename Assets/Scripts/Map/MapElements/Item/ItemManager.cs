@@ -12,7 +12,7 @@ public class ItemManager : MonoBehaviour {
     protected GameObject itemsFolder;
     protected List<Item> items; // Tous les items
 
-    public void Initialize() {
+    public virtual void Initialize() {
         gm = GameManager.Instance;
         itemsFolder = new GameObject("Items");
         items = new List<Item>();
@@ -30,7 +30,7 @@ public class ItemManager : MonoBehaviour {
         }
     }
 
-    public void PopItem(GameObject itemPrefab) {
+    public virtual void PopItem(GameObject itemPrefab) {
         Vector3 pos = gm.map.GetFreeRoundedLocation();
         GenerateItemFromPrefab(itemPrefab, pos);
     }

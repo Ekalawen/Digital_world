@@ -28,7 +28,22 @@ public class PlainMap : MapManager {
             new Vector2(tailleX, tailleZ),
             roundCubesPositions);
         surface.GenerateCubes();
+    }
 
+    public override Vector3 GetPlayerStartPosition() {
+        Vector3 res = base.GetPlayerStartPosition();
+        while (!IsOverCube(res))
+            res = base.GetPlayerStartPosition();
+        return res;
+    }
+
+    public bool IsOverCube(Vector3 position) {
+        RaycastHit hit;
+        Ray ray = new Ray (position, Vector3.down);
+        return Physics.Raycast(ray, out hit) && hit.collider.tag == "Cube";
+    }
+
+    public void CreateArbres() {
         //// Puis on crée tous les arbres
         //// On définit le nombre d'arbre en fonction de la surface de la map
         //int surfaceMap = tailleX * tailleZ;
@@ -46,18 +61,5 @@ public class PlainMap : MapManager {
         //        hauteurPdcPallier: 3f);
         //    posArbresPossibles.RemoveAt(indice);
         //}
-    }
-
-    public override Vector3 GetPlayerStartPosition() {
-        Vector3 res = base.GetPlayerStartPosition();
-        while (!IsOverCube(res))
-            res = base.GetPlayerStartPosition();
-        return res;
-    }
-
-    public bool IsOverCube(Vector3 position) {
-        RaycastHit hit;
-        Ray ray = new Ray (position, Vector3.down);
-        return Physics.Raycast(ray, out hit) && hit.collider.tag == "Cube";
     }
 }

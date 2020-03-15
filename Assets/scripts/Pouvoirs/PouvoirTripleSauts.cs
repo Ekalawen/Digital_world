@@ -40,17 +40,20 @@ public class PouvoirTripleSauts : IPouvoir {
 
         // Faire le dash, pour ça on attends que le joueur relache le bouton de la souris !
         yield return null; // Important pour ne pas trigger le premier dash tout de suite !
-        while (!Input.GetMouseButtonDown(0) && Time.timeSinceLevelLoad - debutDash < tempsPourDash) {
+        while (!Input.GetMouseButtonDown(0) && Time.timeSinceLevelLoad - debutDash < tempsPourDash
+            && !Input.GetMouseButtonDown(1)) {
             // Rendre la main
             yield return null;
         }
+        bool appuiClickDroit = Input.GetMouseButtonDown(1);
         yield return null; // Important pour ne pas que le même relachement de la touche affecte tous les performDashs !
 
         // On éteint la sphère
         DestroyImmediate(blueSphere);
 
         // Si on a mis trop de temps, le triple dash est brisé !
-        if (Time.timeSinceLevelLoad - debutDash < tempsPourDash) {
+        // Ou si on a appuyé sur le click droit !
+        if (Time.timeSinceLevelLoad - debutDash < tempsPourDash && !appuiClickDroit) {
 
             // Si il vient de choisir la position, on le TP (pour le moment on s'embête pas ^^')
             Vector3 direction = transform.parent.GetComponent<Player>().camera.transform.forward;

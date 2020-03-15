@@ -394,17 +394,15 @@ public class Player : Character {
 
 	void OnControllerColliderHit(ControllerColliderHit hit) {
 
-        if(hit.gameObject.GetComponent<DeathCube>() != null) {
-            Debug.Log("Looooooooooooooooose ! :'(");
-            gm.eventManager.LoseGame(EventManager.DeathReason.TOUCHED_DEATH_CUBE);
-        } else if (hit.gameObject.GetComponent<BrisableCube>() != null) {
-            hit.gameObject.GetComponent<BrisableCube>().DestroyInSeconds();
-        }
+        //// Si on a touché un cube spécial, on fait une action !
+        Cube cube = hit.gameObject.GetComponent<Cube>();
+        if (cube != null && DoubleCheckInteractWithCube(cube))
+            cube.InteractWithPlayer();
 
-		// On regarde si le personnage s'accroche à un mur !
-		// Pour ça il doit être dans les airs !
-		// Et il ne doit PAS être en train d'appuyer sur SHIFT
-		if ((etat == EtatPersonnage.EN_SAUT || etat == EtatPersonnage.EN_CHUTE) && !Input.GetKey(KeyCode.LeftShift)) {
+        // On regarde si le personnage s'accroche à un mur !
+        // Pour ça il doit être dans les airs !
+        // Et il ne doit PAS être en train d'appuyer sur SHIFT
+        if ((etat == EtatPersonnage.EN_SAUT || etat == EtatPersonnage.EN_CHUTE) && !Input.GetKey(KeyCode.LeftShift)) {
 
 			/*// On ne peut pas s'aggriper si on a une distance horizontale trop petite !
 			Vector3 pointDepart = pointDebutSaut;
@@ -542,6 +540,22 @@ public class Player : Character {
     public void ResetGrip() {
         // Permet de s'accrocher à nouveau à un mur !
         origineSaut = EtatPersonnage.AU_SOL;
+    }
+
+    public bool DoubleCheckInteractWithCube(Cube cube) {
+        Vector3 playerPos = transform.position;
+        Vector3 cubePos = cube.transform.position;
+        float playerExtends = controller.radius + controller.skinWidth;
+        float cubeExtends = cube.transform.localScale.x / 2;
+
+        // Get the closest point to the sphere by clamping
+        float x = Mathf.Clamp(playerPos.x, cubePos.x - cubeExtends, cubePos.x + cubeExtends);
+        float y = Mathf.Clamp(playerPos.y, cubePos.y - cubeExtends, cubePos.y + cubeExtends);
+        float z = Mathf.Clamp(playerPos.z, cubePos.z - cubeExtends, cubePos.z + cubeExtends);
+        Vector3 closestPoint = new Vector3(x, y, z);
+
+        float distance = Vector3.Distance(closestPoint, playerPos);
+        return distance <= playerExtends;
     }
 }
 

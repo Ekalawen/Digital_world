@@ -31,7 +31,8 @@ public class Console : MonoBehaviour {
 	public Vector2 tempsAvantPhraseRandom; // Le temps avant de générer une phrase aléatoire dans la console
 	public Vector2 tempsAvantConseiller; // Le temps avant de générer un conseil
 	public Text importantText; // Là où l'on affiche les informations importantes
-	public List<string> conseils; // Les conseils à dispenser au joueur !
+    public bool useAltitudeCritique = true; // Si on doit utiliser altitude critique ou pas dans cette partie !
+    public List<string> conseils; // Les conseils à dispenser au joueur !
     public List<TimedMessage> timedMessages;
 
 	[HideInInspector]
@@ -145,7 +146,8 @@ public class Console : MonoBehaviour {
     }
 	
 	protected virtual void Update () {
-        AltitudeCritique();
+        if(useAltitudeCritique)
+            AltitudeCritique();
 
         //// On lance des phrases random desfois !
         //if (timerPhraseRandom.IsOver()) {

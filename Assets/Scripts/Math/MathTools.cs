@@ -44,4 +44,14 @@ public static class MathTools
     public static int RandBetween(Vector2Int range) {
         return Random.Range(range.x, range.y + 1);
     }
+
+    public static bool AreListEqual<T>(List<T> l1, List<T> l2) {
+        if (l1.Count != l2.Count)
+            return false;
+        for(int i = 0; i < l1.Count; i++) {
+            if (!l1[i].Equals(l2[i]))
+                return false;
+        }
+        return true;
+    }
 }

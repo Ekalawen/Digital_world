@@ -55,10 +55,18 @@ public class Cube : MonoBehaviour {
         psr.material = newMaterial;
         float particuleTime = particle.main.duration;
         Destroy(go, particuleTime);
+
+        Destroy();
+    }
+
+    public void Destroy() {
         gm.map.DeleteCube(this);
     }
 
     public bool IsDestructible() {
         return bIsDestructible;
+    }
+
+    public virtual void InteractWithPlayer() {
     }
 }
