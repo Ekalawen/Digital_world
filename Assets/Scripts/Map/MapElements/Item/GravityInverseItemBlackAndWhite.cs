@@ -1,8 +1,11 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GravityInverseItemBlackAndWhite : GravityInverseItem {
+
+    public float addedTime = 35.0f;
 
     protected override void Start() {
         base.Start();
@@ -22,6 +25,9 @@ public class GravityInverseItemBlackAndWhite : GravityInverseItem {
 
         // Change all colors !
         ChangeColor();
+
+        // Change all colors !
+        AddTime();
     }
 
     protected void ChangeColor() {
@@ -81,5 +87,9 @@ public class GravityInverseItemBlackAndWhite : GravityInverseItem {
             ColorManagerBlackAndWhite colorManager = (ColorManagerBlackAndWhite)gm.colorManager;
             newCube.SetColor(ColorManager.GetColor(colorManager.GetCurrentTheme()));
         }
+    }
+
+    protected void AddTime() {
+        gm.timerManager.AddTime(addedTime);
     }
 }

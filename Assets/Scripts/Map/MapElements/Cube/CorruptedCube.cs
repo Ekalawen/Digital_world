@@ -5,7 +5,7 @@ using UnityEngine;
 public class CorruptedCube : Cube {
 
     public float dureeBeforeCorruption = 2.5f;
-    //public Color corruptionColor = Color.gray;
+    public Material corruptionMaterial;
     public int sizeCorruption = 1;
     public int rangeCorruption = 2;
     public CubeType cubeCorruptedGeneratedType = CubeType.DEATH;
@@ -13,15 +13,21 @@ public class CorruptedCube : Cube {
 
     protected Color initialColor;
     protected Coroutine coroutine = null;
+    protected Material initialMaterial;
 
     protected override void Start() {
         base.Start();
         initialColor = GetColor();
+        initialMaterial = GetComponent<MeshRenderer>().material;
     }
 
     protected IEnumerator CStartCorruption() {
         ColorManagerBlackAndWhite colorManager = (ColorManagerBlackAndWhite)gm.colorManager;
-        SetColor(colorManager.GetNotCurrentColor());
+        //SetColor(colorManager.GetNotCurrentColor());
+        GetComponent<MeshRenderer>().material = corruptionMaterial;
+        Color color = ColorManager.GetColor(colorManager.GetNotCurrentTheme());
+        color.a = 0.5f;
+        GetComponent<MeshRenderer>().material.color = color;
         yield return new WaitForSeconds(dureeBeforeCorruption);
         Corrupt();
     }
@@ -31,7 +37,8 @@ public class CorruptedCube : Cube {
             StopCoroutine(coroutine);
             coroutine = null;
             ColorManagerBlackAndWhite colorManager = (ColorManagerBlackAndWhite)gm.colorManager;
-            SetColor(ColorManager.GetColor(colorManager.GetCurrentTheme()));
+            //SetColor(ColorManager.GetColor(colorManager.GetCurrentTheme()));
+            GetComponent<MeshRenderer>().material = initialMaterial;
         }
     }
 

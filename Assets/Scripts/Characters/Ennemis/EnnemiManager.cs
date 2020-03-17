@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -30,8 +31,7 @@ public class EnnemiManager : MonoBehaviour {
             GameObject ennemiPrefab = ennemisPrefabs[i];
             int nbEnnemi = nbEnnemis[i];
             for (int j = 0; j < nbEnnemi; j++) {
-                Vector3 pos = gm.map.GetFreeRoundedLocation();
-                GenerateEnnemiFromPrefab(ennemiPrefab, pos);
+                PopEnnemi(ennemiPrefab);
             }
         }
     }
@@ -74,5 +74,10 @@ public class EnnemiManager : MonoBehaviour {
         gm.historyManager.AddEnnemiHistory(ennemi);
 
         return ennemi;
+    }
+
+    protected virtual Ennemi PopEnnemi(GameObject ennemiPrefab) {
+        Vector3 pos = gm.map.GetFreeRoundedLocation();
+        return GenerateEnnemiFromPrefab(ennemiPrefab, pos);
     }
 }

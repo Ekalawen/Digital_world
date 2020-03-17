@@ -1,5 +1,22 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &937202147574375145
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7730889610464725364}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0ae8e7c23d574648afe97aace2495f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ennemisPrefabs:
+  - {fileID: 6398685525867094646, guid: 473f956203f769543aad13400bb3c860, type: 3}
+  nbEnnemis: 00000000
+  ennemis: []
+  ennemisFolder: {fileID: 0}
 --- !u!1001 &1670342463691277944
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10,7 +27,7 @@ PrefabInstance:
     - target: {fileID: 8964305910077050636, guid: 5245853b69c624a4aa5a3d6136e5cd47,
         type: 3}
       propertyPath: m_Name
-      value: NoEnnemiManager
+      value: EnnemiManagerBlackAndWhite
       objectReference: {fileID: 0}
     - target: {fileID: 8964305910077050634, guid: 5245853b69c624a4aa5a3d6136e5cd47,
         type: 3}
@@ -67,5 +84,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8964305910077050635, guid: 5245853b69c624a4aa5a3d6136e5cd47,
+        type: 3}
+      propertyPath: nbEnnemis.Array.data[1]
+      value: 2
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 8964305910077050635, guid: 5245853b69c624a4aa5a3d6136e5cd47, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 5245853b69c624a4aa5a3d6136e5cd47, type: 3}
+--- !u!1 &7730889610464725364 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8964305910077050636, guid: 5245853b69c624a4aa5a3d6136e5cd47,
+    type: 3}
+  m_PrefabInstance: {fileID: 1670342463691277944}
+  m_PrefabAsset: {fileID: 0}

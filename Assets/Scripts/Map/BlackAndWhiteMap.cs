@@ -1,8 +1,12 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class BlackAndWhiteMap : PlainMap {
+
+    public float minDistanceFromSurface = 3.0f;
 
     protected override void GenerateMap() {
 		GenerateBlackAndWhiteMap();
@@ -28,6 +32,9 @@ public class BlackAndWhiteMap : PlainMap {
         // RandomFilling with corrupted cubes !!
         currentCubeTypeUsed = Cube.CubeType.SPECIAL;
         GenerateRandomFilling();
+
+        // Génerer les lumières !
+        GenerateLumieres();
     }
 
     public override Vector3 GetPlayerStartPosition() {
@@ -49,5 +56,24 @@ public class BlackAndWhiteMap : PlainMap {
             }
         }
         return false;
+    }
+
+    protected void GenerateLumieres() {
+        List<Cube> surfacePositions = GetAllCubesOfType(Cube.CubeType.INDESTRUCTIBLE);
+        for (int i = 0; i < nbLumieresInitial; i++) {
+            Vector3 pos = GetFarFromEnsemble(surfacePositions);
+            CreateLumiere(pos, Lumiere.LumiereType.NORMAL);
+        }
+    }
+
+    protected Vector3 GetFarFromEnsemble(List<Cube> farCubes) {
+        while(true) {
+            Vector3 pos = GetFreeRoundedLocation();
+            List<float> distances = new List<float>();
+            foreach (Cube cube in farCubes)
+                distances.Add(Vector3.Distance(pos, cube.transform.position));
+            if (distances.Min() >= minDistanceFromSurface)
+                return pos;
+        }
     }
 }

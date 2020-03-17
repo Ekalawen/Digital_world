@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7324250301190615901}
-  - component: {fileID: 8176443034720158904}
+  - component: {fileID: 68428756070356398}
   m_Layer: 0
-  m_Name: PouvoirRollback
+  m_Name: PouvoirRollbackBlackAndWhite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -31,7 +31,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8176443034720158904
+--- !u!114 &68428756070356398
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -40,10 +40,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 5474762033359417457}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9506d00f3e2f13a418646168c2691f05, type: 3}
+  m_Script: {fileID: 11500000, guid: 78782b42fb030b44480b658db2b1110e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cooldown: 4
+  cooldown: 3.5
   timerMalus: 0
   activationAudioClips:
     relativeVolume: 1
@@ -53,6 +53,6 @@ MonoBehaviour:
     bLoop: 0
     clips:
     - {fileID: 8300000, guid: eba6031eaa2a82e489a67ff68af19033, type: 3}
-  dureeRevertedMax: 3
+  dureeRevertedMax: 2.5
   dureeTotalRevert: 1
   shouldRevertEnnemis: 1

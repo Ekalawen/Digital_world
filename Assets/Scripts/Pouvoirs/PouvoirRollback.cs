@@ -66,7 +66,7 @@ public class PouvoirRollback : IPouvoir {
         }
     }
 
-    protected void InitPouvoir() {
+    protected virtual void InitPouvoir() {
         timer = new Timer(dureeTotalRevert);
         startedTime = Time.timeSinceLevelLoad;
         playerCurve = CreateReversedLastRelevantCurveFromHistory(gm.historyManager.GetPlayerHistory());
