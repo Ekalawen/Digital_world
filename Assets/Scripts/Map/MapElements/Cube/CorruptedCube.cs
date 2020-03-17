@@ -28,7 +28,7 @@ public class CorruptedCube : Cube {
         Color color = ColorManager.GetColor(colorManager.GetNotCurrentTheme());
         color.a = 0.5f;
         GetComponent<MeshRenderer>().material.color = color;
-        yield return new WaitForSeconds(dureeBeforeCorruption);
+        yield return new WaitForSeconds(dureeBeforeCorruption + Random.Range(-1.0f, 1.0f) * 0.02f * dureeBeforeCorruption);
         Corrupt();
     }
 
