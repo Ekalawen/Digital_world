@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class ItemManagerBlackAndWhite : ItemManager {
 
+    public float minDistanceFromSurface = 3.0f;
+
     protected bool shouldPopOnTop = false;
 
     public override void Initialize() {
@@ -13,9 +15,10 @@ public class ItemManagerBlackAndWhite : ItemManager {
 
     public override void PopItem(GameObject itemPrefab) {
         BlackAndWhiteMap map = (BlackAndWhiteMap)gm.map;
+        List<Cube> surface = map.GetAllCubesOfType(Cube.CubeType.INDESTRUCTIBLE);
         Vector3 pos;
         while (true) {
-            pos = map.GetFreeRoundedLocation();
+            pos = map.GetFarFromEnsemble(surface, minDistanceFromSurface);
             if ((shouldPopOnTop && map.IsInTopPart(pos))
              || (!shouldPopOnTop && !map.IsInTopPart(pos)))
                 break;

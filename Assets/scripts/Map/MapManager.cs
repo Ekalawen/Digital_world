@@ -808,4 +808,14 @@ public abstract class MapManager : MonoBehaviour {
         return res;
     }
 
+    public Vector3 GetFarFromEnsemble(List<Cube> farCubes, float minDistance) {
+        while(true) {
+            Vector3 pos = GetFreeRoundedLocation();
+            List<float> distances = new List<float>();
+            foreach (Cube cube in farCubes)
+                distances.Add(Vector3.Distance(pos, cube.transform.position));
+            if (distances.Min() >= minDistance)
+                return pos;
+        }
+    }
 }
