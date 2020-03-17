@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2881169314780862663
+--- !u!1 &5474762033359417457
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,44 +8,51 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2881169314780862657}
-  - component: {fileID: 2881169314780862656}
+  - component: {fileID: 7324250301190615901}
+  - component: {fileID: 8176443034720158904}
   m_Layer: 0
-  m_Name: EnnemiManager
+  m_Name: PouvoirRollback
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2881169314780862657
+--- !u!4 &7324250301190615901
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2881169314780862663}
+  m_GameObject: {fileID: 5474762033359417457}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.619095, y: 15.025953, z: 17.877594}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2881169314780862656
+--- !u!114 &8176443034720158904
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2881169314780862663}
+  m_GameObject: {fileID: 5474762033359417457}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f33d5fc70022ca4faa04be1fb925d47, type: 3}
+  m_Script: {fileID: 11500000, guid: 9506d00f3e2f13a418646168c2691f05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ennemisPrefabs:
-  - {fileID: 1252573298759596, guid: d49852f29496f46858edc6834aef370d, type: 3}
-  - {fileID: 1092124540126664, guid: dd5132e9c49f88444af0393c85142a25, type: 3}
-  nbEnnemis: 0200000000000000
-  ennemis: []
-  ennemisFolder: {fileID: 0}
+  cooldown: 4
+  timerMalus: 0
+  activationAudioClips:
+    relativeVolume: 1
+    spatialBlend: 1
+    bReverse: 1
+    bIsMusic: 0
+    bLoop: 0
+    clips:
+    - {fileID: 8300000, guid: eba6031eaa2a82e489a67ff68af19033, type: 3}
+  dureeRevertedMax: 3
+  dureeTotalRevert: 1
+  shouldRevertEnnemis: 0

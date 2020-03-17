@@ -27,7 +27,7 @@ public abstract class Ennemi : Character {
 
 	public virtual void Update () {
         // Si le temps est freeze, on ne fait rien
-        if(GameManager.Instance.timeFreezed) {
+        if(GameManager.Instance.IsTimeFreezed()) {
             return;
         }
 

@@ -106,9 +106,9 @@ public class Player : Character {
 
         console = GameObject.FindObjectOfType<Console>();
 
-        if(pouvoirAPrefab != null)
+        if (pouvoirAPrefab != null)
             pouvoirA = Instantiate(pouvoirAPrefab, parent: this.transform).GetComponent<IPouvoir>();
-        if(pouvoirEPrefab != null)
+        if (pouvoirEPrefab != null)
             pouvoirE = Instantiate(pouvoirEPrefab, parent: this.transform).GetComponent<IPouvoir>();
         if(pouvoirLeftBoutonPrefab != null)
             pouvoirLeftBouton = Instantiate(pouvoirLeftBoutonPrefab, parent: this.transform).GetComponent<IPouvoir>();
@@ -184,7 +184,7 @@ public class Player : Character {
     // On met à jour le mouvement du joueur
     void UpdateMouvement() {
         // Si le temps est freeze, on ne se déplace pas !
-        if(GameManager.Instance.timeFreezed) {
+        if(GameManager.Instance.IsTimeFreezed()) {
             return;
         }
 
@@ -486,28 +486,28 @@ public class Player : Character {
         // A
         if(Input.GetKeyDown(KeyCode.A)) {
             if (pouvoirA != null)
-                pouvoirA.TryUsePouvoir();
+                pouvoirA.TryUsePouvoir(KeyCode.A);
             else
                 gm.soundManager.PlayNotFoundPouvoirClip();
         }
         // E
         if(Input.GetKeyDown(KeyCode.E)) {
             if (pouvoirE != null)
-                pouvoirE.TryUsePouvoir();
+                pouvoirE.TryUsePouvoir(KeyCode.E);
             else
                 gm.soundManager.PlayNotFoundPouvoirClip();
         }
         // Click Gauche
         if(Input.GetMouseButtonDown(0)) {
             if (pouvoirLeftBouton != null)
-                pouvoirLeftBouton.TryUsePouvoir();
+                pouvoirLeftBouton.TryUsePouvoir(KeyCode.Mouse0);
             else
                 gm.soundManager.PlayNotFoundPouvoirClip();
         }
         // Click Droit
         if(Input.GetMouseButtonDown(1)) {
             if (pouvoirRightBouton != null)
-                pouvoirRightBouton.TryUsePouvoir();
+                pouvoirRightBouton.TryUsePouvoir(KeyCode.Mouse1);
             else
                 gm.soundManager.PlayNotFoundPouvoirClip();
         }

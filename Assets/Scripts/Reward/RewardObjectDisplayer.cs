@@ -24,7 +24,7 @@ public class RewardObjectDisplayer : MonoBehaviour {
         this.duration = duration;
         this.delay = delay;
         this.acceleration = acceleration;
-        this.curve = CreateCurveFromHistory();
+        this.curve = CreateCurveFromHistory(this.history, this.acceleration);
         this.delayBeforeSpawning = history.positions[0].time;// / acceleration;
         this.delayBeforeEnd = duration - history.LastTime();
         this.scaleFactor = scaleFactor;
@@ -43,7 +43,7 @@ public class RewardObjectDisplayer : MonoBehaviour {
         obj = GameObject.Instantiate(prefab, curve[0], Quaternion.identity, displayerFolder);
     }
 
-    protected Curve CreateCurveFromHistory() {
+    public static Curve CreateCurveFromHistory(ObjectHistory history, float acceleration) {
         Curve curve = new LinearCurve();
         for(int i = 0; i < history.positions.Count; i++) {
             TimedVector3 tpos = history.positions[i];

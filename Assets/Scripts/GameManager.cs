@@ -68,7 +68,7 @@ public class GameManager : MonoBehaviour {
     [HideInInspector]
     public bool partieDejaTerminee = false;
     [HideInInspector]
-    public bool timeFreezed = false;
+    protected bool timeFreezed = false;
 
     //////////////////////////////////////////////////////////////////////////////////////
     // METHODES
@@ -120,7 +120,6 @@ public class GameManager : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-
         // Si on a appuyé sur la touche Escape, on quitte le jeu !
         if (Input.GetKey (KeyCode.Escape)) {
 			QuitterPartie();
@@ -180,4 +179,14 @@ public class GameManager : MonoBehaviour {
             SceneManager.LoadScene("MenuScene");
         }
 	}
+
+    public bool IsTimeFreezed() {
+        return timeFreezed;
+    }
+    public void FreezeTime() {
+        timeFreezed = true;
+    }
+    public void UnFreezeTime() {
+        timeFreezed = false;
+    }
 }

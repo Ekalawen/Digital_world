@@ -29,7 +29,7 @@ public class LumiereFurtive : Lumiere {
 
 	public virtual void Update () {
         // Si le temps est freeze, on ne fait rien
-        if(gm.timeFreezed) {
+        if(gm.IsTimeFreezed()) {
             return;
         }
 

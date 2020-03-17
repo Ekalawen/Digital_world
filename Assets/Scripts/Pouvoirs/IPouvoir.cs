@@ -19,8 +19,9 @@ public abstract class IPouvoir : MonoBehaviour {
     protected GameManager gm;
     protected Player player;
     protected Timer cooldownTimer;
+    protected KeyCode binding;
 
-    public void Start() {
+    public virtual void Start() {
         pouvoirAvailable = true;
         gm = FindObjectOfType<GameManager>();
         player = gm.player;
@@ -29,7 +30,8 @@ public abstract class IPouvoir : MonoBehaviour {
     }
 
     // La fonction appelée lorsque le joueur appui sur une touche
-    public void TryUsePouvoir() {
+    public void TryUsePouvoir(KeyCode binding) {
+        this.binding = binding;
         if(pouvoirAvailable && !freezePouvoir && cooldownTimer.IsOver()) {
             if(UsePouvoir()) {
                 cooldownTimer.Reset();

@@ -22,7 +22,8 @@ public class PouvoirTripleSauts : IPouvoir {
     protected override bool UsePouvoir() {
         // Freezer le temps
         pouvoirAvailable = false;
-        GameManager.Instance.timeFreezed = true;
+        GameManager.Instance.FreezeTime();
+        player.FreezePouvoirs(true);
         // Faire un dash et attendre qu'il se termine
         StartCoroutine(PerformDash(nbDashs));
 
@@ -65,11 +66,13 @@ public class PouvoirTripleSauts : IPouvoir {
             } else {
                 // Si c'est la dernière coroutine, defreezer le temps
                 pouvoirAvailable = true;
-                GameManager.Instance.timeFreezed = false;
+                GameManager.Instance.UnFreezeTime();
+                player.FreezePouvoirs(false);
             }
         } else {
             pouvoirAvailable = true;
-            GameManager.Instance.timeFreezed = false;
+            GameManager.Instance.UnFreezeTime();
+            player.FreezePouvoirs(false);
         }
     }
 

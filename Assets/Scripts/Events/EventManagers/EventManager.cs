@@ -135,8 +135,8 @@ public class EventManager : MonoBehaviour {
         if (coroutineDeathCubesCreation != null)
             StopCoroutine(coroutineDeathCubesCreation);
 
-        if(reason != DeathReason.FALL_OUT)
-            gm.timeFreezed = true;
+        if (reason != DeathReason.FALL_OUT)
+            gm.FreezeTime();
 
         gm.historyManager.SetDureeGame(gm.timerManager.GetElapsedTime());
 
@@ -162,7 +162,7 @@ public class EventManager : MonoBehaviour {
         if (coroutineDeathCubesCreation != null)
             StopCoroutine(coroutineDeathCubesCreation);
 
-        gm.timeFreezed = true;
+        gm.FreezeTime();
         gm.player.FreezePouvoirs();
 
         gm.historyManager.SetDureeGame(gm.timerManager.GetElapsedTime());
