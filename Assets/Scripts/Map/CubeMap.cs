@@ -10,6 +10,7 @@ public class CubeMap : MapManager {
     public int tailleMinCave = 3;
     public int tailleMaxCave = 10;
     public int nbLumieresPerCaves = 1;
+    public int offsetLumieresFromCenter = 1;
     public bool caveOffsetSides = true;
 
 	[HideInInspector] public int volumeMap;
@@ -66,7 +67,7 @@ public class CubeMap : MapManager {
             caves.Add(cave);
 
             // On y rajoute la lumière !
-            cave.AddNLumiereInside(nbLumieresPerCaves);
+            cave.AddNLumiereInside(nbLumieresPerCaves, offsetLumieresFromCenter);
 
             volumeCaves += cave.GetVolume();
             currentProportion = volumeCaves / GetVolume();

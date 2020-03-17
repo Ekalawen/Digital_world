@@ -154,19 +154,21 @@ public class Cave : CubeEnsemble {
         cubeMatrix[(int)pointsActuel.x, (int)pointsActuel.y, (int)pointsActuel.z] = null;
 	}
 
-    public void AddNLumiereInside(int nbLumieresToAdd) {
+    public void AddNLumiereInside(int nbLumieresToAdd, int offsetFromCenter = 1) {
+        if (nbLumieresToAdd > 1 && Mathf.Max(nbCubesParAxe.x, Mathf.Max(nbCubesParAxe.y, nbCubesParAxe.z)) <= 3)
+            throw new System.Exception.("Impossible de faire poper assez de lumières dans ces conditions !");
         for (int i = 0; i < nbLumieresToAdd; i++) {
             // On cherche une case où créer un objectif !
             Vector3 posLumiere = new Vector3(
-                Random.Range(1, nbCubesParAxe.x - 1),
-                Random.Range(1, nbCubesParAxe.y - 1),
-                Random.Range(1, nbCubesParAxe.z - 1));
+                Random.Range(offsetFromCenter, nbCubesParAxe.x - offsetFromCenter),
+                Random.Range(offsetFromCenter, nbCubesParAxe.y - offsetFromCenter),
+                Random.Range(offsetFromCenter, nbCubesParAxe.z - offsetFromCenter));
             while (cubeMatrix[(int)posLumiere.x, (int)posLumiere.y, (int)posLumiere.z] != null
-              && map.IsLumiereAt(posLumiere)) {
+              || map.IsLumiereAt(posLumiere)) {
                 posLumiere = new Vector3(
-                    Random.Range(1, nbCubesParAxe.x - 1),
-                    Random.Range(1, nbCubesParAxe.y - 1),
-                    Random.Range(1, nbCubesParAxe.z - 1));
+                    Random.Range(offsetFromCenter, nbCubesParAxe.x - offsetFromCenter),
+                    Random.Range(offsetFromCenter, nbCubesParAxe.y - offsetFromCenter),
+                    Random.Range(offsetFromCenter, nbCubesParAxe.z - offsetFromCenter));
             }
             posLumiere += depart;
             map.CreateLumiere(posLumiere, Lumiere.LumiereType.NORMAL);
