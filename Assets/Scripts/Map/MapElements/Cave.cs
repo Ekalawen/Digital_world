@@ -155,8 +155,8 @@ public class Cave : CubeEnsemble {
 	}
 
     public void AddNLumiereInside(int nbLumieresToAdd, int offsetFromCenter = 1) {
-        if (nbLumieresToAdd > 1 && Mathf.Min(nbCubesParAxe.x, Mathf.Min(nbCubesParAxe.y, nbCubesParAxe.z)) - 2 * offsetFromCenter <= 1)
-            throw new System.Exception("Impossible de faire poper assez de lumières dans ces conditions !");
+        while (nbLumieresToAdd > 1 && Mathf.Min(nbCubesParAxe.x, Mathf.Min(nbCubesParAxe.y, nbCubesParAxe.z)) - 2 * offsetFromCenter <= 1 && offsetFromCenter > 0)
+            offsetFromCenter--;
         for (int i = 0; i < nbLumieresToAdd; i++) {
             // On cherche une case où créer un objectif !
             Vector3 posLumiere = new Vector3(

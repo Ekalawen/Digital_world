@@ -15,8 +15,8 @@ public class TexteExplicatif : MonoBehaviour {
     public Text titleTextSource;
     public Text titleTextTarget;
     public Text mainText;
-    public bool useTextPath = false;
-    public string textPath;
+    public bool useTextAsset = false;
+    public TextAsset textAsset;
 
     public Color color;
     public Button doneButton;
@@ -31,13 +31,13 @@ public class TexteExplicatif : MonoBehaviour {
     public void Start() {
         InitColor();
 
-        if (useTextPath) {
+        if (useTextAsset) {
             InitTresholdText();
         }
     }
 
     protected void InitTresholdText() {
-        tresholdText = new TresholdText(rootPath + textPath);
+        tresholdText = new TresholdText(textAsset);
     }
 
     public void Run(int textTreshold = 0) {
@@ -47,7 +47,7 @@ public class TexteExplicatif : MonoBehaviour {
             titleTextTarget.text = titleTextSource.text;
         firstFrame = true;
 
-        if (useTextPath) {
+        if (useTextAsset) {
             string newText = UseReplacementList(GetTextFromPath(textTreshold));
             mainText.text = newText;
         }
@@ -123,7 +123,7 @@ public class TexteExplicatif : MonoBehaviour {
     }
 
     public List<int> GetAllTresholds() {
-        if(useTextPath) {
+        if(useTextAsset) {
             if (tresholdText == null)
                 InitTresholdText();
             return tresholdText.GetAllTresholds();

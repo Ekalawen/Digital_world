@@ -25,35 +25,52 @@ public class TresholdText {
     public static string FRAGMENT_TRESHOLD_SYMBOLE = "#FragmentTreshold=";
 
     protected string path;
+    protected TextAsset textAsset;
+    protected int textAssetLineIndice = 0;
     protected List<TresholdFragment> fragments;
 
     public TresholdText(string path) {
         this.path = path;
+        this.textAsset = null;
         ComputeFragments();
         RevertTresholdOrderFragments();
     }
 
+    public TresholdText(TextAsset textAsset) {
+        this.path = null;
+        this.textAsset = textAsset;
+        ComputeFragments();
+        RevertTresholdOrderFragments();
+    }
+
+    protected string ReadLine() {
+        string[] splited = textAsset.text.Split('\n');
+        if (textAssetLineIndice >= splited.Length)
+            return null;
+        string res = splited[textAssetLineIndice].Trim();
+        textAssetLineIndice++;
+        return res;
+    }
+
     protected void ComputeFragments() {
         fragments = new List<TresholdFragment>();
-        StreamReader reader = new StreamReader(path);
+        textAssetLineIndice = 0;
 
-        string line = reader.ReadLine();
+        string line = ReadLine();
         if(line != NEW_FRAGMENT_SYMBOLE && line != null)
             Debug.LogErrorFormat("Un fragment doit commencer par {0}, ici le fragment vaut \n{1}", NEW_FRAGMENT_SYMBOLE, line);
-        while((line = reader.ReadLine()) != null) {
+        while((line = ReadLine()) != null) {
             if(line.StartsWith(FRAGMENT_TRESHOLD_SYMBOLE)) {
                 int treshold = int.Parse(line.Split(' ')[1]);
                 string content = "";
-                line = reader.ReadLine();
+                line = ReadLine();
                 while(line != NEW_FRAGMENT_SYMBOLE && line != null) {
                     content += line + "\n";
-                    line = reader.ReadLine();
+                    line = ReadLine();
                 }
                 fragments.Add(new TresholdFragment(treshold, content));
             }
         }
-
-        reader.Close();
     }
 
     public List<TresholdFragment> GetAllFragments() {
