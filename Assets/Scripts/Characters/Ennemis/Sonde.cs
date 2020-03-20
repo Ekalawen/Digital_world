@@ -8,8 +8,6 @@ public class Sonde : Ennemi {
 
 	public float distancePoussee; // La distance sur laquelle on va pousser le personnage !
 	public float tempsPoussee; // Le temps pendant lequel le personnage est poussé !
-	public float coefficiantDeRushVitesse; // Le multiplicateur de vitesse lorsque les drones rushs
-	public float coefficiantDeRushDistanceDeDetection; // Le multiplicateur de la portée de détection quand on est en rush
 
 	protected EtatSonde etat;
 	protected Vector3 lastPositionSeen; // La dernière position à laquelle le joueur a été vu !

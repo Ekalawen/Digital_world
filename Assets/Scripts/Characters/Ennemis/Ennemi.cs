@@ -21,7 +21,8 @@ public abstract class Ennemi : Character {
         gm = GameManager.Instance;
         player = gm.player;
 		controller = this.GetComponent<CharacterController> ();
-		vitesse = Mathf.Exp(Random.Range(Mathf.Log(vitesseMin), Mathf.Log(vitesseMax)));
+		//vitesse = Mathf.Exp(Random.Range(Mathf.Log(vitesseMin), Mathf.Log(vitesseMax)));
+		vitesse = Random.Range(vitesseMin, vitesseMax);
         lastTimeHit = Time.timeSinceLevelLoad;
 	}
 
