@@ -32,7 +32,7 @@ public class ParkourTrainingMap : CubeMap {
 
         //LinkCycleWithLumieres(cycle);
 
-        //AddLumiereOnTopOfFullBlocks(fullBlocks);
+        AddLumiereOnTopOfFullBlocks(fullBlocks);
     }
 
     protected void GenerateCouronneOfLumieres() {
