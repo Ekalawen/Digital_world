@@ -21,20 +21,17 @@ public class ParkourTrainingMap : CubeMap {
     }
 
     protected void GenerateParkourTrainingMap() {
-        //GenerateCubeMap();
         MapContainer mapContainer = new MapContainer(Vector3.zero, new Vector3(tailleMap.x, tailleMap.y, tailleMap.z));
-
-        ////GenerateHorizontalPonts();
-
-        //GenerateCouronneOfLumieres();
 
         List<FullBlock> fullBlocks = GenerateNumberedRandomFilling();
 
-        //List<Vector3> cycle = GenerateHamiltonienCycle(fullBlocks);
-
-        //LinkCycleWithLumieres(cycle);
-
         AddLumiereOnTopOfFullBlocks(fullBlocks);
+
+        /// Parties d'autres versions !
+        //GenerateHorizontalPonts();
+        //GenerateCouronneOfLumieres();
+        //List<Vector3> cycle = GenerateHamiltonienCycle(fullBlocks);
+        //LinkCycleWithLumieres(cycle);
     }
 
     protected void GenerateCouronneOfLumieres() {
