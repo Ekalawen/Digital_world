@@ -320,10 +320,11 @@ public abstract class MapManager : MonoBehaviour {
         return cubes;
     }
 
-    public Lumiere CreateLumiere(Vector3 pos, Lumiere.LumiereType type) {
+    public Lumiere CreateLumiere(Vector3 pos, Lumiere.LumiereType type, bool dontRoundPositions = false) {
         // On arrondie les positions pour être à une valeur entière :)
         // C'EST TRES IMPORTANT QUE CES POSITIONS SOIENT ENTIERES !!! (pour vérifier qu'elles sont accessibles)
-        pos = MathTools.Round(pos);
+        if(!dontRoundPositions)
+            pos = MathTools.Round(pos);
 
         Lumiere lumiere = GameObject.Instantiate(GetPrefab(type), pos, Quaternion.identity, lumieresFolder.transform).GetComponent<Lumiere>();
         lumieres.Add(lumiere);
