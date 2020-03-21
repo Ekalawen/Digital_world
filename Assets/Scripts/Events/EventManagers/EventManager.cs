@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -62,6 +63,7 @@ public class EventManager : MonoBehaviour {
 
     protected virtual void StartEndGame()
     {
+        Debug.Log(Environment.StackTrace);
         isEndGameStarted = true;
 
         // On crée la finaleLight

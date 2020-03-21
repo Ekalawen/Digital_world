@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 // Permet de générer une carte à l'intérieur d'un grand cube !
@@ -8,6 +9,7 @@ public class ParkourTrainingMap : CubeMap {
 
     public int nbPonts = 10;
     public Vector2Int rangeSizePont = new Vector2Int(3, 5);
+
     public bool pontOnlyHorizontalSurrounding = false;
     public int pontsOffsetFromSides = 2;
     public int nbCouronnesOfLumieres = 2;
@@ -179,6 +181,26 @@ public class ParkourTrainingMap : CubeMap {
             Vector3 pos = depart + pas * i;
             if(GetCubeAt(MathTools.Round(pos)) == null)
                 CreateLumiere(pos, Lumiere.LumiereType.NORMAL, dontRoundPositions: true);
+        }
+    }
+
+    public void AllumePlusProcheLumiere(Vector3 position) {
+        List<float> distances = new List<float>();
+        foreach(Lumiere lumiere in GetLumieres()) {
+            LumiereSwitchable ls = (LumiereSwitchable)lumiere;
+            ls.SetState(LumiereSwitchable.LumiereSwitchableState.OFF);
+            if (lumiere.transform.position != position)
+                distances.Add(Vector3.Distance(position, lumiere.transform.position));
+        }
+        if (distances.Count == 0)
+            return;
+        float minDistance = distances.Min();
+        foreach (Lumiere lumiere in GetLumieres()) {
+            if(Vector3.Distance(position, lumiere.transform.position) == minDistance) {
+                LumiereSwitchable ls = (LumiereSwitchable)lumiere;
+                ls.SetState(LumiereSwitchable.LumiereSwitchableState.ON);
+                break;
+            }
         }
     }
 }

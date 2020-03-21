@@ -22,6 +22,20 @@ public class LumiereSwitchable : Lumiere {
         state = newState;
         lumiereOn.SetActive(state == LumiereSwitchableState.ON);
         lumiereOff.SetActive(state == LumiereSwitchableState.OFF);
+        CheckNotCollideWithPlayer();
+    }
+
+    protected void CheckNotCollideWithPlayer() {
+        if (state == LumiereSwitchableState.ON) {
+            Player player = gm.player;
+            if (player != null) {
+                float playerDistance = Vector3.Distance(player.transform.position, transform.position);
+                float minDistanceOverlap = player.transform.localScale[0] + lumiereOn.transform.localScale[0];
+                if (playerDistance <= minDistanceOverlap) {
+                    Captured();
+                }
+            }
+        }
     }
 
     public LumiereSwitchableState GetState() {
@@ -31,28 +45,6 @@ public class LumiereSwitchable : Lumiere {
     protected override void OnTriggerEnter(Collider hit) {
         if(GetState() == LumiereSwitchableState.ON) {
             base.OnTriggerEnter(hit);
-        }
-    }
-
-    protected override void OnTriggerEnterSpecific() {
-        List<Lumiere> lumieres = gm.map.GetLumieres();
-        foreach(Lumiere lumiere in lumieres) {
-            if(lumiere != this) {
-                LumiereSwitchable ls = (LumiereSwitchable)lumiere;
-                ls.SetState(LumiereSwitchableState.OFF);
-            }
-        }
-        StartCoroutine(Reverse());
-    }
-
-    protected IEnumerator Reverse() {
-        yield return new WaitForSeconds(2);
-        List<Lumiere> lumieres = gm.map.GetLumieres();
-        foreach(Lumiere lumiere in lumieres) {
-            if(lumiere != this) {
-                LumiereSwitchable ls = (LumiereSwitchable)lumiere;
-                ls.SetState(LumiereSwitchableState.ON);
-            }
         }
     }
 }

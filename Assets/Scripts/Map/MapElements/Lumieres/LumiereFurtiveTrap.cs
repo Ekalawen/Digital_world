@@ -9,8 +9,8 @@ public class LumiereFurtiveTrap : LumiereFurtive {
     public GameObject lumiereGeneratedPrefab;
     public int nbLumieresToGenerate = 1;
 
-    protected override void OnTriggerEnterSpecific() {
-        base.OnTriggerEnterSpecific();
+    protected override void CapturedSpecific() {
+        base.CapturedSpecific();
 
         // Faire poper des ennemis à tous les coins du niveau, et une au centre !
         List<Vector3> allCorners = gm.map.GetAllInsidedCorners();

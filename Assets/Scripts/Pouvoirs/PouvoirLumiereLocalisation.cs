@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,8 +16,8 @@ public class PouvoirLumiereLocalisation : IPouvoir {
                 return false;
             }
 
-			// On trace les rayons ! =)
-            List<Lumiere> lumieres = gm.map.GetLumieres();
+            // On trace les rayons ! =)
+            List<Lumiere> lumieres = GetLumieresToLocate();
 			for (int i = 0; i < lumieres.Count; i++) {
                 Vector3 departRayons = player.transform.position + 0.5f * gm.gravityManager.Up();
                 Vector3 derriere = player.transform.position - player.camera.transform.forward.normalized;
@@ -45,5 +46,18 @@ public class PouvoirLumiereLocalisation : IPouvoir {
 		}
 
         return true;
+    }
+
+    protected virtual List<Lumiere> GetLumieresToLocate() {
+        List<Lumiere> res = new List<Lumiere>();
+        foreach (Lumiere lumiere in gm.map.GetLumieres()) res.Add(lumiere);
+        for(int i = 0; i < res.Count; i++) {
+            LumiereSwitchable ls = res[i].GetComponent<LumiereSwitchable>();
+            if(ls != null && ls.GetState() == LumiereSwitchable.LumiereSwitchableState.OFF) {
+                res.RemoveAt(i);
+                i--;
+            }
+        }
+        return res;
     }
 }
