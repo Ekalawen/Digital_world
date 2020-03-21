@@ -198,4 +198,40 @@ public class Cave : CubeEnsemble {
     public float GetVolume() {
         return (float)nbCubesParAxe[0] * nbCubesParAxe[1] * nbCubesParAxe[2];
     }
+
+    public void FulfillFloor(bool exeptOne = false) {
+        for(int x = 0; x < nbCubesParAxe.x; x++) {
+            for(int z = 0; z < nbCubesParAxe.z; z++) {
+                if(cubeMatrix[x, 0, z] == null) {
+                    Vector3 pos = depart + new Vector3(x, 0, z);
+                    Cube cube = CreateCube(pos);
+                    cubeMatrix[x, 0, z] = cube;
+                }
+            }
+        }
+
+        if(exeptOne) {
+            Vector3Int pos = new Vector3Int(Random.Range(0, nbCubesParAxe.x), 0, Random.Range(0, nbCubesParAxe.z));
+            Vector3Int dest = GetFreeIndiceLocation(offsetFromSides: 1);
+            RelierChemin(cubeMatrix, map, pos, dest);
+        }
+    }
+
+    public Vector3 GetFreeLocation(int offsetFromSides = 0) {
+        return depart + GetFreeIndiceLocation(offsetFromSides);
+    }
+
+    protected Vector3Int GetFreeIndiceLocation(int offsetFromSides = 0) {
+        int k = 0, kmax = 100000;
+        while(k < kmax) {
+            Vector3Int pos = new Vector3Int(
+                Random.Range(offsetFromSides, nbCubesParAxe.x - offsetFromSides),
+                Random.Range(offsetFromSides, nbCubesParAxe.y - offsetFromSides),
+                Random.Range(offsetFromSides, nbCubesParAxe.z - offsetFromSides));
+            if (cubeMatrix[pos.x, pos.y, pos.z] == null)
+                return pos;
+            k++;
+        }
+        throw new System.Exception("Cette cave est pleine ! Impossible de trouver une free location !");
+    }
 }

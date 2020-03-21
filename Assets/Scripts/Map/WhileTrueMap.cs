@@ -45,10 +45,12 @@ public class WhileTrueMap : CubeMap {
 
             // On définit sa position sur la carte
             Vector3 position = new Vector3(Random.Range(2, tailleMap.x - size.x - 1),
-                2, // On le force à être atteignable en sautant =)
+                //2, // On le force à être atteignable en sautant =)
+                Random.Range(2, tailleMap.y - size.y - 1),
                 Random.Range(2, tailleMap.z - size.z - 1));
 
             Cave cave = new Cave(position, size, bMakeSpaceArround: true, bDigInside: true);
+            cave.FulfillFloor();
             caves.Add(cave);
 
             // On y rajoute la lumière !
