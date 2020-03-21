@@ -54,4 +54,15 @@ public static class MathTools
         }
         return true;
     }
+
+    public static List<Vector3> GetAllVoisins(Vector3 pos) {
+        List<Vector3> res = new List<Vector3>();
+        res.Add(pos + Vector3.forward);
+        res.Add(pos - Vector3.forward);
+        res.Add(pos + Vector3.right);
+        res.Add(pos - Vector3.right);
+        res.Add(pos + Vector3.up);
+        res.Add(pos - Vector3.up);
+        return res;
+    }
 }

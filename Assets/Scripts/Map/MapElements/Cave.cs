@@ -64,9 +64,15 @@ public class Cave : CubeEnsemble {
     }
 
     public Vector3 GetCenter() {
-        return depart + nbCubesParAxe.x * Vector3.right / 2.0f
-            + nbCubesParAxe.y * Vector3.up / 2.0f
-            + nbCubesParAxe.z * Vector3.forward / 2.0f;
+        return depart + (nbCubesParAxe.x - 1) * Vector3.right / 2.0f
+            + (nbCubesParAxe.y - 1) * Vector3.up / 2.0f
+            + (nbCubesParAxe.z - 1) * Vector3.forward / 2.0f;
+    }
+
+    public Vector3 GetOnTop() {
+        return depart + (nbCubesParAxe.x - 1) * Vector3.right / 2.0f
+            + nbCubesParAxe.y * Vector3.up
+            + (nbCubesParAxe.z - 1) * Vector3.forward / 2.0f;
     }
 
     protected void InitializeCubeMatrix() {

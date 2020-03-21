@@ -28,7 +28,8 @@ public abstract class MapManager : MonoBehaviour {
 	public GameObject lumiereSpecialePrefab; // On récupère les lumières !
 	public GameObject lumiereFinalePrefab; // On récupère les lumières finales !
 
-    public bool bDoFinalChecks = true;
+    public bool fixNbLumieres = true;
+    public bool linkUnreachableLumiereToRest = true;
     public Vector3Int tailleMap; // La taille de la map, en largeur, hauteur et profondeur
 	public int nbLumieresInitial; // Le nombre de lumières lors de la création de la map
 
@@ -83,8 +84,10 @@ public abstract class MapManager : MonoBehaviour {
         // Puis on régule la map pour s'assurer que tout va bien :)
         PrintCubesNumbers();
         //LocaliseCubeOnLumieres();
-        if (bDoFinalChecks) {
+        if (fixNbLumieres) {
             FixNbLumieres();
+        }
+        if(linkUnreachableLumiereToRest) {
             LinkUnreachableLumiereToRest();
         }
     }
@@ -373,10 +376,10 @@ public abstract class MapManager : MonoBehaviour {
         && 0 <= pos.z && pos.z <= tailleMap.z;
     }
 
-    public bool IsInInsidedRegularMap(Vector3 pos) {
-        return 1 <= pos.x && pos.x < tailleMap.x
-        && 1 <= pos.y && pos.y < tailleMap.y
-        && 1 <= pos.z && pos.z < tailleMap.z;
+    public bool IsInInsidedRegularMap(Vector3 pos, int offsetFromSides = 1) {
+        return offsetFromSides <= pos.x && pos.x <= tailleMap.x - offsetFromSides
+        && offsetFromSides <= pos.y && pos.y <= tailleMap.y - offsetFromSides
+        && offsetFromSides <= pos.z && pos.z <= tailleMap.z - offsetFromSides;
     }
 
     public List<Cube> GetAllCubes() {
@@ -451,15 +454,15 @@ public abstract class MapManager : MonoBehaviour {
         return center;
     }
 
-    public Vector3 GetFreeRoundedLocation() {
-        Vector3 center = MathTools.Round(new Vector3(Random.Range(1.0f, (float)tailleMap.x - 1),
-                                     Random.Range(1.0f, (float)tailleMap.y - 1),
-                                     Random.Range(1.0f, (float)tailleMap.z - 1)));
+    public Vector3 GetFreeRoundedLocation(int offsetFromSides = 1) {
+        Vector3 center = MathTools.Round(new Vector3(Random.Range((float)offsetFromSides, (float)tailleMap.x - offsetFromSides),
+                                     Random.Range((float)offsetFromSides, (float)tailleMap.y - offsetFromSides),
+                                     Random.Range((float)offsetFromSides, (float)tailleMap.z - offsetFromSides)));
         int k = 0; int kmax = 5000;
         while(GetCubesInLocation(center).Count > 0 && k <= kmax) {
-            center = MathTools.Round(new Vector3(Random.Range(1.0f, (float)tailleMap.x - 1),
-                                     Random.Range(1.0f, (float)tailleMap.y - 1),
-                                     Random.Range(1.0f, (float)tailleMap.z - 1)));
+            center = MathTools.Round(new Vector3(Random.Range((float)offsetFromSides, (float)tailleMap.x - offsetFromSides),
+                                     Random.Range((float)offsetFromSides, (float)tailleMap.y - offsetFromSides),
+                                     Random.Range((float)offsetFromSides, (float)tailleMap.z - offsetFromSides)));
             k++;
         }
         if (k > kmax)
@@ -515,7 +518,9 @@ public abstract class MapManager : MonoBehaviour {
 
         // Vérifier si les lumières sont dans cette zone, si elles ne le sont pas, elles sont inaccessibles
         foreach(Lumiere lumiere in lumieres) {
-            LinkPositionToReachableArea(lumiere.transform.position, reachableArea);
+            if (!MathTools.IsRounded(lumiere.transform.position))
+                Debug.LogWarning("Attention une lumière n'est pas à une position entière ! Peut engendrer des bugs dans le Link !");
+            LinkPositionToReachableArea(MathTools.Round(lumiere.transform.position), reachableArea);
         }
     }
 
@@ -789,13 +794,16 @@ public abstract class MapManager : MonoBehaviour {
         lumieres.Remove(lumiere);
     }
 
-    protected void GenerateRandomFilling() {
+    protected List<FullBlock> GenerateRandomFilling() {
+        List<FullBlock> fullBlocks = new List<FullBlock>();
         List<Vector3> farAwayPos = GetFarAwayPositions();
         List<Vector3> selectedPos = GaussianGenerator.SelectSomeProportionOfNaiveMethod<Vector3>(farAwayPos, proportionRandomFilling);
         foreach(Vector3 pos in selectedPos) {
             Vector3 finalPos = pos - Vector3.one * (int)Mathf.Floor(sizeCubeRandomFilling / 2.0f);
             FullBlock fb = new FullBlock(finalPos, Vector3Int.one * sizeCubeRandomFilling);
+            fullBlocks.Add(fb);
         }
+        return fullBlocks;
     }
 
     protected List<Vector3> GetFarAwayPositions() {
@@ -817,5 +825,18 @@ public abstract class MapManager : MonoBehaviour {
             if (distances.Min() >= minDistance)
                 return pos;
         }
+    }
+
+    public List<Vector3> GetCouronne(int hauteur, int offsetSides) {
+        List<Vector3> res = new List<Vector3>();
+        for (int x = offsetSides; x <= tailleMap.x - offsetSides - 1; x++)
+            res.Add(new Vector3(x, hauteur, offsetSides));
+        for (int y = offsetSides; y <= tailleMap.y - offsetSides - 1; y++)
+            res.Add(new Vector3(tailleMap.x - offsetSides, hauteur, y));
+        for (int x = offsetSides + 1; x <= tailleMap.x - offsetSides; x++)
+            res.Add(new Vector3(x, hauteur, tailleMap.y - offsetSides));
+        for (int y = offsetSides + 1; y <= tailleMap.y - offsetSides; y++)
+            res.Add(new Vector3(offsetSides, hauteur, y));
+        return res;
     }
 }

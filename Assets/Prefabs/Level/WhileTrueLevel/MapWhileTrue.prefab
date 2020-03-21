@@ -17,26 +17,32 @@ MonoBehaviour:
     type: 3}
   indestructibleCubePrefab: {fileID: 1586838666760998, guid: 166cc3691555747479ad6b1623980374,
     type: 3}
-  lumierePrefab: {fileID: 92096758339111740, guid: ed7e41e7d6a0b33418291580a6285ef2,
+  specialCubePrefab: {fileID: 0}
+  lumierePrefab: {fileID: 92096758339111740, guid: f0c58b58a31aa504ea831d6a2910acb0,
     type: 3}
+  lumiereSpecialePrefab: {fileID: 0}
   lumiereFinalePrefab: {fileID: 6995409226328054440, guid: 9e97ff21fbd4e324b866d7002d438e06,
     type: 3}
-  ennemiPrefabs: {fileID: 1252573298759596, guid: d49852f29496f46858edc6834aef370d,
-    type: 3}
-  bDoFinalChecks: 1
+  fixNbLumieres: 1
+  linkUnreachableLumiereToRest: 1
   tailleMap: {x: 12, y: 12, z: 12}
   nbLumieresInitial: 0
-  lumieres: []
+  useRandomFilling: 0
+  minDistanceRandomFilling: 0
+  proportionRandomFilling: 0
+  sizeCubeRandomFilling: 0
+  mapFolder: {fileID: 0}
+  cubesFolder: {fileID: 0}
+  lumieresFolder: {fileID: 0}
   gm: {fileID: 0}
-  lumieresAttrapees: 0
-  nbEnnemis: 0
   proportionCaves: 0
   proportionSourcePont: 0
   tailleMinCave: 6
   tailleMaxCave: 6
   nbLumieresPerCaves: 0
+  offsetLumieresFromCenter: 1
+  caveOffsetSides: 1
   volumeMap: 0
-  gravityZonePrefab: {fileID: 0}
   nbCaves: 1
   nbPonts: 25
 --- !u!1001 &6496987865494209856

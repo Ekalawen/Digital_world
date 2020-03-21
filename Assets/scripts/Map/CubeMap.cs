@@ -9,6 +9,7 @@ public class CubeMap : MapManager {
     public float proportionSourcePont;
     public int tailleMinCave = 3;
     public int tailleMaxCave = 10;
+    public bool makeSpaceArround = false;
     public int nbLumieresPerCaves = 1;
     public int offsetLumieresFromCenter = 1;
     public bool caveOffsetSides = true;
@@ -34,7 +35,7 @@ public class CubeMap : MapManager {
 
         // On veut générer des caves dangeureuses :3
         // Qui possèderont des lumières !
-        List<Cave> caves = GenerateCaves(proportionCaves, bWithLumieres: true);
+        List<Cave> caves = GenerateCaves(proportionCaves, bWithLumieres: true, bMakeSpaceArround: makeSpaceArround);
 
         //// Générer des gravityZones
         //for(int i = 0; i < 1; i++) {
@@ -48,7 +49,7 @@ public class CubeMap : MapManager {
     }
     //public GameObject gravityZonePrefab;
 
-	protected List<Cave> GenerateCaves(float proportionCaves, bool bWithLumieres) {
+	protected List<Cave> GenerateCaves(float proportionCaves, bool bWithLumieres, bool bMakeSpaceArround = false) {
         List<Cave> caves = new List<Cave>();
         float currentProportion = 0.0f;
         float volumeCaves = 0;
@@ -63,7 +64,7 @@ public class CubeMap : MapManager {
             // On définit sa position sur la carte
             Vector3 position = GetPositionCave(size);
 
-            Cave cave = new Cave(position, size, bMakeSpaceArround: false, bDigInside: true);
+            Cave cave = new Cave(position, size, bMakeSpaceArround: bMakeSpaceArround, bDigInside: true);
             caves.Add(cave);
 
             // On y rajoute la lumière !

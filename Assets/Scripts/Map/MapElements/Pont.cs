@@ -34,4 +34,29 @@ public class Pont : CubeEnsemble {
             CreateCube(pos);
 		}
 	}
+
+    public List<Vector3> GetAllSurroundingPositions() {
+        List<Vector3> res = new List<Vector3>();
+        List<Vector3> cubesPositions = new List<Vector3>();
+        foreach (Cube cube in cubes) cubesPositions.Add(cube.transform.position);
+        foreach(Cube cube in cubes) {
+            foreach(Vector3 voisin in MathTools.GetAllVoisins(cube.transform.position)) {
+                if (!res.Contains(voisin) && !cubesPositions.Contains(voisin))
+                    res.Add(voisin);
+            }
+        }
+        return res;
+    }
+
+    public List<Lumiere> SurroundWithLumieres(Lumiere.LumiereType lumiereType, bool onlyHorizontaly = false) {
+        List<Lumiere> lumieres = new List<Lumiere>();
+        foreach(Vector3 pos in GetAllSurroundingPositions()) {
+            if(map.IsInInsidedRegularMap(pos)) {
+                if (!onlyHorizontaly || (onlyHorizontaly && pos.y == depart.y)) {
+                    lumieres.Add(map.CreateLumiere(pos, lumiereType));
+                }
+            }
+        }
+        return lumieres;
+    }
 }

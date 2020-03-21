@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class GaussianGenerator {
 
@@ -56,6 +57,22 @@ public class GaussianGenerator {
         for(int i = 0; i < l.Count; i++) {
             if(Random.Range(0.0f, 1.0f) < proportion)
                 res.Add(l[i]);
+        }
+
+        return res;
+    }
+
+    public static List<T> SelecteSomeNumberOf<T>(List<T> l, int number) {
+        if (number > l.Count)
+            Debug.LogError("Impossible d'extraire cette quantité d'éléments de cette liste !");
+
+        List<T> res = new List<T>();
+        List<int> indices = Enumerable.Range(0, l.Count).ToList<int>();
+
+        for(int i = 0; i < number; i++) {
+            int ind = Random.Range(0, indices.Count);
+            res.Add(l[indices[ind]]);
+            indices.RemoveAt(ind);
         }
 
         return res;
