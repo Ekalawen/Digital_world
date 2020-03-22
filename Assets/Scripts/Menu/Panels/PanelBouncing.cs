@@ -28,6 +28,8 @@ public class PanelBouncing : MonoBehaviour {
     public bool isSource; // Permet de savoir que notre cube est une source
     [HideInInspector]
     public Color couleurSource; // La couleur de notre cube
+    [HideInInspector]
+    public Vector2 realPosition; // La véritable position en pixel à l'écran ! x)
 
     //////////////////////////////////////////////////////////////////////////////////////
     // METHODES
@@ -99,5 +101,16 @@ public class PanelBouncing : MonoBehaviour {
 
     int DistanceCarre(PanelBouncing p) {
         return (int) (Mathf.Abs(p.x - x) + Mathf.Abs(p.y - y));
+    }
+
+    public void SetPosition(Vector2 pos, float size, RectTransform parentRect) {
+        RectTransform r = this.GetComponent<RectTransform>();
+        float newX = pos.x * size - parentRect.rect.width / 2 + size / 2;
+        float newY = pos.y * size - parentRect.rect.height / 2 + size / 2;
+        r.localPosition = new Vector3(newX, newY, 0);
+        r.localRotation = Quaternion.identity;
+        r.localScale = new Vector3(1, 1, 1);
+        r.sizeDelta = new Vector2(size, size);
+        realPosition = new Vector2(newX, newY);
     }
 }

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MenuLevel : MonoBehaviour {
@@ -35,6 +34,8 @@ public class MenuLevel : MonoBehaviour {
     public int distanceSource = 8; // La distance d'action de la source
     public float decroissanceSource = 0.01f; // La vitesse de décroissance de la source
     public List<ColorSource.ThemeSource> themes; // Les couleurs des sources :)
+
+    protected bool playStarted = false;
 
     private void Update() {
         // Si on appui sur Echap on quitte
@@ -70,13 +71,10 @@ public class MenuLevel : MonoBehaviour {
     }
 
     public void Play() {
-        menuLevelSelector.SaveLevelIndice();
-        PlayerPrefs.SetString(LEVEL_NAME_KEY, GetName());
-		SceneManager.LoadScene(levelSceneName);
+        menuLevelSelector.Play(levelSceneName);
     }
 
     public void Next() {
-        Debug.Log("MenuLevel.Next()");
         if (inputFieldNext.text == GetPassword()) {
             menuLevelSelector.Next();
         } else if (inputFieldNext.text == SUPER_CHEATED_PASSWORD) {
@@ -239,5 +237,12 @@ public class MenuLevel : MonoBehaviour {
     public void SetAlreadyDiscoverLevel() {
         string key = GetName() + HAS_ALREADY_DISCOVER_LEVEL_KEY;
         PlayerPrefs.SetString(key, "True");
+    }
+
+    public bool IsPlayStarted() {
+        return playStarted;
+    }
+    public void SetPlayStarted() {
+        playStarted = true;
     }
 }
