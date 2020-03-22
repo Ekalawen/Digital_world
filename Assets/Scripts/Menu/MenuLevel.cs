@@ -23,6 +23,8 @@ public class MenuLevel : MonoBehaviour {
     public Text textLevelName;
     public InputField inputFieldNext;
     public string nextPassword = "passwd";
+    public GameObject joueurPrefab;
+    public GameObject consolePrefab;
     public TexteExplicatif texteInformations;
     public TexteExplicatif texteExplicatifPasswdError;
     public TexteExplicatif texteExplicatifDonneesHackes;

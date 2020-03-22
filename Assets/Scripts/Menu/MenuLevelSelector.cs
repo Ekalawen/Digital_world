@@ -17,7 +17,7 @@ public class MenuLevelSelector : MonoBehaviour {
 
     private void Update() {
         // Si on appui sur Echap on quitte
-        if (!MenuManager.DISABLE_HOTKEYS) {
+        if (!MenuManager.DISABLE_HOTKEYS && !GetCurrentLevel().IsPlayStarted()) {
             if (Input.GetKeyDown(KeyCode.Escape)) {
                 Back();
             }
@@ -68,8 +68,8 @@ public class MenuLevelSelector : MonoBehaviour {
     }
 
     public void Play(string levelSceneName) {
-        MenuLevel menuLevel = levels[levelIndice].GetComponent<MenuLevel>();
-        if (menuLevel.IsPlayStarted()) {// Pour éviter de lancer deux fois le play !
+        MenuLevel menuLevel = GetCurrentLevel();
+        if (menuLevel.IsPlayStarted()) { // Pour éviter de lancer deux fois le play !
             return;
         }
         //SceneManager.LoadScene(levelSceneName, LoadSceneMode.Additive);
@@ -80,7 +80,7 @@ public class MenuLevelSelector : MonoBehaviour {
         PlayerPrefs.SetString(MenuLevel.LEVEL_NAME_KEY, menuLevel.GetName());
 
         StartCoroutine(FadeOutMenuLevel(menuLevel.gameObject));
-        StartCoroutine(FadeInLoadingMenu(loading));
+        StartCoroutine(FadeInLoadingMenu(loading, menuLevel));
     }
 
     protected IEnumerator FadeOutMenuLevel(GameObject menuLevel) {
@@ -92,14 +92,18 @@ public class MenuLevelSelector : MonoBehaviour {
         menuLevel.SetActive(false);
     }
 
-    protected IEnumerator FadeInLoadingMenu(AsyncOperation loading) {
+    protected IEnumerator FadeInLoadingMenu(AsyncOperation loading, MenuLevel level) {
         Timer timer = new Timer(dureeFading);
         loadingMenu.gameObject.SetActive(true);
-        loadingMenu.Initialize(loading);
+        loadingMenu.Initialize(loading, level);
         loadingMenu.GetComponent<CanvasGroup>().alpha = 0.0f;
         while(!timer.IsOver()) {
             loadingMenu.GetComponent<CanvasGroup>().alpha = timer.GetAvancement();
             yield return null;
         }
+    }
+
+    protected MenuLevel GetCurrentLevel() {
+        return levels[levelIndice].GetComponent<MenuLevel>();
     }
 }

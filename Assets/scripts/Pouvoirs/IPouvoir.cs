@@ -9,6 +9,10 @@ using UnityEngine;
 /// </summary>
 public abstract class IPouvoir : MonoBehaviour {
 
+    public string nom;
+    public string description;
+    public Sprite sprite;
+
     public float cooldown = 0.0f;
     public float timerMalus = 0.0f;
 
