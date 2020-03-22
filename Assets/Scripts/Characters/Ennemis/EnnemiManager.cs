@@ -63,6 +63,7 @@ public class EnnemiManager : MonoBehaviour {
                     maxParent = maxParent.parent;
                 maxParent.SetParent(ennemisFolder.transform);
             }
+            ennemi.Start(); // On reset l'ennemi histoire d'être sur qu'il va bien :)
             ennemis.Add(ennemi);
         }
     }
