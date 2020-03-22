@@ -48,7 +48,7 @@ public class EventManager : MonoBehaviour {
             int nbLumieres = map.GetLumieres().Count;
             if (nbLumieres == 0 && !isEndGameStarted) {
                 if (!bNoEndgame) {
-                    gm.soundManager.PlayEndGameMusic();
+                    gm.soundManager.PlayEndGameMusic(); // Ici car lorsqu'il y a plusieurs end-games on ne veut pas que la musique restart !
                     StartEndGame();
                 } else {
                     WinGame();
@@ -63,7 +63,6 @@ public class EventManager : MonoBehaviour {
 
     protected virtual void StartEndGame()
     {
-        Debug.Log(Environment.StackTrace);
         isEndGameStarted = true;
 
         // On crée la finaleLight

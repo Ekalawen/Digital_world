@@ -34,13 +34,14 @@ public class SoundManager : MonoBehaviour {
     protected Transform globalSoundsFolder;
     protected List<AudioSource> availableSources;
     protected List<AudioSource> usedSources;
+    protected AudioSource normalMusicSource;
 
     public void Initialize() {
         globalSoundsFolder = new GameObject("Sounds").transform;
         //globalSource.volume = PlayerPrefs.GetFloat(MenuOptions.MUSIC_VOLUME_KEY);
         availableSources = new List<AudioSource>();
         usedSources = new List<AudioSource>();
-        PlayClipsOnSource(normalMusics);
+        normalMusicSource = PlayClipsOnSource(normalMusics);
     }
 
     public AudioSource GetAvailableSource() {
@@ -52,8 +53,12 @@ public class SoundManager : MonoBehaviour {
                 i--;
                 continue;
             }
-            if (source.isPlaying == false)
+            if (source.isPlaying == false) {
                 availableSources.Add(source);
+                usedSources.RemoveAt(i);
+                i--;
+                continue;
+            }
         }
 
         // Si on en a déjà de disponible, c'est cool ! :D
@@ -125,7 +130,11 @@ public class SoundManager : MonoBehaviour {
         PlayClipsOnSource(getItemClips, pos);
     }
     public void PlayEndGameMusic() {
+        Debug.Log("1");
+        normalMusicSource.Stop();
+        Debug.Log("2");
         PlayClipsOnSource(endGameMusics);
+        Debug.Log("3");
     }
     public void PlayJumpEventStunClip() {
         PlayClipsOnSource(jumpEventStunClips);
@@ -157,10 +166,13 @@ public class SoundManager : MonoBehaviour {
         // On set le volume
         if(audioClipParams.bIsMusic) {
             source.volume = PlayerPrefs.GetFloat(MenuOptions.MUSIC_VOLUME_KEY);
+            Debug.Log("volume = " + source.volume);
         } else {
             source.volume = PlayerPrefs.GetFloat(MenuOptions.SOUND_VOLUME_KEY);
         }
         source.volume *= AudioClipParams.BASE_VOLUME * audioClipParams.relativeVolume;
+        if(audioClipParams.bIsMusic)
+            Debug.Log("volumeFinal = " + source.volume);
 
         // On positionne la source
         source.transform.position = pos;
