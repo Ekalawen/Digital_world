@@ -91,7 +91,8 @@ public class RewardManager : MonoBehaviour {
         // Si on a appuyé sur la touche Escape, on revient au menu !
         if (Input.GetKey (KeyCode.Escape) 
          || Input.GetKey(KeyCode.KeypadEnter)
-         || Input.GetKey(KeyCode.Return)) {
+         || Input.GetKey(KeyCode.Return)
+         || Input.GetKey(KeyCode.Space)) {
             SceneManager.LoadScene("MenuScene");
 		}
     }
