@@ -61,7 +61,7 @@ public class RewardManager : MonoBehaviour {
         lumieresDisplayers = new List<RewardPointDisplayer>();
         foreach(ObjectHistory history in lumieresHistory) {
             RewardPointDisplayer displayer = gameObject.AddComponent<RewardPointDisplayer>();
-            displayer.Initialize(lumiereObjectPrefab, history, dureeReward, delayBetweenTrails, accelerationCoefficiant, pointDisplayerScaleFactor);
+            displayer.Initialize(history.prefab, history, dureeReward, delayBetweenTrails, accelerationCoefficiant, pointDisplayerScaleFactor);
             lumieresDisplayers.Add(displayer);
         }
 

@@ -146,10 +146,12 @@ public class HistoryManager : MonoBehaviour {
         this.dureeGame = duree;
     }
 
-    public void AddLumiereHistory(Lumiere lumiere) {
+    public void AddLumiereHistory(Lumiere lumiere, GameObject lumierePrefab) {
         if (lumieresHistory == null)
             lumieresHistory = new List<ObjectHistory>();
-        lumieresHistory.Add(new ObjectHistory(lumiere));
+        ObjectHistory history = new ObjectHistory(lumiere);
+        history.prefab = lumierePrefab;
+        lumieresHistory.Add(history);
     }
 
     public void AddItemHistory(Item item, GameObject itemPrefab) {

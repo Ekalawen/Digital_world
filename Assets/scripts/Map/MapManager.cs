@@ -329,7 +329,7 @@ public abstract class MapManager : MonoBehaviour {
         Lumiere lumiere = GameObject.Instantiate(GetPrefab(type), pos, Quaternion.identity, lumieresFolder.transform).GetComponent<Lumiere>();
         lumieres.Add(lumiere);
 
-        gm.historyManager.AddLumiereHistory(lumiere);
+        gm.historyManager.AddLumiereHistory(lumiere, lumiere.rewardLumierePrefab);
 
         return lumiere;
     }

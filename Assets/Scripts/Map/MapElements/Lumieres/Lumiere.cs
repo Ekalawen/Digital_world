@@ -9,6 +9,7 @@ public class Lumiere : MonoBehaviour {
 
     public LumiereType type;
     public float timeBonus = 10.0f;
+    public GameObject rewardLumierePrefab;
 
     protected GameManager gm;
 
