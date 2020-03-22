@@ -487,7 +487,7 @@ public abstract class MapManager : MonoBehaviour {
         return center;
     }
 
-    public Vector3 GetCenter() {
+    public virtual Vector3 GetCenter() {
         return new Vector3(tailleMap.x, tailleMap.y, tailleMap.z) / 2.0f;
     }
 

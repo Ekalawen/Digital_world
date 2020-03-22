@@ -40,6 +40,8 @@ public class HistoryManager : MonoBehaviour {
     [HideInInspector]
     public Vector3Int mapSize;
     [HideInInspector]
+    public Vector3 mapCenter; // Different de mapSize pour le tutoriel !
+    [HideInInspector]
     public List<ColorSource.ThemeSource> themes;
     protected ObjectHistory playerHistory;
     protected List<ObjectHistory> ennemisHistory;
@@ -69,6 +71,7 @@ public class HistoryManager : MonoBehaviour {
 
         echantillonnageTimer = new Timer(frequenceEchantillonnagePositions);
         mapSize = gm.map.tailleMap;
+        mapCenter = gm.map.GetCenter();
         themes = gm.colorManager.themes;
     }
 

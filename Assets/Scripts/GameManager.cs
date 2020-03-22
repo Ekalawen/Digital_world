@@ -173,7 +173,7 @@ public class GameManager : MonoBehaviour {
 		Cursor.lockState = CursorLockMode.None;
 		Cursor.visible = true;
 
-        if(eventManager.IsWin()) {
+        if(eventManager.IsWin() && SceneManager.GetActiveScene().name != "TutorialScene") {
             SceneManager.LoadScene("RewardScene");
         } else {
             SceneManager.LoadScene("MenuScene");

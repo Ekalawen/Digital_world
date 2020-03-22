@@ -136,4 +136,8 @@ public class TutorialMap : MapManager {
     public override Vector2 GetPlayerStartOrientationXY(Vector3 playerStartPosition) {
         return new Vector2(90, 90);
     }
+
+    public override Vector3 GetCenter() {
+        return new Vector3(102, 10, 12);
+    }
 }

@@ -18,7 +18,8 @@ public class RewardCamera : MonoBehaviour {
         //    center += tpos.position;
         //}
         //center /= hm.GetPlayerHistory().positions.Count;
-        center = (Vector3)hm.mapSize / 2.0f;
+        //center = (Vector3)hm.mapSize / 2.0f;
+        center = hm.mapCenter;
 
         Vector3Int tailleMap = hm.mapSize;
         distance = (tailleMap.x + tailleMap.y + tailleMap.z) / 3.0f;
