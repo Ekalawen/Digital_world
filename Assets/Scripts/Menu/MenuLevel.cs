@@ -89,6 +89,8 @@ public class MenuLevel : MonoBehaviour {
     public void NextIfEnter() {
         if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return))
             Next();
+        else
+            texteInformations.EnableHotkeysNextFrame();
     }
 
     public void Previous() {

@@ -22,6 +22,8 @@ public class TexteExplicatif : MonoBehaviour {
     public Button doneButton;
     public Image fondSombre;
 
+    public bool dontDisableOnSpace = false;
+
     protected bool firstFrame;
     protected TresholdText tresholdText;
     protected string rootPath = "";
@@ -59,8 +61,12 @@ public class TexteExplicatif : MonoBehaviour {
     }
 
     private void Update() {
-        if(!firstFrame /*&& content.activeInHierarchy*/
-        && (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.Space))) {
+        if(content.activeInHierarchy
+        && !firstFrame /*&& content.activeInHierarchy*/
+        && (Input.GetKeyDown(KeyCode.Escape)
+        || Input.GetKeyDown(KeyCode.KeypadEnter) 
+        || Input.GetKeyDown(KeyCode.Return) 
+        || (!dontDisableOnSpace && Input.GetKeyDown(KeyCode.Space)))) {
             Disable();
         }
         firstFrame = false;
@@ -72,9 +78,11 @@ public class TexteExplicatif : MonoBehaviour {
     }
 
     public void DisableHotkeys() {
+        Debug.Log("DisableHotkeys !" + Environment.StackTrace);
         MenuManager.DISABLE_HOTKEYS = true;
     }
     public void EnableHotkeys() {
+        Debug.Log("EnableHotkeys !" + Environment.StackTrace);
         MenuManager.DISABLE_HOTKEYS = false;
     }
     public void EnableHotkeysNextFrame() {
