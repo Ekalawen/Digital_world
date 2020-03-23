@@ -29,6 +29,7 @@ public class MenuLevel : MonoBehaviour {
     public TexteExplicatif texteExplicatifPasswdError;
     public TexteExplicatif texteExplicatifDonneesHackes;
     public TexteExplicatif texteExplicatifDonneesHackesSuccess;
+    public TexteExplicatif texteExplicatifIntroduction;
     public Text score_nbTries, score_nbWins, score_winrate, score_highestScore;
 
     // Les propriétés du background de ce level
@@ -198,6 +199,8 @@ public class MenuLevel : MonoBehaviour {
         texteExplicatifPasswdError.SetRootPath(rootPath);
         texteExplicatifDonneesHackes.SetRootPath(rootPath);
         texteExplicatifDonneesHackesSuccess.SetRootPath(rootPath);
+        if(texteExplicatifIntroduction != null)
+            texteExplicatifIntroduction.SetRootPath(rootPath);
 
         MatchEvaluator evaluator = new MatchEvaluator(SurroundWithBlueColor);
         texteExplicatifDonneesHackesSuccess.AddReplacement("%Trace%", GetTrace());
@@ -228,7 +231,11 @@ public class MenuLevel : MonoBehaviour {
     
     protected void DisplayPopupUnlockLevel() {
         if (!HasAlreadyDiscoverLevel()) {
-            MenuManager.Instance.RunPopup("Niveau débloqué !", "Félicitation ! Vous venez de débloquer le niveau " + GetName() + " !\nContinuez comme ça !\nEt Happy Hacking ! :)");
+            if (menuLevelSelector.GetLevelIndice() != 0) {
+                MenuManager.Instance.RunPopup("Niveau débloqué !", "Félicitation ! Vous venez de débloquer le niveau " + GetName() + " !\nContinuez comme ça !\nEt Happy Hacking ! :)");
+            } else {
+                texteExplicatifIntroduction.Run();
+            }
             SetAlreadyDiscoverLevel();
         }
     }

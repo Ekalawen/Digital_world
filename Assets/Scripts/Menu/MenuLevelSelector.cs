@@ -106,4 +106,8 @@ public class MenuLevelSelector : MonoBehaviour {
     protected MenuLevel GetCurrentLevel() {
         return levels[levelIndice].GetComponent<MenuLevel>();
     }
+
+    public int GetLevelIndice() {
+        return levelIndice;
+    }
 }

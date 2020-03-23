@@ -31,11 +31,6 @@ public class TexteExplicatif : MonoBehaviour {
     protected List<Tuple<string, MatchEvaluator>> replacementListEvaluator = new List<Tuple<string, MatchEvaluator>>();
 
     public void Start() {
-        InitColor();
-
-        if (useTextAsset) {
-            InitTresholdText();
-        }
     }
 
     protected void InitTresholdText() {
@@ -43,6 +38,12 @@ public class TexteExplicatif : MonoBehaviour {
     }
 
     public void Run(int textTreshold = 0) {
+        InitColor();
+
+        if (useTextAsset) {
+            InitTresholdText();
+        }
+
         content.SetActive(true);
         DisableHotkeys();
         if(titleTextSource != null && titleTextTarget != null)
