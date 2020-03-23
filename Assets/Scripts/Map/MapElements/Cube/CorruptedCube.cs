@@ -56,7 +56,8 @@ public class CorruptedCube : Cube {
                         Cube newCube = gm.map.AddCube(pos, type);
                         if(newCube != null && !isAccessibleType) {
                             ColorManagerBlackAndWhite colorManager = (ColorManagerBlackAndWhite)gm.colorManager;
-                            //newCube.SetColor(colorManager.GetNotCurrentColor());
+                            newCube.SetColor(ColorManager.GetColor(colorManager.GetNotCurrentTheme()));
+                            //newCube.SetColor(ColorManager.GetColor(colorManager.GetCurrentTheme()));
                         }
                         if(newCube != null && isAccessibleType) {
                             ColorManagerBlackAndWhite colorManager = (ColorManagerBlackAndWhite)gm.colorManager;

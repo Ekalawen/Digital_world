@@ -18,7 +18,9 @@ public class Cube : MonoBehaviour {
     }
 
     public virtual void RegisterCubeToColorSources() {
-        ColorManager colorManager = FindObjectOfType<ColorManager>();
+        //ColorManager colorManager = FindObjectOfType<ColorManager>();
+        ColorManager colorManager = gm.colorManager;
+        SetColor(Color.black);
         foreach(ColorSource colorSource in colorManager.sources) {
             if(Vector3.Distance(transform.position, colorSource.transform.position) <= colorSource.range)
                 colorSource.AddCube(this);
