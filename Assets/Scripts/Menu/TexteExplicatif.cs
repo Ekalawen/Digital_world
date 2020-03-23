@@ -78,11 +78,9 @@ public class TexteExplicatif : MonoBehaviour {
     }
 
     public void DisableHotkeys() {
-        Debug.Log("DisableHotkeys !" + Environment.StackTrace);
         MenuManager.DISABLE_HOTKEYS = true;
     }
     public void EnableHotkeys() {
-        Debug.Log("EnableHotkeys !" + Environment.StackTrace);
         MenuManager.DISABLE_HOTKEYS = false;
     }
     public void EnableHotkeysNextFrame() {
