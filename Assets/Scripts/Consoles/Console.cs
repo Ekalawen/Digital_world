@@ -1,7 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
 
 public struct TimerMessage {
     public TimedMessage message;
@@ -69,8 +71,8 @@ public class Console : MonoBehaviour {
 
 		// Les premiers messages
 		PremiersMessages();
-        timerPhraseRandom = new Timer(Random.Range(tempsAvantPhraseRandom.x, tempsAvantPhraseRandom.y));
-        timerConseiller = new Timer(Random.Range(tempsAvantConseiller.x, tempsAvantConseiller.y));
+        timerPhraseRandom = new Timer(UnityEngine.Random.Range(tempsAvantPhraseRandom.x, tempsAvantPhraseRandom.y));
+        timerConseiller = new Timer(UnityEngine.Random.Range(tempsAvantConseiller.x, tempsAvantConseiller.y));
 
         // Setup les timers des timedMessages
         InitTimersMessages();
@@ -101,7 +103,7 @@ public class Console : MonoBehaviour {
     protected void LancerConseils() {
         if (timerConseiller.IsOver()) {
             Conseiller();
-            timerConseiller = new Timer(Random.Range(tempsAvantConseiller.x, tempsAvantConseiller.y));
+            timerConseiller = new Timer(UnityEngine.Random.Range(tempsAvantConseiller.x, tempsAvantConseiller.y));
         }
     }
 
@@ -158,8 +160,8 @@ public class Console : MonoBehaviour {
         // On lance des conseils !
         LancerConseils();
 
-        // On efface l'important texte si ça fait suffisamment longtemps qu'il est affiché
-        EffacerImportantText();
+        //// On efface l'important texte si ça fait suffisamment longtemps qu'il est affiché
+        //EffacerImportantText();
 
         // On conseille d'appuyer sur TAB si le joueur galère a trouver des orbes
         ConseillerUtiliserDetection();
@@ -175,27 +177,70 @@ public class Console : MonoBehaviour {
 		timeLastLumiereAttrapee = Time.timeSinceLevelLoad;
 	}
 
-	public void AjouterMessageImportant(string message, TypeText type, float tempsAffichage, bool bAfficherInConsole = true) {
+	public void AjouterMessageImportant(
+        string message,
+        TypeText type,
+        float tempsAffichage,
+        bool bAfficherInConsole = true,
+        string messageToReplace = "") {
+
 		// Déjà on affiche le message dans la console
         if(bAfficherInConsole)
             AjouterMessage (message, type);
 
-		// Et en plus on l'affiche en gros !
-		importantText.text = message;
-		switch (type) {
-		case TypeText.BASIC_TEXT:
-			importantText.color = basicColor;
-			break;
-		case TypeText.ENNEMI_TEXT:
-			importantText.color = ennemiColor;
-			break;
-		case TypeText.ALLY_TEXT:
-			importantText.color = allyColor;
-			break;
-		}
-		lastTimeImportantText = Time.timeSinceLevelLoad;
-		tempsImportantText = tempsAffichage;
-	}
+        int ind = EffacerImportantMessage(messageToReplace);
+
+        AjouterImportantMessageAt(message, type, ind);
+
+        StartCoroutine(CEffacerImportantTextIn(message, tempsAffichage + 0.01f)); // On attends un peu pour laisse le temps à d'autres systèmes de prendre la main ^^'
+    }
+
+    protected int EffacerImportantMessage(string messageToReplace) {
+        List<string> lines = GetImportantTextLines();
+        if (messageToReplace == "")
+            return 0;
+        for(int i = 0; i < lines.Count; i++) {
+            if(lines[i].Contains(messageToReplace)) {
+                lines.RemoveAt(i);
+                importantText.text = String.Join("\n", lines);
+                return i;
+            }
+        }
+        return 0;
+    }
+
+    protected void AjouterImportantMessageAt(string message, TypeText type, int ind = 0) {
+        List<string> lines = GetImportantTextLines();
+        lines.Insert(ind, SurroundWithColor(message, type));
+        importantText.text = String.Join("\n", lines);
+    }
+
+    protected string SurroundWithColor(string message, TypeText type) {
+        string colorString = ColorUtility.ToHtmlStringRGBA(GetTextTypeColor(type));
+        Debug.Log("couleur = " + colorString);
+        return string.Format("<color=#{0}>{1}</color>", colorString, message);
+    }
+
+    public Color GetTextTypeColor(TypeText type) {
+        switch (type) {
+            case TypeText.BASIC_TEXT:
+                return basicColor;
+            case TypeText.ENNEMI_TEXT:
+                return ennemiColor;
+            case TypeText.ALLY_TEXT:
+                return allyColor;
+        }
+        throw new Exception("Couleur inconnue !");
+    }
+
+    protected IEnumerator CEffacerImportantTextIn(string message, float duree) {
+        yield return new WaitForSeconds(duree);
+        EffacerImportantMessage(message);
+    }
+
+    public List<string> GetImportantTextLines() {
+        return importantText.text.Split('\n').OfType<string>().ToList();
+    }
 
 	public void AjouterMessage(string message, TypeText type, bool bUsePrefix = true) {
         // On préfixe ! :)
@@ -314,7 +359,7 @@ public class Console : MonoBehaviour {
 		phrases.Add ("Instruction 3 : Faites attention quand vous rentrez dans une grotte ...");
 		phrases.Add ("Instruction 3 : Restez toujours en mouvement !");
 		phrases.Add ("Durée d'existence de la Matrix : " + Time.timeSinceLevelLoad);
-		phrases.Add ("Numéro d'identification de la Matrix : " + Random.Range (0, 10000000));
+		phrases.Add ("Numéro d'identification de la Matrix : " + UnityEngine.Random.Range (0, 10000000));
 		phrases.Add ("Il y a une sonde dernière toi ! Non je déconne :D");
 		phrases.Add ("Tu as oublié les touches ? RTFM !");
 		phrases.Add ("Récursif ou Itératif ?");
@@ -326,7 +371,7 @@ public class Console : MonoBehaviour {
         //    phrases.Add ("Il y a " + nbEnnemis + " " + ennemisName + " à votre recherche.");
         //}
 
-		string phrase = phrases [Random.Range (0, phrases.Count)];
+		string phrase = phrases [UnityEngine.Random.Range (0, phrases.Count)];
 		AjouterMessage (phrase, TypeText.BASIC_TEXT);
 	}
 
@@ -334,14 +379,15 @@ public class Console : MonoBehaviour {
         if (conseils.Count == 0)
             return;
 
-		string phrase = conseils[Random.Range (0, conseils.Count)];
+		string phrase = conseils[UnityEngine.Random.Range (0, conseils.Count)];
 		AjouterMessage(phrase, TypeText.BASIC_TEXT);
     }
 
     // Lorsqu'un ennemi repère le joueur
     public void JoueurDetecte() {
-        AjouterMessageImportant ("DÉTECTÉ !", Console.TypeText.ENNEMI_TEXT, 2, bAfficherInConsole: false);
-		AjouterMessage ("Je vous ai détecté, je sais où vous êtes !", Console.TypeText.ENNEMI_TEXT);
+        string message = "DÉTECTÉ !";
+        AjouterMessageImportant (message, Console.TypeText.ENNEMI_TEXT, 2, bAfficherInConsole: false, message);
+        AjouterMessage ("Je vous ai détecté, je sais où vous êtes !", Console.TypeText.ENNEMI_TEXT);
 	}
 	//public void JoueurDetecte(string nomDetecteur) {
 		//AjouterMessage (nomDetecteur + " vous a détecté, je sais où vous êtes.", Console.TypeText.ENNEMI_TEXT);
@@ -349,8 +395,9 @@ public class Console : MonoBehaviour {
 
 	// Quand le joueur réussit à semer toutes les sondes
 	public void SemerEnnemis() {
-		AjouterMessageImportant ("DISSIMULÉ !", TypeText.ALLY_TEXT, 2f, bAfficherInConsole: false);
-		AjouterMessage("On les a semés, on est plus suivi !", TypeText.ALLY_TEXT);
+        string message = "DISSIMULÉ !";
+		AjouterMessageImportant (message, TypeText.ALLY_TEXT, 2f, bAfficherInConsole: false, message);
+        AjouterMessage("On les a semés, on est plus suivi !", TypeText.ALLY_TEXT);
 	}
 	
 	// Lorsqu'une sonde perd le joueur de vue
@@ -360,14 +407,16 @@ public class Console : MonoBehaviour {
 
 	// Lorsque le joueur est touché
 	public void JoueurToucheSonde() {
-		AjouterMessageImportant ("TOUCHÉ !", Console.TypeText.ENNEMI_TEXT, 1, bAfficherInConsole: false);
+        string message = "TOUCHÉ !";
+		AjouterMessageImportant (message, Console.TypeText.ENNEMI_TEXT, 1, bAfficherInConsole: false, message);
         AjouterMessage("TOUCHÉ par une Sonde !", Console.TypeText.ENNEMI_TEXT);
 		//AjouterMessageImportant ("TOUCHÉ ! Je vais vous avoir !", Console.TypeText.ENNEMI_TEXT, 1);
 	}
 
 	// Lorsque le joueur est touché
 	public void JoueurToucheTracer() {
-		AjouterMessageImportant ("TOUCHÉ !", Console.TypeText.ENNEMI_TEXT, 1, bAfficherInConsole: false);
+        string message = "TOUCHÉ !";
+		AjouterMessageImportant (message, Console.TypeText.ENNEMI_TEXT, 1, bAfficherInConsole: false, message);
         AjouterMessage("TOUCHÉ par un Tracer !", Console.TypeText.ENNEMI_TEXT);
 	}
 
@@ -399,13 +448,13 @@ public class Console : MonoBehaviour {
 		string message;
 		while (true) {
 			message = "";
-			for (int i = 0; i < Random.Range (0, 6); i++)
+			for (int i = 0; i < UnityEngine.Random.Range (0, 6); i++)
 				message += " ";
 			message += "On a réussi YES";
-			for (int i = 0; i < Random.Range (3, 12); i++)
+			for (int i = 0; i < UnityEngine.Random.Range (3, 12); i++)
 				message += "S";
 			message += " ";
-			for (int i = 0; i < Random.Range (1, 6); i++)
+			for (int i = 0; i < UnityEngine.Random.Range (1, 6); i++)
 				message += "!";
 			AjouterMessage (message, Console.TypeText.ALLY_TEXT);
 			yield return null;
@@ -441,13 +490,13 @@ public class Console : MonoBehaviour {
 		string message;
 		while (true) {
 			message = "";
-			for (int i = 0; i < Random.Range (0, 6); i++)
+			for (int i = 0; i < UnityEngine.Random.Range (0, 6); i++)
 				message += " ";
 			message += "Nous vous avons attrapé ... MOU";
-			for (int i = 0; i < Random.Range (1, 6); i++)
+			for (int i = 0; i < UnityEngine.Random.Range (1, 6); i++)
 				message += "HA";
 			message += " ";
-			for (int i = 0; i < Random.Range (1, 6); i++)
+			for (int i = 0; i < UnityEngine.Random.Range (1, 6); i++)
 				message += "!";
 			AjouterMessage (message, Console.TypeText.ENNEMI_TEXT);
 			yield return null;
@@ -457,12 +506,17 @@ public class Console : MonoBehaviour {
 	// Quand on attrape une lumière
 	public void AttraperLumiere(int nbLumieresRestantes) {
 		//AjouterMessage ("ON A DES INFOS !", Console.TypeText.ALLY_TEXT);
-		if (nbLumieresRestantes > 0) {
-			AjouterMessageImportant ("Plus que " + nbLumieresRestantes + " !", Console.TypeText.ALLY_TEXT, 2);
+		if (!gm.eventManager.IsEndGameStarted() && nbLumieresRestantes > 0) {
+            string messageCurrent = "Plus que " + nbLumieresRestantes + " !";
+            string messagePrecedent = "Plus que " + (nbLumieresRestantes + 1) + " !";
+            //EffacerImportantMessage(messageCurrent);
+            AjouterMessageImportant(messageCurrent, Console.TypeText.ALLY_TEXT, 1.2f, true, messagePrecedent);
 		} else {
-			AjouterMessage ("ON LES A TOUTES !", Console.TypeText.ALLY_TEXT);
-			AjouterMessageImportant ("FAUT SE BARRER MAINTENANT !!!", Console.TypeText.ALLY_TEXT, 2);
-		}
+            if (!gm.eventManager.IsWin() && gm.eventManager.GetComponent<EventManagerWhileTrue>() == null) { // Ehhhh x)
+                AjouterMessage("ON LES A TOUTES !", Console.TypeText.ALLY_TEXT);
+                AjouterMessageImportant("FAUT SE BARRER MAINTENANT !!!", Console.TypeText.ALLY_TEXT, 1.2f);
+            }
+        }
 	}
 
 	// Quand le joueur lance les trails
@@ -516,19 +570,22 @@ public class Console : MonoBehaviour {
 
     // Message lorsqu'un event de gravité se déclenche !
     public void GravityEventMessage(GravityManager.Direction direction, float intensité) {
-        AjouterMessageImportant("Changement de gravité !", TypeText.ENNEMI_TEXT, 2, bAfficherInConsole: false);
+        string message = "Changement de gravité !";
+        AjouterMessageImportant(message, TypeText.ENNEMI_TEXT, 2, bAfficherInConsole: false, message);
         float pourcentage = intensité / 5.0f * 100.0f;
         AjouterMessage("Gravité : direction = " + direction.ToString() + " intensité = " + pourcentage.ToString("N2") + "%", TypeText.ENNEMI_TEXT);
     }
 
     // Message lors d'un blackout !
     public void BlackoutMessage() {
-        AjouterMessageImportant("Blackout !", TypeText.ENNEMI_TEXT, 2);
+        string message = "Blackout !";
+        AjouterMessageImportant(message, TypeText.ENNEMI_TEXT, 2, bAfficherInConsole: true, message);
     }
 
     // Lorsque l'on alerte les tracers !
     public void AlerterTracers() {
-        AjouterMessageImportant("Tracers Alertés !", TypeText.ENNEMI_TEXT, 2);
+        string message = "Tracers Alertés !";
+        AjouterMessageImportant(message, TypeText.ENNEMI_TEXT, 2, bAfficherInConsole: true, message);
     }
 
     // Lorsque l'on capture la première lumière dans la map Analyze

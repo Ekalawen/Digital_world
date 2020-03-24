@@ -29,18 +29,21 @@ public class Lumiere : MonoBehaviour {
         gm.map.RemoveLumiere(this);
         Destroy (this.gameObject);
 
-        // Et on certifie qu'on a bien attrapé une orbe
-        gm.console.AttraperLumiere(gm.map.GetLumieres().Count);
-
         gm.console.UpdateLastLumiereAttrapee();
 
         CapturedSpecific();
 
         gm.eventManager.OnLumiereCaptured(type);
 
+        NotifyConsoleLumiereCatpure();
+
         gm.soundManager.PlayGetLumiereClip(transform.position);
 
         gm.timerManager.AddTime(timeBonus);
+    }
+
+    protected virtual void NotifyConsoleLumiereCatpure() {
+        gm.console.AttraperLumiere(gm.map.GetLumieres().Count);
     }
 
     protected virtual void CapturedSpecific() {

@@ -12,6 +12,7 @@ public class LumiereSwitchable : Lumiere {
     public LumiereSwitchableState startState = LumiereSwitchableState.ON;
 
     protected LumiereSwitchableState state;
+    protected bool capturedInSwitchingToOn = false;
 
     protected override void Start () {
         base.Start();
@@ -32,10 +33,19 @@ public class LumiereSwitchable : Lumiere {
                 float playerDistance = Vector3.Distance(player.transform.position, transform.position);
                 float minDistanceOverlap = player.transform.localScale[0] + lumiereOn.transform.localScale[0];
                 if (playerDistance <= minDistanceOverlap) {
+                    capturedInSwitchingToOn = true;
                     Captured();
+                    capturedInSwitchingToOn = false;
                 }
             }
         }
+    }
+
+    protected override void NotifyConsoleLumiereCatpure() {
+        int nbLumieres = gm.map.GetLumieres().Count;
+        if (capturedInSwitchingToOn)
+            nbLumieres++;
+        gm.console.AttraperLumiere(nbLumieres);
     }
 
     public LumiereSwitchableState GetState() {

@@ -73,7 +73,7 @@ public class EventManager : MonoBehaviour {
 
         gm.player.FreezeLocalisation();
 
-        gm.console.StartEndGame();
+        //gm.console.StartEndGame();
 
         // On lance la création des blocks de la mort !
         coroutineDeathCubesCreation = StartCoroutine(FillMapWithDeathCubes(finalLight.transform.position));
@@ -231,5 +231,9 @@ public class EventManager : MonoBehaviour {
 
     public bool IsWin() {
         return gameIsWin;
+    }
+
+    public bool IsEndGameStarted() {
+        return isEndGameStarted;
     }
 }
