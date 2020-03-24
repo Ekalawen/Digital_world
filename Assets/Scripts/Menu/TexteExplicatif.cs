@@ -54,6 +54,14 @@ public class TexteExplicatif : MonoBehaviour {
             string newText = UseReplacementList(GetTextFromPath(textTreshold));
             mainText.text = newText;
         }
+
+        PutMainTextOnBottom();
+    }
+
+    protected void PutMainTextOnBottom() {
+        Vector3 pos = mainText.rectTransform.position;
+        pos.y -= 1000;
+        mainText.rectTransform.position = pos;
     }
 
     public void SetText(string newTitle, string newText) {
