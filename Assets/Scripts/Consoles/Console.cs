@@ -217,7 +217,6 @@ public class Console : MonoBehaviour {
 
     protected string SurroundWithColor(string message, TypeText type) {
         string colorString = ColorUtility.ToHtmlStringRGBA(GetTextTypeColor(type));
-        Debug.Log("couleur = " + colorString);
         return string.Format("<color=#{0}>{1}</color>", colorString, message);
     }
 
