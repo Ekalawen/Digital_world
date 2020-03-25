@@ -513,7 +513,7 @@ public class Console : MonoBehaviour {
 		} else {
             if (!gm.eventManager.IsWin() && gm.eventManager.GetComponent<EventManagerWhileTrue>() == null) { // Ehhhh x)
                 AjouterMessage("ON LES A TOUTES !", Console.TypeText.ALLY_TEXT);
-                AjouterMessageImportant("FAUT SE BARRER MAINTENANT !!!", Console.TypeText.ALLY_TEXT, 1.2f);
+                AjouterMessageImportant("FAUT SE BARRER MAINTENANT !!!", Console.TypeText.ALLY_TEXT, 2f);
             }
         }
 	}
