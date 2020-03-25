@@ -443,7 +443,7 @@ public class Console : MonoBehaviour {
 
 	// Text de récompense
 	IEnumerator Recompenser() {
-		yield return new WaitForSeconds (3);
+		yield return new WaitForSeconds (4);
 		string message;
 		while (true) {
 			message = "";
@@ -464,20 +464,20 @@ public class Console : MonoBehaviour {
 	public void LoseGame(EventManager.DeathReason reason) {
         switch(reason) {
             case EventManager.DeathReason.CAPTURED:
-                AjouterMessageImportant ("MENACE CAPTURÉ !", Console.TypeText.ENNEMI_TEXT, 5);
-                AjouterMessage("Cause de la mort : Capturé !", Console.TypeText.ENNEMI_TEXT);
+                AjouterMessageImportant ("MENACE CAPTURÉE !", Console.TypeText.ENNEMI_TEXT, 5);
+                AjouterMessage("Cause de la mort : Vous avez été capturé par un ennemi !", Console.TypeText.ENNEMI_TEXT);
                 break;
             case EventManager.DeathReason.FALL_OUT:
                 AjouterMessageImportant ("MENACE ÉJECTÉE !", Console.TypeText.ENNEMI_TEXT, 5);
-                AjouterMessage("Cause de la mort : Éjecté !", Console.TypeText.ENNEMI_TEXT);
+                AjouterMessage("Cause de la mort : Vous êtes tombé !", Console.TypeText.ENNEMI_TEXT);
                 break;
             case EventManager.DeathReason.TIME_OUT:
-                AjouterMessageImportant ("MENACE DÉSYNCHRONISÉ !", Console.TypeText.ENNEMI_TEXT, 5);
-                AjouterMessage("Cause de la mort : Désynchronisé !", Console.TypeText.ENNEMI_TEXT);
+                AjouterMessageImportant ("MENACE DÉSYNCHRONISÉE !", Console.TypeText.ENNEMI_TEXT, 5);
+                AjouterMessage("Cause de la mort : Vous n'aviez plus de temps !", Console.TypeText.ENNEMI_TEXT);
                 break;
             case EventManager.DeathReason.TOUCHED_DEATH_CUBE:
                 AjouterMessageImportant ("MENACE ÉLIMINÉE !", Console.TypeText.ENNEMI_TEXT, 5);
-                AjouterMessage("Cause de la mort : Cube de la mort !", Console.TypeText.ENNEMI_TEXT);
+                AjouterMessage("Cause de la mort : Vous avez touché un Cube de la Mort !", Console.TypeText.ENNEMI_TEXT);
                 break;
         }
 		StartCoroutine (SeMoquer());
@@ -485,7 +485,7 @@ public class Console : MonoBehaviour {
 
 	// On se moque de lui
 	IEnumerator SeMoquer() {
-		yield return new WaitForSeconds (3);
+		yield return new WaitForSeconds (4);
 		string message;
 		while (true) {
 			message = "";
