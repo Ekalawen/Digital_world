@@ -138,6 +138,6 @@ public class TutorialMap : MapManager {
     }
 
     public override Vector3 GetCenter() {
-        return new Vector3(102, 10, 12);
+        return new Vector3(107, 10, 12);
     }
 }
