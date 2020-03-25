@@ -39,6 +39,10 @@ public class Timer {
         return duree;
     }
 
+    public void SetDuree(float newDuree) {
+        duree = newDuree;
+    }
+
     public float GetRemainingTime() {
         return debut + duree - Time.timeSinceLevelLoad;
     }

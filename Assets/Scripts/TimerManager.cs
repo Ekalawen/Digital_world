@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -17,7 +18,7 @@ public class TimerManager : MonoBehaviour {
     protected float totalTime;
     protected float debutTime;
     protected GameManager gm;
-    protected float lastTimeSoundTimeOut;
+    protected Timer soundTimeOutTimer;
     protected Timer gameTimer;
 
     public void Initialize() {
@@ -26,7 +27,7 @@ public class TimerManager : MonoBehaviour {
         gm = FindObjectOfType<GameManager>();
         debutTime = Time.timeSinceLevelLoad;
         totalTime = initialTime;
-        lastTimeSoundTimeOut = Time.timeSinceLevelLoad;
+        soundTimeOutTimer = new Timer(1.0f);
         gameTimer = new Timer(0.0f);
     }
 
@@ -54,9 +55,19 @@ public class TimerManager : MonoBehaviour {
             displayText.fontSize = (int)(fontSize * (1.0f + (1.0f - avancement)));
         }
 
-        if(remainingTime <= 10.0f) {
-            if(Time.timeSinceLevelLoad - lastTimeSoundTimeOut >= 1.0f) {
-                lastTimeSoundTimeOut = Time.timeSinceLevelLoad;
+        PlayTimeOutSound();
+    }
+
+    protected void PlayTimeOutSound() {
+        if(GetRemainingTime() <= 10.0f) {
+            if (GetRemainingTime() <= 1.6f)
+                soundTimeOutTimer.SetDuree(0.2f);
+            else if (GetRemainingTime() <= 5.0f)
+                soundTimeOutTimer.SetDuree(0.5f);
+            else
+                soundTimeOutTimer.SetDuree(1.0f);
+            if(soundTimeOutTimer.IsOver()) {
+                soundTimeOutTimer.Reset();
                 gm.soundManager.PlayTimeOutClip();
             }
         }
