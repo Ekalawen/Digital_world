@@ -13,7 +13,8 @@ public class TimerManager : MonoBehaviour {
     public float dureeMoving = 2.0f;
     public float distanceMoving = 100.0f;
     public RectTransform textContainer;
-    public float fontSize = 20;
+    public int fontSize = 20;
+    public float fontSizeBounceCoef = 1.2f;
 
     protected float totalTime;
     protected float debutTime;
@@ -44,18 +45,26 @@ public class TimerManager : MonoBehaviour {
         int centiseconds = Mathf.FloorToInt((remainingTime - secondes) * 100);
         displayText.text = secondes + ":" + centiseconds.ToString("D2");
 
+        PlayTimeOutSound();
+
         if(remainingTime >= 20.0f) {
             displayText.color = gm.console.allyColor;
+            displayText.fontSize = fontSize;
         } else if (remainingTime >= 10.0f) {
             float avancement = (remainingTime - 10.0f) / 10.0f;
             displayText.color = avancement * gm.console.allyColor + (1.0f - avancement) * gm.console.ennemiColor;
+            displayText.fontSize = fontSize;
         } else {
             displayText.color = gm.console.ennemiColor;
             float avancement = remainingTime / 10.0f;
-            displayText.fontSize = (int)(fontSize * (1.0f + (1.0f - avancement)));
+            float size = fontSize * (1.0f + (1.0f - avancement));
+            if (remainingTime <= 10.0f) {
+                float coefBounce = 1 + (1.0f - soundTimeOutTimer.GetAvancement()) * (fontSizeBounceCoef - 1.0f);
+                size *= coefBounce;
+            }
+            displayText.fontSize = (int)size;
         }
-
-        PlayTimeOutSound();
+        Debug.Log("fontSize = " + displayText.fontSize);
     }
 
     protected void PlayTimeOutSound() {
