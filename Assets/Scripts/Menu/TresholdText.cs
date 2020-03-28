@@ -22,9 +22,7 @@ public class TresholdFragment {
     public void ApplyReplacementEvaluator(Tuple<string, MatchEvaluator> replacement) {
         string source = replacement.Item1;
         MatchEvaluator evaluator = replacement.Item2;
-        Debug.Log(text);
         text = Regex.Replace(text, source, evaluator);
-        Debug.Log(text);
     }
 }
 
