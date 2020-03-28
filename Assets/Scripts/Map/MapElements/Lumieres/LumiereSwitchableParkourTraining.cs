@@ -6,7 +6,6 @@ using UnityEngine;
 public class LumiereSwitchableParkourTraining : LumiereSwitchable {
 
     protected override void CapturedSpecific() {
-        ParkourTrainingMap map = (ParkourTrainingMap)gm.map;
-        map.AllumePlusProcheLumiere(transform.position);
+        gm.map.GetComponent<AllumePlusProcheLumiereMapFunction>().AllumePlusProcheLumiere(transform.position);
     }
 }

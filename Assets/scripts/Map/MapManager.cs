@@ -733,7 +733,12 @@ public abstract class MapManager : MonoBehaviour {
 
     protected void CreateRandomLumiereInCave() {
         List<Cave> caves = GetMapElementsOfType<Cave>();
-        Cave chosenCave = caves[Random.Range(0, caves.Count)];
+        List<Cave> cavesGrandes = new List<Cave>();
+        foreach(Cave cave in caves) {
+            if (cave.nbCubesParAxe.x >= 3 && cave.nbCubesParAxe.y >= 3 && cave.nbCubesParAxe.z >= 3)
+                cavesGrandes.Add(cave);
+        }
+        Cave chosenCave = cavesGrandes[Random.Range(0, cavesGrandes.Count)];
         chosenCave.AddNLumiereInside(1);
     }
 

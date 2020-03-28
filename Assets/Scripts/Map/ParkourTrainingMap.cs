@@ -180,24 +180,4 @@ public class ParkourTrainingMap : CubeMap {
                 CreateLumiere(pos, Lumiere.LumiereType.NORMAL, dontRoundPositions: true);
         }
     }
-
-    public void AllumePlusProcheLumiere(Vector3 position) {
-        List<float> distances = new List<float>();
-        foreach(Lumiere lumiere in GetLumieres()) {
-            LumiereSwitchable ls = (LumiereSwitchable)lumiere;
-            ls.SetState(LumiereSwitchable.LumiereSwitchableState.OFF);
-            if (lumiere.transform.position != position)
-                distances.Add(Vector3.Distance(position, lumiere.transform.position));
-        }
-        if (distances.Count == 0)
-            return;
-        float minDistance = distances.Min();
-        foreach (Lumiere lumiere in GetLumieres()) {
-            if(Vector3.Distance(position, lumiere.transform.position) == minDistance) {
-                LumiereSwitchable ls = (LumiereSwitchable)lumiere;
-                ls.SetState(LumiereSwitchable.LumiereSwitchableState.ON);
-                break;
-            }
-        }
-    }
 }

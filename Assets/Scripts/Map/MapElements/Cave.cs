@@ -161,7 +161,9 @@ public class Cave : CubeEnsemble {
 	}
 
     public void AddNLumiereInside(int nbLumieresToAdd, int offsetFromCenter = 1) {
-        while (nbLumieresToAdd > 1 && Mathf.Min(nbCubesParAxe.x, Mathf.Min(nbCubesParAxe.y, nbCubesParAxe.z)) - 2 * offsetFromCenter <= 1 && offsetFromCenter > 0)
+        while (nbLumieresToAdd > 1
+            && Mathf.Min(nbCubesParAxe.x, Mathf.Min(nbCubesParAxe.y, nbCubesParAxe.z)) - 2 * offsetFromCenter <= 1
+            && offsetFromCenter > 0)
             offsetFromCenter--;
         for (int i = 0; i < nbLumieresToAdd; i++) {
             // On cherche une case où créer un objectif !

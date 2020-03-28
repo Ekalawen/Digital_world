@@ -9,10 +9,10 @@ public class Cube : MonoBehaviour {
     public CubeType type;
     public GameObject explosionParticlesPrefab;
     public bool bIsDestructible = true;
+    public bool shouldRegisterToColorSources = false;
 
     [HideInInspector] public bool bIsRegular = true;
     protected GameManager gm;
-    protected bool shouldRegisterToColorSources = false;
 
     protected virtual void Start() {
         gm = GameManager.Instance;

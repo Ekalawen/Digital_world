@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class DeathCube : Cube {
 
-    public bool shouldRegisterToColorSources = true;
     public float minColorSaturationAndValue = 0.1f;
 
     protected override void Start() {
@@ -14,23 +13,10 @@ public class DeathCube : Cube {
         if(gm.player.DoubleCheckInteractWithCube(this)) {
             gm.eventManager.LoseGame(EventManager.DeathReason.TOUCHED_DEATH_CUBE);
         }
-        if(shouldRegisterToColorSources)
-            RegisterCubeToColorSources();
     }
-
-    //public override void RegisterCubeToColorSources() {
-    //    base.RegisterCubeToColorSources();
-    //    //Color color = GetColor();
-    //    //color = color - color;
-    //    //Color newColor = new Color(1.0f - color.r, 1.0f - color.g, 1.0f - color.b);
-    //    //SetColor(newColor);
-    //    SetColor(Color.white - GetColor());
-    //}
 
     public override void AddColor(Color addedColor) {
         Color color = ThresholdColorSaturation(GetColor() + addedColor);
-        if(color != GetColor() + addedColor)
-            Debug.LogFormat("oldColor = {0} newColor = {1}", GetColor() + addedColor, color);
         GetComponent<MeshRenderer>().material.color = color;
     }
 
