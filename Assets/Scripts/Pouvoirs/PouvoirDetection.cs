@@ -5,6 +5,8 @@ using UnityEngine;
 public class PouvoirDetection : IPouvoir {
 
 	public GameObject lumierePathPrefab; // Les lumières à placer quand le personnage fait une détection !
+    public float dureePath = 3.0f;
+    public float vitessePath = 30.0f;
 
     protected override bool UsePouvoir() {
 		if (Input.GetKeyDown (KeyCode.A)) {
@@ -54,8 +56,11 @@ public class PouvoirDetection : IPouvoir {
                 Vector3 direction = next - current;
                 Vector3 pos = current + direction / nbSpheresByNodes * (j + 1);
                 GameObject go = Instantiate(lumierePathPrefab, pos, Quaternion.identity);
-                Destroy(go, 1.0f);
-                yield return new WaitForSeconds(0.1f);
+                Color color = gm.colorManager.GetColorForPosition(go.transform.position);
+                color = Color.white - color;
+                go.GetComponent<MeshRenderer>().material.color = color;
+                Destroy(go, dureePath);
+                yield return new WaitForSeconds(1.0f / vitessePath);
             }
         }
     }

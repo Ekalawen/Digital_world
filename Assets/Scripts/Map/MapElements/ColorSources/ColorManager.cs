@@ -210,4 +210,15 @@ public class ColorManager : MonoBehaviour {
     public static bool AreSameThemes(List<ColorSource.ThemeSource> t1, List<ColorSource.ThemeSource> t2) {
         return MathTools.AreListEqual(t1, t2);
     }
+
+    public Color GetColorForPosition(Vector3 pos) {
+        Color color = Color.black;
+        foreach(ColorSource source in sources) {
+            float dist = Vector3.Distance(pos, source.transform.position);
+            if(dist < source.range) {
+                color += source.GetColorForPosition(pos);
+            }
+        }
+        return color;
+    }
 }

@@ -29,6 +29,7 @@ public abstract class MapManager : MonoBehaviour {
 	public GameObject lumiereFinalePrefab; // On récupère les lumières finales !
 
     public bool fixNbLumieres = true;
+    public bool lumieresFixedInCaves = false;
     public bool linkUnreachableLumiereToRest = true;
     public Vector3Int tailleMap; // La taille de la map, en largeur, hauteur et profondeur
 	public int nbLumieresInitial; // Le nombre de lumières lors de la création de la map
@@ -717,10 +718,23 @@ public abstract class MapManager : MonoBehaviour {
         if(lumieres.Count < nbLumieresInitial) {
             int nbLumieresToAdd = nbLumieresInitial - lumieres.Count;
             for(int i = 0; i < nbLumieresToAdd; i++) {
-                Vector3 posLumiere = GetFreeRoundedLocation();
-                CreateLumiere(posLumiere, Lumiere.LumiereType.NORMAL);
+                if(lumieresFixedInCaves)
+                    CreateRandomLumiereInCave();
+                else
+                    CreateRandomLumiere();
             }
         }
+    }
+
+    protected void CreateRandomLumiere() {
+        Vector3 posLumiere = GetFreeRoundedLocation();
+        CreateLumiere(posLumiere, Lumiere.LumiereType.NORMAL);
+    }
+
+    protected void CreateRandomLumiereInCave() {
+        List<Cave> caves = GetMapElementsOfType<Cave>();
+        Cave chosenCave = caves[Random.Range(0, caves.Count)];
+        chosenCave.AddNLumiereInside(1);
     }
 
     protected void GetAllAlreadyExistingCubesAndLumieres() {
@@ -839,5 +853,20 @@ public abstract class MapManager : MonoBehaviour {
         for (int y = offsetSides + 1; y <= tailleMap.y - offsetSides; y++)
             res.Add(new Vector3(offsetSides, hauteur, y));
         return res;
+    }
+
+    public List<MapElement> GetMapElements() {
+        return mapElements;
+    }
+
+    public List<T> GetMapElementsOfType<T>() where T : MapElement {
+        List<T> elements = new List<T>();
+        for(int i = 0; i < mapElements.Count; i++) {
+            MapElement element = mapElements[i];
+            if (element is T) {
+                elements.Add((T)element);
+            }
+        }
+        return elements;
     }
 }

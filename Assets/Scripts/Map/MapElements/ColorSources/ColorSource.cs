@@ -31,10 +31,15 @@ public class ColorSource : MonoBehaviour {
     public void AddCube(Cube cube) {
         if(!cubesInRange.Contains(cube)) {
             cubesInRange.Add(cube);
-            float distance = Vector3.Distance(cube.transform.position, this.transform.position);
-            float affaiblissement = 1f - distance / range;
-            cube.AddColor(color * affaiblissement);
+            Color colorToAdd = GetColorForPosition(cube.transform.position);
+            cube.AddColor(colorToAdd);
         }
+    }
+
+    public Color GetColorForPosition(Vector3 pos) {
+        float distance = Vector3.Distance(pos, transform.position);
+        float affaiblissement = 1f - distance / range;
+        return color * affaiblissement;
     }
 
     public void Delete() {
