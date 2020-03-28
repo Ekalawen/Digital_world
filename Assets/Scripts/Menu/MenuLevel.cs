@@ -227,7 +227,11 @@ public class MenuLevel : MonoBehaviour {
         texteExplicatifDonneesHackesSuccess.AddReplacement("%Passe%", nextPassword);
         texteExplicatifDonneesHackesSuccess.AddReplacementEvaluator(@"Passes?", evaluator);
         texteExplicatifDonneesHackesSuccess.AddReplacementEvaluator(@"Traces?", evaluator);
-        //texteExplicatifDonneesHackesSuccess.AddReplacementEvaluator(@"$", (Match match) => "blabla ! :D");
+        // L'ajout des next palliers se fait dans la fonction AddNextPallierMessageToAllFragments()
+
+        texteInformations.AddReplacement("[Cilliannelle Crittefigiée]", "<color=#00FF00FF>[Cilliannelle Crittefigiée]</color>");
+        texteInformations.AddReplacement("[Morgensoul*]", "<color=#00FFFFFF>[Morgensoul*]</color>");
+        texteInformations.AddReplacement("[V1P3R]", "<color=#00FFFFFF>[V1P3R]</color>");
     }
 
     public bool HasJustWin() {
