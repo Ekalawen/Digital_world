@@ -12,12 +12,15 @@ public class Cube : MonoBehaviour {
 
     [HideInInspector] public bool bIsRegular = true;
     protected GameManager gm;
+    protected bool shouldRegisterToColorSources = false;
 
     protected virtual void Start() {
         gm = GameManager.Instance;
+        if (shouldRegisterToColorSources)
+            RegisterCubeToColorSources();
     }
 
-    public virtual void RegisterCubeToColorSources() {
+    protected virtual void RegisterCubeToColorSources() {
         //ColorManager colorManager = FindObjectOfType<ColorManager>();
         ColorManager colorManager = gm.colorManager;
         SetColor(Color.black);
@@ -25,6 +28,10 @@ public class Cube : MonoBehaviour {
             if(Vector3.Distance(transform.position, colorSource.transform.position) <= colorSource.range)
                 colorSource.AddCube(this);
         }
+    }
+
+    public void ShouldRegisterToColorSources() {
+        shouldRegisterToColorSources = true;
     }
 
     public Color GetColor() {

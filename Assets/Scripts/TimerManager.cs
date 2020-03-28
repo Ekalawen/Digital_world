@@ -64,7 +64,6 @@ public class TimerManager : MonoBehaviour {
             }
             displayText.fontSize = (int)size;
         }
-        Debug.Log("fontSize = " + displayText.fontSize);
     }
 
     protected void PlayTimeOutSound() {
