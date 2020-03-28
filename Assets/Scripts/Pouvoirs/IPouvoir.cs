@@ -15,6 +15,8 @@ public abstract class IPouvoir : MonoBehaviour {
 
     public float cooldown = 0.0f;
     public float timerMalus = 0.0f;
+    public bool timerMalusTimeProportional = false;
+    public float timerMalusTimeProportion = 1.0f / 3.0f;
 
     public AudioClipParams activationAudioClips;
 
@@ -48,8 +50,16 @@ public abstract class IPouvoir : MonoBehaviour {
     }
 
     protected virtual void ApplyTimerMalus() {
-        if (timerMalus != 0.0f)
-            gm.timerManager.AddTime(-timerMalus);
+        if (!timerMalusTimeProportional) {
+            if (timerMalus != 0.0f) {
+                gm.timerManager.AddTime(-timerMalus);
+            }
+        } else {
+            float timeToRemove = gm.timerManager.GetRemainingTime() * timerMalusTimeProportion;
+            if (timeToRemove != 0.0f) {
+                gm.timerManager.AddTime(-timeToRemove);
+            }
+        }
     }
 
     // La véritable fonction qui appelle le pouvoir
