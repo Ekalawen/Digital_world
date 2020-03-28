@@ -1,7 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using UnityEngine;
 
 public class TresholdFragment {
@@ -15,6 +17,14 @@ public class TresholdFragment {
 
     public override string ToString() {
         return "Treshold = " + treshold + "\n" + text;
+    }
+
+    public void ApplyReplacementEvaluator(Tuple<string, MatchEvaluator> replacement) {
+        string source = replacement.Item1;
+        MatchEvaluator evaluator = replacement.Item2;
+        Debug.Log(text);
+        text = Regex.Replace(text, source, evaluator);
+        Debug.Log(text);
     }
 }
 
@@ -77,6 +87,10 @@ public class TresholdText {
         return fragments;
     }
 
+    public List<TresholdFragment> GetAllFragmentsOrdered() {
+        return fragments.OrderBy((TresholdFragment fragment) => fragment.treshold).ToList();
+    }
+
     public List<TresholdFragment> GetUnderTresholdFragments(int treshold) {
         List<TresholdFragment> res = new List<TresholdFragment>();
         foreach (TresholdFragment tf in fragments) {
@@ -124,5 +138,11 @@ public class TresholdText {
             tresholds.Add(fragment.treshold);
         }
         return tresholds;
+    }
+
+    public void ApplyReplacementEvaluatorToAllFragment(Tuple<string, MatchEvaluator> replacement) {
+        for(int i = 0; i < fragments.Count; i++) {
+            fragments[i].ApplyReplacementEvaluator(replacement);
+        }
     }
 }

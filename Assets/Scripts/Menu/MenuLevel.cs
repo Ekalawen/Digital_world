@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using UnityEngine;
@@ -113,7 +114,26 @@ public class MenuLevel : MonoBehaviour {
             texteExplicatifDonneesHackes.Run(GetNbWins());
         } else {
             texteExplicatifDonneesHackesSuccess.Run(GetNbWins());
+            AddNextPallierMessageToAllFragments();
         }
+    }
+
+    protected void AddNextPallierMessageToAllFragments() {
+        TresholdText tresholdText = texteExplicatifDonneesHackesSuccess.GetTresholdText();
+        List<TresholdFragment> fragments = tresholdText.GetAllFragmentsOrdered();
+        for (int i = 0; i < fragments.Count; i++) {
+            if (i < fragments.Count - 1) {
+                int nextTreshold = fragments[i + 1].treshold;
+                fragments[i].ApplyReplacementEvaluator(
+                    new Tuple<string, MatchEvaluator>(@"$(?![\r\n])", // Match EOF
+                    (Match match) => "Prochain pallier à " + nextTreshold + " victoires.\n\n\n"));
+            } else {
+                fragments[i].ApplyReplacementEvaluator(
+                    new Tuple<string, MatchEvaluator>(@"$(?![\r\n])", // Match EOF
+                    (Match match) => "Dernier pallier.\n\n\n"));
+            }
+        }
+        texteExplicatifDonneesHackesSuccess.ComputeText(GetNbWins());
     }
 
     public void SaveNextInputField() {
@@ -207,6 +227,7 @@ public class MenuLevel : MonoBehaviour {
         texteExplicatifDonneesHackesSuccess.AddReplacement("%Passe%", nextPassword);
         texteExplicatifDonneesHackesSuccess.AddReplacementEvaluator(@"Passes?", evaluator);
         texteExplicatifDonneesHackesSuccess.AddReplacementEvaluator(@"Traces?", evaluator);
+        //texteExplicatifDonneesHackesSuccess.AddReplacementEvaluator(@"$", (Match match) => "blabla ! :D");
     }
 
     public bool HasJustWin() {

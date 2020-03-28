@@ -51,11 +51,15 @@ public class TexteExplicatif : MonoBehaviour {
         firstFrame = true;
 
         if (useTextAsset) {
-            string newText = UseReplacementList(GetTextFromPath(textTreshold));
-            mainText.text = newText;
+            ComputeText(textTreshold);
         }
 
         PutMainTextOnBottom();
+    }
+
+    public void ComputeText(int textTreshold = 0) {
+        string newText = UseReplacementList(GetTextFromPath(textTreshold));
+        mainText.text = newText;
     }
 
     protected void PutMainTextOnBottom() {
@@ -137,6 +141,10 @@ public class TexteExplicatif : MonoBehaviour {
         doneButton.GetComponent<Image>().color = saturated;
     }
 
+    public TresholdText GetTresholdText() {
+        return tresholdText;
+    }
+
     public List<int> GetAllTresholds() {
         if(useTextAsset) {
             if (tresholdText == null)
@@ -145,5 +153,9 @@ public class TexteExplicatif : MonoBehaviour {
         } else {
             return new List<int>();
         }
+    }
+
+    public void ApplyReplacementEvaluatorToAllFragments(Tuple<string, MatchEvaluator> replacement) {
+        tresholdText.ApplyReplacementEvaluatorToAllFragment(replacement);
     }
 }
