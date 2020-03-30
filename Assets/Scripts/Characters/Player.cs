@@ -50,11 +50,14 @@ public class Player : Character {
 	protected Vector3 pointDebutSaut; // le point de départ du saut !
 	protected EtatPersonnage origineSaut; // Permet de savoir depuis où (le sol ou un mur) le personnage a sauté !
 	protected Vector3 normaleOrigineSaut; // La normale au plan du mur duquel le personnage a sauté
+    protected EtatPersonnage jumpedFrom;
 	protected float hauteurMaxSaut; // La hauteur maximale d'un saut !
 	protected float debutMur; // le timing où le personnage a commencé à s'accrocher au mur !
 	protected Vector3 normaleMur; // la normale au mur sur lequel le personnage est accroché !
 	protected Vector3 pointMur; // un point du mur sur lequel le personnage est accroché ! En effet, la normale ne suffit pas :p
     protected float dureeMurRestante; // Le temps qu'il nous reste à être accroché au mur (utile pour les shifts qui peuvent nous décrocher)
+    protected int nbDoublesSautsMax = 0; // Nombre de doubles sauts
+    protected int nbDoublesSautsCourrant = 0; // Le nombre de doubles sauts déjà utilisés
 
     protected IPouvoir pouvoirA; // Le pouvoir de la touche A (souvent la détection)
     protected IPouvoir pouvoirE; // Le pouvoir de la touche E (souvent la localisation)
@@ -235,24 +238,32 @@ public class Player : Character {
             switch (etat)
             {
                 case EtatPersonnage.AU_SOL:
-                    if (Input.GetButton("Jump") && gm.gravityManager.HasGravity())
-                    {
+                    if (Input.GetButton("Jump") && gm.gravityManager.HasGravity()) {
                         Jump(from: EtatPersonnage.AU_SOL);
                         move = ApplyJumpMouvement(move);
                     }
-                    dureeMurRestante = dureeMur;
+                    ResetAuSol();
                     break;
 
                 case EtatPersonnage.EN_SAUT:
+                    if (Input.GetButtonDown("Jump") && gm.gravityManager.HasGravity() && CanDoubleJump()) {
+                        AddDoubleJump();
+                        Jump(from: origineSaut);
+                    }
                     move = ApplyJumpMouvement(move);
                     break;
 
                 case EtatPersonnage.EN_CHUTE:
-                    //move.y -= gravite;
+                    if (Input.GetButtonDown("Jump") && gm.gravityManager.HasGravity() && CanDoubleJump()) {
+                        AddDoubleJump();
+                        Jump(from: origineSaut);
+                        move = ApplyJumpMouvement(move);
+                    }
                     break;
 
                 case EtatPersonnage.AU_MUR:
                     // On peut se décrocher du mur en appuyant sur shift
+                    ResetDoubleJump();
                     if (Input.GetKey(KeyCode.LeftShift))
                     {
                         etat = EtatPersonnage.EN_CHUTE;
@@ -315,6 +326,27 @@ public class Player : Character {
         gm.postProcessManager.UpdateGripEffect(etatAvant);
 
 		controller.Move (move * Time.deltaTime);
+    }
+
+    protected void AddDoubleJump() {
+        nbDoublesSautsCourrant++;
+    }
+
+    protected bool CanDoubleJump() {
+        return nbDoublesSautsCourrant < nbDoublesSautsMax;
+    }
+
+    protected void ResetAuSol() {
+        ResetDoubleJump();
+        ResetDureeMur();
+    }
+
+    protected void ResetDoubleJump() {
+        nbDoublesSautsCourrant = 0;
+    }
+
+    protected void ResetDureeMur() {
+        dureeMurRestante = dureeMur;
     }
 
     // Permet de savoir la dernière fois qu'il a été en contact avec un ennemi !
@@ -466,10 +498,9 @@ public class Player : Character {
         etat = EtatPersonnage.EN_SAUT;
         debutSaut = Time.timeSinceLevelLoad;
         pointDebutSaut = transform.position;
+        origineSaut = from;
         if (from == EtatPersonnage.AU_SOL) {
-            origineSaut = EtatPersonnage.AU_SOL;
         } else if (from == EtatPersonnage.AU_MUR) {
-            origineSaut = EtatPersonnage.AU_MUR;
             normaleOrigineSaut = normaleMur;
         } else {
             Debug.Log("On saute depuis un endroit non autorisé !");
@@ -556,6 +587,10 @@ public class Player : Character {
 
         float distance = Vector3.Distance(closestPoint, playerPos);
         return distance <= playerExtends;
+    }
+
+    public void AddDoubleJump(int nbToAdd) {
+        nbDoublesSautsMax += nbToAdd;
     }
 }
 
