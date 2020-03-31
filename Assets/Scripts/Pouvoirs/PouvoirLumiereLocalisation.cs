@@ -20,24 +20,26 @@ public class PouvoirLumiereLocalisation : IPouvoir {
         }
 
         atLeastOneRay = false;
+        int nbLumieres = 0;
+        int nbItems = 0;
 
         if (canDetectLumieres) {
-            DrawLumieresRays();
+            nbLumieres = DrawLumieresRays();
         }
 
         if (canDetectItems) {
-            DrawItemsRays();
+            nbItems = DrawItemsRays();
             NotifyOnlyVisibleOnTriggerItems();
         }
 
-        gm.console.RunLocalisation(atLeastOneRay);
+        gm.console.RunLocalisation(nbLumieres, nbItems);
 
         gm.console.UpdateLastLumiereAttrapee();
 
         return atLeastOneRay;
     }
 
-    protected void DrawLumieresRays() {
+    protected int DrawLumieresRays() {
         // On trace les rayons ! =)
         List<Lumiere> lumieres = GetLumieresToLocate();
         for (int i = 0; i < lumieres.Count; i++) {
@@ -49,9 +51,10 @@ public class PouvoirLumiereLocalisation : IPouvoir {
             tr.GetComponent<Trail>().SetTarget(lumieres[i].transform.position);
             atLeastOneRay = true;
         }
+        return lumieres.Count;
     }
 
-    protected void DrawItemsRays() {
+    protected int DrawItemsRays() {
         // On trace les rayons des items
         List<Item> items = gm.itemManager.GetItems();
         for (int i = 0; i < items.Count; i++) {
@@ -63,6 +66,7 @@ public class PouvoirLumiereLocalisation : IPouvoir {
             tr.GetComponent<Trail>().SetTarget(items[i].transform.position);
             atLeastOneRay = true;
         }
+        return items.Count;
     }
 
     protected void NotifyOnlyVisibleOnTriggerItems() {
