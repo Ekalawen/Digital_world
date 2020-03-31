@@ -9,43 +9,58 @@ public class PouvoirLumiereLocalisation : IPouvoir {
 	public GameObject trailItemsPrefab; // Les trails à tracer pour retrouver les items
 
     protected override bool UsePouvoir() {
-		if (Input.GetKeyDown (KeyCode.E)) {
-            if (!player.CanUseLocalisation()) {
-                gm.console.FailLocalisation();
-                gm.soundManager.PlayFailActionClip();
-                return false;
-            }
+        if (!player.CanUseLocalisation()) {
+            gm.console.FailLocalisation();
+            gm.soundManager.PlayFailActionClip();
+            return false;
+        }
 
-            // On trace les rayons ! =)
-            List<Lumiere> lumieres = GetLumieresToLocate();
-			for (int i = 0; i < lumieres.Count; i++) {
-                Vector3 departRayons = player.transform.position + 0.5f * gm.gravityManager.Up();
-                Vector3 derriere = player.transform.position - player.camera.transform.forward.normalized;
-                Vector3 devant = player.transform.position + player.camera.transform.forward.normalized;
-                Vector3 target = lumieres[i].transform.position;
-				GameObject tr = Instantiate (trailLumieresPrefab, derriere, Quaternion.identity) as GameObject;
-                tr.GetComponent<Trail>().SetTarget(lumieres[i].transform.position);
-			}
+        DrawLumieresRays();
 
-            // On trace les rayons des items
-            List<Item> items = gm.itemManager.GetItems();
-			for (int i = 0; i < items.Count; i++) {
-                Vector3 departRayons = player.transform.position + 0.5f * gm.gravityManager.Up();
-                Vector3 derriere = player.transform.position - player.camera.transform.forward.normalized;
-                Vector3 devant = player.transform.position + player.camera.transform.forward.normalized;
-                Vector3 target = items[i].transform.position;
-				GameObject tr = Instantiate (trailItemsPrefab, derriere, Quaternion.identity) as GameObject;
-                tr.GetComponent<Trail>().SetTarget(items[i].transform.position);
-			}
+        DrawItemsRays();
 
-			// Un petit message
-			gm.console.RunLocalisation();
+        NotifyOnlyVisibleOnTriggerItems();
 
-			// Et on certifie qu'on a appuyé sur E
-			gm.console.UpdateLastLumiereAttrapee();
-		}
+        gm.console.RunLocalisation();
+
+        gm.console.UpdateLastLumiereAttrapee();
 
         return true;
+    }
+
+    protected void DrawLumieresRays() {
+        // On trace les rayons ! =)
+        List<Lumiere> lumieres = GetLumieresToLocate();
+        for (int i = 0; i < lumieres.Count; i++) {
+            Vector3 departRayons = player.transform.position + 0.5f * gm.gravityManager.Up();
+            Vector3 derriere = player.transform.position - player.camera.transform.forward.normalized;
+            Vector3 devant = player.transform.position + player.camera.transform.forward.normalized;
+            Vector3 target = lumieres[i].transform.position;
+            GameObject tr = Instantiate (trailLumieresPrefab, derriere, Quaternion.identity) as GameObject;
+            tr.GetComponent<Trail>().SetTarget(lumieres[i].transform.position);
+        }
+    }
+
+    protected void DrawItemsRays() {
+        // On trace les rayons des items
+        List<Item> items = gm.itemManager.GetItems();
+        for (int i = 0; i < items.Count; i++) {
+            Vector3 departRayons = player.transform.position + 0.5f * gm.gravityManager.Up();
+            Vector3 derriere = player.transform.position - player.camera.transform.forward.normalized;
+            Vector3 devant = player.transform.position + player.camera.transform.forward.normalized;
+            Vector3 target = items[i].transform.position;
+            GameObject tr = Instantiate (trailItemsPrefab, derriere, Quaternion.identity) as GameObject;
+            tr.GetComponent<Trail>().SetTarget(items[i].transform.position);
+        }
+    }
+
+    protected void NotifyOnlyVisibleOnTriggerItems() {
+        foreach(Item item in gm.itemManager.GetItems()) {
+            OnlyVisibleOnTrigger component = item.GetComponent<OnlyVisibleOnTrigger>();
+            if(component != null && component.enabled) {
+                component.Activate();
+            }
+        }
     }
 
     protected virtual List<Lumiere> GetLumieresToLocate() {
