@@ -109,6 +109,10 @@ public class Player : Character {
 
         console = GameObject.FindObjectOfType<Console>();
 
+        InitPouvoirs();
+    }
+
+    protected void InitPouvoirs() {
         if (pouvoirAPrefab != null)
             pouvoirA = Instantiate(pouvoirAPrefab, parent: this.transform).GetComponent<IPouvoir>();
         if (pouvoirEPrefab != null)
@@ -117,6 +121,23 @@ public class Player : Character {
             pouvoirLeftBouton = Instantiate(pouvoirLeftBoutonPrefab, parent: this.transform).GetComponent<IPouvoir>();
         if(pouvoirRightBoutonPrefab != null)
             pouvoirRightBouton = Instantiate(pouvoirRightBoutonPrefab, parent: this.transform).GetComponent<IPouvoir>();
+    }
+
+    public void SetPouvoir(GameObject pouvoirPrefab, PouvoirGiverItem.PouvoirBinding pouvoirBinding) {
+        switch(pouvoirBinding) {
+            case PouvoirGiverItem.PouvoirBinding.A:
+                pouvoirA = Instantiate(pouvoirPrefab, parent: this.transform).GetComponent<IPouvoir>();
+                break;
+            case PouvoirGiverItem.PouvoirBinding.E:
+                pouvoirE = Instantiate(pouvoirPrefab, parent: this.transform).GetComponent<IPouvoir>();
+                break;
+            case PouvoirGiverItem.PouvoirBinding.LEFT_CLICK:
+                pouvoirLeftBouton = Instantiate(pouvoirPrefab, parent: this.transform).GetComponent<IPouvoir>();
+                break;
+            case PouvoirGiverItem.PouvoirBinding.RIGHT_CLICK:
+                pouvoirRightBouton = Instantiate(pouvoirPrefab, parent: this.transform).GetComponent<IPouvoir>();
+                break;
+        }
     }
 
     void ChoseStartingPosition() {

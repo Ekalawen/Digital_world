@@ -606,4 +606,16 @@ public class Console : MonoBehaviour {
         }
         AjouterMessage("Tu peux effectuer un Double Saut en appuyant à nouveau sur Espace !", TypeText.ALLY_TEXT);
     }
+
+    public void CapturePouvoirGiverItem(string pouvoirName, PouvoirGiverItem.PouvoirBinding pouvoirBinding) {
+        AjouterMessageImportant(pouvoirName + " Activé !", TypeText.ALLY_TEXT, 2, bAfficherInConsole: false);
+        string strBinding = "";
+        switch(pouvoirBinding) {
+            case PouvoirGiverItem.PouvoirBinding.A: strBinding = "A"; break;
+            case PouvoirGiverItem.PouvoirBinding.E: strBinding = "E"; break;
+            case PouvoirGiverItem.PouvoirBinding.LEFT_CLICK: strBinding = "le click gauche"; break;
+            case PouvoirGiverItem.PouvoirBinding.RIGHT_CLICK: strBinding = "le click droit"; break;
+        }
+        AjouterMessage("Tu peux utiliser le pouvoir " + pouvoirName + " en appuyant sur " + strBinding + " !", TypeText.ALLY_TEXT);
+    }
 }
