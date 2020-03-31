@@ -5,8 +5,12 @@ using UnityEngine;
 
 public class PouvoirLumiereLocalisation : IPouvoir {
 
+    public bool canDetectLumieres = true;
+    public bool canDetectItems = true;
 	public GameObject trailLumieresPrefab; // Les trails à tracer pour retrouver les lumières
 	public GameObject trailItemsPrefab; // Les trails à tracer pour retrouver les items
+
+    protected bool atLeastOneRay;
 
     protected override bool UsePouvoir() {
         if (!player.CanUseLocalisation()) {
@@ -15,17 +19,22 @@ public class PouvoirLumiereLocalisation : IPouvoir {
             return false;
         }
 
-        DrawLumieresRays();
+        atLeastOneRay = false;
 
-        DrawItemsRays();
+        if (canDetectLumieres) {
+            DrawLumieresRays();
+        }
 
-        NotifyOnlyVisibleOnTriggerItems();
+        if (canDetectItems) {
+            DrawItemsRays();
+            NotifyOnlyVisibleOnTriggerItems();
+        }
 
-        gm.console.RunLocalisation();
+        gm.console.RunLocalisation(atLeastOneRay);
 
         gm.console.UpdateLastLumiereAttrapee();
 
-        return true;
+        return atLeastOneRay;
     }
 
     protected void DrawLumieresRays() {
@@ -38,6 +47,7 @@ public class PouvoirLumiereLocalisation : IPouvoir {
             Vector3 target = lumieres[i].transform.position;
             GameObject tr = Instantiate (trailLumieresPrefab, derriere, Quaternion.identity) as GameObject;
             tr.GetComponent<Trail>().SetTarget(lumieres[i].transform.position);
+            atLeastOneRay = true;
         }
     }
 
@@ -51,6 +61,7 @@ public class PouvoirLumiereLocalisation : IPouvoir {
             Vector3 target = items[i].transform.position;
             GameObject tr = Instantiate (trailItemsPrefab, derriere, Quaternion.identity) as GameObject;
             tr.GetComponent<Trail>().SetTarget(items[i].transform.position);
+            atLeastOneRay = true;
         }
     }
 

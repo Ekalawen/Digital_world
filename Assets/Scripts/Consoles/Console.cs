@@ -519,13 +519,17 @@ public class Console : MonoBehaviour {
 	}
 
 	// Quand le joueur lance les trails
-	public void RunLocalisation() {
-		int nbLumieresRestantes = map.GetLumieres().Count;
-		if(nbLumieresRestantes > 0) {
-			AjouterMessage ("On t'envoie les données ! Il te restes " + nbLumieresRestantes + " objectifs !", Console.TypeText.ALLY_TEXT);
-		} else {
-			AjouterMessage ("On a hacké toute la base, faut s'enfuir maintenant !", Console.TypeText.ALLY_TEXT);
-		}
+	public void RunLocalisation(bool atLeastOneRay) {
+        if (atLeastOneRay) {
+            int nbLumieresRestantes = map.GetLumieres().Count;
+            if (nbLumieresRestantes > 0) {
+                AjouterMessage("On t'envoie les données ! Il te restes " + nbLumieresRestantes + " objectifs !", Console.TypeText.ALLY_TEXT);
+            } else {
+                AjouterMessage("On a hacké toute la base, faut s'enfuir maintenant !", Console.TypeText.ALLY_TEXT);
+            }
+        } else {
+            AjouterMessage("On trouver rien à localiser !", Console.TypeText.ALLY_TEXT);
+        }
 	}
 
 	// Quand le joueur lance la détection

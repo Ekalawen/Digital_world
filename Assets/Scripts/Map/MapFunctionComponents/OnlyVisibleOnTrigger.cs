@@ -60,15 +60,17 @@ public class OnlyVisibleOnTrigger : MonoBehaviour {
             mesh.mesh.material.color = color;
             mesh.mesh.enabled = false;
         }
-        foreach (ParticleSystemColor psc in particleSystems) {
+        for(int i = 0; i < particleSystems.Count; i++) {
+            ParticleSystemColor psc = particleSystems[i];
             psc.particleSystem.Stop();
-            for (int i = 0; i < particleSystems.Count; i++) {
-                ParticleSystemColor ps = particleSystems[i];
+            for (int j = 0; j < particleSystems.Count; j++) {
+                ParticleSystemColor ps = particleSystems[j];
                 Color color = ps.particleSystem.startColor;
                 color.a = 0.0f;
                 ps.particleSystem.startColor = color;
-                particleSystems[i] = ps;
+                particleSystems[j] = ps;
             }
+            particleSystems[i] = psc;
         }
     }
 
