@@ -8,5 +8,6 @@ public class AddDoubleJumpItem : Item {
 
     public override void OnTrigger(Collider hit) {
         gm.player.AddDoubleJump(nbDoubleJumpAdded);
+        gm.console.CaptureAddDoubleJump();
     }
 }

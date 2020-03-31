@@ -42,7 +42,7 @@ public class Console : MonoBehaviour {
 	[HideInInspector]
 	public MapManager map;
 	[HideInInspector]
-	public GameObject player;
+	public Player player;
 	[HideInInspector]
 	public EventManager eventManager;
 	protected List<GameObject> lines; // Les lignes de la console, constitués d'un RectTransform et d'un Text
@@ -65,7 +65,7 @@ public class Console : MonoBehaviour {
         map = gm.map;
 		lines = new List<GameObject> ();
 		numLines = new List<int> ();
-        player = gm.player.gameObject;
+        player = gm.player;
 		importantText.text = "";
         eventManager = gm.eventManager;
 
@@ -595,5 +595,15 @@ public class Console : MonoBehaviour {
     // Lorsque le joueur tombe, typiquement dans le tutoriel !
     public void SavedFromFalling() {
         AjouterMessageImportant("Attention à ne être éjecté la prochaine fois !", TypeText.ALLY_TEXT, 3);
+    }
+
+    // Lorsque le joueur capture un item double saut !
+    public void CaptureAddDoubleJump() {
+        if (player.GetNbDoubleSautsMax() == 1) {
+            AjouterMessageImportant("Double Saut Activé !", TypeText.ALLY_TEXT, 2, bAfficherInConsole: false);
+        } else {
+            AjouterMessageImportant("Double Saut + 1", TypeText.ALLY_TEXT, 2, bAfficherInConsole: false);
+        }
+        AjouterMessage("Tu peux effectuer un Double Saut en appuyant à nouveau sur Espace !", TypeText.ALLY_TEXT);
     }
 }

@@ -589,6 +589,10 @@ public class Player : Character {
         return distance <= playerExtends;
     }
 
+    public int GetNbDoubleSautsMax() {
+        return nbDoublesSautsMax;
+    }
+
     public void AddDoubleJump(int nbToAdd) {
         nbDoublesSautsMax += nbToAdd;
     }
