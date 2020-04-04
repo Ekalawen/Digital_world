@@ -47,7 +47,7 @@ public class TimeZoneButton : IZone {
         gm.console.AjouterMessageImportant(currentMessage,
             Console.TypeText.BASIC_TEXT,
             1.0f,
-            bAfficherInConsole: false,
+            bAfficherInConsole: true,
             precedantMessage);
         precedantMessage = currentMessage;
 
@@ -67,7 +67,7 @@ public class TimeZoneButton : IZone {
             gm.console.AjouterMessageImportant(currentMessage,
                 Console.TypeText.ENNEMI_TEXT,
                 1.0f,
-                bAfficherInConsole: false,
+                bAfficherInConsole: true,
                 precedantMessage);
             precedantMessage = currentMessage;
             
