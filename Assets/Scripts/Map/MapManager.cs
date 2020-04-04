@@ -28,6 +28,8 @@ public abstract class MapManager : MonoBehaviour {
 	public GameObject lumiereSpecialePrefab; // On récupère les lumières !
 	public GameObject lumiereFinalePrefab; // On récupère les lumières finales !
 
+    public List<MapFunctionComponent> mapFunctionComponents;
+
     public bool fixNbLumieres = true;
     public bool lumieresFixedInCaves = false;
     public bool linkUnreachableLumiereToRest = true;
@@ -45,7 +47,7 @@ public abstract class MapManager : MonoBehaviour {
     [HideInInspector]
     protected List<Lumiere> lumieres;
     [HideInInspector]
-    public GameObject mapFolder, cubesFolder, lumieresFolder;
+    public GameObject mapFolder, cubesFolder, lumieresFolder, zonesFolder;
     protected Cube.CubeType currentCubeTypeUsed = Cube.CubeType.NORMAL;
     [HideInInspector]
     public GameManager gm;
@@ -63,6 +65,8 @@ public abstract class MapManager : MonoBehaviour {
         cubesFolder.transform.SetParent(mapFolder.transform);
         lumieresFolder = new GameObject("Lumieres");
         lumieresFolder.transform.SetParent(mapFolder.transform);
+        zonesFolder = new GameObject("Zones");
+        zonesFolder.transform.SetParent(mapFolder.transform);
         mapElements = new List<MapElement>();
         lumieres = new List<Lumiere>();
         cubesRegular = new Cube[tailleMap.x + 1, tailleMap.y + 1, tailleMap.z + 1];
@@ -79,7 +83,7 @@ public abstract class MapManager : MonoBehaviour {
         GenerateMap();
 
         // Générer le random filling si besoin
-        if(useRandomFilling)
+        if (useRandomFilling)
             GenerateRandomFilling();
 
         // Puis on régule la map pour s'assurer que tout va bien :)
@@ -91,6 +95,9 @@ public abstract class MapManager : MonoBehaviour {
         if(linkUnreachableLumiereToRest) {
             LinkUnreachableLumiereToRest();
         }
+
+        // On rajoute les fonctions customs des components !
+        ApplyAllMapFunctionsComponents();
     }
 
     protected abstract void GenerateMap();
@@ -770,6 +777,10 @@ public abstract class MapManager : MonoBehaviour {
         return currentCubeTypeUsed;
     }
 
+    public void SetCurrentCubeType(Cube.CubeType newType) {
+        currentCubeTypeUsed = newType;
+    }
+
     public Vector3 GetFarRoundedLocation(Vector3 farFromThis) {
         Vector3 farPos = GetFreeRoundedLocation();
 
@@ -873,5 +884,12 @@ public abstract class MapManager : MonoBehaviour {
             }
         }
         return elements;
+    }
+
+    protected void ApplyAllMapFunctionsComponents() {
+        foreach (MapFunctionComponent function in mapFunctionComponents) {
+            function.Initialize();
+            function.Activate();
+        }
     }
 }

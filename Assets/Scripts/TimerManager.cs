@@ -41,9 +41,7 @@ public class TimerManager : MonoBehaviour {
             remainingTime = 0.0f;
             gm.eventManager.LoseGame(EventManager.DeathReason.TIME_OUT);
         }
-        int secondes = Mathf.FloorToInt(remainingTime);
-        int centiseconds = Mathf.FloorToInt((remainingTime - secondes) * 100);
-        displayText.text = secondes + ":" + centiseconds.ToString("D2");
+        displayText.text = TimerManager.TimerToString(remainingTime);
 
         PlayTimeOutSound();
 
@@ -64,6 +62,12 @@ public class TimerManager : MonoBehaviour {
             }
             displayText.fontSize = (int)size;
         }
+    }
+
+    public static string TimerToString(float seconds) {
+        int secondes = Mathf.FloorToInt(seconds);
+        int centiseconds = Mathf.FloorToInt((seconds - secondes) * 100);
+        return secondes + ":" + centiseconds.ToString("D2");
     }
 
     protected void PlayTimeOutSound() {

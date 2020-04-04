@@ -24,7 +24,7 @@ public class CubeMap : MapManager {
     // Crée une map en forme de Cube
     protected virtual void GenerateCubeMap() {
         // On crée le contour de la map !
-        MapContainer mapContainer = new MapContainer(Vector3.zero, new Vector3(tailleMap.x, tailleMap.y, tailleMap.z));
+        MapContainer mapContainer = new MapContainer(Vector3.zero, new Vector3(tailleMap.x, tailleMap.y, tailleMap.z) + Vector3.one);
 
         // On veut créer des passerelles entre les sources ! <3
         // On définit les cubes qui seront à l'origine de passerelles

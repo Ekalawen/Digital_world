@@ -22,7 +22,7 @@ public class LabyrintheMap : MapManager {
     void GenerateLabyrintheMap() {
         // On crée le contour de la map !
         currentCubeTypeUsed = Cube.CubeType.INDESTRUCTIBLE;
-        MapContainer mapContainer = new MapContainer(Vector3.zero, new Vector3(tailleMap.x, tailleMap.y, tailleMap.z));
+        MapContainer mapContainer = new MapContainer(Vector3.zero, new Vector3(tailleMap.x, tailleMap.y, tailleMap.z) + Vector3.one);
 
         // On remplit la map
         currentCubeTypeUsed = Cube.CubeType.NORMAL;

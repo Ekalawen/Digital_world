@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CaptureColorSources : MonoBehaviour {
 
+    public bool onlyOnStart = false;
     public bool fixValue = false;
     public float fixedValue = 0.0f;
 
@@ -17,17 +18,24 @@ public class CaptureColorSources : MonoBehaviour {
         meshRenderer = GetComponent<MeshRenderer>();
         light = GetComponent<Light>();
         useMesh = meshRenderer != null;
+        CaptureColor();
     }
 
     void Update() {
+        if (!onlyOnStart)
+            CaptureColor();
+    }
+
+    protected void CaptureColor() {
         Color color = gm.colorManager.GetColorForPosition(transform.position);
         if (useMesh) {
-            color.a = meshRenderer.material.color.a;
+            Debug.Log("a = " + color.a);
             if(fixValue) color = FixeValue(color);
+            color.a = meshRenderer.material.color.a;
             meshRenderer.material.color = color;
         } else {
-            color.a = light.color.a;
             if(fixValue) color = FixeValue(color);
+            color.a = light.color.a;
             light.color = color;
         }
     }

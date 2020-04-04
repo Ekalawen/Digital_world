@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class ZoneCubique : MonoBehaviour {
+public abstract class IZone : MonoBehaviour {
 
     protected GameManager gm;
 

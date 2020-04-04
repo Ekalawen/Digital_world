@@ -25,6 +25,8 @@ public class SoundManager : MonoBehaviour {
     public AudioClipParams activationPouvoirClips;
     public AudioClipParams deniedPouvoirClips;
     public AudioClipParams notFoundPouvoirClips;
+    public AudioClipParams timeZoneButtonInClips;
+    public AudioClipParams timeZoneButtonOutClips;
     public AudioClipParams victoryClips;
     public AudioClipParams defeatClips;
 
@@ -151,6 +153,12 @@ public class SoundManager : MonoBehaviour {
     public void PlayNotFoundPouvoirClip() {
         PlayClipsOnSource(notFoundPouvoirClips);
     }
+    public void PlayTimeZoneButtonInClip(Vector3 pos) {
+        PlayClipsOnSource(timeZoneButtonInClips, pos);
+    }
+    public void PlayTimeZoneButtonOutClip(Vector3 pos) {
+        PlayClipsOnSource(timeZoneButtonOutClips, pos);
+    }
     public void PlayVictoryClip() {
         PlayClipsOnSource(victoryClips);
     }
@@ -166,13 +174,10 @@ public class SoundManager : MonoBehaviour {
         // On set le volume
         if(audioClipParams.bIsMusic) {
             source.volume = PlayerPrefs.GetFloat(MenuOptions.MUSIC_VOLUME_KEY);
-            Debug.Log("volume = " + source.volume);
         } else {
             source.volume = PlayerPrefs.GetFloat(MenuOptions.SOUND_VOLUME_KEY);
         }
         source.volume *= AudioClipParams.BASE_VOLUME * audioClipParams.relativeVolume;
-        if(audioClipParams.bIsMusic)
-            Debug.Log("volumeFinal = " + source.volume);
 
         // On positionne la source
         source.transform.position = pos;

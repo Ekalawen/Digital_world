@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MessageZone : ZoneCubique {
+public class MessageZone : IZone {
 
     public string message;
     public Console.TypeText typeTexte;

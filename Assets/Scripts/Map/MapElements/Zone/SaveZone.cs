@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SaveZone : ZoneCubique {
+public class SaveZone : IZone {
 
     public Transform posSaved;
 

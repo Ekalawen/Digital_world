@@ -21,7 +21,7 @@ public class ParkourTrainingMap : CubeMap {
     }
 
     protected void GenerateParkourTrainingMap() {
-        MapContainer mapContainer = new MapContainer(Vector3.zero, new Vector3(tailleMap.x, tailleMap.y, tailleMap.z));
+        MapContainer mapContainer = new MapContainer(Vector3.zero, new Vector3(tailleMap.x, tailleMap.y, tailleMap.z) + Vector3.one);
 
         List<FullBlock> fullBlocks = GenerateNumberedRandomFilling();
 

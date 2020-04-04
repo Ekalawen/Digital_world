@@ -21,7 +21,6 @@ public class Cube : MonoBehaviour {
     }
 
     protected virtual void RegisterCubeToColorSources() {
-        //ColorManager colorManager = FindObjectOfType<ColorManager>();
         ColorManager colorManager = gm.colorManager;
         SetColor(Color.black);
         foreach(ColorSource colorSource in colorManager.sources) {

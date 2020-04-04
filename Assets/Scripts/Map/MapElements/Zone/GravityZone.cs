@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GravityZone : ZoneCubique {
+public class GravityZone : IZone {
 
     public GravityManager.Direction direction;
     public bool bUseCurrentGravity = false;

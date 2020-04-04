@@ -65,4 +65,8 @@ public static class MathTools
         res.Add(pos - Vector3.up);
         return res;
     }
+
+    public static float RandomSign() {
+        return Random.value < 0.5f ? 1.0f : -1.0f;
+    }
 }
