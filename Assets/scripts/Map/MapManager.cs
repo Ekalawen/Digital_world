@@ -257,6 +257,10 @@ public abstract class MapManager : MonoBehaviour {
         return null;
     }
 
+    public Cube GetCubeAt(float x, float y, float z) {
+        return GetCubeAt(new Vector3(x, y, z));
+    }
+
     public List<Cube> GetCubesInSphere(Vector3 center, float radius) {
         List<Cube> cubes = new List<Cube>();
         int xMin = (int)Mathf.Floor(center.x - radius);
@@ -577,7 +581,7 @@ public abstract class MapManager : MonoBehaviour {
         return GetVoisinsLibres(pos).Count > 0;
     }
 
-    protected List<Vector3> GetVoisinsLibres(Vector3 pos) {
+    public List<Vector3> GetVoisinsLibres(Vector3 pos) {
         List<Vector3> res = new List<Vector3>();
         int i = (int)pos.x, j = (int)pos.y, k = (int)pos.z;
         // DROITE
@@ -830,7 +834,7 @@ public abstract class MapManager : MonoBehaviour {
 
     protected List<FullBlock> GenerateRandomFilling() {
         List<FullBlock> fullBlocks = new List<FullBlock>();
-        List<Vector3> farAwayPos = GetFarAwayPositions();
+        List<Vector3> farAwayPos = GetFarAwayPositions(minDistanceRandomFilling);
         List<Vector3> selectedPos = GaussianGenerator.SelectSomeProportionOfNaiveMethod<Vector3>(farAwayPos, proportionRandomFilling);
         foreach(Vector3 pos in selectedPos) {
             Vector3 finalPos = pos - Vector3.one * (int)Mathf.Floor(sizeCubeRandomFilling / 2.0f);
@@ -840,10 +844,11 @@ public abstract class MapManager : MonoBehaviour {
         return fullBlocks;
     }
 
-    protected List<Vector3> GetFarAwayPositions() {
+    // distanceMin valait avant minDistanceRandomFilling !
+    public List<Vector3> GetFarAwayPositions(float distanceMin) {
         List<Vector3> res = new List<Vector3>();
         foreach(Vector3 pos in GetAllEmptyPositions()) {
-            List<Cube> nearCubes = GetCubesInSphere(pos, minDistanceRandomFilling);
+            List<Cube> nearCubes = GetCubesInSphere(pos, distanceMin);
             if (nearCubes.Count == 0)
                 res.Add(pos);
         }

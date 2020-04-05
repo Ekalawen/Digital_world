@@ -11,6 +11,10 @@ GameObject:
   - component: {fileID: 6410810415113497365}
   - component: {fileID: 229687044870772476}
   - component: {fileID: -7911952377474769180}
+  - component: {fileID: 2385245176111165273}
+  - component: {fileID: 137355696508878798}
+  - component: {fileID: 6999666459836728430}
+  - component: {fileID: 1746269567355592947}
   m_Layer: 0
   m_Name: CubeMapParkourTraining
   m_TagString: Untagged
@@ -56,6 +60,11 @@ MonoBehaviour:
     type: 3}
   lumiereFinalePrefab: {fileID: 6995409226328054440, guid: 9e97ff21fbd4e324b866d7002d438e06,
     type: 3}
+  mapFunctionComponents:
+  - {fileID: 2385245176111165273}
+  - {fileID: 137355696508878798}
+  - {fileID: 6999666459836728430}
+  - {fileID: 1746269567355592947}
   fixNbLumieres: 0
   lumieresFixedInCaves: 0
   linkUnreachableLumiereToRest: 1
@@ -68,6 +77,7 @@ MonoBehaviour:
   mapFolder: {fileID: 0}
   cubesFolder: {fileID: 0}
   lumieresFolder: {fileID: 0}
+  zonesFolder: {fileID: 0}
   gm: {fileID: 0}
   proportionCaves: 0.5
   proportionSourcePont: 0
@@ -95,5 +105,59 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c06eda6246b11f645aa770dcaa175bdf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2385245176111165273
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6404323573375056085}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e16be9d76b3301458de84003b78a55e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cubeType: 0
+--- !u!114 &137355696508878798
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6404323573375056085}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4351708e30c472142a00694493faa9e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cubeType: 0
+  nbRandomCubes: 30
+  minDistanceRandomFilling: 1
+  sizeCubeRandomFilling: 1
+--- !u!114 &6999666459836728430
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6404323573375056085}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1920a00ee208fb8488ffeee9a750a1f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lumiereType: 0
+--- !u!114 &1746269567355592947
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6404323573375056085}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0716ac14acd11b04098252bb48503da1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

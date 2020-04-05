@@ -10,6 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 323203983345647892}
   - component: {fileID: 1140333974042038929}
+  - component: {fileID: 5226205723616552680}
+  - component: {fileID: -1655391877756794990}
+  - component: {fileID: -6659412028148703771}
+  - component: {fileID: 48885752814307598}
   m_Layer: 0
   m_Name: MapBlackAndWhite
   m_TagString: Untagged
@@ -55,7 +59,13 @@ MonoBehaviour:
   lumiereSpecialePrefab: {fileID: 0}
   lumiereFinalePrefab: {fileID: 6995409226328054440, guid: 9e97ff21fbd4e324b866d7002d438e06,
     type: 3}
+  mapFunctionComponents:
+  - {fileID: 5226205723616552680}
+  - {fileID: -1655391877756794990}
+  - {fileID: -6659412028148703771}
+  - {fileID: 48885752814307598}
   fixNbLumieres: 1
+  lumieresFixedInCaves: 0
   linkUnreachableLumiereToRest: 1
   tailleMap: {x: 15, y: 20, z: 15}
   nbLumieresInitial: 15
@@ -66,6 +76,7 @@ MonoBehaviour:
   mapFolder: {fileID: 0}
   cubesFolder: {fileID: 0}
   lumieresFolder: {fileID: 0}
+  zonesFolder: {fileID: 0}
   gm: {fileID: 0}
   tailleX: 15
   tailleZ: 15
@@ -74,3 +85,62 @@ MonoBehaviour:
   nbArbres: 0
   roundCubesPositions: 1
   minDistanceFromSurface: 3
+--- !u!114 &5226205723616552680
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5600080639895813435}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aec7ab0dc9674064f9cb6418c460ab8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cubeType: 2
+  ecartsPdc: 5
+  hauteurMax: 8
+  roundCubesPositions: 1
+--- !u!114 &-1655391877756794990
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5600080639895813435}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 151e2e28aa2652d45a2762e3d9a974c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cubeType: 3
+  minDistanceRandomFilling: 2
+  proportionRandomFilling: 0.02
+  sizeCubeRandomFilling: 1
+--- !u!114 &-6659412028148703771
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5600080639895813435}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ab098edc3ecd5e4ba39aa61cc740273, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lumiereType: 0
+  cubeTypeFarFrom: 2
+  minDistance: 3
+--- !u!114 &48885752814307598
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5600080639895813435}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0716ac14acd11b04098252bb48503da1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

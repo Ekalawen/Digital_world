@@ -121,10 +121,10 @@ public class ParkourTrainingMap : CubeMap {
 
     protected List<FullBlock> GenerateNumberedRandomFilling() {
         List<FullBlock> fullBlocks = new List<FullBlock>();
-        List<Vector3> farAwayPos = GetFarAwayPositions();
+        List<Vector3> farAwayPos = GetFarAwayPositions(minDistanceRandomFilling);
         List<Vector3> selectedPos = GaussianGenerator.SelecteSomeNumberOf(farAwayPos, nbRandomCubes);
         foreach (Vector3 pos in selectedPos) {
-            Vector3 finalPos = pos - Vector3.one * (int)Mathf.Floor(sizeCubeRandomFilling / 2.0f);
+            Vector3 finalPos = pos - Vector3.one * Mathf.FloorToInt(sizeCubeRandomFilling / 2.0f);
             FullBlock fb = new FullBlock(finalPos, Vector3Int.one * sizeCubeRandomFilling);
             fullBlocks.Add(fb);
         }

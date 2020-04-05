@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FixNbLumieresMapFunction : MapFunctionComponent{
+public class FixNbLumieresMapFunction : GenerateLumieresMapFunction {
 
     public bool lumieresFixedInCaves = false;
 
@@ -45,7 +45,7 @@ public class FixNbLumieresMapFunction : MapFunctionComponent{
 
     protected void CreateRandomLumiere() {
         Vector3 posLumiere = map.GetFreeRoundedLocation();
-        map.CreateLumiere(posLumiere, Lumiere.LumiereType.NORMAL);
+        map.CreateLumiere(posLumiere, lumiereType);
     }
 
 }
