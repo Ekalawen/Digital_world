@@ -6,37 +6,6 @@ using UnityEngine;
 
 public class BlackAndWhiteMap : PlainMap {
 
-    public float minDistanceFromSurface = 3.0f;
-
-    protected override void GenerateMap() {
-		GenerateBlackAndWhiteMap();
-    }
-
-    // Génère une map particulière !
-    void GenerateBlackAndWhiteMap() {
-
-		// On génère les points de contrôles
-		Vector3[,] pdc = SurfaceInterpolante.GeneratePointsDeControle(new Vector2Int(tailleX, tailleZ), hauteurMax, ecartsPdc);
-
-        // On crée une surface pour le sol ! :)
-        SurfaceInterpolante surface = new SurfaceInterpolante(
-            pdc,
-            ecartsPdc,
-            new Vector2(tailleX, tailleZ),
-            roundCubesPositions);
-        currentCubeTypeUsed = Cube.CubeType.INDESTRUCTIBLE;
-        float offsetY = tailleMap.y / 2.0f - hauteurMax / 2.0f;
-        surface.AddOffset(Vector3.up * offsetY);
-        surface.GenerateCubes();
-
-        // RandomFilling with corrupted cubes !!
-        currentCubeTypeUsed = Cube.CubeType.SPECIAL;
-        GenerateRandomFilling();
-
-        // Génerer les lumières !
-        GenerateLumieres();
-    }
-
     public override Vector3 GetPlayerStartPosition() {
         while (true) {
             Vector3 pos = GetFreeRoundedLocation();
@@ -56,13 +25,5 @@ public class BlackAndWhiteMap : PlainMap {
             }
         }
         return false;
-    }
-
-    protected void GenerateLumieres() {
-        List<Cube> surfacePositions = GetAllCubesOfType(Cube.CubeType.INDESTRUCTIBLE);
-        for (int i = 0; i < nbLumieresInitial; i++) {
-            Vector3 pos = GetFarFromEnsemble(surfacePositions, minDistanceFromSurface);
-            CreateLumiere(pos, Lumiere.LumiereType.NORMAL);
-        }
     }
 }

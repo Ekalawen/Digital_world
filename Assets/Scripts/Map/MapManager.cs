@@ -16,7 +16,7 @@ class Node {
     }
 }
 
-public abstract class MapManager : MonoBehaviour {
+public class MapManager : MonoBehaviour {
 
 	// public enum TypeMap {CUBE_MAP, PLAINE_MAP, LABYRINTHE_MAP, GROUND_MAP, EMPTY_MAP, TUTORIAL_MAP}; // Plus vraiment utile ! :D
 
@@ -30,16 +30,9 @@ public abstract class MapManager : MonoBehaviour {
 
     public List<MapFunctionComponent> mapFunctionComponents;
 
-    public bool fixNbLumieres = true;
-    public bool lumieresFixedInCaves = false;
-    public bool linkUnreachableLumiereToRest = true;
     public Vector3Int tailleMap; // La taille de la map, en largeur, hauteur et profondeur
 	public int nbLumieresInitial; // Le nombre de lumières lors de la création de la map
 
-    public bool useRandomFilling = false;
-    public float minDistanceRandomFilling = 0f;
-    public float proportionRandomFilling = 0.0f;
-    public int sizeCubeRandomFilling = 0; // Ca peut être intéressant d'augmenter cette taill ! :)
 
     protected Cube[,,] cubesRegular; // Toutes les positions entières dans [0, tailleMap]
     protected List<Cube> cubesNonRegular; // Toutes les autres positions (non-entières)
@@ -80,30 +73,18 @@ public abstract class MapManager : MonoBehaviour {
         GetAllAlreadyExistingCubesAndLumieres();
 
         //// Ici les classes qui hériteront de cette classe pourront faire leur génération !
+        //// Mais ce n'est maintenant plus nécessaire, tout passe par les MapFunctionsComponents ! :)
         //GenerateMap();
-
-        //// Générer le random filling si besoin
-        //if (useRandomFilling)
-        //    GenerateRandomFilling();
-
-        ////LocaliseCubeOnLumieres();
-        //if (fixNbLumieres)
-        //{
-        //    FixNbLumieres();
-        //}
-        //if (linkUnreachableLumiereToRest)
-        //{
-        //    LinkUnreachableLumiereToRest();
-        //}
 
         // On rajoute les fonctions customs des components !
         ApplyAllMapFunctionsComponents();
 
-        // Puis on régule la map pour s'assurer que tout va bien :)
+        // Puis on affiche les proportions de cubes régular et non-regular pour vérifier que tout va bien :)
         PrintCubesNumbers();
     }
 
-    protected abstract void GenerateMap();
+    protected virtual void GenerateMap() {
+    }
 
     private void AddCube(Cube cube) {
         Vector3 pos = cube.transform.position;
@@ -362,30 +343,6 @@ public abstract class MapManager : MonoBehaviour {
         return null;
     }
 
-	//// Crée un mur constitué de cubes entre les 4 coins que constitue les indices
-	//protected void RemplirFace(int indVertx1, int indVertx2, int indVertx3, int indVertx4, Vector3[] pos) {
-	//	Vector3 depart = pos [indVertx1];
-	//	//Vector3 arrivee = pos [indVertx4];
-	//	Vector3 pas1 = (pos [indVertx2] - depart) / tailleMap;
-	//	Vector3 pas2 = (pos [indVertx4] - depart) / tailleMap;
-
-	//	for (int i = 0; i <= tailleMap; i++) {
-	//		for (int j = 0; j <= tailleMap; j++) {
-	//			Vector3 actuel = depart + pas1 * i + pas2 * j;
-	//			GameObject instance = Instantiate (cubePrefab, actuel, Quaternion.identity) as GameObject;
-
-	//			// On va un peu décaler les cubes pour créer du relief !
-	//			//float decalageMax = personnage.GetComponent<CharacterController>().stepOffset / 2;
-	//			float decalageMax = 0.1f;
-	//			Vector3 directionDecalage = Vector3.Cross (pas1, pas2);
-	//			directionDecalage.Normalize ();
- //               //instance.transform.Translate (directionDecalage * Random.Range (-decalageMax, decalageMax));
-
- //               AddCube(instance.GetComponent<Cube>());
-	//		}
-	//	}
-	//}
-
     public bool IsInRegularMap(Vector3 pos) {
         return 0 <= pos.x && pos.x <= tailleMap.x
         && 0 <= pos.y && pos.y <= tailleMap.y
@@ -445,6 +402,7 @@ public abstract class MapManager : MonoBehaviour {
                 nbCubesNonRegularNonNull++;
         Debug.Log("Nombre cubes non-regular = " + cubesNonRegular.Count);
         Debug.Log("Nombre cubes non-regular NULL = " + (cubesNonRegular.Count - nbCubesNonRegularNonNull));
+        LocaliseCubeOnLumieres();
     }
 
     public Vector3 GetRoundedLocation() {
@@ -511,7 +469,7 @@ public abstract class MapManager : MonoBehaviour {
             Cube cubeOn = GetCubeAt(lum.transform.position);
             if(cubeOn != null) {
                 cubeOn.SetColor(Color.white);
-                Debug.Log("Une lumiere dans un cube !");
+                Debug.Log("Une lumiere dans un cube à la position " + cubeOn.transform.position + " !");
             }
         }
     }
@@ -529,17 +487,6 @@ public abstract class MapManager : MonoBehaviour {
         return reachableArea;
     }
 
-    public void LinkUnreachableLumiereToRest() {
-        List<Vector3> reachableArea = GetReachableArea();
-
-        // Vérifier si les lumières sont dans cette zone, si elles ne le sont pas, elles sont inaccessibles
-        foreach(Lumiere lumiere in lumieres) {
-            if (!MathTools.IsRounded(lumiere.transform.position))
-                Debug.LogWarning("Attention une lumière n'est pas à une position entière ! Peut engendrer des bugs dans le Link !");
-            LinkPositionToReachableArea(MathTools.Round(lumiere.transform.position), reachableArea);
-        }
-    }
-
     public void LinkPositionToReachableArea(Vector3 pos, List<Vector3> reachableArea) {
         if(!reachableArea.Contains(pos)) {
             // Les linker au reste
@@ -554,6 +501,17 @@ public abstract class MapManager : MonoBehaviour {
                 (result) => result.Item1);
             // Les relier ! :)
             Cave.RelierChemin(cubesRegular, this, pos, closestPosition);
+        }
+    }
+
+    public void LinkUnreachableLumiereToRest() {
+        List<Vector3> reachableArea = GetReachableArea();
+
+        // Vérifier si les lumières sont dans cette zone, si elles ne le sont pas, elles sont inaccessibles
+        foreach(Lumiere lumiere in GetLumieres()) {
+            if (!MathTools.IsRounded(lumiere.transform.position))
+                Debug.LogWarning("Attention une lumière n'est pas à une position entière ! Peut engendrer des bugs dans le Link !");
+            LinkPositionToReachableArea(MathTools.Round(lumiere.transform.position), reachableArea);
         }
     }
 
@@ -719,27 +677,6 @@ public abstract class MapManager : MonoBehaviour {
         return res;
     }
 
-    protected virtual void FixNbLumieres() {
-        if(lumieres.Count > nbLumieresInitial) {
-            int nbLumieresToDelete = lumieres.Count - nbLumieresInitial;
-            for(int i = 0; i < nbLumieresToDelete; i++) {
-                int indiceLumiere = Random.Range(0, lumieres.Count);
-                Destroy(lumieres[indiceLumiere].gameObject);
-                lumieres.RemoveAt(indiceLumiere);
-            }
-        }
-
-        if(lumieres.Count < nbLumieresInitial) {
-            int nbLumieresToAdd = nbLumieresInitial - lumieres.Count;
-            for(int i = 0; i < nbLumieresToAdd; i++) {
-                if(lumieresFixedInCaves)
-                    CreateRandomLumiereInCave();
-                else
-                    CreateRandomLumiere();
-            }
-        }
-    }
-
     protected void CreateRandomLumiere() {
         Vector3 posLumiere = GetFreeRoundedLocation();
         CreateLumiere(posLumiere, Lumiere.LumiereType.NORMAL);
@@ -832,20 +769,8 @@ public abstract class MapManager : MonoBehaviour {
         lumieres.Remove(lumiere);
     }
 
-    protected List<FullBlock> GenerateRandomFilling() {
-        List<FullBlock> fullBlocks = new List<FullBlock>();
-        List<Vector3> farAwayPos = GetFarAwayPositions(minDistanceRandomFilling);
-        List<Vector3> selectedPos = GaussianGenerator.SelectSomeProportionOfNaiveMethod<Vector3>(farAwayPos, proportionRandomFilling);
-        foreach(Vector3 pos in selectedPos) {
-            Vector3 finalPos = pos - Vector3.one * (int)Mathf.Floor(sizeCubeRandomFilling / 2.0f);
-            FullBlock fb = new FullBlock(finalPos, Vector3Int.one * sizeCubeRandomFilling);
-            fullBlocks.Add(fb);
-        }
-        return fullBlocks;
-    }
-
     // distanceMin valait avant minDistanceRandomFilling !
-    public List<Vector3> GetFarAwayPositions(float distanceMin) {
+    public List<Vector3> GetFarAwayFromAllCubesPositions(float distanceMin) {
         List<Vector3> res = new List<Vector3>();
         foreach(Vector3 pos in GetAllEmptyPositions()) {
             List<Cube> nearCubes = GetCubesInSphere(pos, distanceMin);

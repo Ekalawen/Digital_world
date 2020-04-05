@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4913549307214802}
-  - component: {fileID: 114991096836358190}
+  - component: {fileID: 129806322342455819}
   - component: {fileID: 7291592381796525078}
   - component: {fileID: 3425981728395409398}
   - component: {fileID: 694806362120025368}
@@ -35,7 +35,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114991096836358190
+--- !u!114 &129806322342455819
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -44,7 +44,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1698300190402578}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aef839c4dc79e476c8f67e3c3574a0a6, type: 3}
+  m_Script: {fileID: 11500000, guid: ba84e068e9e8e4b68997d0c80ea9b339, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   cubePrefab: {fileID: 1586838666760998, guid: 166cc3691555747479ad6b1623980374, type: 3}
@@ -64,29 +64,13 @@ MonoBehaviour:
   - {fileID: 3425981728395409398}
   - {fileID: 694806362120025368}
   - {fileID: 3182079684695872772}
-  fixNbLumieres: 1
-  lumieresFixedInCaves: 0
-  linkUnreachableLumiereToRest: 1
   tailleMap: {x: 15, y: 15, z: 15}
   nbLumieresInitial: 15
-  useRandomFilling: 0
-  minDistanceRandomFilling: 0
-  proportionRandomFilling: 0
-  sizeCubeRandomFilling: 0
   mapFolder: {fileID: 0}
   cubesFolder: {fileID: 0}
   lumieresFolder: {fileID: 0}
   zonesFolder: {fileID: 0}
   gm: {fileID: 0}
-  proportionCaves: 1
-  proportionSourcePont: 0.005
-  tailleMinCave: 3
-  tailleMaxCave: 6
-  makeSpaceArround: 0
-  nbLumieresPerCaves: 1
-  offsetLumieresFromCenter: 1
-  caveOffsetSides: 1
-  volumeMap: 0
 --- !u!114 &7291592381796525078
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -114,6 +98,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cubeType: 0
   proportionCaves: 0.3
+  useNbCaves: 0
+  nbCaves: 0
   tailleMinCave: 3
   tailleMaxCave: 5
   makeSpaceArround: 0
@@ -132,6 +118,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce20223adc62b6845bc5123c0a0e50e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lumiereType: 0
   lumieresFixedInCaves: 0
 --- !u!114 &3182079684695872772
 MonoBehaviour:

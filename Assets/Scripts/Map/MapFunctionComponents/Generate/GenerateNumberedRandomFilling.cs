@@ -14,7 +14,7 @@ public class GenerateNumberedRandomFilling : GenerateCubesMapFunction {
 
     protected List<FullBlock> GenerateNumberedRandomFillingCubes() {
         List<FullBlock> fullBlocks = new List<FullBlock>();
-        List<Vector3> farAwayPos = map.GetFarAwayPositions(minDistanceRandomFilling);
+        List<Vector3> farAwayPos = map.GetFarAwayFromAllCubesPositions(minDistanceRandomFilling);
         List<Vector3> selectedPos = GaussianGenerator.SelecteSomeNumberOf(farAwayPos, nbRandomCubes);
         foreach (Vector3 pos in selectedPos) {
             Vector3 finalPos = pos - Vector3.one * Mathf.FloorToInt(sizeCubeRandomFilling / 2.0f);
