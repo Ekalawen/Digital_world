@@ -29,7 +29,6 @@ public class CaptureColorSources : MonoBehaviour {
     protected void CaptureColor() {
         Color color = gm.colorManager.GetColorForPosition(transform.position);
         if (useMesh) {
-            Debug.Log("a = " + color.a);
             if(fixValue) color = FixeValue(color);
             color.a = meshRenderer.material.color.a;
             meshRenderer.material.color = color;
