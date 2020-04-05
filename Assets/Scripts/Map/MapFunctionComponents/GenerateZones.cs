@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AddZones : MapFunctionComponent {
+public class GenerateZones : MapFunctionComponent {
 
     public List<GameObject> zonesPrefabs;
     public List<int> nbZones;

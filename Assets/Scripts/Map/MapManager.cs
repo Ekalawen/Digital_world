@@ -88,6 +88,7 @@ public abstract class MapManager : MonoBehaviour {
 
         // Puis on régule la map pour s'assurer que tout va bien :)
         PrintCubesNumbers();
+
         //LocaliseCubeOnLumieres();
         if (fixNbLumieres) {
             FixNbLumieres();
