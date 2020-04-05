@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class GenerateCaves : GenerateCubesMapFunction {
 
-	public float proportionCaves;
+	public float proportionCaves = 0.3f;
+    public bool useNbCaves = false;
+    public int nbCaves = 0;
     public int tailleMinCave = 3;
     public int tailleMaxCave = 10;
     public bool makeSpaceArround = false;
@@ -15,36 +17,59 @@ public class GenerateCaves : GenerateCubesMapFunction {
     public override void Activate() {
         // On veut générer des caves dangeureuses :3
         // Qui possèderont des lumières !
-        List<Cave> caves = GenerateAllCaves(proportionCaves, bWithLumieres: true, bMakeSpaceArround: makeSpaceArround);
+        GenerateAllCaves();
     }
 
-	protected List<Cave> GenerateAllCaves(float proportionCaves, bool bWithLumieres, bool bMakeSpaceArround = false) {
+	protected List<Cave> GenerateAllCaves() {
+        List<Cave> caves = null;
+        if (!useNbCaves)
+            caves = GenerateAllCavesWithProportion();
+        else
+            caves = GenerateAllCavesWithNbCaves();
+
+        return caves;
+	}
+
+    protected List<Cave> GenerateAllCavesWithProportion() {
         List<Cave> caves = new List<Cave>();
         float currentProportion = 0.0f;
         float volumeCaves = 0;
         while(currentProportion < proportionCaves) {
-		//for (int k = 0; k < nbCaves; k++) {
-            // On définit la taille de la cave
-            Vector3Int size = Vector3Int.zero;
-			size.x = Random.Range(tailleMinCave, tailleMaxCave + 1);
-			size.y = Random.Range(tailleMinCave, tailleMaxCave + 1);
-			size.z = Random.Range(tailleMinCave, tailleMaxCave + 1);
-
-            // On définit sa position sur la carte
-            Vector3 position = GetPositionCave(size);
-
-            Cave cave = new Cave(position, size, bMakeSpaceArround: bMakeSpaceArround, bDigInside: true);
+            Cave cave = GenerateCave();
             caves.Add(cave);
-
-            // On y rajoute la lumière !
-            cave.AddNLumiereInside(nbLumieresPerCaves, offsetLumieresFromCenter);
-
             volumeCaves += cave.GetVolume();
             currentProportion = volumeCaves / map.GetVolume();
 		}
-
         return caves;
-	}
+    }
+
+    protected List<Cave> GenerateAllCavesWithNbCaves() {
+        List<Cave> caves = new List<Cave>();
+        for(int i = 0; i < nbCaves; i++) {
+            Cave cave = GenerateCave();
+            caves.Add(cave);
+		}
+        return caves;
+    }
+
+
+    protected virtual Cave GenerateCave() {
+        // On définit la taille de la cave
+        Vector3Int size = Vector3Int.zero;
+        size.x = Random.Range(tailleMinCave, tailleMaxCave + 1);
+        size.y = Random.Range(tailleMinCave, tailleMaxCave + 1);
+        size.z = Random.Range(tailleMinCave, tailleMaxCave + 1);
+
+        // On définit sa position sur la carte
+        Vector3 position = GetPositionCave(size);
+
+        Cave cave = new Cave(position, size, bMakeSpaceArround: makeSpaceArround, bDigInside: true);
+
+        // On y rajoute la lumière !
+        cave.AddNLumiereInside(nbLumieresPerCaves, offsetLumieresFromCenter);
+
+        return cave;
+    }
 
     protected virtual Vector3 GetPositionCave(Vector3Int sizeCave) {
         if (caveOffsetSides) {

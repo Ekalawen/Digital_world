@@ -183,14 +183,14 @@ public class Cave : CubeEnsemble {
         }
     }
 
-    public void AddAllLumiereInside() {
+    public void AddAllLumiereInside(Lumiere.LumiereType lumiereType = Lumiere.LumiereType.NORMAL) {
         for (int i = 0; i < nbCubesParAxe.x; i++) {
             for (int j = 0; j < nbCubesParAxe.y; j++) {
                 for (int k = 0; k < nbCubesParAxe.z; k++) {
                     if(cubeMatrix[i, j, k] == null) {
                         Vector3 posLumiere = new Vector3(i, j, k);
                         posLumiere += depart;
-                        map.CreateLumiere(posLumiere, Lumiere.LumiereType.NORMAL);
+                        map.CreateLumiere(posLumiere, lumiereType);
                     }
                 }
             }
@@ -201,7 +201,7 @@ public class Cave : CubeEnsemble {
         return (float)nbCubesParAxe[0] * nbCubesParAxe[1] * nbCubesParAxe[2];
     }
 
-    public void FulfillFloor(bool exeptOne = false) {
+    public void FulfillFloor(bool exceptOne = false) {
         for(int x = 0; x < nbCubesParAxe.x; x++) {
             for(int z = 0; z < nbCubesParAxe.z; z++) {
                 if(cubeMatrix[x, 0, z] == null) {
@@ -212,7 +212,7 @@ public class Cave : CubeEnsemble {
             }
         }
 
-        if(exeptOne) {
+        if(exceptOne) {
             Vector3Int pos = new Vector3Int(Random.Range(0, nbCubesParAxe.x), 0, Random.Range(0, nbCubesParAxe.z));
             Vector3Int dest = GetFreeIndiceLocation(offsetFromSides: 1);
             RelierChemin(cubeMatrix, map, pos, dest);

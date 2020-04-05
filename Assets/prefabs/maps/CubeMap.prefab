@@ -10,6 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4913549307214802}
   - component: {fileID: 114991096836358190}
+  - component: {fileID: 7291592381796525078}
+  - component: {fileID: 3425981728395409398}
+  - component: {fileID: 694806362120025368}
+  - component: {fileID: 3182079684695872772}
   m_Layer: 0
   m_Name: CubeMap
   m_TagString: Untagged
@@ -55,7 +59,11 @@ MonoBehaviour:
     type: 3}
   lumiereFinalePrefab: {fileID: 6995409226328054440, guid: 9e97ff21fbd4e324b866d7002d438e06,
     type: 3}
-  mapFunctionComponents: []
+  mapFunctionComponents:
+  - {fileID: 7291592381796525078}
+  - {fileID: 3425981728395409398}
+  - {fileID: 694806362120025368}
+  - {fileID: 3182079684695872772}
   fixNbLumieres: 1
   lumieresFixedInCaves: 0
   linkUnreachableLumiereToRest: 1
@@ -79,3 +87,61 @@ MonoBehaviour:
   offsetLumieresFromCenter: 1
   caveOffsetSides: 1
   volumeMap: 0
+--- !u!114 &7291592381796525078
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1698300190402578}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e16be9d76b3301458de84003b78a55e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cubeType: 0
+--- !u!114 &3425981728395409398
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1698300190402578}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 131c84a63811d0743a222b5cb6d90db6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cubeType: 0
+  proportionCaves: 0.3
+  tailleMinCave: 3
+  tailleMaxCave: 5
+  makeSpaceArround: 0
+  nbLumieresPerCaves: 1
+  offsetLumieresFromCenter: 1
+  caveOffsetSides: 1
+--- !u!114 &694806362120025368
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1698300190402578}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce20223adc62b6845bc5123c0a0e50e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lumieresFixedInCaves: 0
+--- !u!114 &3182079684695872772
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1698300190402578}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0716ac14acd11b04098252bb48503da1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

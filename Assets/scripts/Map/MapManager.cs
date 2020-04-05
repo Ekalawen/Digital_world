@@ -79,26 +79,28 @@ public abstract class MapManager : MonoBehaviour {
         // Récupérer tous les cubes et toutes les lumières qui pourraient déjà exister avant la création de la map !
         GetAllAlreadyExistingCubesAndLumieres();
 
-        // Ici les classes qui hériteront de cette classe pourront faire leur génération !
-        GenerateMap();
+        //// Ici les classes qui hériteront de cette classe pourront faire leur génération !
+        //GenerateMap();
 
-        // Générer le random filling si besoin
-        if (useRandomFilling)
-            GenerateRandomFilling();
+        //// Générer le random filling si besoin
+        //if (useRandomFilling)
+        //    GenerateRandomFilling();
 
-        // Puis on régule la map pour s'assurer que tout va bien :)
-        PrintCubesNumbers();
-
-        //LocaliseCubeOnLumieres();
-        if (fixNbLumieres) {
-            FixNbLumieres();
-        }
-        if(linkUnreachableLumiereToRest) {
-            LinkUnreachableLumiereToRest();
-        }
+        ////LocaliseCubeOnLumieres();
+        //if (fixNbLumieres)
+        //{
+        //    FixNbLumieres();
+        //}
+        //if (linkUnreachableLumiereToRest)
+        //{
+        //    LinkUnreachableLumiereToRest();
+        //}
 
         // On rajoute les fonctions customs des components !
         ApplyAllMapFunctionsComponents();
+
+        // Puis on régule la map pour s'assurer que tout va bien :)
+        PrintCubesNumbers();
     }
 
     protected abstract void GenerateMap();

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class LinkUnreachableLumiereToRestMapFunction : MapFunctionComponent {
     public override void Activate() {
+        LinkUnreachableLumiereToRest();
     }
 
     public void LinkUnreachableLumiereToRest() {

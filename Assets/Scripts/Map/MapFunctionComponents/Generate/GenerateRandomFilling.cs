@@ -5,10 +5,9 @@ using UnityEngine;
 
 public class GenerateRandomFilling : GenerateCubesMapFunction {
 
-    public bool useRandomFilling = false;
-    public float minDistanceRandomFilling = 0f;
-    public float proportionRandomFilling = 0.0f;
-    public int sizeCubeRandomFilling = 0; // Ca peut être intéressant d'augmenter cette taille ! :)
+    public float minDistanceRandomFilling = 1f;
+    public float proportionRandomFilling = 0.02f;
+    public int sizeCubeRandomFilling = 1; // Ca peut être intéressant d'augmenter cette taille ! :)
 
     public override void Activate() {
         GenerateRandomFillingCubes();

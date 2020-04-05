@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class ProtectLumieresWithCouronnes : MapFunctionComponent {
+public class GenerateCouronnesArroundLumieres : GenerateCubesMapFunction {
 
     public float proportionToProtect = 1.0f;
-    public Cube.CubeType cubeType = Cube.CubeType.INDESTRUCTIBLE;
     public GameObject activationZonePrefab;
 
     public override void Activate() {
@@ -24,10 +23,7 @@ public class ProtectLumieresWithCouronnes : MapFunctionComponent {
     }
 
     protected MapContainer CreateCouronne(Vector3 position) {
-        Cube.CubeType oldType = map.GetCurrentCubeType();
-        map.SetCurrentCubeType(cubeType);
         MapContainer couronne = MapContainer.CreateFromCenter(position, Vector3.one);
-        map.SetCurrentCubeType(oldType);
         return couronne;
     }
 
