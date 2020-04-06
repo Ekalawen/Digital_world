@@ -10,11 +10,13 @@ public abstract class Ennemi : Character {
 	public float distanceDeDetection; // La distance à partir de laquelle le probe peut pourchasser l'ennemi
     public float timeMalusOnHit = 5.0f; // Le temps que perd le joueur lorsqu'il se fait touché !
     public float timeBetweenTwoHits = 1.0f;
+    public float timeBetweenTwoHitsDamages = 1.0f;
 
 	protected GameManager gm;
 	protected Player player;
 	protected float vitesse;
-    protected float lastTimeHit;
+    protected Timer timerHit;
+    protected Timer timerHitDamages;
 
 	public override void Start () {
         base.Start();
@@ -23,7 +25,10 @@ public abstract class Ennemi : Character {
 		controller = this.GetComponent<CharacterController> ();
 		//vitesse = Mathf.Exp(Random.Range(Mathf.Log(vitesseMin), Mathf.Log(vitesseMax)));
 		vitesse = Random.Range(vitesseMin, vitesseMax);
-        lastTimeHit = Time.timeSinceLevelLoad;
+        timerHit = new Timer(timeBetweenTwoHits);
+        timerHit.SetOver();
+        timerHitDamages = new Timer(timeBetweenTwoHitsDamages);
+        timerHitDamages.SetOver();
 	}
 
 	public virtual void Update () {
@@ -64,11 +69,14 @@ public abstract class Ennemi : Character {
 
     protected virtual void HitPlayer() {
         HitContinuousPlayerSpecific();
-        if(Time.timeSinceLevelLoad - lastTimeHit > timeBetweenTwoHits) {
-            HitPlayerSpecific();
+        if(timerHit.IsOver()) {
+            timerHit.Reset();
 
-            lastTimeHit = Time.timeSinceLevelLoad;
-            gm.timerManager.AddTime(-timeMalusOnHit);
+            HitPlayerSpecific();
+            if (timerHitDamages.IsOver()) {
+                timerHitDamages.Reset();
+                gm.timerManager.AddTime(-timeMalusOnHit);
+            }
             DisplayHitMessage();
             PlayHitSound();
         }
