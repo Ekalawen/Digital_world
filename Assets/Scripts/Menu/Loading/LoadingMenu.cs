@@ -58,8 +58,8 @@ public class LoadingMenu : MonoBehaviour {
 
     protected void InitPouvoir(GameObject pouvoirPrefab, PouvoirDisplay display) {
         IPouvoir pouvoir = pouvoirPrefab ? pouvoirPrefab.GetComponent<IPouvoir>() : null;
-        string nom = pouvoir ? pouvoir.nom : "404 Not Found";
-        string description = pouvoir ? pouvoir.description : "Null";
+        string nom = pouvoir ? pouvoir.nom : PouvoirDisplay.NULL_NAME_VALUE;
+        string description = pouvoir ? pouvoir.description : PouvoirDisplay.NULL_DESCRIPTION_VALUE;
         Sprite sprite = pouvoir ? pouvoir.sprite : null;
         display.Initialize(nom, description, sprite);
     }
