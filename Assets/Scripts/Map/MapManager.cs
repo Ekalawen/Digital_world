@@ -563,6 +563,30 @@ public class MapManager : MonoBehaviour {
         return res;
     }
 
+    public List<Vector3> GetVoisinsPleins(Vector3 pos) {
+        List<Vector3> res = new List<Vector3>();
+        int i = (int)pos.x, j = (int)pos.y, k = (int)pos.z;
+        // DROITE
+        if (IsInRegularMap(new Vector3(i + 1, j, k)) && cubesRegular[i + 1, j, k] != null)
+            res.Add(new Vector3(i + 1, j, k));
+        // GAUCHE
+        if (IsInRegularMap(new Vector3(i - 1, j, k)) && cubesRegular[i - 1, j, k] != null)
+            res.Add(new Vector3(i - 1, j, k));
+        // HAUT
+        if (IsInRegularMap(new Vector3(i, j + 1, k)) && cubesRegular[i, j + 1, k] != null)
+            res.Add(new Vector3(i, j + 1, k));
+        // BAS
+        if (IsInRegularMap(new Vector3(i, j - 1, k)) && cubesRegular[i, j - 1, k] != null)
+            res.Add(new Vector3(i, j - 1, k));
+        // DEVANT
+        if (IsInRegularMap(new Vector3(i, j, k + 1)) && cubesRegular[i, j, k + 1] != null)
+            res.Add(new Vector3(i, j, k + 1));
+        // DERRIRE
+        if (IsInRegularMap(new Vector3(i, j, k - 1)) && cubesRegular[i, j, k - 1] != null)
+            res.Add(new Vector3(i, j, k - 1));
+        return res;
+    }
+
     protected List<Vector3Int> GetVoisinsLibresInt(Vector3Int pos) {
         List<Vector3> v3 = GetVoisinsLibres(pos);
         List<Vector3Int> v3I = new List<Vector3Int>();

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class AllumePlusProcheLumiereMapFunction : MonoBehaviour {
+public class AllumePlusProcheLumiere : MonoBehaviour {
 
     protected GameManager gm;
     protected MapManager map;
@@ -13,7 +13,7 @@ public class AllumePlusProcheLumiereMapFunction : MonoBehaviour {
         map = gm.map;
     }
 
-    public void AllumePlusProcheLumiere(Vector3 position) {
+    public void AllumerPlusProcheLumiere(Vector3 position) {
         List<float> distances = new List<float>();
         foreach(Lumiere lumiere in map.GetLumieres()) {
             LumiereSwitchable ls = (LumiereSwitchable)lumiere;

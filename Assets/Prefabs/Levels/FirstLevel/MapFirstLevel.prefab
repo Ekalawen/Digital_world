@@ -1,5 +1,17 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-6232122221873823536
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6404323573375056085}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce701536c965fb847a885590e740ebf0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &6406004073022886087
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -55,6 +67,57 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
+        type: 3}
+      propertyPath: mapFunctionComponents.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
+        type: 3}
+      propertyPath: lumierePrefab
+      value: 
+      objectReference: {fileID: 8907419764697859225, guid: 09698535f72ab0a4caecab6acfebd7a7,
+        type: 3}
+    - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
+        type: 3}
+      propertyPath: tailleMap.x
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
+        type: 3}
+      propertyPath: tailleMap.y
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
+        type: 3}
+      propertyPath: tailleMap.z
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
+        type: 3}
+      propertyPath: nbLumieresInitial
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
+        type: 3}
+      propertyPath: mapFunctionComponents.Array.data[4]
+      value: 
+      objectReference: {fileID: -6232122221873823536}
+    - target: {fileID: 3425981728395409398, guid: 129f4eb78691940da993d749688543fd,
+        type: 3}
+      propertyPath: proportionCaves
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3425981728395409398, guid: 129f4eb78691940da993d749688543fd,
+        type: 3}
+      propertyPath: tailleMaxCave
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3425981728395409398, guid: 129f4eb78691940da993d749688543fd,
+        type: 3}
+      propertyPath: nbLumieresPerCaves
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 114991096836358190, guid: 129f4eb78691940da993d749688543fd,
         type: 3}
       propertyPath: tailleMap
@@ -106,46 +169,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8907419764697859225, guid: 09698535f72ab0a4caecab6acfebd7a7,
         type: 3}
-    - target: {fileID: 3425981728395409398, guid: 129f4eb78691940da993d749688543fd,
-        type: 3}
-      propertyPath: proportionCaves
-      value: 0.3
-      objectReference: {fileID: 0}
-    - target: {fileID: 3425981728395409398, guid: 129f4eb78691940da993d749688543fd,
-        type: 3}
-      propertyPath: tailleMaxCave
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 3425981728395409398, guid: 129f4eb78691940da993d749688543fd,
-        type: 3}
-      propertyPath: nbLumieresPerCaves
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
-        type: 3}
-      propertyPath: lumierePrefab
-      value: 
-      objectReference: {fileID: 8907419764697859225, guid: 09698535f72ab0a4caecab6acfebd7a7,
-        type: 3}
-    - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
-        type: 3}
-      propertyPath: tailleMap.x
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
-        type: 3}
-      propertyPath: tailleMap.y
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
-        type: 3}
-      propertyPath: tailleMap.z
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
-        type: 3}
-      propertyPath: nbLumieresInitial
-      value: 10
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 129f4eb78691940da993d749688543fd, type: 3}
+--- !u!1 &6404323573375056085 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1698300190402578, guid: 129f4eb78691940da993d749688543fd,
+    type: 3}
+  m_PrefabInstance: {fileID: 6406004073022886087}
+  m_PrefabAsset: {fileID: 0}

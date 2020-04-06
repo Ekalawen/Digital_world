@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LinkUnreachableLumiereToRestMapFunction : MapFunctionComponent {
+public class LinkUnreachableLumiereToRest : MapFunctionComponent {
     public override void Activate() {
-        LinkUnreachableLumiereToRest();
+        LinkAllUnreachableLumiereToRest();
     }
 
-    public void LinkUnreachableLumiereToRest() {
+    public void LinkAllUnreachableLumiereToRest() {
         List<Vector3> reachableArea = map.GetReachableArea();
 
         // Vérifier si les lumières sont dans cette zone, si elles ne le sont pas, elles sont inaccessibles

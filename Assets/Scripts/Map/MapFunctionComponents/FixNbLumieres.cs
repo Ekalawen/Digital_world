@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FixNbLumieresMapFunction : GenerateLumieresMapFunction {
+public class FixNbLumieres: GenerateLumieresMapFunction {
 
     public bool lumieresFixedInCaves = false;
 
     public override void Activate() {
-        FixNbLumieres();
+        FixNbOfLumieres();
     }
 
-    protected virtual void FixNbLumieres() {
+    protected virtual void FixNbOfLumieres() {
         List<Lumiere> lumieres = map.GetLumieres();
         if(lumieres.Count > map.nbLumieresInitial) {
             int nbLumieresToDelete = lumieres.Count - map.nbLumieresInitial;
