@@ -10,6 +10,7 @@ public class RunAwayPlayerController : MonoBehaviour {
     public float distanceToFleePlayer = 5.0f; // La distance à laquelle on commence à fuir !
     public float wanderingVitesse; // vitesse de déplacement de base
 	public float fleeingVitesse; // vitesse de lorsque l'on doit fuir !
+    public float malusVerticalMouvement = 0f; // On peut faire en sorte de moins utiliser les hauteurs
     //public GameObject trailPrefab;
 
     protected GameManager gm;
@@ -114,7 +115,8 @@ public class RunAwayPlayerController : MonoBehaviour {
         foreach (Vector3 pos in allFarAwayPositions) {
             Vector3 direction = pos - transform.position;
             float dist = direction.magnitude;
-            if (dist < minDist) {
+            float verticalMalus = Mathf.Abs(gm.gravityManager.GetHigh(pos) - gm.gravityManager.GetHigh(transform.position)) * malusVerticalMouvement;
+            if (dist + verticalMalus < minDist) {
                 RaycastHit hit;
                 Ray ray = new Ray(transform.position, direction);
                 if (!Physics.Raycast(ray, out hit, dist)) {

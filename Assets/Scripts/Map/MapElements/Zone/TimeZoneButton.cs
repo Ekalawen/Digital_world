@@ -33,6 +33,8 @@ public class TimeZoneButton : IZone {
 
         Timer timer = new Timer(durationToActivate);
         while(!timer.IsOver()) {
+            if (gm.eventManager.IsGameOver())
+                break;
             currentMessage = TimerManager.TimerToString(timer.GetRemainingTime());
             gm.console.AjouterMessageImportant(currentMessage,
                 Console.TypeText.ALLY_TEXT,
@@ -43,15 +45,17 @@ public class TimeZoneButton : IZone {
             yield return null;
         }
 
-        currentMessage = "Hacké !";
-        gm.console.AjouterMessageImportant(currentMessage,
-            Console.TypeText.BASIC_TEXT,
-            1.0f,
-            bAfficherInConsole: true,
-            precedantMessage);
-        precedantMessage = currentMessage;
+        if (!gm.eventManager.IsGameOver()) {
+            currentMessage = "Hacké !";
+            gm.console.AjouterMessageImportant(currentMessage,
+                Console.TypeText.BASIC_TEXT,
+                1.0f,
+                bAfficherInConsole: true,
+                precedantMessage);
+            precedantMessage = currentMessage;
 
-        CallAllEvents();
+            CallAllEvents();
+        }
     }
 
     public void CallAllEvents() {
