@@ -6,12 +6,15 @@ using UnityEngine.Events;
 public class GenerateCouronnesArroundLumieres : GenerateCubesMapFunction {
 
     public float proportionToProtect = 1.0f;
+    public bool useNbToProtect = false;
+    public int nbToProtect = 0;
     public GameObject activationZonePrefab;
 
     public override void Activate() {
         int nbLumieres = map.GetLumieres().Count;
-        int nbToProtect = Mathf.Clamp(Mathf.RoundToInt(nbLumieres * proportionToProtect), 0, nbLumieres);
-        List<Lumiere> lumieresToProtect = GaussianGenerator.SelecteSomeNumberOf(map.GetLumieres(), nbToProtect);
+        int nb = useNbToProtect ? nbToProtect : Mathf.Clamp(Mathf.RoundToInt(nbLumieres * proportionToProtect), 0, nbLumieres);
+        nb = Mathf.Min(nb, nbLumieres);
+        List<Lumiere> lumieresToProtect = GaussianGenerator.SelecteSomeNumberOf(map.GetLumieres(), nb);
         foreach(Lumiere lumiere in lumieresToProtect) {
             ProtectLumiere(lumiere);
         }

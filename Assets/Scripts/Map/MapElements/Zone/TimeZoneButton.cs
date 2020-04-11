@@ -63,13 +63,13 @@ public class TimeZoneButton : IZone {
             if (coroutine != null)
                 StopCoroutine(coroutine);
 
-            currentMessage = "Déconnecté !";
-            gm.console.AjouterMessageImportant(currentMessage,
-                Console.TypeText.ENNEMI_TEXT,
-                1.0f,
-                bAfficherInConsole: true,
-                precedantMessage);
-            precedantMessage = currentMessage;
+            //currentMessage = "Déconnecté !";
+            //gm.console.AjouterMessageImportant(currentMessage,
+            //    Console.TypeText.ENNEMI_TEXT,
+            //    1.0f,
+            //    bAfficherInConsole: true,
+            //    precedantMessage);
+            //precedantMessage = currentMessage;
             
             gm.soundManager.PlayTimeZoneButtonOutClip(transform.position);
         }
