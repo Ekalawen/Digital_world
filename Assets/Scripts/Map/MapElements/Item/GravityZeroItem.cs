@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GravityInverseItem : Item {
+public class GravityZeroItem : Item {
 
     public override void OnTrigger(Collider hit) {
-        GravityManager.Direction up = GravityManager.OppositeDir(gm.gravityManager.gravityDirection);
-        gm.gravityManager.SetGravity(up, 0.0f);
+        gm.gravityManager.SetGravity(gm.gravityManager.gravityDirection, 0.0f);
         gm.console.CapturePouvoirGiverVoler();
     }
 

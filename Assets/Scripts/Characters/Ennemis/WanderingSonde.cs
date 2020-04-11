@@ -60,7 +60,6 @@ public class WanderingSonde : Sonde {
                 }
             }
         }
-        Debug.Log("State = " + etat);
     }
 
     protected override void Wait() {
@@ -89,32 +88,49 @@ public class WanderingSonde : Sonde {
 
     protected void FindNextDestination() {
         timerBeforeNextDestination.Reset();
+
+        List<Vector3> allEmptyLocations = gm.map.GetAllEmptyPositions();
+        bool founded = false;
+        while (allEmptyLocations.Count > 1) {
+            int ind = UnityEngine.Random.Range(0, allEmptyLocations.Count);
+            RaycastHit hit;
+            Vector3 direction = allEmptyLocations[ind] - transform.position;
+            Ray ray = new Ray(transform.position, direction);
+            if (!Physics.Raycast(ray, out hit, direction.magnitude)) {// Si c'est une position accessible directement !
+                wanderingDestination = allEmptyLocations[ind];
+                founded = true;
+                break;
+            }
+            allEmptyLocations.RemoveAt(ind);
+        }
+        if(!founded)
+            wanderingDestination = allEmptyLocations[0];
+
         //wanderingDestination = gm.map.GetFreeRoundedLocation();
 
-        // On va jusque là où l'on peut ! :D
-        RaycastHit hit;
-        Ray ray = new Ray(transform.position, wanderingDestination - transform.position);
-        bool hited = Physics.Raycast(ray, out hit);
-        if (hited) {
-            Vector3 point = hit.point;
-            if (Vector3.Distance(transform.position, point) <= Vector3.Distance(transform.position, wanderingDestination))
-                wanderingDestination = point;
-        }
+        //// On va jusque là où l'on peut ! :D
+        //RaycastHit hit;
+        //Ray ray = new Ray(transform.position, wanderingDestination - transform.position);
+        //bool hited = Physics.Raycast(ray, out hit);
+        //if (hited) {
+        //    Vector3 point = hit.point;
+        //    if (Vector3.Distance(transform.position, point) <= Vector3.Distance(transform.position, wanderingDestination))
+        //        wanderingDestination = point;
+        //}
 
-        // Pour éviter d'être bloqué si on est sur un coin de la map ! :)
-        if (Vector3.Distance(wanderingDestination, transform.position) <= 1.0f) {
-            Vector3 direction = UnityEngine.Random.insideUnitSphere;
-            ray = new Ray(transform.position, direction);
-            if (Physics.Raycast(ray, out hit)) {
-                wanderingDestination = hit.point;
-            } else {
-                wanderingDestination = transform.position + direction * 3.0f;
-            }
-        }
+        //// Pour éviter d'être bloqué si on est sur un coin de la map ! :)
+        //if (Vector3.Distance(wanderingDestination, transform.position) <= 1.0f) {
+        //    Vector3 direction = UnityEngine.Random.insideUnitSphere;
+        //    ray = new Ray(transform.position, direction);
+        //    if (Physics.Raycast(ray, out hit)) {
+        //        wanderingDestination = hit.point;
+        //    } else {
+        //        wanderingDestination = transform.position + direction * 3.0f;
+        //    }
+        //}
 
         if (!gm.ennemiManager.IsPlayerFollowed()) {
             ThrowRayToDestination();
-            Debug.Log("RAY !");
         }
     }
 

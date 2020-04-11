@@ -15,8 +15,6 @@ public class FurtiveController : MonoBehaviour {
     protected Vector3 posObjectifHidden;
     protected Vector3 posObjectifVisible;
 	public CharacterController controller;
-	//[HideInInspector]
- //   public List<Poussee> poussees;
 
     public void Start() {
         gm = GameManager.Instance;
@@ -26,7 +24,6 @@ public class FurtiveController : MonoBehaviour {
 		controller = this.GetComponent<CharacterController> ();
         if (controller == null)
             Debug.LogError("Il est nécessaire d'avoir un CharacterController avec un FurtiveController !");
-        //poussees = new List<Poussee>();
     }
 
 	public virtual void Update () {
@@ -36,8 +33,6 @@ public class FurtiveController : MonoBehaviour {
         }
 
         UpdateSpecific();
-
-        //ApplyPoussees();
 	}
 
     protected void UpdateSpecific() {
@@ -131,7 +126,7 @@ public class FurtiveController : MonoBehaviour {
                 RaycastHit hit;
                 Vector3 direction = allEmptyLocations[ind] - transform.position;
                 Ray ray = new Ray (transform.position, direction);
-                if(!Physics.Raycast(ray, out hit, direction.magnitude))
+                if(!Physics.Raycast(ray, out hit, direction.magnitude)) // Si c'est une position accessible directement !
                     return allEmptyLocations[ind];
             }
             allEmptyLocations.RemoveAt(ind);

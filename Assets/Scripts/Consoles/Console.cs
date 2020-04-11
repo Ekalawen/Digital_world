@@ -607,6 +607,12 @@ public class Console : MonoBehaviour {
         AjouterMessage("Tu peux effectuer un Double Saut en appuyant à nouveau sur Espace !", TypeText.ALLY_TEXT);
     }
 
+    // Lorsque le joueur capture un item pour voler !
+    public void CapturePouvoirGiverVoler() {
+        AjouterMessageImportant("Vol Activé !", TypeText.ALLY_TEXT, 2, bAfficherInConsole: false);
+        AjouterMessage("Tu peux maintenant Voler ! Appuie sur Espace pour monter et sur Shift pour descendre !", TypeText.ALLY_TEXT);
+    }
+
     public void CapturePouvoirGiverItem(string pouvoirName, PouvoirGiverItem.PouvoirBinding pouvoirBinding) {
         AjouterMessageImportant(pouvoirName + " Activé !", TypeText.ALLY_TEXT, 2, bAfficherInConsole: false);
         string strBinding = "";

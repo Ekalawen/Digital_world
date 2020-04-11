@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 3694160853077472796}
   - component: {fileID: 3661997910615493086}
   - component: {fileID: 3702270953493746680}
-  - component: {fileID: 6751904517948289909}
   - component: {fileID: 6988295499627204924}
   - component: {fileID: 4533981064456519302}
+  - component: {fileID: 2596393694470615297}
   m_Layer: 0
   m_Name: FurtiveItem
   m_TagString: Objectif
@@ -96,21 +96,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!114 &6751904517948289909
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3688614103008678108}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bfc826a922d02d6429b9f01dee2b887e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hiddenVitesse: 0.75
-  visibleBaseVitesse: 2
-  controller: {fileID: 6988295499627204924}
 --- !u!143 &6988295499627204924
 CharacterController:
   m_ObjectHideFlags: 0
@@ -141,11 +126,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4724675bb66c9a4fa3ad7877334014c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dureeVisibilite: 1.5
-  dureeFadeIn: 0.6
-  dureeFadeOut: 0.6
+  dureeVisibilite: 2
+  dureeFadeIn: 0.7
+  dureeFadeOut: 0.7
   initialMeshs: []
   initialParticleSystems: []
+--- !u!114 &2596393694470615297
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3688614103008678108}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 357f1c9a8fb7efe468b77f15fa0e2e6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  distanceToFleePlayer: 7
+  wanderingVitesse: 2
+  fleeingVitesse: 2.75
+  controller: {fileID: 6988295499627204924}
 --- !u!1 &3690056514926735352
 GameObject:
   m_ObjectHideFlags: 0
@@ -250,5 +251,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 557a840502824d349a6ec6711ddbdf22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onlyOnStart: 0
   fixValue: 1
   fixedValue: 0.28
