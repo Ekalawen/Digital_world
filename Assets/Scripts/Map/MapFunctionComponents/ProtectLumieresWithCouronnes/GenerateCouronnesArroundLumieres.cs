@@ -8,6 +8,7 @@ public class GenerateCouronnesArroundLumieres : GenerateCubesMapFunction {
     public float proportionToProtect = 1.0f;
     public bool useNbToProtect = false;
     public int nbToProtect = 0;
+    public float dureeDestruction = 1.0f;
     public GameObject activationZonePrefab;
 
     public override void Activate() {
@@ -38,7 +39,7 @@ public class GenerateCouronnesArroundLumieres : GenerateCubesMapFunction {
             Vector3 position = couronne.GetCenter();
             TimeZoneButton button = Instantiate(activationZonePrefab, position, Quaternion.identity, map.zonesFolder.transform).GetComponentInChildren<TimeZoneButton>();
             DestroyCouronne destroyCouronne = button.gameObject.AddComponent<DestroyCouronne>();
-            destroyCouronne.Initialize(couronne, button);
+            destroyCouronne.Initialize(couronne, button, dureeDestruction);
             button.AddEvent(new UnityAction(destroyCouronne.DestroyTheCouronne));
             button.AddEvent(new UnityAction(destroyCouronne.DestroyButton));
         }

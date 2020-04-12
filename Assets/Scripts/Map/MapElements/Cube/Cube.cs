@@ -67,6 +67,14 @@ public class Cube : MonoBehaviour {
         Destroy();
     }
 
+    public void ExplodeIn(float seconds) {
+        StartCoroutine(CExplodeIn(seconds));
+    }
+    public IEnumerator CExplodeIn(float seconds) {
+        yield return new WaitForSeconds(seconds);
+        Explode();
+    }
+
     public void Destroy() {
         gm.map.DeleteCube(this);
     }
