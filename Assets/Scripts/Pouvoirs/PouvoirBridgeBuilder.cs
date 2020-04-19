@@ -53,13 +53,32 @@ public class PouvoirBridgeBuilder : IPouvoir {
 
         // On compte le nombre de cubes
         int nbCubes = (int)Mathf.Ceil((pointCible - pointSource).magnitude);
-
-        // Pour chaque cube, on le crée avec un interval !
+        List<Vector3> cubesPositions = new List<Vector3>();
         for(int i = 0; i < nbCubes; i++) {
-            Vector3 pos = pointSource + i * bridgeDirection;
-            BuildCube(pos, Quaternion.LookRotation(bridgeDirection, gm.gravityManager.Up()));
-            yield return new WaitForSeconds(vitessePropagationCubes);
+            cubesPositions.Add(pointSource + i * bridgeDirection);
         }
+
+        Vector3 pointCourrant = pointSource;
+        while(Vector3.Distance(pointSource, pointCourrant) <= Vector3.Distance(pointSource, pointCible)) {
+            for(int i = 0; i < cubesPositions.Count; i++) {
+                if (Vector3.Distance(pointSource, cubesPositions[i]) <= Vector3.Distance(pointSource, pointCourrant)) {
+                    BuildCube(cubesPositions[i], Quaternion.LookRotation(bridgeDirection, gm.gravityManager.Up()));
+                    cubesPositions.RemoveAt(i);
+                    i--;
+                } else {
+                    break;
+                }
+            }
+            yield return null;
+            pointCourrant = pointCourrant + bridgeDirection * vitessePropagationCubes * Time.deltaTime;
+        }
+
+        //// Pour chaque cube, on le crée avec un interval !
+        //for(int i = 0; i < nbCubes; i++) {
+        //    Vector3 pos = pointSource + i * bridgeDirection;
+        //    BuildCube(pos, Quaternion.LookRotation(bridgeDirection, gm.gravityManager.Up()));
+        //    yield return new WaitForSeconds(vitessePropagationCubes);
+        //}
     }
 
     // On construit un cube !
