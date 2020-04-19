@@ -44,6 +44,7 @@ public class MapManager : MonoBehaviour {
     protected Cube.CubeType currentCubeTypeUsed = Cube.CubeType.NORMAL;
     [HideInInspector]
     public GameManager gm;
+    protected PlayerStartComponent playerStartComponent = null;
 
 	//////////////////////////////////////////////////////////////////////////////////////
 	// METHODES
@@ -60,6 +61,7 @@ public class MapManager : MonoBehaviour {
         lumieresFolder.transform.SetParent(mapFolder.transform);
         zonesFolder = new GameObject("Zones");
         zonesFolder.transform.SetParent(mapFolder.transform);
+        InitPlayerStartComponent();
         mapElements = new List<MapElement>();
         lumieres = new List<Lumiere>();
         cubesRegular = new Cube[tailleMap.x + 1, tailleMap.y + 1, tailleMap.z + 1];
@@ -775,14 +777,23 @@ public class MapManager : MonoBehaviour {
         return corners;
     }
 
+    public void InitPlayerStartComponent() {
+        playerStartComponent = GetComponent<PlayerStartComponent>();
+        if (playerStartComponent == null) {
+            Debug.Log("Pas trouvé ! x)");
+            playerStartComponent = gameObject.AddComponent<PlayerStartComponent>();
+        } else {
+            Debug.Log("PlayerStartComponent trouvé ! :)");
+        }
+        playerStartComponent.Initialize();
+    }
+
     public virtual Vector3 GetPlayerStartPosition() {
-        return GetFreeRoundedLocation();
+        return playerStartComponent.GetPlayerStartPosition();
     }
 
     public virtual Vector2 GetPlayerStartOrientationXY(Vector3 playerStartPosition) {
-        Vector3 direction = Vector3.ProjectOnPlane((GetCenter() - playerStartPosition), Vector3.up).normalized;
-        float angle = Vector3.SignedAngle(Vector3.forward, direction, Vector3.up);
-        return new Vector2(90, angle);
+        return playerStartComponent.GetPlayerStartOrientationXY(playerStartPosition);
     }
 
     public List<Lumiere> GetLumieres() {

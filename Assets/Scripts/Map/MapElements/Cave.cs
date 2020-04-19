@@ -8,12 +8,12 @@ public class Cave : CubeEnsemble {
     public Vector3Int nbCubesParAxe;
     public Cube[,,] cubeMatrix;
 
-    public Cave(Vector3 depart, Vector3Int nbCubesParAxe, bool bMakeSpaceArround = false, bool bDigInside = true) : base() {
+    public Cave(Vector3 depart, Vector3Int nbCubesParAxe, bool bMakeSpaceArround = false, bool bDigInside = true, bool bPreserveMapBordures = false) : base() {
         this.depart = depart;
         this.nbCubesParAxe = nbCubesParAxe;
 
         InitializeCubeMatrix();
-        CleanSpaceBeforeSpawning(bMakeSpaceArround);
+        CleanSpaceBeforeSpawning(bMakeSpaceArround, bPreserveMapBordures);
         GenererCubePlein();
         if (bDigInside)
             GeneratePaths();
@@ -37,14 +37,96 @@ public class Cave : CubeEnsemble {
 		}
 	}
 
-    protected void CleanSpaceBeforeSpawning(bool bMakeSpaceArround = false) {
+    // Vide le cube
+    public void RemoveAllCubesInside(int offset = 1) {
+        for (int i = offset; i < nbCubesParAxe.x - offset; i++) {
+            for (int j = offset; j < nbCubesParAxe.y - offset; j++) {
+                for (int k = offset; k < nbCubesParAxe.z - offset; k++) {
+                    Cube cube = cubeMatrix[i, j, k];
+                    if(cube != null) {
+                        map.DeleteCube(cube);
+                        cubeMatrix[i, j, k] = null;
+                    }
+                }
+            }
+        }
+    }
+
+    public void AddOuverturesOnSides(int nbOuvertures = 1, bool allowOuverturesInCorners = false) {
+        List<Cube>[] murs = GetAllMursPositions();
+        foreach(List<Cube> mur in murs) {
+            List<Cube> murToUse = mur;
+
+            if(!allowOuverturesInCorners) {
+                murToUse = new List<Cube>();
+                foreach(Cube cube in mur) {
+                    Vector3 cubePos = cube.transform.position - depart;
+                    if(!IsInCorner(cubePos)) {
+                        murToUse.Add(cube);
+                    }
+                }
+            }
+
+            for(int i = 0; i < (int)Mathf.Min(nbOuvertures, murToUse.Count); i++) {
+                int ind = Random.Range(0, murToUse.Count);
+                Cube cubeSelected = murToUse[ind];
+                map.DeleteCube(cubeSelected);
+                Vector3 pos = cubeSelected.transform.position - depart;
+                cubeMatrix[(int)pos.x, (int)pos.y, (int)pos.z] = null;
+                murToUse.RemoveAt(ind);
+            }
+        }
+    }
+
+    protected List<Cube>[] GetAllMursPositions() {
+        List<Cube>[] murs = new List<Cube>[6];
+        for(int i = 0; i < murs.Length; i++)
+            murs[i] = new List<Cube>();
+        for (int i = 0; i < nbCubesParAxe.x; i++) {
+            for (int j = 0; j < nbCubesParAxe.y; j++) {
+                for (int k = 0; k < nbCubesParAxe.z; k++) {
+                    Cube cube = cubeMatrix[i, j, k];
+                    if (cube != null) {
+                        Vector3 pos = new Vector3(i, j, k);
+                        if (i == 0) murs[0].Add(cube);
+                        if (j == 0) murs[1].Add(cube);
+                        if (k == 0) murs[2].Add(cube);
+                        if (i == nbCubesParAxe.x - 1) murs[3].Add(cube);
+                        if (j == nbCubesParAxe.y - 1) murs[4].Add(cube);
+                        if (k == nbCubesParAxe.z - 1) murs[5].Add(cube);
+                    }
+                }
+            }
+        }
+        return murs;
+    }
+
+    public bool IsInCorner(Vector3 pos) {
+        int nbBordures = 0;
+        nbBordures += pos.x == 0 ? 1 : 0;
+        nbBordures += pos.y == 0 ? 1 : 0;
+        nbBordures += pos.z == 0 ? 1 : 0;
+        nbBordures += pos.x == nbCubesParAxe.x - 1 ? 1 : 0;
+        nbBordures += pos.y == nbCubesParAxe.y - 1 ? 1 : 0;
+        nbBordures += pos.z == nbCubesParAxe.z - 1 ? 1 : 0;
+        return nbBordures >= 2;
+    }
+
+    protected void CleanSpaceBeforeSpawning(bool bMakeSpaceArround = false, bool preserveMapBordure = false) {
         // On veut détruire tous les cubes et lumières qui se trouvent dans notre cave !
         Vector3 center = GetCenter();
         Vector3 halfSize = new Vector3(Mathf.Abs(center.x - depart.x), Mathf.Abs(center.y - depart.y), Mathf.Abs(center.z - depart.z));
         center -= new Vector3(0.5f, 0.5f, 0.5f); // Petit ajustement important
         if(bMakeSpaceArround)
             halfSize += new Vector3(1f, 1f, 1f); // Petit ajustement important, pour laisser un espace autour de la cave !
-        map.DeleteCubesInBox(center, halfSize);
+        List<Cube> cubesToDelete = map.GetCubesInBox(center, halfSize);
+        foreach (Cube cube in cubesToDelete) {
+            if (preserveMapBordure) {
+                if (!map.IsInInsidedRegularMap(cube.transform.position))
+                    continue;
+            }
+            map.DeleteCube(cube);
+        }
 
         // Et toutes les lumières
         List<Lumiere> lumieresToDeletes = new List<Lumiere>();
