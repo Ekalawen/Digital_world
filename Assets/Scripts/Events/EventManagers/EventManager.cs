@@ -5,19 +5,21 @@ using UnityEngine;
 
 // Le but de la DataBase est de gérer le comportement de tout ce qui entrave le joueur.
 // Cela va de la coordination des Drones, à la génération d'évenements néffastes.
-public class EventManager : MonoBehaviour { 
+public class EventManager : MonoBehaviour {
     public enum DeathReason { TIME_OUT, CAPTURED, FALL_OUT, TOUCHED_DEATH_CUBE };
+    public enum EndGameType { DEATH_CUBES, CUBES_DESTRUCTIONS };
 
     public float ejectionTreshold = -10.0f;
     public float endGameDuration = 20.0f;
     public float endGameFrameRate = 0.2f;
+    public EndGameType endGameType = EndGameType.DEATH_CUBES;
     public bool bNoEndgame = false;
 
     public List<GameObject> randomEventsPrefabs;
 
     protected GameManager gm;
     protected MapManager map;
-    protected Coroutine coroutineDeathCubesCreation;
+    protected Coroutine coroutineDeathCubesCreation, coroutineCubesDestructions;
     protected bool isEndGameStarted = false;
     protected List<Cube> deathCubes;
     protected bool gameIsEnded = false;
@@ -76,7 +78,10 @@ public class EventManager : MonoBehaviour {
         //gm.console.StartEndGame();
 
         // On lance la création des blocks de la mort !
-        coroutineDeathCubesCreation = StartCoroutine(FillMapWithDeathCubes(finalLight.transform.position));
+        if (endGameType == EndGameType.DEATH_CUBES)
+            coroutineDeathCubesCreation = StartCoroutine(FillMapWithDeathCubes(finalLight.transform.position));
+        else if (endGameType == EndGameType.CUBES_DESTRUCTIONS)
+            coroutineCubesDestructions = StartCoroutine(DestroyAllCubesProgressively(finalLight.transform.position));
     }
 
     protected IEnumerator FillMapWithDeathCubes(Vector3 centerPos) {
@@ -128,6 +133,56 @@ public class EventManager : MonoBehaviour {
         }
     }
 
+    protected IEnumerator DestroyAllCubesProgressively(Vector3 centerPos) {
+        List<Cube> cubes = map.GetAllCubes();
+
+        Vector3 playerPos = gm.player.transform.position;
+
+        float nbTimings = endGameDuration / endGameFrameRate;
+        int nbCubesToDestroy = (int)(cubes.Count / nbTimings);
+
+        while (cubes.Count > 0) {
+            playerPos = gm.player.transform.position;
+            for(int i = 0; i < cubes.Count; i++) {
+                if(cubes[i] == null) {
+                    cubes.RemoveAt(i);
+                    i--;
+                }
+            }
+            cubes.Sort(delegate (Cube cubeA, Cube cubeB) {
+                Vector3 A = cubeA.transform.position;
+                Vector3 B = cubeB.transform.position;
+                float distToA = Mathf.Min(Vector3.Distance(A, centerPos), Vector3.Distance(A, playerPos));
+                float distToB = Mathf.Min(Vector3.Distance(B, centerPos), Vector3.Distance(B, playerPos));
+                return distToB.CompareTo(distToA);
+            });
+
+            Vector3 barycentre = Vector3.zero;
+            int nbCubesDestroyed = (int)Mathf.Min(nbCubesToDestroy, cubes.Count);
+            for (int i = 0; i < nbCubesDestroyed; i++) {
+                barycentre += cubes[0].transform.position;
+                cubes[0].Explode();
+                cubes.RemoveAt(0);
+            }
+
+            barycentre /= nbCubesDestroyed;
+            gm.soundManager.PlayCreateCubeClip(barycentre);
+            yield return new WaitForSeconds(endGameFrameRate);
+        }
+
+        //for (int i = 0; i < cubes.Count; i += nbCubesToDestroy) {
+        //    Vector3 barycentre = Vector3.zero;
+        //    for (int j = i; j < (int)Mathf.Min(i + nbCubesToDestroy, cubes.Count); j++) {
+        //        Cube cube = map.AddCube(cubes[j], Cube.CubeType.DEATH);
+        //        deathCubes.Add(cube);
+        //        barycentre += cubes[j];
+        //    }
+        //    barycentre /= nbCubesToDestroy;
+        //    gm.soundManager.PlayCreateCubeClip(barycentre);
+        //    yield return new WaitForSeconds(endGameFrameRate);
+        //}
+    }
+
     public void LoseGame(DeathReason reason)
     {
         if (gameIsEnded)
@@ -135,6 +190,8 @@ public class EventManager : MonoBehaviour {
         gameIsEnded = true;
         if (coroutineDeathCubesCreation != null)
             StopCoroutine(coroutineDeathCubesCreation);
+        if (coroutineCubesDestructions != null)
+            StopCoroutine(coroutineCubesDestructions);
 
         if (reason != DeathReason.FALL_OUT)
             gm.FreezeTime();
@@ -162,6 +219,8 @@ public class EventManager : MonoBehaviour {
         gameIsWin = true;
         if (coroutineDeathCubesCreation != null)
             StopCoroutine(coroutineDeathCubesCreation);
+        if (coroutineCubesDestructions != null)
+            StopCoroutine(coroutineCubesDestructions);
 
         gm.FreezeTime();
         gm.player.FreezePouvoirs();
