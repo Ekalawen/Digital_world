@@ -160,7 +160,6 @@ public class GravityManager : MonoBehaviour {
                 return gm.map.tailleMap.y - pos.y;
             case Direction.BAS:
                 return pos.y;
-            // FONCTION A VERIFIER A PARTIR D'ICI !!
             case Direction.GAUCHE:
                 return pos.x;
             case Direction.DROITE:

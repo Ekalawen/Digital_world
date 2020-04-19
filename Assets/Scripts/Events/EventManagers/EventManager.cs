@@ -198,7 +198,7 @@ public class EventManager : MonoBehaviour {
     }
 
     protected virtual bool IsPlayerEjected() {
-        return gm.player.transform.position.y < ejectionTreshold;
+        return gm.gravityManager.GetHigh(gm.player.transform.position) < ejectionTreshold;
     }
 
 	public bool PartieTermine() {
