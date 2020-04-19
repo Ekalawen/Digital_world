@@ -55,9 +55,11 @@ public class Player : Character {
 	protected float debutMur; // le timing où le personnage a commencé à s'accrocher au mur !
 	protected Vector3 normaleMur; // la normale au mur sur lequel le personnage est accroché !
 	protected Vector3 pointMur; // un point du mur sur lequel le personnage est accroché ! En effet, la normale ne suffit pas :p
+    protected Vector3 normaleSol; // La normale au sol lorsque l'on est au sol et que l'on essaye de slider vers le bas.
     protected float dureeMurRestante; // Le temps qu'il nous reste à être accroché au mur (utile pour les shifts qui peuvent nous décrocher)
     protected int nbDoublesSautsMax = 0; // Nombre de doubles sauts
     protected int nbDoublesSautsCourrant = 0; // Le nombre de doubles sauts déjà utilisés
+    protected float slideLimit; // La limite à partir de laquelle on va slider sur une surface.
 
     protected IPouvoir pouvoirA; // Le pouvoir de la touche A (souvent la détection)
     protected IPouvoir pouvoirE; // Le pouvoir de la touche E (souvent la localisation)
@@ -99,6 +101,7 @@ public class Player : Character {
         camera.transform.RotateAround(camera.transform.position, up, orientationXY.y);
 
 		pointDebutSaut = transform.position;
+        slideLimit = controller.slopeLimit;
 
         // On veut maintenant activer la caméra du playerPrefabs !
         personnage.GetComponentInChildren<Camera>().enabled = true;
@@ -248,6 +251,7 @@ public class Player : Character {
 
 		// On trouve l'état du personnage
 		GetEtatPersonnage();
+        Debug.Log("Etat = " + etat);
 
 		// Si on a fait un grand saut, on le dit
 		DetecterGrandSaut(etatAvant);
@@ -346,7 +350,10 @@ public class Player : Character {
 
         gm.postProcessManager.UpdateGripEffect(etatAvant);
 
-		controller.Move (move * Time.deltaTime);
+        // On fait slider si on peut ! :)
+        move = SlideBottomIfImportantSlope(move);
+
+        controller.Move(move * Time.deltaTime);
     }
 
     protected void AddDoubleJump() {
@@ -398,11 +405,54 @@ public class Player : Character {
                 continue;
             Vector3 n = hit.normal;
             float angle = Vector3.Angle(n, up);
-            if (Mathf.Abs(angle) <= 45f) {
+            if(gm.gravityManager.Down() == Vector3.down) {
+                normaleSol = n;
+            }
+            if (Mathf.Abs(angle) <= slideLimit) {
                 return true;
             }
         }
         return false;
+    }
+
+    protected Vector3 GetNormaleToDirection(Vector3 move) {
+        RaycastHit[] hits = Physics.SphereCastAll(transform.position,
+                                                  transform.localScale.x / 2.0f,
+                                                  move.normalized,
+                                                  controller.skinWidth * 1.1f);
+        Vector3 up = gm.gravityManager.Up();
+        foreach (RaycastHit hit in hits) {
+            if (hit.collider.gameObject.tag == "Player"
+             || hit.collider.gameObject.tag == "Objectif"
+             || hit.collider.gameObject.tag == "Trigger")
+                continue;
+            Vector3 n = hit.normal;
+            return n;
+        }
+        return Vector3.zero;
+    }
+
+    protected bool IsAxisAligned(Vector3 move) {
+        return move != Vector3.zero
+            && ( Vector3.Cross(move, Vector3.up) == Vector3.zero
+            || Vector3.Cross(move, Vector3.down) == Vector3.zero
+            || Vector3.Cross(move, Vector3.forward) == Vector3.zero
+            || Vector3.Cross(move, Vector3.back) == Vector3.zero
+            || Vector3.Cross(move, Vector3.right) == Vector3.zero
+            || Vector3.Cross(move, Vector3.left) == Vector3.zero);
+    }
+
+    protected Vector3 SlideBottomIfImportantSlope(Vector3 move) {
+        Vector3 normaleToDirection = GetNormaleToDirection(move);
+        Vector3 bottomMove = Vector3.Dot(move, gm.gravityManager.Down()) * gm.gravityManager.Down();
+        if (!IsAxisAligned(normaleToDirection)
+         && Mathf.Abs(Vector3.Angle(-bottomMove, normaleToDirection)) >= slideLimit
+         && Vector3.Dot(normaleToDirection, gm.gravityManager.Up()) > 0f) {
+            float magnitude = move.magnitude;
+            move = Vector3.ProjectOnPlane(move, normaleToDirection);
+            move = move.normalized * magnitude;
+        }
+        return move;
     }
 
     // Pour mettre à jour l'état du personnage !
@@ -470,12 +520,12 @@ public class Player : Character {
                     // Si la normale est au moins un peu à l'horizontale !
                     Vector3 up = gm.gravityManager.Up();
 					Vector3 nProject = Vector3.ProjectOnPlane (n, up);
-					if (nProject != Vector3.zero && Mathf.Abs(Vector3.Angle (n, nProject)) < 45f) {
+					if (nProject != Vector3.zero && Mathf.Abs(Vector3.Angle (n, nProject)) < slideLimit) {
                         /*// Si on détecte une collision avec un mur, on peut s'aggriper si l'angle entre la normale
-                        // au mur et le vecteur (pointDepartSaut/mur) est inférieur à 45°
+                        // au mur et le vecteur (pointDepartSaut/mur) est inférieur à slideLimit°
                         Vector3 direction = pointDebutSaut - hit.point;
                         Vector3 directionProject = Vector3.ProjectOnPlane(direction, Vector3.up);
-                        if (Mathf.Abs (Vector3.Angle (nProject, directionProject)) < 45f) {*/
+                        if (Mathf.Abs (Vector3.Angle (nProject, directionProject)) < slideLimit) {*/
                         GripOn(hit);
 					}
 				}
