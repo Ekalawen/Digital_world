@@ -99,8 +99,8 @@ public class TimerManager : MonoBehaviour {
         totalTime += time;
         Text t = Instantiate(movingTextPrefab, textContainer).GetComponent<Text>();
         t.gameObject.SetActive(true);
-        int secondes = Mathf.FloorToInt(time);
-        int centiseconds = Mathf.FloorToInt((time - secondes) * 100);
+        int secondes = time >= 0 ? Mathf.FloorToInt(time) : Mathf.CeilToInt(time);
+        int centiseconds = Mathf.Abs(Mathf.FloorToInt((time - secondes) * 100));
         t.text = (time >= 0 ? "+" : "") + secondes + ":" + centiseconds.ToString("D2");
         t.color = (time >= 0 ? gm.console.allyColor : gm.console.ennemiColor);
         StartCoroutine(MoveTextDown(t));

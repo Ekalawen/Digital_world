@@ -132,11 +132,8 @@ public class SoundManager : MonoBehaviour {
         PlayClipsOnSource(getItemClips, pos);
     }
     public void PlayEndGameMusic() {
-        Debug.Log("1");
         normalMusicSource.Stop();
-        Debug.Log("2");
         PlayClipsOnSource(endGameMusics);
-        Debug.Log("3");
     }
     public void PlayJumpEventStunClip() {
         PlayClipsOnSource(jumpEventStunClips);

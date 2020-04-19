@@ -251,7 +251,6 @@ public class Player : Character {
 
 		// On trouve l'état du personnage
 		GetEtatPersonnage();
-        Debug.Log("Etat = " + etat);
 
 		// Si on a fait un grand saut, on le dit
 		DetecterGrandSaut(etatAvant);

@@ -14,6 +14,7 @@ public class PouvoirBridgeBuilder : IPouvoir {
     public float vitessePropagationCubes; // La vitesse à laquelle sont crées les cubes !
     public bool isDestructive; // Permet de savoir si ce pouvoir détruit les autres cubes ou pas !
     public float rayonDestruction; // Le rayon de destruction autour duquel on détruit les cubes pour pouvoir passe =)
+    public bool untilLastCubeTouched = false; // Le rayon traverse jusqu'au dernier cube touché.
 
     protected override bool UsePouvoir() {
         Vector3 pointSource; // Le départ du pont
@@ -30,7 +31,8 @@ public class PouvoirBridgeBuilder : IPouvoir {
             if(cube != null) {
                 pointCible = hit.collider.transform.position;
                 touched = true;
-                break;
+                if(!untilLastCubeTouched)
+                    break;
             }
         }
         if(touched) {
@@ -72,13 +74,6 @@ public class PouvoirBridgeBuilder : IPouvoir {
             yield return null;
             pointCourrant = pointCourrant + bridgeDirection * vitessePropagationCubes * Time.deltaTime;
         }
-
-        //// Pour chaque cube, on le crée avec un interval !
-        //for(int i = 0; i < nbCubes; i++) {
-        //    Vector3 pos = pointSource + i * bridgeDirection;
-        //    BuildCube(pos, Quaternion.LookRotation(bridgeDirection, gm.gravityManager.Up()));
-        //    yield return new WaitForSeconds(vitessePropagationCubes);
-        //}
     }
 
     // On construit un cube !
@@ -95,7 +90,7 @@ public class PouvoirBridgeBuilder : IPouvoir {
         if (isDestructive) {
             List<Cube> cubes = gm.map.GetCubesInSphere(position, rayonDestruction);
             foreach (Cube c in cubes) {
-                if (c.bIsRegular) {
+                if (c.bIsRegular && !c.IsDestructible()) {
                     gm.map.DeleteCube(c);
                 }
             }

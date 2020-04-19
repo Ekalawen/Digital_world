@@ -41,7 +41,6 @@ public class RunAwayPlayerController : MonoBehaviour {
 
     protected void UpdateSpecific() {
         UpdateEtat();
-        Debug.Log("Etat = " + etat);
 
         // Tant que le joueur n'est pas trop proche, on erre
         switch (etat) {

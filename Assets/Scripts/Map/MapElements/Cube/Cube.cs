@@ -47,9 +47,7 @@ public class Cube : MonoBehaviour {
 
     public float GetLuminosity() {
         Color color = GetComponent<MeshRenderer>().material.color;
-        float H, S, V;
-        Color.RGBToHSV(color, out H, out S, out V);
-        return V;
+        return ColorManager.GetLuminosity(color);
     }
 
     public void Explode() {

@@ -10,6 +10,8 @@ public class GenerateCouronnesArroundLumieres : GenerateCubesMapFunction {
     public int nbToProtect = 0;
     public float dureeDestruction = 1.0f;
     public GameObject activationZonePrefab;
+    public bool destroyAlreadyExistingCubes = true;
+    public bool destroyAlreadyExistingCubesInMapBordures = false;
 
     public override void Activate() {
         int nbLumieres = map.GetLumieres().Count;
@@ -22,8 +24,19 @@ public class GenerateCouronnesArroundLumieres : GenerateCubesMapFunction {
     }
 
     protected void ProtectLumiere(Lumiere lumiere) {
+        DestroyAlreadyExistingCubes(lumiere.transform.position);
         MapContainer couronne = CreateCouronne(lumiere.transform.position);
         PopActivationZoneArround(couronne);
+    }
+
+    protected void DestroyAlreadyExistingCubes(Vector3 center) {
+        if(destroyAlreadyExistingCubes) {
+            List<Cube> cubes = map.GetCubesInBox(center, Vector3.one);
+            foreach(Cube cube in cubes) {
+                if (destroyAlreadyExistingCubesInMapBordures || map.IsInInsidedRegularMap(cube.transform.position))
+                    map.DeleteCube(cube);
+            }
+        }
     }
 
     protected MapContainer CreateCouronne(Vector3 position) {

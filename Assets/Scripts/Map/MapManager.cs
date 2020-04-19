@@ -369,6 +369,15 @@ public class MapManager : MonoBehaviour {
         return allCubes;
     }
 
+    public List<Vector3> GetAllPositions() {
+        List<Vector3> allPositions = new List<Vector3>();
+        for (int i = 0; i <= tailleMap.x; i++)
+            for (int j = 0; j <= tailleMap.y; j++)
+                for (int k = 0; k <= tailleMap.z; k++)
+                    allPositions.Add(new Vector3(i, j, k));
+        return allPositions;
+    }
+
     public List<Cube> GetAllCubesOfType(Cube.CubeType type) {
         List<Cube> allCubes = new List<Cube>();
         for (int i = 0; i <= tailleMap.x; i++)
@@ -780,10 +789,8 @@ public class MapManager : MonoBehaviour {
     public void InitPlayerStartComponent() {
         playerStartComponent = GetComponent<PlayerStartComponent>();
         if (playerStartComponent == null) {
-            Debug.Log("Pas trouvé ! x)");
             playerStartComponent = gameObject.AddComponent<PlayerStartComponent>();
         } else {
-            Debug.Log("PlayerStartComponent trouvé ! :)");
         }
         playerStartComponent.Initialize();
     }

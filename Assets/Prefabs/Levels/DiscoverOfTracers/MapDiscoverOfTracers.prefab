@@ -1,5 +1,26 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8768747337379517072
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7039882823969649111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1570afb766fecbf4e887fce8adb513c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cubeType: 2
+  proportionToProtect: 0
+  useNbToProtect: 1
+  nbToProtect: 1
+  dureeDestruction: 0.5
+  activationZonePrefab: {fileID: 840567304841879497, guid: 0e1f0347252d1ad42be8a9b7d283c5f1,
+    type: 3}
+  destroyAlreadyExistingCubes: 1
+  destroyAlreadyExistingCubesInMapBordures: 0
 --- !u!114 &6574979268457357818
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -69,6 +90,58 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
+        type: 3}
+      propertyPath: mapFunctionComponents.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
+        type: 3}
+      propertyPath: lumierePrefab
+      value: 
+      objectReference: {fileID: 1106701525400260, guid: e464862985a8e4bb3a14bf8d90846952,
+        type: 3}
+    - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
+        type: 3}
+      propertyPath: mapFunctionComponents.Array.data[2]
+      value: 
+      objectReference: {fileID: 5638278599895887411}
+    - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
+        type: 3}
+      propertyPath: mapFunctionComponents.Array.data[3]
+      value: 
+      objectReference: {fileID: 7498715540871965917}
+    - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
+        type: 3}
+      propertyPath: mapFunctionComponents.Array.data[4]
+      value: 
+      objectReference: {fileID: 5592833176441408705}
+    - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
+        type: 3}
+      propertyPath: mapFunctionComponents.Array.data[1]
+      value: 
+      objectReference: {fileID: 6574979268457357818}
+    - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
+        type: 3}
+      propertyPath: indestructibleCubePrefab
+      value: 
+      objectReference: {fileID: 7765281387075646581, guid: f4579decf9a895b41b9b68733a8257f0,
+        type: 3}
+    - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
+        type: 3}
+      propertyPath: mapFunctionComponents.Array.data[5]
+      value: 
+      objectReference: {fileID: -8768747337379517072}
+    - target: {fileID: 3425981728395409398, guid: 129f4eb78691940da993d749688543fd,
+        type: 3}
+      propertyPath: proportionCaves
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3425981728395409398, guid: 129f4eb78691940da993d749688543fd,
+        type: 3}
+      propertyPath: tailleMaxCave
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 114991096836358190, guid: 129f4eb78691940da993d749688543fd,
         type: 3}
       propertyPath: mapFunctionComponents.Array.size
@@ -105,47 +178,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 5592833176441408705}
     - target: {fileID: 114991096836358190, guid: 129f4eb78691940da993d749688543fd,
-        type: 3}
-      propertyPath: mapFunctionComponents.Array.data[1]
-      value: 
-      objectReference: {fileID: 6574979268457357818}
-    - target: {fileID: 3425981728395409398, guid: 129f4eb78691940da993d749688543fd,
-        type: 3}
-      propertyPath: proportionCaves
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3425981728395409398, guid: 129f4eb78691940da993d749688543fd,
-        type: 3}
-      propertyPath: tailleMaxCave
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
-        type: 3}
-      propertyPath: mapFunctionComponents.Array.size
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
-        type: 3}
-      propertyPath: lumierePrefab
-      value: 
-      objectReference: {fileID: 1106701525400260, guid: e464862985a8e4bb3a14bf8d90846952,
-        type: 3}
-    - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
-        type: 3}
-      propertyPath: mapFunctionComponents.Array.data[2]
-      value: 
-      objectReference: {fileID: 5638278599895887411}
-    - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
-        type: 3}
-      propertyPath: mapFunctionComponents.Array.data[3]
-      value: 
-      objectReference: {fileID: 7498715540871965917}
-    - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
-        type: 3}
-      propertyPath: mapFunctionComponents.Array.data[4]
-      value: 
-      objectReference: {fileID: 5592833176441408705}
-    - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
         type: 3}
       propertyPath: mapFunctionComponents.Array.data[1]
       value: 

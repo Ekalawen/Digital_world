@@ -153,6 +153,14 @@ public class ColorManager : MonoBehaviour {
                 RemoveClosestSource(cube.transform.position);
             }
         }
+        //List<Vector3> allPositions = map.GetAllPositions();
+        //MathTools.Shuffle(allPositions);
+
+        //foreach(Vector3 pos in allPositions) {
+        //    while(GetLuminosity(GetColorForPosition(pos)) > cubeLuminosityMax + 0.0001f) { // Car la luminosité n'est jamais à vraiment 0
+        //        RemoveClosestSource(pos);
+        //    }
+        //}
     }
 
     protected void RemoveClosestSource(Vector3 pos) {
@@ -220,5 +228,11 @@ public class ColorManager : MonoBehaviour {
             }
         }
         return color;
+    }
+
+    public static float GetLuminosity(Color color) {
+        float H, S, V;
+        Color.RGBToHSV(color, out H, out S, out V);
+        return V;
     }
 }
