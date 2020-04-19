@@ -645,19 +645,23 @@ public class Player : Character {
     }
 
     public bool DoubleCheckInteractWithCube(Cube cube) {
-        Vector3 playerPos = transform.position;
-        Vector3 cubePos = cube.transform.position;
-        float playerExtends = controller.radius + controller.skinWidth;
-        float cubeExtends = cube.transform.localScale.x / 2;
+        return MathTools.AABBSphere(cube.transform.position,
+            Vector3.one * cube.transform.localScale.x / 2,
+            transform.position,
+            controller.radius + controller.skinWidth);
+        //Vector3 playerPos = transform.position;
+        //Vector3 cubePos = cube.transform.position;
+        //float playerExtends = controller.radius + controller.skinWidth;
+        //float cubeExtends = cube.transform.localScale.x / 2;
 
-        // Get the closest point to the sphere by clamping
-        float x = Mathf.Clamp(playerPos.x, cubePos.x - cubeExtends, cubePos.x + cubeExtends);
-        float y = Mathf.Clamp(playerPos.y, cubePos.y - cubeExtends, cubePos.y + cubeExtends);
-        float z = Mathf.Clamp(playerPos.z, cubePos.z - cubeExtends, cubePos.z + cubeExtends);
-        Vector3 closestPoint = new Vector3(x, y, z);
+        //// Get the closest point to the sphere by clamping
+        //float x = Mathf.Clamp(playerPos.x, cubePos.x - cubeExtends, cubePos.x + cubeExtends);
+        //float y = Mathf.Clamp(playerPos.y, cubePos.y - cubeExtends, cubePos.y + cubeExtends);
+        //float z = Mathf.Clamp(playerPos.z, cubePos.z - cubeExtends, cubePos.z + cubeExtends);
+        //Vector3 closestPoint = new Vector3(x, y, z);
 
-        float distance = Vector3.Distance(closestPoint, playerPos);
-        return distance <= playerExtends;
+        //float distance = Vector3.Distance(closestPoint, playerPos);
+        //return distance <= playerExtends;
     }
 
     public int GetNbDoubleSautsMax() {

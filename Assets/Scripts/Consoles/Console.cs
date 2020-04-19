@@ -551,7 +551,8 @@ public class Console : MonoBehaviour {
 
     // Lorsque le joueur tente de construire un pont avec une cible invalide !
     public void PouvoirBridgeBuilderInvalide() {
-        AjouterMessageImportant("Ce n'est pas une cible valide !", TypeText.ENNEMI_TEXT, 1f);
+        string message = "Ce n'est pas une cible valide !";
+        AjouterMessageImportant(message, TypeText.ENNEMI_TEXT, 1f, true, message);
     }
 
     // Lorsque le joueur rentre dans l'EndGame

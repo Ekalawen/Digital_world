@@ -69,4 +69,12 @@ public static class MathTools
     public static float RandomSign() {
         return Random.value < 0.5f ? 1.0f : -1.0f;
     }
+
+    public static bool AABBSphere(Vector3 aabbCenter, Vector3 aabbHalfExtents, Vector3 sphereCenter, float sphereRayon) {
+        Vector3 aabbClosestPointToSphere = new Vector3(
+            Mathf.Clamp(sphereCenter.x, aabbCenter.x - aabbHalfExtents.x, aabbCenter.x + aabbHalfExtents.x),
+            Mathf.Clamp(sphereCenter.y, aabbCenter.y - aabbHalfExtents.y, aabbCenter.y + aabbHalfExtents.y),
+            Mathf.Clamp(sphereCenter.z, aabbCenter.z - aabbHalfExtents.z, aabbCenter.z + aabbHalfExtents.z));
+        return Vector3.Distance(aabbClosestPointToSphere, sphereCenter) <= sphereRayon;
+    }
 }

@@ -17,31 +17,29 @@ public class PouvoirBridgeBuilder : IPouvoir {
 
     protected override bool UsePouvoir() {
         Vector3 pointSource; // Le départ du pont
-        Vector3 pointCible; // La fin du pont
+        Vector3 pointCible = Vector3.zero; // La fin du pont
 
         // On récupère les informations du pont en lancant un rayon
         // Et en vérifiant qu'il touche bien un cube
         pointSource = transform.parent.transform.position + gm.gravityManager.Down(); // On essaye de faire partir le pont d'en dessous de nous !
         Ray ray = new Ray(transform.parent.transform.position, transform.parent.GetComponent<Player>().camera.transform.forward); // On part pas d'en-dessous pour ne pas que le ray soit bloqué !
-        RaycastHit hit;
-        if(Physics.Raycast(ray, out hit, float.PositiveInfinity)) {
-            // On vérifie qu'on a bien touché un cube
-            if(hit.collider.tag == "Cube") {
+        RaycastHit[] hits = Physics.RaycastAll(ray, float.PositiveInfinity);
+        bool touched = false;
+        foreach(RaycastHit hit in hits) {
+            Cube cube = hit.collider.gameObject.GetComponent<Cube>();
+            if(cube != null) {
                 pointCible = hit.collider.transform.position;
-
-                // Puis on lance sa création, si tout s'est bien passé !
-                StartCoroutine(BuildBridge(pointSource, pointCible));
-
-            } else {
-                CibleInvalide();
-                return false;
+                touched = true;
+                break;
             }
+        }
+        if(touched) {
+            StartCoroutine(BuildBridge(pointSource, pointCible));
+            return true;
         } else {
             CibleInvalide();
             return false;
         }
-
-        return true;
     }
 
     void CibleInvalide() {
@@ -58,7 +56,8 @@ public class PouvoirBridgeBuilder : IPouvoir {
 
         // Pour chaque cube, on le crée avec un interval !
         for(int i = 0; i < nbCubes; i++) {
-            BuildCube(pointSource + i * bridgeDirection, Quaternion.LookRotation(bridgeDirection, gm.gravityManager.Up()));
+            Vector3 pos = pointSource + i * bridgeDirection;
+            BuildCube(pos, Quaternion.LookRotation(bridgeDirection, gm.gravityManager.Up()));
             yield return new WaitForSeconds(vitessePropagationCubes);
         }
     }
@@ -66,8 +65,11 @@ public class PouvoirBridgeBuilder : IPouvoir {
     // On construit un cube !
     void BuildCube(Vector3 position, Quaternion orientation) {
         // Créer le cube
-        Cube cube = gm.map.AddCube(position, Cube.CubeType.NORMAL, orientation);
-        cube.ShouldRegisterToColorSources();
+        if (FarEnoughtFromLumieres(position)) {
+            Cube cube = gm.map.AddCube(position, Cube.CubeType.NORMAL, orientation);
+            cube.ShouldRegisterToColorSources();
+        }
+
         gm.soundManager.PlayCreateCubeClip(position);
 
         // Détruire les autres cubes qui sont autour de lui et qui ne sont pas des cubes de ponts !
@@ -81,4 +83,11 @@ public class PouvoirBridgeBuilder : IPouvoir {
         }
     }
 
+    protected bool FarEnoughtFromLumieres(Vector3 pos) {
+        foreach(Lumiere lumiere in gm.map.GetLumieres()) {
+            if (MathTools.AABBSphere(pos, Vector3.one * 0.5f, lumiere.transform.position, lumiere.transform.localScale.x / 2.0f))
+                return false;
+        }
+        return true;
+    }
 }
