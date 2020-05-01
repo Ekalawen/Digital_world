@@ -6,8 +6,7 @@ public class GravityInverseItem : Item {
 
     public override void OnTrigger(Collider hit) {
         GravityManager.Direction up = GravityManager.OppositeDir(gm.gravityManager.gravityDirection);
-        gm.gravityManager.SetGravity(up, 0.0f);
-        gm.console.CapturePouvoirGiverVoler();
+        gm.gravityManager.SetGravity(up, gm.gravityManager.gravityIntensity);
     }
 
 }
