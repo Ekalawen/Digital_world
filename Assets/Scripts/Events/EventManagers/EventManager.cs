@@ -142,13 +142,10 @@ public class EventManager : MonoBehaviour {
         int nbCubesToDestroy = (int)(cubes.Count / nbTimings);
 
         while (cubes.Count > 0) {
+            // Pour récupérer les cubes crées pendant la destruction de la map !
+            cubes = map.GetAllCubes();
+
             playerPos = gm.player.transform.position;
-            for(int i = 0; i < cubes.Count; i++) {
-                if(cubes[i] == null) {
-                    cubes.RemoveAt(i);
-                    i--;
-                }
-            }
             cubes.Sort(delegate (Cube cubeA, Cube cubeB) {
                 Vector3 A = cubeA.transform.position;
                 Vector3 B = cubeB.transform.position;
@@ -160,27 +157,14 @@ public class EventManager : MonoBehaviour {
             Vector3 barycentre = Vector3.zero;
             int nbCubesDestroyed = (int)Mathf.Min(nbCubesToDestroy, cubes.Count);
             for (int i = 0; i < nbCubesDestroyed; i++) {
-                barycentre += cubes[0].transform.position;
-                cubes[0].Explode();
-                cubes.RemoveAt(0);
+                barycentre += cubes[i].transform.position;
+                cubes[i].Explode();
             }
 
             barycentre /= nbCubesDestroyed;
             gm.soundManager.PlayCreateCubeClip(barycentre);
             yield return new WaitForSeconds(endGameFrameRate);
         }
-
-        //for (int i = 0; i < cubes.Count; i += nbCubesToDestroy) {
-        //    Vector3 barycentre = Vector3.zero;
-        //    for (int j = i; j < (int)Mathf.Min(i + nbCubesToDestroy, cubes.Count); j++) {
-        //        Cube cube = map.AddCube(cubes[j], Cube.CubeType.DEATH);
-        //        deathCubes.Add(cube);
-        //        barycentre += cubes[j];
-        //    }
-        //    barycentre /= nbCubesToDestroy;
-        //    gm.soundManager.PlayCreateCubeClip(barycentre);
-        //    yield return new WaitForSeconds(endGameFrameRate);
-        //}
     }
 
     public void LoseGame(DeathReason reason)
