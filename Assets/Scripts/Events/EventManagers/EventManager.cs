@@ -144,6 +144,7 @@ public class EventManager : MonoBehaviour {
         while (cubes.Count > 0) {
             // Pour récupérer les cubes crées pendant la destruction de la map !
             cubes = map.GetAllCubes();
+            if (cubes.Count == 0) break;
 
             playerPos = gm.player.transform.position;
             cubes.Sort(delegate (Cube cubeA, Cube cubeB) {
