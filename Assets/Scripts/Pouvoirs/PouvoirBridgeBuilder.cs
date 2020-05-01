@@ -13,6 +13,7 @@ public class PouvoirBridgeBuilder : IPouvoir {
     public GameObject cubePrefab; // Le prefab des cubes à créer pour fabriquer le pont !
     public float vitessePropagationCubes; // La vitesse à laquelle sont crées les cubes !
     public bool isDestructive; // Permet de savoir si ce pouvoir détruit les autres cubes ou pas !
+    public bool canDestroyIndestructibleCubes = false; // Permet de de détruire également les cubes indestructibles
     public float rayonDestruction; // Le rayon de destruction autour duquel on détruit les cubes pour pouvoir passe =)
     public bool untilLastCubeTouched = false; // Le rayon traverse jusqu'au dernier cube touché.
 
@@ -90,7 +91,7 @@ public class PouvoirBridgeBuilder : IPouvoir {
         if (isDestructive) {
             List<Cube> cubes = gm.map.GetCubesInSphere(position, rayonDestruction);
             foreach (Cube c in cubes) {
-                if (c.bIsRegular && !c.IsDestructible()) {
+                if (c.bIsRegular && (c.IsDestructible() || canDestroyIndestructibleCubes)) {
                     gm.map.DeleteCube(c);
                 }
             }
