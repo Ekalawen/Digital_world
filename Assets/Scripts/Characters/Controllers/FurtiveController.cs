@@ -2,40 +2,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FurtiveController : MonoBehaviour {
+public class FurtiveController : IController {
 
     public enum EtatFurtif { HIDDEN, VISIBLE };
 
 	public float hiddenVitesse; // vitesse de déplacement de base
 	public float visibleBaseVitesse; // vitesse de déplacement de base
 
-    protected GameManager gm;
 	protected Player player;
     protected EtatFurtif etat;
     protected Vector3 posObjectifHidden;
     protected Vector3 posObjectifVisible;
-	public CharacterController controller;
 
-    public void Start() {
-        gm = GameManager.Instance;
+    public override void Start() {
+        base.Start();
         player = gm.player;
         posObjectifHidden = transform.position;
         posObjectifVisible = transform.position;
-		controller = this.GetComponent<CharacterController> ();
-        if (controller == null)
-            Debug.LogError("Il est nécessaire d'avoir un CharacterController avec un FurtiveController !");
     }
 
-	public virtual void Update () {
-        // Si le temps est freeze, on ne fait rien
-        if(gm.IsTimeFreezed()) {
-            return;
-        }
-
-        UpdateSpecific();
-	}
-
-    protected void UpdateSpecific() {
+    protected override void UpdateSpecific() {
         UpdateEtat();
 
         // Tant que le joueur ne nous voit pas, on erre

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class RunAwayPlayerController : MonoBehaviour {
+public class RunAwayPlayerController : IController {
 
     public enum Etat { WANDERING, FLEEING };
 
@@ -13,33 +13,20 @@ public class RunAwayPlayerController : MonoBehaviour {
     public float malusVerticalMouvement = 0f; // On peut faire en sorte de moins utiliser les hauteurs
     //public GameObject trailPrefab;
 
-    protected GameManager gm;
 	protected Player player;
     protected Etat etat;
     protected Vector3 posObjectifWandering;
     protected Vector3 posObjectifFleeing;
-	public CharacterController controller;
 
-    public void Start() {
+    public override void Start() {
+        base.Start();
         gm = GameManager.Instance;
         player = gm.player;
         posObjectifWandering = transform.position;
         posObjectifFleeing = transform.position;
-		controller = this.GetComponent<CharacterController> ();
-        if (controller == null)
-            Debug.LogError("Il est nécessaire d'avoir un CharacterController avec un RunAwayPlayerController !");
     }
 
-	public virtual void Update () {
-        // Si le temps est freeze, on ne fait rien
-        if(gm.IsTimeFreezed()) {
-            return;
-        }
-
-        UpdateSpecific();
-	}
-
-    protected void UpdateSpecific() {
+    protected override void UpdateSpecific() {
         UpdateEtat();
 
         // Tant que le joueur n'est pas trop proche, on erre
