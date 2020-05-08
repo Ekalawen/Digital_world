@@ -38,7 +38,7 @@ public abstract class IPouvoir : MonoBehaviour {
     // La fonction appelée lorsque le joueur appui sur une touche
     public void TryUsePouvoir(KeyCode binding) {
         this.binding = binding;
-        if(pouvoirAvailable && !freezePouvoir && cooldownTimer.IsOver()) {
+        if(IsAvailable() && IsTimerOver()) {
             if(UsePouvoir()) {
                 cooldownTimer.Reset();
                 ApplyTimerMalus();
@@ -47,6 +47,14 @@ public abstract class IPouvoir : MonoBehaviour {
                 gm.soundManager.PlayDeniedPouvoirClip();
             }
         }
+    }
+
+    public bool IsAvailable() {
+        return pouvoirAvailable && !freezePouvoir;
+    }
+
+    public bool IsTimerOver() {
+        return cooldownTimer.IsOver();
     }
 
     protected virtual void ApplyTimerMalus() {
@@ -67,5 +75,11 @@ public abstract class IPouvoir : MonoBehaviour {
 
     public void FreezePouvoir(bool value = true) {
         freezePouvoir = value;
+    }
+
+    public float GetCurrentCooldown() {
+        if (cooldownTimer == null)
+            return 0.0f;
+        return cooldownTimer.GetRemainingTime();
     }
 }

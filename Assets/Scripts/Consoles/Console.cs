@@ -37,6 +37,11 @@ public class Console : MonoBehaviour {
     public List<string> conseils; // Les conseils à dispenser au joueur !
     public List<TimedMessage> timedMessages;
 
+    public PouvoirDisplayInGame pouvoirDisplayA;
+    public PouvoirDisplayInGame pouvoirDisplayE;
+    public PouvoirDisplayInGame pouvoirDisplayLeftClick;
+    public PouvoirDisplayInGame pouvoirDisplayRightClick;
+
 	[HideInInspector]
 	public GameManager gm;
 	[HideInInspector]
@@ -76,6 +81,9 @@ public class Console : MonoBehaviour {
 
         // Setup les timers des timedMessages
         InitTimersMessages();
+
+        // Init les pouvoirs displays
+        InitPouvoirsDisplays();
     }
 
     protected void InitTimersMessages() {
@@ -624,5 +632,17 @@ public class Console : MonoBehaviour {
             case PouvoirGiverItem.PouvoirBinding.RIGHT_CLICK: strBinding = "le click droit"; break;
         }
         AjouterMessage("Tu peux utiliser le pouvoir " + pouvoirName + " en appuyant sur " + strBinding + " !", TypeText.ALLY_TEXT);
+    }
+
+    public void InitPouvoirsDisplays() {
+        Player player = gm.player;
+        InitPouvoir(player.GetPouvoirA(), pouvoirDisplayA);
+        InitPouvoir(player.GetPouvoirE(), pouvoirDisplayE);
+        InitPouvoir(player.GetPouvoirLeftClick(), pouvoirDisplayLeftClick);
+        InitPouvoir(player.GetPouvoirRightClick(), pouvoirDisplayRightClick);
+    }
+
+    protected void InitPouvoir(IPouvoir pouvoir, PouvoirDisplayInGame display) {
+        display.Initialize(pouvoir);
     }
 }

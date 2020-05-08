@@ -141,6 +141,7 @@ public class Player : Character {
                 pouvoirRightBouton = Instantiate(pouvoirPrefab, parent: this.transform).GetComponent<IPouvoir>();
                 break;
         }
+        gm.console.InitPouvoirsDisplays();
     }
 
     void ChoseStartingPosition() {
@@ -669,6 +670,19 @@ public class Player : Character {
 
     public void AddDoubleJump(int nbToAdd) {
         nbDoublesSautsMax += nbToAdd;
+    }
+
+    public IPouvoir GetPouvoirA() {
+        return pouvoirA;
+    }
+    public IPouvoir GetPouvoirE() {
+        return pouvoirE;
+    }
+    public IPouvoir GetPouvoirLeftClick() {
+        return pouvoirLeftBouton;
+    }
+    public IPouvoir GetPouvoirRightClick() {
+        return pouvoirRightBouton;
     }
 }
 
