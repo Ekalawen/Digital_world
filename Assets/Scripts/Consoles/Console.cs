@@ -123,7 +123,6 @@ public class Console : MonoBehaviour {
     }
 
     protected void DetectPlayerSafeOrNot() {
-        Debug.Log("Bonjour !");
         if (!gm.eventManager.IsGameOver()) {
             bool oldState = playerIsFollowed;
             playerIsFollowed = gm.ennemiManager.IsPlayerFollowed();

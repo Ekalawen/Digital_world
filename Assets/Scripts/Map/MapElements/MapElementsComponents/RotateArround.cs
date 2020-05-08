@@ -10,8 +10,6 @@ public class RotateArround : MonoBehaviour {
     public float vitesse = 3.0f;
 
     protected Vector3 axe;
-    protected CharacterController controller;
-    protected Vector3 localVirtualPoint;
 
     public void Start() {
         if (useAxe && axeToUse != Vector3.zero)
@@ -19,8 +17,6 @@ public class RotateArround : MonoBehaviour {
         else {
             ComputeRandomAxe();
         }
-        controller = GetComponent<CharacterController>();
-        localVirtualPoint = transform.position - target.transform.position;
     }
 
     protected void ComputeRandomAxe() {
@@ -38,14 +34,6 @@ public class RotateArround : MonoBehaviour {
 
     public void Update() {
         float angle = 100 * vitesse * Time.deltaTime;
-        if(controller == null)
-            transform.RotateAround(target.transform.position, axe, angle);
-        else {
-            localVirtualPoint = RotateAround(localVirtualPoint, Vector3.zero, axe, angle);
-            Vector3 virtualPoint = localVirtualPoint + target.transform.position;
-            //transform.position = (virtualPoint + transform.position) / 2.0f;
-            Vector3 move = virtualPoint - transform.position;
-            controller.Move(move);
-        }
+        transform.RotateAround(target.transform.position, axe, angle);
     }
 }
