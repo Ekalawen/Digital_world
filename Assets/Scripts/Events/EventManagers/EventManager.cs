@@ -141,18 +141,23 @@ public class EventManager : MonoBehaviour {
         float nbTimings = endGameDuration / endGameFrameRate;
         int nbCubesToDestroy = (int)(cubes.Count / nbTimings);
 
+        float seuilProximité = 2.5f;
         while (cubes.Count > 0) {
             // Pour récupérer les cubes crées pendant la destruction de la map !
             cubes = map.GetAllCubes();
             if (cubes.Count == 0) break;
 
+            // On détruit les cubes aléatoirement
+            MathTools.Shuffle(cubes);
+
+            // Sauf ceux qui sont proches de nous et du joueur, on les détruit en dernier !
             playerPos = gm.player.transform.position;
             cubes.Sort(delegate (Cube cubeA, Cube cubeB) {
                 Vector3 A = cubeA.transform.position;
                 Vector3 B = cubeB.transform.position;
-                float distToA = Mathf.Min(Vector3.Distance(A, centerPos), Vector3.Distance(A, playerPos));
-                float distToB = Mathf.Min(Vector3.Distance(B, centerPos), Vector3.Distance(B, playerPos));
-                return distToB.CompareTo(distToA);
+                bool AinSeuil = Vector3.Distance(A, centerPos) <= seuilProximité || Vector3.Distance(A, playerPos) <= seuilProximité;
+                bool BinSeuil = Vector3.Distance(B, centerPos) <= seuilProximité || Vector3.Distance(B, playerPos) <= seuilProximité;
+                return AinSeuil.CompareTo(BinSeuil);
             });
 
             Vector3 barycentre = Vector3.zero;
