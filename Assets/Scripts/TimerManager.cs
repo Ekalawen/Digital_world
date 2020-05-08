@@ -80,6 +80,16 @@ public class TimerManager : MonoBehaviour {
         else
             return seconds + "." + centiseconds.ToString("D2");
     }
+    public static string TimerToClearerString(float time) {
+        int seconds = Mathf.FloorToInt(time);
+        int deciseconds = Mathf.FloorToInt((time - seconds) * 10);
+        int centiseconds = Mathf.FloorToInt((time - seconds) * 100);
+        if (time >= 2.0f)
+            return seconds.ToString();
+        else
+            return seconds + "." + deciseconds.ToString("D1");
+    }
+
 
     protected void PlayTimeOutSound() {
         if(GetRemainingTime() <= 10.0f) {
