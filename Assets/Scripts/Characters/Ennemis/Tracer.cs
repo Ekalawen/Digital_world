@@ -61,12 +61,10 @@ public class Tracer : Ennemi {
     }
 
     public void StartEmiting() {
-        Debug.Log("StartEmiting()");
         emitingCoroutine = StartCoroutine(CStartEmiting());
     }
 
     protected IEnumerator CStartEmiting() {
-        Debug.Log("CStartEmiting()");
         debutEmiting = Time.timeSinceLevelLoad;
         emitionParticleSystem.gameObject.SetActive(true);
         ParticleSystem.ShapeModule shape = emitionParticleSystem.shape;

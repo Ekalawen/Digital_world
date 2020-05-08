@@ -35,7 +35,6 @@ public class TracerController : EnnemiController {
             case TracerState.WAITING:
                 break;
             case TracerState.RUSHING:
-                Debug.Log("path length = " + path.Count);
                 if(Vector3.Distance(transform.position, path[0]) < 0.001f) {
                     path.RemoveAt(0);
                     lastTimePause = Time.timeSinceLevelLoad;
@@ -100,14 +99,10 @@ public class TracerController : EnnemiController {
         TracerState oldState = state;
         state = newState;
         if(newState == TracerState.EMITING && oldState != TracerState.EMITING) {
-            Debug.Log("Call startEmitingEvents !");
             startEmitingEvents.Invoke();
             stopEmitingCoroutine = StartCoroutine(CStopEmitingIn());
         }
-        //if (newState != TracerState.EMITING)
-        //    stopEmitingEvents.Invoke(); // ==> pousseeEmiting = null;
         if (newState == TracerState.RUSHING && oldState != TracerState.RUSHING) {
-            Debug.Log("Call StopEmiting ! (previous State = " + oldState + ")");
             StopEmiting();
             gm.soundManager.PlayDetectionClip(transform.position, transform);
         }

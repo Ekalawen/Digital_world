@@ -131,6 +131,7 @@ public class TutorialMap : MapManager {
 
     public override Vector3 GetPlayerStartPosition() {
         return new Vector3(5, 5, 5);
+        //return new Vector3(184, 10, 22);
     }
 
     public override Vector2 GetPlayerStartOrientationXY(Vector3 playerStartPosition) {
