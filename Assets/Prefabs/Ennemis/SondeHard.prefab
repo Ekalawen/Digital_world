@@ -92,7 +92,8 @@ GameObject:
   - component: {fileID: 8039181169005473558}
   - component: {fileID: 7935943269857834002}
   - component: {fileID: 8038696312968194154}
-  - component: {fileID: 8486304268996504244}
+  - component: {fileID: 1428963571738898126}
+  - component: {fileID: 5705072460954977061}
   m_Layer: 0
   m_Name: SondeHard
   m_TagString: Ennemi
@@ -192,7 +193,7 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &8486304268996504244
+--- !u!114 &1428963571738898126
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -201,19 +202,32 @@ MonoBehaviour:
   m_GameObject: {fileID: 7959482423994999332}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a68d48d7d1b05c499fcec9c9c8e241a, type: 3}
+  m_Script: {fileID: 11500000, guid: 1f243d8073c58410c950182cd53bc568, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 0}
   vitesseMin: 2.8
   vitesseMax: 2.8
-  tempsInactifDebutJeu: 3
-  distanceDeDetection: 10
   timeMalusOnHit: 5
   timeBetweenTwoHits: 0.2
   timeBetweenTwoHitsDamages: 1
   distancePoussee: 10
   tempsPoussee: 0.5
+--- !u!114 &5705072460954977061
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7959482423994999332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 787a312d2b1afd44ba991622ce303a08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vitesse: 2.8
+  tempsInactifDebutJeu: 3
+  distanceDeDetection: 10
   wanderingSpeedCoef: 0.5
   trailDePrevisualisation: {fileID: 5527728633433075683, guid: 52fd8dd34b0d30b44bf377b86958696a,
     type: 3}

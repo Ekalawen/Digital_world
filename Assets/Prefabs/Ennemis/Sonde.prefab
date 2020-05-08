@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 135486824720915102}
   - component: {fileID: 23523471878242714}
   - component: {fileID: 114528774782627616}
+  - component: {fileID: -641334895464681557}
   - component: {fileID: 143727705574006242}
   m_Layer: 0
   m_Name: Sonde
@@ -111,11 +112,25 @@ MonoBehaviour:
   vitesseMin: 1.85
   vitesseMax: 1.85
   tempsInactifDebutJeu: 3
-  distanceDeDetection: 10
   timeMalusOnHit: 5
   timeBetweenTwoHits: 0.2
+  timeBetweenTwoHitsDamages: 1
   distancePoussee: 10
   tempsPoussee: 0.5
+--- !u!114 &-641334895464681557
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1252573298759596}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b336ac2ac8c08194eab86d7d1f28cfda, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vitesse: 1.85
+  distanceDeDetection: 10
 --- !u!143 &143727705574006242
 CharacterController:
   m_ObjectHideFlags: 0

@@ -42,9 +42,10 @@ public class RunAwayPlayerController : IController {
                 //tr.GetComponent<Trail>().SetTarget(posObjectifWandering);
 
                 // Puis on y va
-                Vector3 direction = (posObjectifWandering - transform.position).normalized;
-                Vector3 finalMouvement = direction * wanderingVitesse * Time.deltaTime;
-                controller.Move(finalMouvement);
+                Move(posObjectifWandering, useCustomVitesse: true, wanderingVitesse);
+                //Vector3 direction = (posObjectifWandering - transform.position).normalized;
+                //Vector3 finalMouvement = direction * wanderingVitesse * Time.deltaTime;
+                //controller.Move(finalMouvement);
                 break;
 
             case Etat.FLEEING:
@@ -59,9 +60,10 @@ public class RunAwayPlayerController : IController {
                 //trf.GetComponent<Trail>().SetTarget(posObjectifFleeing);
 
                 // Puis on y va
-                Vector3 directionVisible = (posObjectifFleeing - transform.position).normalized;
-                Vector3 finalMouvementVisible = directionVisible * fleeingVitesse * Time.deltaTime;
-                controller.Move(finalMouvementVisible);
+                Move(posObjectifFleeing, useCustomVitesse: true, fleeingVitesse);
+                //Vector3 directionVisible = (posObjectifFleeing - transform.position).normalized;
+                //Vector3 finalMouvementVisible = directionVisible * fleeingVitesse * Time.deltaTime;
+                //controller.Move(finalMouvementVisible);
                 break;
         }
     }
@@ -126,5 +128,13 @@ public class RunAwayPlayerController : IController {
             allEmptyLocations.RemoveAt(ind);
         }
         return allEmptyLocations[0];
+    }
+
+    public override bool IsInactive() {
+        return false;
+    }
+
+    public override bool IsMoving() {
+        return true;
     }
 }

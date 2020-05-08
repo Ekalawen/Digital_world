@@ -4,10 +4,6 @@ using UnityEngine;
 
 public abstract class Ennemi : Character {
 
-	public float vitesseMin; // On veut une vitesse aléatoire comprise
-	public float vitesseMax; // entre min et max !
-    public float tempsInactifDebutJeu; // Le temps pendant lequel la sonde n'agira pas en début de partie
-	public float distanceDeDetection; // La distance à partir de laquelle le probe peut pourchasser l'ennemi
     public float timeMalusOnHit = 5.0f; // Le temps que perd le joueur lorsqu'il se fait touché !
     public float timeBetweenTwoHits = 1.0f;
     public float timeBetweenTwoHitsDamages = 1.0f;
@@ -23,8 +19,6 @@ public abstract class Ennemi : Character {
         gm = GameManager.Instance;
         player = gm.player;
 		controller = this.GetComponent<CharacterController> ();
-		//vitesse = Mathf.Exp(Random.Range(Mathf.Log(vitesseMin), Mathf.Log(vitesseMax)));
-		vitesse = Random.Range(vitesseMin, vitesseMax);
         timerHit = new Timer(timeBetweenTwoHits);
         timerHit.SetOver();
         timerHitDamages = new Timer(timeBetweenTwoHitsDamages);
@@ -37,35 +31,10 @@ public abstract class Ennemi : Character {
             return;
         }
 
-        if (Time.timeSinceLevelLoad >= tempsInactifDebutJeu)
-            UpdateSpecific();
-
         ApplyPoussees();
 	}
 
     public abstract void UpdateSpecific();
-
-    // Permet de savoir si l'ennemi voit le joueur
-    public bool IsPlayerVisible() {
-        // Si l'ennemie est suffisament proche et qu'il est visible !
-        RaycastHit hit;
-        Ray ray = new Ray (transform.position, player.transform.position - transform.position);
-        return Physics.Raycast(ray, out hit, distanceDeDetection) && hit.collider.name == "Joueur";
-    }
-
-    protected Vector3 Move(Vector3 target) {
-        Vector3 direction = (target - transform.position).normalized;
-        Vector3 finalMouvement = direction * vitesse * Time.deltaTime;
-
-        // Si c'est trop long, on ajuste
-        if (Vector3.Magnitude(finalMouvement) > Vector3.Distance(transform.position, target)) {
-            finalMouvement = target - transform.position;
-        }
-
-        controller.Move(finalMouvement);
-
-        return finalMouvement;
-    }
 
     protected virtual void HitPlayer() {
         HitContinuousPlayerSpecific();
@@ -97,5 +66,15 @@ public abstract class Ennemi : Character {
     protected abstract void HitPlayerSpecific();
     protected abstract void HitContinuousPlayerSpecific();
 
-    public abstract bool IsInactive();
+	// Permet de savoir si l'ennemi est en mouvement
+	public bool IsMoving() {
+        IController controller = GetComponent<IController>();
+        return controller.IsMoving();
+	}
+
+	// Permet de savoir si l'ennemi ne bouge pas
+    public bool IsInactive() {
+        IController controller = GetComponent<IController>();
+        return controller.IsInactive();
+    }
 }

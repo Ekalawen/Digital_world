@@ -112,10 +112,11 @@ public class SoundManager : MonoBehaviour {
         //source.spatialBlend = 0.5f;
         PlayClipsOnSource(detectionClips, pos, parent);
     }
-    public void PlayEmissionTracerClip(Vector3 pos, Transform parent, float duree) {
+    public AudioSource PlayEmissionTracerClip(Vector3 pos, Transform parent) {
         //source.spatialBlend = 1.0f;
         AudioSource source = PlayClipsOnSource(emissionTracerClips, pos, parent);
-        StartCoroutine(StopClipIn(source, duree));
+        //StartCoroutine(StopClipIn(source, duree));
+        return source;
     }
     public void PlayHitClip(Vector3 pos) {
         // reverse !

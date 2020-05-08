@@ -7,7 +7,6 @@ public class FurtiveController : IController {
     public enum EtatFurtif { HIDDEN, VISIBLE };
 
 	public float hiddenVitesse; // vitesse de déplacement de base
-	public float visibleBaseVitesse; // vitesse de déplacement de base
 
 	protected Player player;
     protected EtatFurtif etat;
@@ -36,9 +35,10 @@ public class FurtiveController : IController {
                 }
 
                 // Puis on y va
-                Vector3 direction = (posObjectifHidden - transform.position).normalized;
-                Vector3 finalMouvement = direction * hiddenVitesse * Time.deltaTime;
-                controller.Move(finalMouvement);
+                Move(posObjectifHidden, useCustomVitesse: true, hiddenVitesse);
+                //Vector3 direction = (posObjectifHidden - transform.position).normalized;
+                //Vector3 finalMouvement = direction * hiddenVitesse * Time.deltaTime;
+                //controller.Move(finalMouvement);
                 break;
 
             case EtatFurtif.VISIBLE:
@@ -55,9 +55,10 @@ public class FurtiveController : IController {
                 }
 
                 // Puis on y va
-                Vector3 directionVisible = (posObjectifVisible - transform.position).normalized;
-                Vector3 finalMouvementVisible = directionVisible * visibleBaseVitesse * coefRapprochementAxe * Time.deltaTime;
-                controller.Move(finalMouvementVisible);
+                Move(posObjectifVisible, useCustomVitesse: true, vitesse * coefRapprochementAxe);
+                //Vector3 directionVisible = (posObjectifVisible - transform.position).normalized;
+                //Vector3 finalMouvementVisible = directionVisible * visibleBaseVitesse * coefRapprochementAxe * Time.deltaTime;
+                //controller.Move(finalMouvementVisible);
                 break;
         }
     }
@@ -153,5 +154,13 @@ public class FurtiveController : IController {
             }
         }
         return bestPos;
+    }
+
+    public override bool IsInactive() {
+        return false;
+    }
+
+    public override bool IsMoving() {
+        return true;
     }
 }

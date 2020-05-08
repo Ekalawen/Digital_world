@@ -17,7 +17,8 @@ public class LumiereFurtiveTrap : LumiereFurtive {
         allCorners.Add(gm.map.GetCenter());
         foreach(Vector3 corner in allCorners) {
             Ennemi ennemi = gm.ennemiManager.GenerateEnnemiFromPrefab(ennemiToGeneratePrefab, corner);
-            ennemi.tempsInactifDebutJeu = Time.timeSinceLevelLoad + timeBeforeEnnemisActivation;
+            IController ennemiController = ennemi.GetComponent<IController>();
+            ennemiController.tempsInactifDebutJeu = Time.timeSinceLevelLoad + timeBeforeEnnemisActivation;
         }
 
         // Ainsi qu'une autre lumiere furtive ! (mais juste furtive cette fois-ci ^^)

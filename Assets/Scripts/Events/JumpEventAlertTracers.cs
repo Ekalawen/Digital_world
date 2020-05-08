@@ -11,7 +11,9 @@ public class JumpEventAlertTracers : JumpEvent {
         foreach(Ennemi ennemi in gm.ennemiManager.ennemis) {
             Tracer tracer = ennemi.GetComponent<Tracer>();
             if(tracer != null) {
-                tracer.DetectPlayer();
+                TracerController tracerController = tracer.GetComponent<TracerController>();
+                if(tracerController != null)
+                    tracerController.DetectPlayer();
             }
         }
 
