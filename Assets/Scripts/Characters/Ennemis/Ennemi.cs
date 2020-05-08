@@ -31,6 +31,8 @@ public abstract class Ennemi : Character {
             return;
         }
 
+        UpdateSpecific();
+
         ApplyPoussees();
 	}
 
