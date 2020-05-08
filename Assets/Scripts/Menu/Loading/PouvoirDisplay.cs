@@ -25,5 +25,7 @@ public class PouvoirDisplay : MonoBehaviour {
                 bordure.color = bordureColorActive;
         }
         this.image.sprite = sprite;
+        if(sprite != null)
+            this.image.color = Color.white; // Sinon c'est transparent !
     }
 }
