@@ -656,6 +656,10 @@ public class Console : MonoBehaviour {
         AjouterMessage("Tu peux utiliser le pouvoir " + pouvoirName + " en appuyant sur " + strBinding + " !", TypeText.ALLY_TEXT);
     }
 
+    public void FirstBossChangementDePhase(int newPhaseIndice) {
+        AjouterMessageImportant("Loading phase " + newPhaseIndice + " !", TypeText.ENNEMI_TEXT, 2, bAfficherInConsole: true);
+    }
+
     public void InitPouvoirsDisplays() {
         Player player = gm.player;
         InitPouvoir(player.GetPouvoirA(), pouvoirDisplayA);

@@ -14,7 +14,7 @@ public class FirstBoss : Sonde {
     public float explosionAttackDistance = 5.5f;
     public float explosionAttackDamage = 100f;
     public GameObject explosionAttackParticulesPrefab;
-    public GameObject timeZonePhase2, timeZonePhase3;
+    public List<GameObject> timeZoneByPhases;
     public List<float> esperanceApparitionRandomFillingByPhases;
     public GameObject generateRandomFillingEventPrefab;
 
@@ -101,17 +101,27 @@ public class FirstBoss : Sonde {
         randomEventToRemove = randomEvent;
     }
 
+    protected void UpdateTimeZone(int phaseIndice) {
+        timeZoneByPhases[phaseIndice - 1].SetActive(true);
+    }
+
+    protected void UpdateConsoleMessage(int phaseIndice) {
+        gm.console.FirstBossChangementDePhase(phaseIndice);
+    }
+
     public void GoToPhase1() {
         UpdateRandomEvent(phaseIndice: 1);
         UpdateAttackRate(phaseIndice: 1);
+        UpdateTimeZone(phaseIndice: 1);
     }
 
     public void GoToPhase2() {
         StartCoroutine(CGoToPhase2());
     }
     protected IEnumerator CGoToPhase2() {
+        UpdateConsoleMessage(phaseIndice: 2);
         yield return StartCoroutine(ExplosionAttack());
-        timeZonePhase3.SetActive(true);
+        UpdateTimeZone(phaseIndice: 2);
         UpdateAttackRate(phaseIndice: 2);
         UpdateRandomEvent(phaseIndice: 2);
     }
@@ -121,10 +131,25 @@ public class FirstBoss : Sonde {
     }
     public IEnumerator CGoToPhase3() {
         SetAttackRate(99999);
+        UpdateConsoleMessage(phaseIndice: 3);
         yield return StartCoroutine(ExplosionAttack());
         SetSatellitesActivation(true);
+        UpdateTimeZone(phaseIndice: 3);
         UpdateAttackRate(phaseIndice: 3);
         UpdateRandomEvent(phaseIndice: 3);
+    }
+
+    public void GoToPhase4() {
+        StartCoroutine(CGoToPhase4());
+    }
+    public IEnumerator CGoToPhase4() {
+        UpdateConsoleMessage(phaseIndice: 4);
+        SetAttackRate(99999);
+        yield return StartCoroutine(ExplosionAttack());
+        //SetSatellitesActivation(true);
+        //UpdateTimeZone(phaseIndice: 3);
+        //UpdateAttackRate(phaseIndice: 3);
+        //UpdateRandomEvent(phaseIndice: 3);
     }
 
     public IEnumerator ExplosionAttack() {
