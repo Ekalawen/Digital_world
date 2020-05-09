@@ -8,15 +8,19 @@ public class FirstBoss : Sonde {
     public float attackDelay = 0.5f;
     public List<float> attackRateByPhases;
     public GameObject attacksPrefab;
-    public float explosionAttackStandardDelay = 3.8f;
     public float explosionAttackDelay = 3.8f;
     public float explosionAttackTotalTime = 7.0f;
+    public float fastExplosionAttackDelay = 1.0f;
+    public float fastExplosionAttackTotalTime = 2.0f;
     public float explosionAttackDistance = 5.5f;
     public float explosionAttackDamage = 100f;
     public GameObject explosionAttackParticulesPrefab;
+    public GameObject fastExplosionAttackParticulesPrefab;
     public List<GameObject> timeZoneByPhases;
     public List<float> esperanceApparitionRandomFillingByPhases;
     public GameObject generateRandomFillingEventPrefab;
+    public IController sondeController;
+    public IController tracerController;
 
     protected List<Sonde> satellites;
     protected Timer timerAttacks;
@@ -113,6 +117,7 @@ public class FirstBoss : Sonde {
         UpdateRandomEvent(phaseIndice: 1);
         UpdateAttackRate(phaseIndice: 1);
         UpdateTimeZone(phaseIndice: 1);
+        UpdateConsoleMessage(phaseIndice: 1);
     }
 
     public void GoToPhase2() {
@@ -120,7 +125,7 @@ public class FirstBoss : Sonde {
     }
     protected IEnumerator CGoToPhase2() {
         UpdateConsoleMessage(phaseIndice: 2);
-        yield return StartCoroutine(ExplosionAttack());
+        yield return StartCoroutine(CExplosionAttackNormale());
         UpdateTimeZone(phaseIndice: 2);
         UpdateAttackRate(phaseIndice: 2);
         UpdateRandomEvent(phaseIndice: 2);
@@ -132,7 +137,7 @@ public class FirstBoss : Sonde {
     public IEnumerator CGoToPhase3() {
         SetAttackRate(99999);
         UpdateConsoleMessage(phaseIndice: 3);
-        yield return StartCoroutine(ExplosionAttack());
+        yield return StartCoroutine(CExplosionAttackNormale());
         SetSatellitesActivation(true);
         UpdateTimeZone(phaseIndice: 3);
         UpdateAttackRate(phaseIndice: 3);
@@ -145,26 +150,47 @@ public class FirstBoss : Sonde {
     public IEnumerator CGoToPhase4() {
         UpdateConsoleMessage(phaseIndice: 4);
         SetAttackRate(99999);
-        yield return StartCoroutine(ExplosionAttack());
-        //SetSatellitesActivation(true);
-        //UpdateTimeZone(phaseIndice: 3);
-        //UpdateAttackRate(phaseIndice: 3);
-        //UpdateRandomEvent(phaseIndice: 3);
+        yield return StartCoroutine(CExplosionAttackNormale());
+        UpdateAttackRate(phaseIndice: 4);
+        UpdateRandomEvent(phaseIndice: 4);
+        SwapControllers();
     }
 
-    public IEnumerator ExplosionAttack() {
+    protected void SwapControllers() {
+        if(sondeController.enabled) {
+            Debug.Log("TracerMode !");
+            sondeController.enabled = false;
+            tracerController.enabled = true;
+        } else {
+            Debug.Log("SondeMode !");
+            tracerController.enabled = false;
+            sondeController.enabled = true;
+        }
+    }
+
+    public IEnumerator CExplosionAttackNormale() {
+        yield return StartCoroutine(CExplosionAttack(explosionAttackDelay, explosionAttackTotalTime, explosionAttackParticulesPrefab));
+    }
+    public IEnumerator CExplosionAttackFast() {
+        yield return StartCoroutine(CExplosionAttack(fastExplosionAttackDelay, fastExplosionAttackTotalTime, fastExplosionAttackParticulesPrefab));
+    }
+    public void ExplosionAttackFast() {
+        StartCoroutine(CExplosionAttackFast());
+    }
+
+    public IEnumerator CExplosionAttack(float delay, float totalTime, GameObject particlesPrefab) {
         // Start decreasing
-        PlayParticles();
+        PlayParticles(totalTime, particlesPrefab);
         // Play SOUND here !!!
         IController controller = GetComponent<IController>();
         float oldVitesse = controller.vitesse;
         controller.vitesse = 0.0f;
 
         // Wait until end of decreasing ...
-        yield return new WaitForSeconds(explosionAttackDelay);
+        yield return new WaitForSeconds(delay);
 
         // Increasing !!! Explosion !!!
-        Timer timer = new Timer(explosionAttackTotalTime - explosionAttackDelay);
+        Timer timer = new Timer(totalTime - delay);
         while(!timer.IsOver()) {
             if (Vector3.Distance(player.transform.position, transform.position) <= explosionAttackDistance)
                 HitPlayer(useCustomTimeMalus: true, explosionAttackDamage);
@@ -180,33 +206,9 @@ public class FirstBoss : Sonde {
         controller.vitesse = oldVitesse;
     }
 
-    protected void PlayParticles() {
-        GameObject go = Instantiate(explosionAttackParticulesPrefab, transform.position, Quaternion.identity, componentsFolder);
-        //// Set time of first part
-        //float acceleration = explosionAttackDelay / explosionAttackStandardDelay;
-        //GameObject decreasingBall = go.transform.Find("DecreasingBall").gameObject;
-        //ParticleSystem[] decreasingParticles = decreasingBall.GetComponentsInChildren<ParticleSystem>();
-        //for (int i = 0; i < decreasingParticles.Length; i++)
-        //{
-        //    ParticleSystem ps = decreasingParticles[i];
-        //    ps.Stop();
-        //    ParticleSystem.MainModule main = ps.main;
-        //    main.duration = main.duration * acceleration; // On peut pas modifier la duration pendant que le système joue !
-        //    ps.Play();
-        //}
+    protected void PlayParticles(float totalTime, GameObject particlesPrefab) {
+        GameObject go = Instantiate(particlesPrefab, transform.position, Quaternion.identity, componentsFolder);
 
-        //// Set time of second part
-        //GameObject increasingBall = go.transform.Find("IncreasingBall").gameObject;
-        //ParticleSystem[] increasingParticles = increasingBall.GetComponentsInChildren<ParticleSystem>();
-        //for (int i = 0; i < decreasingParticles.Length; i++)
-        //{
-        //    ParticleSystem ps = decreasingParticles[i];
-        //    ps.Stop();
-        //    ParticleSystem.MainModule main = ps.main;
-        //    main.startDelay = explosionAttackDelay;
-        //    ps.Play();
-        //}
-
-        Destroy(go, explosionAttackTotalTime * 2);
+        Destroy(go, totalTime * 2);
     }
 }

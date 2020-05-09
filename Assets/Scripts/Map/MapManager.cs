@@ -598,6 +598,24 @@ public class MapManager : MonoBehaviour {
         return res;
     }
 
+    public List<Vector3> GetVoisinsNoObstacles(Vector3 pos) {
+        List<Vector3> res = new List<Vector3>();
+        int i = (int)pos.x, j = (int)pos.y, k = (int)pos.z;
+        // DROITE
+        res.Add(new Vector3(i + 1, j, k));
+        // GAUCHE
+        res.Add(new Vector3(i - 1, j, k));
+        // HAUT
+        res.Add(new Vector3(i, j + 1, k));
+        // BAS
+        res.Add(new Vector3(i, j - 1, k));
+        // DEVANT
+        res.Add(new Vector3(i, j, k + 1));
+        // DERRIRE
+        res.Add(new Vector3(i, j, k - 1));
+        return res;
+    }
+
     protected List<Vector3Int> GetVoisinsLibresInt(Vector3Int pos) {
         List<Vector3> v3 = GetVoisinsLibres(pos);
         List<Vector3Int> v3I = new List<Vector3Int>();
@@ -626,6 +644,31 @@ public class MapManager : MonoBehaviour {
                 return true;
         }
         return false;
+    }
+
+    public List<Vector3> GetNoObstaclePath(Vector3 start, Vector3 end, bool bIsRandom = false) {
+        start = MathTools.Round(start);
+        end = MathTools.Round(end);
+
+        List<Vector3> path = new List<Vector3>();
+        Vector3 current = start;
+        path.Add(current);
+
+        while(current != end) {
+            List<Vector3> voisins = GetVoisinsNoObstacles(current);
+            List<Vector3> nearestVoisins = new List<Vector3>();
+            float currentDist = Vector3.Distance(current, end);
+            foreach(Vector3 voisin in voisins) {
+                if (Vector3.Distance(voisin, end) < currentDist)
+                    nearestVoisins.Add(voisin);
+            }
+            if (bIsRandom)
+                MathTools.Shuffle(nearestVoisins);
+            current = nearestVoisins[0];
+            path.Add(current);
+        }
+
+        return path;
     }
 
     public List<Vector3> GetPath(Vector3 start, Vector3 end, List<Vector3> posToDodge, bool bIsRandom = false) {

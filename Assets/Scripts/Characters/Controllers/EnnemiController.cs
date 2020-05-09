@@ -14,7 +14,7 @@ public abstract class EnnemiController : IController {
     }
 
     // Permet de savoir si l'ennemi voit le joueur
-    public bool IsPlayerVisible() {
+    public virtual bool IsPlayerVisible() {
         // Si l'ennemie est suffisament proche et qu'il est visible !
         RaycastHit hit;
         Ray ray = new Ray (transform.position, player.transform.position - transform.position);

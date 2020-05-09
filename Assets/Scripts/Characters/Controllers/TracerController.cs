@@ -85,7 +85,7 @@ public class TracerController : EnnemiController {
         ComputePath(player.transform.position);
     }
 
-    void ComputePath(Vector3 end) {
+    protected virtual void ComputePath(Vector3 end) {
         Vector3 start = MathTools.Round(transform.position);
         end = MathTools.Round(end);
         List<Vector3> posToDodge = gm.ennemiManager.GetAllRoundedEnnemisPositions();
