@@ -74,11 +74,17 @@ public class EnnemiManager : MonoBehaviour {
 
         gm.historyManager.AddEnnemiHistory(ennemi);
 
-        // For bosses ! :D
-        Ennemi[] childEnnemis = ennemi.gameObject.GetComponentsInChildren<Ennemi>();
-        foreach (Ennemi child in childEnnemis)
-            gm.historyManager.AddEnnemiHistory(child);
+        //// For bosses ! :D
+        //Ennemi[] childEnnemis = ennemi.gameObject.GetComponentsInChildren<Ennemi>();
+        //foreach (Ennemi child in childEnnemis)
+        //    gm.historyManager.AddEnnemiHistory(child);
 
+        return ennemi;
+    }
+
+    public Ennemi RegisterAlreadyExistingEnnemi(Ennemi ennemi) {
+        ennemis.Add(ennemi);
+        gm.historyManager.AddEnnemiHistory(ennemi);
         return ennemi;
     }
 

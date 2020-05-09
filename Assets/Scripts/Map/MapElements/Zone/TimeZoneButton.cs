@@ -8,6 +8,7 @@ public class TimeZoneButton : IZone {
     public float rayon = 1.5f;
     public float durationToActivate = 3.0f;
     public bool shouldPopCubeInCenter = true;
+    public bool autoDestroyOnActivate = false;
     public UnityEvent events; // C'est déjà une liste !
 
     protected Coroutine coroutine = null;
@@ -60,6 +61,8 @@ public class TimeZoneButton : IZone {
 
     public void CallAllEvents() {
         events.Invoke();
+        if (autoDestroyOnActivate)
+            Destroy(transform.parent.gameObject); // Attention ça c'est du au fait qu'on a un composant inutile pour les TimeZoneButtons !
     }
 
     protected override void OnExit(Collider other) {

@@ -10,7 +10,6 @@ public abstract class Ennemi : Character {
 
 	protected GameManager gm;
 	protected Player player;
-	protected float vitesse;
     protected Timer timerHit;
     protected Timer timerHitDamages;
 
@@ -38,15 +37,16 @@ public abstract class Ennemi : Character {
 
     public abstract void UpdateSpecific();
 
-    protected virtual void HitPlayer() {
+    protected virtual void HitPlayer(bool useCustomTimeMalus = false, float customTimeMalus = 0.0f) {
         HitContinuousPlayerSpecific();
+        float timeMalusToUse = useCustomTimeMalus ? customTimeMalus : timeMalusOnHit;
         if(timerHit.IsOver()) {
             timerHit.Reset();
 
             HitPlayerSpecific();
             if (timerHitDamages.IsOver()) {
                 timerHitDamages.Reset();
-                gm.timerManager.AddTime(-timeMalusOnHit);
+                gm.timerManager.AddTime(-timeMalusToUse);
             }
             DisplayHitMessage();
             PlayHitSound();

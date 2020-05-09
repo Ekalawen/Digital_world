@@ -4,21 +4,34 @@ using UnityEngine;
 
 public class FirstBoss : Sonde {
 
-    public float periodeAttacks = 2.0f;
+    public Transform componentsFolder;
+    public float attackDelay = 0.5f;
+    public float attackRate = 99999f;
+    public float attackRatePhase2 = 0.5f;
     public GameObject attacksPrefab;
+    public float explosionAttackStandardDelay = 3.8f;
+    public float explosionAttackDelay = 3.8f;
+    public float explosionAttackTotalTime = 7.0f;
+    public float explosionAttackDistance = 5.5f;
+    public float explosionAttackDamage = 100f;
+    public GameObject explosionAttackParticulesPrefab;
+    public GameObject timeZonePhase2, timeZonePhase3;
 
     protected List<Sonde> satellites;
     protected Timer timerAttacks;
     protected Transform projectilesFolder;
+    protected List<Coroutine> coroutinesOfNextAttacks;
 
 	public override void Start () {
         base.Start();
         name = "FirstBoss";
-        satellites = new List<Sonde>(GetComponentsInChildren<Sonde>());
-        satellites.Remove(this);
-        timerAttacks = new Timer(periodeAttacks);
         projectilesFolder = new GameObject("Projectiles").transform;
         projectilesFolder.transform.parent = transform;
+        coroutinesOfNextAttacks = new List<Coroutine>();
+        satellites = new List<Sonde>(GetComponentsInChildren<Sonde>());
+        satellites.Remove(this);
+        timerAttacks = new Timer(attackRate);
+        SetSatellitesActivation(false);
     }
 
     public override void UpdateSpecific () {
@@ -27,22 +40,128 @@ public class FirstBoss : Sonde {
         if (Time.timeSinceLevelLoad < GetComponent<IController>().tempsInactifDebutJeu)
             return;
 
-        if (timerAttacks.IsOver()) {
-            timerAttacks.Reset();
-            Attack();
-        }
+        Attack();
 	}
 
     public void Attack() {
-        //Sonde sonde = satellites[Random.Range(0, satellites.Count)];
-        //satellites.Remove(sonde);
-        //Destroy(sonde.GetComponent<IController>());
-        //GoToDirectionController newController = sonde.gameObject.AddComponent<GoToDirectionController>();
-        //newController.direction = player.transform.position - sonde.transform.position;
-        //newController.vitesse = attacksVitesse;
-        Vector3 direction = (player.transform.position - transform.position).normalized;
-        Vector3 spawn = transform.position + direction * transform.localScale[0];
-        GoToDirectionController projectile = Instantiate(attacksPrefab, spawn, Quaternion.identity, projectilesFolder).GetComponent<GoToDirectionController>();
+        if (timerAttacks.IsOver()) {
+            timerAttacks.Reset();
+            Vector3 direction = (player.transform.position - transform.position).normalized;
+            coroutinesOfNextAttacks.Add(StartCoroutine(CAttackInDelay(direction)));
+        }
+    }
+
+    protected IEnumerator CAttackInDelay(Vector3 direction) {
+        yield return new WaitForSeconds(attackDelay);
+        Vector3 spawn = transform.position + direction * (transform.localScale[0] / 2.0f + 0.55f);
+        Ennemi attack = gm.ennemiManager.GenerateEnnemiFromPrefab(attacksPrefab, spawn);
+        attack.transform.parent = projectilesFolder;
+        GoToDirectionController projectile = attack.GetComponent<GoToDirectionController>();
         projectile.direction = direction;
+    }
+
+    public void SetAttackRate(float newAttackRate) {
+        foreach(Coroutine coroutine in coroutinesOfNextAttacks) {
+            if (coroutine != null) {
+                StopCoroutine(coroutine);
+            }
+        }
+        coroutinesOfNextAttacks.Clear();
+        timerAttacks = new Timer(newAttackRate);
+    }
+
+    public void SetSatellitesActivation(bool activation) {
+        if (!activation) {
+            foreach (Sonde satellite in satellites)
+                satellite.gameObject.SetActive(activation);
+        } else {
+            StartCoroutine(CActivateSatellitesProgressively());
+        }
+    }
+
+    protected IEnumerator CActivateSatellitesProgressively() {
+        foreach (Sonde satellite in satellites) {
+            satellite.gameObject.SetActive(true);
+            gm.ennemiManager.RegisterAlreadyExistingEnnemi(satellite);
+            yield return new WaitForEndOfFrame();
+            yield return new WaitForEndOfFrame();
+        }
+    }
+
+    public void GoToPhase2() {
+        StartCoroutine(CGoToPhase2());
+    }
+    protected IEnumerator CGoToPhase2() {
+        yield return StartCoroutine(ExplosionAttack());
+        SetAttackRate(attackRatePhase2);
+        timeZonePhase3.SetActive(true);
+    }
+
+    public void GoToPhase3() {
+        StartCoroutine(CGoToPhase3());
+    }
+    public IEnumerator CGoToPhase3() {
+        SetAttackRate(attackRate);
+        yield return StartCoroutine(ExplosionAttack());
+        SetAttackRate(attackRatePhase2);
+        SetSatellitesActivation(true);
+    }
+
+    public IEnumerator ExplosionAttack() {
+        // Start decreasing
+        PlayParticles();
+        // Play SOUND here !!!
+        IController controller = GetComponent<IController>();
+        float oldVitesse = controller.vitesse;
+        controller.vitesse = 0.0f;
+
+        // Wait until end of decreasing ...
+        yield return new WaitForSeconds(explosionAttackDelay);
+
+        // Increasing !!! Explosion !!!
+        Timer timer = new Timer(explosionAttackTotalTime - explosionAttackDelay);
+        while(!timer.IsOver()) {
+            if (Vector3.Distance(player.transform.position, transform.position) <= explosionAttackDistance)
+                HitPlayer(useCustomTimeMalus: true, explosionAttackDamage);
+            List<Cube> nearCubes = gm.map.GetCubesInSphere(transform.position, explosionAttackDistance);
+            foreach (Cube cube in nearCubes) {
+                if(cube != null)
+                    cube.Explode();
+            }
+            yield return null;
+        }
+
+        // End of explosion
+        controller.vitesse = oldVitesse;
+    }
+
+    protected void PlayParticles() {
+        GameObject go = Instantiate(explosionAttackParticulesPrefab, transform.position, Quaternion.identity, componentsFolder);
+        //// Set time of first part
+        //float acceleration = explosionAttackDelay / explosionAttackStandardDelay;
+        //GameObject decreasingBall = go.transform.Find("DecreasingBall").gameObject;
+        //ParticleSystem[] decreasingParticles = decreasingBall.GetComponentsInChildren<ParticleSystem>();
+        //for (int i = 0; i < decreasingParticles.Length; i++)
+        //{
+        //    ParticleSystem ps = decreasingParticles[i];
+        //    ps.Stop();
+        //    ParticleSystem.MainModule main = ps.main;
+        //    main.duration = main.duration * acceleration; // On peut pas modifier la duration pendant que le système joue !
+        //    ps.Play();
+        //}
+
+        //// Set time of second part
+        //GameObject increasingBall = go.transform.Find("IncreasingBall").gameObject;
+        //ParticleSystem[] increasingParticles = increasingBall.GetComponentsInChildren<ParticleSystem>();
+        //for (int i = 0; i < decreasingParticles.Length; i++)
+        //{
+        //    ParticleSystem ps = decreasingParticles[i];
+        //    ps.Stop();
+        //    ParticleSystem.MainModule main = ps.main;
+        //    main.startDelay = explosionAttackDelay;
+        //    ps.Play();
+        //}
+
+        Destroy(go, explosionAttackTotalTime * 2);
     }
 }

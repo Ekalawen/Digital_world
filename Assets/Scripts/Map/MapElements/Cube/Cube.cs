@@ -51,6 +51,7 @@ public class Cube : MonoBehaviour {
     }
 
     public void Explode() {
+        gm = GameManager.Instance; // Sinon peut y avoir un bug si on essaie de le détruire dans la même frame que lorsqu'il est crée ! (Le Start a pas le temps de s'éxécuter :'()
         GameObject go = Instantiate(explosionParticlesPrefab, transform.position, Quaternion.identity);
         go.transform.up = gm.gravityManager.Up();
         ParticleSystem particle = go.GetComponent<ParticleSystem>();

@@ -96,8 +96,10 @@ public class HistoryManager : MonoBehaviour {
         if(!gm.eventManager.IsWin() && echantillonnageTimer.IsOver()) {
             for(int i = 0; i < ennemisHistory.Count; i++) {
                 ObjectHistory ch = ennemisHistory[i];
-                TimedVector3 tpos = new TimedVector3(ch.obj.transform.position, gm.timerManager.GetElapsedTime());
-                ch.positions.Add(tpos);
+                if (ch.obj != null) { // Il est maintenant possible que certains ennemis soient détruits ! ==> peut engendrer des bugs !
+                    TimedVector3 tpos = new TimedVector3(ch.obj.transform.position, gm.timerManager.GetElapsedTime());
+                    ch.positions.Add(tpos);
+                }
             }
         }
     }

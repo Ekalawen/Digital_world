@@ -72,11 +72,12 @@ public class PouvoirRollback : IPouvoir {
         playerCurve = CreateReversedLastRelevantCurveFromHistory(gm.historyManager.GetPlayerHistory());
         if (shouldRevertEnnemis) {
             ennemisCurves = new List<EnnemiCurve>();
-            foreach (ObjectHistory ennemiHistory in gm.historyManager.GetEnnemisHistory())
-            {
-                Curve curve = CreateReversedLastRelevantCurveFromHistory(ennemiHistory);
-                Ennemi ennemi = ennemiHistory.obj.GetComponent<Ennemi>();
-                ennemisCurves.Add(new EnnemiCurve(ennemi, curve));
+            foreach (ObjectHistory ennemiHistory in gm.historyManager.GetEnnemisHistory()) {
+                if (ennemiHistory.obj != null) {
+                    Curve curve = CreateReversedLastRelevantCurveFromHistory(ennemiHistory);
+                    Ennemi ennemi = ennemiHistory.obj.GetComponent<Ennemi>();
+                    ennemisCurves.Add(new EnnemiCurve(ennemi, curve));
+                }
             }
         }
 
