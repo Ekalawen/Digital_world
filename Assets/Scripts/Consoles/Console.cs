@@ -185,6 +185,18 @@ public class Console : MonoBehaviour {
 		timeLastLumiereAttrapee = Time.timeSinceLevelLoad;
 	}
 
+    public void AjouterMessageImportant(
+        TimedMessage timedMessage,
+        bool bAfficherInConsole = true,
+        string messageToReplace ="") {
+        AjouterMessageImportant(
+            timedMessage.message,
+            timedMessage.type,
+            timedMessage.duree,
+            bAfficherInConsole,
+            messageToReplace);
+    }
+
 	public void AjouterMessageImportant(
         string message,
         TypeText type,
@@ -248,6 +260,16 @@ public class Console : MonoBehaviour {
     public List<string> GetImportantTextLines() {
         return importantText.text.Split('\n').OfType<string>().ToList();
     }
+
+    public void AjouterMessage(
+        TimedMessage timedMessage,
+        bool bUsePrefix = true) {
+        AjouterMessage(
+            timedMessage.message,
+            timedMessage.type,
+            bUsePrefix);
+    }
+
 
 	public void AjouterMessage(string message, TypeText type, bool bUsePrefix = true) {
         // On préfixe ! :)

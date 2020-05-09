@@ -13,7 +13,11 @@ public class GoToDirectionController : IController {
 
         // Si on est trop loin du jeu on s'auto-détruit ! :)
         if(Vector3.Distance(transform.position, gm.map.GetCenter()) >= distanceBeforeDestruction) {
-            Destroy(gameObject);
+            Ennemi ennemi = GetComponent<Ennemi>();
+            if (ennemi != null)
+                ennemi.Destroy();
+            else
+                Destroy(gameObject);
         }
     }
 

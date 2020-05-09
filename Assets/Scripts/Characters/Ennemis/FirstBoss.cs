@@ -6,8 +6,7 @@ public class FirstBoss : Sonde {
 
     public Transform componentsFolder;
     public float attackDelay = 0.5f;
-    public float attackRate = 99999f;
-    public float attackRatePhase2 = 0.5f;
+    public List<float> attackRateByPhases;
     public GameObject attacksPrefab;
     public float explosionAttackStandardDelay = 3.8f;
     public float explosionAttackDelay = 3.8f;
@@ -16,11 +15,14 @@ public class FirstBoss : Sonde {
     public float explosionAttackDamage = 100f;
     public GameObject explosionAttackParticulesPrefab;
     public GameObject timeZonePhase2, timeZonePhase3;
+    public List<float> esperanceApparitionRandomFillingByPhases;
+    public GameObject generateRandomFillingEventPrefab;
 
     protected List<Sonde> satellites;
     protected Timer timerAttacks;
     protected Transform projectilesFolder;
     protected List<Coroutine> coroutinesOfNextAttacks;
+    protected RandomEvent randomEventToRemove = null;
 
 	public override void Start () {
         base.Start();
@@ -30,8 +32,8 @@ public class FirstBoss : Sonde {
         coroutinesOfNextAttacks = new List<Coroutine>();
         satellites = new List<Sonde>(GetComponentsInChildren<Sonde>());
         satellites.Remove(this);
-        timerAttacks = new Timer(attackRate);
         SetSatellitesActivation(false);
+        GoToPhase1();
     }
 
     public override void UpdateSpecific () {
@@ -70,6 +72,10 @@ public class FirstBoss : Sonde {
         timerAttacks = new Timer(newAttackRate);
     }
 
+    public void UpdateAttackRate(int phaseIndice) {
+        SetAttackRate(attackRateByPhases[phaseIndice - 1]);
+    }
+
     public void SetSatellitesActivation(bool activation) {
         if (!activation) {
             foreach (Sonde satellite in satellites)
@@ -88,23 +94,37 @@ public class FirstBoss : Sonde {
         }
     }
 
+    protected void UpdateRandomEvent(int phaseIndice) {
+        gm.eventManager.RemoveEvent(randomEventToRemove);
+        RandomEvent randomEvent = gm.eventManager.AddEvent(generateRandomFillingEventPrefab);
+        randomEvent.esperanceApparition = esperanceApparitionRandomFillingByPhases[phaseIndice - 1];
+        randomEventToRemove = randomEvent;
+    }
+
+    public void GoToPhase1() {
+        UpdateRandomEvent(phaseIndice: 1);
+        UpdateAttackRate(phaseIndice: 1);
+    }
+
     public void GoToPhase2() {
         StartCoroutine(CGoToPhase2());
     }
     protected IEnumerator CGoToPhase2() {
         yield return StartCoroutine(ExplosionAttack());
-        SetAttackRate(attackRatePhase2);
         timeZonePhase3.SetActive(true);
+        UpdateAttackRate(phaseIndice: 2);
+        UpdateRandomEvent(phaseIndice: 2);
     }
 
     public void GoToPhase3() {
         StartCoroutine(CGoToPhase3());
     }
     public IEnumerator CGoToPhase3() {
-        SetAttackRate(attackRate);
+        SetAttackRate(99999);
         yield return StartCoroutine(ExplosionAttack());
-        SetAttackRate(attackRatePhase2);
         SetSatellitesActivation(true);
+        UpdateAttackRate(phaseIndice: 3);
+        UpdateRandomEvent(phaseIndice: 3);
     }
 
     public IEnumerator ExplosionAttack() {

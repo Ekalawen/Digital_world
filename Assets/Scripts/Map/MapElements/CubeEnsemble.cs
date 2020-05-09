@@ -28,4 +28,10 @@ public abstract class CubeEnsemble : MapElement {
     public override void OnDeleteCube(Cube cube) {
         cubes.Remove(cube);
     }
+
+    public void RegisterToColorSources() {
+        foreach (Cube cube in cubes)
+            cube.shouldRegisterToColorSources = true;
+            //cube.RegisterCubeToColorSources();
+    }
 }

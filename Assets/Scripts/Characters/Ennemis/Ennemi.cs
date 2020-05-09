@@ -79,4 +79,9 @@ public abstract class Ennemi : Character {
         IController controller = GetComponent<IController>();
         return controller.IsInactive();
     }
+
+    public void Destroy() {
+        gm.ennemiManager.RemoveEnnemi(this);
+        Destroy(gameObject);
+    }
 }

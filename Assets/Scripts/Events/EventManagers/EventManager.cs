@@ -36,11 +36,21 @@ public class EventManager : MonoBehaviour {
         randomEventsFolder = new GameObject("Events");
 
         randomEvents = new List<RandomEvent>();
-        foreach (GameObject randomEventPrefab in randomEventsPrefabs)
-        {
-            RandomEvent randomEvent = Instantiate(randomEventPrefab, randomEventsFolder.transform).GetComponent<RandomEvent>();
-            randomEvents.Add(randomEvent);
+        foreach (GameObject randomEventPrefab in randomEventsPrefabs) {
+            AddEvent(randomEventPrefab);
         }
+    }
+
+    public RandomEvent AddEvent(GameObject randomEventPrefab) {
+        RandomEvent randomEvent = Instantiate(randomEventPrefab, randomEventsFolder.transform).GetComponent<RandomEvent>();
+        randomEvents.Add(randomEvent);
+        return randomEvent;
+    }
+
+    public void RemoveEvent(RandomEvent randomEvent) {
+        randomEvents.Remove(randomEvent);
+        if(randomEvent != null)
+            Destroy(randomEvent.gameObject);
     }
 
     public virtual void OnLumiereCaptured(Lumiere.LumiereType type)

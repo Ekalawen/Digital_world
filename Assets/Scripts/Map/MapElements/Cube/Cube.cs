@@ -20,7 +20,7 @@ public class Cube : MonoBehaviour {
             RegisterCubeToColorSources();
     }
 
-    protected virtual void RegisterCubeToColorSources() {
+    public virtual void RegisterCubeToColorSources() {
         ColorManager colorManager = gm.colorManager;
         SetColor(Color.black);
         foreach(ColorSource colorSource in colorManager.sources) {

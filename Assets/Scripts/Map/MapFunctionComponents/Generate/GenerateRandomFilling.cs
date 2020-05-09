@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using System.Diagnostics;
 
 public class GenerateRandomFilling : GenerateCubesMapFunction {
 
     public float minDistanceRandomFilling = 1f;
+    public bool useAllEmptyPositionsInstead = false;
     public float proportionRandomFilling = 0.02f;
     public int sizeCubeRandomFilling = 1; // Ca peut être intéressant d'augmenter cette taille ! :)
+    public bool registerToColorSources = false;
 
     public override void Activate() {
         GenerateRandomFillingCubes();
@@ -15,11 +18,17 @@ public class GenerateRandomFilling : GenerateCubesMapFunction {
 
     protected List<FullBlock> GenerateRandomFillingCubes() {
         List<FullBlock> fullBlocks = new List<FullBlock>();
-        List<Vector3> farAwayPos = GetFarAwayPositions();
+        List<Vector3> farAwayPos = null;
+        if (useAllEmptyPositionsInstead)
+            farAwayPos = gm.map.GetAllEmptyPositions();
+        else
+            farAwayPos = GetFarAwayPositions();
         List<Vector3> selectedPos = GaussianGenerator.SelectSomeProportionOfNaiveMethod<Vector3>(farAwayPos, proportionRandomFilling);
         foreach(Vector3 pos in selectedPos) {
             Vector3 finalPos = pos - Vector3.one * (int)Mathf.Floor(sizeCubeRandomFilling / 2.0f);
             FullBlock fb = new FullBlock(finalPos, Vector3Int.one * sizeCubeRandomFilling);
+            if (registerToColorSources)
+                fb.RegisterToColorSources();
             fullBlocks.Add(fb);
         }
         return fullBlocks;

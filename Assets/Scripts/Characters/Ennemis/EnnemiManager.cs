@@ -92,4 +92,8 @@ public class EnnemiManager : MonoBehaviour {
         Vector3 pos = gm.map.GetFreeRoundedLocation();
         return GenerateEnnemiFromPrefab(ennemiPrefab, pos);
     }
+
+    public void RemoveEnnemi(Ennemi ennemi) {
+        ennemis.Remove(ennemi);
+    }
 }
