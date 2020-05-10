@@ -121,7 +121,7 @@ public class FirstBoss : Sonde {
         gm.console.PouvoirsDesactives();
         gm.itemManager.RemoveAllPouvoirsGivers();
         gm.player.RemoveAllPouvoirs();
-        gm.player.SetNbDoubleJumps(0);
+        //gm.player.SetNbDoubleJumps(0); // C'est la seule façon de s'en sortir du joueur au stade 4 :)
         gm.player.SetPouvoir(pouvoirLocalisationPrefab, PouvoirGiverItem.PouvoirBinding.E);
     }
 
