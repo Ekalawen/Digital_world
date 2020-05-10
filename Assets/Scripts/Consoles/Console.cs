@@ -662,8 +662,13 @@ public class Console : MonoBehaviour {
         AjouterMessage("Tu peux utiliser le pouvoir " + pouvoirName + " en appuyant sur " + strBinding + " !", TypeText.ALLY_TEXT);
     }
 
-    public void FirstBossChangementDePhase(int newPhaseIndice) {
-        AjouterMessageImportant("Loading phase " + newPhaseIndice + " !", TypeText.ENNEMI_TEXT, 3, bAfficherInConsole: true);
+    public void FirstBossChangementDePhase(int newPhaseIndice, float duree) {
+        StartCoroutine(CFirstBossChangementDePhase(newPhaseIndice, duree));
+    }
+    protected IEnumerator CFirstBossChangementDePhase(int newPhaseIndice, float duree) {
+        AjouterMessageImportant("Loading phase " + newPhaseIndice + " ...", TypeText.ENNEMI_TEXT, duree, bAfficherInConsole: true);
+        yield return new WaitForSeconds(duree);
+        AjouterMessageImportant("Phase " + newPhaseIndice + " chargé !", TypeText.ENNEMI_TEXT, 2, bAfficherInConsole: true);
     }
 
     public void InitPouvoirsDisplays() {

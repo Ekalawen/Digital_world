@@ -109,7 +109,7 @@ public class FirstBoss : Sonde {
     }
 
     protected void UpdateConsoleMessage(int phaseIndice) {
-        gm.console.FirstBossChangementDePhase(phaseIndice);
+        gm.console.FirstBossChangementDePhase(phaseIndice, explosionAttackTotalTime);
     }
 
     protected void AddTimeItem() {
@@ -135,7 +135,6 @@ public class FirstBoss : Sonde {
         UpdateRandomEvent(phaseIndice: 1);
         UpdateAttackRate(phaseIndice: 1);
         UpdateTimeZone(phaseIndice: 1);
-        UpdateConsoleMessage(phaseIndice: 1);
     }
 
     public void GoToPhase2() {
@@ -237,5 +236,14 @@ public class FirstBoss : Sonde {
 
     public override Vector3 PopPosition(MapManager map) {
         return map.GetFreeSphereLocation(2.5f);
+    }
+
+    public override bool IsMoving() {
+        SondeController sondeController = GetComponent<SondeController>();
+        return Time.timeSinceLevelLoad >= sondeController.tempsInactifDebutJeu;
+    }
+
+    public override bool IsInactive() {
+        return !IsMoving();
     }
 }

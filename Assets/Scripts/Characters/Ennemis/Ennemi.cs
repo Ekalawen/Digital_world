@@ -69,13 +69,13 @@ public abstract class Ennemi : Character {
     protected abstract void HitContinuousPlayerSpecific();
 
 	// Permet de savoir si l'ennemi est en mouvement
-	public bool IsMoving() {
+	public virtual bool IsMoving() {
         IController controller = GetComponent<IController>();
         return controller.IsMoving();
 	}
 
 	// Permet de savoir si l'ennemi ne bouge pas
-    public bool IsInactive() {
+    public virtual bool IsInactive() {
         IController controller = GetComponent<IController>();
         return controller.IsInactive();
     }
