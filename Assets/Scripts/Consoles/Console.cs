@@ -108,6 +108,12 @@ public class Console : MonoBehaviour {
 		//AjouterMessage ("On détecte " + gm.ennemiManager.ennemis.Count + " Ennemis !", TypeText.ALLY_TEXT);
 	}
 
+    public void PouvoirsDesactives() {
+		AjouterMessageImportant ("Pouvoirs Désactivés !", TypeText.ALLY_TEXT, 5);
+		AjouterMessageImportant ("Pouvoirs Désactivés !", TypeText.ENNEMI_TEXT, 5);
+		AjouterMessageImportant ("Pouvoirs Désactivés !", TypeText.BASIC_TEXT, 5);
+    }
+
     protected void LancerConseils() {
         if (timerConseiller.IsOver()) {
             Conseiller();

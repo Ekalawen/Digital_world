@@ -21,6 +21,8 @@ public class FirstBoss : Sonde {
     public GameObject generateRandomFillingEventPrefab;
     public IController sondeController;
     public IController tracerController;
+    public GameObject itemToPopPrefab;
+    public int nbLumieres = 15;
 
     protected List<Sonde> satellites;
     protected Timer timerAttacks;
@@ -113,6 +115,24 @@ public class FirstBoss : Sonde {
         gm.console.FirstBossChangementDePhase(phaseIndice);
     }
 
+    protected void AddTimeItem() {
+        gm.itemManager.PopItem(itemToPopPrefab);
+    }
+
+    protected void RemovePouvoirs() {
+        gm.console.PouvoirsDesactives();
+        gm.player.FreezePouvoirs();
+        gm.player.SetNbDoubleJumps(0);
+    }
+
+    protected void PopAllDatas() {
+        FixNbLumieres fixNbLumieres = gm.map.gameObject.AddComponent<FixNbLumieres>();
+        fixNbLumieres.lumiereType = Lumiere.LumiereType.NORMAL;
+        gm.map.nbLumieresInitial = nbLumieres;
+        fixNbLumieres.Initialize();
+        fixNbLumieres.Activate();
+    }
+
     public void GoToPhase1() {
         UpdateRandomEvent(phaseIndice: 1);
         UpdateAttackRate(phaseIndice: 1);
@@ -125,6 +145,7 @@ public class FirstBoss : Sonde {
     }
     protected IEnumerator CGoToPhase2() {
         UpdateConsoleMessage(phaseIndice: 2);
+        AddTimeItem();
         yield return StartCoroutine(CExplosionAttackNormale());
         UpdateTimeZone(phaseIndice: 2);
         UpdateAttackRate(phaseIndice: 2);
@@ -137,6 +158,7 @@ public class FirstBoss : Sonde {
     public IEnumerator CGoToPhase3() {
         SetAttackRate(99999);
         UpdateConsoleMessage(phaseIndice: 3);
+        AddTimeItem();
         yield return StartCoroutine(CExplosionAttackNormale());
         SetSatellitesActivation(true);
         UpdateTimeZone(phaseIndice: 3);
@@ -148,9 +170,12 @@ public class FirstBoss : Sonde {
         StartCoroutine(CGoToPhase4());
     }
     public IEnumerator CGoToPhase4() {
-        UpdateConsoleMessage(phaseIndice: 4);
         SetAttackRate(99999);
+        UpdateConsoleMessage(phaseIndice: 4);
+        AddTimeItem();
         yield return StartCoroutine(CExplosionAttackNormale());
+        RemovePouvoirs();
+        PopAllDatas();
         UpdateAttackRate(phaseIndice: 4);
         UpdateRandomEvent(phaseIndice: 4);
         SwapControllers();

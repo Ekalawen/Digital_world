@@ -46,6 +46,8 @@ public abstract class IPouvoir : MonoBehaviour {
             } else {
                 gm.soundManager.PlayDeniedPouvoirClip();
             }
+        } else {
+            gm.soundManager.PlayDeniedPouvoirClip();
         }
     }
 

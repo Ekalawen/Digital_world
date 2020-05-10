@@ -672,6 +672,10 @@ public class Player : Character {
         nbDoublesSautsMax += nbToAdd;
     }
 
+    public void SetNbDoubleJumps(int nbDoubleJumps) {
+        nbDoublesSautsMax = nbDoubleJumps;
+    }
+
     public IPouvoir GetPouvoirA() {
         return pouvoirA;
     }
