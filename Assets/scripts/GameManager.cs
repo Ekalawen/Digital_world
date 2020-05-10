@@ -141,7 +141,23 @@ public class GameManager : MonoBehaviour {
 			partieDejaTerminee = true;
 			StartCoroutine (QuitInSeconds(7));
 		}
+
+        // On a un cheat code qui nous permet d'instantanément gagner la partie !
+        TestCheatCodeWinGame();
 	}
+
+    protected int cheatCodeState = 0;
+    protected void TestCheatCodeWinGame() {
+        if(Input.GetKeyDown(KeyCode.Keypad7) && cheatCodeState == 0) {
+            cheatCodeState = 1;
+        } else if (Input.GetKeyDown(KeyCode.Keypad8) && cheatCodeState == 1) {
+            cheatCodeState = 2;
+        } else if (Input.GetKeyDown(KeyCode.Keypad9) && cheatCodeState == 2) {
+            eventManager.WinGame();
+        } else if (Input.anyKeyDown) {
+            cheatCodeState = 0;
+        }
+    }
 
     public IEnumerator QuitInSeconds(int tps) {
 		yield return new WaitForSeconds (tps);

@@ -663,7 +663,7 @@ public class Console : MonoBehaviour {
     }
 
     public void FirstBossChangementDePhase(int newPhaseIndice) {
-        AjouterMessageImportant("Loading phase " + newPhaseIndice + " !", TypeText.ENNEMI_TEXT, 2, bAfficherInConsole: true);
+        AjouterMessageImportant("Loading phase " + newPhaseIndice + " !", TypeText.ENNEMI_TEXT, 3, bAfficherInConsole: true);
     }
 
     public void InitPouvoirsDisplays() {

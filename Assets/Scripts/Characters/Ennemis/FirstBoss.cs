@@ -26,15 +26,12 @@ public class FirstBoss : Sonde {
 
     protected List<Sonde> satellites;
     protected Timer timerAttacks;
-    protected Transform projectilesFolder;
     protected List<Coroutine> coroutinesOfNextAttacks;
     protected RandomEvent randomEventToRemove = null;
 
 	public override void Start () {
         base.Start();
         name = "FirstBoss";
-        projectilesFolder = new GameObject("Projectiles").transform;
-        projectilesFolder.transform.parent = transform;
         coroutinesOfNextAttacks = new List<Coroutine>();
         satellites = new List<Sonde>(GetComponentsInChildren<Sonde>());
         satellites.Remove(this);
@@ -64,7 +61,6 @@ public class FirstBoss : Sonde {
         yield return new WaitForSeconds(attackDelay);
         Vector3 spawn = transform.position + direction * (transform.localScale[0] / 2.0f + 0.55f);
         Ennemi attack = gm.ennemiManager.GenerateEnnemiFromPrefab(attacksPrefab, spawn);
-        attack.transform.parent = projectilesFolder;
         GoToDirectionController projectile = attack.GetComponent<GoToDirectionController>();
         projectile.direction = direction;
     }
