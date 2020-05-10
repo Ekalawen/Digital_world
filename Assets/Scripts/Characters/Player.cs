@@ -127,18 +127,18 @@ public class Player : Character {
     }
 
     public void SetPouvoir(GameObject pouvoirPrefab, PouvoirGiverItem.PouvoirBinding pouvoirBinding) {
-        switch(pouvoirBinding) {
+        switch (pouvoirBinding) {
             case PouvoirGiverItem.PouvoirBinding.A:
-                pouvoirA = Instantiate(pouvoirPrefab, parent: this.transform).GetComponent<IPouvoir>();
+                pouvoirA = pouvoirPrefab == null ? null : Instantiate(pouvoirPrefab, parent: this.transform).GetComponent<IPouvoir>();
                 break;
             case PouvoirGiverItem.PouvoirBinding.E:
-                pouvoirE = Instantiate(pouvoirPrefab, parent: this.transform).GetComponent<IPouvoir>();
+                pouvoirE = pouvoirPrefab == null ? null : Instantiate(pouvoirPrefab, parent: this.transform).GetComponent<IPouvoir>();
                 break;
             case PouvoirGiverItem.PouvoirBinding.LEFT_CLICK:
-                pouvoirLeftBouton = Instantiate(pouvoirPrefab, parent: this.transform).GetComponent<IPouvoir>();
+                pouvoirLeftBouton = pouvoirPrefab == null ? null : Instantiate(pouvoirPrefab, parent: this.transform).GetComponent<IPouvoir>();
                 break;
             case PouvoirGiverItem.PouvoirBinding.RIGHT_CLICK:
-                pouvoirRightBouton = Instantiate(pouvoirPrefab, parent: this.transform).GetComponent<IPouvoir>();
+                pouvoirRightBouton = pouvoirPrefab == null ? null : Instantiate(pouvoirPrefab, parent: this.transform).GetComponent<IPouvoir>();
                 break;
         }
         gm.console.InitPouvoirsDisplays();
@@ -624,6 +624,13 @@ public class Player : Character {
         pouvoirE?.FreezePouvoir(value);
         pouvoirLeftBouton?.FreezePouvoir(value);
         pouvoirRightBouton?.FreezePouvoir(value);
+    }
+
+    public void RemoveAllPouvoirs() {
+        SetPouvoir(null, PouvoirGiverItem.PouvoirBinding.A);
+        SetPouvoir(null, PouvoirGiverItem.PouvoirBinding.E);
+        SetPouvoir(null, PouvoirGiverItem.PouvoirBinding.LEFT_CLICK);
+        SetPouvoir(null, PouvoirGiverItem.PouvoirBinding.RIGHT_CLICK);
     }
 
     public bool CanUseLocalisation() {

@@ -23,6 +23,7 @@ public class FirstBoss : Sonde {
     public IController tracerController;
     public GameObject itemToPopPrefab;
     public int nbLumieres = 15;
+    public GameObject pouvoirLocalisationPrefab;
 
     protected List<Sonde> satellites;
     protected Timer timerAttacks;
@@ -119,8 +120,9 @@ public class FirstBoss : Sonde {
     protected void RemovePouvoirs() {
         gm.console.PouvoirsDesactives();
         gm.itemManager.RemoveAllPouvoirsGivers();
-        gm.player.FreezePouvoirs();
+        gm.player.RemoveAllPouvoirs();
         gm.player.SetNbDoubleJumps(0);
+        gm.player.SetPouvoir(pouvoirLocalisationPrefab, PouvoirGiverItem.PouvoirBinding.E);
     }
 
     protected void PopAllDatas() {
