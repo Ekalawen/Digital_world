@@ -15,6 +15,8 @@ public class SoundManager : MonoBehaviour {
     public AudioClipParams hitTracerClips;
     public AudioClipParams emissionTracerClips;
     public AudioClipParams firstBossPresenceClips;
+    public AudioClipParams firstBossDecreasingBall;
+    public AudioClipParams firstBossIncreasingBall;
     public AudioClipParams detectionClips;
     public AudioClipParams timeOutClips;
     public AudioClipParams receivedMessageClips;
@@ -129,6 +131,12 @@ public class SoundManager : MonoBehaviour {
     public void PlayHitTracerClip(Vector3 pos, Transform parent) {
         PlayClipsOnSource(hitTracerClips, pos, parent);
     }
+    public void PlayDecreasingBallFirstBoss(Vector3 pos, float duration) {
+        PlayClipsOnSource(firstBossDecreasingBall, pos, null, duration);
+    }
+    public void PlayIncreasingBallFirstBoss(Vector3 pos, float duration) {
+        PlayClipsOnSource(firstBossIncreasingBall, pos, null, duration);
+    }
     public void PlayGetLumiereClip(Vector3 pos) {
         //source.spatialBlend = 1.0f;
         PlayClipsOnSource(getLumiereClips, pos);
@@ -169,7 +177,12 @@ public class SoundManager : MonoBehaviour {
     }
 
     //protected void PlayClipsOnSource(List<AudioClip> clips, AudioSource source, bool bReverse = false) {
-    protected AudioSource PlayClipsOnSource(AudioClipParams audioClipParams, Vector3 pos = new Vector3(), Transform parent = null) {
+    protected AudioSource PlayClipsOnSource(
+        AudioClipParams audioClipParams,
+        Vector3 pos = new Vector3(),
+        Transform parent = null,
+        float duration = -1.0f) {
+
         // On get la source
         AudioSource source = GetAvailableSource();
 
@@ -186,15 +199,24 @@ public class SoundManager : MonoBehaviour {
         source.transform.SetParent((parent == null) ? globalSoundsFolder: parent);
 
         // On get le bon clip
-        source.clip = audioClipParams.clips[Random.Range(0, audioClipParams.clips.Count)];
+        AudioClip clip = audioClipParams.clips[Random.Range(0, audioClipParams.clips.Count)];
+        source.clip = clip;
 
         // On vérifie si c'est reverse ou pas
         if(audioClipParams.bReverse) {
             source.timeSamples = source.clip.samples - 1;
             source.pitch = -1;
         } else {
-            source.pitch = 1;
             source.timeSamples = 0;
+            source.pitch = 1;
+        }
+
+        // On ajuste le pitch pour matcher avec la duration si celle-ci est spécifiée ! :)
+        if(duration == -1) {
+            source.pitch = source.pitch / Mathf.Abs(source.pitch); // Normalize à 1
+        } else {
+            float acceleration = clip.length / duration;
+            source.pitch *= acceleration;
         }
 
         // On set le spatial blend !

@@ -205,7 +205,7 @@ public class FirstBoss : Sonde {
     public IEnumerator CExplosionAttack(float delay, float totalTime, GameObject particlesPrefab) {
         // Start decreasing
         PlayParticles(totalTime, particlesPrefab);
-        // Play SOUND here !!!
+        gm.soundManager.PlayDecreasingBallFirstBoss(transform.position, delay);
         IController controller = GetComponent<IController>();
         float oldVitesse = controller.vitesse;
         controller.vitesse = 0.0f;
@@ -214,6 +214,7 @@ public class FirstBoss : Sonde {
         yield return new WaitForSeconds(delay);
 
         // Increasing !!! Explosion !!!
+        gm.soundManager.PlayIncreasingBallFirstBoss(transform.position, totalTime - delay);
         Timer timer = new Timer(totalTime - delay);
         while(!timer.IsOver()) {
             if (Vector3.Distance(player.transform.position, transform.position) <= explosionAttackDistance)
