@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 557a840502824d349a6ec6711ddbdf22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onlyOnStart: 0
   fixValue: 1
   fixedValue: 0.28
 --- !u!1001 &8416113065647738093
@@ -92,11 +93,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1262352015429642806, guid: 8c964a2d15245c344a2db086d7983f18,
         type: 3}
-    - target: {fileID: 7384125151683064792, guid: d0ddb16281cd2494fb5804c33d3660c5,
+    - target: {fileID: 7412662047760507945, guid: d0ddb16281cd2494fb5804c33d3660c5,
         type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: b91fbe3d793ddbf4885c734a51c2e97a, type: 2}
+    - target: {fileID: 6757590229209202019, guid: d0ddb16281cd2494fb5804c33d3660c5,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 41ee404eebf43754b8a58f9593a0da81, type: 2}
     - target: {fileID: 7729743112768375352, guid: d0ddb16281cd2494fb5804c33d3660c5,
         type: 3}
       propertyPath: m_IsActive
@@ -126,6 +132,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Intensity
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7384125151683064792, guid: d0ddb16281cd2494fb5804c33d3660c5,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d0ddb16281cd2494fb5804c33d3660c5, type: 3}

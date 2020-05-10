@@ -121,6 +121,7 @@ public class FirstBoss : Sonde {
 
     protected void RemovePouvoirs() {
         gm.console.PouvoirsDesactives();
+        gm.itemManager.RemoveAllPouvoirsGivers();
         gm.player.FreezePouvoirs();
         gm.player.SetNbDoubleJumps(0);
     }

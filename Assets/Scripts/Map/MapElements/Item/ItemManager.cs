@@ -63,4 +63,22 @@ public class ItemManager : MonoBehaviour {
     public void RemoveItem(Item item) {
         items.Remove(item);
     }
+
+    public void RemoveAllItems() {
+        foreach(Item item in items) {
+            Destroy(item.gameObject);
+        }
+        items.Clear();
+    }
+
+    public void RemoveAllPouvoirsGivers() {
+        for(int i = 0; i < items.Count; i++) {
+            PouvoirGiverItem pouvoirGiver = items[i].GetComponent<PouvoirGiverItem>();
+            if(pouvoirGiver != null) {
+                Destroy(pouvoirGiver.gameObject);
+                items.RemoveAt(i);
+                i--;
+            }
+        }
+    }
 }

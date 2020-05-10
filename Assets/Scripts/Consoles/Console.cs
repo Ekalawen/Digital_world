@@ -109,9 +109,9 @@ public class Console : MonoBehaviour {
 	}
 
     public void PouvoirsDesactives() {
-		AjouterMessageImportant ("Pouvoirs Désactivés !", TypeText.ALLY_TEXT, 5);
-		AjouterMessageImportant ("Pouvoirs Désactivés !", TypeText.ENNEMI_TEXT, 5);
-		AjouterMessageImportant ("Pouvoirs Désactivés !", TypeText.BASIC_TEXT, 5);
+		AjouterMessageImportant ("Pouvoirs Désactivés !", TypeText.ALLY_TEXT, 3);
+		AjouterMessageImportant ("Pouvoirs Désactivés !", TypeText.ENNEMI_TEXT, 3);
+		AjouterMessageImportant ("Pouvoirs Désactivés !", TypeText.BASIC_TEXT, 3);
     }
 
     protected void LancerConseils() {
