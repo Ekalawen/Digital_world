@@ -237,4 +237,8 @@ public class FirstBoss : Sonde {
 
         Destroy(go, totalTime * 2);
     }
+
+    public override Vector3 PopPosition(MapManager map) {
+        return map.GetFreeSphereLocation(2.5f);
+    }
 }

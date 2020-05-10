@@ -84,4 +84,8 @@ public abstract class Ennemi : Character {
         gm.ennemiManager.RemoveEnnemi(this);
         Destroy(gameObject);
     }
+
+    public virtual Vector3 PopPosition(MapManager map) {
+        return map.GetFreeRoundedLocation();
+    }
 }
