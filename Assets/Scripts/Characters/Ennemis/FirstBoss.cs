@@ -39,6 +39,7 @@ public class FirstBoss : Sonde {
         satellites = new List<Sonde>(GetComponentsInChildren<Sonde>());
         satellites.Remove(this);
         SetSatellitesActivation(false);
+        //gm.soundManager.PlayFirstBossPresenceClip(transform.position, transform); // ==> Ca rend pas bien pour le moment !
         GoToPhase1();
     }
 

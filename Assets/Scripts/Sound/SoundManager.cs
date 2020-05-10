@@ -14,6 +14,7 @@ public class SoundManager : MonoBehaviour {
     public AudioClipParams hitClips;
     public AudioClipParams hitTracerClips;
     public AudioClipParams emissionTracerClips;
+    public AudioClipParams firstBossPresenceClips;
     public AudioClipParams detectionClips;
     public AudioClipParams timeOutClips;
     public AudioClipParams receivedMessageClips;
@@ -118,6 +119,9 @@ public class SoundManager : MonoBehaviour {
         //StartCoroutine(StopClipIn(source, duree));
         return source;
     }
+    public void PlayFirstBossPresenceClip(Vector3 pos, Transform parent) {
+        PlayClipsOnSource(firstBossPresenceClips, pos, parent);
+    }
     public void PlayHitClip(Vector3 pos) {
         // reverse !
         PlayClipsOnSource(hitClips, pos);
@@ -192,6 +196,9 @@ public class SoundManager : MonoBehaviour {
             source.pitch = 1;
             source.timeSamples = 0;
         }
+
+        // On set le spatial blend !
+        source.spatialBlend = audioClipParams.spatialBlend;
 
         // On vérifie si ça loop ou pas !
         source.loop = audioClipParams.bLoop;
