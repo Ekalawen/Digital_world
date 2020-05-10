@@ -16,6 +16,22 @@ MonoBehaviour:
   pouvoirPrefab: {fileID: 1262352015429642806, guid: 8c964a2d15245c344a2db086d7983f18,
     type: 3}
   pouvoirBinding: 2
+--- !u!114 &1627625561033524722
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9161277165500110514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5e5f161f160ba34ba82d09a80413c71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vitesse: 0.5
+  fixSAndV: 1
+  Sfixed: 1
+  Vfixed: 0.75
 --- !u!1001 &3749364752949400069
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -83,8 +99,19 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4400398335637947010, guid: fbdd897afe5b4904f8af9bb70f00ab74,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fbdd897afe5b4904f8af9bb70f00ab74, type: 3}
+--- !u!1 &9161277165500110514 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5416438832157639863, guid: fbdd897afe5b4904f8af9bb70f00ab74,
+    type: 3}
+  m_PrefabInstance: {fileID: 3749364752949400069}
+  m_PrefabAsset: {fileID: 0}
 --- !u!23 &6757590229209202019 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: 7624492885844520806, guid: fbdd897afe5b4904f8af9bb70f00ab74,

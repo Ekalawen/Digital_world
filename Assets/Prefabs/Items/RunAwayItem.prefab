@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 4533981064456519302}
   - component: {fileID: 2596393694470615297}
   m_Layer: 0
-  m_Name: FurtiveItem
+  m_Name: RunAwayItem
   m_TagString: Objectif
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -143,11 +143,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 357f1c9a8fb7efe468b77f15fa0e2e6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  vitesse: 5
+  tempsInactifDebutJeu: 0
   distanceToFleePlayer: 7
   wanderingVitesse: 2
-  fleeingVitesse: 2.75
+  fleeingVitesse: 2.5
   malusVerticalMouvement: 0.5
-  controller: {fileID: 6988295499627204924}
 --- !u!1 &3690056514926735352
 GameObject:
   m_ObjectHideFlags: 0
@@ -191,7 +192,7 @@ Light:
   serializedVersion: 9
   m_Type: 2
   m_Color: {r: 0, g: 0.2784314, b: 0.0047049103, a: 1}
-  m_Intensity: 5
+  m_Intensity: 4
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208

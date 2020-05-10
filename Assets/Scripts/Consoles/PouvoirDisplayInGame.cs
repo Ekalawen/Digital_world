@@ -17,6 +17,12 @@ public class PouvoirDisplayInGame : MonoBehaviour {
     protected IPouvoir pouvoir;
 
     public void Initialize(IPouvoir pouvoir) {
+        if(pouvoir == null) {
+            bordure.gameObject.SetActive(false);
+            return;
+        }
+
+        bordure.gameObject.SetActive(true);
         this.pouvoir = pouvoir;
         string nom = pouvoir ? pouvoir.nom : PouvoirDisplay.NULL_NAME_VALUE;
         string description = pouvoir ? pouvoir.description : PouvoirDisplay.NULL_DESCRIPTION_VALUE;
