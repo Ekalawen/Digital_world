@@ -263,15 +263,16 @@ public class EventManager : MonoBehaviour {
 	public bool PartieTermine() {
 		// Si le joueur est tombé du cube ...
 		if (IsPlayerEjected()) {
-			// Si le joueur a perdu ...
-			if (map.GetLumieres().Count > 0) {
-                //console.JoueurEjecte();
-                LoseGame(EventManager.DeathReason.FALL_OUT);
-                //gm.console.LoseGame(EventManager.DeathReason.FALL_OUT);
-			// Si le joueur a gagné !
-			} else {
-				gm.console.WinGame();
-			}
+            //console.JoueurEjecte();
+            LoseGame(EventManager.DeathReason.FALL_OUT);
+			//// Si le joueur a perdu ...
+			//if (map.GetLumieres().Count > 0) {
+                ////console.JoueurEjecte();
+                //LoseGame(EventManager.DeathReason.FALL_OUT);
+			//// Si le joueur a gagné !
+			//} else {
+			//	gm.console.WinGame();
+			//}
 			return true;
 		}
 
