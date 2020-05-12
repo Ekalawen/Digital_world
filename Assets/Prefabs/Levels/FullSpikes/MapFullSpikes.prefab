@@ -16,6 +16,20 @@ MonoBehaviour:
   offsetBetweenSpikes: 2
   bGoToEnd: 0
   spikesMaxRange: 25
+--- !u!114 &8423463533569049393
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7116236717929286229}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe62ec37f5d64a840a65d7f0ecfbb02f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cubeType: 1
+  edgesOffset: 1
 --- !u!1001 &5405347776859323745
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -26,7 +40,7 @@ PrefabInstance:
     - target: {fileID: 3009060673421440820, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: m_Name
-      value: NewMapFullSpikes
+      value: MapFullSpikes
       objectReference: {fileID: 0}
     - target: {fileID: 3014360596586505460, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
@@ -86,7 +100,7 @@ PrefabInstance:
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: mapFunctionComponents.Array.size
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
@@ -129,10 +143,15 @@ PrefabInstance:
         type: 3}
       propertyPath: mapFunctionComponents.Array.data[2]
       value: 
-      objectReference: {fileID: 7738180024218294111}
+      objectReference: {fileID: 8423463533569049393}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: mapFunctionComponents.Array.data[3]
+      value: 
+      objectReference: {fileID: 7738180024218294111}
+    - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
+        type: 3}
+      propertyPath: mapFunctionComponents.Array.data[4]
       value: 
       objectReference: {fileID: 5687764382400821059}
     m_RemovedComponents: []
