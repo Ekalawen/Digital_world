@@ -50,6 +50,13 @@ public class ItemManager : MonoBehaviour {
         return items;
     }
 
+    public List<Vector3> GetItemsPositions() {
+        List<Vector3> positions = new List<Vector3>();
+        foreach (Item item in items)
+            positions.Add(item.transform.position);
+        return positions;
+    }
+
     public List<Item> GetItemsType(Type itemType) {
         List<Item> res = new List<Item>();
         foreach(Item item in items) {

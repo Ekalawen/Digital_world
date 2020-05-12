@@ -5,13 +5,19 @@ using UnityEngine;
 public class PouvoirDetection : IPouvoir {
 
 	public GameObject lumierePathPrefab; // Les lumières à placer quand le personnage fait une détection !
+    public bool detectLumieres = true;
+    public bool detectItems = true;
     public float dureePath = 3.0f;
     public float vitessePath = 30.0f;
 
     protected override bool UsePouvoir() {
 		if (Input.GetKeyDown (KeyCode.A)) {
             // Penser à ajouter les autres objectifs intéressants !
-            List<Vector3> positions = gm.map.GetAllLumieresPositions();
+            List<Vector3> positions = new List<Vector3>();
+            if (detectLumieres)
+                positions.AddRange(gm.map.GetAllLumieresPositions());
+            if (detectItems)
+                positions.AddRange(gm.itemManager.GetItemsPositions());
 
             if (!player.CanUseLocalisation() || positions.Count == 0) {
                 gm.console.FailLocalisation();
@@ -42,7 +48,10 @@ public class PouvoirDetection : IPouvoir {
 
 			// Un petit message
 			gm.console.RunDetection(nearestPosition);
-		}
+
+            if (detectItems)
+                NotifyOnlyVisibleOnTriggerItems();
+        }
 
         return true;
     }
@@ -65,9 +74,12 @@ public class PouvoirDetection : IPouvoir {
         }
     }
 
-    protected override void ApplyTimerMalus() {
-        float timeMalus = gm.timerManager.GetRemainingTime() / 3;
-        gm.timerManager.AddTime(-timeMalus);
+    protected void NotifyOnlyVisibleOnTriggerItems() {
+        foreach(Item item in gm.itemManager.GetItems()) {
+            OnlyVisibleOnTrigger component = item.GetComponent<OnlyVisibleOnTrigger>();
+            if(component != null && component.enabled) {
+                component.Activate();
+            }
+        }
     }
-
 }
