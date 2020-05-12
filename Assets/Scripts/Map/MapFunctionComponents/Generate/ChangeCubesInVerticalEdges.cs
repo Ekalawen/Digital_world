@@ -12,7 +12,8 @@ public class ChangeCubesInVerticalEdges : GenerateCubesMapFunction {
             Vector3 pos = cube.transform.position;
             if(IsInVerticalEdges(pos, edgesOffset)) {
                 map.DeleteCube(cube);
-                map.AddCube(pos, cubeType);
+                Cube newCube = map.AddCube(pos, cubeType);
+                newCube.shouldRegisterToColorSources = false;
             }
         }
     }

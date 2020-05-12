@@ -76,4 +76,8 @@ public class ColorSource : MonoBehaviour {
     public void InverseColor() {
         ChangeColor(new Color(1.0f - color.r, 1.0f - color.g, 1.0f - color.b));
     }
+
+    public void RemoveCube(Cube cube) {
+        cubesInRange.Remove(cube);
+    }
 }

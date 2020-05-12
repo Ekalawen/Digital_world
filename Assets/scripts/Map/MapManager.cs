@@ -128,6 +128,9 @@ public class MapManager : MonoBehaviour {
     private void DestroyImmediateCube(Cube cube, bool bJustInactive = false) {
         if (cube == null)
             return;
+        foreach(ColorSource colorSource in gm.colorManager.GetAllColorSources()) {
+            colorSource.RemoveCube(cube);
+        }
         foreach(MapElement mapElement in mapElements) {
             mapElement.OnDeleteCube(cube);
         }
