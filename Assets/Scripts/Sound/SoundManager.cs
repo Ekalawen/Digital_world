@@ -18,6 +18,7 @@ public class SoundManager : MonoBehaviour {
     public AudioClipParams firstBossDecreasingBall;
     public AudioClipParams firstBossIncreasingBall;
     public AudioClipParams detectionClips;
+    public AudioClipParams dissimuleClips;
     public AudioClipParams timeOutClips;
     public AudioClipParams receivedMessageClips;
     public AudioClipParams eventStartClips;
@@ -114,6 +115,9 @@ public class SoundManager : MonoBehaviour {
     public void PlayDetectionClip(Vector3 pos, Transform parent) {
         //source.spatialBlend = 0.5f;
         PlayClipsOnSource(detectionClips, pos, parent);
+    }
+    public void PlayDissimuleClip() {
+        PlayClipsOnSource(dissimuleClips);
     }
     public AudioSource PlayEmissionTracerClip(Vector3 pos, Transform parent) {
         //source.spatialBlend = 1.0f;

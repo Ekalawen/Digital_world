@@ -145,6 +145,7 @@ public class Console : MonoBehaviour {
             }
             if (!playerIsFollowed && oldState) {
                 SemerEnnemis();
+                gm.soundManager.PlayDissimuleClip();
             }
         }
     }
