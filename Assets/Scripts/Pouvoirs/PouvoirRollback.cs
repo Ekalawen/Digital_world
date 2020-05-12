@@ -34,11 +34,6 @@ public class PouvoirRollback : IPouvoir {
         return true;
     }
 
-    protected override void ApplyTimerMalus() {
-        float timeMalus = gm.timerManager.GetRemainingTime() / 3;
-        gm.timerManager.AddTime(-timeMalus);
-    }
-
     protected Curve CreateReversedLastRelevantCurveFromHistory(ObjectHistory history) {
         ObjectHistory lastHistory = new ObjectHistory(history.obj);
         for (int i = history.positions.Count - 1; i >= 0; i--) {
