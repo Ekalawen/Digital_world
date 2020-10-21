@@ -128,8 +128,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 0}
-  vitesseMin: 15
-  vitesseMax: 15
   timeMalusOnHit: 1
   timeBetweenTwoHits: 0.2
   timeBetweenTwoHitsDamages: 0.2
@@ -154,8 +152,10 @@ MonoBehaviour:
   vitesse: 15
   tempsInactifDebutJeu: 3
   distanceDeDetection: 999999
+  canAlwaysSeePlayer: 0
   dureeEmiting: 4
   dureePauseEntreNodes: 0.1
+  goToPosJustBeforePlayer: 1
   startEmitingEvents:
     m_PersistentCalls:
       m_Calls:

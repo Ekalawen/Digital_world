@@ -9,6 +9,7 @@ public class TracerController : EnnemiController {
 
     public float dureeEmiting = 4.0f;
     public float dureePauseEntreNodes = 0.1f;
+    public bool goToPosJustBeforePlayer = false;
     public UnityEvent startEmitingEvents;
     public UnityEvent stopEmitingEvents;
 
@@ -90,6 +91,8 @@ public class TracerController : EnnemiController {
         end = MathTools.Round(end);
         List<Vector3> posToDodge = gm.ennemiManager.GetAllRoundedEnnemisPositions();
         path = gm.map.GetPath(start, end, posToDodge, bIsRandom: true);
+        if (goToPosJustBeforePlayer)
+            path.RemoveAt(path.Count - 1);
         if(path == null) {
             SetState(TracerState.EMITING);
         }
