@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 // Le but de la DataBase est de gérer le comportement de tout ce qui entrave le joueur.
@@ -9,6 +10,7 @@ public class EventManager : MonoBehaviour {
     public enum DeathReason { TIME_OUT, CAPTURED, FALL_OUT, TOUCHED_DEATH_CUBE, OUT_OF_BLOCKS };
     public enum EndGameType { DEATH_CUBES, CUBES_DESTRUCTIONS };
 
+    public bool ejectionTresholdUseLastCubePosition = false;
     public float ejectionTreshold = -10.0f;
     public float endGameDuration = 20.0f;
     public float endGameFrameRate = 0.2f;
@@ -257,10 +259,28 @@ public class EventManager : MonoBehaviour {
     }
 
     protected virtual bool IsPlayerEjected() {
-        return gm.gravityManager.GetHigh(gm.player.transform.position) < ejectionTreshold;
+        if (!ejectionTresholdUseLastCubePosition)
+            return gm.gravityManager.GetHigh(gm.player.transform.position) < ejectionTreshold;
+        else {
+            float lowest = GetLessHighCubeAltitude();
+            return gm.gravityManager.GetHigh(gm.player.transform.position) < lowest + ejectionTreshold;
+        }
     }
 
-	public bool PartieTermine() {
+    protected float GetLessHighCubeAltitude()
+    {
+        List<Cube> cubes = gm.map.GetAllCubes();
+        if (!cubes.Any())
+            return 0;
+        float lowest = gm.gravityManager.GetHigh(cubes[0].transform.position);
+        foreach(Cube cube in cubes) {
+            float altitude = gm.gravityManager.GetHigh(cube.transform.position);
+            lowest = Mathf.Min(lowest, altitude);
+        }
+        return lowest;
+    }
+
+    public bool PartieTermine() {
 		// Si le joueur est tombé du cube ...
 		if (IsPlayerEjected()) {
             //console.JoueurEjecte();

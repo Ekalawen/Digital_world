@@ -7,9 +7,11 @@ using System;
 public class InfiniteMap : MapManager {
 
     public int nbBlocksForward = 3;
+    public int nbFirstBlocks = 3;
     public float intervalDestructionBlocks = 3;
     public float speedDestructionBlocks = 1;
-    public List<GameObject> blockPrefabs;
+    public GameObject firstBlock;
+    public List<BlockList> blockLists;
 
     Transform blocksFolder;
 
@@ -27,12 +29,15 @@ public class InfiniteMap : MapManager {
     }
 
     protected void CreateFirstBlocks() {
-        for (int i = 0; i < nbBlocksForward + 1; i++)
-            CreateBlock();
+        for (int i = 0; i < nbBlocksForward + 1; i++) {
+            if(i < nbFirstBlocks)
+                CreateBlock(firstBlock);
+            else
+                CreateBlock(GetRandomBlockPrefab());
+        }
     }
 
-    protected void CreateBlock() {
-        GameObject blockPrefab = blockPrefabs[UnityEngine.Random.Range(0, blockPrefabs.Count)];
+    protected void CreateBlock(GameObject blockPrefab) {
         Vector3 blockStartPoint = blockPrefab.GetComponent<Block>().startPoint.position;
         Vector3 blockPosition = GetNextBlockPosition(blockStartPoint);
 
@@ -40,6 +45,12 @@ public class InfiniteMap : MapManager {
         newBlock.Initialize(blocksFolder);
 
         blocks.Add(newBlock);
+    }
+
+    protected GameObject GetRandomBlockPrefab() {
+        BlockList blockList = blockLists[UnityEngine.Random.Range(0, blockLists.Count)];
+        GameObject block = blockList.blocks[UnityEngine.Random.Range(0, blockList.blocks.Count)];
+        return block;
     }
 
     private void DestroyFirstBlock() {
@@ -79,7 +90,7 @@ public class InfiniteMap : MapManager {
         int indice = blocks.IndexOf(block);
         if(indice > indiceCurrentBlock) {
             for(int i = indiceCurrentBlock; i < indice; i++)
-                CreateBlock();
+                CreateBlock(GetRandomBlockPrefab());
             indiceCurrentBlock = indice;
         }
     }

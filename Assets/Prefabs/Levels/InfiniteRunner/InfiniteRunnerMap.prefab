@@ -50,10 +50,19 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1698300190402578, guid: b668a69fe5ff311409440deda3264e19, type: 3}
+      propertyPath: m_Name
+      value: InfiniteRunnerMap
+      objectReference: {fileID: 0}
     - target: {fileID: -1939473570733004662, guid: b668a69fe5ff311409440deda3264e19,
         type: 3}
       propertyPath: blockPrefabs.Array.size
       value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: -1939473570733004662, guid: b668a69fe5ff311409440deda3264e19,
+        type: 3}
+      propertyPath: blockLists.Array.size
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -1939473570733004662, guid: b668a69fe5ff311409440deda3264e19,
         type: 3}
@@ -74,7 +83,7 @@ PrefabInstance:
     - target: {fileID: -1939473570733004662, guid: b668a69fe5ff311409440deda3264e19,
         type: 3}
       propertyPath: nbBlocksForward
-      value: 50
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: -1939473570733004662, guid: b668a69fe5ff311409440deda3264e19,
         type: 3}
@@ -175,10 +184,30 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 5230655378198019161, guid: b154730c048f8c14f8375ec6b295afdc,
         type: 3}
-    - target: {fileID: 1698300190402578, guid: b668a69fe5ff311409440deda3264e19, type: 3}
-      propertyPath: m_Name
-      value: InfiniteRunnerMap
-      objectReference: {fileID: 0}
+    - target: {fileID: -1939473570733004662, guid: b668a69fe5ff311409440deda3264e19,
+        type: 3}
+      propertyPath: blockLists.Array.data[0]
+      value: 
+      objectReference: {fileID: 4300991588029701113, guid: 58483f5688d90ea43bc21cd848f41775,
+        type: 3}
+    - target: {fileID: -1939473570733004662, guid: b668a69fe5ff311409440deda3264e19,
+        type: 3}
+      propertyPath: blockLists.Array.data[1]
+      value: 
+      objectReference: {fileID: 6694138598523547948, guid: e681f8cd6e21a05468844f6348420e85,
+        type: 3}
+    - target: {fileID: -1939473570733004662, guid: b668a69fe5ff311409440deda3264e19,
+        type: 3}
+      propertyPath: blockLists.Array.data[2]
+      value: 
+      objectReference: {fileID: 330840037406571865, guid: 075927b7044c77f4db77ad9878eaad58,
+        type: 3}
+    - target: {fileID: -1939473570733004662, guid: b668a69fe5ff311409440deda3264e19,
+        type: 3}
+      propertyPath: firstBlock
+      value: 
+      objectReference: {fileID: 5230655378198019161, guid: b154730c048f8c14f8375ec6b295afdc,
+        type: 3}
     - target: {fileID: 4913549307214802, guid: b668a69fe5ff311409440deda3264e19, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
