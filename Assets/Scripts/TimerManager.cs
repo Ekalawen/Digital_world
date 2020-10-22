@@ -146,4 +146,8 @@ public class TimerManager : MonoBehaviour {
     public float GetElapsedTime() {
         return gameTimer.GetElapsedTime();
     }
+
+    public bool HasGameStarted() {
+        return gameTimer.GetElapsedTime() >= 0.1f;
+    }
 }

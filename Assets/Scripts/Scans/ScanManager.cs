@@ -43,17 +43,22 @@ public class ScanManager : MonoBehaviour {
             UpdateScans();
 
         // On active ce qui est proche du joueur ou dans un scan
-        Vector3 center = gm.player.transform.position;
         foreach(Cube cube in gm.map.GetAllCubes()) {
-            bool isNear = Vector3.Distance(center, cube.transform.position) <= visionRange;
-            bool isInScans = IsInScans(cube.transform.position);
-            if (useScans && useVision) {
-                cube.gameObject.SetActive(isNear || isInScans);
-            } else if (useVision) {
-                cube.gameObject.SetActive(isNear);
-            } else if (useScans) {
-                cube.gameObject.SetActive(isInScans);
-            }
+            bool cubeVisionState = GetCubeActiveState(cube);
+            cube.gameObject.SetActive(cubeVisionState);
+        }
+    }
+
+    public bool GetCubeActiveState(Cube cube) {
+        Vector3 center = gm.player.transform.position;
+        bool isNear = Vector3.Distance(center, cube.transform.position) <= visionRange;
+        bool isInScans = IsInScans(cube.transform.position);
+        if (useScans && useVision) {
+            return isNear || isInScans;
+        } else if (useVision) {
+            return isNear;
+        } else {  // useScans
+            return isInScans;
         }
     }
 

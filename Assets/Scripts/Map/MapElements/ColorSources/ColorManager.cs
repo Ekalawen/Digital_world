@@ -26,8 +26,8 @@ public class ColorManager : MonoBehaviour {
     // Il faudra changer ça, les sources ne sont pas forcément des cubes !?
 	public float frequenceSources; // La frequence qu'un emplacement soit une source
 	public Vector2 porteeSourceRange; // La range de distance de coloration d'une source
-    public float cubeLuminosityMax; // Le maximum de luminosité d'un cube (pour éviter d'éblouir le joueur)
     public bool bUseOwnLuminosity = false; // De base on utilise la luminosité des PlayerPrefs !
+    public float cubeLuminosityMax; // Le maximum de luminosité d'un cube (pour éviter d'éblouir le joueur)
     public List<SavedColor> savedColors; // Utile si on a besoin de certaines couleurs à certains moments dans le jeu !
 
     protected MapManager map;
@@ -57,8 +57,10 @@ public class ColorManager : MonoBehaviour {
         if (!bGenerateInCubes)
             GenerateColorSources(map.tailleMap);
         else
-            GenerateColorSourcesInCubes();
+            GenerateColorSourcesInCubes(map.GetAllCubes());
         CheckCubeSaturation();
+
+        Debug.Log("Nombre color sources = " + GetAllColorSources().Count);
     }
 
     public void GenerateColorSources(Vector3Int size) {
@@ -79,9 +81,8 @@ public class ColorManager : MonoBehaviour {
         }
     }
 
-    public void GenerateColorSourcesInCubes() {
+    public void GenerateColorSourcesInCubes(List<Cube> cubes) {
         // On calcul le nombre de sources
-        List<Cube> cubes = map.GetAllCubes();
         List<Vector3> possiblesPos = new List<Vector3>();
         foreach (Cube cube in cubes) possiblesPos.Add(cube.transform.position);
         int N = possiblesPos.Count;
@@ -89,7 +90,6 @@ public class ColorManager : MonoBehaviour {
         float mean = N * P;
         float variance = N * P * (1.0f - P);
         int nbSources = (int)GaussianGenerator.Next(mean, variance, 0, N);
-        Debug.Log("nbSources = " + nbSources);
 
         // Puis on les réparties ! C'est pas grâve si plusieurs sources sont au même endroit !
         for(int i = 0; i < nbSources; i++) {
@@ -146,6 +146,10 @@ public class ColorManager : MonoBehaviour {
 
     public void CheckCubeSaturation() {
         List<Cube> cubes = map.GetAllCubes();
+        CheckCubeSaturationInCubes(cubes);
+    }
+
+    public void CheckCubeSaturationInCubes(List<Cube> cubes) {
         MathTools.Shuffle(cubes);
 
         foreach(Cube cube in cubes) {

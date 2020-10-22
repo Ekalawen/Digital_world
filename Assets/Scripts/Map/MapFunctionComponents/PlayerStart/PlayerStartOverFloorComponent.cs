@@ -10,8 +10,11 @@ public class PlayerStartOverFloorComponent : PlayerStartComponent {
         int k = 0;
         while (true) {
             Vector3 pos = map.GetFreeRoundedLocation();
-            if (IsOverFloor(pos) || k > kmax)
+            if (IsOverFloor(pos) || k > kmax) {
+                if (k > kmax)
+                    Debug.LogWarning("On a pas trouvé de position au desssu du sol !");
                 return pos;
+            }
             k++;
         }
     }

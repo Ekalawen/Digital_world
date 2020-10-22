@@ -44,7 +44,7 @@ public class ColorSource : MonoBehaviour {
 
     public void Delete() {
         RemoveColor();
-        DestroyImmediate(gameObject);
+        Destroy(gameObject);
     }
 
     protected void AddColor() {

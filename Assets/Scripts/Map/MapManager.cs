@@ -21,7 +21,8 @@ public class MapManager : MonoBehaviour {
 	// public enum TypeMap {CUBE_MAP, PLAINE_MAP, LABYRINTHE_MAP, GROUND_MAP, EMPTY_MAP, TUTORIAL_MAP}; // Plus vraiment utile ! :D
 
 	public GameObject cubePrefab; // On récupère ce qu'est un cube !
-	public GameObject deathCubePrefab; // On récupère ce qu'est qu'un cube de la mort ! :)
+
+    public GameObject deathCubePrefab; // On récupère ce qu'est qu'un cube de la mort ! :)
 	public GameObject indestructibleCubePrefab; // On récupère ce qu'est qu'un cube indestructible ! :)
 	public GameObject specialCubePrefab; // On récupère ce qu'est qu'un cube special ! :)
 	public GameObject lumierePrefab; // On récupère les lumières !
@@ -78,6 +79,9 @@ public class MapManager : MonoBehaviour {
         //// Mais ce n'est maintenant plus nécessaire, tout passe par les MapFunctionsComponents ! :)
         //GenerateMap();
 
+        // Pour que les maps spéciales puissent faire leur initialisations spécifiques
+        InitializeSpecific();
+
         // On rajoute les fonctions customs des components !
         ApplyAllMapFunctionsComponents();
 
@@ -85,7 +89,13 @@ public class MapManager : MonoBehaviour {
         PrintCubesNumbers();
     }
 
+    protected virtual void InitializeSpecific() {
+    }
+
     protected virtual void GenerateMap() {
+    }
+
+    protected virtual void Update() {
     }
 
     private void AddCube(Cube cube) {

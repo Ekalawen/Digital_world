@@ -516,6 +516,10 @@ public class Console : MonoBehaviour {
                 AjouterMessageImportant ("MENACE ÉLIMINÉE !", Console.TypeText.ENNEMI_TEXT, 5);
                 AjouterMessage("Cause de la mort : Vous avez touché un Cube de la Mort !", Console.TypeText.ENNEMI_TEXT);
                 break;
+            case EventManager.DeathReason.OUT_OF_BLOCKS:
+                AjouterMessageImportant ("MENACE ÉLIMINÉE !", Console.TypeText.ENNEMI_TEXT, 5);
+                AjouterMessage("Cause de la mort : Vous avez été rattrapé par la Chute !", Console.TypeText.ENNEMI_TEXT);
+                break;
         }
 		StartCoroutine (SeMoquer());
 	}

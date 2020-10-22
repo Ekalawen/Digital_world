@@ -20,9 +20,8 @@ public class Cube : MonoBehaviour {
             RegisterCubeToColorSources();
     }
 
-    public virtual void RegisterCubeToColorSources() {
+    protected virtual void RegisterCubeToColorSources() {
         ColorManager colorManager = gm.colorManager;
-        SetColor(Color.black);
         foreach(ColorSource colorSource in colorManager.sources) {
             if(Vector3.Distance(transform.position, colorSource.transform.position) <= colorSource.range)
                 colorSource.AddCube(this);
@@ -66,8 +65,17 @@ public class Cube : MonoBehaviour {
         Destroy();
     }
 
+    public float GetExplosionParticuleTimeDuration() {
+        return explosionParticlesPrefab.GetComponent<ParticleSystem>().main.duration;
+    }
+
     public void ExplodeIn(float seconds) {
-        StartCoroutine(CExplodeIn(seconds));
+        if(gameObject.activeSelf) {
+            StartCoroutine(CExplodeIn(seconds));
+        } else {
+            gameObject.SetActive(true);
+            Destroy();
+        }
     }
     public IEnumerator CExplodeIn(float seconds) {
         yield return new WaitForSeconds(seconds);
