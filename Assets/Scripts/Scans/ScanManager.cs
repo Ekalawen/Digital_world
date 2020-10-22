@@ -5,10 +5,10 @@ using UnityEngine.Rendering.PostProcessing;
 
 public class ScanManager : MonoBehaviour {
 
-    public bool useScan = false;
+    public bool useVision = false;
+    public float visionRange = 10.0f;
 
-    public float scanRange = 10.0f;
-
+    public bool useScans = false;
     public float scanFrequence = 2.0f;
     public float scanDuree = 5.0f;
     public float scanSpeed = 15.0f;
@@ -31,22 +31,29 @@ public class ScanManager : MonoBehaviour {
     }
 
     protected void ScanInitialize() {
-        if (!useScan)
+        if (!useScans)
             return;
     }
 
     protected void OnlyRenderScannableCubes() {
-        if (!useScan)
+        if (!useVision && !useScans)
             return;
 
-        UpdateScans();
+        if (useScans)
+            UpdateScans();
 
         // On active ce qui est proche du joueur ou dans un scan
         Vector3 center = gm.player.transform.position;
         foreach(Cube cube in gm.map.GetAllCubes()) {
-            bool isNear = Vector3.Distance(center, cube.transform.position) <= scanRange;
+            bool isNear = Vector3.Distance(center, cube.transform.position) <= visionRange;
             bool isInScans = IsInScans(cube.transform.position);
-            cube.gameObject.SetActive(isNear || isInScans);
+            if (useScans && useVision) {
+                cube.gameObject.SetActive(isNear || isInScans);
+            } else if (useVision) {
+                cube.gameObject.SetActive(isNear);
+            } else if (useScans) {
+                cube.gameObject.SetActive(isInScans);
+            }
         }
     }
 
