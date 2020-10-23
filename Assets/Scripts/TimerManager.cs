@@ -8,6 +8,7 @@ public class TimerManager : MonoBehaviour {
 
     public float initialTime = 40.0f;
     public bool isInfinitTime = false;
+    public bool shouldDisplayGameTimer = true;
     public Text displayText;
     public GameObject movingTextPrefab;
     public float dureeMoving = 2.0f;
@@ -36,6 +37,17 @@ public class TimerManager : MonoBehaviour {
         if (gm.eventManager.IsGameOver())
             return;
 
+        if (shouldDisplayGameTimer)
+            DisplayGameTimer();
+        else
+            HideGameTimer();
+    }
+
+    private void HideGameTimer() {
+        displayText.text = "";
+    }
+
+    protected void DisplayGameTimer() {
         float remainingTime = GetRemainingTime();
         if(remainingTime <= 0) {
             remainingTime = 0.0f;

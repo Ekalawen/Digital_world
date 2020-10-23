@@ -89,8 +89,9 @@ public class InfiniteMap : MapManager {
     public void OnEnterBlock(Block block) {
         int indice = blocks.IndexOf(block);
         if(indice > indiceCurrentBlock) {
-            for(int i = indiceCurrentBlock; i < indice; i++)
+            for (int i = indiceCurrentBlock; i < indice; i++) {
                 CreateBlock(GetRandomBlockPrefab());
+            }
             indiceCurrentBlock = indice;
         }
     }

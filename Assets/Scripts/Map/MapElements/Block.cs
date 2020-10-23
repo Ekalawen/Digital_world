@@ -36,8 +36,13 @@ public class Block : MonoBehaviour {
             Cube cube = cubes[i];
             Vector3 cubePosition = cube.transform.position;
             Cube newCube = map.AddCube(cubePosition, cube.type, parent: cubeFolder);
+            if(newCube == null) {
+                cubes.RemoveAt(i);
+                i--;
+            } else {
+                cubes[i] = newCube;
+            }
             Destroy(cube.gameObject);
-            cubes[i] = newCube;
         }
     }
 
