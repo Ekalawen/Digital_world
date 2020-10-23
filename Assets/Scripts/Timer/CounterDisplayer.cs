@@ -12,15 +12,16 @@ public class CounterDisplayer : MonoBehaviour {
     public RectTransform textContainer;
     public int fontSize = 20;
 
-    public void Initialize() {
-    }
-
     public void Display(string message) {
         displayText.text = message;
     }
 
     public void Hide() {
         displayText.text = "";
+    }
+
+    public Color GetTextColor() {
+        return displayText.color;
     }
 
     public void SetColor(Color color) {

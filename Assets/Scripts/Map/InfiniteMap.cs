@@ -12,10 +12,12 @@ public class InfiniteMap : MapManager {
     public float speedDestructionBlocks = 1;
     public GameObject firstBlock;
     public List<BlockList> blockLists;
+    public CounterDisplayer nbBlocksDisplayer;
 
     Transform blocksFolder;
 
     int indiceCurrentBlock = 0;
+    int nbBlocksRun = 0;
     List<Block> blocks;
     Timer destructionBlockTimer;
 
@@ -24,6 +26,7 @@ public class InfiniteMap : MapManager {
         blocksFolder = new GameObject("Blocks").transform;
         blocksFolder.transform.SetParent(cubesFolder.transform);
         destructionBlockTimer = new Timer(intervalDestructionBlocks);
+        nbBlocksDisplayer.Display(nbBlocksRun.ToString());
 
         CreateFirstBlocks();
     }
@@ -99,6 +102,10 @@ public class InfiniteMap : MapManager {
     public void OnEnterBlock(Block block) {
         int indice = blocks.IndexOf(block);
         if(indice > indiceCurrentBlock) {
+            int nbBlocksAdded = indice - indiceCurrentBlock;
+            nbBlocksRun += nbBlocksAdded;
+            nbBlocksDisplayer.Display(nbBlocksRun.ToString());
+            nbBlocksDisplayer.AddVolatileText($"+ {nbBlocksAdded.ToString()}", nbBlocksDisplayer.GetTextColor());
             for (int i = indiceCurrentBlock; i < indice; i++) {
                 CreateBlock(GetRandomBlockPrefab());
             }

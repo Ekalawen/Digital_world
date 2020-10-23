@@ -26,7 +26,6 @@ public class TimerManager : MonoBehaviour {
         totalTime = initialTime;
         soundTimeOutTimer = new Timer(1.0f);
         gameTimer = new Timer(0.0f);
-        timerDisplayer.Initialize();
     }
 
     private void Update() {
