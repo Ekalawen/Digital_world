@@ -2,20 +2,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class TimerManager : MonoBehaviour {
 
     public float initialTime = 40.0f;
     public bool isInfinitTime = false;
     public bool shouldDisplayGameTimer = true;
-    public Text displayText;
-    public GameObject movingTextPrefab;
-    public float dureeMoving = 2.0f;
-    public float distanceMoving = 100.0f;
-    public RectTransform textContainer;
     public int fontSize = 20;
     public float fontSizeBounceCoef = 1.2f;
+    public CounterDisplayer timerDisplayer;
 
     protected float totalTime;
     protected float debutTime;
@@ -31,6 +26,7 @@ public class TimerManager : MonoBehaviour {
         totalTime = initialTime;
         soundTimeOutTimer = new Timer(1.0f);
         gameTimer = new Timer(0.0f);
+        timerDisplayer.Initialize();
     }
 
     private void Update() {
@@ -44,7 +40,7 @@ public class TimerManager : MonoBehaviour {
     }
 
     private void HideGameTimer() {
-        displayText.text = "";
+        timerDisplayer.Hide();
     }
 
     protected void DisplayGameTimer() {
@@ -53,26 +49,26 @@ public class TimerManager : MonoBehaviour {
             remainingTime = 0.0f;
             gm.eventManager.LoseGame(EventManager.DeathReason.TIME_OUT);
         }
-        displayText.text = TimerManager.TimerToString(remainingTime);
+        timerDisplayer.Display(TimerManager.TimerToString(remainingTime));
 
         PlayTimeOutSound();
 
         if(remainingTime >= 20.0f) {
-            displayText.color = gm.console.allyColor;
-            displayText.fontSize = fontSize;
+            timerDisplayer.SetColor(gm.console.allyColor);
+            timerDisplayer.SetFontSize(fontSize);
         } else if (remainingTime >= 10.0f) {
             float avancement = (remainingTime - 10.0f) / 10.0f;
-            displayText.color = avancement * gm.console.allyColor + (1.0f - avancement) * gm.console.ennemiColor;
-            displayText.fontSize = fontSize;
+            timerDisplayer.SetColor(avancement * gm.console.allyColor + (1.0f - avancement) * gm.console.ennemiColor);
+            timerDisplayer.SetFontSize(fontSize);
         } else {
-            displayText.color = gm.console.ennemiColor;
+            timerDisplayer.SetColor(gm.console.ennemiColor);
             float avancement = remainingTime / 10.0f;
             float size = fontSize * (1.0f + (1.0f - avancement));
             if (remainingTime <= 10.0f) {
                 float coefBounce = 1 + (1.0f - soundTimeOutTimer.GetAvancement()) * (fontSizeBounceCoef - 1.0f);
                 size *= coefBounce;
             }
-            displayText.fontSize = (int)size;
+            timerDisplayer.SetFontSize((int)size);
         }
     }
 
@@ -130,30 +126,13 @@ public class TimerManager : MonoBehaviour {
             return;
 
         totalTime += time;
-        Text t = Instantiate(movingTextPrefab, textContainer).GetComponent<Text>();
-        t.gameObject.SetActive(true);
         int secondes = time >= 0 ? Mathf.FloorToInt(time) : Mathf.CeilToInt(time);
         int centiseconds = Mathf.Abs(Mathf.FloorToInt((time - secondes) * 100));
-        t.text = (time >= 0 ? "+" : "") + secondes + ":" + centiseconds.ToString("D2");
-        t.color = (time >= 0 ? gm.console.allyColor : gm.console.ennemiColor);
-        StartCoroutine(MoveTextDown(t));
+        string volatileText = (time >= 0 ? "+" : "") + secondes + ":" + centiseconds.ToString("D2");
+        Color volatileColor = (time >= 0 ? gm.console.allyColor : gm.console.ennemiColor);
+        timerDisplayer.AddVolatileText(volatileText, volatileColor);
     }
 
-    protected IEnumerator MoveTextDown(Text t) {
-        float debut = Time.timeSinceLevelLoad;
-        float yDebut = t.rectTransform.anchoredPosition.y - 10;
-        while (Time.timeSinceLevelLoad - debut <= dureeMoving) {
-            float avancement = (Time.timeSinceLevelLoad - debut) / dureeMoving;
-            Vector2 pos = t.rectTransform.anchoredPosition;
-            pos.y = yDebut - avancement * distanceMoving;
-            t.rectTransform.anchoredPosition = pos;
-            Color color = t.color;
-            color.a = 1.0f - avancement;
-            t.color = color;
-            yield return null;
-        }
-        Destroy(t.gameObject);
-    }
 
     public float GetElapsedTime() {
         return gameTimer.GetElapsedTime();

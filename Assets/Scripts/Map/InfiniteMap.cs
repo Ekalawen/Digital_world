@@ -80,6 +80,16 @@ public class InfiniteMap : MapManager {
 
     protected override void Update() {
         base.Update();
+
+        ManageBlockDestruction();
+
+        DisplayNumberBlocksRun();
+    }
+
+    protected void DisplayNumberBlocksRun() {
+    }
+
+    protected void ManageBlockDestruction() {
         if(destructionBlockTimer.IsOver()) {
             DestroyFirstBlock();
             destructionBlockTimer.Reset();
