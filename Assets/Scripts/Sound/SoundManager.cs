@@ -21,6 +21,7 @@ public class SoundManager : MonoBehaviour {
     public AudioClipParams dissimuleClips;
     public AudioClipParams timeOutClips;
     public AudioClipParams receivedMessageClips;
+    public AudioClipParams newBlockClips;
     public AudioClipParams eventStartClips;
     public AudioClipParams eventEndClips;
     public AudioClipParams jumpSuccessClips;
@@ -101,6 +102,9 @@ public class SoundManager : MonoBehaviour {
     }
     public void PlayReceivedMessageClip() {
         PlayClipsOnSource(receivedMessageClips);
+    }
+    public void PlayNewBlockClip() {
+        PlayClipsOnSource(newBlockClips);
     }
     public void PlayEventStartClip() {
         PlayClipsOnSource(eventStartClips);

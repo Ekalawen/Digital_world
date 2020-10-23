@@ -21,7 +21,7 @@ public class InfiniteMap : MapManager {
     Transform blocksFolder;
 
     int indiceCurrentBlock = 0;
-    int nbBlocksRun = 0;
+    int nbBlocksRun;
     List<Block> blocks;
     Timer destructionBlockTimer;
     Timer timerBeforeChangeColorBlocks;
@@ -34,6 +34,7 @@ public class InfiniteMap : MapManager {
         destructionBlockTimer = new Timer(intervalDestructionBlocks);
         nbBlocksDisplayer.Display(nbBlocksRun.ToString());
         timerBeforeChangeColorBlocks = new Timer(timeBeforeChangeColorBlocks);
+        nbBlocksRun = 0;
 
         CreateFirstBlocks();
     }
@@ -119,8 +120,11 @@ public class InfiniteMap : MapManager {
         if(indice > indiceCurrentBlock) {
             int nbBlocksAdded = indice - indiceCurrentBlock;
             nbBlocksRun += nbBlocksAdded;
-            nbBlocksDisplayer.Display(nbBlocksRun.ToString());
-            nbBlocksDisplayer.AddVolatileText($"+ {nbBlocksAdded.ToString()}", nbBlocksDisplayer.GetTextColor());
+            if (nbBlocksRun > nbFirstBlocks) {
+                nbBlocksDisplayer.Display((nbBlocksRun - nbFirstBlocks).ToString());
+                nbBlocksDisplayer.AddVolatileText($"+ {nbBlocksAdded.ToString()}", nbBlocksDisplayer.GetTextColor());
+                gm.soundManager.PlayNewBlockClip();
+            }
             for (int i = indiceCurrentBlock; i < indice; i++) {
                 CreateBlock(GetRandomBlockPrefab());
             }
