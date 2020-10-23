@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [System.Serializable]
@@ -165,6 +166,20 @@ public class ColorManager : MonoBehaviour {
         //        RemoveClosestSource(pos);
         //    }
         //}
+    }
+
+    public List<ColorSource> GetClosestsColorSources(Vector3 pos, int nb)
+    {
+        sources.Sort(delegate (ColorSource A, ColorSource B) {
+            float distAToStart = Vector3.Distance(A.transform.position, pos);
+            float distBToStart = Vector3.Distance(B.transform.position, pos);
+            return distBToStart.CompareTo(distAToStart);
+        });
+        return sources.Take(nb).ToList();
+    }
+
+    public List<ColorSource> GetColorSourcesInRange(Vector3 pos, float range) {
+        return sources.Where(source => Vector3.Distance(source.transform.position, pos) <= range).ToList();
     }
 
     protected void RemoveClosestSource(Vector3 pos) {

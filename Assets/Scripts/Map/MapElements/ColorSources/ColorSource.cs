@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,7 +11,8 @@ public class ColorSource : MonoBehaviour {
     [HideInInspector] public Color color;
     [HideInInspector] public float range;
     [HideInInspector] public List<Cube> cubesInRange;
-    private MapManager map;
+    protected MapManager map;
+    protected Coroutine goingToColor = null;
 
     public void Initialize(Color color, float range) {
         this.color = color;
@@ -79,5 +81,23 @@ public class ColorSource : MonoBehaviour {
 
     public void RemoveCube(Cube cube) {
         cubesInRange.Remove(cube);
+    }
+
+    public void GoToColor(Color newColor, float overTime) {
+        if(goingToColor == null)
+            goingToColor = StartCoroutine(CGoToColor(newColor, overTime));
+    }
+
+    protected IEnumerator CGoToColor(Color targetColor, float overTime) {
+        Color debutColor = color;
+        Timer timer = new Timer(overTime);
+        while(!timer.IsOver()) {
+            float avancement = timer.GetAvancement();
+            Color middleColor = debutColor * (1 - avancement) + targetColor * avancement;
+            ChangeColor(middleColor);
+            yield return new WaitForSeconds(Mathf.Min(0.035f, overTime / 10));
+        }
+        ChangeColor(targetColor);
+        goingToColor = null;
     }
 }

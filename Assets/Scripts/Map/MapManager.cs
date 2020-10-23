@@ -923,4 +923,10 @@ public class MapManager : MonoBehaviour {
             function.Activate();
         }
     }
+
+
+    public Cube GetFarestCubeFrom(Vector3 position) {
+        List<Cube> cubes = GetAllCubes();
+        return cubes.OrderBy(cube => Vector3.Distance(cube.transform.position, position)).Last();
+    }
 }

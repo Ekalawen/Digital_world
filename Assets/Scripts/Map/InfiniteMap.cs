@@ -13,6 +13,10 @@ public class InfiniteMap : MapManager {
     public GameObject firstBlock;
     public List<BlockList> blockLists;
     public CounterDisplayer nbBlocksDisplayer;
+    public Color colorChangeColorBlocks;
+    public float rangeChangeColorBlocks;
+    public float speedChangeColorBlocks;
+    public float timeBeforeChangeColorBlocks;
 
     Transform blocksFolder;
 
@@ -20,6 +24,8 @@ public class InfiniteMap : MapManager {
     int nbBlocksRun = 0;
     List<Block> blocks;
     Timer destructionBlockTimer;
+    Timer timerBeforeChangeColorBlocks;
+
 
     protected override void InitializeSpecific() {
         blocks = new List<Block>();
@@ -27,8 +33,17 @@ public class InfiniteMap : MapManager {
         blocksFolder.transform.SetParent(cubesFolder.transform);
         destructionBlockTimer = new Timer(intervalDestructionBlocks);
         nbBlocksDisplayer.Display(nbBlocksRun.ToString());
+        timerBeforeChangeColorBlocks = new Timer(timeBeforeChangeColorBlocks);
 
         CreateFirstBlocks();
+    }
+
+    protected override void Update() {
+        base.Update();
+
+        ManageBlockDestruction();
+
+        MakeCubesLookDangerous();
     }
 
     protected void CreateFirstBlocks() {
@@ -67,6 +82,17 @@ public class InfiniteMap : MapManager {
         }
     }
 
+    protected void MakeCubesLookDangerous() {
+        if (timerBeforeChangeColorBlocks.IsOver()) {
+            List<Cube> farestCubes = blocks.First().GetCubes();
+            farestCubes = farestCubes.Where(c => c != null).ToList();
+            Cube farestCube = farestCubes.OrderBy(cube => Vector3.Distance(cube.transform.position, gm.player.transform.position)).Last();
+            List<ColorSource> closestSources = gm.colorManager.GetColorSourcesInRange(farestCube.transform.position, rangeChangeColorBlocks);
+            foreach (ColorSource source in closestSources)
+                source.GoToColor(colorChangeColorBlocks, speedChangeColorBlocks);
+        }
+    }
+
     protected Vector3 GetNextBlockPosition(Vector3 blockStartPoint) {
         if(blocks.Any()) {
             return blocks.Last().endPoint.position - blockStartPoint;
@@ -79,17 +105,6 @@ public class InfiniteMap : MapManager {
             return blocks.Last().endPoint.rotation;
         }
         return Quaternion.identity;
-    }
-
-    protected override void Update() {
-        base.Update();
-
-        ManageBlockDestruction();
-
-        DisplayNumberBlocksRun();
-    }
-
-    protected void DisplayNumberBlocksRun() {
     }
 
     protected void ManageBlockDestruction() {
