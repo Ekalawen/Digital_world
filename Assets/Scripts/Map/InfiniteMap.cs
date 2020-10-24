@@ -6,17 +6,19 @@ using System;
 
 public class InfiniteMap : MapManager {
 
+    public bool shouldLearnBlocksTime = false;
+    public bool shouldResetAllBlocksTime = false;
     public int nbBlocksForward = 3;
     public int nbFirstBlocks = 3;
-    public float intervalDestructionBlocks = 3;
-    public float speedDestructionBlocks = 1;
+    public float timeBeforeFirstDestruction = 3;
+    public float timeForDestructionIfNoAverage = 2.5f;
+    public float timeDifficultyCoefficient = 1.0f;
     public GameObject firstBlock;
     public List<BlockList> blockLists;
     public CounterDisplayer nbBlocksDisplayer;
     public Color colorChangeColorBlocks;
     public float rangeChangeColorBlocks;
     public float speedChangeColorBlocks;
-    public float timeBeforeChangeColorBlocks;
 
     Transform blocksFolder;
 
@@ -25,17 +27,20 @@ public class InfiniteMap : MapManager {
     List<Block> blocks;
     Timer destructionBlockTimer;
     Timer timerBeforeChangeColorBlocks;
+    Timer timerSinceLastBlock;
 
 
     protected override void InitializeSpecific() {
         blocks = new List<Block>();
         blocksFolder = new GameObject("Blocks").transform;
         blocksFolder.transform.SetParent(cubesFolder.transform);
-        destructionBlockTimer = new Timer(intervalDestructionBlocks);
+        destructionBlockTimer = new Timer(timeBeforeFirstDestruction);
         nbBlocksDisplayer.Display(nbBlocksRun.ToString());
-        timerBeforeChangeColorBlocks = new Timer(timeBeforeChangeColorBlocks);
+        timerBeforeChangeColorBlocks = new Timer(timeBeforeFirstDestruction);
+        timerSinceLastBlock = new Timer();
         nbBlocksRun = 0;
 
+        ResetAllBlocksTime();
         CreateFirstBlocks();
     }
 
@@ -61,7 +66,7 @@ public class InfiniteMap : MapManager {
         Vector3 blockPosition = GetNextBlockPosition(blockStartPoint);
 
         Block newBlock = Instantiate(blockPrefab, blockPosition, Quaternion.identity, blocksFolder).GetComponent<Block>();
-        newBlock.Initialize(blocksFolder);
+        newBlock.Initialize(blocksFolder, blockPrefab.GetComponent<Block>());
 
         blocks.Add(newBlock);
     }
@@ -75,9 +80,12 @@ public class InfiniteMap : MapManager {
     private void DestroyFirstBlock() {
         if (blocks.Any()) {
             Block firstBlock = blocks.First();
-            firstBlock.Destroy(speedDestructionBlocks);
+            float destroyTime = firstBlock.HasEnoughTimesForAveraging() ? firstBlock.GetAverageTime() : timeForDestructionIfNoAverage;
+            destroyTime *= timeDifficultyCoefficient;
+            firstBlock.Destroy(destroyTime);
             indiceCurrentBlock--;
             blocks.Remove(firstBlock);
+            destructionBlockTimer = new Timer(destroyTime);
         } else {
             gm.eventManager.LoseGame(EventManager.DeathReason.OUT_OF_BLOCKS);
         }
@@ -111,7 +119,6 @@ public class InfiniteMap : MapManager {
     protected void ManageBlockDestruction() {
         if(destructionBlockTimer.IsOver()) {
             DestroyFirstBlock();
-            destructionBlockTimer.Reset();
         }
     }
 
@@ -120,18 +127,52 @@ public class InfiniteMap : MapManager {
         if(indice > indiceCurrentBlock) {
             int nbBlocksAdded = indice - indiceCurrentBlock;
             nbBlocksRun += nbBlocksAdded;
-            if (nbBlocksRun > nbFirstBlocks) {
-                nbBlocksDisplayer.Display((nbBlocksRun - nbFirstBlocks).ToString());
-                nbBlocksDisplayer.AddVolatileText($"+ {nbBlocksAdded.ToString()}", nbBlocksDisplayer.GetTextColor());
-                gm.soundManager.PlayNewBlockClip();
-            }
-            for (int i = indiceCurrentBlock; i < indice; i++) {
-                CreateBlock(GetRandomBlockPrefab());
-            }
+            RewardPlayerForNewBlock(nbBlocksAdded);
+            CreateNewBlocks(nbBlocksAdded);
+            RememberTimeNeededForBlock(indice, indiceCurrentBlock);
+            timerSinceLastBlock.Reset();
             indiceCurrentBlock = indice;
         }
     }
 
+    protected void RememberTimeNeededForBlock(int indiceBlockEntered, int indiceCurrentBlock) {
+        if (shouldLearnBlocksTime) {
+            if (indiceBlockEntered == indiceCurrentBlock + 1 && nbBlocksRun > nbFirstBlocks) {
+                if (indiceCurrentBlock >= 0) {
+                    Block passedBlock = blocks[indiceCurrentBlock];
+                    passedBlock.RememberTime(timerSinceLastBlock.GetElapsedTime());
+                    nbBlocksDisplayer.AddVolatileText($"{timerSinceLastBlock.GetElapsedTime()}s", Color.red);
+                }
+            }
+        }
+    }
+
+    private void CreateNewBlocks(int nbBlocksAdded) {
+        for (int i = 0; i < nbBlocksAdded; i++) {
+            CreateBlock(GetRandomBlockPrefab());
+        }
+    }
+
+    protected void RewardPlayerForNewBlock(int nbBlocksAdded) {
+        if (nbBlocksRun > nbFirstBlocks) {
+            nbBlocksDisplayer.Display((nbBlocksRun - nbFirstBlocks).ToString());
+            nbBlocksDisplayer.AddVolatileText($"+ {nbBlocksAdded.ToString()}", nbBlocksDisplayer.GetTextColor());
+            gm.soundManager.PlayNewBlockClip();
+        }
+    }
+
     public void OnExitBlock(Block block) {
+    }
+
+    protected void ResetAllBlocksTime() {
+        if (shouldResetAllBlocksTime) {
+            foreach (BlockList list in blockLists) {
+                foreach (GameObject blockPrefab in list.blocks) {
+                    Block block = blockPrefab.GetComponent<Block>();
+                    block.timesForFinishing = new List<float>();
+                }
+            }
+            Debug.LogWarning("All blocks time have been reseted !");
+        }
     }
 }

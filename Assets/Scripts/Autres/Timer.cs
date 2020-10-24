@@ -9,7 +9,7 @@ public class Timer {
     protected bool stoped = false;
     protected float stopedTiming;
 
-    public Timer(float duree) {
+    public Timer(float duree = 0) {
         this.duree = duree;
         this.debut = Time.timeSinceLevelLoad;
     }

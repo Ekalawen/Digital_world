@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 
 public class Block : MonoBehaviour {
@@ -9,14 +10,19 @@ public class Block : MonoBehaviour {
     public Transform startPoint;
     public Transform endPoint;
     public Transform cubeFolder;
+    public int minTimesForMin = 3;
+    public List<float> timesForFinishing; // { private get; set; }  // Don't use this directly ! Use GetTimeList() !
 
     GameManager gm;
     MapManager map;
     List<Cube> cubes;
+    Block originalBlockPrefab;
 
-    public void Initialize(Transform blocksFolder) {
+
+    public void Initialize(Transform blocksFolder, Block originalBlockPrefab) {
         gm = GameManager.Instance;
         map = gm.map;
+        this.originalBlockPrefab = originalBlockPrefab;
         GatherCubes();
         AddCubesToMap();
         if(gm.timerManager.HasGameStarted()) {
@@ -88,5 +94,30 @@ public class Block : MonoBehaviour {
                 break;
         }
         Destroy(gameObject);
+    }
+
+    protected List<float> GetTimeList() {
+        return originalBlockPrefab.timesForFinishing;
+    }
+
+    public void RememberTime(float time) {
+        EditorUtility.SetDirty(originalBlockPrefab);
+        GetTimeList().Add(time);
+    }
+
+    public float GetAverageTime() {
+        if (GetTimeList().Count > 0) {
+            float mean = 0;
+            foreach (float time in GetTimeList())
+                mean += time;
+            mean /= GetTimeList().Count;
+            return mean;
+        }
+        else
+            return 2.5f;
+    }
+
+    public bool HasEnoughTimesForAveraging() {
+        return GetTimeList().Count >= minTimesForMin;
     }
 }
