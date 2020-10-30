@@ -129,14 +129,14 @@ public class TutorialMap : MapManager {
         Pont pont = new Pont(depart, dir1, dist1);
     }
 
-    public override Vector3 GetPlayerStartPosition() {
-        return new Vector3(5, 5, 5);
-        //return new Vector3(184, 10, 22);
-    }
+    //public override Vector3 GetPlayerStartPosition() {
+    //    return new Vector3(5, 5, 5);
+    //    //return new Vector3(184, 10, 22);
+    //}
 
-    public override Vector2 GetPlayerStartOrientationXY(Vector3 playerStartPosition) {
-        return new Vector2(90, 90);
-    }
+    //public override Vector2 GetPlayerStartOrientationXY(Vector3 playerStartPosition) {
+    //    return new Vector2(90, 90);
+    //}
 
     public override Vector3 GetCenter() {
         return new Vector3(107, 10, 12);

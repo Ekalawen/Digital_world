@@ -846,7 +846,6 @@ public class MapManager : MonoBehaviour {
         playerStartComponent = GetComponent<PlayerStartComponent>();
         if (playerStartComponent == null) {
             playerStartComponent = gameObject.AddComponent<PlayerStartComponent>();
-        } else {
         }
         playerStartComponent.Initialize();
     }
