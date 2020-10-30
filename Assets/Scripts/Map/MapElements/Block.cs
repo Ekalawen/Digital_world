@@ -6,11 +6,16 @@ using UnityEditor;
 using UnityEngine;
 
 public class Block : MonoBehaviour {
+
+    protected static float defaultAverageTime = 2.5f;
+    protected static float timesExtremeBounds = 0.20f;
+    protected static int minTimesCountForAveraging = 3;
+    protected static int maxTimesCountForAveraging = 10;
+
     public Vector3Int size;
     public Transform startPoint;
     public Transform endPoint;
     public Transform cubeFolder;
-    public int minTimesForMin = 3;
     public List<float> timesForFinishing; // { private get; set; }  // Don't use this directly ! Use GetTimeList() !
 
     GameManager gm;
@@ -100,24 +105,35 @@ public class Block : MonoBehaviour {
         return originalBlockPrefab.timesForFinishing;
     }
 
-    public void RememberTime(float time) {
-        EditorUtility.SetDirty(originalBlockPrefab);
-        GetTimeList().Add(time);
+    public void RememberTime(float time, CounterDisplayer nbBlocksDisplayer) {
+        if (ShouldKeepRememberingTimes()) {
+            EditorUtility.SetDirty(originalBlockPrefab);
+            GetTimeList().Add(time);
+            nbBlocksDisplayer.AddVolatileText($"{time}s", Color.red);
+            RemoveExtremeTimes();
+        }
+    }
+
+    protected void RemoveExtremeTimes() {
+        if (HasEnoughTimesForAveraging() && !ShouldKeepRememberingTimes()) {
+            List<float> times = GetTimeList();
+            float mean = GetAverageTime();
+            times.RemoveAll(f => Mathf.Abs(mean - f) >= mean * timesExtremeBounds);
+        }
     }
 
     public float GetAverageTime() {
-        if (GetTimeList().Count > 0) {
-            float mean = 0;
-            foreach (float time in GetTimeList())
-                mean += time;
-            mean /= GetTimeList().Count;
-            return mean;
-        }
+        if (HasEnoughTimesForAveraging())
+            return GetTimeList().Sum() / GetTimeList().Count;
         else
-            return 2.5f;
+            return defaultAverageTime;
     }
 
     public bool HasEnoughTimesForAveraging() {
-        return GetTimeList().Count >= minTimesForMin;
+        return GetTimeList().Count >= minTimesCountForAveraging;
+    }
+
+    protected bool ShouldKeepRememberingTimes() {
+        return GetTimeList().Count < maxTimesCountForAveraging;
     }
 }

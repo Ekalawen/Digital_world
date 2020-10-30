@@ -6,12 +6,10 @@ using System;
 
 public class InfiniteMap : MapManager {
 
-    public bool shouldLearnBlocksTime = false;
     public bool shouldResetAllBlocksTime = false;
     public int nbBlocksForward = 3;
     public int nbFirstBlocks = 3;
     public float timeBeforeFirstDestruction = 3;
-    public float timeForDestructionIfNoAverage = 2.5f;
     public float timeDifficultyCoefficient = 1.0f;
     public GameObject firstBlock;
     public List<BlockList> blockLists;
@@ -80,8 +78,7 @@ public class InfiniteMap : MapManager {
     private void DestroyFirstBlock() {
         if (blocks.Any()) {
             Block firstBlock = blocks.First();
-            float destroyTime = firstBlock.HasEnoughTimesForAveraging() ? firstBlock.GetAverageTime() : timeForDestructionIfNoAverage;
-            destroyTime *= timeDifficultyCoefficient;
+            float destroyTime = firstBlock.GetAverageTime() * timeDifficultyCoefficient;
             firstBlock.Destroy(destroyTime);
             indiceCurrentBlock--;
             blocks.Remove(firstBlock);
@@ -136,13 +133,10 @@ public class InfiniteMap : MapManager {
     }
 
     protected void RememberTimeNeededForBlock(int indiceBlockEntered, int indiceCurrentBlock) {
-        if (shouldLearnBlocksTime) {
-            if (indiceBlockEntered == indiceCurrentBlock + 1 && nbBlocksRun > nbFirstBlocks) {
-                if (indiceCurrentBlock >= 0) {
-                    Block passedBlock = blocks[indiceCurrentBlock];
-                    passedBlock.RememberTime(timerSinceLastBlock.GetElapsedTime());
-                    nbBlocksDisplayer.AddVolatileText($"{timerSinceLastBlock.GetElapsedTime()}s", Color.red);
-                }
+        if (indiceBlockEntered == indiceCurrentBlock + 1 && nbBlocksRun > nbFirstBlocks) {
+            if (indiceCurrentBlock >= 0) {
+                Block passedBlock = blocks[indiceCurrentBlock];
+                passedBlock.RememberTime(timerSinceLastBlock.GetElapsedTime(), nbBlocksDisplayer);
             }
         }
     }
