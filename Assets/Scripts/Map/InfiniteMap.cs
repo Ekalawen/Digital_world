@@ -22,6 +22,7 @@ public class InfiniteMap : MapManager {
 
     int indiceCurrentBlock = 0;
     int nbBlocksRun;
+    List<BlockWeight> blockWeights;
     List<Block> blocks;
     Timer destructionBlockTimer;
     Timer timerBeforeChangeColorBlocks;
@@ -37,6 +38,8 @@ public class InfiniteMap : MapManager {
         timerBeforeChangeColorBlocks = new Timer(timeBeforeFirstDestruction);
         timerSinceLastBlock = new Timer();
         nbBlocksRun = 0;
+        blockWeights = blockLists.Aggregate(new List<BlockWeight>(),
+            (list, blockList) => list.Concat(blockList.blocks).ToList());
 
         ResetAllBlocksTime();
         CreateFirstBlocks();
@@ -70,9 +73,15 @@ public class InfiniteMap : MapManager {
     }
 
     protected GameObject GetRandomBlockPrefab() {
-        BlockList blockList = blockLists[UnityEngine.Random.Range(0, blockLists.Count)];
-        GameObject block = blockList.blocks[UnityEngine.Random.Range(0, blockList.blocks.Count)];
-        return block;
+        float totalWeight = blockWeights.Sum(bw => bw.weight);
+        float randomNumber = UnityEngine.Random.Range(0f, 1f) * totalWeight;
+        float sum = 0;
+        for(int i = 0; i < blockWeights.Count; i++) {
+            sum += blockWeights[i].weight;
+            if (randomNumber <= sum)
+                return blockWeights[i].block;
+        }
+        return blockWeights.Last().block;
     }
 
     private void DestroyFirstBlock() {
@@ -161,8 +170,8 @@ public class InfiniteMap : MapManager {
     protected void ResetAllBlocksTime() {
         if (shouldResetAllBlocksTime) {
             foreach (BlockList list in blockLists) {
-                foreach (GameObject blockPrefab in list.blocks) {
-                    Block block = blockPrefab.GetComponent<Block>();
+                foreach (BlockWeight blockWeight in list.blocks) {
+                    Block block = blockWeight.block.GetComponent<Block>();
                     block.timesForFinishing = new List<float>();
                 }
             }
