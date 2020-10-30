@@ -1,11 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class GenerateCaves : GenerateCubesMapFunction {
 
-	public float proportionCaves = 0.3f;
+    [Header("Caves Generation")]
     public bool useNbCaves = false;
+    [ConditionalHide("useNbCaves", true)]
+	public float proportionCaves = 0.3f;
+    [ConditionalHide("!useNbCaves", true)]
     public int nbCaves = 0;
     public int tailleMinCave = 3;
     public int tailleMaxCave = 10;
@@ -14,6 +18,11 @@ public class GenerateCaves : GenerateCubesMapFunction {
     public int nbLumieresPerCaves = 1;
     public int offsetLumieresFromCenter = 1;
     public int caveOffsetFromSides = 2;
+    [Header("Fixed offsets")]
+    public bool shouldUseCaveFixedOffsetX = false;
+    public bool shouldUseCaveFixedOffsetY = false;
+    public bool shouldUseCaveFixedOffsetZ = false;
+    public Vector3Int caveFixedOffset;
 
     public override void Activate() {
         // On veut générer des caves dangeureuses :3
@@ -73,17 +82,36 @@ public class GenerateCaves : GenerateCubesMapFunction {
     }
 
     protected virtual Vector3 GetPositionCave(Vector3Int sizeCave, int caveOffsetFromSides) {
-        //if (caveOffsetSides) {
-        //    return new Vector3(Random.Range(2, map.tailleMap.x - sizeCave.x),
-        //        Random.Range(2, map.tailleMap.y - sizeCave.y),
-        //        Random.Range(2, map.tailleMap.z - sizeCave.z));
-        //} else {
-        //    return new Vector3(Random.Range(0, map.tailleMap.x - sizeCave.x + 2),
-        //        Random.Range(0, map.tailleMap.y - sizeCave.y + 2),
-        //        Random.Range(0, map.tailleMap.z - sizeCave.z + 2));
-        //}
-        return new Vector3(Random.Range(caveOffsetFromSides, map.tailleMap.x - sizeCave.x + 2 - caveOffsetFromSides),
-            Random.Range(caveOffsetFromSides, map.tailleMap.y - sizeCave.y + 2 - caveOffsetFromSides),
-            Random.Range(caveOffsetFromSides, map.tailleMap.z - sizeCave.z + 2 - caveOffsetFromSides));
+        Vector3 position = Vector3.zero;
+        position.x = shouldUseCaveFixedOffsetX ? caveFixedOffset.x :
+            Random.Range(caveOffsetFromSides, map.tailleMap.x - sizeCave.x + 2 - caveOffsetFromSides);
+        position.y = shouldUseCaveFixedOffsetY ? caveFixedOffset.y :
+            Random.Range(caveOffsetFromSides, map.tailleMap.y - sizeCave.y + 2 - caveOffsetFromSides);
+        position.z = shouldUseCaveFixedOffsetZ ? caveFixedOffset.z :
+            Random.Range(caveOffsetFromSides, map.tailleMap.z - sizeCave.z + 2 - caveOffsetFromSides);
+        return position;
     }
 }
+
+//[CustomEditor(typeof(GenerateCaves)), CanEditMultipleObjects]
+//public class GenerateCavesEditor : Editor {
+//    public override void OnInspectorGUI() {
+//        GenerateCaves generateCaves = target as GenerateCaves;
+//        serializedObject.Update();
+//        SerializedProperty property = serializedObject.GetIterator();
+//        while(property.NextVisible(true)) {
+//            switch(property.name) {
+//                case "nbCaves":
+//                    if(generateCaves.useNbCaves) EditorGUILayout.PropertyField(property);
+//                    break;
+//                case "proportionCaves":
+//                    if(!generateCaves.useNbCaves) EditorGUILayout.PropertyField(property);
+//                    break;
+//                default:
+//                    EditorGUILayout.PropertyField(property);
+//                    break;
+//            }
+//        }
+//        serializedObject.ApplyModifiedProperties();
+//    }
+//}
