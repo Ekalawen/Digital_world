@@ -20,17 +20,19 @@ public class MapManager : MonoBehaviour {
 
 	// public enum TypeMap {CUBE_MAP, PLAINE_MAP, LABYRINTHE_MAP, GROUND_MAP, EMPTY_MAP, TUTORIAL_MAP}; // Plus vraiment utile ! :D
 
+    [Header("Cube Prefabs")]
 	public GameObject cubePrefab; // On récupère ce qu'est un cube !
-
     public GameObject deathCubePrefab; // On récupère ce qu'est qu'un cube de la mort ! :)
 	public GameObject indestructibleCubePrefab; // On récupère ce qu'est qu'un cube indestructible ! :)
 	public GameObject specialCubePrefab; // On récupère ce qu'est qu'un cube special ! :)
+
+    [Header("Lumières Prefabs")]
 	public GameObject lumierePrefab; // On récupère les lumières !
 	public GameObject lumiereSpecialePrefab; // On récupère les lumières !
 	public GameObject lumiereFinalePrefab; // On récupère les lumières finales !
 
+    [Header("Map Construction")]
     public List<MapFunctionComponent> mapFunctionComponents;
-
     public Vector3Int tailleMap; // La taille de la map, en largeur, hauteur et profondeur
 	public int nbLumieresInitial; // Le nombre de lumières lors de la création de la map
 

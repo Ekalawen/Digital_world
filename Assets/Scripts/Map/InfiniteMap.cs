@@ -6,22 +6,38 @@ using System;
 
 public class InfiniteMap : MapManager {
 
-    public bool shouldResetAllBlocksTime = false;
+    public enum DifficultyMode { CONSTANT, PROGRESSIVE }
+
+    [Header("Parameters")]
+    public List<BlockList> blockLists;
     public int nbBlocksForward = 3;
+    public DifficultyMode difficultyMode = DifficultyMode.CONSTANT;
+    [ConditionalHide("difficultyMode", DifficultyMode.CONSTANT)]
+    public float timeDifficultyCoefficient = 1.0f;
+    [ConditionalHide("difficultyMode", DifficultyMode.PROGRESSIVE)]
+    public float timeDifficultyOffset = 1.85f;
+    [ConditionalHide("difficultyMode", DifficultyMode.PROGRESSIVE)]
+    public float timeDifficultyProgression = 6f;
+
+    [Header("Start")]
+    public GameObject firstBlock;
     public int nbFirstBlocks = 3;
     public float timeBeforeFirstDestruction = 3;
-    public float timeDifficultyCoefficient = 1.0f;
-    public GameObject firstBlock;
-    public List<BlockList> blockLists;
-    public CounterDisplayer nbBlocksDisplayer;
+
+    [Header("Color Change")]
     public Color colorChangeColorBlocks;
     public float rangeChangeColorBlocks;
     public float speedChangeColorBlocks;
+
+    [Header("Others")]
+    public CounterDisplayer nbBlocksDisplayer;
+    public bool shouldResetAllBlocksTime = false;
 
     Transform blocksFolder;
 
     int indiceCurrentBlock = 0;
     int nbBlocksRun;
+    int nbBlocksDestroyed;
     List<BlockWeight> blockWeights;
     List<Block> blocks;
     Timer destructionBlockTimer;
@@ -38,6 +54,7 @@ public class InfiniteMap : MapManager {
         timerBeforeChangeColorBlocks = new Timer(timeBeforeFirstDestruction);
         timerSinceLastBlock = new Timer();
         nbBlocksRun = 0;
+        nbBlocksDestroyed = 0;
         blockWeights = blockLists.Aggregate(new List<BlockWeight>(),
             (list, blockList) => list.Concat(blockList.blocks).ToList());
 
@@ -87,13 +104,25 @@ public class InfiniteMap : MapManager {
     private void DestroyFirstBlock() {
         if (blocks.Any()) {
             Block firstBlock = blocks.First();
-            float destroyTime = firstBlock.GetAverageTime() * timeDifficultyCoefficient;
+            float destroyTime = firstBlock.GetAverageTime();
+            destroyTime = ApplyTimeDifficulty(destroyTime);
             firstBlock.Destroy(destroyTime);
+            nbBlocksDestroyed += 1;
             indiceCurrentBlock--;
             blocks.Remove(firstBlock);
             destructionBlockTimer = new Timer(destroyTime);
         } else {
             gm.eventManager.LoseGame(EventManager.DeathReason.OUT_OF_BLOCKS);
+        }
+    }
+
+    protected float ApplyTimeDifficulty(float destroyTime) {
+        if (difficultyMode == DifficultyMode.CONSTANT)
+            return destroyTime * timeDifficultyCoefficient;
+        else {
+            float difficultyCoefficient = timeDifficultyOffset / Mathf.Pow(Mathf.Max(nbBlocksDestroyed, 1), 1 / timeDifficultyProgression);
+            nbBlocksDisplayer.AddVolatileText(difficultyCoefficient.ToString(), Color.blue);
+            return destroyTime * difficultyCoefficient;
         }
     }
 
