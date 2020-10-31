@@ -41,9 +41,13 @@ public class ConditionalHidePropertyDrawer : PropertyDrawer
         string conditionPath = propertyPath.Replace(property.name, condHAtt.ConditionalSourceField); //changes the path to the conditionalsource property path
         SerializedProperty sourcePropertyValue = property.serializedObject.FindProperty(conditionPath);
 
+        System.Type parentType = sourcePropertyValue.serializedObject.targetObject.GetType();
+        System.Reflection.FieldInfo fi = parentType.GetField(sourcePropertyValue.propertyPath);
+        object sourceValue = fi.GetValue(sourcePropertyValue.serializedObject.targetObject);
+
         if (sourcePropertyValue != null)
         {
-            enabled = sourcePropertyValue.boolValue ^ condHAtt.ShouldReverseDisplay;
+            enabled = (sourceValue.Equals(condHAtt.SourceTrueValue)) ^ condHAtt.ShouldReverseDisplay;
         }
         else
         {

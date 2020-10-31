@@ -12,8 +12,10 @@ public class ConditionalHideAttribute : PropertyAttribute
     public bool HideInInspector = false;
     //TRUE = Hide if true / FALSE = Hide if false (default behavior)
     public bool ShouldReverseDisplay = false;
+    //The value the source should have to display
+    public object SourceTrueValue;
 
-    public ConditionalHideAttribute(string conditionalSourceField, bool hideInInspector) {
+    public ConditionalHideAttribute(string conditionalSourceField, object sourceTrueValue, bool hideInInspector) {
         if (!conditionalSourceField.StartsWith("!")) {
             this.ConditionalSourceField = conditionalSourceField;
             ShouldReverseDisplay = false;
@@ -22,8 +24,13 @@ public class ConditionalHideAttribute : PropertyAttribute
             ShouldReverseDisplay = true;
         }
         this.HideInInspector = true;
+        this.SourceTrueValue = sourceTrueValue;
     }
 
-    public ConditionalHideAttribute(string conditionalSourceField) : this(conditionalSourceField, true) {
+    public ConditionalHideAttribute(string conditionalSourceField, object sourceTrueValue)
+        : this(conditionalSourceField, sourceTrueValue, true) {
+    }
+
+    public ConditionalHideAttribute(string conditionalSourceField) : this(conditionalSourceField, true, true) {
     }
 }

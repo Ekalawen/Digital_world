@@ -5,24 +5,37 @@ using UnityEngine;
 
 public class GenerateCaves : GenerateCubesMapFunction {
 
-    [Header("Caves Generation")]
+    [Header("Generating Mode")]
     public bool useNbCaves = false;
-    [ConditionalHide("useNbCaves", true)]
-	public float proportionCaves = 0.3f;
-    [ConditionalHide("!useNbCaves", true)]
+    [ConditionalHide("useNbCaves")]
     public int nbCaves = 0;
+    [ConditionalHide("!useNbCaves")]
+	public float proportionCaves = 0.3f;
+
+    [Header("Parameters")]
     public int tailleMinCave = 3;
     public int tailleMaxCave = 10;
     public bool makeSpaceArround = false;
+    [ConditionalHide("makeSpaceArround")]
     public bool preserveMapBordure = false;
     public int nbLumieresPerCaves = 1;
     public int offsetLumieresFromCenter = 1;
     public int caveOffsetFromSides = 2;
+
     [Header("Fixed offsets")]
-    public bool shouldUseCaveFixedOffsetX = false;
-    public bool shouldUseCaveFixedOffsetY = false;
-    public bool shouldUseCaveFixedOffsetZ = false;
-    public Vector3Int caveFixedOffset;
+    public bool useCaveFixedOffset = false;
+    [ConditionalHide("useCaveFixedOffset")]
+    public bool useCaveFixedOffsetX = false;
+    [ConditionalHide("useCaveFixedOffsetX")]
+    public int caveFixedOffsetX;
+    [ConditionalHide("useCaveFixedOffset")]
+    public bool useCaveFixedOffsetY = false;
+    [ConditionalHide("useCaveFixedOffsetY")]
+    public int caveFixedOffsetY;
+    [ConditionalHide("useCaveFixedOffset")]
+    public bool useCaveFixedOffsetZ = false;
+    [ConditionalHide("useCaveFixedOffsetZ")]
+    public int caveFixedOffsetZ;
 
     public override void Activate() {
         // On veut générer des caves dangeureuses :3
@@ -83,11 +96,11 @@ public class GenerateCaves : GenerateCubesMapFunction {
 
     protected virtual Vector3 GetPositionCave(Vector3Int sizeCave, int caveOffsetFromSides) {
         Vector3 position = Vector3.zero;
-        position.x = shouldUseCaveFixedOffsetX ? caveFixedOffset.x :
+        position.x = useCaveFixedOffset && useCaveFixedOffsetX ? caveFixedOffsetX :
             Random.Range(caveOffsetFromSides, map.tailleMap.x - sizeCave.x + 2 - caveOffsetFromSides);
-        position.y = shouldUseCaveFixedOffsetY ? caveFixedOffset.y :
+        position.y = useCaveFixedOffset && useCaveFixedOffsetY ? caveFixedOffsetY :
             Random.Range(caveOffsetFromSides, map.tailleMap.y - sizeCave.y + 2 - caveOffsetFromSides);
-        position.z = shouldUseCaveFixedOffsetZ ? caveFixedOffset.z :
+        position.z = useCaveFixedOffset && useCaveFixedOffsetZ ? caveFixedOffsetZ :
             Random.Range(caveOffsetFromSides, map.tailleMap.z - sizeCave.z + 2 - caveOffsetFromSides);
         return position;
     }

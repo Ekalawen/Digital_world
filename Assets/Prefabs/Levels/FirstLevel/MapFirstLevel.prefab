@@ -26,8 +26,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cubeType: 0
   useNbCaves: 0
-  proportionCaves: 0.3
   nbCaves: 0
+  proportionCaves: 0.3
   tailleMinCave: 3
   tailleMaxCave: 10
   makeSpaceArround: 0
@@ -35,10 +35,13 @@ MonoBehaviour:
   nbLumieresPerCaves: 1
   offsetLumieresFromCenter: 1
   caveOffsetFromSides: 2
-  shouldUseCaveFixedOffsetX: 0
-  shouldUseCaveFixedOffsetY: 0
-  shouldUseCaveFixedOffsetZ: 0
-  caveFixedOffset: {x: 0, y: 0, z: 0}
+  useCaveFixedOffset: 0
+  useCaveFixedOffsetX: 0
+  caveFixedOffsetX: 0
+  useCaveFixedOffsetY: 0
+  caveFixedOffsetY: 0
+  useCaveFixedOffsetZ: 0
+  caveFixedOffsetZ: 0
 --- !u!1001 &6406004073022886087
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -148,6 +151,26 @@ PrefabInstance:
     - target: {fileID: 3425981728395409398, guid: 129f4eb78691940da993d749688543fd,
         type: 3}
       propertyPath: useNbCaves
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3425981728395409398, guid: 129f4eb78691940da993d749688543fd,
+        type: 3}
+      propertyPath: useCaveFixedOffset
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3425981728395409398, guid: 129f4eb78691940da993d749688543fd,
+        type: 3}
+      propertyPath: useCaveFixedOffsetX
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3425981728395409398, guid: 129f4eb78691940da993d749688543fd,
+        type: 3}
+      propertyPath: useCaveFixedOffsetY
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3425981728395409398, guid: 129f4eb78691940da993d749688543fd,
+        type: 3}
+      propertyPath: useCaveFixedOffsetZ
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114991096836358190, guid: 129f4eb78691940da993d749688543fd,
