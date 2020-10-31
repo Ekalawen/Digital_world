@@ -17,27 +17,39 @@ public class MenuLevel : MonoBehaviour {
     public static string HAS_ALREADY_DISCOVER_LEVEL_KEY = "hasAlreadyDiscoverLevel";
     public static string SUPER_CHEATED_PASSWORD = "lecreateurdecejeuestmonuniquedieuetmaitre";
 
+    [Header("Name")]
     public string levelSceneName;
     public string levelFolderName;
-    public MenuLevelSelector menuLevelSelector;
-    public MenuBackgroundBouncing menuBouncingBackground;
-    public Text textLevelName;
-    public InputField inputFieldNext;
+
+    [Header("Background")]
+    public float probaSource = 0.00035f; // La probabilité d'être une source
+    public int distanceSource = 8; // La distance d'action de la source
+    public float decroissanceSource = 0.01f; // La vitesse de décroissance de la source
+    public List<ColorSource.ThemeSource> themes; // Les couleurs des sources :)
+
+    [Header("Links to Level")]
     public string nextPassword = "passwd";
     public GameObject joueurPrefab;
     public GameObject consolePrefab;
+
+    [Header("Textes Explicatifs")]
     public TexteExplicatif texteInformations;
     public TexteExplicatif texteExplicatifPasswdError;
     public TexteExplicatif texteExplicatifDonneesHackes;
     public TexteExplicatif texteExplicatifDonneesHackesSuccess;
     public TexteExplicatif texteExplicatifIntroduction;
-    public Text score_nbTries, score_nbWins, score_winrate, score_highestScore;
 
-    // Les propriétés du background de ce level
-    public float probaSource = 0.00035f; // La probabilité d'être une source
-    public int distanceSource = 8; // La distance d'action de la source
-    public float decroissanceSource = 0.01f; // La vitesse de décroissance de la source
-    public List<ColorSource.ThemeSource> themes; // Les couleurs des sources :)
+    [Header("Scores")]
+    public Text score_nbTries;
+    public Text score_nbWins;
+    public Text score_winrate;
+    public Text score_highestScore;
+
+    [Header("Other Links")]
+    public MenuLevelSelector menuLevelSelector;
+    public MenuBackgroundBouncing menuBouncingBackground;
+    public Text textLevelName;
+    public InputField inputFieldNext;
 
     protected bool playStarted = false;
 
