@@ -5,12 +5,14 @@ using UnityEngine;
 
 public class GenerateCaves : GenerateCubesMapFunction {
 
+    public enum GENERATE_MODE { PROPORTION, COUNT };
+
     [Header("Generating Mode")]
-    public bool useNbCaves = false;
-    [ConditionalHide("useNbCaves")]
-    public int nbCaves = 0;
-    [ConditionalHide("!useNbCaves")]
+    public GENERATE_MODE generateMode = GENERATE_MODE.PROPORTION;
+    [ConditionalHide("generateMode", GENERATE_MODE.PROPORTION)]
 	public float proportionCaves = 0.3f;
+    [ConditionalHide("generateMode", GENERATE_MODE.COUNT)]
+    public int nbCaves = 0;
 
     [Header("Parameters")]
     public int tailleMinCave = 3;
@@ -45,9 +47,9 @@ public class GenerateCaves : GenerateCubesMapFunction {
 
 	protected List<Cave> GenerateAllCaves() {
         List<Cave> caves = null;
-        if (!useNbCaves)
+        if (generateMode == GENERATE_MODE.PROPORTION)
             caves = GenerateAllCavesWithProportion();
-        else
+        else if (generateMode == GENERATE_MODE.COUNT)
             caves = GenerateAllCavesWithNbCaves();
 
         return caves;

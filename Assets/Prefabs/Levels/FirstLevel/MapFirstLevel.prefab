@@ -25,9 +25,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cubeType: 0
-  useNbCaves: 0
-  nbCaves: 0
+  generateMode: 0
   proportionCaves: 0.3
+  nbCaves: 0
   tailleMinCave: 3
   tailleMaxCave: 10
   makeSpaceArround: 0
@@ -171,6 +171,11 @@ PrefabInstance:
     - target: {fileID: 3425981728395409398, guid: 129f4eb78691940da993d749688543fd,
         type: 3}
       propertyPath: useCaveFixedOffsetZ
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3425981728395409398, guid: 129f4eb78691940da993d749688543fd,
+        type: 3}
+      propertyPath: generateMode
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114991096836358190, guid: 129f4eb78691940da993d749688543fd,
