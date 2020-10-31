@@ -63,6 +63,9 @@ public class Block : MonoBehaviour {
             Cube cube = child.gameObject.GetComponent<Cube>();
             if (cube != null)
                 cubes.Add(cube);
+            RandomCubes randomCubes = child.gameObject.GetComponent<RandomCubes>();
+            if (randomCubes != null)
+                cubes.AddRange(randomCubes.GetChosenCubesAndDestroyOthers());
         }
     }
 
