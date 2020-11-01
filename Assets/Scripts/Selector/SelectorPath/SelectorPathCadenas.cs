@@ -15,6 +15,7 @@ public class SelectorPathCadenas : MonoBehaviour {
     public Image cadenaOpen;
     public Image cadenaClosed;
     public Image background;
+    public Canvas canvas;
 
     protected SelectorManager selectorManager;
 
@@ -22,6 +23,11 @@ public class SelectorPathCadenas : MonoBehaviour {
         selectorManager = SelectorManager.Instance;
         DisplayGoodCadena();
         MakeCadenaLookAtCamera();
+        RegisterCameraToCanvas();
+    }
+
+    protected void RegisterCameraToCanvas() {
+        canvas.worldCamera = selectorManager.camera;
     }
 
     protected void MakeCadenaLookAtCamera() {
@@ -38,5 +44,25 @@ public class SelectorPathCadenas : MonoBehaviour {
             cadenaClosed.gameObject.SetActive(true);
             background.color = closedColorBackground;
         }
+    }
+
+    public void DisplayReverseCadena() {
+        if (!selectorPath.IsUnlocked()) {
+            cadenaOpen.gameObject.SetActive(true);
+            cadenaClosed.gameObject.SetActive(false);
+            background.color = openColorBackground;
+        } else {
+            cadenaOpen.gameObject.SetActive(false);
+            cadenaClosed.gameObject.SetActive(true);
+            background.color = closedColorBackground;
+        }
+    }
+
+    public void SetFocused() {
+        DisplayReverseCadena();
+    }
+
+    public void SetUnfocused() {
+        DisplayGoodCadena();
     }
 }

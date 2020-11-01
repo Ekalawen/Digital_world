@@ -8,12 +8,19 @@ public class SelectorLevelObjectCube : MonoBehaviour {
     public Material normalMaterial;
     public Material focusedMaterial;
 
+    protected SelectorManager selectorManager;
     protected bool hasClickedDown = false;
 
+    public void Start() {
+        selectorManager = SelectorManager.Instance;
+    }
+
     public void OnMouseEnter() {
-        objectLevel.level.OnMouseEnter();
-        GetComponent<Renderer>().material = focusedMaterial;
-        objectLevel.title.SetFocused();
+        if (!selectorManager.PopupIsEnabled()) {
+            objectLevel.level.OnMouseEnter();
+            GetComponent<Renderer>().material = focusedMaterial;
+            objectLevel.title.SetFocused();
+        }
     }
 
     public void OnMouseExit() {
@@ -30,7 +37,8 @@ public class SelectorLevelObjectCube : MonoBehaviour {
     public void OnMouseUp() {
         if (hasClickedDown) {
             hasClickedDown = false;
-            objectLevel.level.OnMouseDown();
+            if(!selectorManager.PopupIsEnabled())
+                objectLevel.level.OnMouseDown();
         }
     }
 }

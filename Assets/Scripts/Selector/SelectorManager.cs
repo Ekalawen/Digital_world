@@ -27,6 +27,7 @@ public class SelectorManager : MonoBehaviour {
     protected List<SelectorLevel> levels;
     protected List<SelectorPath> paths;
     protected SelectorLevel currentSelectorLevel;
+
     protected bool hasLevelOpen = false;
 
     void Awake() {
@@ -239,5 +240,9 @@ public class SelectorManager : MonoBehaviour {
         popup.SetColorTheme(theme);
         popup.SetText(title, text);
         popup.Run();
+    }
+
+    public bool PopupIsEnabled() {
+        return popup.content.activeInHierarchy;
     }
 }

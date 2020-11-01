@@ -91,4 +91,8 @@ public class SelectorPath : MonoBehaviour {
             return pathPoints[(pathPoints.Count - 1) / 2].transform.position;
         }
     }
+
+    public void OnCadenaClicked() {
+        selectorManager.RunPopup("OHHHHHHHHHHHH", "YEAHHHHHHHHH !!!!", TexteExplicatif.Theme.POSITIF);
+    }
 }

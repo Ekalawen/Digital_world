@@ -31,7 +31,7 @@ public class SelectorCameraController : MonoBehaviour {
     }
 
     protected void MoveByDragging() {
-        if (selectorManager.HasSelectorLevelOpen())
+        if (selectorManager.HasSelectorLevelOpen() || selectorManager.PopupIsEnabled())
             return;
 
         Vector3 move = Vector3.zero;
