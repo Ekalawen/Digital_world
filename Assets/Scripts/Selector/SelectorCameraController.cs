@@ -5,24 +5,90 @@ using System.Linq;
 using UnityEngine;
 
 public class SelectorCameraController : MonoBehaviour {
+    [Header("Mouvement and Rotations")]
+    public Vector3 speed;
+    public float dureeRotations = 0.3f;
 
+    [Header("ElasticitySphere")]
+    public Vector2 sizeElasticitySphere;
+    public Vector2 elasticitySphereCoefficiant;
+
+    [Header("Links")]
     public SelectorManager selectorManager;
     public CharacterController controller;
-    public float dureeRotations = 0.3f;
 
     protected Vector3 lastClosestLevelPosition = Vector3.zero;
     protected Coroutine rotationCoroutine = null;
 
+    public void Start() {
+        speed *= 100;
+    }
+
     public void Update() {
+        MoveByDragging();
+        ApplyElasticitySphere();
         LookAtClosestLevel();
+    }
+
+    protected void MoveByDragging() {
+        Vector3 move = Vector3.zero;
+        if(Input.GetMouseButton(0)) {
+            float speedX = - Input.GetAxis("Mouse X");
+            float speedY = - Input.GetAxis("Mouse Y");
+            move += transform.right * speedX * speed.x;
+            move += Vector3.up * speedY * speed.y;
+        }
+        float speedZ = Input.GetAxis("Mouse ScrollWheel");
+        move += transform.forward * speedZ * speed.z;
+        move *= Time.deltaTime;
+        controller.Move(move);
+    }
+
+    protected void ApplyElasticitySphere() {
+        Vector3 closest = GetClosestLevelPosition(transform.position);
+        float distance = Vector3.Distance(closest, transform.position);
+        Vector3 direction = (closest - transform.position).normalized;
+        Vector3 move = Vector3.zero;
+        if(distance > sizeElasticitySphere[1]) {
+            float distanceToCatchBack = (distance - sizeElasticitySphere[1]);
+            move += direction * distanceToCatchBack * elasticitySphereCoefficiant[1];
+        }
+        if(distance < sizeElasticitySphere[0]) {
+            float distanceToCatchBack = (sizeElasticitySphere[0] - distance);
+            Vector3 attemptedMove = -direction * distanceToCatchBack * elasticitySphereCoefficiant[0];
+            attemptedMove = EnsureNotAttractedByAnOtherSphere(attemptedMove, closest);
+            move += attemptedMove;
+        }
+        move *= Time.deltaTime;
+        controller.Move(move);
+    }
+
+    protected Vector3 EnsureNotAttractedByAnOtherSphere(Vector3 attemptedMove, Vector3 closest) {
+        while (true) {
+            Vector3 newPosition = transform.position + attemptedMove;
+            Vector3 newClosest = GetClosestLevelPosition(newPosition);
+            if (newClosest != closest)
+                attemptedMove /= 2;
+            else
+                break;
+        }
+        return attemptedMove;
+    }
+
+    protected List<Vector3> GetLevelsPositions() {
+        return selectorManager.GetLevels().Select(l => l.transform.position).ToList();
+    }
+
+    protected Vector3 GetClosestLevelPosition(Vector3 pos) {
+        List<Vector3> levelsPositions = GetLevelsPositions();
+        return levelsPositions.OrderBy(p => Vector3.Distance(pos, p)).First();
     }
 
     protected void LookAtClosestLevel() {
         if (rotationCoroutine != null)
             return;
 
-        List<Vector3> levelsPositions = selectorManager.GetLevels().Select(l => l.transform.position).ToList();
-        Vector3 closest = levelsPositions.OrderBy(pos => Vector3.Distance(transform.position, pos)).First();
+        Vector3 closest = GetClosestLevelPosition(transform.position);
         if(closest == lastClosestLevelPosition)
             transform.LookAt(closest);
         else

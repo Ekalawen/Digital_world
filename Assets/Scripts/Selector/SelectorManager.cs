@@ -5,12 +5,20 @@ using UnityEngine;
 
 public class SelectorManager : MonoBehaviour {
 
+    static SelectorManager _instance;
+    public static SelectorManager Instance { get { return _instance ?? (_instance = new GameObject().AddComponent<SelectorManager>()); } }
+
     public Transform levelsFolder;
     public Transform pathsFolder;
+    public Camera camera;
     public MenuBackgroundBouncing background;
 
     protected List<SelectorLevel> levels;
     protected List<SelectorPath> paths;
+
+    void Awake() {
+        if (!_instance) { _instance = this; }
+    }
 
     void Start() {
         GatherLevels();
