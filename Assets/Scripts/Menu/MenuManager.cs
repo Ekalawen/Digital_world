@@ -51,8 +51,9 @@ public class MenuManager : MonoBehaviour {
 	// Lorsqu'on appui sur le bouton jouer
 	public void OnPlayPress() {
 		Debug.Log("On a appuyé sur Play !");
+        //menuLevelSelector.Run(0);
         SceneManager.LoadScene("SelectorScene");
-	}
+    }
 
 	// Lorsqu'on appui sur le bouton tutoriel
 	public void OnTutorialPress() {

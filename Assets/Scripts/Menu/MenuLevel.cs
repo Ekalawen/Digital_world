@@ -306,4 +306,8 @@ public class MenuLevel : MonoBehaviour {
     public void SetPlayStarted() {
         playStarted = true;
     }
+
+    public bool IsSucceeded() {
+        return GetNbWins() > 0;
+    }
 }

@@ -415,6 +415,7 @@ MonoBehaviour:
   camera: {fileID: 278439638}
   background: {fileID: 332243354}
   loadingMenu: {fileID: 228537039}
+  popup: {fileID: 1681162045}
   dureeFading: 0.5
 --- !u!1001 &78443479
 PrefabInstance:
@@ -4101,6 +4102,7 @@ RectTransform:
   - {fileID: 351283348}
   - {fileID: 1959256442}
   - {fileID: 228537038}
+  - {fileID: 1695283033}
   m_Father: {fileID: 199321218}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4959,6 +4961,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f5dfef9efb5d854f9c5aca338f0692e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1681162045 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: -1033799586518541889, guid: 15bc17ce10363aa40b4772a21e53aba4,
+    type: 3}
+  m_PrefabInstance: {fileID: 1695283032}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c33eea4f7e07b9b4ea6e6f03285a1fae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1692856191
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5096,6 +5110,131 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccf0705c23ac93e4c8ed60a553363616, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1001 &1695283032
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1166235441}
+    m_Modifications:
+    - target: {fileID: 7553642874499919498, guid: 15bc17ce10363aa40b4772a21e53aba4,
+        type: 3}
+      propertyPath: m_Name
+      value: Popup
+      objectReference: {fileID: 0}
+    - target: {fileID: 7553642874499919498, guid: 15bc17ce10363aa40b4772a21e53aba4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7126880526820848706, guid: 15bc17ce10363aa40b4772a21e53aba4,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7126880526820848706, guid: 15bc17ce10363aa40b4772a21e53aba4,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7126880526820848706, guid: 15bc17ce10363aa40b4772a21e53aba4,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7126880526820848706, guid: 15bc17ce10363aa40b4772a21e53aba4,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7126880526820848706, guid: 15bc17ce10363aa40b4772a21e53aba4,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7126880526820848706, guid: 15bc17ce10363aa40b4772a21e53aba4,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7126880526820848706, guid: 15bc17ce10363aa40b4772a21e53aba4,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7126880526820848706, guid: 15bc17ce10363aa40b4772a21e53aba4,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7126880526820848706, guid: 15bc17ce10363aa40b4772a21e53aba4,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7126880526820848706, guid: 15bc17ce10363aa40b4772a21e53aba4,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7126880526820848706, guid: 15bc17ce10363aa40b4772a21e53aba4,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -1033799586518541889, guid: 15bc17ce10363aa40b4772a21e53aba4,
+        type: 3}
+      propertyPath: color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -1033799586518541889, guid: 15bc17ce10363aa40b4772a21e53aba4,
+        type: 3}
+      propertyPath: color.a
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: -1033799586518541889, guid: 15bc17ce10363aa40b4772a21e53aba4,
+        type: 3}
+      propertyPath: positifThemeColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -1033799586518541889, guid: 15bc17ce10363aa40b4772a21e53aba4,
+        type: 3}
+      propertyPath: positifThemeColor.a
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: -1033799586518541889, guid: 15bc17ce10363aa40b4772a21e53aba4,
+        type: 3}
+      propertyPath: negatifThemeColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -1033799586518541889, guid: 15bc17ce10363aa40b4772a21e53aba4,
+        type: 3}
+      propertyPath: negatifThemeColor.a
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: -1033799586518541889, guid: 15bc17ce10363aa40b4772a21e53aba4,
+        type: 3}
+      propertyPath: neutralThemeColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -1033799586518541889, guid: 15bc17ce10363aa40b4772a21e53aba4,
+        type: 3}
+      propertyPath: neutralThemeColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -1033799586518541889, guid: 15bc17ce10363aa40b4772a21e53aba4,
+        type: 3}
+      propertyPath: neutralThemeColor.a
+      value: 0.4
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 15bc17ce10363aa40b4772a21e53aba4, type: 3}
+--- !u!4 &1695283033 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7126880526820848706, guid: 15bc17ce10363aa40b4772a21e53aba4,
+    type: 3}
+  m_PrefabInstance: {fileID: 1695283032}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1695741577
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -22,6 +23,10 @@ public class SelectorLevel : MonoBehaviour {
 
     public void OnMouseDown() {
         if(!selectorManager.HasSelectorLevelOpen())
-            selectorManager.DisplayLevel(this);
+            selectorManager.TryDisplayLevel(this);
+    }
+
+    public bool IsSucceeded() {
+        return menuLevel.IsSucceeded();
     }
 }

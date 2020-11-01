@@ -10,6 +10,9 @@ public class SelectorPath : MonoBehaviour {
     public SelectorLevel endLevel;
     public List<GameObject> intermediatePoints;
 
+    [Header("Password")]
+    public string password = "passwd";
+
     [Header("Trails")]
     public float timeBetweenTrails = 0.3f;
     public Gradient trailColorUnlocked;
@@ -46,8 +49,7 @@ public class SelectorPath : MonoBehaviour {
             for(int i = 0; i < pathPoints.Count - 1; i++) {
                 Vector3 source = pathPoints[i].transform.position;
                 Vector3 target = pathPoints[i + 1].transform.position;
-                Gradient gradient = i % 2 == 0 ? trailColorUnlocked : trailColorLocked;
-                ThrowTrail(source, target, gradient);
+                ThrowTrail(source, target, GetGradientColor());
             }
             trailTimer.Reset();
         }
@@ -57,5 +59,15 @@ public class SelectorPath : MonoBehaviour {
         GameObject tr = Instantiate(trailPrefab, source, Quaternion.identity, transform) as GameObject;
         tr.GetComponent<Trail>().SetTarget(target);
         tr.GetComponent<TrailRenderer>().colorGradient = gradient;
+    }
+
+    public bool IsUnlocked() {
+        return true;
+    }
+
+    public Gradient GetGradientColor() {
+        if (IsUnlocked())
+            return trailColorUnlocked;
+        return trailColorLocked;
     }
 }

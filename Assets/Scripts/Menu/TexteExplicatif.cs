@@ -10,6 +10,7 @@ public class TexteExplicatif : MonoBehaviour {
 
     public static string ROOT_REPOSITORY = "Assets/Texts/";
     public static string ROOT_LEVELS_REPOSITORY = ROOT_REPOSITORY + "Levels/";
+    public enum Theme { POSITIF, NEGATIF, NEUTRAL };
 
     public GameObject content;
     public Text titleTextSource;
@@ -21,6 +22,9 @@ public class TexteExplicatif : MonoBehaviour {
     public Color color;
     public Button doneButton;
     public Image fondSombre;
+    public Color positifThemeColor;
+    public Color negatifThemeColor;
+    public Color neutralThemeColor;
 
     public bool dontDisableOnSpace = false;
 
@@ -40,9 +44,6 @@ public class TexteExplicatif : MonoBehaviour {
     }
 
     public void Run(int textTreshold = 0) {
-        if (selectorManager != null && !selectorManager.HasSelectorLevelOpen())
-            return;
-
         InitColor();
 
         if (useTextAsset) {
@@ -137,6 +138,22 @@ public class TexteExplicatif : MonoBehaviour {
             text = Regex.Replace(text, source, evaluator);
         }
         return text;
+    }
+
+    public void SetColorTheme(Theme theme) {
+        switch(theme) {
+            case Theme.POSITIF:
+                color = positifThemeColor;
+                break;
+            case Theme.NEGATIF:
+                color = negatifThemeColor;
+                break;
+            case Theme.NEUTRAL:
+                color = neutralThemeColor;
+                break;
+            default:
+                break;
+        }
     }
 
     protected void InitColor() {

@@ -19,6 +19,7 @@ public class SelectorManager : MonoBehaviour {
     public new Camera camera;
     public MenuBackgroundBouncing background;
     public LoadingMenu loadingMenu;
+    public TexteExplicatif popup;
 
     [Header("Parameters")]
     public float dureeFading = 0.5f;
@@ -154,6 +155,17 @@ public class SelectorManager : MonoBehaviour {
         return currentSelectorLevel;
     }
 
+    public void TryDisplayLevel(SelectorLevel selectorLevel, bool instantDisplay = false) {
+        List<SelectorPath> precedentPaths = paths.FindAll(p => p.endLevel == selectorLevel);
+        if(precedentPaths.All(p => p.IsUnlocked())) {
+            DisplayLevel(selectorLevel, instantDisplay);
+        } else {
+            RunPopup("Niveau vérouillé !",
+                "Niveau vérouillé.\n" +
+                "Vous devez débloquer tous les chemins menant à ce niveau pour le dévérouiller !", TexteExplicatif.Theme.NEGATIF);
+        }
+    }
+
     public void DisplayLevel(SelectorLevel selectorLevel, bool instantDisplay = false) {
         currentSelectorLevel = selectorLevel;
         hasLevelOpen = true;
@@ -178,8 +190,6 @@ public class SelectorManager : MonoBehaviour {
         hasLevelOpen = false;
         StartCoroutine(FadeOut(currentSelectorLevel.menuLevel.gameObject));
         StartCoroutine(FadeOut(background.gameObject));
-        //currentSelectorLevel.menuLevel.gameObject.SetActive(false);
-        //background.gameObject.SetActive(false);
     }
 
     public void Next() {
@@ -214,5 +224,11 @@ public class SelectorManager : MonoBehaviour {
         SelectorLevel currentLevel = GetLastLevelSaved();
         if(currentLevel != null)
             DisplayLevel(currentLevel, instantDisplay:true);
+    }
+
+    public void RunPopup(string title, string text, TexteExplicatif.Theme theme) {
+        popup.SetColorTheme(theme);
+        popup.SetText(title, text);
+        popup.Run();
     }
 }
