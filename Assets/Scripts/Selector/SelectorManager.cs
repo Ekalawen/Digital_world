@@ -64,6 +64,10 @@ public class SelectorManager : MonoBehaviour {
         return levels;
     }
 
+    public List<SelectorPath> GetPaths() {
+        return paths;
+    }
+
     protected void GatherPaths() {
         paths = new List<SelectorPath>();
         foreach(Transform child in pathsFolder) {

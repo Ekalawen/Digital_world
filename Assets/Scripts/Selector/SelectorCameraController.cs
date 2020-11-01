@@ -27,7 +27,7 @@ public class SelectorCameraController : MonoBehaviour {
     public void Update() {
         MoveByDragging();
         ApplyElasticitySphere();
-        LookAtClosestLevel();
+        LookAtClosestInterestPoint();
     }
 
     protected void MoveByDragging() {
@@ -48,7 +48,7 @@ public class SelectorCameraController : MonoBehaviour {
     }
 
     protected void ApplyElasticitySphere() {
-        Vector3 closest = GetClosestLevelPosition(transform.position);
+        Vector3 closest = GetClosestInterestPoint(transform.position);
         float distance = Vector3.Distance(closest, transform.position);
         Vector3 direction = (closest - transform.position).normalized;
         Vector3 move = Vector3.zero;
@@ -69,7 +69,7 @@ public class SelectorCameraController : MonoBehaviour {
     protected Vector3 EnsureNotAttractedByAnOtherSphere(Vector3 attemptedMove, Vector3 closest) {
         while (true) {
             Vector3 newPosition = transform.position + attemptedMove;
-            Vector3 newClosest = GetClosestLevelPosition(newPosition);
+            Vector3 newClosest = GetClosestInterestPoint(newPosition);
             if (newClosest != closest)
                 attemptedMove /= 2;
             else
@@ -82,16 +82,22 @@ public class SelectorCameraController : MonoBehaviour {
         return selectorManager.GetLevels().Select(l => l.transform.position).ToList();
     }
 
-    protected Vector3 GetClosestLevelPosition(Vector3 pos) {
-        List<Vector3> levelsPositions = GetLevelsPositions();
-        return levelsPositions.OrderBy(p => Vector3.Distance(pos, p)).First();
+    protected List<Vector3> GetCadenasPositions() {
+        return selectorManager.GetPaths().Select(p => p.cadena.transform.position).ToList();
     }
 
-    protected void LookAtClosestLevel() {
+    protected Vector3 GetClosestInterestPoint(Vector3 pos) {
+        List<Vector3> levelsPositions = GetLevelsPositions();
+        List<Vector3> cadenasPositions = GetCadenasPositions();
+        List<Vector3> interestPoints = levelsPositions.Concat(cadenasPositions).ToList();
+        return interestPoints.OrderBy(p => Vector3.Distance(pos, p)).First();
+    }
+
+    protected void LookAtClosestInterestPoint() {
         if (rotationCoroutine != null)
             return;
 
-        Vector3 closest = GetClosestLevelPosition(transform.position);
+        Vector3 closest = GetClosestInterestPoint(transform.position);
         if(closest == lastClosestLevelPosition)
             transform.LookAt(closest);
         else
