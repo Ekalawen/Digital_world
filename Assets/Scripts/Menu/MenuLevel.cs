@@ -22,10 +22,10 @@ public class MenuLevel : MonoBehaviour {
     public string levelFolderName;
 
     [Header("Background")]
-    public float probaSource = 0.00035f; // La probabilité d'être une source
-    public int distanceSource = 8; // La distance d'action de la source
-    public float decroissanceSource = 0.01f; // La vitesse de décroissance de la source
-    public List<ColorSource.ThemeSource> themes; // Les couleurs des sources :)
+    public float probaSource = 0.00035f;
+    public int distanceSource = 8;
+    public float decroissanceSource = 0.01f;
+    public List<ColorSource.ThemeSource> themes;
 
     [Header("Links to Level")]
     public string nextPassword = "passwd";
@@ -47,6 +47,7 @@ public class MenuLevel : MonoBehaviour {
 
     [Header("Other Links")]
     public MenuLevelSelector menuLevelSelector;
+    public SelectorManager selectorManager;
     public MenuBackgroundBouncing menuBouncingBackground;
     public Text textLevelName;
     public InputField inputFieldNext;
@@ -58,16 +59,17 @@ public class MenuLevel : MonoBehaviour {
         if (!MenuManager.DISABLE_HOTKEYS) {
             if (Input.GetKeyDown(KeyCode.Return)
             || Input.GetKeyDown(KeyCode.KeypadEnter)
-            || Input.GetKeyDown(KeyCode.Space))
-            {
+            || Input.GetKeyDown(KeyCode.Space)) {
                 Play();
             }
-            // Les cotes pour changer de niveau
             if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D)) {
                 Next();
             }
             if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.Q)) {
                 Previous();
+            }
+            if (Input.GetKeyDown(KeyCode.Escape)) {
+                Back();
             }
         }
     }
@@ -87,14 +89,17 @@ public class MenuLevel : MonoBehaviour {
     }
 
     public void Play() {
-        menuLevelSelector.Play(levelSceneName);
+        menuLevelSelector?.Play(levelSceneName);
+        selectorManager?.Play(levelSceneName);
     }
 
     public void Next() {
         if (inputFieldNext.text == GetPassword()) {
-            menuLevelSelector.Next();
+            menuLevelSelector?.Next();
+            selectorManager?.Next();
         } else if (inputFieldNext.text == SUPER_CHEATED_PASSWORD) {
-            menuLevelSelector.Next();
+            menuLevelSelector?.Next();
+            selectorManager?.Next();
         } else {
             texteExplicatifPasswdError.Run();
         }
@@ -108,17 +113,24 @@ public class MenuLevel : MonoBehaviour {
     }
 
     public void Previous() {
-        menuLevelSelector.Previous();
+        menuLevelSelector?.Previous();
+        selectorManager?.Previous();
     }
+
     public void Back() {
-        menuLevelSelector.Back();
+        menuLevelSelector?.Back();
+        selectorManager?.BackToSelector();
     }
 
     public void OpenInformations() {
+        if (selectorManager != null && !selectorManager.HasSelectorLevelOpen())
+            return;
         texteInformations.Run(GetNbWins());
     }
 
     public void OpenDonneesHackes() {
+        if (selectorManager != null && !selectorManager.HasSelectorLevelOpen())
+            return;
         // Changer le texte des données hackés en fonction du nombre de fois où l'on a gagné ce niveau !
         string key = textLevelName.text + NB_WINS_KEY;
         int nbVictoires = PlayerPrefs.HasKey(key) ? PlayerPrefs.GetInt(key) : 0;
@@ -268,7 +280,8 @@ public class MenuLevel : MonoBehaviour {
     
     protected void DisplayPopupUnlockLevel() {
         if (!HasAlreadyDiscoverLevel()) {
-            if (menuLevelSelector.GetLevelIndice() != 0) {
+            bool shouldCongrats = menuLevelSelector != null ? menuLevelSelector.GetLevelIndice() != 0 : selectorManager.GetLevelIndice() != 0;
+            if (shouldCongrats) {
                 MenuManager.Instance.RunPopup("Niveau débloqué !", "Félicitation ! Vous venez de débloquer le niveau " + GetName() + " !\nContinuez comme ça !\nEt Happy Hacking ! :)");
             } else {
                 texteExplicatifIntroduction.Run();

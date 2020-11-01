@@ -192,7 +192,7 @@ public class GameManager : MonoBehaviour {
         if(eventManager.IsWin() && SceneManager.GetActiveScene().name != "TutorialScene") {
             SceneManager.LoadScene("RewardScene");
         } else {
-            SceneManager.LoadScene("MenuScene");
+            SceneManager.LoadScene("SelectorScene");
         }
 	}
 

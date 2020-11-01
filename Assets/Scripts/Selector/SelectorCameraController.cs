@@ -31,6 +31,9 @@ public class SelectorCameraController : MonoBehaviour {
     }
 
     protected void MoveByDragging() {
+        if (selectorManager.HasSelectorLevelOpen())
+            return;
+
         Vector3 move = Vector3.zero;
         if(Input.GetMouseButton(0)) {
             float speedX = - Input.GetAxis("Mouse X");

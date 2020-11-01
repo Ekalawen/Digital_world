@@ -24,6 +24,7 @@ public class TexteExplicatif : MonoBehaviour {
 
     public bool dontDisableOnSpace = false;
 
+    protected SelectorManager selectorManager;
     protected bool firstFrame;
     protected TresholdText tresholdText;
     protected string rootPath = "";
@@ -31,6 +32,7 @@ public class TexteExplicatif : MonoBehaviour {
     protected List<Tuple<string, MatchEvaluator>> replacementListEvaluator = new List<Tuple<string, MatchEvaluator>>();
 
     public void Start() {
+        selectorManager = SelectorManager.Instance;
     }
 
     protected void InitTresholdText() {
@@ -38,6 +40,9 @@ public class TexteExplicatif : MonoBehaviour {
     }
 
     public void Run(int textTreshold = 0) {
+        if (selectorManager != null && !selectorManager.HasSelectorLevelOpen())
+            return;
+
         InitColor();
 
         if (useTextAsset) {

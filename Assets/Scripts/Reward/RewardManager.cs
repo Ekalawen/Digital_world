@@ -93,7 +93,7 @@ public class RewardManager : MonoBehaviour {
          || Input.GetKey(KeyCode.KeypadEnter)
          || Input.GetKey(KeyCode.Return)
          || Input.GetKey(KeyCode.Space)) {
-            SceneManager.LoadScene("MenuScene");
+            SceneManager.LoadScene("SelectorScene");
 		}
     }
 

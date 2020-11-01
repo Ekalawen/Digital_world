@@ -8,8 +8,12 @@ public class MenuManager : MonoBehaviour {
     static MenuManager _instance;
     public static MenuManager Instance { get { return _instance ?? (_instance = new GameObject().AddComponent<MenuManager>()); } }
 
+
     public static bool DISABLE_HOTKEYS = false;
     public static string FIRST_TIME_CONNEXION_KEY = "firstTimeConnexionKey";
+    public static string SHOULD_SET_RANDOM_BACKGROUND_KEY = "shouldSetRandomBackgroundKey";
+    public static string TRUE = "true";
+    public static string FALSE = "false";
 
     public MenuLevelSelector menuLevelSelector;
     public MenuOptions menuOptions;
@@ -21,16 +25,13 @@ public class MenuManager : MonoBehaviour {
     }
 
     private void Start() {
-        // On réinitialise les player prefs si c'est la première fois que l'on se connecte !
-        if(!PlayerPrefs.HasKey(FIRST_TIME_CONNEXION_KEY)) {
-            menuOptions.ReinitialiserSauvegardes();
-        }
+        ResetPlayerPrefsIfFirstConnexion();
+        SetRandomBackgroundIfNeeded();
+    }
 
-        if (PlayerPrefs.GetString(MenuLevelSelector.LEVEL_INDICE_MUST_BE_USED_KEY) == "True") {
-            int levelIndice = PlayerPrefs.GetInt(MenuLevelSelector.LEVEL_INDICE_KEY);
-            PlayerPrefs.SetString(MenuLevelSelector.LEVEL_INDICE_MUST_BE_USED_KEY, "False");
-            if(levelIndice != -1) // Pour le tutoriel
-                menuLevelSelector.Run(levelIndice);
+    protected void ResetPlayerPrefsIfFirstConnexion() {
+        if (!PlayerPrefs.HasKey(FIRST_TIME_CONNEXION_KEY)) {
+            menuOptions.ReinitialiserSauvegardes();
         }
     }
 
@@ -50,7 +51,7 @@ public class MenuManager : MonoBehaviour {
 	// Lorsqu'on appui sur le bouton jouer
 	public void OnPlayPress() {
 		Debug.Log("On a appuyé sur Play !");
-        menuLevelSelector.Run();
+        SceneManager.LoadScene("SelectorScene");
 	}
 
 	// Lorsqu'on appui sur le bouton tutoriel
@@ -94,6 +95,16 @@ public class MenuManager : MonoBehaviour {
         for(int i = 0; i < nbThemes; i++)
             themes.Add(ColorManager.GetRandomTheme());
         menuBouncingBackground.SetParameters(probaSource, distanceSource, decroissanceSource, themes);
+    }
+
+    protected void SetRandomBackgroundIfNeeded() {
+        if(PlayerPrefs.HasKey(SHOULD_SET_RANDOM_BACKGROUND_KEY)) {
+            string shouldSet = PlayerPrefs.GetString(SHOULD_SET_RANDOM_BACKGROUND_KEY);
+            if(shouldSet == TRUE) {
+                SetRandomBackground();
+                PlayerPrefs.SetString(SHOULD_SET_RANDOM_BACKGROUND_KEY, FALSE);
+            }
+        }
     }
 
     public void RunPopup(string title, string text) {
