@@ -21,6 +21,10 @@ public class SelectorLevel : MonoBehaviour {
     public void OnMouseExit() {
     }
 
+    public string GetName() {
+        return menuLevel.textLevelName.text;
+    }
+
     public void OnMouseDown() {
         if(!selectorManager.HasSelectorLevelOpen())
             selectorManager.TryDisplayLevel(this);

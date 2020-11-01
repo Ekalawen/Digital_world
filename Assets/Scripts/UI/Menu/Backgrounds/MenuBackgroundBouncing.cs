@@ -40,7 +40,7 @@ public class MenuBackgroundBouncing : MonoBehaviour {
 	// METHODES
 	//////////////////////////////////////////////////////////////////////////////////////
 
-	void Start () {
+	public void Initialize () {
 		// Initialisations
 		nbX = (int) (rect.rect.width / size) + 2; // +2 pour être vraiment sur que ça dépasse de tous les cotés !
 		nbY = (int) (rect.rect.height / size) + 2; // +2 pour être vraiment sur que ça dépasse de tous les cotés !

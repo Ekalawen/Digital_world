@@ -25,6 +25,7 @@ public class MenuManager : MonoBehaviour {
     }
 
     private void Start() {
+        menuBouncingBackground.Initialize();
         ResetPlayerPrefsIfFirstConnexion();
         SetRandomBackgroundIfNeeded();
     }

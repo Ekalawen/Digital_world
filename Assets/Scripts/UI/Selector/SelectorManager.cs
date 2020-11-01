@@ -19,6 +19,7 @@ public class SelectorManager : MonoBehaviour {
     public new Camera camera;
     public MenuBackgroundBouncing background;
     public LoadingMenu loadingMenu;
+    public SelectorPathUnlockScreen unlockScreen;
     public TexteExplicatif popup;
 
     [Header("Parameters")]
@@ -37,6 +38,7 @@ public class SelectorManager : MonoBehaviour {
     public void Start() {
         GatherLevels();
         GatherPaths();
+        background.Initialize();
         background.gameObject.SetActive(false);
         SetCurrentLevelBasedOnLastSavedLevel();
         PlaceCameraInFrontOfCurrentLevel();
@@ -74,13 +76,10 @@ public class SelectorManager : MonoBehaviour {
         foreach(Transform child in pathsFolder) {
             SelectorPath path = child.gameObject.GetComponent<SelectorPath>();
             if (path != null) {
-                LinkPath(path);
+                path.Initialize(unlockScreen);
                 paths.Add(path);
             }
         }
-    }
-
-    protected void LinkPath(SelectorPath path) {
     }
 
     protected void GatherLevels() {
@@ -113,11 +112,28 @@ public class SelectorManager : MonoBehaviour {
         SaveLastLevel();
         PlayerPrefs.SetString(MenuLevel.LEVEL_NAME_KEY, menuLevel.GetName());
 
-        StartCoroutine(FadeOut(menuLevel.gameObject));
+        FadeOut(menuLevel.gameObject, dureeFading);
         FadeInLoadingMenu(loading, menuLevel);
     }
 
-    protected IEnumerator FadeOut(GameObject go) {
+    public Coroutine FadeIn(GameObject go, float dureeFading) {
+        return StartCoroutine(CFadeIn(go, dureeFading));
+    }
+    protected IEnumerator CFadeIn(GameObject go, float dureeFading) {
+        Timer timer = new Timer(dureeFading);
+        go.SetActive(true);
+        go.GetComponent<CanvasGroup>().alpha = 0.0f;
+        while(!timer.IsOver()) {
+            go.GetComponent<CanvasGroup>().alpha = timer.GetAvancement();
+            yield return null;
+        }
+        go.GetComponent<CanvasGroup>().alpha = 1.0f;
+    }
+
+    public Coroutine FadeOut(GameObject go, float dureeFading) {
+        return StartCoroutine(CFadeOut(go, dureeFading));
+    }
+    protected IEnumerator CFadeOut(GameObject go, float dureeFading) {
         Timer timer = new Timer(dureeFading);
         go.GetComponent<CanvasGroup>().alpha = 1.0f;
         while(!timer.IsOver()) {
@@ -128,21 +144,10 @@ public class SelectorManager : MonoBehaviour {
         go.SetActive(false);
     }
 
-    protected IEnumerator FadeIn(GameObject go) {
-        Timer timer = new Timer(dureeFading);
-        gameObject.SetActive(true);
-        go.GetComponent<CanvasGroup>().alpha = 0.0f;
-        while(!timer.IsOver()) {
-            go.GetComponent<CanvasGroup>().alpha = timer.GetAvancement();
-            yield return null;
-        }
-        go.GetComponent<CanvasGroup>().alpha = 1.0f;
-    }
-
     protected void FadeInLoadingMenu(AsyncOperation loading, MenuLevel level) {
         loadingMenu.gameObject.SetActive(true);
         loadingMenu.Initialize(loading, level);
-        StartCoroutine(FadeIn(loadingMenu.gameObject));
+        FadeIn(loadingMenu.gameObject, dureeFading);
     }
 
     protected void SaveLastLevel() {
@@ -185,8 +190,8 @@ public class SelectorManager : MonoBehaviour {
             currentSelectorLevel.menuLevel.gameObject.SetActive(true);
             background.gameObject.SetActive(true);
         } else {
-            StartCoroutine(FadeIn(currentSelectorLevel.menuLevel.gameObject));
-            StartCoroutine(FadeIn(background.gameObject));
+            FadeIn(currentSelectorLevel.menuLevel.gameObject, dureeFading);
+            FadeIn(background.gameObject, dureeFading);
         }
     }
 
@@ -198,8 +203,8 @@ public class SelectorManager : MonoBehaviour {
         if (!HasSelectorLevelOpen())
             return;
         hasLevelOpen = false;
-        StartCoroutine(FadeOut(currentSelectorLevel.menuLevel.gameObject));
-        StartCoroutine(FadeOut(background.gameObject));
+        FadeOut(currentSelectorLevel.menuLevel.gameObject, dureeFading);
+        FadeOut(background.gameObject, dureeFading);
     }
 
     public void Next() {

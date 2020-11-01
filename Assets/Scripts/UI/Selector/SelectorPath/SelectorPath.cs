@@ -21,13 +21,16 @@ public class SelectorPath : MonoBehaviour {
 
     [Header("Links")]
     public SelectorPathCadenas cadena;
+    public TexteExplicatif donneesHackees;
 
     protected SelectorManager selectorManager;
     protected Timer trailTimer;
     protected List<GameObject> pathPoints;
+    protected SelectorPathUnlockScreen unlockScreen;
 
-    public void Start() {
+    public void Initialize(SelectorPathUnlockScreen unlockScreen) {
         selectorManager = SelectorManager.Instance;
+        this.unlockScreen = unlockScreen;
         trailTimer = new Timer(timeBetweenTrails);
         LinkAllPoints();
         SetCadenaPosition();
@@ -93,6 +96,22 @@ public class SelectorPath : MonoBehaviour {
     }
 
     public void OnCadenaClicked() {
-        selectorManager.RunPopup("OHHHHHHHHHHHH", "YEAHHHHHHHHH !!!!", TexteExplicatif.Theme.POSITIF);
+        selectorManager.FadeIn(selectorManager.background.gameObject, selectorManager.dureeFading);
+        unlockScreen.gameObject.SetActive(true);
+        unlockScreen.Initialize(this);
+        selectorManager.FadeIn(unlockScreen.gameObject, selectorManager.dureeFading);
+    }
+
+    public void CloseUnlockScreen() {
+        selectorManager.FadeOut(selectorManager.background.gameObject, selectorManager.dureeFading);
+        selectorManager.FadeOut(unlockScreen.gameObject, selectorManager.dureeFading);
+    }
+
+    public string GetPassword() {
+        return password;
+    }
+
+    public void Unlock(string passwordUsed) {
+        Debug.Log("I am unlocked !");
     }
 }
