@@ -68,9 +68,14 @@ public class SelectorManager : MonoBehaviour {
         paths = new List<SelectorPath>();
         foreach(Transform child in pathsFolder) {
             SelectorPath path = child.gameObject.GetComponent<SelectorPath>();
-            if (path != null)
+            if (path != null) {
+                LinkPath(path);
                 paths.Add(path);
+            }
         }
+    }
+
+    protected void LinkPath(SelectorPath path) {
     }
 
     protected void GatherLevels() {

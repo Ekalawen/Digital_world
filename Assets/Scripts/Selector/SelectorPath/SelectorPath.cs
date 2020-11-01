@@ -19,12 +19,18 @@ public class SelectorPath : MonoBehaviour {
     public Gradient trailColorLocked;
     public GameObject trailPrefab;
 
+    [Header("Links")]
+    public SelectorPathCadenas cadena;
+
+    protected SelectorManager selectorManager;
     protected Timer trailTimer;
     protected List<GameObject> pathPoints;
 
     public void Start() {
+        selectorManager = SelectorManager.Instance;
         trailTimer = new Timer(timeBetweenTrails);
         LinkAllPoints();
+        SetCadenaPosition();
     }
 
     protected void LinkAllPoints() {
@@ -69,5 +75,20 @@ public class SelectorPath : MonoBehaviour {
         if (IsUnlocked())
             return trailColorUnlocked;
         return trailColorLocked;
+    }
+
+    protected void SetCadenaPosition() {
+        Vector3 middle = GetMiddlePoint();
+        cadena.transform.position = middle;
+    }
+
+    protected Vector3 GetMiddlePoint() {
+        if(pathPoints.Count % 2 == 0) {
+            Vector3 firstMiddle = pathPoints[pathPoints.Count / 2 - 1].transform.position;
+            Vector3 secondMiddle = pathPoints[pathPoints.Count / 2].transform.position;
+            return (firstMiddle + secondMiddle) / 2;
+        } else {
+            return pathPoints[(pathPoints.Count - 1) / 2].transform.position;
+        }
     }
 }
