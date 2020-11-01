@@ -133,4 +133,11 @@ public class SelectorCameraController : MonoBehaviour {
         rotationCoroutine = null;
     }
 
+    public float GetIdealDistanceFromLevel() {
+        return sizeElasticitySphere[0];
+    }
+
+    public void PlaceAt(Vector3 posToGoTo) {
+        transform.position = posToGoTo;
+    }
 }

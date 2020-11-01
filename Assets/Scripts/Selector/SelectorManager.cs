@@ -36,7 +36,19 @@ public class SelectorManager : MonoBehaviour {
         GatherLevels();
         GatherPaths();
         background.gameObject.SetActive(false);
-        currentSelectorLevel = GetLastLevelSaved();
+        SetCurrentLevelBasedOnLastSavedLevel();
+        PlaceCameraInFrontOfCurrentLevel();
+        DisplayCurrentLevel();
+        CleanLastSavedLevel();
+    }
+
+    protected void CleanLastSavedLevel() {
+        PlayerPrefs.DeleteKey(LAST_LEVEL_KEY);
+    }
+
+    protected void SetCurrentLevelBasedOnLastSavedLevel() {
+        SelectorLevel lastLevel = GetLastLevelSaved();
+        currentSelectorLevel = lastLevel ?? levels[0];
     }
 
     public void Update() {
@@ -135,22 +147,25 @@ public class SelectorManager : MonoBehaviour {
                 return level;
             }
         }
-        return levels[0];
+        return null;
     }
 
     private SelectorLevel GetCurrentLevel() {
         return currentSelectorLevel;
     }
 
-    public void DisplayLevel(SelectorLevel selectorLevel) {
+    public void DisplayLevel(SelectorLevel selectorLevel, bool instantDisplay = false) {
         currentSelectorLevel = selectorLevel;
         hasLevelOpen = true;
         selectorLevel.menuLevel.gameObject.SetActive(true);
         background.gameObject.SetActive(true);
-        StartCoroutine(FadeIn(currentSelectorLevel.menuLevel.gameObject));
-        StartCoroutine(FadeIn(background.gameObject));
-        //currentSelectorLevel.menuLevel.gameObject.SetActive(true);
-        //background.gameObject.SetActive(true);
+        if (instantDisplay) {
+            currentSelectorLevel.menuLevel.gameObject.SetActive(true);
+            background.gameObject.SetActive(true);
+        } else {
+            StartCoroutine(FadeIn(currentSelectorLevel.menuLevel.gameObject));
+            StartCoroutine(FadeIn(background.gameObject));
+        }
     }
 
     public bool HasSelectorLevelOpen() {
@@ -186,5 +201,18 @@ public class SelectorManager : MonoBehaviour {
 
     public int GetLevelIndice() {
         return 0;
+    }
+
+    protected void PlaceCameraInFrontOfCurrentLevel() {
+        SelectorCameraController cameraController = camera.GetComponent<SelectorCameraController>();
+        Vector3 levelPos = currentSelectorLevel.transform.position;
+        Vector3 posToGoTo = levelPos + currentSelectorLevel.transform.forward * cameraController.GetIdealDistanceFromLevel();
+        cameraController.PlaceAt(posToGoTo);
+    }
+
+    protected void DisplayCurrentLevel() {
+        SelectorLevel currentLevel = GetLastLevelSaved();
+        if(currentLevel != null)
+            DisplayLevel(currentLevel, instantDisplay:true);
     }
 }
