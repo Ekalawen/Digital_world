@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,6 +12,14 @@ public class SelectorLevelObjectTitle : MonoBehaviour {
     public Image background;
     public Color normalColor;
     public Color focusedColor;
+
+    public void Start() {
+        SetTitleToLevelName();
+    }
+
+    protected void SetTitleToLevelName() {
+        text.text = objectLevel.level.menuLevel.textLevelName.text;
+    }
 
     public void SetFocused() {
         background.color = focusedColor;

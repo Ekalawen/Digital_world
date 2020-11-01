@@ -64,10 +64,16 @@ public class SelectorManager : MonoBehaviour {
         levels = new List<SelectorLevel>();
         foreach(Transform child in levelsFolder) {
             SelectorLevel level = child.gameObject.GetComponent<SelectorLevel>();
-            if (level != null)
+            if (level != null) {
+                LinkLevel(level);
                 levels.Add(level);
-            level.menuLevel.selectorManager = this;
+            }
         }
+    }
+
+    protected void LinkLevel(SelectorLevel level) {
+        level.menuLevel.selectorManager = this;
+        level.menuLevel.menuBouncingBackground = background;
     }
 
     public void Play(string levelSceneName) {

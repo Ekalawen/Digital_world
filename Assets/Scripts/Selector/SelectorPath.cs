@@ -6,7 +6,9 @@ using UnityEngine;
 public class SelectorPath : MonoBehaviour {
 
     [Header("Path")]
-    public List<GameObject> pathPoints;
+    public SelectorLevel startLevel;
+    public SelectorLevel endLevel;
+    public List<GameObject> intermediatePoints;
 
     [Header("Trails")]
     public float timeBetweenTrails = 0.3f;
@@ -15,9 +17,19 @@ public class SelectorPath : MonoBehaviour {
     public GameObject trailPrefab;
 
     protected Timer trailTimer;
+    protected List<GameObject> pathPoints;
 
     public void Start() {
         trailTimer = new Timer(timeBetweenTrails);
+        LinkAllPoints();
+    }
+
+    protected void LinkAllPoints() {
+        pathPoints = intermediatePoints;
+        if (startLevel != null)
+            pathPoints.Insert(0, startLevel.gameObject);
+        if (endLevel != null)
+            pathPoints.Insert(pathPoints.Count, endLevel.gameObject);
     }
 
     public void Update() {
