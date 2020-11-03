@@ -38,6 +38,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         SetBackgroundAccordingToLockState();
         SetCadenasAccordingToLockState();
         SetTitle();
+        FillInputWithPasswordIfAlreayDiscovered();
     }
 
     protected void SetTitle() {
@@ -91,7 +92,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
 
     protected void AddReplacementForDonneesHackeesToPopup(TexteExplicatif popup) {
         popup.AddReplacement("%Trace%", selectorPath.GetTrace());
-        popup.AddReplacement("%Passe%", selectorPath.password);
+        popup.AddReplacement("%Passe%", selectorPath.passwordPasse);
         MatchEvaluator evaluator = new MatchEvaluator(SurroundWithBlueColor);
         popup.AddReplacementEvaluator(@"Passes?", evaluator);
         popup.AddReplacementEvaluator(@"Traces?", evaluator);
@@ -142,6 +143,12 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         } else {
             openCadena.SetActive(false);
             closedCadena.SetActive(true);
+        }
+    }
+
+    protected void FillInputWithPasswordIfAlreayDiscovered() {
+        if(selectorPath.IsUnlocked()) {
+            input.text = selectorPath.GetPassword();
         }
     }
 }

@@ -12,7 +12,7 @@ public class SelectorPath : MonoBehaviour {
     public TextAsset donneesHackees;
 
     [Header("Password")]
-    public string password = "passwd";
+    public string passwordPasse = "passwd";
 
     [Header("Trails")]
     public float timeBetweenTrails = 0.3f;
@@ -112,10 +112,6 @@ public class SelectorPath : MonoBehaviour {
         selectorManager.SetSelectorPathUnlockScreenOpenness(true);
     }
 
-    public string GetTrace() {
-        return "00TODOPATH00";
-    }
-
     public void CloseUnlockScreen() {
         selectorManager.FadeOut(selectorManager.background.gameObject, selectorManager.dureeFading);
         selectorManager.FadeOut(unlockScreen.gameObject, selectorManager.dureeFading);
@@ -128,7 +124,26 @@ public class SelectorPath : MonoBehaviour {
     }
 
     public string GetPassword() {
-        return password;
+        return GetTrace() + GetPasse();
+    }
+
+    public string GetPasse() {
+        return passwordPasse;
+    }
+
+    public string GetTrace() {
+        string key = name + MenuLevel.TRACE_KEY;
+        if (!PlayerPrefs.HasKey(key))
+            InitTrace();
+        return PlayerPrefs.GetString(key);
+    }
+
+    protected void InitTrace() {
+        string trace = Trace.GenerateTrace();
+        print(trace);
+
+        string key = name + MenuLevel.TRACE_KEY;
+        PlayerPrefs.SetString(key, trace);
     }
 
     public void Unlock(string passwordUsed) {
