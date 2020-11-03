@@ -26,6 +26,7 @@ public class SelectorManager : MonoBehaviour {
     public float dureeFading = 0.5f;
 
     protected List<SelectorLevel> levels;
+
     protected List<SelectorPath> paths;
     protected SelectorLevel currentSelectorLevel;
 
@@ -37,8 +38,8 @@ public class SelectorManager : MonoBehaviour {
     }
 
     public void Start() {
-        GatherLevels();
         GatherPaths();
+        GatherLevels();
         background.Initialize();
         background.gameObject.SetActive(false);
         SetCurrentLevelBasedOnLastSavedLevel();
@@ -88,15 +89,10 @@ public class SelectorManager : MonoBehaviour {
         foreach(Transform child in levelsFolder) {
             SelectorLevel level = child.gameObject.GetComponent<SelectorLevel>();
             if (level != null) {
-                LinkLevel(level);
+                level.Initialize(background);
                 levels.Add(level);
             }
         }
-    }
-
-    protected void LinkLevel(SelectorLevel level) {
-        level.menuLevel.selectorManager = this;
-        level.menuLevel.menuBouncingBackground = background;
     }
 
     public void Play(string levelSceneName) {
@@ -172,8 +168,7 @@ public class SelectorManager : MonoBehaviour {
     }
 
     public void TryDisplayLevel(SelectorLevel selectorLevel, bool instantDisplay = false) {
-        List<SelectorPath> precedentPaths = paths.FindAll(p => p.endLevel == selectorLevel);
-        if(precedentPaths.All(p => p.IsUnlocked())) {
+        if(IsLevelAccessible(selectorLevel)) {
             DisplayLevel(selectorLevel, instantDisplay);
         } else {
             RunPopup("Niveau vérouillé !",
@@ -257,5 +252,10 @@ public class SelectorManager : MonoBehaviour {
 
     public bool PopupIsEnabled() {
         return popup.content.activeInHierarchy;
+    }
+
+    public bool IsLevelAccessible(SelectorLevel selectorLevel) {
+        List<SelectorPath> precedentPaths = paths.FindAll(p => p.endLevel == selectorLevel);
+        return precedentPaths.All(p => p.IsUnlocked());
     }
 }

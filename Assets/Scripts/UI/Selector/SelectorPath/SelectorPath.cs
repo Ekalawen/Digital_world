@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class SelectorPath : MonoBehaviour {
 
+    public static string IS_UNLOCKED_PATH_KEY = "IS_UNLOCKED_PATH_KEY";
+
     [Header("Path")]
     public SelectorLevel startLevel;
     public SelectorLevel endLevel;
@@ -79,10 +81,6 @@ public class SelectorPath : MonoBehaviour {
         tr.GetComponent<TrailRenderer>().colorGradient = gradient;
     }
 
-    public bool IsUnlocked() {
-        return true;
-    }
-
     public Gradient GetGradientColor() {
         if (IsUnlocked())
             return trailColorUnlocked;
@@ -147,6 +145,12 @@ public class SelectorPath : MonoBehaviour {
     }
 
     public void Unlock(string passwordUsed) {
-        Debug.Log("I am unlocked !");
+        string key = name + IS_UNLOCKED_PATH_KEY;
+        PlayerPrefs.SetString(key, MenuManager.TRUE);
+    }
+
+    public bool IsUnlocked() {
+        string key = name + IS_UNLOCKED_PATH_KEY;
+        return PlayerPrefs.HasKey(key) && PlayerPrefs.GetString(key) == MenuManager.TRUE;
     }
 }

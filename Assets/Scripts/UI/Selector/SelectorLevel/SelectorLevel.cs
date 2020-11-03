@@ -10,9 +10,12 @@ public class SelectorLevel : MonoBehaviour {
 
     protected SelectorManager selectorManager;
 
-    void Start() {
+    public void Initialize(MenuBackgroundBouncing background) {
         selectorManager = SelectorManager.Instance;
         objectLevel.title.GetComponent<LookAtTransform>().transformToLookAt = selectorManager.camera.transform;
+        objectLevel.Initialize();
+        menuLevel.selectorManager = selectorManager;
+        menuLevel.menuBouncingBackground = background;
     }
 
     public void OnMouseEnter() {
@@ -32,5 +35,9 @@ public class SelectorLevel : MonoBehaviour {
 
     public bool IsSucceeded() {
         return menuLevel.IsSucceeded();
+    }
+
+    public bool IsAccessible() {
+        return selectorManager.IsLevelAccessible(this);
     }
 }

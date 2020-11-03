@@ -13,7 +13,7 @@ public class SelectorLevelObjectTitle : MonoBehaviour {
     public Color normalColor;
     public Color focusedColor;
 
-    public void Start() {
+    public void Initialize() {
         SetTitleToLevelName();
     }
 
