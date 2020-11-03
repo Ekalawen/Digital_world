@@ -784,10 +784,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelSceneName: 
   levelFolderName: 
-  menuLevelSelector: {fileID: 0}
-  menuBouncingBackground: {fileID: 0}
-  textLevelName: {fileID: 8202754044706578278}
-  inputFieldNext: {fileID: 4118876302933153908}
+  probaSource: 0.00035
+  distanceSource: 8
+  decroissanceSource: 0.01
+  themes: 
   nextPassword: passwd
   joueurPrefab: {fileID: 0}
   consolePrefab: {fileID: 0}
@@ -800,10 +800,11 @@ MonoBehaviour:
   score_nbWins: {fileID: 6930940554812199280}
   score_winrate: {fileID: 237219931712615412}
   score_highestScore: {fileID: 1640933625636169752}
-  probaSource: 0.00035
-  distanceSource: 8
-  decroissanceSource: 0.01
-  themes: 
+  menuLevelSelector: {fileID: 0}
+  selectorManager: {fileID: 0}
+  menuBouncingBackground: {fileID: 0}
+  textLevelName: {fileID: 8202754044706578278}
+  inputFieldNext: {fileID: 4118876302933153908}
 --- !u!1 &8403021309417100603
 GameObject:
   m_ObjectHideFlags: 0
@@ -974,11 +975,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: TextDatasSuccess
       objectReference: {fileID: 0}
-    - target: {fileID: 2959731601633258554, guid: 15bc17ce10363aa40b4772a21e53aba4,
-        type: 3}
-      propertyPath: m_Text
-      value: "Donn\xE9es Hack\xE9s"
-      objectReference: {fileID: 0}
     - target: {fileID: -1033799586518541889, guid: 15bc17ce10363aa40b4772a21e53aba4,
         type: 3}
       propertyPath: titleTextSource
@@ -1069,11 +1065,6 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5152861231154546183, guid: 15bc17ce10363aa40b4772a21e53aba4,
-        type: 3}
-      propertyPath: m_Text
-      value: "Vous avez r\xE9ussi !\nLe mot de passe est \"passwd\" !"
-      objectReference: {fileID: 0}
     - target: {fileID: 1320690978835082529, guid: 15bc17ce10363aa40b4772a21e53aba4,
         type: 3}
       propertyPath: m_Color.r
@@ -1088,6 +1079,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Color.b
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2959731601633258554, guid: 15bc17ce10363aa40b4772a21e53aba4,
+        type: 3}
+      propertyPath: m_Text
+      value: "Donn\xE9es Hack\xE9s"
+      objectReference: {fileID: 0}
+    - target: {fileID: 5152861231154546183, guid: 15bc17ce10363aa40b4772a21e53aba4,
+        type: 3}
+      propertyPath: m_Text
+      value: "Vous avez r\xE9ussi !\nLe mot de passe est \"passwd\" !"
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 15bc17ce10363aa40b4772a21e53aba4, type: 3}
@@ -1125,11 +1126,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2959731601633258554, guid: 15bc17ce10363aa40b4772a21e53aba4,
-        type: 3}
-      propertyPath: m_Text
-      value: Nom du Niveau
       objectReference: {fileID: 0}
     - target: {fileID: -1033799586518541889, guid: 15bc17ce10363aa40b4772a21e53aba4,
         type: 3}
@@ -1241,6 +1237,16 @@ PrefabInstance:
       propertyPath: m_Color.b
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2959731601633258554, guid: 15bc17ce10363aa40b4772a21e53aba4,
+        type: 3}
+      propertyPath: m_Text
+      value: Nom du Niveau
+      objectReference: {fileID: 0}
+    - target: {fileID: 6556492732181097162, guid: 15bc17ce10363aa40b4772a21e53aba4,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 5691370298690601226, guid: 15bc17ce10363aa40b4772a21e53aba4,
         type: 3}
       propertyPath: m_SizeDelta.y
@@ -1261,10 +1267,20 @@ PrefabInstance:
       propertyPath: m_SizeDelta.x
       value: -40
       objectReference: {fileID: 0}
-    - target: {fileID: 6556492732181097162, guid: 15bc17ce10363aa40b4772a21e53aba4,
+    - target: {fileID: 3363145989467740062, guid: 15bc17ce10363aa40b4772a21e53aba4,
         type: 3}
-      propertyPath: m_RootOrder
-      value: 3
+      propertyPath: m_Size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5450004070020585527, guid: 15bc17ce10363aa40b4772a21e53aba4,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5450004070020585527, guid: 15bc17ce10363aa40b4772a21e53aba4,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 874383169358855599, guid: 15bc17ce10363aa40b4772a21e53aba4,
         type: 3}
@@ -1391,21 +1407,6 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3363145989467740062, guid: 15bc17ce10363aa40b4772a21e53aba4,
-        type: 3}
-      propertyPath: m_Size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5450004070020585527, guid: 15bc17ce10363aa40b4772a21e53aba4,
-        type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5450004070020585527, guid: 15bc17ce10363aa40b4772a21e53aba4,
-        type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 15bc17ce10363aa40b4772a21e53aba4, type: 3}
 --- !u!4 &5749629255899464891 stripped
@@ -1437,11 +1438,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: TextDatasLocked
-      objectReference: {fileID: 0}
-    - target: {fileID: 2959731601633258554, guid: 15bc17ce10363aa40b4772a21e53aba4,
-        type: 3}
-      propertyPath: m_Text
-      value: "Donn\xE9es Hack\xE9s"
       objectReference: {fileID: 0}
     - target: {fileID: -1033799586518541889, guid: 15bc17ce10363aa40b4772a21e53aba4,
         type: 3}
@@ -1538,11 +1534,6 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5152861231154546183, guid: 15bc17ce10363aa40b4772a21e53aba4,
-        type: 3}
-      propertyPath: m_Text
-      value: "Vous n'avez encore jamais hack\xE9 ce niveau.\nAucunes donn\xE9es accessibles."
-      objectReference: {fileID: 0}
     - target: {fileID: 1320690978835082529, guid: 15bc17ce10363aa40b4772a21e53aba4,
         type: 3}
       propertyPath: m_Color.r
@@ -1557,6 +1548,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Color.b
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2959731601633258554, guid: 15bc17ce10363aa40b4772a21e53aba4,
+        type: 3}
+      propertyPath: m_Text
+      value: "Donn\xE9es Hack\xE9s"
+      objectReference: {fileID: 0}
+    - target: {fileID: 5152861231154546183, guid: 15bc17ce10363aa40b4772a21e53aba4,
+        type: 3}
+      propertyPath: m_Text
+      value: "Vous n'avez encore jamais hack\xE9 ce niveau.\nAucunes donn\xE9es accessibles."
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 15bc17ce10363aa40b4772a21e53aba4, type: 3}
@@ -1750,11 +1751,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: TextRefus
       objectReference: {fileID: 0}
-    - target: {fileID: 2959731601633258554, guid: 15bc17ce10363aa40b4772a21e53aba4,
-        type: 3}
-      propertyPath: m_Text
-      value: "Mot de passe \xE9rron\xE9."
-      objectReference: {fileID: 0}
     - target: {fileID: -1033799586518541889, guid: 15bc17ce10363aa40b4772a21e53aba4,
         type: 3}
       propertyPath: titleTextSource
@@ -1835,12 +1831,6 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5152861231154546183, guid: 15bc17ce10363aa40b4772a21e53aba4,
-        type: 3}
-      propertyPath: m_Text
-      value: "Ce n'est pas le bon mot de passe.\nR\xE9ussissez ce niveau pour obtenir
-        le mot de passe dans les Donn\xE9es Hack\xE9es().\n\nBonne chance !"
-      objectReference: {fileID: 0}
     - target: {fileID: 1320690978835082529, guid: 15bc17ce10363aa40b4772a21e53aba4,
         type: 3}
       propertyPath: m_Color.r
@@ -1855,6 +1845,17 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Color.b
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2959731601633258554, guid: 15bc17ce10363aa40b4772a21e53aba4,
+        type: 3}
+      propertyPath: m_Text
+      value: "Mot de passe \xE9rron\xE9."
+      objectReference: {fileID: 0}
+    - target: {fileID: 5152861231154546183, guid: 15bc17ce10363aa40b4772a21e53aba4,
+        type: 3}
+      propertyPath: m_Text
+      value: "Ce n'est pas le bon mot de passe.\nR\xE9ussissez ce niveau pour obtenir
+        le mot de passe dans les Donn\xE9es Hack\xE9es().\n\nBonne chance !"
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 15bc17ce10363aa40b4772a21e53aba4, type: 3}
@@ -1946,7 +1947,7 @@ PrefabInstance:
     - target: {fileID: 1183701273442943422, guid: df108c3e51959b046aaa9a02ab191c65,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -60
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1183701273442943422, guid: df108c3e51959b046aaa9a02ab191c65,
         type: 3}
@@ -2405,6 +2406,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PreviousLevelButton
       objectReference: {fileID: 0}
+    - target: {fileID: 6132519329659876958, guid: df108c3e51959b046aaa9a02ab191c65,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1183701273442943422, guid: df108c3e51959b046aaa9a02ab191c65,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2565,6 +2571,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: NextLevelButton
       objectReference: {fileID: 0}
+    - target: {fileID: 6132519329659876958, guid: df108c3e51959b046aaa9a02ab191c65,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1183701273442943422, guid: df108c3e51959b046aaa9a02ab191c65,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2724,6 +2735,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: TextDatasButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 6132519329659876958, guid: df108c3e51959b046aaa9a02ab191c65,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1183701273442943422, guid: df108c3e51959b046aaa9a02ab191c65,
         type: 3}
