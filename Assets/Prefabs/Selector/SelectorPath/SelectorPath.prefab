@@ -29,7 +29,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 6578463556024073371}
-  - {fileID: 7641145671601767041}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -48,6 +47,7 @@ MonoBehaviour:
   startLevel: {fileID: 0}
   endLevel: {fileID: 0}
   intermediatePoints: []
+  donneesHackees: {fileID: 0}
   password: passwd
   timeBetweenTrails: 0.3
   trailColorUnlocked:
@@ -111,164 +111,6 @@ MonoBehaviour:
   trailPrefab: {fileID: 1168935213390774, guid: 9b0707c978ffad244849b2fbb542f4d7,
     type: 3}
   cadena: {fileID: 2924448267360880393}
-  donneesHackees: {fileID: 8739865459622784892}
---- !u!1001 &643180856081938115
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 1080110162462154180}
-    m_Modifications:
-    - target: {fileID: 7553642874499919498, guid: 15bc17ce10363aa40b4772a21e53aba4,
-        type: 3}
-      propertyPath: m_Name
-      value: DonneesHackees
-      objectReference: {fileID: 0}
-    - target: {fileID: 7126880526820848706, guid: 15bc17ce10363aa40b4772a21e53aba4,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 529
-      objectReference: {fileID: 0}
-    - target: {fileID: 7126880526820848706, guid: 15bc17ce10363aa40b4772a21e53aba4,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 223
-      objectReference: {fileID: 0}
-    - target: {fileID: 7126880526820848706, guid: 15bc17ce10363aa40b4772a21e53aba4,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7126880526820848706, guid: 15bc17ce10363aa40b4772a21e53aba4,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7126880526820848706, guid: 15bc17ce10363aa40b4772a21e53aba4,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7126880526820848706, guid: 15bc17ce10363aa40b4772a21e53aba4,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7126880526820848706, guid: 15bc17ce10363aa40b4772a21e53aba4,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7126880526820848706, guid: 15bc17ce10363aa40b4772a21e53aba4,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7126880526820848706, guid: 15bc17ce10363aa40b4772a21e53aba4,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7126880526820848706, guid: 15bc17ce10363aa40b4772a21e53aba4,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7126880526820848706, guid: 15bc17ce10363aa40b4772a21e53aba4,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7126880526820848706, guid: 15bc17ce10363aa40b4772a21e53aba4,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1.3225
-      objectReference: {fileID: 0}
-    - target: {fileID: 7126880526820848706, guid: 15bc17ce10363aa40b4772a21e53aba4,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1.3225
-      objectReference: {fileID: 0}
-    - target: {fileID: 7126880526820848706, guid: 15bc17ce10363aa40b4772a21e53aba4,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1.3225
-      objectReference: {fileID: 0}
-    - target: {fileID: -1033799586518541889, guid: 15bc17ce10363aa40b4772a21e53aba4,
-        type: 3}
-      propertyPath: useTextPath
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -1033799586518541889, guid: 15bc17ce10363aa40b4772a21e53aba4,
-        type: 3}
-      propertyPath: textPath
-      value: DatasSuccess.txt
-      objectReference: {fileID: 0}
-    - target: {fileID: -1033799586518541889, guid: 15bc17ce10363aa40b4772a21e53aba4,
-        type: 3}
-      propertyPath: color.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -1033799586518541889, guid: 15bc17ce10363aa40b4772a21e53aba4,
-        type: 3}
-      propertyPath: color.a
-      value: 0.4
-      objectReference: {fileID: 0}
-    - target: {fileID: -1033799586518541889, guid: 15bc17ce10363aa40b4772a21e53aba4,
-        type: 3}
-      propertyPath: useTextAsset
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5152861231154546183, guid: 15bc17ce10363aa40b4772a21e53aba4,
-        type: 3}
-      propertyPath: m_Text
-      value: "Vous avez r\xE9ussi !\nLe mot de passe est \"passwd\" !"
-      objectReference: {fileID: 0}
-    - target: {fileID: 1320690978835082529, guid: 15bc17ce10363aa40b4772a21e53aba4,
-        type: 3}
-      propertyPath: m_Color.r
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1320690978835082529, guid: 15bc17ce10363aa40b4772a21e53aba4,
-        type: 3}
-      propertyPath: m_Color.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1320690978835082529, guid: 15bc17ce10363aa40b4772a21e53aba4,
-        type: 3}
-      propertyPath: m_Color.b
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3280705160243486359, guid: 15bc17ce10363aa40b4772a21e53aba4,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2959731601633258554, guid: 15bc17ce10363aa40b4772a21e53aba4,
-        type: 3}
-      propertyPath: m_Text
-      value: "Donn\xE9es Hack\xE9s"
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 15bc17ce10363aa40b4772a21e53aba4, type: 3}
---- !u!4 &7641145671601767041 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7126880526820848706, guid: 15bc17ce10363aa40b4772a21e53aba4,
-    type: 3}
-  m_PrefabInstance: {fileID: 643180856081938115}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &8739865459622784892 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: -1033799586518541889, guid: 15bc17ce10363aa40b4772a21e53aba4,
-    type: 3}
-  m_PrefabInstance: {fileID: 643180856081938115}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c33eea4f7e07b9b4ea6e6f03285a1fae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &6492116574664539345
 PrefabInstance:
   m_ObjectHideFlags: 0

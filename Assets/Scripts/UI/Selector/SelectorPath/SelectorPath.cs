@@ -9,6 +9,7 @@ public class SelectorPath : MonoBehaviour {
     public SelectorLevel startLevel;
     public SelectorLevel endLevel;
     public List<GameObject> intermediatePoints;
+    public TextAsset donneesHackees;
 
     [Header("Password")]
     public string password = "passwd";
@@ -21,7 +22,6 @@ public class SelectorPath : MonoBehaviour {
 
     [Header("Links")]
     public SelectorPathCadenas cadena;
-    public TexteExplicatif donneesHackees;
 
     protected SelectorManager selectorManager;
     protected Timer trailTimer;
@@ -46,6 +46,15 @@ public class SelectorPath : MonoBehaviour {
 
     public void Update() {
         LinkPathPoints();
+        CloseIfEscape();
+    }
+
+    protected void CloseIfEscape() {
+        if (!selectorManager.PopupIsEnabled()) {
+            if (Input.GetKeyDown(KeyCode.Escape)) {
+                CloseUnlockScreen();
+            }
+        }
     }
 
     protected void LinkPathPoints() {
@@ -100,11 +109,22 @@ public class SelectorPath : MonoBehaviour {
         unlockScreen.gameObject.SetActive(true);
         unlockScreen.Initialize(this);
         selectorManager.FadeIn(unlockScreen.gameObject, selectorManager.dureeFading);
+        selectorManager.SetSelectorPathUnlockScreenOpenness(true);
+    }
+
+    public string GetTrace() {
+        return "00TODOPATH00";
     }
 
     public void CloseUnlockScreen() {
         selectorManager.FadeOut(selectorManager.background.gameObject, selectorManager.dureeFading);
         selectorManager.FadeOut(unlockScreen.gameObject, selectorManager.dureeFading);
+        StartCoroutine(CDisableScreenOpennessNextFrame());
+    }
+
+    protected IEnumerator CDisableScreenOpennessNextFrame() {
+        yield return null;
+        selectorManager.SetSelectorPathUnlockScreenOpenness(false);
     }
 
     public string GetPassword() {

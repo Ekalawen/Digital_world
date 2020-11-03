@@ -30,6 +30,7 @@ public class SelectorManager : MonoBehaviour {
     protected SelectorLevel currentSelectorLevel;
 
     protected bool hasLevelOpen = false;
+    protected bool hasUnlockScreenOpen = false;
 
     void Awake() {
         if (!_instance) { _instance = this; }
@@ -56,7 +57,7 @@ public class SelectorManager : MonoBehaviour {
     }
 
     public void Update() {
-        if (!HasSelectorLevelOpen()) {
+        if (!HasSelectorLevelOpen() && !HasSelectorPathUnlockScreenOpen()) {
             if (Input.GetKeyDown(KeyCode.Escape)) {
                 Return();
             }
@@ -199,6 +200,14 @@ public class SelectorManager : MonoBehaviour {
         return hasLevelOpen;
     }
 
+    public bool HasSelectorPathUnlockScreenOpen() {
+        return hasUnlockScreenOpen;
+    }
+
+    public void SetSelectorPathUnlockScreenOpenness(bool value) {
+        hasUnlockScreenOpen = value;
+    }
+
     public void BackToSelector() {
         if (!HasSelectorLevelOpen())
             return;
@@ -242,8 +251,7 @@ public class SelectorManager : MonoBehaviour {
     }
 
     public void RunPopup(string title, string text, TexteExplicatif.Theme theme) {
-        popup.SetColorTheme(theme);
-        popup.SetText(title, text);
+        popup.Initialize(title: title, mainText: text, theme: theme);
         popup.Run();
     }
 

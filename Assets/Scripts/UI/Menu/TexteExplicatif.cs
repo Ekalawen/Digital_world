@@ -39,6 +39,19 @@ public class TexteExplicatif : MonoBehaviour {
         selectorManager = SelectorManager.Instance;
     }
 
+    public void Initialize(string title = "",
+        string mainText = "",
+        bool useTextAsset = false,
+        TextAsset textAsset = null,
+        Theme theme = Theme.POSITIF) {
+        CleanReplacements();
+        this.titleTextTarget.text = title;
+        this.mainText.text = mainText;
+        this.useTextAsset = useTextAsset;
+        this.textAsset = textAsset;
+        SetColorTheme(theme);
+    }
+
     protected void InitTresholdText() {
         tresholdText = new TresholdText(textAsset);
     }
@@ -179,5 +192,10 @@ public class TexteExplicatif : MonoBehaviour {
 
     public void ApplyReplacementEvaluatorToAllFragments(Tuple<string, MatchEvaluator> replacement) {
         tresholdText.ApplyReplacementEvaluatorToAllFragment(replacement);
+    }
+
+    public void CleanReplacements() {
+        replacementList.Clear();
+        replacementListEvaluator.Clear();
     }
 }

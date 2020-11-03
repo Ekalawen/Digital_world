@@ -49,8 +49,10 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
 
     public void Submit() {
         if (input.text == selectorPath.GetPassword() || input.text == MenuLevel.SUPER_CHEATED_PASSWORD) {
-            selectorPath.Unlock(input.text);
-            SetBackgroundAccordingToLockState();
+            if (!selectorPath.IsUnlocked()) {
+                selectorPath.Unlock(input.text);
+                SetBackgroundAccordingToLockState();
+            }
         } else {
             selectorManager.RunPopup("Mot de passe érroné.",
                 "Ce n'est pas le bon mot de passe.\n" +
@@ -61,15 +63,39 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         }
     }
 
+    public void SubmitIfEnter() {
+        if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return))
+            Submit();
+    }
+
     public void OpenDonneesHackees() {
         string key = selectorPath.startLevel.menuLevel.textLevelName.text + MenuLevel.NB_WINS_KEY;
         int nbVictoires = PlayerPrefs.HasKey(key) ? PlayerPrefs.GetInt(key) : 0;
+        selectorManager.popup.Initialize(
+            title: "Données Hackées",
+            useTextAsset: true,
+            textAsset: selectorPath.donneesHackees,
+            theme: TexteExplicatif.Theme.POSITIF);
+        AddReplacementForDonneesHackeesToPopup(selectorManager.popup);
         if (nbVictoires == 0) {
-            selectorPath.donneesHackees.Run(textTreshold: 0);
+            selectorManager.popup.Run(textTreshold: 0);
         } else {
-            selectorPath.donneesHackees.Run(textTreshold: nbVictoires);
-            AddNextPallierMessageToAllFragments(selectorPath.donneesHackees, textTreshold: nbVictoires);
+            selectorManager.popup.Run(textTreshold: nbVictoires);
+            AddNextPallierMessageToAllFragments(selectorManager.popup, textTreshold: nbVictoires);
         }
+    }
+
+    public static string SurroundWithBlueColor(Match match) {
+        return "<color=blue>" + match.Value + "</color>";
+    }
+
+    protected void AddReplacementForDonneesHackeesToPopup(TexteExplicatif popup) {
+        popup.AddReplacement("%Trace%", selectorPath.GetTrace());
+        popup.AddReplacement("%Passe%", selectorPath.password);
+        MatchEvaluator evaluator = new MatchEvaluator(SurroundWithBlueColor);
+        popup.AddReplacementEvaluator(@"Passes?", evaluator);
+        popup.AddReplacementEvaluator(@"Traces?", evaluator);
+        // L'ajout des next palliers se fait dans la fonction AddNextPallierMessageToAllFragments()
     }
 
     protected void AddNextPallierMessageToAllFragments(TexteExplicatif texteExplicatif, int textTreshold) {
