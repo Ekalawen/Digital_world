@@ -206,15 +206,13 @@ public class EventManager : MonoBehaviour {
 
         gm.soundManager.PlayDefeatClip();
 
-        // On retient que l'on a fait un essaie !
-        string key = PlayerPrefs.GetString(MenuLevel.LEVEL_NAME_KEY) + MenuLevel.NB_TRIES_KEY;
-        int newValue = PlayerPrefs.HasKey(key) ? PlayerPrefs.GetInt(key) + 1 : 1;
-        PlayerPrefs.SetInt(key, newValue);
+        RememberGameResult(success: false);
 
         StartCoroutine(gm.QuitInSeconds(7));
     }
 
-    public void WinGame() {
+    public void WinGame()
+    {
         if (gameIsEnded)
             return;
         gameIsEnded = true;
@@ -234,24 +232,84 @@ public class EventManager : MonoBehaviour {
 
         gm.soundManager.PlayVictoryClip();
 
-        // On retient que l'on a gagné ce niveau une fois de plus !
-        string key = PlayerPrefs.GetString(MenuLevel.LEVEL_NAME_KEY) + MenuLevel.NB_WINS_KEY;
-        int newValue = PlayerPrefs.HasKey(key) ? PlayerPrefs.GetInt(key) + 1 : 1;
-        Debug.Log("key = " + key + " newValue = " + newValue);
-        PlayerPrefs.SetInt(key, newValue);
-
-        // On retient que notre meilleur score s'il est meilleur !
-        key = PlayerPrefs.GetString(MenuLevel.LEVEL_NAME_KEY) + MenuLevel.HIGHEST_SCORE_KEY;
-        float newValueScore = PlayerPrefs.HasKey(key) ?
-            Mathf.Max(PlayerPrefs.GetFloat(key), gm.timerManager.GetRemainingTime()) :
-            gm.timerManager.GetRemainingTime();
-        PlayerPrefs.SetFloat(key, newValueScore);
-
-        // On retient que l'on vient de gagner !
-        key = PlayerPrefs.GetString(MenuLevel.LEVEL_NAME_KEY) + MenuLevel.HAS_JUST_WIN_KEY;
-        PlayerPrefs.SetString(key, "True");
+        RememberGameResult(success: true);
 
         StartCoroutine(gm.QuitInSeconds(7));
+    }
+
+    protected void RememberGameResult(bool success) {
+        if (gm.GetLevelType() == MenuLevel.LevelType.INFINITE)
+            success = IsNewBestScore();
+
+        if (!success) {
+            IncrementDeathCount();
+        } else {
+            IncrementWinsCount();
+            RecordBestScore();
+            RememberHasJustWin();
+        }
+        IncrementSumOfAllTriesScores();
+        RememberSincelastBestScore(success);
+    }
+
+    protected void RememberHasJustWin() {
+        string keyHasJustWin = GetKeyFor(MenuLevel.HAS_JUST_WIN_KEY);
+        PlayerPrefs.SetString(keyHasJustWin, MenuManager.TRUE);
+    }
+
+    protected void RecordBestScore() {
+        string keyHighestScore = GetKeyFor(MenuLevel.HIGHEST_SCORE_KEY);
+        float score = GetScore();
+        float newValueScore = PlayerPrefs.HasKey(keyHighestScore) ?  Mathf.Max(PlayerPrefs.GetFloat(keyHighestScore), score) : score;
+        PlayerPrefs.SetFloat(keyHighestScore, newValueScore);
+    }
+
+    protected void IncrementWinsCount() {
+        string keyNbWins = GetKeyFor(MenuLevel.NB_WINS_KEY);
+        int newValue = PlayerPrefs.HasKey(keyNbWins) ? PlayerPrefs.GetInt(keyNbWins) + 1 : 1;
+        PlayerPrefs.SetInt(keyNbWins, newValue);
+    }
+
+    protected void IncrementDeathCount() {
+        string keyNbTries = GetKeyFor(MenuLevel.NB_DEATHS_KEY);
+        int newValue = PlayerPrefs.HasKey(keyNbTries) ? PlayerPrefs.GetInt(keyNbTries) + 1 : 1;
+        PlayerPrefs.SetInt(keyNbTries, newValue);
+    }
+
+    protected void RememberSincelastBestScore(bool hasWin) {
+        string keySinceLastBestScore = GetKeyFor(MenuLevel.SINCE_LAST_BEST_SCORE);
+        if (hasWin && IsNewBestScore()) {
+            PlayerPrefs.SetInt(keySinceLastBestScore, 0);
+        } else {
+            int newSinceLastBestScore = 1 + (PlayerPrefs.HasKey(keySinceLastBestScore) ? PlayerPrefs.GetInt(keySinceLastBestScore) : 0);
+            PlayerPrefs.SetInt(keySinceLastBestScore, newSinceLastBestScore);
+        }
+    }
+
+    protected void IncrementSumOfAllTriesScores() {
+        string keySum = GetKeyFor(MenuLevel.SUM_OF_ALL_TRIES_SCORES);
+        float oldSum = PlayerPrefs.HasKey(keySum) ? PlayerPrefs.GetFloat(keySum) : 0f;
+        float newSum = oldSum + GetScore();
+        PlayerPrefs.SetFloat(keySum, newSum);
+    }
+
+    public float GetScore() {
+        if(gm.GetLevelType() == MenuLevel.LevelType.REGULAR) {
+            return gm.timerManager.GetRemainingTime();
+        } else {
+            return gm.GetInfiniteMap().GetNbBlocksRun();
+        }
+    }
+
+    public bool IsNewBestScore() {
+        string keyBestScore = GetKeyFor(MenuLevel.HIGHEST_SCORE_KEY);
+        float bestScore = PlayerPrefs.HasKey(keyBestScore) ? PlayerPrefs.GetFloat(keyBestScore) : 0;
+        return GetScore() >= bestScore;
+    }
+
+    protected string GetKeyFor(string keySuffix) {
+        string levelNameKey = PlayerPrefs.GetString(MenuLevel.LEVEL_NAME_KEY);
+        return levelNameKey + keySuffix;
     }
 
     public bool IsGameOver() {

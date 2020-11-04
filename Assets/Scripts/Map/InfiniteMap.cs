@@ -187,7 +187,7 @@ public class InfiniteMap : MapManager {
 
     protected void RewardPlayerForNewBlock(int nbBlocksAdded) {
         if (nbBlocksRun > nbFirstBlocks) {
-            nbBlocksDisplayer.Display((nbBlocksRun - nbFirstBlocks).ToString());
+            nbBlocksDisplayer.Display(GetNbBlocksRun().ToString());
             nbBlocksDisplayer.AddVolatileText($"+ {nbBlocksAdded.ToString()}", nbBlocksDisplayer.GetTextColor());
             gm.soundManager.PlayNewBlockClip();
         }
@@ -206,5 +206,9 @@ public class InfiniteMap : MapManager {
             }
             Debug.LogWarning("All blocks time have been reseted !");
         }
+    }
+
+    public int GetNbBlocksRun() {
+        return nbBlocksRun - nbFirstBlocks;
     }
 }

@@ -7,19 +7,25 @@ using UnityEngine.UI;
 
 public class MenuLevel : MonoBehaviour {
 
+    public enum LevelType { REGULAR, INFINITE };
+
     public static string LEVEL_NAME_KEY = "levelNameKey";
     public static string CURRENT_INPUT_FIELD_KEY = "currentInputField";
     public static string NB_WINS_KEY = "nbVictoires";
-    public static string NB_TRIES_KEY = "nbTries";
+    public static string NB_DEATHS_KEY = "nbTries";
+    public static string SUM_OF_ALL_TRIES_SCORES = "sumOfAllTriesScores";
     public static string HIGHEST_SCORE_KEY = "highestScore";
+    public static string SINCE_LAST_BEST_SCORE = "sinceLastBestScore";
     public static string TRACE_KEY = "trace";
     public static string HAS_JUST_WIN_KEY = "hasJustWin";
     public static string HAS_ALREADY_DISCOVER_LEVEL_KEY = "hasAlreadyDiscoverLevel";
     public static string SUPER_CHEATED_PASSWORD = "lecreateurdecejeuestmonuniquedieuetmaitre";
 
+
     [Header("Name")]
     public string levelSceneName;
     public string levelFolderName;
+    public LevelType levelType;
 
     [Header("Background")]
     public float probaSource = 0.00035f;
@@ -40,10 +46,16 @@ public class MenuLevel : MonoBehaviour {
     public TexteExplicatif texteExplicatifIntroduction;
 
     [Header("Scores")]
+    public GameObject scoresRegular;
+    public GameObject scoresInfinite;
     public Text score_nbTries;
     public Text score_nbWins;
     public Text score_winrate;
     public Text score_highestScore;
+    public Text score_nbGames;
+    public Text score_meanScore;
+    public Text score_sinceLastBestScore;
+    public Text score_bestScore;
 
     [Header("Other Links")]
     public SelectorManager selectorManager;
@@ -77,7 +89,7 @@ public class MenuLevel : MonoBehaviour {
 
     private void OnEnable() {
         menuBouncingBackground.SetParameters(probaSource, distanceSource, decroissanceSource, themes);
-        ReadScores();
+        SetScores();
 
         MenuManager.DISABLE_HOTKEYS = false;
         InitTextesExplicatifs();
@@ -168,13 +180,33 @@ public class MenuLevel : MonoBehaviour {
         }
     }
 
-    protected void ReadScores() {
+    protected void SetScores() {
+        if (levelType == LevelType.REGULAR) {
+            scoresRegular.SetActive(true);
+            scoresInfinite.SetActive(false);
+            SetRegularScores();
+        } else {
+            scoresRegular.SetActive(false);
+            scoresInfinite.SetActive(true);
+            SetInfiniteScores();
+        }
+    }
+
+    protected void SetRegularScores() {
         score_nbWins.text = ChangeLastWord(score_nbWins.text, GetNbWins().ToString());
-        score_nbTries.text = ChangeLastWord(score_nbTries.text, GetNbTries().ToString());
+        score_nbTries.text = ChangeLastWord(score_nbTries.text, GetNbDeaths().ToString());
         string winrateString = (100.0f * GetWinrate()).ToString("N2") + "%";
         score_winrate.text = ChangeLastWord(score_winrate.text, winrateString);
         string highestScoreString = (HasHighestScore()) ? GetHighestScore().ToString("N2") : "null";
         score_highestScore.text = ChangeLastWord(score_highestScore.text, highestScoreString);
+    }
+
+    protected void SetInfiniteScores() {
+        score_nbGames.text = ChangeLastWord(score_nbGames.text, GetNbDeaths().ToString());
+        score_meanScore.text = ChangeLastWord(score_meanScore.text, ((int)GetMeanScore()).ToString());
+        score_sinceLastBestScore.text = ChangeLastWord(score_sinceLastBestScore.text, GetSinceLastBestScore().ToString());
+        string highestScoreString = (HasHighestScore()) ? ((int)GetHighestScore()).ToString() : "null";
+        score_bestScore.text = ChangeLastWord(score_bestScore.text, highestScoreString);
     }
 
     public int GetNbWins() {
@@ -182,13 +214,26 @@ public class MenuLevel : MonoBehaviour {
         return PlayerPrefs.HasKey(key) ? PlayerPrefs.GetInt(key) : 0;
     }
 
-    public int GetNbTries() {
-        string key = textLevelName.text + NB_TRIES_KEY;
+    public int GetNbDeaths() {
+        string key = textLevelName.text + NB_DEATHS_KEY;
         return PlayerPrefs.HasKey(key) ? PlayerPrefs.GetInt(key) : 0;
     }
 
+    public int GetNbTries() {
+        return GetNbWins() + GetNbDeaths();
+    }
+
     public float GetWinrate() {
-        return (float)GetNbWins() / ((float)GetNbWins() + (float)GetNbTries());
+        return (float)GetNbWins() / (float)GetNbTries();
+    }
+
+    public float GetMeanScore() {
+        return GetSumOfAllTriesScores() / (float)GetNbTries();
+    }
+
+    public float GetSumOfAllTriesScores() {
+        string key = textLevelName.text + SUM_OF_ALL_TRIES_SCORES;
+        return PlayerPrefs.HasKey(key) ? PlayerPrefs.GetFloat(key) : 0;
     }
 
     public bool HasHighestScore() {
@@ -199,6 +244,11 @@ public class MenuLevel : MonoBehaviour {
     public float GetHighestScore() {
         string key = textLevelName.text + HIGHEST_SCORE_KEY;
         return PlayerPrefs.HasKey(key) ? PlayerPrefs.GetFloat(key) : 0.0f;
+    }
+
+    public int GetSinceLastBestScore() {
+        string key = textLevelName.text + SINCE_LAST_BEST_SCORE;
+        return PlayerPrefs.HasKey(key) ? PlayerPrefs.GetInt(key) : 0;
     }
 
     public static string ChangeLastWord(string str, string lastWordReplacement) {

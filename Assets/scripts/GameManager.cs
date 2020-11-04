@@ -205,4 +205,16 @@ public class GameManager : MonoBehaviour {
     public void UnFreezeTime() {
         timeFreezed = false;
     }
+
+    public InfiniteMap GetInfiniteMap() {
+        return map as InfiniteMap;
+    }
+
+    internal MenuLevel.LevelType GetLevelType() {
+        if(((InfiniteMap)map) == null) {
+            return MenuLevel.LevelType.REGULAR;
+        } else {
+            return MenuLevel.LevelType.INFINITE;
+        }
+    }
 }
