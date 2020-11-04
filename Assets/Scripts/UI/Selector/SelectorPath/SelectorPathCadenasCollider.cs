@@ -30,8 +30,11 @@ public class SelectorPathCadenasCollider : MonoBehaviour {
     public void OnMouseUp() {
         if (hasClickedDown) {
             hasClickedDown = false;
-            if (!selectorManager.PopupIsEnabled())
+            if (!selectorManager.PopupIsEnabled()
+             && !selectorManager.HasSelectorLevelOpen()
+             && !selectorManager.HasSelectorPathUnlockScreenOpen()) {
                 cadenas.selectorPath.OnCadenaClicked();
+            }
         }
     }
 }

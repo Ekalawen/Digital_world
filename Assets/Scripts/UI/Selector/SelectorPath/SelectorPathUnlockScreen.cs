@@ -53,6 +53,11 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
             if (!selectorPath.IsUnlocked()) {
                 selectorPath.Unlock(input.text);
                 SetBackgroundAccordingToLockState();
+            } else {
+                selectorManager.RunPopup(
+                    title: "Déjà débloqué !",
+                    text: "Vous avez déjà dévérouillé ce Path() !",
+                    theme: TexteExplicatif.Theme.NEUTRAL);
             }
         } else {
             selectorManager.RunPopup("Mot de passe érroné.",
