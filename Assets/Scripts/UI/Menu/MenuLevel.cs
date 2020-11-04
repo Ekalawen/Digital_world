@@ -46,12 +46,13 @@ public class MenuLevel : MonoBehaviour {
     public Text score_highestScore;
 
     [Header("Other Links")]
-    public MenuLevelSelector menuLevelSelector;
     public SelectorManager selectorManager;
     public MenuBackgroundBouncing menuBouncingBackground;
     public Text textLevelName;
     public InputField inputFieldNext;
 
+    [HideInInspector]
+    public MenuLevelSelector menuLevelSelector;
     protected bool playStarted = false;
 
     private void Update() {

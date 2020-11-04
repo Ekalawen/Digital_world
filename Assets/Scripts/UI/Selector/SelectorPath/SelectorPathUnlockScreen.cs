@@ -116,15 +116,19 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
     public void OpenDonneesHackees() {
         string key = selectorPath.startLevel.menuLevel.textLevelName.text + MenuLevel.NB_WINS_KEY;
         int nbVictoires = PlayerPrefs.HasKey(key) ? PlayerPrefs.GetInt(key) : 0;
-        selectorManager.popup.Initialize(
-            title: "Données Hackées",
-            useTextAsset: true,
-            textAsset: selectorPath.donneesHackees,
-            theme: TexteExplicatif.Theme.POSITIF);
-        AddReplacementForDonneesHackeesToPopup(selectorManager.popup);
         if (nbVictoires == 0) {
-            selectorManager.popup.Run(textTreshold: 0);
+            selectorManager.RunPopup(
+                title: "Données Hackées",
+                text: "Vous n'avez encore jamais hackée niveau.\n" +
+                "Aucunes données accessibles.",
+                theme: TexteExplicatif.Theme.NEUTRAL);
         } else {
+            selectorManager.popup.Initialize(
+                title: "Données Hackées",
+                useTextAsset: true,
+                textAsset: selectorPath.donneesHackees,
+                theme: TexteExplicatif.Theme.POSITIF);
+            AddReplacementForDonneesHackeesToPopup(selectorManager.popup);
             selectorManager.popup.Run(textTreshold: nbVictoires);
             AddNextPallierMessageToAllFragments(selectorManager.popup, textTreshold: nbVictoires);
         }
