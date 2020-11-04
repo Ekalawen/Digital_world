@@ -195,6 +195,10 @@ public class SelectorManager : MonoBehaviour {
         return hasLevelOpen;
     }
 
+    public bool HasThisSelectorLevelOpen(SelectorLevel selectorLevel) {
+        return hasLevelOpen && currentSelectorLevel == selectorLevel;
+    }
+
     public bool HasSelectorPathUnlockScreenOpen() {
         return hasUnlockScreenOpen;
     }
