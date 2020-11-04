@@ -46,7 +46,7 @@ public class SelectorLevelObjectCube : MonoBehaviour {
         }
     }
 
-    protected void SetMaterial(bool focus) {
+    public void SetMaterial(bool focus) {
         if (!selectorLevel.IsAccessible())
             GetComponent<Renderer>().material = lockedMaterial;
         else

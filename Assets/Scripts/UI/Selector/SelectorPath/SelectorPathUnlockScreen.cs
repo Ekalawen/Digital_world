@@ -50,23 +50,60 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
 
     public void Submit() {
         if (input.text == selectorPath.GetPassword() || input.text == MenuLevel.SUPER_CHEATED_PASSWORD) {
-            if (!selectorPath.IsUnlocked()) {
-                selectorPath.Unlock(input.text);
-                SetBackgroundAccordingToLockState();
+            if (selectorPath.IsUnlocked()) {
+                SubmitGoodUnlocked();
             } else {
-                selectorManager.RunPopup(
-                    title: "Déjà débloqué !",
-                    text: "Vous avez déjà dévérouillé ce Path() !",
-                    theme: TexteExplicatif.Theme.NEUTRAL);
+                SubmitGoodLocked();
             }
         } else {
-            selectorManager.RunPopup("Mot de passe érroné.",
-                "Ce n'est pas le bon mot de passe.\n" +
-                "Réussissez ce niveau pour obtenir le mot de passe dans les Données Hackées().\n" +
-                "\n" +
-                "Bonne Chance !",
-                TexteExplicatif.Theme.NEGATIF);
+            if (selectorPath.IsUnlocked()) {
+                SubmitFalseUnlocked();
+            } else {
+                SubmitFalseLocked();
+            }
         }
+    }
+
+    protected void SubmitGoodUnlocked() {
+        selectorManager.RunPopup(
+            title: "Déjà débloqué !",
+            text: "Vous avez déjà dévérouillé ce Path() !",
+            theme: TexteExplicatif.Theme.NEUTRAL);
+    }
+
+    protected void SubmitGoodLocked() {
+        selectorPath.Unlock(input.text);
+        SetBackgroundAccordingToLockState();
+        SetCadenasAccordingToLockState();
+        selectorPath.endLevel.objectLevel.cube.SetMaterial(focus: false);
+        selectorPath.cadena.DisplayGoodCadena();
+        selectorManager.RunPopup("Path() hacké !",
+            "Félicitation !\n" +
+            "Vous avez trouvé le bon mot de passe pour hacker et dévérouiller ce Path() !" +
+            "\n" +
+            "Keep hacking !",
+            TexteExplicatif.Theme.POSITIF);
+    }
+
+    protected void SubmitFalseLocked() {
+        selectorManager.RunPopup("Mot de passe érroné.",
+            "Ce n'est pas le bon mot de passe.\n" +
+            "Réussissez ce niveau pour obtenir le mot de passe dans les Données Hackées().\n" +
+            "\n" +
+            "Bonne Chance !",
+            TexteExplicatif.Theme.NEGATIF);
+    }
+
+    protected void SubmitFalseUnlocked() {
+        string password = selectorPath.GetPassword();
+        selectorManager.popup.Initialize(
+            title: "C'était mieux avant.",
+            mainText: "Ce Path() est déjà dévérouillé !\n" +
+            "Et pourtant ce n'est plus le bon mot de passe.\n" +
+            $"Le mot de passe était {password}\n",
+            theme: TexteExplicatif.Theme.NEUTRAL);
+        selectorManager.popup.AddReplacement(password, $"<color=green>{password}</color>");
+        selectorManager.popup.Run();
     }
 
     public void SubmitIfEnter() {
@@ -119,7 +156,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
                     (Match match) => "Dernier pallier.\n\n\n"));
             }
         }
-        texteExplicatif.ComputeText(textTreshold);
+        texteExplicatif.mainText.text = texteExplicatif.ComputeText(textTreshold);
     }
 
 

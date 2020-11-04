@@ -76,15 +76,16 @@ public class TexteExplicatif : MonoBehaviour {
         firstFrame = true;
 
         if (useTextAsset) {
-            ComputeText(textTreshold);
+            mainText.text = ComputeText(textTreshold);
+        } else {
+            mainText.text = UseReplacementList(mainText.text);
         }
 
         PutMainTextOnBottom();
     }
 
-    public void ComputeText(int textTreshold = 0) {
-        string newText = UseReplacementList(GetTextFromPath(textTreshold));
-        mainText.text = newText;
+    public string ComputeText(int textTreshold = 0) {
+        return UseReplacementList(GetTextFromPath(textTreshold));
     }
 
     protected void PutMainTextOnBottom() {

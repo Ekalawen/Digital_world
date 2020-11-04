@@ -157,7 +157,7 @@ public class MenuLevel : MonoBehaviour {
                     (Match match) => "Dernier pallier.\n\n\n"));
             }
         }
-        texteExplicatifDonneesHackesSuccess.ComputeText(GetNbWins());
+        texteExplicatifDonneesHackesSuccess.mainText.text = texteExplicatifDonneesHackesSuccess.ComputeText(GetNbWins());
     }
 
     public void SaveNextInputField() {
