@@ -37,15 +37,17 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         this.selectorPath = selectorPath;
         SetBackgroundAccordingToLockState();
         SetCadenasAccordingToLockState();
-        SetTitle();
+        SetTitles();
         FillInputWithPasswordIfAlreayDiscovered();
     }
 
-    protected void SetTitle() {
+    protected void SetTitles() {
         string startLevelName = selectorPath.startLevel.GetName();
         fromLevelTitle.text = startLevelName;
+        UIHelper.FitTextHorizontaly(startLevelName, fromLevelTitle);
         string endLevelName = selectorPath.endLevel.GetName();
         toLevelTitle.text = endLevelName;
+        UIHelper.FitTextHorizontaly(endLevelName, toLevelTitle);
     }
 
     public void Submit() {
