@@ -211,7 +211,7 @@ public class GameManager : MonoBehaviour {
     }
 
     internal MenuLevel.LevelType GetLevelType() {
-        if(((InfiniteMap)map) == null) {
+        if(map.gameObject.GetComponent<InfiniteMap>() == null) {
             return MenuLevel.LevelType.REGULAR;
         } else {
             return MenuLevel.LevelType.INFINITE;

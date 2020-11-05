@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.UI;
@@ -114,8 +115,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
     }
 
     public void OpenDonneesHackees() {
-        string key = selectorPath.startLevel.menuLevel.textLevelName.text + MenuLevel.NB_WINS_KEY;
-        int nbVictoires = PlayerPrefs.HasKey(key) ? PlayerPrefs.GetInt(key) : 0;
+        int nbVictoires = selectorPath.startLevel.menuLevel.GetNbWins();
         if (nbVictoires == 0) {
             selectorManager.RunPopup(
                 title: "Données Hackées",
@@ -130,7 +130,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
                 theme: TexteExplicatif.Theme.POSITIF);
             AddReplacementForDonneesHackeesToPopup(selectorManager.popup);
             selectorManager.popup.Run(textTreshold: nbVictoires);
-            AddNextPallierMessageToAllFragments(selectorManager.popup, textTreshold: nbVictoires);
+            AddNextPallierMessage(selectorManager.popup, textTreshold: nbVictoires);
         }
     }
 
@@ -143,24 +143,42 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         // L'ajout des next palliers se fait dans la fonction AddNextPallierMessageToAllFragments()
     }
 
-    protected void AddNextPallierMessageToAllFragments(TexteExplicatif texteExplicatif, int textTreshold) {
+    protected void AddNextPallierMessage(TexteExplicatif texteExplicatif, int textTreshold) {
         TresholdText tresholdText = texteExplicatif.GetTresholdText();
         List<TresholdFragment> fragments = tresholdText.GetAllFragmentsOrdered();
-        for (int i = 0; i < fragments.Count; i++) {
-            if (i < fragments.Count - 1) {
-                int nextTreshold = fragments[i + 1].treshold;
-                fragments[i].ApplyReplacementEvaluator(
-                    new Tuple<string, MatchEvaluator>(@"$(?![\r\n])", // Match EOF
-                    (Match match) => "Prochain pallier à " + nextTreshold + " victoires.\n\n\n"));
-            } else {
-                fragments[i].ApplyReplacementEvaluator(
-                    new Tuple<string, MatchEvaluator>(@"$(?![\r\n])", // Match EOF
-                    (Match match) => "Dernier pallier.\n\n\n"));
-            }
+        for(int i = 0; i < fragments.Count; i++) {
+            TresholdFragment fragment = fragments[i];
+            string nextPallierText = GetNextPallierText(fragment, fragments, textTreshold);
+            string pallierNumberText = $"Pallier n°{i + 1} : {nextPallierText}\n";
+            pallierNumberText = UIHelper.SurroundWithColor(pallierNumberText, "#008000ff");  // Green
+            fragment.text = pallierNumberText + fragment.text;
         }
+        //if(fragments.Last() != currentFragment) {
+        //    int nextTreshold = fragments[fragments.FindIndex(f => f == currentFragment) + 1].treshold;
+        //    currentFragment.ApplyReplacementEvaluator(
+        //        new Tuple<string, MatchEvaluator>(@"$(?![\r\n])", // Match EOF
+        //        (Match match) => "Prochain pallier à " + nextTreshold + " victoires.\n\n\n"));
+        //} else {
+        //    fragments.Last().ApplyReplacementEvaluator(
+        //        new Tuple<string, MatchEvaluator>(@"$(?![\r\n])", // Match EOF
+        //        (Match match) => "Dernier pallier.\n\n\n"));
+        //}
         texteExplicatif.mainText.text = texteExplicatif.ComputeText(textTreshold);
     }
 
+    protected string GetNextPallierText(TresholdFragment fragment, List<TresholdFragment> fragments, int textTreshold) {
+        TresholdFragment currentFragment = fragments.FindAll(f => f.treshold <= textTreshold).Last();
+        if(fragment == currentFragment) {
+            if (fragment == fragments.Last()) {
+                return "(Dernier pallier)";
+            } else {
+                int nextTreshold = fragments[fragments.FindIndex(f => f == currentFragment) + 1].treshold;
+                return $"(Prochain pallier à {nextTreshold} victoires)";
+            }
+        } else {
+            return "";
+        }
+    }
 
     public void Return() {
         selectorPath.CloseUnlockScreen();

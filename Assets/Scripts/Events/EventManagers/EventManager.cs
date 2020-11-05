@@ -258,13 +258,15 @@ public class EventManager : MonoBehaviour {
     }
 
     protected void RecordBestScore() {
+        if (IsNewBestScore()) {
+            string keyHasJustBestScore = GetKeyFor(MenuLevel.HAS_JUST_MAKE_BEST_SCORE_KEY);
+            PlayerPrefs.SetString(keyHasJustBestScore, MenuManager.TRUE);
+        }
+
         string keyHighestScore = GetKeyFor(MenuLevel.HIGHEST_SCORE_KEY);
         float score = GetScore();
         float newValueScore = PlayerPrefs.HasKey(keyHighestScore) ?  Mathf.Max(PlayerPrefs.GetFloat(keyHighestScore), score) : score;
         PlayerPrefs.SetFloat(keyHighestScore, newValueScore);
-
-        string keyHasJustBestScore = GetKeyFor(MenuLevel.HAS_JUST_MAKE_BEST_SCORE_KEY);
-        PlayerPrefs.SetString(keyHasJustBestScore, MenuManager.TRUE);
     }
 
     protected void IncrementWinsCount() {

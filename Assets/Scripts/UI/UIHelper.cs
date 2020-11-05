@@ -14,4 +14,13 @@ public class UIHelper {
         while (text.fontSize > 1 && IsOverflowing(content, text))
             text.fontSize -= 1;
     }
+
+    public static string SurroundWithColor(string text, Color color) {
+        string htmlColor = $"#{ColorUtility.ToHtmlStringRGBA(color)}";
+        return SurroundWithColor(text, htmlColor);
+    }
+
+    public static string SurroundWithColor(string text, string htmlColor) {
+        return $"<color={htmlColor}>{text}</color>";
+    }
 }
