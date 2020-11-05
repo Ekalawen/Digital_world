@@ -241,6 +241,7 @@ public class EventManager : MonoBehaviour {
         if (gm.GetLevelType() == MenuLevel.LevelType.INFINITE)
             success = IsNewBestScore();
 
+        RememberSincelastBestScore(success);
         if (!success) {
             IncrementDeathCount();
         } else {
@@ -249,7 +250,6 @@ public class EventManager : MonoBehaviour {
             RememberHasJustWin();
         }
         IncrementSumOfAllTriesScores();
-        RememberSincelastBestScore(success);
     }
 
     protected void RememberHasJustWin() {
@@ -274,9 +274,9 @@ public class EventManager : MonoBehaviour {
     }
 
     protected void IncrementDeathCount() {
-        string keyNbTries = GetKeyFor(MenuLevel.NB_DEATHS_KEY);
-        int newValue = PlayerPrefs.HasKey(keyNbTries) ? PlayerPrefs.GetInt(keyNbTries) + 1 : 1;
-        PlayerPrefs.SetInt(keyNbTries, newValue);
+        string keyNbDeaths = GetKeyFor(MenuLevel.NB_DEATHS_KEY);
+        int newValue = PlayerPrefs.HasKey(keyNbDeaths) ? PlayerPrefs.GetInt(keyNbDeaths) + 1 : 1;
+        PlayerPrefs.SetInt(keyNbDeaths, newValue);
     }
 
     protected void RememberSincelastBestScore(bool hasWin) {
@@ -304,11 +304,14 @@ public class EventManager : MonoBehaviour {
         }
     }
 
-    public bool IsNewBestScore() {
+    public float GetBestScore() {
         string keyBestScore = GetKeyFor(MenuLevel.HIGHEST_SCORE_KEY);
-        float bestScore = PlayerPrefs.HasKey(keyBestScore) ? PlayerPrefs.GetFloat(keyBestScore) : 0;
+        return PlayerPrefs.HasKey(keyBestScore) ? PlayerPrefs.GetFloat(keyBestScore) : 0;
+    }
+
+    public bool IsNewBestScore() {
         float currentScore = GetScore();
-        return currentScore != 0 && currentScore > bestScore;
+        return currentScore != 0 && currentScore > GetBestScore();
     }
 
     protected string GetKeyFor(string keySuffix) {

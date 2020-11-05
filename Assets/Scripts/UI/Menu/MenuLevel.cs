@@ -202,7 +202,7 @@ public class MenuLevel : MonoBehaviour {
     }
 
     protected void SetInfiniteScores() {
-        score_nbGames.text = ChangeLastWord(score_nbGames.text, GetNbDeaths().ToString());
+        score_nbGames.text = ChangeLastWord(score_nbGames.text, GetNbTries().ToString());
         score_meanScore.text = ChangeLastWord(score_meanScore.text, ((int)GetMeanScore()).ToString());
         score_sinceLastBestScore.text = ChangeLastWord(score_sinceLastBestScore.text, GetSinceLastBestScore().ToString());
         score_bestScore.text = ChangeLastWord(score_bestScore.text, GetBestScoreToString());

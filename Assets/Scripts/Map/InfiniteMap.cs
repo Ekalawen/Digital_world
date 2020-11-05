@@ -8,6 +8,8 @@ public class InfiniteMap : MapManager {
 
     public enum DifficultyMode { CONSTANT, PROGRESSIVE }
 
+    public static Vector3 FORWARD = Vector3.right;
+
     [Header("Parameters")]
     public List<BlockList> blockLists;
     public int nbBlocksForward = 3;
@@ -31,6 +33,7 @@ public class InfiniteMap : MapManager {
 
     [Header("Others")]
     public CounterDisplayer nbBlocksDisplayer;
+    public GameObject bestScoreMarkerPrefab;
     public bool shouldResetAllBlocksTime = false;
 
     Transform blocksFolder;
@@ -38,12 +41,13 @@ public class InfiniteMap : MapManager {
     int indiceCurrentBlock = 0;
     int nbBlocksRun;
     int nbBlocksDestroyed;
+    int nbBlocksCreated = 0;
     List<BlockWeight> blockWeights;
     List<Block> blocks;
     Timer destructionBlockTimer;
     Timer timerBeforeChangeColorBlocks;
     Timer timerSinceLastBlock;
-
+    bool hasMadeNewBestScore = false;
 
     protected override void InitializeSpecific() {
         blocks = new List<Block>();
@@ -85,8 +89,20 @@ public class InfiniteMap : MapManager {
 
         Block newBlock = Instantiate(blockPrefab, blockPosition, Quaternion.identity, blocksFolder).GetComponent<Block>();
         newBlock.Initialize(blocksFolder, blockPrefab.GetComponent<Block>());
+        nbBlocksCreated += 1;
 
         blocks.Add(newBlock);
+
+        AddBestScoreMarker(newBlock);
+    }
+
+    protected void AddBestScoreMarker(Block block) {
+        int bestScore = (int)gm.eventManager.GetBestScore();
+        if(bestScore != 0 && (nbBlocksCreated - nbFirstBlocks) == bestScore + 1) {
+            Vector3 pos = block.endPoint.position + Vector3.up * 1.5f;
+            GameObject marker = Instantiate(bestScoreMarkerPrefab, pos, Quaternion.identity, block.transform.parent);
+            marker.transform.LookAt(pos + FORWARD);
+        }
     }
 
     protected GameObject GetRandomBlockPrefab() {
@@ -186,11 +202,21 @@ public class InfiniteMap : MapManager {
     }
 
     protected void RewardPlayerForNewBlock(int nbBlocksAdded) {
-        if (nbBlocksRun > nbFirstBlocks) {
+        if (nbBlocksRun > nbFirstBlocks)
+        {
             nbBlocksDisplayer.Display(GetNbBlocksRun().ToString());
             nbBlocksDisplayer.AddVolatileText($"+ {nbBlocksAdded.ToString()}", nbBlocksDisplayer.GetTextColor());
             gm.soundManager.PlayNewBlockClip();
+            if (IsNewBestScore(GetNbBlocksRun())) {
+                gm.console.RewardBestScore();
+                gm.soundManager.PlayRewardBestScore();
+                hasMadeNewBestScore = true;
+            }
         }
+    }
+
+    protected bool IsNewBestScore(int score) {
+        return score > gm.eventManager.GetBestScore() && !hasMadeNewBestScore;
     }
 
     public void OnExitBlock(Block block) {

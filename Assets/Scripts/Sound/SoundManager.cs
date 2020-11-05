@@ -32,6 +32,7 @@ public class SoundManager : MonoBehaviour {
     public AudioClipParams notFoundPouvoirClips;
     public AudioClipParams timeZoneButtonInClips;
     public AudioClipParams timeZoneButtonOutClips;
+    public AudioClipParams rewardBestScoreClips;
     public AudioClipParams victoryClips;
     public AudioClipParams defeatClips;
 
@@ -177,6 +178,9 @@ public class SoundManager : MonoBehaviour {
     public void PlayTimeZoneButtonOutClip(Vector3 pos) {
         PlayClipsOnSource(timeZoneButtonOutClips, pos);
     }
+    public void PlayRewardBestScore() {
+        PlayClipsOnSource(rewardBestScoreClips);
+    }
     public void PlayVictoryClip() {
         PlayClipsOnSource(victoryClips);
     }
@@ -243,5 +247,4 @@ public class SoundManager : MonoBehaviour {
         yield return new WaitForSeconds(duree);
         source.Stop();
     }
-
 }

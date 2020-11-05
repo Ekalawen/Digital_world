@@ -204,7 +204,7 @@ public class Console : MonoBehaviour {
             messageToReplace);
     }
 
-	public void AjouterMessageImportant(
+    public void AjouterMessageImportant(
         string message,
         TypeText type,
         float tempsAffichage,
@@ -686,5 +686,9 @@ public class Console : MonoBehaviour {
 
     protected void InitPouvoir(IPouvoir pouvoir, PouvoirDisplayInGame display) {
         display.Initialize(pouvoir);
+    }
+
+    public void RewardBestScore() {
+        AjouterMessageImportant("Meilleur Score !!!", TypeText.ALLY_TEXT, 3, bAfficherInConsole: true);
     }
 }
