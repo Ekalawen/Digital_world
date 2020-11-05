@@ -209,6 +209,6 @@ public class InfiniteMap : MapManager {
     }
 
     public int GetNbBlocksRun() {
-        return nbBlocksRun - nbFirstBlocks;
+        return Mathf.Max(0, nbBlocksRun - nbFirstBlocks);
     }
 }

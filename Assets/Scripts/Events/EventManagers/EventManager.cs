@@ -262,6 +262,9 @@ public class EventManager : MonoBehaviour {
         float score = GetScore();
         float newValueScore = PlayerPrefs.HasKey(keyHighestScore) ?  Mathf.Max(PlayerPrefs.GetFloat(keyHighestScore), score) : score;
         PlayerPrefs.SetFloat(keyHighestScore, newValueScore);
+
+        string keyHasJustBestScore = GetKeyFor(MenuLevel.HAS_JUST_MAKE_BEST_SCORE_KEY);
+        PlayerPrefs.SetString(keyHasJustBestScore, MenuManager.TRUE);
     }
 
     protected void IncrementWinsCount() {
@@ -277,7 +280,7 @@ public class EventManager : MonoBehaviour {
     }
 
     protected void RememberSincelastBestScore(bool hasWin) {
-        string keySinceLastBestScore = GetKeyFor(MenuLevel.SINCE_LAST_BEST_SCORE);
+        string keySinceLastBestScore = GetKeyFor(MenuLevel.SINCE_LAST_BEST_SCORE_KEY);
         if (hasWin && IsNewBestScore()) {
             PlayerPrefs.SetInt(keySinceLastBestScore, 0);
         } else {
@@ -287,7 +290,7 @@ public class EventManager : MonoBehaviour {
     }
 
     protected void IncrementSumOfAllTriesScores() {
-        string keySum = GetKeyFor(MenuLevel.SUM_OF_ALL_TRIES_SCORES);
+        string keySum = GetKeyFor(MenuLevel.SUM_OF_ALL_TRIES_SCORES_KEY);
         float oldSum = PlayerPrefs.HasKey(keySum) ? PlayerPrefs.GetFloat(keySum) : 0f;
         float newSum = oldSum + GetScore();
         PlayerPrefs.SetFloat(keySum, newSum);
@@ -304,7 +307,8 @@ public class EventManager : MonoBehaviour {
     public bool IsNewBestScore() {
         string keyBestScore = GetKeyFor(MenuLevel.HIGHEST_SCORE_KEY);
         float bestScore = PlayerPrefs.HasKey(keyBestScore) ? PlayerPrefs.GetFloat(keyBestScore) : 0;
-        return GetScore() >= bestScore;
+        float currentScore = GetScore();
+        return currentScore != 0 && currentScore > bestScore;
     }
 
     protected string GetKeyFor(string keySuffix) {

@@ -134,14 +134,10 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         }
     }
 
-    public static string SurroundWithBlueColor(Match match) {
-        return "<color=blue>" + match.Value + "</color>";
-    }
-
     protected void AddReplacementForDonneesHackeesToPopup(TexteExplicatif popup) {
         popup.AddReplacement("%Trace%", selectorPath.GetTrace());
         popup.AddReplacement("%Passe%", selectorPath.passwordPasse);
-        MatchEvaluator evaluator = new MatchEvaluator(SurroundWithBlueColor);
+        MatchEvaluator evaluator = new MatchEvaluator(TexteExplicatif.SurroundWithBlueColor);
         popup.AddReplacementEvaluator(@"Passes?", evaluator);
         popup.AddReplacementEvaluator(@"Traces?", evaluator);
         // L'ajout des next palliers se fait dans la fonction AddNextPallierMessageToAllFragments()

@@ -49,8 +49,11 @@ public class TexteExplicatif : MonoBehaviour {
         string mainText = "",
         bool useTextAsset = false,
         TextAsset textAsset = null,
-        Theme theme = Theme.POSITIF) {
-        CleanReplacements();
+        Theme theme = Theme.POSITIF,
+        bool cleanReplacements = true) {
+        if (cleanReplacements) {
+            CleanReplacements();
+        }
         this.titleTextTarget.text = title;
         this.mainText.text = mainText;
         this.useTextAsset = useTextAsset;
@@ -204,5 +207,17 @@ public class TexteExplicatif : MonoBehaviour {
     public void CleanReplacements() {
         replacementList.Clear();
         replacementListEvaluator.Clear();
+    }
+
+    public static string SurroundWithRedColor(Match match) {
+        return "<color=red>" + match.Value + "</color>";
+    }
+
+    public static string SurroundWithGreenColor(Match match) {
+        return "<color=green>" + match.Value + "</color>";
+    }
+
+    public static string SurroundWithBlueColor(Match match) {
+        return "<color=blue>" + match.Value + "</color>";
     }
 }

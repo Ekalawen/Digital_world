@@ -181,6 +181,7 @@ public class SelectorManager : MonoBehaviour {
         currentSelectorLevel = selectorLevel;
         hasLevelOpen = true;
         selectorLevel.menuLevel.gameObject.SetActive(true);
+        selectorLevel.menuLevel.Initialize();
         background.gameObject.SetActive(true);
         if (instantDisplay) {
             currentSelectorLevel.menuLevel.gameObject.SetActive(true);
@@ -249,8 +250,8 @@ public class SelectorManager : MonoBehaviour {
             DisplayLevel(currentLevel, instantDisplay:true);
     }
 
-    public void RunPopup(string title, string text, TexteExplicatif.Theme theme) {
-        popup.Initialize(title: title, mainText: text, theme: theme);
+    public void RunPopup(string title, string text, TexteExplicatif.Theme theme, bool cleanReplacements = true) {
+        popup.Initialize(title: title, mainText: text, theme: theme, cleanReplacements: cleanReplacements);
         popup.Run();
     }
 
