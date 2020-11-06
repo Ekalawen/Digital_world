@@ -52,6 +52,8 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
     }
 
     public void Submit() {
+        if (!selectorManager.HasSelectorPathUnlockScreenOpen())
+            return;
         if (input.text == selectorPath.GetPassword() || input.text == MenuLevel.SUPER_CHEATED_PASSWORD) {
             if (selectorPath.IsUnlocked()) {
                 SubmitGoodUnlocked();
@@ -115,6 +117,8 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
     }
 
     public void OpenDonneesHackees() {
+        if (!selectorManager.HasSelectorPathUnlockScreenOpen())
+            return;
         int nbVictoires = selectorPath.startLevel.menuLevel.GetNbWins();
         if (nbVictoires == 0) {
             selectorManager.RunPopup(
@@ -140,7 +144,6 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         MatchEvaluator evaluator = new MatchEvaluator(TexteExplicatif.SurroundWithBlueColor);
         popup.AddReplacementEvaluator(@"Passes?", evaluator);
         popup.AddReplacementEvaluator(@"Traces?", evaluator);
-        // L'ajout des next palliers se fait dans la fonction AddNextPallierMessageToAllFragments()
     }
 
     protected void AddNextPallierMessage(TexteExplicatif texteExplicatif, int textTreshold) {
@@ -153,16 +156,6 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
             pallierNumberText = UIHelper.SurroundWithColor(pallierNumberText, "#008000ff");  // Green
             fragment.text = pallierNumberText + fragment.text;
         }
-        //if(fragments.Last() != currentFragment) {
-        //    int nextTreshold = fragments[fragments.FindIndex(f => f == currentFragment) + 1].treshold;
-        //    currentFragment.ApplyReplacementEvaluator(
-        //        new Tuple<string, MatchEvaluator>(@"$(?![\r\n])", // Match EOF
-        //        (Match match) => "Prochain pallier à " + nextTreshold + " victoires.\n\n\n"));
-        //} else {
-        //    fragments.Last().ApplyReplacementEvaluator(
-        //        new Tuple<string, MatchEvaluator>(@"$(?![\r\n])", // Match EOF
-        //        (Match match) => "Dernier pallier.\n\n\n"));
-        //}
         texteExplicatif.mainText.text = texteExplicatif.ComputeText(textTreshold);
     }
 
@@ -181,6 +174,8 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
     }
 
     public void Return() {
+        if (!selectorManager.HasSelectorPathUnlockScreenOpen())
+            return;
         selectorPath.CloseUnlockScreen();
     }
 

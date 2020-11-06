@@ -41,8 +41,11 @@ public class SelectorLevelObjectCube : MonoBehaviour {
     public void OnMouseUp() {
         if (hasClickedDown) {
             hasClickedDown = false;
-            if(!selectorManager.PopupIsEnabled())
+            if (!selectorManager.PopupIsEnabled()
+            && !selectorManager.HasSelectorLevelOpen()
+            && !selectorManager.HasSelectorPathUnlockScreenOpen()) {
                 objectLevel.level.OnMouseDown();
+            }
         }
     }
 

@@ -26,18 +26,18 @@ public class SelectorManager : MonoBehaviour {
     public float dureeFading = 0.5f;
 
     protected List<SelectorLevel> levels;
-
     protected List<SelectorPath> paths;
     protected SelectorLevel currentSelectorLevel;
-
     protected bool hasLevelOpen = false;
     protected bool hasUnlockScreenOpen = false;
+    protected Dictionary<GameObject, Coroutine> fadingObjects;
 
     void Awake() {
         if (!_instance) { _instance = this; }
     }
 
     public void Start() {
+        fadingObjects = new Dictionary<GameObject, Coroutine>();
         GatherPaths();
         GatherLevels();
         background.Initialize();
@@ -114,27 +114,43 @@ public class SelectorManager : MonoBehaviour {
     }
 
     public Coroutine FadeIn(GameObject go, float dureeFading) {
-        return StartCoroutine(CFadeIn(go, dureeFading));
+        if(fadingObjects.ContainsKey(go)) {
+            StopCoroutine(fadingObjects[go]);
+            fadingObjects.Remove(go);
+        }
+        Coroutine coroutine = StartCoroutine(CFadeIn(go, dureeFading));
+        fadingObjects[go] = coroutine;
+        return coroutine;
     }
     protected IEnumerator CFadeIn(GameObject go, float dureeFading) {
         Timer timer = new Timer(dureeFading);
         go.SetActive(true);
-        go.GetComponent<CanvasGroup>().alpha = 0.0f;
+        float startAlpha = go.GetComponent<CanvasGroup>().alpha;
+        if (startAlpha == 1.0f)
+            startAlpha = 0.0f;
         while(!timer.IsOver()) {
-            go.GetComponent<CanvasGroup>().alpha = timer.GetAvancement();
+            go.GetComponent<CanvasGroup>().alpha = startAlpha + timer.GetAvancement() * (1.0f - startAlpha);
             yield return null;
         }
         go.GetComponent<CanvasGroup>().alpha = 1.0f;
     }
 
     public Coroutine FadeOut(GameObject go, float dureeFading) {
-        return StartCoroutine(CFadeOut(go, dureeFading));
+        if(fadingObjects.ContainsKey(go)) {
+            StopCoroutine(fadingObjects[go]);
+            fadingObjects.Remove(go);
+        }
+        Coroutine coroutine = StartCoroutine(CFadeOut(go, dureeFading));
+        fadingObjects[go] = coroutine;
+        return coroutine;
     }
     protected IEnumerator CFadeOut(GameObject go, float dureeFading) {
         Timer timer = new Timer(dureeFading);
-        go.GetComponent<CanvasGroup>().alpha = 1.0f;
+        float startAlpha = go.GetComponent<CanvasGroup>().alpha;
+        if (startAlpha == 0.0f)
+            startAlpha = 1.0f;
         while(!timer.IsOver()) {
-            go.GetComponent<CanvasGroup>().alpha = 1.0f - timer.GetAvancement();
+            go.GetComponent<CanvasGroup>().alpha = startAlpha - timer.GetAvancement() / startAlpha;
             yield return null;
         }
         go.GetComponent<CanvasGroup>().alpha = 0.0f;
