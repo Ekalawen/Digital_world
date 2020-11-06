@@ -4,6 +4,10 @@ using UnityEngine.UI;
 
 public class UIHelper {
 
+    public static string RED = "#800000ff";
+    public static string GREEN = "#008000ff";
+    public static string BLUE = "#000080ff";
+
     public static bool IsOverflowing(string content, Text text) {
         float preferedWidth = LayoutUtility.GetPreferredWidth(text.rectTransform);
         float maxWidth = text.GetComponent<RectTransform>().rect.width;

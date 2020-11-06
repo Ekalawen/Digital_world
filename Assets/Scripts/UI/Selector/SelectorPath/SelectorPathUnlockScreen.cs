@@ -91,8 +91,13 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
     }
 
     protected void SubmitFalseLocked() {
+        string registeredPassword = input.text;
+        string goodPassword = selectorPath.GetPassword();
+        string advice = Trace.GetPasswordAdvice(registeredPassword, goodPassword);
+        advice = UIHelper.SurroundWithColor(advice, UIHelper.GREEN);
         selectorManager.RunPopup("Mot de passe érroné.",
             "Ce n'est pas le bon mot de passe.\n" +
+            $"{advice}\n" +
             "Réussissez ce niveau pour obtenir le mot de passe dans les Données Hackées().\n" +
             "\n" +
             "Bonne Chance !",
@@ -153,7 +158,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
             TresholdFragment fragment = fragments[i];
             string nextPallierText = GetNextPallierText(fragment, fragments, textTreshold);
             string pallierNumberText = $"Pallier n°{i + 1} : {nextPallierText}\n";
-            pallierNumberText = UIHelper.SurroundWithColor(pallierNumberText, "#008000ff");  // Green
+            pallierNumberText = UIHelper.SurroundWithColor(pallierNumberText, UIHelper.GREEN);  // Green
             fragment.text = pallierNumberText + fragment.text;
         }
         texteExplicatif.mainText.text = texteExplicatif.ComputeText(textTreshold);
