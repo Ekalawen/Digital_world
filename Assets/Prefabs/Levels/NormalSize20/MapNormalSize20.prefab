@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cubeType: 0
+  generateMode: 0
   proportionCaves: 0.7
-  useNbCaves: 0
   nbCaves: 0
   tailleMinCave: 6
   tailleMaxCave: 9
@@ -23,6 +23,13 @@ MonoBehaviour:
   nbLumieresPerCaves: 1
   offsetLumieresFromCenter: 1
   caveOffsetFromSides: 1
+  useCaveFixedOffset: 0
+  useCaveFixedOffsetX: 0
+  caveFixedOffsetX: 0
+  useCaveFixedOffsetY: 0
+  caveFixedOffsetY: 0
+  useCaveFixedOffsetZ: 0
+  caveFixedOffsetZ: 0
   nbOuverturesOnSides: 1
   allowOuverturesInCorners: 0
 --- !u!114 &1138688350929194333
@@ -148,7 +155,7 @@ PrefabInstance:
         type: 3}
       propertyPath: lumierePrefab
       value: 
-      objectReference: {fileID: 8907419764697859225, guid: 348e30329f9526d47b4d7021d136d9e6,
+      objectReference: {fileID: 1106701525400260, guid: e464862985a8e4bb3a14bf8d90846952,
         type: 3}
     - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
         type: 3}

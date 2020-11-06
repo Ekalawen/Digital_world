@@ -67,7 +67,9 @@ public class PouvoirDetection : IPouvoir {
                 GameObject go = Instantiate(lumierePathPrefab, pos, Quaternion.identity);
                 Color color = gm.colorManager.GetColorForPosition(go.transform.position);
                 color = Color.white - color;
-                go.GetComponent<MeshRenderer>().material.color = color;
+                Material material = go.GetComponent<MeshRenderer>().material;
+                material.color = color;
+                material.SetColor("_EmissionColor", color);
                 Destroy(go, dureePath);
                 yield return new WaitForSeconds(1.0f / vitessePath);
             }
