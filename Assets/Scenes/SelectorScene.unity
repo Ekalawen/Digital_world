@@ -1755,8 +1755,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7e9b39d718aa4640894c8a0cde8593b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: {x: 0.33, y: 1, z: 5}
-  dureeRotations: 0.3
+  speedMouse: {x: 0.33, y: 1, z: 5}
+  speedKeyboard: {x: 20, y: 20, z: 15}
+  dureeRotations: 0.4
   sizeElasticitySphere: {x: 8, y: 15}
   elasticitySphereCoefficiant: {x: 0.5, y: 3}
   selectorManager: {fileID: 78100085}
@@ -2957,6 +2958,91 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ccf0705c23ac93e4c8ed60a553363616, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1001 &631702976
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 887143770}
+    m_Modifications:
+    - target: {fileID: 7738803014398748274, guid: cc907fb2357e24d418476ae8e205f87f,
+        type: 3}
+      propertyPath: m_Name
+      value: FirstRunnerLevel (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7738803014398748275, guid: cc907fb2357e24d418476ae8e205f87f,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7738803014398748275, guid: cc907fb2357e24d418476ae8e205f87f,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7738803014398748275, guid: cc907fb2357e24d418476ae8e205f87f,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7738803014398748275, guid: cc907fb2357e24d418476ae8e205f87f,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7738803014398748275, guid: cc907fb2357e24d418476ae8e205f87f,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7738803014398748275, guid: cc907fb2357e24d418476ae8e205f87f,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7738803014398748275, guid: cc907fb2357e24d418476ae8e205f87f,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7738803014398748275, guid: cc907fb2357e24d418476ae8e205f87f,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 7738803014398748275, guid: cc907fb2357e24d418476ae8e205f87f,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7738803014398748275, guid: cc907fb2357e24d418476ae8e205f87f,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7738803014398748275, guid: cc907fb2357e24d418476ae8e205f87f,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7738803014398748276, guid: cc907fb2357e24d418476ae8e205f87f,
+        type: 3}
+      propertyPath: menuLevel
+      value: 
+      objectReference: {fileID: 1256844171393087952}
+    - target: {fileID: 7738803014398748276, guid: cc907fb2357e24d418476ae8e205f87f,
+        type: 3}
+      propertyPath: resetScores
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: cc907fb2357e24d418476ae8e205f87f, type: 3}
+--- !u!4 &631702977 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7738803014398748275, guid: cc907fb2357e24d418476ae8e205f87f,
+    type: 3}
+  m_PrefabInstance: {fileID: 631702976}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &639622660
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3505,6 +3591,7 @@ Transform:
   - {fileID: 150979906}
   - {fileID: 723419364}
   - {fileID: 279735095}
+  - {fileID: 631702977}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

@@ -6,7 +6,8 @@ using UnityEngine;
 
 public class SelectorCameraController : MonoBehaviour {
     [Header("Mouvement and Rotations")]
-    public Vector3 speed;
+    public Vector3 speedMouse;
+    public Vector3 speedKeyboard;
     public float dureeRotations = 0.3f;
 
     [Header("ElasticitySphere")]
@@ -18,10 +19,11 @@ public class SelectorCameraController : MonoBehaviour {
     public CharacterController controller;
 
     protected Vector3 lastClosestLevelPosition = Vector3.zero;
+    protected bool isMoving;
     protected Coroutine rotationCoroutine = null;
 
     public void Start() {
-        speed *= 100;
+        speedMouse *= 100;
     }
 
     public void Update() {
@@ -31,20 +33,33 @@ public class SelectorCameraController : MonoBehaviour {
     }
 
     protected void MoveByDragging() {
-        if (selectorManager.HasSelectorLevelOpen() || selectorManager.PopupIsEnabled())
+        if (selectorManager.HasSelectorLevelOpen()
+         || selectorManager.PopupIsEnabled()
+         || selectorManager.HasSelectorPathUnlockScreenOpen())
             return;
 
-        Vector3 move = Vector3.zero;
+        float speedX = Input.GetAxis("Horizontal") * speedKeyboard.x;
+        float speedY = Input.GetAxis("Depth") * speedKeyboard.y;
+        float speedZ = Input.GetAxis("Vertical") * speedKeyboard.z;
+
         if(Input.GetMouseButton(0)) {
-            float speedX = - Input.GetAxis("Mouse X");
-            float speedY = - Input.GetAxis("Mouse Y");
-            move += transform.right * speedX * speed.x;
-            move += Vector3.up * speedY * speed.y;
+            speedX += - Input.GetAxis("Mouse X") * speedMouse.x;
+            speedY += - Input.GetAxis("Mouse Y") * speedMouse.y;
         }
-        float speedZ = Input.GetAxis("Mouse ScrollWheel");
-        move += transform.forward * speedZ * speed.z;
+        speedZ += Input.GetAxis("Mouse ScrollWheel") * speedMouse.z;
+
+        Vector3 move = Vector3.zero;
+        move += transform.right * speedX;
+        move += Vector3.up * speedY;
+        move += transform.forward * speedZ;
         move *= Time.deltaTime;
         controller.Move(move);
+
+        isMoving = move != Vector3.zero;
+        //if(rotationCoroutine != null) {
+        //    //StopCoroutine(rotationCoroutine);
+        //    //rotationCoroutine = null;
+        //}
     }
 
     protected void ApplyElasticitySphere() {
@@ -94,10 +109,17 @@ public class SelectorCameraController : MonoBehaviour {
     }
 
     protected void LookAtClosestInterestPoint() {
-        if (rotationCoroutine != null)
-            return;
-
         Vector3 closest = GetClosestInterestPoint(transform.position);
+
+        if (rotationCoroutine != null) {
+            if (closest == lastClosestLevelPosition)
+                return;
+            else {
+                StopCoroutine(rotationCoroutine);
+                rotationCoroutine = null;
+            }
+        }
+
         if(closest == lastClosestLevelPosition)
             transform.LookAt(closest);
         else
