@@ -135,7 +135,7 @@ public class Trace {
             return "Ce n'est pas la bonne Trace.";
         }
         int levenshteinDist = GetDistanceDeLevenshtein(passe, truePasse);
-        if (levenshteinDist <= 5) {
+        if (levenshteinDist <= 6) {
             return $"Presque ! Il vous faut faire {levenshteinDist} ajout, suppression ou remplacement dans votre Passe pour arriver au bon Passe.";
         }
         return "Ce n'est pas le bon Passe.";

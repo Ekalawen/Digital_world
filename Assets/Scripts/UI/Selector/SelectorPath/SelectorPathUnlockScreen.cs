@@ -254,6 +254,8 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
     protected void FillInputWithPasswordIfAlreayDiscovered() {
         if(selectorPath.IsUnlocked()) {
             input.text = selectorPath.GetPassword();
+        } else {
+            input.text = "";
         }
     }
 }
