@@ -258,7 +258,7 @@ public class EventManager : MonoBehaviour {
     }
 
     protected void RecordBestScore() {
-        if (IsNewBestScore()) {
+        if (IsNewBestScore() && GetBestScore() != 0) {
             string keyHasJustBestScore = GetKeyFor(MenuLevel.HAS_JUST_MAKE_BEST_SCORE_KEY);
             PlayerPrefs.SetString(keyHasJustBestScore, MenuManager.TRUE);
         }
