@@ -32,27 +32,27 @@ public class TresholdText {
     public static string NEW_FRAGMENT_SYMBOLE = "###New Fragment###";
     public static string FRAGMENT_TRESHOLD_SYMBOLE = "#FragmentTreshold=";
 
-    protected string path;
     protected TextAsset textAsset;
+    protected string content;
     protected int textAssetLineIndice = 0;
     protected List<TresholdFragment> fragments;
 
-    public TresholdText(string path) {
-        this.path = path;
+    public TresholdText(string content) {
         this.textAsset = null;
+        this.content = content;
         ComputeFragments();
         RevertTresholdOrderFragments();
     }
 
     public TresholdText(TextAsset textAsset) {
-        this.path = null;
         this.textAsset = textAsset;
+        this.content = textAsset.text;
         ComputeFragments();
         RevertTresholdOrderFragments();
     }
 
     protected string ReadLine() {
-        string[] splited = textAsset.text.Split('\n');
+        string[] splited = content.Split('\n');
         if (textAssetLineIndice >= splited.Length)
             return null;
         string res = splited[textAssetLineIndice].Trim();
@@ -87,6 +87,10 @@ public class TresholdText {
 
     public List<TresholdFragment> GetAllFragmentsOrdered() {
         return fragments.OrderBy((TresholdFragment fragment) => fragment.treshold).ToList();
+    }
+
+    public TresholdFragment GetFirstFragment() {
+        return GetAllFragmentsOrdered().First();
     }
 
     public List<TresholdFragment> GetUnderTresholdFragments(int treshold) {

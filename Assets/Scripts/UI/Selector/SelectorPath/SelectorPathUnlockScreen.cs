@@ -93,15 +93,21 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
     protected void SubmitFalseLocked() {
         string registeredPassword = input.text;
         string goodPassword = selectorPath.GetPassword();
-        string advice = Trace.GetPasswordAdvice(registeredPassword, goodPassword);
-        advice = UIHelper.SurroundWithColor(advice, UIHelper.GREEN);
+        string advice = GetPasswordAdvice(registeredPassword, goodPassword);
         selectorManager.RunPopup("Mot de passe érroné.",
             "Ce n'est pas le bon mot de passe.\n" +
-            $"{advice}\n" +
+            advice +
             "Réussissez ce niveau pour obtenir le mot de passe dans les Données Hackées().\n" +
             "\n" +
             "Bonne Chance !",
             TexteExplicatif.Theme.NEGATIF);
+    }
+
+    protected string GetPasswordAdvice(string registeredPassword, string goodPassword) {
+        if (selectorPath.dontUseAdvice)
+            return "";
+        string advice = Trace.GetPasswordAdvice(registeredPassword, goodPassword);
+        return UIHelper.SurroundWithColor(advice, UIHelper.GREEN) + "\n";
     }
 
     protected void SubmitFalseUnlocked() {
@@ -110,7 +116,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
             title: "C'était mieux avant.",
             mainText: "Ce Path() est déjà dévérouillé !\n" +
             "Et pourtant ce n'est plus le bon mot de passe.\n" +
-            $"Le mot de passe était {password}\n",
+            $"Le mot de passe était {password}.\n",
             theme: TexteExplicatif.Theme.NEUTRAL);
         selectorManager.popup.AddReplacement(password, $"<color=green>{password}</color>");
         selectorManager.popup.Run();
@@ -124,23 +130,57 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
     public void OpenDonneesHackees() {
         if (!selectorManager.HasSelectorPathUnlockScreenOpen())
             return;
-        int nbVictoires = selectorPath.startLevel.menuLevel.GetNbWins();
-        if (nbVictoires == 0) {
-            selectorManager.RunPopup(
-                title: "Données Hackées",
-                text: "Vous n'avez encore jamais hackée niveau.\n" +
-                "Aucunes données accessibles.",
-                theme: TexteExplicatif.Theme.NEUTRAL);
+        int currentTreshold = GetCurrentTreshold();
+        int firstTreshold = new TresholdText(selectorPath.donneesHackees.text).GetFirstFragment().treshold;
+        if (currentTreshold == 0 || currentTreshold < firstTreshold) {
+            if (currentTreshold == 0)
+                OpenDonneesHackeesJamaisHackee();
+            else
+                OpenDonneesHackeesBeforeFirstTreshold(firstTreshold);
         } else {
-            selectorManager.popup.Initialize(
-                title: "Données Hackées",
-                useTextAsset: true,
-                textAsset: selectorPath.donneesHackees,
-                theme: TexteExplicatif.Theme.POSITIF);
-            AddReplacementForDonneesHackeesToPopup(selectorManager.popup);
-            selectorManager.popup.Run(textTreshold: nbVictoires);
-            AddNextPallierMessage(selectorManager.popup, textTreshold: nbVictoires);
+            OpenDonneesHackeesWithTreshold(currentTreshold);
         }
+    }
+
+    protected int GetCurrentTreshold() {
+        if (GetStartLevelType() == MenuLevel.LevelType.REGULAR)
+            return selectorPath.startLevel.menuLevel.GetNbWins();
+        else
+            return (int)selectorPath.startLevel.menuLevel.GetHighestScore();
+    }
+
+    public MenuLevel.LevelType GetStartLevelType() {
+        return selectorPath.startLevel.menuLevel.levelType;
+    }
+
+    protected void OpenDonneesHackeesWithTreshold(int treshold) {
+        selectorManager.popup.Initialize(
+            title: "Données Hackées",
+            useTextAsset: true,
+            textAsset: selectorPath.donneesHackees,
+            theme: TexteExplicatif.Theme.POSITIF);
+        AddReplacementForDonneesHackeesToPopup(selectorManager.popup);
+        selectorManager.popup.Run(textTreshold: treshold);
+        AddNextPallierMessage(selectorManager.popup, textTreshold: treshold);
+    }
+
+    protected void OpenDonneesHackeesJamaisHackee() {
+        selectorManager.RunPopup(
+            title: "Données Hackées",
+            text: "Vous n'avez encore jamais hackée niveau.\n" +
+            "Aucunes données accessibles.",
+            theme: TexteExplicatif.Theme.NEUTRAL);
+    }
+
+    protected void OpenDonneesHackeesBeforeFirstTreshold(int firstTreshold) {
+        string unite = (GetStartLevelType() == MenuLevel.LevelType.INFINITE) ? "block" : "victoire";
+        unite += (firstTreshold > 1) ? "s" : "";
+        selectorManager.RunPopup(
+            title: "Données Hackées",
+            text: "Vous n'avez encore jamais hackée niveau.\n" +
+            $"Premier pallier à {firstTreshold} {unite}.\n" +
+            "Aucunes données accessibles.",
+            theme: TexteExplicatif.Theme.NEUTRAL);
     }
 
     protected void AddReplacementForDonneesHackeesToPopup(TexteExplicatif popup) {
@@ -149,6 +189,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         MatchEvaluator evaluator = new MatchEvaluator(TexteExplicatif.SurroundWithBlueColor);
         popup.AddReplacementEvaluator(@"Passes?", evaluator);
         popup.AddReplacementEvaluator(@"Traces?", evaluator);
+        popup.AddReplacementEvaluator(@"Donn[ée]es Hack[ée]es", evaluator);
     }
 
     protected void AddNextPallierMessage(TexteExplicatif texteExplicatif, int textTreshold) {
@@ -171,7 +212,9 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
                 return "(Dernier pallier)";
             } else {
                 int nextTreshold = fragments[fragments.FindIndex(f => f == currentFragment) + 1].treshold;
-                return $"(Prochain pallier à {nextTreshold} victoires)";
+                string unite = (GetStartLevelType() == MenuLevel.LevelType.INFINITE) ? "block" : "victoire";
+                unite += (nextTreshold > 1) ? "s" : "";
+                return $"(Prochain pallier à {nextTreshold} {unite})";
             }
         } else {
             return "";

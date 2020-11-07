@@ -12,9 +12,12 @@ public class SelectorPath : MonoBehaviour {
     public SelectorLevel endLevel;
     public List<GameObject> intermediatePoints;
     public TextAsset donneesHackees;
+    public bool lockPath = false;
 
     [Header("Password")]
     public string passwordPasse = "passwd";
+    public bool dontUseAdvice = false;
+    public bool dontUseTrace = false;
 
     [Header("Trails")]
     public float timeBetweenTrails = 0.3f;
@@ -34,6 +37,7 @@ public class SelectorPath : MonoBehaviour {
         selectorManager = SelectorManager.Instance;
         this.unlockScreen = unlockScreen;
         trailTimer = new Timer(timeBetweenTrails);
+        LockPath();
         LinkAllPoints();
         SetCadenaPosition();
     }
@@ -122,7 +126,10 @@ public class SelectorPath : MonoBehaviour {
     }
 
     public string GetPassword() {
-        return GetTrace() + GetPasse();
+        if (!dontUseTrace)
+            return GetTrace() + GetPasse();
+        else
+            return GetPasse();
     }
 
     public string GetPasse() {
@@ -152,5 +159,12 @@ public class SelectorPath : MonoBehaviour {
     public bool IsUnlocked() {
         string key = name + IS_UNLOCKED_PATH_KEY;
         return PlayerPrefs.HasKey(key) && PlayerPrefs.GetString(key) == MenuManager.TRUE;
+    }
+
+    protected void LockPath() {
+        if(lockPath) {
+            string key = name + IS_UNLOCKED_PATH_KEY;
+            PlayerPrefs.DeleteKey(key);
+        }
     }
 }

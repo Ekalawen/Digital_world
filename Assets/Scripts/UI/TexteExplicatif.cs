@@ -11,11 +11,6 @@ public class TexteExplicatif : MonoBehaviour {
     public static string ROOT_REPOSITORY = "Assets/Texts/";
     public static string ROOT_LEVELS_REPOSITORY = ROOT_REPOSITORY + "Levels/";
 
-    internal void Initialize(string title, bool useTextAsset, object textAsset, Theme theme)
-    {
-        throw new NotImplementedException();
-    }
-
     public enum Theme { POSITIF, NEGATIF, NEUTRAL };
 
     public GameObject content;
@@ -210,14 +205,14 @@ public class TexteExplicatif : MonoBehaviour {
     }
 
     public static string SurroundWithRedColor(Match match) {
-        return "<color=red>" + match.Value + "</color>";
+        return $"<color={UIHelper.RED}>" + match.Value + "</color>";
     }
 
     public static string SurroundWithGreenColor(Match match) {
-        return "<color=green>" + match.Value + "</color>";
+        return $"<color={UIHelper.GREEN}>" + match.Value + "</color>";
     }
 
     public static string SurroundWithBlueColor(Match match) {
-        return "<color=blue>" + match.Value + "</color>";
+        return $"<color={UIHelper.BLUE}>" + match.Value + "</color>";
     }
 }

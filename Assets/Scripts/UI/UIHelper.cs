@@ -6,7 +6,11 @@ public class UIHelper {
 
     public static string RED = "#800000ff";
     public static string GREEN = "#008000ff";
-    public static string BLUE = "#000080ff";
+    public static string BLUE = "#0000ffff";
+    public static string CYAN = "#00ffffff";
+    public static string PURE_RED = "#ff0000ff";
+    public static string PURE_GREEN = "#00ff00ff";
+    public static string PURE_BLUE = "#0000ffff";
 
     public static bool IsOverflowing(string content, Text text) {
         float preferedWidth = LayoutUtility.GetPreferredWidth(text.rectTransform);

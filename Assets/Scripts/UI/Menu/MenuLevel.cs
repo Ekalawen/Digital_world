@@ -314,9 +314,9 @@ public class MenuLevel : MonoBehaviour {
         texteExplicatifDonneesHackesSuccess.AddReplacementEvaluator(@"Traces?", evaluator);
         // L'ajout des next palliers se fait dans la fonction AddNextPallierMessageToAllFragments()
 
-        texteInformations.AddReplacement("[Cilliannelle Crittefigiée]", "<color=#00FF00FF>[Cilliannelle Crittefigiée]</color>");
-        texteInformations.AddReplacement("[Morgensoul*]", "<color=#00FFFFFF>[Morgensoul*]</color>");
-        texteInformations.AddReplacement("[V1P3R]", "<color=#00FFFFFF>[V1P3R]</color>");
+        texteInformations.AddReplacement("[Cilliannelle Crittefigiée]", $"<color={UIHelper.PURE_GREEN}>[Cilliannelle Crittefigiée]</color>");
+        texteInformations.AddReplacement("[Morgensoul*]", $"<color={UIHelper.CYAN}>[Morgensoul*]</color>");
+        texteInformations.AddReplacement("[V1P3R]", $"<color={UIHelper.CYAN}>[V1P3R]</color>");
     }
 
     public bool HasJustWin() {
