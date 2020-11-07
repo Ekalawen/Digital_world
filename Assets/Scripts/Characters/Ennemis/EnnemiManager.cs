@@ -26,7 +26,6 @@ public class EnnemiManager : MonoBehaviour {
     }
 
     void GenerateEnnemies() {
-        ennemis = new List<Ennemi>();
         for(int i = 0; i < ennemisPrefabs.Count; i++) {
             GameObject ennemiPrefab = ennemisPrefabs[i];
             int nbEnnemi = nbEnnemis[i];
@@ -54,6 +53,7 @@ public class EnnemiManager : MonoBehaviour {
 
     protected void GetAllAlreadyExistingEnnemis() {
         Ennemi[] newEnnemis = FindObjectsOfType<Ennemi>();
+        ennemis = new List<Ennemi>();
         foreach (Ennemi ennemi in newEnnemis) {
             if(!ennemi.transform.IsChildOf(ennemisFolder.transform)) {
                 Transform maxParent = ennemi.transform.parent;
@@ -63,8 +63,9 @@ public class EnnemiManager : MonoBehaviour {
                     maxParent = maxParent.parent;
                 maxParent.SetParent(ennemisFolder.transform);
             }
-            ennemi.Start(); // On reset l'ennemi histoire d'être sur qu'il va bien :)
-            ennemis.Add(ennemi);
+            Ennemi newEnnemi = Instantiate(ennemi.gameObject, ennemi.transform.position, ennemi.transform.rotation, ennemi.transform.parent).GetComponent<Ennemi>();
+            Destroy(ennemi.gameObject);
+            ennemis.Add(newEnnemi);
         }
     }
 
