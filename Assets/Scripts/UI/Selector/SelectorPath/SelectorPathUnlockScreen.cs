@@ -146,7 +146,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         if (GetStartLevelType() == MenuLevel.LevelType.REGULAR)
             return selectorPath.startLevel.menuLevel.GetNbWins();
         else
-            return (int)selectorPath.startLevel.menuLevel.GetHighestScore();
+            return (int)selectorPath.startLevel.menuLevel.GetBestScore();
     }
 
     public MenuLevel.LevelType GetStartLevelType() {

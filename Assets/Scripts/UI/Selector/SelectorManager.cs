@@ -198,6 +198,7 @@ public class SelectorManager : MonoBehaviour {
         hasLevelOpen = true;
         selectorLevel.menuLevel.gameObject.SetActive(true);
         selectorLevel.menuLevel.Initialize();
+        selectorLevel.DisplayInitialPopup();
         background.gameObject.SetActive(true);
         if (instantDisplay) {
             currentSelectorLevel.menuLevel.gameObject.SetActive(true);
@@ -278,5 +279,13 @@ public class SelectorManager : MonoBehaviour {
     public bool IsLevelAccessible(SelectorLevel selectorLevel) {
         List<SelectorPath> precedentPaths = paths.FindAll(p => p.endLevel == selectorLevel);
         return precedentPaths.All(p => p.IsUnlocked());
+    }
+
+    public List<SelectorPath> GetOutPaths(SelectorLevel selectorLevel) {
+        return paths.FindAll(p => p.startLevel == selectorLevel);
+    }
+
+    public List<SelectorPath> GetInPaths(SelectorLevel selectorLevel) {
+        return paths.FindAll(p => p.endLevel == selectorLevel);
     }
 }

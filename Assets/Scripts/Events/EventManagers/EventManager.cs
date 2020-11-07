@@ -258,12 +258,15 @@ public class EventManager : MonoBehaviour {
     }
 
     protected void RecordBestScore() {
-        if (IsNewBestScore() && GetBestScore() != 0) {
+        if (IsNewBestScore()) {
             string keyHasJustBestScore = GetKeyFor(MenuLevel.HAS_JUST_MAKE_BEST_SCORE_KEY);
             PlayerPrefs.SetString(keyHasJustBestScore, MenuManager.TRUE);
+
+            string keyPrecedentBestScore = GetKeyFor(MenuLevel.PRECEDENT_BEST_SCORE_KEY);
+            PlayerPrefs.SetFloat(keyPrecedentBestScore, GetBestScore());
         }
 
-        string keyHighestScore = GetKeyFor(MenuLevel.HIGHEST_SCORE_KEY);
+        string keyHighestScore = GetKeyFor(MenuLevel.BEST_SCORE_KEY);
         float score = GetScore();
         float newValueScore = PlayerPrefs.HasKey(keyHighestScore) ?  Mathf.Max(PlayerPrefs.GetFloat(keyHighestScore), score) : score;
         PlayerPrefs.SetFloat(keyHighestScore, newValueScore);
@@ -307,13 +310,13 @@ public class EventManager : MonoBehaviour {
     }
 
     public float GetBestScore() {
-        string keyBestScore = GetKeyFor(MenuLevel.HIGHEST_SCORE_KEY);
+        string keyBestScore = GetKeyFor(MenuLevel.BEST_SCORE_KEY);
         return PlayerPrefs.HasKey(keyBestScore) ? PlayerPrefs.GetFloat(keyBestScore) : 0;
     }
 
     public bool IsNewBestScore() {
         float currentScore = GetScore();
-        return currentScore != 0 && currentScore > GetBestScore();
+        return currentScore > GetBestScore();
     }
 
     protected string GetKeyFor(string keySuffix) {

@@ -18,7 +18,6 @@ public class SelectorLevel : MonoBehaviour {
         objectLevel.Initialize();
         menuLevel.selectorManager = selectorManager;
         menuLevel.menuBouncingBackground = background;
-        RewardIfNewBestScore();
     }
 
     public void OnMouseEnter() {
@@ -64,15 +63,127 @@ public class SelectorLevel : MonoBehaviour {
             cleanReplacements: false);
     }
 
+    public void DisplayInitialPopup() {
+        bool hasDisplay = false;
+        hasDisplay = DisplayPopupUnlockLevel();
+        if (hasDisplay)
+            return;
+        if(menuLevel.levelType == MenuLevel.LevelType.REGULAR) {
+            hasDisplay = DisplayNewPallierMessageRegular();
+        } else {
+            hasDisplay = DisplayNewPallierMessageInfinite();
+        }
+        if (hasDisplay) {
+            menuLevel.SetNotJustMakeNewBestScore();
+            return;
+        }
+        RewardIfNewBestScore();
+    }
+
+    protected bool DisplayNewPallierMessageInfinite() {
+        bool hasDisplayed = false;
+        if (menuLevel.HasJustMakeNewBestScore()) {
+            int bestScore = (int)menuLevel.GetBestScore();
+            int precedentBestScore = (int)menuLevel.GetPrecedentBestScore();
+            List<string> nextLevels = new List<string>();
+            List<int> nextTresholds = new List<int>();
+            foreach (SelectorPath selectorPath in selectorManager.GetOutPaths(this)) {
+                List<int> tresholds = selectorPath.GetTresholds();
+                List<int> candidateTresholds = tresholds.FindAll(t => (t <= bestScore && t > precedentBestScore));
+                if (candidateTresholds.Count > 0) {
+                    int lastTreshold = candidateTresholds.Last();
+                    nextLevels.Add(selectorPath.endLevel.GetName());
+                    nextTresholds.Add(lastTreshold);
+                }
+            }
+            if (nextLevels.Count > 0) {
+                DisplayNewPallierMessage(nextTresholds, nextLevels);
+                hasDisplayed = true;
+                menuLevel.SetNotJustMakeNewBestScore();
+            }
+        }
+        return hasDisplayed;
+    }
+
+    protected bool DisplayNewPallierMessageRegular() {
+        bool hasDisplayed = false;
+        if (menuLevel.HasJustWin()) {
+            int nbWins = menuLevel.GetNbWins();
+            List<string> nextLevels = new List<string>();
+            foreach (SelectorPath selectorPath in selectorManager.GetOutPaths(this)) {
+                List<int> tresholds = selectorPath.GetTresholds();
+                if (tresholds.Contains(nbWins)) {
+                    nextLevels.Add(selectorPath.endLevel.GetName());
+                }
+            }
+            if (nextLevels.Count > 0) {
+                DisplayNewPallierMessage(nbWins, nextLevels);
+                hasDisplayed = true;
+                menuLevel.SetNotJustWin();
+            }
+        }
+        return hasDisplayed;
+    }
+
+    protected void DisplayNewPallierMessage(int nbWin, List<string> nextLevels) {
+        List<int> nbWins = new List<int>();
+        for (int i = 0; i < nextLevels.Count; i++)
+            nbWins.Add(nbWin);
+        DisplayNewPallierMessage(nbWins, nextLevels);
+    }
+    protected void DisplayNewPallierMessage(List<int> nbWins, List<string> nextLevels) {
+        string congrats = "";
+        nextLevels.Sort();
+        for(int i = 0; i < nbWins.Count; i++) {
+            int nbWin = nbWins[i];
+            string nextLevel = nextLevels[i];
+            string de = $"de{(nbWin > 1 ? "s" : "")}";
+            string unite = (menuLevel.levelType == MenuLevel.LevelType.REGULAR) ? "victoire" : "block";
+            string victoire = $"{unite}{(nbWin > 1 ? "s" : "")}";
+            congrats += $"Félicitation ! Vous venez de débloquer le pallier " +
+                $"{de} <color={UIHelper.GREEN}>{nbWin} {victoire}</color> vers le niveau " +
+                $"<color={UIHelper.BLUE}>{nextLevel}</color> !\n";
+        }
+        string le = $"le{((nbWins.Count > 1) ? "s" : "")}";
+        selectorManager.RunPopup(
+            "Pallier débloqué !",
+            congrats +
+            $"Allez {le} consulter dans les Données Hackées !",
+            theme: TexteExplicatif.Theme.POSITIF);
+    }
+
+    protected bool DisplayPopupUnlockLevel() {
+        bool hasDisplayed = false;
+        if (!menuLevel.HasAlreadyDiscoverLevel()) {
+            SelectorLevelRunIntroduction introductionRunner = menuLevel.gameObject.GetComponent<SelectorLevelRunIntroduction>();
+            bool shouldCongrats = introductionRunner == null;
+            if (shouldCongrats) {
+                selectorManager.RunPopup(
+                    title: "Niveau débloqué !",
+                    text: $"Félicitation ! Vous venez de débloquer le niveau <color={UIHelper.BLUE}>{GetName()}</color> !\n" + 
+                    "Continuez comme ça !\n" +
+                    "Et Happy Hacking ! :)",
+                    theme: TexteExplicatif.Theme.POSITIF);
+            } else {
+                introductionRunner.RunIntroduction();
+            }
+            hasDisplayed = true;
+            menuLevel.SetAlreadyDiscoverLevel();
+        }
+        return hasDisplayed;
+    }
+
     public void ResetScores() {
         List<string> keysSuffix = new List<string>() {
             MenuLevel.NB_WINS_KEY,
             MenuLevel.NB_DEATHS_KEY,
             MenuLevel.SUM_OF_ALL_TRIES_SCORES_KEY,
-            MenuLevel.HIGHEST_SCORE_KEY,
+            MenuLevel.BEST_SCORE_KEY,
+            MenuLevel.PRECEDENT_BEST_SCORE_KEY,
             MenuLevel.SINCE_LAST_BEST_SCORE_KEY,
             MenuLevel.HAS_JUST_WIN_KEY,
             MenuLevel.HAS_JUST_MAKE_BEST_SCORE_KEY,
+            MenuLevel.HAS_ALREADY_DISCOVER_LEVEL_KEY,
         };
         foreach(string keySuffix in keysSuffix) {
             string key = GetName() + keySuffix;
@@ -89,6 +200,7 @@ public class SelectorLevel : MonoBehaviour {
         }
         if(menuLevel.levelType == MenuLevel.LevelType.INFINITE) {
             menuLevel.SetBestScore(maxTreshold);
+            menuLevel.SetPrecedentBestScore(maxTreshold);
             Debug.Log($"{GetName()} a maintenant un Meilleur Score de {maxTreshold} !");
         }
     }

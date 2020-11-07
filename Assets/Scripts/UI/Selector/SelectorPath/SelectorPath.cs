@@ -77,7 +77,11 @@ public class SelectorPath : MonoBehaviour {
             trailTimer.Reset();
         }
     }
-    
+
+    public List<int> GetTresholds() {
+        return new TresholdText(donneesHackees).GetAllTresholds();
+    }
+
     protected void ThrowTrail(Vector3 source, Vector3 target, Gradient gradient) {
         GameObject tr = Instantiate(trailPrefab, source, Quaternion.identity, transform) as GameObject;
         tr.GetComponent<Trail>().SetTarget(target);

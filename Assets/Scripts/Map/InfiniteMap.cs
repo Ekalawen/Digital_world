@@ -216,7 +216,8 @@ public class InfiniteMap : MapManager {
     }
 
     protected bool IsNewBestScore(int score) {
-        return score > gm.eventManager.GetBestScore() && !hasMadeNewBestScore;
+        int precedentBestScore = (int)gm.eventManager.GetBestScore();
+        return precedentBestScore > 0 && score > precedentBestScore && !hasMadeNewBestScore;
     }
 
     public void OnExitBlock(Block block) {

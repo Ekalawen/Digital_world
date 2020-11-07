@@ -14,7 +14,8 @@ public class MenuLevel : MonoBehaviour {
     public static string NB_WINS_KEY = "nbVictoires";
     public static string NB_DEATHS_KEY = "nbTries";
     public static string SUM_OF_ALL_TRIES_SCORES_KEY = "sumOfAllTriesScores";
-    public static string HIGHEST_SCORE_KEY = "highestScore";
+    public static string BEST_SCORE_KEY = "bestScore";
+    public static string PRECEDENT_BEST_SCORE_KEY = "precedentBestScore";
     public static string SINCE_LAST_BEST_SCORE_KEY = "sinceLastBestScore";
     public static string TRACE_KEY = "trace";
     public static string HAS_JUST_WIN_KEY = "hasJustWin";
@@ -75,8 +76,9 @@ public class MenuLevel : MonoBehaviour {
         MenuManager.DISABLE_HOTKEYS = false;
         InitTextesExplicatifs();
 
-        DisplayPopupUnlockLevel();
-        DisplayPopupUnlockNewTreshold();
+        /// This is now done in SelectorLevel !
+        //DisplayPopupUnlockLevel();
+        //DisplayPopupUnlockNewTreshold();
 
         string key = GetName() + CURRENT_INPUT_FIELD_KEY;
         inputFieldNext.text = PlayerPrefs.GetString(key);
@@ -244,26 +246,36 @@ public class MenuLevel : MonoBehaviour {
         return PlayerPrefs.HasKey(key) ? PlayerPrefs.GetFloat(key) : 0;
     }
 
-    public bool HasHighestScore() {
-        string key = textLevelName.text + HIGHEST_SCORE_KEY;
+    public bool HasBestScore() {
+        string key = textLevelName.text + BEST_SCORE_KEY;
         return PlayerPrefs.HasKey(key);
     }
 
-    public float GetHighestScore() {
-        string key = textLevelName.text + HIGHEST_SCORE_KEY;
+    public float GetBestScore() {
+        string key = textLevelName.text + BEST_SCORE_KEY;
         return PlayerPrefs.HasKey(key) ? PlayerPrefs.GetFloat(key) : 0.0f;
     }
 
     public void SetBestScore(float bestScore) {
-        string key = textLevelName.text + HIGHEST_SCORE_KEY;
+        string key = textLevelName.text + BEST_SCORE_KEY;
         PlayerPrefs.SetFloat(key, bestScore);
+    }
+
+    public float GetPrecedentBestScore() {
+        string key = textLevelName.text + PRECEDENT_BEST_SCORE_KEY;
+        return PlayerPrefs.HasKey(key) ? PlayerPrefs.GetFloat(key) : 0.0f;
+    }
+
+    public void SetPrecedentBestScore(float precedentScore) {
+        string key = textLevelName.text + PRECEDENT_BEST_SCORE_KEY;
+        PlayerPrefs.SetFloat(key, precedentScore);
     }
 
     public string GetBestScoreToString() {
         if(levelType == LevelType.REGULAR)
-            return (HasHighestScore()) ? GetHighestScore().ToString("N2") : "null";
+            return (HasBestScore()) ? GetBestScore().ToString("N2") : "null";
         else
-            return (HasHighestScore()) ? ((int)GetHighestScore()).ToString() : "null";
+            return (HasBestScore()) ? ((int)GetBestScore()).ToString() : "null";
     }
 
     public int GetSinceLastBestScore() {
@@ -331,19 +343,31 @@ public class MenuLevel : MonoBehaviour {
 
     public bool HasJustWin() {
         string key = GetName() + HAS_JUST_WIN_KEY;
-        return PlayerPrefs.HasKey(key) && PlayerPrefs.GetString(key) == "True";
+        return PlayerPrefs.HasKey(key) && PlayerPrefs.GetString(key) == MenuManager.TRUE;
     }
 
     public void SetNotJustWin() {
         string key = GetName() + HAS_JUST_WIN_KEY;
-        PlayerPrefs.SetString(key, "False");
+        PlayerPrefs.DeleteKey(key);
+    }
+
+    public bool HasJustMakeNewBestScore() {
+        string key = GetName() + HAS_JUST_MAKE_BEST_SCORE_KEY;
+        return PlayerPrefs.HasKey(key) && PlayerPrefs.GetString(key) == MenuManager.TRUE;
+    }
+
+    public void SetNotJustMakeNewBestScore() {
+        string key = GetName() + HAS_JUST_MAKE_BEST_SCORE_KEY;
+        PlayerPrefs.DeleteKey(key);
     }
 
     protected void DisplayPopupUnlockNewTreshold() {
         if (HasJustWin()) {
             List<int> tresholds = texteExplicatifDonneesHackesSuccess.GetAllTresholds();
             if(tresholds.Contains(GetNbWins())) {
-                MenuManager.Instance.RunPopup("Pallier débloqué !", "Félicitation ! Vous venez de débloquer le pallier de" + (GetNbWins() > 1 ? "s" : "") + " " + GetNbWins() + " victoire" + ((GetNbWins() > 1) ? "s" : "") + " !\nAllez le consulter dans les Données Hackées !");
+                MenuManager.Instance.RunPopup(
+                    "Pallier débloqué !", 
+                    "Félicitation ! Vous venez de débloquer le pallier de" + (GetNbWins() > 1 ? "s" : "") + " " + GetNbWins() + " victoire" + ((GetNbWins() > 1) ? "s" : "") + " !\nAllez le consulter dans les Données Hackées !");
             }
             SetNotJustWin();
         }
@@ -353,7 +377,9 @@ public class MenuLevel : MonoBehaviour {
         if (!HasAlreadyDiscoverLevel()) {
             bool shouldCongrats = menuLevelSelector != null ? menuLevelSelector.GetLevelIndice() != 0 : selectorManager.GetLevelIndice() != 0;
             if (shouldCongrats) {
-                MenuManager.Instance.RunPopup("Niveau débloqué !", "Félicitation ! Vous venez de débloquer le niveau " + GetName() + " !\nContinuez comme ça !\nEt Happy Hacking ! :)");
+                MenuManager.Instance.RunPopup(
+                    "Niveau débloqué !",
+                    "Félicitation ! Vous venez de débloquer le niveau " + GetName() + " !\nContinuez comme ça !\nEt Happy Hacking ! :)");
             } else {
                 texteExplicatifIntroduction.Run();
             }

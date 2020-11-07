@@ -135,11 +135,7 @@ public class TresholdText {
     }
 
     public List<int> GetAllTresholds() {
-        List<int> tresholds = new List<int>();
-        foreach(TresholdFragment fragment in fragments) {
-            tresholds.Add(fragment.treshold);
-        }
-        return tresholds;
+        return GetAllFragmentsOrdered().Select(f => f.treshold).ToList();
     }
 
     public void ApplyReplacementEvaluatorToAllFragment(Tuple<string, MatchEvaluator> replacement) {

@@ -1,5 +1,20 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &7112064749957928733
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9123583758460351089}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52a5d8ec72d426c4eae53675a96ff674, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selectorLevel: {fileID: 0}
+  introductionTextAsset: {fileID: 4900000, guid: 0b9caf2381f124f44a4955f7b051dddf,
+    type: 3}
 --- !u!1001 &1102100159028148201
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -300,6 +315,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2552e1b8881a0d44ab3f3fc7850edf17, type: 3}
+--- !u!1 &9123583758460351089 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8202754042922485144, guid: 2552e1b8881a0d44ab3f3fc7850edf17,
+    type: 3}
+  m_PrefabInstance: {fileID: 1102100159028148201}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &1985111446004448799 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1497440377134516726, guid: 2552e1b8881a0d44ab3f3fc7850edf17,
@@ -452,7 +473,7 @@ PrefabInstance:
     - target: {fileID: 6408735524314510494, guid: df108c3e51959b046aaa9a02ab191c65,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6408735524314510494, guid: df108c3e51959b046aaa9a02ab191c65,
         type: 3}
@@ -463,11 +484,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 7112064749957928733}
     - target: {fileID: 6408735524314510494, guid: df108c3e51959b046aaa9a02ab191c65,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: Run
+      value: RunIntroduction
       objectReference: {fileID: 0}
     - target: {fileID: 6408735524314510494, guid: df108c3e51959b046aaa9a02ab191c65,
         type: 3}
@@ -684,7 +705,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c33eea4f7e07b9b4ea6e6f03285a1fae, type: 3}
+  m_Script: {fileID: 11500000, guid: 072a23b4a766a424faf401ea653021e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &8546561672988240833 stripped
