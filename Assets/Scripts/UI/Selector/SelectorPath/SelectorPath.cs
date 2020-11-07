@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class SelectorPath : MonoBehaviour {
@@ -12,7 +13,6 @@ public class SelectorPath : MonoBehaviour {
     public SelectorLevel endLevel;
     public List<GameObject> intermediatePoints;
     public TextAsset donneesHackees;
-    public bool lockPath = false;
 
     [Header("Password")]
     public string passwordPasse = "passwd";
@@ -37,7 +37,6 @@ public class SelectorPath : MonoBehaviour {
         selectorManager = SelectorManager.Instance;
         this.unlockScreen = unlockScreen;
         trailTimer = new Timer(timeBetweenTrails);
-        LockPath();
         LinkAllPoints();
         SetCadenaPosition();
     }
@@ -151,9 +150,14 @@ public class SelectorPath : MonoBehaviour {
         PlayerPrefs.SetString(key, trace);
     }
 
-    public void Unlock(string passwordUsed) {
+    public void UnlockPath() {
         string key = name + IS_UNLOCKED_PATH_KEY;
         PlayerPrefs.SetString(key, MenuManager.TRUE);
+        Debug.Log($"{GetName()} unlocked !");
+    }
+
+    public string GetName() {
+        return $"{startLevel.GetName()} ==> {endLevel.GetName()}";
     }
 
     public bool IsUnlocked() {
@@ -161,10 +165,28 @@ public class SelectorPath : MonoBehaviour {
         return PlayerPrefs.HasKey(key) && PlayerPrefs.GetString(key) == MenuManager.TRUE;
     }
 
-    protected void LockPath() {
-        if(lockPath) {
-            string key = name + IS_UNLOCKED_PATH_KEY;
-            PlayerPrefs.DeleteKey(key);
+    public void LockPath() {
+        string key = name + IS_UNLOCKED_PATH_KEY;
+        PlayerPrefs.DeleteKey(key);
+        Debug.Log($"{GetName()} locked !");
+    }
+
+    public int GetMaxTreshold() {
+        TresholdText text = new TresholdText(donneesHackees.text);
+        return text.GetLastFragment().treshold;
+    }
+}
+
+[CustomEditor(typeof(SelectorPath)), CanEditMultipleObjects]
+public class SelectorPathEditor : Editor {
+    public override void OnInspectorGUI() {
+        DrawDefaultInspector();
+        SelectorPath selectorPath = target as SelectorPath;
+        if(GUILayout.Button("Unlock Path")) {
+            selectorPath.UnlockPath();
+        }
+        if(GUILayout.Button("Lock Path")) {
+            selectorPath.LockPath();
         }
     }
 }

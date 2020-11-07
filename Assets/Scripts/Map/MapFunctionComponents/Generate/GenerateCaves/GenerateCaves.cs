@@ -108,25 +108,3 @@ public class GenerateCaves : GenerateCubesMapFunction {
     }
 }
 
-//[CustomEditor(typeof(GenerateCaves)), CanEditMultipleObjects]
-//public class GenerateCavesEditor : Editor {
-//    public override void OnInspectorGUI() {
-//        GenerateCaves generateCaves = target as GenerateCaves;
-//        serializedObject.Update();
-//        SerializedProperty property = serializedObject.GetIterator();
-//        while(property.NextVisible(true)) {
-//            switch(property.name) {
-//                case "nbCaves":
-//                    if(generateCaves.useNbCaves) EditorGUILayout.PropertyField(property);
-//                    break;
-//                case "proportionCaves":
-//                    if(!generateCaves.useNbCaves) EditorGUILayout.PropertyField(property);
-//                    break;
-//                default:
-//                    EditorGUILayout.PropertyField(property);
-//                    break;
-//            }
-//        }
-//        serializedObject.ApplyModifiedProperties();
-//    }
-//}

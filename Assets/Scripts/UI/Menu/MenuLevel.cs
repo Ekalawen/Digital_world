@@ -213,6 +213,11 @@ public class MenuLevel : MonoBehaviour {
         return PlayerPrefs.HasKey(key) ? PlayerPrefs.GetInt(key) : 0;
     }
 
+    public void SetNbWins(int nbWins) {
+        string key = textLevelName.text + NB_WINS_KEY;
+        PlayerPrefs.SetInt(key, nbWins);
+    }
+
     public int GetNbDeaths() {
         string key = textLevelName.text + NB_DEATHS_KEY;
         return PlayerPrefs.HasKey(key) ? PlayerPrefs.GetInt(key) : 0;
@@ -247,6 +252,11 @@ public class MenuLevel : MonoBehaviour {
     public float GetHighestScore() {
         string key = textLevelName.text + HIGHEST_SCORE_KEY;
         return PlayerPrefs.HasKey(key) ? PlayerPrefs.GetFloat(key) : 0.0f;
+    }
+
+    public void SetBestScore(float bestScore) {
+        string key = textLevelName.text + HIGHEST_SCORE_KEY;
+        PlayerPrefs.SetFloat(key, bestScore);
     }
 
     public string GetBestScoreToString() {

@@ -147,4 +147,8 @@ public class TresholdText {
             fragments[i].ApplyReplacementEvaluator(replacement);
         }
     }
+
+    public TresholdFragment GetLastFragment() {
+        return GetAllFragmentsOrdered().Last();
+    }
 }

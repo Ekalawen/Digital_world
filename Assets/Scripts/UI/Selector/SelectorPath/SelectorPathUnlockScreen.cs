@@ -77,7 +77,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
     }
 
     protected void SubmitGoodLocked() {
-        selectorPath.Unlock(input.text);
+        selectorPath.UnlockPath();
         SetBackgroundAccordingToLockState();
         SetCadenasAccordingToLockState();
         selectorPath.endLevel.objectLevel.cube.SetMaterial(focus: false);
