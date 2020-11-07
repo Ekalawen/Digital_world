@@ -158,7 +158,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
             title: "Données Hackées",
             useTextAsset: true,
             textAsset: selectorPath.donneesHackees,
-            theme: TexteExplicatif.Theme.POSITIF);
+            theme: TexteExplicatif.Theme.NEUTRAL);
         AddReplacementForDonneesHackeesToPopup(selectorManager.popup);
         selectorManager.popup.Run(textTreshold: treshold);
         AddNextPallierMessage(selectorManager.popup, textTreshold: treshold);
@@ -184,8 +184,8 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
     }
 
     protected void AddReplacementForDonneesHackeesToPopup(TexteExplicatif popup) {
-        popup.AddReplacement("%Trace%", selectorPath.GetTrace());
-        popup.AddReplacement("%Passe%", selectorPath.passwordPasse);
+        popup.AddReplacement("%Trace%", UIHelper.SurroundWithColor(selectorPath.GetTrace(), UIHelper.PURE_GREEN));
+        popup.AddReplacement("%Passe%", UIHelper.SurroundWithColor(selectorPath.passwordPasse, UIHelper.PURE_GREEN));
         MatchEvaluator evaluator = new MatchEvaluator(TexteExplicatif.SurroundWithBlueColor);
         popup.AddReplacementEvaluator(@"Passes?", evaluator);
         popup.AddReplacementEvaluator(@"Traces?", evaluator);
@@ -199,7 +199,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
             TresholdFragment fragment = fragments[i];
             string nextPallierText = GetNextPallierText(fragment, fragments, textTreshold);
             string pallierNumberText = $"Pallier n°{i + 1} : {nextPallierText}\n";
-            pallierNumberText = UIHelper.SurroundWithColor(pallierNumberText, UIHelper.GREEN);  // Green
+            pallierNumberText = UIHelper.SurroundWithColor(pallierNumberText, UIHelper.GREEN);
             fragment.text = pallierNumberText + fragment.text;
         }
         texteExplicatif.mainText.text = texteExplicatif.ComputeText(textTreshold);
