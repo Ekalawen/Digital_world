@@ -340,10 +340,15 @@ public class MapManager : MonoBehaviour {
             pos = MathTools.Round(pos);
 
         Lumiere lumiere = GameObject.Instantiate(GetPrefab(type), pos, Quaternion.identity, lumieresFolder.transform).GetComponent<Lumiere>();
+
+        RegisterAlreadyExistingLumiere(lumiere);
+
+        return lumiere;
+    }
+
+    public Lumiere RegisterAlreadyExistingLumiere(Lumiere lumiere) {
         lumieres.Add(lumiere);
-
         gm.historyManager.AddLumiereHistory(lumiere, lumiere.rewardLumierePrefab);
-
         return lumiere;
     }
 
@@ -806,7 +811,7 @@ public class MapManager : MonoBehaviour {
                     maxParent = maxParent.parent;
                 maxParent.SetParent(lumieresFolder.transform);
             }
-            lumieres.Add(lumiere);
+            RegisterAlreadyExistingLumiere(lumiere);
         }
     }
 

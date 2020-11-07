@@ -65,20 +65,14 @@ public class EnnemiManager : MonoBehaviour {
             }
             Ennemi newEnnemi = Instantiate(ennemi.gameObject, ennemi.transform.position, ennemi.transform.rotation, ennemi.transform.parent).GetComponent<Ennemi>();
             Destroy(ennemi.gameObject);
-            ennemis.Add(newEnnemi);
+            RegisterAlreadyExistingEnnemi(newEnnemi);
         }
     }
 
     public Ennemi GenerateEnnemiFromPrefab(GameObject ennemiPrefab, Vector3 pos) {
         Ennemi ennemi = Instantiate(ennemiPrefab, pos, Quaternion.identity, ennemisFolder.transform).GetComponent<Ennemi>();
-        ennemis.Add(ennemi);
 
-        gm.historyManager.AddEnnemiHistory(ennemi);
-
-        //// For bosses ! :D
-        //Ennemi[] childEnnemis = ennemi.gameObject.GetComponentsInChildren<Ennemi>();
-        //foreach (Ennemi child in childEnnemis)
-        //    gm.historyManager.AddEnnemiHistory(child);
+        RegisterAlreadyExistingEnnemi(ennemi);
 
         return ennemi;
     }
