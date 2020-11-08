@@ -16,37 +16,16 @@ public class PouvoirDetection : IPouvoir {
         {
             List<Vector3> positions = GetAllInterestPoints();
 
-            if (!player.CanUseLocalisation() || positions.Count == 0)
-            {
+            if (!player.CanUseLocalisation() || positions.Count == 0) {
                 gm.console.FailLocalisation();
                 gm.soundManager.PlayFailActionClip();
                 return false;
             }
 
-            // On choisit la position la plus proche
-            Vector3 nearestPosition = positions[0];
-            float distMin = Vector3.Distance(nearestPosition, player.transform.position);
-            foreach (Vector3 position in positions)
-            {
-                float dist = Vector3.Distance(position, player.transform.position);
-                if (dist < distMin)
-                {
-                    distMin = dist;
-                    nearestPosition = position;
-                }
-            }
+            Vector3 nearestPosition = positions.OrderBy(p => Vector3.Distance(p, player.transform.position)).First();
 
-            // On trace le chemin
-            List<Vector3> posToDodge = gm.map.GetAllNonRegularCubePos();
-            for (int i = 0; i < posToDodge.Count; i++)
-                posToDodge[i] = MathTools.Round(posToDodge[i]);
-            List<Vector3> path = gm.map.GetPath(player.transform.position, nearestPosition, posToDodge, bIsRandom: true);
-            if (path != null)
-                StartCoroutine(DrawPath(path));
-            else
-                Debug.Log("Objectif inaccessible en " + nearestPosition + " !");
+            DrawPathToPosition(nearestPosition);
 
-            // Un petit message
             gm.console.RunDetection(nearestPosition);
 
             if (detectItems)
@@ -54,6 +33,17 @@ public class PouvoirDetection : IPouvoir {
         }
 
         return true;
+    }
+
+    protected void DrawPathToPosition(Vector3 position) {
+        List<Vector3> posToDodge = gm.map.GetAllNonRegularCubePos();
+        for (int i = 0; i < posToDodge.Count; i++)
+            posToDodge[i] = MathTools.Round(posToDodge[i]);
+        List<Vector3> path = gm.map.GetPath(player.transform.position, position, posToDodge, bIsRandom: true);
+        if (path != null)
+            StartCoroutine(DrawPath(path));
+        else
+            Debug.Log("Objectif inaccessible en " + position + " !");
     }
 
     protected List<Vector3> GetAllInterestPoints() {
