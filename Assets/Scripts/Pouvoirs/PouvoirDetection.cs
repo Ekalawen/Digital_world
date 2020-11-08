@@ -16,34 +16,70 @@ public class PouvoirDetection : IPouvoir {
         {
             List<Vector3> positions = GetAllInterestPoints();
 
-            if (!player.CanUseLocalisation() || positions.Count == 0) {
+            if (!player.CanUseLocalisation() || positions.Count == 0)
+            {
                 gm.console.FailLocalisation();
                 gm.soundManager.PlayFailActionClip();
                 return false;
             }
 
-            Vector3 nearestPosition = positions.OrderBy(p => Vector3.Distance(p, player.transform.position)).First();
+            try {
+                Vector3 nearestPosition = DrawPathToNearestPosition(positions);
 
-            DrawPathToPosition(nearestPosition);
+                gm.console.RunDetection(nearestPosition);
 
-            gm.console.RunDetection(nearestPosition);
-
-            if (detectItems)
-                NotifyOnlyVisibleOnTriggerItems();
+                if (detectItems)
+                    NotifyOnlyVisibleOnTriggerItems();
+            } catch (System.Exception e) {
+                Debug.LogWarning($"Pouvoir Detection fails :\n{e.StackTrace}");
+                gm.console.FailLocalisation();
+                gm.soundManager.PlayFailActionClip();
+                return false;
+            }
         }
 
         return true;
     }
 
-    protected void DrawPathToPosition(Vector3 position) {
-        List<Vector3> posToDodge = gm.map.GetAllNonRegularCubePos();
-        for (int i = 0; i < posToDodge.Count; i++)
-            posToDodge[i] = MathTools.Round(posToDodge[i]);
-        List<Vector3> path = gm.map.GetPath(player.transform.position, position, posToDodge, bIsRandom: true);
+    private Vector3 DrawPathToNearestPosition(List<Vector3> positions) {
+        //Vector3 nearestPosition = positions.OrderBy(p => Vector3.Distance(p, player.transform.position)).First();
+        //List<Vector3> posToDodge = GetPosToDodge();
+        //List<Vector3> shortestPath = GetPathForPosition(nearestPosition, posToDodge);
+        List<List<Vector3>> pathsToPositions = new List<List<Vector3>>();
+        List<Vector3> posToDodge = GetPosToDodge();
+        positions = positions.OrderBy(p => Vector3.Distance(p, player.transform.position)).Take(3).ToList();
+        foreach (Vector3 pos in positions) {
+            List<Vector3> pathToPosition = GetPathForPosition(pos, posToDodge);
+            pathsToPositions.Add(pathToPosition);
+        }
+        List<List<Vector3>> notNullPaths = pathsToPositions.FindAll(p => p != null);
+        if (notNullPaths.Count <= 0)
+            throw new System.Exception("Aucune position accessible !");
+        List<Vector3> shortestPath = notNullPaths.OrderBy(p => p.Count).First();
+        Vector3 nearestPosition = positions[pathsToPositions.IndexOf(shortestPath)];
+
+        DrawPathToPosition(nearestPosition, shortestPath);
+        return nearestPosition;
+    }
+
+    protected void DrawPathToPosition(Vector3 position, List<Vector3> path) {
         if (path != null)
             StartCoroutine(DrawPath(path));
         else
             Debug.Log("Objectif inaccessible en " + position + " !");
+    }
+
+    protected List<Vector3> GetPathForPosition(Vector3 position, List<Vector3> posToDodge) {
+        List<Vector3> path = gm.map.GetPath(player.transform.position, position, posToDodge, bIsRandom: true);
+        return path;
+    }
+
+    private List<Vector3> GetPosToDodge()
+    {
+        List<Vector3> posToDodge = gm.map.GetAllNonRegularCubePos();
+        for (int i = 0; i < posToDodge.Count; i++)
+            posToDodge[i] = MathTools.Round(posToDodge[i]);
+        return posToDodge;
     }
 
     protected List<Vector3> GetAllInterestPoints() {

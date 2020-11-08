@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-class Node {
+public class Node {
     public Vector3 pos;
     public float cout, heuristique;
     public Node parent;
@@ -92,7 +92,8 @@ public class MapManager : MonoBehaviour {
     }
 
     public List<LumiereSwitchable> GetLumieresSwitchables() {
-        return GetLumieres().FindAll(l => (LumiereSwitchable)l != null).Select(l => (LumiereSwitchable)l).ToList();
+        return GetLumieres().FindAll(l => l.gameObject.GetComponent<LumiereSwitchable>() != null)
+            .Select(l => (LumiereSwitchable)l).ToList();
     }
 
     protected virtual void InitializeSpecific() {
@@ -709,53 +710,25 @@ public class MapManager : MonoBehaviour {
         opened.Add(new Node(start, 0, 0, null));
 
         while(opened.Count > 0) {
-            Node current = opened[opened.Count - 1];
-            opened.RemoveAt(opened.Count - 1);
+            Node current = opened.Last();
+            opened.Remove(current);
 
-            if(current.pos == end) {
-                while(current.pos != start) {
-                    path.Add(current.pos);
-                    current = current.parent;
-                }
-                path.Add(current.pos);
-                path.Reverse();
-                return path;
+            if (current.pos == end) {
+                return ComputePathBackward(start, path, ref current);
             }
 
-            List<Vector3> voisins = GetVoisinsLibres(current.pos);
-            // On évite les pos à dodge ! :)
-            for(int i = 0; i < voisins.Count; i++) {
-                if (posToDodge.Contains(voisins[i])) {
-                    voisins.RemoveAt(i);
-                    i--;
-                }
-            }
-            if (bIsRandom)
-                MathTools.Shuffle(voisins);
-            foreach(Vector3 voisin in voisins) {
-                bool contain = false;
-                foreach(Node n in closed) {
-                    if (n.pos == voisin)
-                        contain = true;
-                }
-                foreach(Node n in opened) {
-                    if (n.pos == voisin)
-                        contain = true;
-                }
-                if (contain)
-                    continue;
-                float distanceToGoal = Vector3.Distance(voisin, end);
+            List<Vector3> voisins = GetVoisinsLibreNotInPosToDodge(posToDodge, current, bIsRandom);
+
+            for (int i = 0; i < voisins.Count; i++)
+            {
+                Vector3 voisin = voisins[i];
+                float distanceToGoal = Vector3.SqrMagnitude(voisin - end);
                 Node node = new Node(voisin, current.cout + 1, current.cout + 1 + distanceToGoal, current);
 
-                for(int i = 0; i <= opened.Count; i++) {
-                    if (i == opened.Count) {
-                        opened.Add(node);
-                        break;
-                    } else if (opened[i].heuristique < node.heuristique) {
-                        opened.Insert(i, node);
-                        break;
-                    }
-                }
+                if(IsNodeInCloseOrOpened(closed, opened, voisin, node))
+                    continue;
+
+                InsertNodeInOpened(opened, node);
             }
 
             closed.Add(current);
@@ -763,6 +736,62 @@ public class MapManager : MonoBehaviour {
 
         Debug.Log("Path failed !!!!");
         return null;
+    }
+
+    private static bool IsNodeInCloseOrOpened(List<Node> closed, List<Node> opened, Vector3 voisin, Node node) {
+        for (int j = 0; j < closed.Count; j++) {
+            Node n = closed[j];
+            if (n.pos == voisin)
+                return true;
+        }
+        for (int j = 0; j < opened.Count; j++) {
+            Node n = opened[j];
+            if (n.pos == voisin) {
+                if (n.heuristique > node.heuristique) {
+                    opened.RemoveAt(j);
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    protected static void InsertNodeInOpened(List<Node> opened, Node node) {
+        for (int j = 0; j <= opened.Count; j++) {
+            if (j == opened.Count) {
+                opened.Add(node);
+                break;
+            } else if (opened[j].heuristique < node.heuristique) {
+                opened.Insert(j, node);
+                break;
+            }
+        }
+    }
+
+    protected List<Vector3> GetVoisinsLibreNotInPosToDodge(List<Vector3> posToDodge, Node current, bool bIsRandom) {
+        List<Vector3> voisins = GetVoisinsLibres(current.pos);
+        for (int i = 0; i < voisins.Count; i++) {
+            if (posToDodge.Contains(voisins[i])) {
+                voisins.RemoveAt(i);
+                i--;
+            }
+        }
+        if (bIsRandom)
+            MathTools.Shuffle(voisins);
+
+        return voisins;
+    }
+
+    protected static List<Vector3> ComputePathBackward(Vector3 start, List<Vector3> path, ref Node current) {
+        while (current.pos != start) {
+            path.Add(current.pos);
+            current = current.parent;
+        }
+        path.Add(current.pos);
+        path.Reverse();
+        return path;
     }
 
     public List<Vector3> GetAllLumieresPositions() {
