@@ -77,4 +77,15 @@ public static class MathTools
             Mathf.Clamp(sphereCenter.z, aabbCenter.z - aabbHalfExtents.z, aabbCenter.z + aabbHalfExtents.z));
         return Vector3.Distance(aabbClosestPointToSphere, sphereCenter) <= sphereRayon;
     }
+
+    public static bool AABB_AABB(Vector3 center1, Vector3 halfExtents1, Vector3 center2, Vector3 halfExtents2) {
+        Vector3 centersDistances = new Vector3(
+            Mathf.Abs(center1.x - center2.x),
+            Mathf.Abs(center1.y - center2.y),
+            Mathf.Abs(center1.z - center2.z));
+        bool collisionX = halfExtents1.x + halfExtents2.x > centersDistances.x;
+        bool collisionY = halfExtents1.y + halfExtents2.y > centersDistances.y;
+        bool collisionZ = halfExtents1.z + halfExtents2.z > centersDistances.z;
+        return collisionX && collisionY && collisionZ;
+    }
 }

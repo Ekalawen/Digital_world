@@ -18,6 +18,9 @@ public class GenerateCaves : GenerateCubesMapFunction {
     public int tailleMinCave = 3;
     public int tailleMaxCave = 10;
     public bool makeSpaceArround = false;
+    public bool dontCollideWithOthersCaves = false;
+    [ConditionalHide("dontCollideWithOthersCaves")]
+    public int distanceWithOthersCaves = 0;
     [ConditionalHide("makeSpaceArround")]
     public bool preserveMapBordure = false;
     public int nbLumieresPerCaves = 1;
@@ -96,7 +99,39 @@ public class GenerateCaves : GenerateCubesMapFunction {
         return cave;
     }
 
-    protected virtual Vector3 GetPositionCave(Vector3Int sizeCave, int caveOffsetFromSides) {
+    protected virtual Vector3 GetPositionCave(Vector3Int sizeCave, int caveOffsetFromSides)
+    {
+        Vector3 position;
+        if(!dontCollideWithOthersCaves)
+            position = GetPositionCaveWithoutCollisions(sizeCave, caveOffsetFromSides);
+        else
+            position = GetPositionCaveWithCollisions(sizeCave, caveOffsetFromSides);
+        return position;
+    }
+
+    protected Vector3 GetPositionCaveWithCollisions(Vector3Int sizeCave, int caveOffsetFromSides) {
+        List<Cave> othersCaves = map.GetMapElementsOfType<Cave>();
+        int nbTriesMax = 1000;
+        for(int nbTries = 0; nbTries < nbTriesMax; nbTries++) {
+            Vector3 position = GetPositionCaveWithoutCollisions(sizeCave, caveOffsetFromSides);
+            if (CaveDontCollideWithOthersCaves(position, sizeCave, othersCaves))
+                return position;
+        }
+        Debug.LogWarning("On a pas réussi à trouver une position qui ne rentre en collision avec aucun autre caves dans GetPositionCaveWithCollisions() !");
+        return GetPositionCaveWithoutCollisions(sizeCave, caveOffsetFromSides);
+    }
+
+    protected bool CaveDontCollideWithOthersCaves(Vector3 position, Vector3Int sizeCave, List<Cave> othersCaves) {
+        Vector3 center = position + (Vector3)sizeCave / 2;
+        Vector3 halfExtents = (Vector3)sizeCave / 2 + Vector3.one * distanceWithOthersCaves;
+        foreach(Cave otherCave in othersCaves) {
+            if (MathTools.AABB_AABB(center, halfExtents, otherCave.GetCenter(), otherCave.GetHalfExtents()))
+                return false;
+        }
+        return true;
+    }
+
+    private Vector3 GetPositionCaveWithoutCollisions(Vector3Int sizeCave, int caveOffsetFromSides) {
         Vector3 position = Vector3.zero;
         position.x = useCaveFixedOffset && useCaveFixedOffsetX ? caveFixedOffsetX :
             Random.Range(caveOffsetFromSides, map.tailleMap.x - sizeCave.x + 2 - caveOffsetFromSides);

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Cave : CubeEnsemble {
@@ -145,6 +146,10 @@ public class Cave : CubeEnsemble {
         }
     }
 
+    public Vector3 GetHalfExtents() {
+        return (Vector3)nbCubesParAxe / 2;
+    }
+
     public Vector3 GetCenter() {
         return depart + (nbCubesParAxe.x - 1) * Vector3.right / 2.0f
             + (nbCubesParAxe.y - 1) * Vector3.up / 2.0f
@@ -243,26 +248,63 @@ public class Cave : CubeEnsemble {
 	}
 
     public void AddNLumiereInside(int nbLumieresToAdd, int offsetFromCenter = 1) {
-        while (nbLumieresToAdd > 1
-            && Mathf.Min(nbCubesParAxe.x, Mathf.Min(nbCubesParAxe.y, nbCubesParAxe.z)) - 2 * offsetFromCenter <= 1
-            && offsetFromCenter > 0)
-            offsetFromCenter--;
+        offsetFromCenter = ComputeOffsetFromCenter(nbLumieresToAdd, offsetFromCenter);
+        List<Vector3> initialPossiblePos = ComputeAllPossiblePos(offsetFromCenter);
         for (int i = 0; i < nbLumieresToAdd; i++) {
-            // On cherche une case où créer un objectif !
-            Vector3 posLumiere = new Vector3(
-                Random.Range(offsetFromCenter, nbCubesParAxe.x - offsetFromCenter),
-                Random.Range(offsetFromCenter, nbCubesParAxe.y - offsetFromCenter),
-                Random.Range(offsetFromCenter, nbCubesParAxe.z - offsetFromCenter));
-            while (cubeMatrix[(int)posLumiere.x, (int)posLumiere.y, (int)posLumiere.z] != null
+            List<Vector3> possiblePos = new List<Vector3>();
+            foreach (Vector3 pos in initialPossiblePos)
+                possiblePos.Add(pos);
+
+            Vector3 posLumiere = possiblePos[Random.Range(0, possiblePos.Count)];
+            bool useOnlyEmptySpace = true;
+            while ((useOnlyEmptySpace && cubeMatrix[(int)posLumiere.x, (int)posLumiere.y, (int)posLumiere.z] != null)
               || map.IsLumiereAt(posLumiere)) {
-                posLumiere = new Vector3(
-                    Random.Range(offsetFromCenter, nbCubesParAxe.x - offsetFromCenter),
-                    Random.Range(offsetFromCenter, nbCubesParAxe.y - offsetFromCenter),
-                    Random.Range(offsetFromCenter, nbCubesParAxe.z - offsetFromCenter));
+                possiblePos.Remove(posLumiere);
+                if(possiblePos.Count <= 0) {
+                    if(useOnlyEmptySpace) {
+                        useOnlyEmptySpace = false;
+                        possiblePos = initialPossiblePos;
+                    } else {
+                        Debug.LogWarning("Nous n'avons pas trouvé de place pour une Lumière dans AddNLumiereInside()");
+                        break;
+                    }
+                }
+                posLumiere = possiblePos[Random.Range(0, possiblePos.Count)];
             }
+            initialPossiblePos.Remove(posLumiere);
             posLumiere += depart;
             map.CreateLumiere(posLumiere, Lumiere.LumiereType.NORMAL);
         }
+    }
+
+    protected List<Vector3> ComputeAllPossiblePos(int offsetFromCenter) {
+        List<Vector3> possibilities = new List<Vector3>();
+        for(int i = offsetFromCenter; i < nbCubesParAxe.x - offsetFromCenter; i++) {
+            for(int j = offsetFromCenter; j < nbCubesParAxe.y - offsetFromCenter; j++) {
+                for(int k = offsetFromCenter; k < nbCubesParAxe.z - offsetFromCenter; k++) {
+                    possibilities.Add(new Vector3(i, j, k));
+                }
+            }
+        }
+        return possibilities;
+    }
+
+    protected int ComputeOffsetFromCenter(int nbLumieresToAdd, int offsetFromCenter) {
+        while (nbLumieresToAdd > 0
+            && GetNbPossibilitiesLumieresWithOffsetsFromCenter(offsetFromCenter) < nbLumieresToAdd
+            && offsetFromCenter > 0) {
+            offsetFromCenter--;
+        }
+        return offsetFromCenter;
+    }
+
+    protected int GetNbPossibilitiesLumieresWithOffsetsFromCenter(int offsetFromCenter) {
+        int placesX = nbCubesParAxe.x - (2 * offsetFromCenter);
+        int placesY = nbCubesParAxe.y - (2 * offsetFromCenter);
+        int placesZ = nbCubesParAxe.z - (2 * offsetFromCenter);
+        if (placesX <= 0 || placesY <= 0 || placesZ <= 0)
+            return 0;
+        return placesX * placesY * placesZ;
     }
 
     public void AddAllLumiereInside(Lumiere.LumiereType lumiereType = Lumiere.LumiereType.NORMAL) {
