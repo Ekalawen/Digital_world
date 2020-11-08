@@ -19,11 +19,12 @@ public class LumiereSwitchable : Lumiere {
         SetState(startState);
 	}
 
-    public void SetState(LumiereSwitchableState newState) {
+    public void SetState(LumiereSwitchableState newState, bool shouldCheckCollisionWithPlayer = true) {
         state = newState;
         lumiereOn.SetActive(state == LumiereSwitchableState.ON);
         lumiereOff.SetActive(state == LumiereSwitchableState.OFF);
-        CheckNotCollideWithPlayer();
+        if(shouldCheckCollisionWithPlayer)
+            CheckNotCollideWithPlayer();
     }
 
     protected void CheckNotCollideWithPlayer() {

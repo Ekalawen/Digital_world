@@ -91,6 +91,10 @@ public class MapManager : MonoBehaviour {
         PrintCubesNumbers();
     }
 
+    public List<LumiereSwitchable> GetLumieresSwitchables() {
+        return GetLumieres().FindAll(l => (LumiereSwitchable)l != null).Select(l => (LumiereSwitchable)l).ToList();
+    }
+
     protected virtual void InitializeSpecific() {
     }
 

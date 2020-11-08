@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PouvoirDetection : IPouvoir {
@@ -11,15 +12,12 @@ public class PouvoirDetection : IPouvoir {
     public float vitessePath = 30.0f;
 
     protected override bool UsePouvoir() {
-		if (Input.GetKeyDown (KeyCode.A)) {
-            // Penser à ajouter les autres objectifs intéressants !
-            List<Vector3> positions = new List<Vector3>();
-            if (detectLumieres)
-                positions.AddRange(gm.map.GetAllLumieresPositions());
-            if (detectItems)
-                positions.AddRange(gm.itemManager.GetItemsPositions());
+		if (Input.GetKeyDown (KeyCode.A))
+        {
+            List<Vector3> positions = GetAllInterestPoints();
 
-            if (!player.CanUseLocalisation() || positions.Count == 0) {
+            if (!player.CanUseLocalisation() || positions.Count == 0)
+            {
                 gm.console.FailLocalisation();
                 gm.soundManager.PlayFailActionClip();
                 return false;
@@ -28,9 +26,11 @@ public class PouvoirDetection : IPouvoir {
             // On choisit la position la plus proche
             Vector3 nearestPosition = positions[0];
             float distMin = Vector3.Distance(nearestPosition, player.transform.position);
-            foreach(Vector3 position in positions) {
+            foreach (Vector3 position in positions)
+            {
                 float dist = Vector3.Distance(position, player.transform.position);
-                if(dist < distMin) {
+                if (dist < distMin)
+                {
                     distMin = dist;
                     nearestPosition = position;
                 }
@@ -46,14 +46,31 @@ public class PouvoirDetection : IPouvoir {
             else
                 Debug.Log("Objectif inaccessible en " + nearestPosition + " !");
 
-			// Un petit message
-			gm.console.RunDetection(nearestPosition);
+            // Un petit message
+            gm.console.RunDetection(nearestPosition);
 
             if (detectItems)
                 NotifyOnlyVisibleOnTriggerItems();
         }
 
         return true;
+    }
+
+    protected List<Vector3> GetAllInterestPoints() {
+        List<Vector3> positions = new List<Vector3>();
+        if (detectLumieres) {
+            List<LumiereSwitchable> lumieresSwitchablesOn = gm.map.GetLumieresSwitchables();
+            lumieresSwitchablesOn = lumieresSwitchablesOn.FindAll(ls => ls.GetState() == LumiereSwitchable.LumiereSwitchableState.ON);
+            if(lumieresSwitchablesOn.Count > 0) {
+                positions.AddRange(lumieresSwitchablesOn.Select(ls => ls.transform.position).ToList());
+            } else {
+                positions.AddRange(gm.map.GetAllLumieresPositions());
+            }
+        }
+        if (detectItems) {
+            positions.AddRange(gm.itemManager.GetItemsPositions());
+        }
+        return positions;
     }
 
     protected IEnumerator DrawPath(List<Vector3> path) {
