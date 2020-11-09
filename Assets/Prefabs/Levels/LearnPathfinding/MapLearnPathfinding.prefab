@@ -24,37 +24,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4bd259e8147f884da12d3ae27b6cf4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &8380183915097426732
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6404323573375056085}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c06eda6246b11f645aa770dcaa175bdf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  type: 1
---- !u!114 &9101069895266962256
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6404323573375056085}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 151e2e28aa2652d45a2762e3d9a974c6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cubeType: 0
-  minDistanceRandomFilling: 1
-  useAllEmptyPositionsInstead: 0
-  proportionRandomFilling: 0.03
-  sizeCubeRandomFilling: 1
-  registerToColorSources: 0
 --- !u!114 &4127031541307620946
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -87,6 +56,39 @@ MonoBehaviour:
   caveFixedOffsetY: 0
   useCaveFixedOffsetZ: 0
   caveFixedOffsetZ: 0
+--- !u!114 &8380183915097426732
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6404323573375056085}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c06eda6246b11f645aa770dcaa175bdf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 1
+  trailPrefab: {fileID: 2355022440795677279, guid: 3aeb445d2ee23b240ae4946f1f9c7864,
+    type: 3}
+--- !u!114 &9101069895266962256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6404323573375056085}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 151e2e28aa2652d45a2762e3d9a974c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cubeType: 0
+  minDistanceRandomFilling: 1
+  useAllEmptyPositionsInstead: 0
+  proportionRandomFilling: 0.03
+  sizeCubeRandomFilling: 1
+  registerToColorSources: 0
 --- !u!1001 &6406004073022886087
 PrefabInstance:
   m_ObjectHideFlags: 0

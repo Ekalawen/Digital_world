@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -8,6 +9,7 @@ public class AllumeLumiere : MonoBehaviour {
     public enum AllumageType { PROCHE, ELOIGNE }
 
     public AllumageType type = AllumageType.PROCHE;
+    public GameObject trailPrefab;
 
     protected GameManager gm;
     protected MapManager map;
@@ -28,6 +30,13 @@ public class AllumeLumiere : MonoBehaviour {
         Lumiere chosenOne = GetChosenOne(position);
         LumiereSwitchable chosenOneSwitchable = (LumiereSwitchable)chosenOne;
         chosenOneSwitchable.SetState(LumiereSwitchable.LumiereSwitchableState.ON);
+
+        TraceRay(position, chosenOneSwitchable.transform.position);
+    }
+
+    protected void TraceRay(Vector3 from, Vector3 to) {
+        Trail trail = Instantiate(trailPrefab, from, Quaternion.identity).GetComponent<Trail>();
+        trail.SetTarget(to);
     }
 
     private Lumiere GetChosenOne(Vector3 position) {
