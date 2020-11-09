@@ -24,7 +24,6 @@ public class InfiniteMap : MapManager {
     [Header("Start")]
     public GameObject firstBlock;
     public int nbFirstBlocks = 3;
-    public float timeBeforeFirstDestruction = 3;
 
     [Header("Color Change")]
     public Color colorChangeColorBlocks;
@@ -45,17 +44,15 @@ public class InfiniteMap : MapManager {
     List<BlockWeight> blockWeights;
     List<Block> blocks;
     Timer destructionBlockTimer;
-    Timer timerBeforeChangeColorBlocks;
     Timer timerSinceLastBlock;
     bool hasMadeNewBestScore = false;
+    bool startsBlockDestruction = false;
 
     protected override void InitializeSpecific() {
         blocks = new List<Block>();
         blocksFolder = new GameObject("Blocks").transform;
         blocksFolder.transform.SetParent(cubesFolder.transform);
-        destructionBlockTimer = new Timer(timeBeforeFirstDestruction);
         nbBlocksDisplayer.Display(nbBlocksRun.ToString());
-        timerBeforeChangeColorBlocks = new Timer(timeBeforeFirstDestruction);
         timerSinceLastBlock = new Timer();
         nbBlocksRun = 0;
         nbBlocksDestroyed = 0;
@@ -143,7 +140,7 @@ public class InfiniteMap : MapManager {
     }
 
     protected void MakeCubesLookDangerous() {
-        if (timerBeforeChangeColorBlocks.IsOver()) {
+        if (startsBlockDestruction) {
             List<Cube> farestCubes = blocks.First().GetCubes();
             farestCubes = farestCubes.Where(c => c != null).ToList();
             Cube farestCube = farestCubes.OrderBy(cube => Vector3.Distance(cube.transform.position, gm.player.transform.position)).Last();
@@ -168,8 +165,10 @@ public class InfiniteMap : MapManager {
     }
 
     protected void ManageBlockDestruction() {
-        if(destructionBlockTimer.IsOver()) {
-            DestroyFirstBlock();
+        if (startsBlockDestruction) {
+            if (destructionBlockTimer.IsOver()) {
+                DestroyFirstBlock();
+            }
         }
     }
 
@@ -183,7 +182,14 @@ public class InfiniteMap : MapManager {
             RememberTimeNeededForBlock(indice, indiceCurrentBlock);
             timerSinceLastBlock.Reset();
             indiceCurrentBlock = indice;
+            if(GetNonStartNbBlocksRun() == 1)
+                StartBlocksDestruction();
         }
+    }
+
+    protected void StartBlocksDestruction() {
+        startsBlockDestruction = true;
+        DestroyFirstBlock();
     }
 
     protected void RememberTimeNeededForBlock(int indiceBlockEntered, int indiceCurrentBlock) {
@@ -204,10 +210,10 @@ public class InfiniteMap : MapManager {
     protected void RewardPlayerForNewBlock(int nbBlocksAdded) {
         if (nbBlocksRun > nbFirstBlocks)
         {
-            nbBlocksDisplayer.Display(GetNbBlocksRun().ToString());
+            nbBlocksDisplayer.Display(GetNonStartNbBlocksRun().ToString());
             nbBlocksDisplayer.AddVolatileText($"+ {nbBlocksAdded.ToString()}", nbBlocksDisplayer.GetTextColor());
             gm.soundManager.PlayNewBlockClip();
-            if (IsNewBestScore(GetNbBlocksRun())) {
+            if (IsNewBestScore(GetNonStartNbBlocksRun())) {
                 gm.console.RewardBestScore();
                 gm.soundManager.PlayRewardBestScore();
                 hasMadeNewBestScore = true;
@@ -235,7 +241,7 @@ public class InfiniteMap : MapManager {
         }
     }
 
-    public int GetNbBlocksRun() {
+    public int GetNonStartNbBlocksRun() {
         return Mathf.Max(0, nbBlocksRun - nbFirstBlocks);
     }
 }

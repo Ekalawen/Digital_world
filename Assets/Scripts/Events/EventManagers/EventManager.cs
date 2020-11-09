@@ -305,7 +305,7 @@ public class EventManager : MonoBehaviour {
         if(gm.GetLevelType() == MenuLevel.LevelType.REGULAR) {
             return gm.timerManager.GetRemainingTime();
         } else {
-            return gm.GetInfiniteMap().GetNbBlocksRun();
+            return gm.GetInfiniteMap().GetNonStartNbBlocksRun();
         }
     }
 
