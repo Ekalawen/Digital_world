@@ -9,6 +9,8 @@ public class AllumeLumiere : MonoBehaviour {
     public enum AllumageType { PROCHE, ELOIGNE }
 
     public AllumageType type = AllumageType.PROCHE;
+    public bool shouldDrawRaycastToNewLumiere = true;
+    [ConditionalHide("shouldDrawRaycastToNewLumiere")]
     public GameObject trailPrefab;
 
     protected GameManager gm;
@@ -35,8 +37,10 @@ public class AllumeLumiere : MonoBehaviour {
     }
 
     protected void TraceRay(Vector3 from, Vector3 to) {
-        Trail trail = Instantiate(trailPrefab, from, Quaternion.identity).GetComponent<Trail>();
-        trail.SetTarget(to);
+        if (shouldDrawRaycastToNewLumiere) {
+            Trail trail = Instantiate(trailPrefab, from, Quaternion.identity).GetComponent<Trail>();
+            trail.SetTarget(to);
+        }
     }
 
     private Lumiere GetChosenOne(Vector3 position) {
