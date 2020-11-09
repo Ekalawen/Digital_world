@@ -19,7 +19,7 @@ public class RewardConsole : Console {
         InitTimersMessages();
     }
 
-    protected override void Update() {
+    public override void Update() {
         RunTimedMessages();
 
         if (timerReward.IsOver()) {

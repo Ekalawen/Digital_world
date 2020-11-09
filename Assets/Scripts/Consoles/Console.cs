@@ -59,6 +59,8 @@ public class Console : MonoBehaviour {
     protected Timer timerPhraseRandom;
     protected Timer timerConseiller;
     protected List<TimerMessage> timersMessages;
+    protected string detectedMessage = "DÉTECTÉ !";
+    protected string dissimuleMessage = "DISSIMULÉ !";
 
 	void Start () {
 	}
@@ -85,6 +87,22 @@ public class Console : MonoBehaviour {
         // Init les pouvoirs displays
         InitPouvoirsDisplays();
     }
+
+	public virtual void Update () {
+        if(useAltitudeCritique)
+            AltitudeCritique();
+
+        LancerConseils();
+
+        // On conseille d'appuyer sur TAB si le joueur galère a trouver des orbes
+        ConseillerUtiliserDetection();
+
+        // On détecte si le joueur est safe ou pas !
+        DetectPlayerSafeOrNot();
+
+        // On lance les messages timed
+        RunTimedMessages();
+	}
 
     protected void InitTimersMessages() {
         timersMessages = new List<TimerMessage>();
@@ -162,32 +180,6 @@ public class Console : MonoBehaviour {
         }
     }
 	
-	protected virtual void Update () {
-        if(useAltitudeCritique)
-            AltitudeCritique();
-
-        //// On lance des phrases random desfois !
-        //if (timerPhraseRandom.IsOver()) {
-        //	LancerPhraseRandom ();
-        //  timerPhraseRandom = new Timer(Random.Range(tempsAvantPhraseRandom.x, tempsAvantPhraseRandom.y));
-        //}
-
-        // On lance des conseils !
-        LancerConseils();
-
-        //// On efface l'important texte si ça fait suffisamment longtemps qu'il est affiché
-        //EffacerImportantText();
-
-        // On conseille d'appuyer sur TAB si le joueur galère a trouver des orbes
-        ConseillerUtiliserDetection();
-
-        // On détecte si le joueur est safe ou pas !
-        DetectPlayerSafeOrNot();
-
-        // On lance les messages timed
-        RunTimedMessages();
-	}
-
 	public void UpdateLastLumiereAttrapee() {
 		timeLastLumiereAttrapee = Time.timeSinceLevelLoad;
 	}
@@ -421,18 +413,15 @@ public class Console : MonoBehaviour {
 
     // Lorsqu'un ennemi repère le joueur
     public void JoueurDetecte() {
-        string message = "DÉTECTÉ !";
-        AjouterMessageImportant (message, Console.TypeText.ENNEMI_TEXT, 2, bAfficherInConsole: false, message);
+        EffacerImportantMessage(dissimuleMessage);
+        AjouterMessageImportant(detectedMessage, Console.TypeText.ENNEMI_TEXT, 2, bAfficherInConsole: false, detectedMessage);
         AjouterMessage ("Je vous ai détecté, je sais où vous êtes !", Console.TypeText.ENNEMI_TEXT);
 	}
-	//public void JoueurDetecte(string nomDetecteur) {
-		//AjouterMessage (nomDetecteur + " vous a détecté, je sais où vous êtes.", Console.TypeText.ENNEMI_TEXT);
-	//}
 
 	// Quand le joueur réussit à semer toutes les sondes
 	public void SemerEnnemis() {
-        string message = "DISSIMULÉ !";
-		AjouterMessageImportant (message, TypeText.ALLY_TEXT, 2f, bAfficherInConsole: false, message);
+        EffacerImportantMessage(detectedMessage);
+		AjouterMessageImportant (dissimuleMessage, TypeText.ALLY_TEXT, 2, bAfficherInConsole: false, dissimuleMessage);
         AjouterMessage("On les a semés, on est plus suivi !", TypeText.ALLY_TEXT);
 	}
 	
