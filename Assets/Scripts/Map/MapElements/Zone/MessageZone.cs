@@ -17,6 +17,7 @@ public class MessageZone : IZone {
     protected override void Start() {
         base.Start();
         timer = new Timer(frequence);
+        timer.SetOver();
     }
 
     private void Update() {
@@ -28,7 +29,6 @@ public class MessageZone : IZone {
     protected override void OnEnter(Collider other) {
         if (other.gameObject.tag == "Player") {
             isIn = true;
-            DisplayMessage();
         }
     }
 
