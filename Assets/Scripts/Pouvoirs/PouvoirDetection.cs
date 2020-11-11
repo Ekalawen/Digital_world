@@ -1,122 +1,72 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class PouvoirDetection : IPouvoir {
 
-	public GameObject lumierePathPrefab; // Les lumières à placer quand le personnage fait une détection !
-    public bool detectLumieres = true;
-    public bool detectItems = true;
-    public float dureePath = 3.0f;
-    public float vitessePath = 30.0f;
+    public bool canDetectLumieres = true;
+    public bool canDetectItems = true;
+	public GameObject trailLumieresPrefab; // Les trails à tracer pour retrouver les lumières
+	public GameObject trailItemsPrefab; // Les trails à tracer pour retrouver les items
+
+    protected bool atLeastOneRay;
 
     protected override bool UsePouvoir() {
-		if (Input.GetKeyDown (KeyCode.A))
-        {
-            List<Vector3> positions = GetAllInterestPoints();
-
-            if (!player.CanUseLocalisation() || positions.Count == 0)
-            {
-                gm.console.FailLocalisation();
-                gm.soundManager.PlayFailActionClip();
-                return false;
-            }
-
-            try {
-                Vector3 nearestPosition = DrawPathToNearestPosition(positions);
-
-                gm.console.RunDetection(nearestPosition);
-
-                if (detectItems)
-                    NotifyOnlyVisibleOnTriggerItems();
-            } catch (System.Exception e) {
-                Debug.LogWarning($"Pouvoir Detection fails :\n{e.StackTrace}");
-                gm.console.FailLocalisation();
-                gm.soundManager.PlayFailActionClip();
-                return false;
-            }
+        if (!player.CanUseLocalisation()) {
+            gm.console.FailLocalisation();
+            gm.soundManager.PlayFailActionClip();
+            return false;
         }
 
-        return true;
-    }
+        atLeastOneRay = false;
+        int nbLumieres = 0;
+        int nbItems = 0;
 
-    private Vector3 DrawPathToNearestPosition(List<Vector3> positions) {
-        //Vector3 nearestPosition = positions.OrderBy(p => Vector3.Distance(p, player.transform.position)).First();
-        //List<Vector3> posToDodge = GetPosToDodge();
-        //List<Vector3> shortestPath = GetPathForPosition(nearestPosition, posToDodge);
-        List<List<Vector3>> pathsToPositions = new List<List<Vector3>>();
-        List<Vector3> posToDodge = GetPosToDodge();
-        positions = positions.OrderBy(p => Vector3.Distance(p, player.transform.position)).Take(3).ToList();
-        foreach (Vector3 pos in positions) {
-            List<Vector3> pathToPosition = GetPathForPosition(pos, posToDodge);
-            pathsToPositions.Add(pathToPosition);
+        if (canDetectLumieres) {
+            nbLumieres = DrawLumieresRays();
         }
-        List<List<Vector3>> notNullPaths = pathsToPositions.FindAll(p => p != null);
-        if (notNullPaths.Count <= 0)
-            throw new System.Exception("Aucune position accessible !");
-        List<Vector3> shortestPath = notNullPaths.OrderBy(p => p.Count).First();
-        Vector3 nearestPosition = positions[pathsToPositions.IndexOf(shortestPath)];
 
-        DrawPathToPosition(nearestPosition, shortestPath);
-        return nearestPosition;
-    }
-
-    protected void DrawPathToPosition(Vector3 position, List<Vector3> path) {
-        if (path != null)
-            StartCoroutine(DrawPath(path));
-        else
-            Debug.Log("Objectif inaccessible en " + position + " !");
-    }
-
-    protected List<Vector3> GetPathForPosition(Vector3 position, List<Vector3> posToDodge) {
-        List<Vector3> path = gm.map.GetPath(player.transform.position, position, posToDodge, bIsRandom: true);
-        return path;
-    }
-
-    private List<Vector3> GetPosToDodge()
-    {
-        List<Vector3> posToDodge = gm.map.GetAllNonRegularCubePos();
-        for (int i = 0; i < posToDodge.Count; i++)
-            posToDodge[i] = MathTools.Round(posToDodge[i]);
-        return posToDodge;
-    }
-
-    protected List<Vector3> GetAllInterestPoints() {
-        List<Vector3> positions = new List<Vector3>();
-        if (detectLumieres) {
-            List<LumiereSwitchable> lumieresSwitchablesOn = gm.map.GetLumieresSwitchables();
-            lumieresSwitchablesOn = lumieresSwitchablesOn.FindAll(ls => ls.GetState() == LumiereSwitchable.LumiereSwitchableState.ON);
-            if(lumieresSwitchablesOn.Count > 0) {
-                positions.AddRange(lumieresSwitchablesOn.Select(ls => ls.transform.position).ToList());
-            } else {
-                positions.AddRange(gm.map.GetAllLumieresPositions());
-            }
+        if (canDetectItems) {
+            nbItems = DrawItemsRays();
+            NotifyOnlyVisibleOnTriggerItems();
         }
-        if (detectItems) {
-            positions.AddRange(gm.itemManager.GetItemsPositions());
-        }
-        return positions;
+
+        gm.console.RunLocalisation(nbLumieres, nbItems);
+
+        gm.console.UpdateLastLumiereAttrapee();
+
+        return atLeastOneRay;
     }
 
-    protected IEnumerator DrawPath(List<Vector3> path) {
-        int nbSpheresByNodes = 4;
-        for(int i = 0; i < path.Count - 1; i++) {
-            Vector3 current = path[i];
-            Vector3 next = path[i + 1];
-            for(int j = 0; j < nbSpheresByNodes; j++) {
-                Vector3 direction = next - current;
-                Vector3 pos = current + direction / nbSpheresByNodes * (j + 1);
-                GameObject go = Instantiate(lumierePathPrefab, pos, Quaternion.identity);
-                Color color = gm.colorManager.GetColorForPosition(go.transform.position);
-                color = Color.white - color;
-                Material material = go.GetComponent<MeshRenderer>().material;
-                material.color = color;
-                material.SetColor("_EmissionColor", color);
-                Destroy(go, dureePath);
-                yield return new WaitForSeconds(1.0f / vitessePath);
-            }
+    protected int DrawLumieresRays() {
+        // On trace les rayons ! =)
+        List<Lumiere> lumieres = GetLumieresToLocate();
+        for (int i = 0; i < lumieres.Count; i++) {
+            Vector3 departRayons = player.transform.position + 0.5f * gm.gravityManager.Up();
+            Vector3 derriere = player.transform.position - player.camera.transform.forward.normalized;
+            Vector3 devant = player.transform.position + player.camera.transform.forward.normalized;
+            Vector3 target = lumieres[i].transform.position;
+            GameObject tr = Instantiate (trailLumieresPrefab, derriere, Quaternion.identity) as GameObject;
+            tr.GetComponent<Trail>().SetTarget(lumieres[i].transform.position);
+            atLeastOneRay = true;
         }
+        return lumieres.Count;
+    }
+
+    protected int DrawItemsRays() {
+        // On trace les rayons des items
+        List<Item> items = gm.itemManager.GetItems();
+        for (int i = 0; i < items.Count; i++) {
+            Vector3 departRayons = player.transform.position + 0.5f * gm.gravityManager.Up();
+            Vector3 derriere = player.transform.position - player.camera.transform.forward.normalized;
+            Vector3 devant = player.transform.position + player.camera.transform.forward.normalized;
+            Vector3 target = items[i].transform.position;
+            GameObject tr = Instantiate (trailItemsPrefab, derriere, Quaternion.identity) as GameObject;
+            tr.GetComponent<Trail>().SetTarget(items[i].transform.position);
+            atLeastOneRay = true;
+        }
+        return items.Count;
     }
 
     protected void NotifyOnlyVisibleOnTriggerItems() {
@@ -126,5 +76,18 @@ public class PouvoirDetection : IPouvoir {
                 component.Activate();
             }
         }
+    }
+
+    protected virtual List<Lumiere> GetLumieresToLocate() {
+        List<Lumiere> res = new List<Lumiere>();
+        foreach (Lumiere lumiere in gm.map.GetLumieres()) res.Add(lumiere);
+        for(int i = 0; i < res.Count; i++) {
+            LumiereSwitchable ls = res[i].GetComponent<LumiereSwitchable>();
+            if(ls != null && ls.GetState() == LumiereSwitchable.LumiereSwitchableState.OFF) {
+                res.RemoveAt(i);
+                i--;
+            }
+        }
+        return res;
     }
 }

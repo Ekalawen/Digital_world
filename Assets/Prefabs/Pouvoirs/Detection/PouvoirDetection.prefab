@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &7872004273408027757
+--- !u!1 &5780963728283393190
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,22 +8,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7872004273408027747}
-  - component: {fileID: 7872004273408027756}
+  - component: {fileID: 5780963728283393192}
+  - component: {fileID: 5780963728283393191}
   m_Layer: 0
-  m_Name: PouvoirDetection
+  m_Name: PouvoirLocalisation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7872004273408027747
+--- !u!4 &5780963728283393192
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7872004273408027757}
+  m_GameObject: {fileID: 5780963728283393190}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 501, y: 204, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -31,36 +31,36 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7872004273408027756
+--- !u!114 &5780963728283393191
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7872004273408027757}
+  m_GameObject: {fileID: 5780963728283393190}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 15205d95ee4e4fe438561fa2eccd3e02, type: 3}
+  m_Script: {fileID: 11500000, guid: be76cb5ecf7cbd24eb8e1255c059dc92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nom: PathFinder
-  description: "G\xE9n\xE8re un chemin jusqu'\u28ECa la Data la plus proche."
-  sprite: {fileID: 21300000, guid: cb743d1a7e2d0924c927c4628592eb76, type: 3}
-  cooldown: 12.5
+  nom: Localisateur
+  description: Trace un rayon qui localise les Datas.
+  sprite: {fileID: 21300000, guid: 4df181cfffb19d04ab75a91337775046, type: 3}
+  cooldown: 0
   timerMalus: 1
   timerMalusTimeProportional: 0
   timerMalusTimeProportion: 0.33333334
   activationAudioClips:
-    relativeVolume: 1
+    relativeVolume: 0.6
     spatialBlend: 1
     bReverse: 0
     bIsMusic: 0
     bLoop: 0
     clips:
-    - {fileID: 8300000, guid: eba6031eaa2a82e489a67ff68af19033, type: 3}
-  lumierePathPrefab: {fileID: 3572840593370224461, guid: 106cf329a77a1264e8519fcb485e280d,
+    - {fileID: 8300000, guid: 2ad59f2ef1a9b824380848c6b0abf32b, type: 3}
+  canDetectLumieres: 1
+  canDetectItems: 1
+  trailLumieresPrefab: {fileID: 1168935213390774, guid: 17a43935c8bf947ea94cb47c7e0d8511,
     type: 3}
-  detectLumieres: 1
-  detectItems: 0
-  dureePath: 3
-  vitessePath: 30
+  trailItemsPrefab: {fileID: 1140410629866252707, guid: ac89450f469098742b6f2aca75b1ce6b,
+    type: 3}
