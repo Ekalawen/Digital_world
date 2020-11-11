@@ -100,4 +100,13 @@ public class ColorSource : MonoBehaviour {
         ChangeColor(targetColor);
         goingToColor = null;
     }
+
+    public static Color LimiteColorSaturation(Color color, float minColorSaturationAndValue = 0.1f) {
+        float mean = (color.r + color.g + color.b) / 3.0f;
+        if(mean < minColorSaturationAndValue) {
+            float ecart = minColorSaturationAndValue - mean;
+            return new Color(color.r + ecart, color.g + ecart, color.b + ecart, color.a);
+        }
+        return color;
+    }
 }

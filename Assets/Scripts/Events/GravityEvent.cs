@@ -14,11 +14,7 @@ public class GravityEvent : RandomEvent {
     protected float newIntensity;
     protected float oldIntensity;
 
-    protected override void Start() {
-        base.Start();
-    }
-
-    public override void StartEvent() {
+    protected override void StartEvent() {
         oldDirection = gm.gravityManager.gravityDirection;
         oldIntensity = gm.gravityManager.gravityIntensity;
         if(bUseRandomDirection)
@@ -28,11 +24,14 @@ public class GravityEvent : RandomEvent {
         gm.gravityManager.SetGravity(newDir, newIntensity);
     }
 
-    public override void EndEvent() {
+    protected override void EndEvent() {
         gm.gravityManager.SetGravity(oldDirection, oldIntensity);
     }
 
-    public override void StartEventConsoleMessage() {
+    protected override void StartEventConsoleMessage() {
         gm.console.GravityEventMessage(newDir, newIntensity);
+    }
+
+    public override void StopEvent() {
     }
 }

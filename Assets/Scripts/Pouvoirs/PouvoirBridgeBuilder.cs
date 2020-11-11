@@ -80,7 +80,7 @@ public class PouvoirBridgeBuilder : IPouvoir {
     // On construit un cube !
     void BuildCube(Vector3 position, Quaternion orientation) {
         // Créer le cube
-        if (FarEnoughtFromLumieres(position)) {
+        if (gm.map.CubeFarEnoughtFromLumieres(position)) {
             Cube cube = gm.map.AddCube(position, Cube.CubeType.NORMAL, orientation);
             cube.ShouldRegisterToColorSources();
         }
@@ -96,13 +96,5 @@ public class PouvoirBridgeBuilder : IPouvoir {
                 }
             }
         }
-    }
-
-    protected bool FarEnoughtFromLumieres(Vector3 pos) {
-        foreach(Lumiere lumiere in gm.map.GetLumieres()) {
-            if (MathTools.AABBSphere(pos, Vector3.one * 0.5f, lumiere.transform.position, lumiere.transform.localScale.x / 2.0f))
-                return false;
-        }
-        return true;
     }
 }

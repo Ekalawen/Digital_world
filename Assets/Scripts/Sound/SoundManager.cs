@@ -27,6 +27,7 @@ public class SoundManager : MonoBehaviour {
     public AudioClipParams jumpSuccessClips;
     public AudioClipParams jumpEventStunClips;
     public AudioClipParams jumpEventUnStunClips;
+    public AudioClipParams intersectionEventClips;
     public AudioClipParams activationPouvoirClips;
     public AudioClipParams deniedPouvoirClips;
     public AudioClipParams notFoundPouvoirClips;
@@ -162,6 +163,9 @@ public class SoundManager : MonoBehaviour {
     }
     public void PlayJumpEventUnStunClip() {
         PlayClipsOnSource(jumpEventUnStunClips);
+    }
+    public void PlayIntersectionEventClip(Vector3 position, float duration, Transform parent) {
+        PlayClipsOnSource(intersectionEventClips, pos: position,  duration: duration, parent: parent);
     }
     public void PlayActivationPouvoirClip(AudioClipParams audioClip = null) {
         PlayClipsOnSource((audioClip == null) ? activationPouvoirClips : audioClip);

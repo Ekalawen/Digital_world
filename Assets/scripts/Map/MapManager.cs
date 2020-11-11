@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class Node {
     public Vector3 pos;
@@ -33,6 +34,7 @@ public class MapManager : MonoBehaviour {
 
     [Header("Map Construction")]
     public List<MapFunctionComponent> mapFunctionComponents;
+
     public Vector3Int tailleMap; // La taille de la map, en largeur, hauteur et profondeur
 	public int nbLumieresInitial; // Le nombre de lumières lors de la création de la map
 
@@ -442,21 +444,21 @@ public class MapManager : MonoBehaviour {
     }
 
     public Vector3 GetRoundedLocation() {
-        int x = Random.Range(1, tailleMap.x);
-        int y = Random.Range(1, tailleMap.y);
-        int z = Random.Range(1, tailleMap.z);
+        int x = UnityEngine.Random.Range(1, tailleMap.x);
+        int y = UnityEngine.Random.Range(1, tailleMap.y);
+        int z = UnityEngine.Random.Range(1, tailleMap.z);
         return new Vector3(x, y, z);
     }
 
     public Vector3 GetFreeSphereLocation(float radius) {
-        Vector3 center = new Vector3(Random.Range(1.0f, (float)tailleMap.x),
-                                     Random.Range(1.0f, (float)tailleMap.y),
-                                     Random.Range(1.0f, (float)tailleMap.z));
+        Vector3 center = new Vector3(UnityEngine.Random.Range(1.0f, (float)tailleMap.x),
+                                     UnityEngine.Random.Range(1.0f, (float)tailleMap.y),
+                                     UnityEngine.Random.Range(1.0f, (float)tailleMap.z));
         int k = 0; int kmax = 5000;
         while(GetCubesInSphere(center, radius).Count > 0 && k <= kmax) {
-            center = new Vector3(Random.Range(1.0f, (float)tailleMap.x),
-                                     Random.Range(1.0f, (float)tailleMap.y),
-                                     Random.Range(1.0f, (float)tailleMap.z));
+            center = new Vector3(UnityEngine.Random.Range(1.0f, (float)tailleMap.x),
+                                     UnityEngine.Random.Range(1.0f, (float)tailleMap.y),
+                                     UnityEngine.Random.Range(1.0f, (float)tailleMap.z));
             k++;
         }
         if (k > kmax)
@@ -465,14 +467,14 @@ public class MapManager : MonoBehaviour {
     }
 
     public Vector3 GetFreeRoundedLocation(int offsetFromSides = 1) {
-        Vector3 center = MathTools.Round(new Vector3(Random.Range((float)offsetFromSides, (float)tailleMap.x - offsetFromSides),
-                                     Random.Range((float)offsetFromSides, (float)tailleMap.y - offsetFromSides),
-                                     Random.Range((float)offsetFromSides, (float)tailleMap.z - offsetFromSides)));
+        Vector3 center = MathTools.Round(new Vector3(UnityEngine.Random.Range((float)offsetFromSides, (float)tailleMap.x - offsetFromSides),
+                                     UnityEngine.Random.Range((float)offsetFromSides, (float)tailleMap.y - offsetFromSides),
+                                     UnityEngine.Random.Range((float)offsetFromSides, (float)tailleMap.z - offsetFromSides)));
         int k = 0; int kmax = 5000;
         while(GetCubesInLocation(center).Count > 0 && k <= kmax) {
-            center = MathTools.Round(new Vector3(Random.Range((float)offsetFromSides, (float)tailleMap.x - offsetFromSides),
-                                     Random.Range((float)offsetFromSides, (float)tailleMap.y - offsetFromSides),
-                                     Random.Range((float)offsetFromSides, (float)tailleMap.z - offsetFromSides)));
+            center = MathTools.Round(new Vector3(UnityEngine.Random.Range((float)offsetFromSides, (float)tailleMap.x - offsetFromSides),
+                                     UnityEngine.Random.Range((float)offsetFromSides, (float)tailleMap.y - offsetFromSides),
+                                     UnityEngine.Random.Range((float)offsetFromSides, (float)tailleMap.z - offsetFromSides)));
             k++;
         }
         if (k > kmax)
@@ -481,14 +483,14 @@ public class MapManager : MonoBehaviour {
     }
 
     public Vector3 GetFreeBoxLocation(Vector3 halfExtents) {
-        Vector3 center = new Vector3(Random.Range(1.0f, (float)tailleMap.x),
-                                     Random.Range(1.0f, (float)tailleMap.y),
-                                     Random.Range(1.0f, (float)tailleMap.z));
+        Vector3 center = new Vector3(UnityEngine.Random.Range(1.0f, (float)tailleMap.x),
+                                     UnityEngine.Random.Range(1.0f, (float)tailleMap.y),
+                                     UnityEngine.Random.Range(1.0f, (float)tailleMap.z));
         int k = 0; int kmax = 5000;
         while(GetCubesInBox(center, halfExtents).Count > 0 && k <= kmax) {
-            center = new Vector3(Random.Range(1.0f, (float)tailleMap.x),
-                                     Random.Range(1.0f, (float)tailleMap.y),
-                                     Random.Range(1.0f, (float)tailleMap.z));
+            center = new Vector3(UnityEngine.Random.Range(1.0f, (float)tailleMap.x),
+                                     UnityEngine.Random.Range(1.0f, (float)tailleMap.y),
+                                     UnityEngine.Random.Range(1.0f, (float)tailleMap.z));
             k++;
         }
         if (k > kmax)
@@ -820,7 +822,7 @@ public class MapManager : MonoBehaviour {
             if (cave.nbCubesParAxe.x >= 3 && cave.nbCubesParAxe.y >= 3 && cave.nbCubesParAxe.z >= 3)
                 cavesGrandes.Add(cave);
         }
-        Cave chosenCave = cavesGrandes[Random.Range(0, cavesGrandes.Count)];
+        Cave chosenCave = cavesGrandes[UnityEngine.Random.Range(0, cavesGrandes.Count)];
         chosenCave.AddNLumiereInside(1);
     }
 
@@ -967,5 +969,95 @@ public class MapManager : MonoBehaviour {
     public Cube GetFarestCubeFrom(Vector3 position) {
         List<Cube> cubes = GetAllCubes();
         return cubes.OrderBy(cube => Vector3.Distance(cube.transform.position, position)).Last();
+    }
+
+    public static List<Vector3> GetAllDirections() {
+        List<Vector3> directions = new List<Vector3>() {
+            Vector3.forward,
+            Vector3.back,
+            Vector3.left,
+            Vector3.right,
+            Vector3.up,
+            Vector3.down};
+        return directions;
+    }
+
+    public Cube GetClosestCubeInDirection(Vector3 center, Vector3 direction) {
+        center = MathTools.Round(center);
+        Cube closestRegular = GetClosestCubeInDirectionRegular(center, direction);
+        Cube closestNonRegular = GetClosestCubeInDirectionNonRegular(center, direction);
+        if(closestRegular != null && closestNonRegular != null) {
+            if (Vector3.Distance(center, closestRegular.transform.position) <= Vector3.Distance(center, closestNonRegular.transform.position))
+                return closestRegular;
+            return closestNonRegular;
+        } else if (closestRegular != null) {
+            return closestRegular;
+        } else if (closestNonRegular != null) {
+            return closestNonRegular;
+        } else {
+            return null;
+        }
+    }
+
+    protected Cube GetClosestCubeInDirectionRegular(Vector3 center, Vector3 direction) {
+        if (!IsInRegularMap(center))
+            return null;
+        if(!MapManager.GetAllDirections().Contains(direction)) {
+            throw new Exception($"direction ({direction}) must be a unitary direction in GetClosestCubeInDirectionRegular()");
+        }
+        Vector3 current = center + direction;
+        while(IsInRegularMap(current)) {
+            Cube currentCube = cubesRegular[(int)current.x, (int)current.y, (int)current.z];
+            if (currentCube != null)
+                return currentCube;
+            current += direction;
+        }
+        return null;
+    }
+
+    protected Cube GetClosestCubeInDirectionNonRegular(Vector3 center, Vector3 direction) {
+        if (!MapManager.GetAllDirections().Contains(direction)) {
+            throw new Exception($"direction ({direction}) must be a unitary direction in GetClosestCubeInDirectionNonRegular()");
+        }
+        List<Vector3> alignedPos = new List<Vector3>();
+        foreach(Vector3 pos in GetAllNonRegularCubePos()) {
+            Vector3 diff = pos - center;
+            if((direction.x == 0) == (diff.x == 0)
+            && (direction.y == 0) == (diff.y == 0)
+            && (direction.z == 0) == (diff.z == 0)) {
+                float projection = Vector3.Project(diff, direction).magnitude;
+                if(Mathf.Sign(projection) > 0) {
+                    if(Mathf.Round(projection) == projection) {
+                        alignedPos.Add(pos);
+                    }
+                }
+            }
+        }
+        if (alignedPos.Count == 0)
+            return null;
+        Vector3 closestAlignedPos = alignedPos.OrderBy(p => Vector3.SqrMagnitude(center - p)).First();
+        return GetCubeAt(closestAlignedPos);
+    }
+
+    public Cube SwapCubeType(Cube cube, Cube.CubeType newType) {
+        if (cube == null)
+            return null;
+        if (cube.type == newType)
+            return cube;
+        Vector3 position = cube.transform.position;
+        Quaternion rotation = cube.transform.rotation;
+        Transform parent = cube.transform.parent;
+        DeleteCube(cube);
+        Cube newCube = AddCube(position, newType, rotation, parent);
+        newCube.ShouldRegisterToColorSources();
+        return newCube;
+    }
+
+    public bool CubeFarEnoughtFromLumieres(Vector3 pos) {
+        foreach(Lumiere lumiere in GetLumieres()) {
+            if (MathTools.AABBSphere(pos, Vector3.one * 0.5f, lumiere.transform.position, lumiere.transform.localScale.x / 2.0f))
+                return false;
+        }
+        return true;
     }
 }

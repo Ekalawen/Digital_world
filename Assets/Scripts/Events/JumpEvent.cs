@@ -8,14 +8,14 @@ public class JumpEvent : RandomEvent {
     public float timeMalus = 10f;
     public float dureeStun = 5.0f;
 
-    public override void StartEvent() {
+    protected override void StartEvent() {
         StartCoroutine(JumpEffect());
     }
 
-    public override void EndEvent() {
+    protected override void EndEvent() {
     }
 
-    public override void StartEventConsoleMessage() {
+    protected override void StartEventConsoleMessage() {
         StartCoroutine(AfficherMessagesPreventifs());
     }
 
@@ -58,5 +58,8 @@ public class JumpEvent : RandomEvent {
             yield return null;
         }
         gm.console.AjouterMessageImportant("JUMP !", Console.TypeText.ENNEMI_TEXT, dureeAttente, bAfficherInConsole: false, precedantMessage);
+    }
+
+    public override void StopEvent() {
     }
 }

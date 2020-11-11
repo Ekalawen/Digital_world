@@ -193,6 +193,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 538345b225d6145f897d93dd37c99e13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  conseils: []
+  nbLumieresTriggers: 
+  useAltitudeCritique: 1
+  tempsAvantPhraseRandom: {x: 3, y: 15}
+  tempsAvantConseiller: {x: 3, y: 15}
   basicColor: {r: 0, g: 1, b: 0, a: 1}
   ennemiColor: {r: 1, g: 0, b: 0, a: 1}
   allyColor: {r: 0, g: 1, b: 1, a: 1}
@@ -200,18 +205,13 @@ MonoBehaviour:
   ennemiPrefix: '[Ennemi]: '
   allyPrefix: "[Alli\xE9]: "
   font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-  textContainer: {fileID: 1968408244200114}
   tailleTexte: 12
-  tempsAvantPhraseRandom: {x: 3, y: 15}
-  tempsAvantConseiller: {x: 3, y: 15}
-  importantText: {fileID: 114709004779769668}
-  useAltitudeCritique: 1
-  conseils: []
-  timedMessages: []
   pouvoirDisplayA: {fileID: 1431395391500463023}
   pouvoirDisplayE: {fileID: 538932472691280750}
   pouvoirDisplayLeftClick: {fileID: 7127984510529966237}
   pouvoirDisplayRightClick: {fileID: 8900267095684683686}
+  textContainer: {fileID: 1968408244200114}
+  importantText: {fileID: 114709004779769668}
   gm: {fileID: 0}
   map: {fileID: 0}
   player: {fileID: 0}
@@ -525,16 +525,6 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.6
       objectReference: {fileID: 0}
-    - target: {fileID: 7817840737000059275, guid: e74d6e33d3532424d9501157e16e3c99,
-        type: 3}
-      propertyPath: m_Text
-      value: <color=#00ff00ff>Click Gauche</color>
-      objectReference: {fileID: 0}
-    - target: {fileID: 7817840737000059275, guid: e74d6e33d3532424d9501157e16e3c99,
-        type: 3}
-      propertyPath: m_FontData.m_Alignment
-      value: 4
-      objectReference: {fileID: 0}
     - target: {fileID: 7817840737000059276, guid: e74d6e33d3532424d9501157e16e3c99,
         type: 3}
       propertyPath: m_AnchorMin.x
@@ -574,6 +564,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7817840737000059275, guid: e74d6e33d3532424d9501157e16e3c99,
+        type: 3}
+      propertyPath: m_Text
+      value: <color=#00ff00ff>Click Gauche</color>
+      objectReference: {fileID: 0}
+    - target: {fileID: 7817840737000059275, guid: e74d6e33d3532424d9501157e16e3c99,
+        type: 3}
+      propertyPath: m_FontData.m_Alignment
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e74d6e33d3532424d9501157e16e3c99, type: 3}
@@ -727,16 +727,6 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.6
       objectReference: {fileID: 0}
-    - target: {fileID: 7817840737000059275, guid: e74d6e33d3532424d9501157e16e3c99,
-        type: 3}
-      propertyPath: m_Text
-      value: <color=#00ff00ff>Click Droit</color>
-      objectReference: {fileID: 0}
-    - target: {fileID: 7817840737000059275, guid: e74d6e33d3532424d9501157e16e3c99,
-        type: 3}
-      propertyPath: m_FontData.m_Alignment
-      value: 4
-      objectReference: {fileID: 0}
     - target: {fileID: 7817840737000059276, guid: e74d6e33d3532424d9501157e16e3c99,
         type: 3}
       propertyPath: m_AnchorMin.x
@@ -776,6 +766,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7817840737000059275, guid: e74d6e33d3532424d9501157e16e3c99,
+        type: 3}
+      propertyPath: m_Text
+      value: <color=#00ff00ff>Click Droit</color>
+      objectReference: {fileID: 0}
+    - target: {fileID: 7817840737000059275, guid: e74d6e33d3532424d9501157e16e3c99,
+        type: 3}
+      propertyPath: m_FontData.m_Alignment
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e74d6e33d3532424d9501157e16e3c99, type: 3}
@@ -929,16 +929,6 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.6
       objectReference: {fileID: 0}
-    - target: {fileID: 7817840737000059275, guid: e74d6e33d3532424d9501157e16e3c99,
-        type: 3}
-      propertyPath: m_Text
-      value: <color=#00ff00ff>E</color>
-      objectReference: {fileID: 0}
-    - target: {fileID: 7817840737000059275, guid: e74d6e33d3532424d9501157e16e3c99,
-        type: 3}
-      propertyPath: m_FontData.m_Alignment
-      value: 4
-      objectReference: {fileID: 0}
     - target: {fileID: 7817840737000059276, guid: e74d6e33d3532424d9501157e16e3c99,
         type: 3}
       propertyPath: m_AnchorMin.x
@@ -978,6 +968,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7817840737000059275, guid: e74d6e33d3532424d9501157e16e3c99,
+        type: 3}
+      propertyPath: m_Text
+      value: <color=#00ff00ff>E</color>
+      objectReference: {fileID: 0}
+    - target: {fileID: 7817840737000059275, guid: e74d6e33d3532424d9501157e16e3c99,
+        type: 3}
+      propertyPath: m_FontData.m_Alignment
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e74d6e33d3532424d9501157e16e3c99, type: 3}
@@ -1131,16 +1131,6 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.6
       objectReference: {fileID: 0}
-    - target: {fileID: 7817840737000059275, guid: e74d6e33d3532424d9501157e16e3c99,
-        type: 3}
-      propertyPath: m_Text
-      value: <color=#00ff00ff>A</color>
-      objectReference: {fileID: 0}
-    - target: {fileID: 7817840737000059275, guid: e74d6e33d3532424d9501157e16e3c99,
-        type: 3}
-      propertyPath: m_FontData.m_Alignment
-      value: 4
-      objectReference: {fileID: 0}
     - target: {fileID: 7817840737000059276, guid: e74d6e33d3532424d9501157e16e3c99,
         type: 3}
       propertyPath: m_AnchorMin.x
@@ -1185,6 +1175,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_SizeDelta.x
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7817840737000059275, guid: e74d6e33d3532424d9501157e16e3c99,
+        type: 3}
+      propertyPath: m_Text
+      value: <color=#00ff00ff>A</color>
+      objectReference: {fileID: 0}
+    - target: {fileID: 7817840737000059275, guid: e74d6e33d3532424d9501157e16e3c99,
+        type: 3}
+      propertyPath: m_FontData.m_Alignment
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e74d6e33d3532424d9501157e16e3c99, type: 3}

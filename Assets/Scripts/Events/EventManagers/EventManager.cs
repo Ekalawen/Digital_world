@@ -10,14 +10,22 @@ public class EventManager : MonoBehaviour {
     public enum DeathReason { TIME_OUT, CAPTURED, FALL_OUT, TOUCHED_DEATH_CUBE, OUT_OF_BLOCKS };
     public enum EndGameType { DEATH_CUBES, CUBES_DESTRUCTIONS };
 
+    [Header("Ejection")]
     public bool ejectionTresholdUseLastCubePosition = false;
     public float ejectionTreshold = -10.0f;
+
+    [Header("Endgame")]
     public float endGameDuration = 20.0f;
     public float endGameFrameRate = 0.2f;
     public EndGameType endGameType = EndGameType.DEATH_CUBES;
     public bool bNoEndgame = false;
 
+    [Header("StarEvents")]
     public List<GameObject> randomEventsPrefabs;
+
+    [Header("AddedEvents")]
+    public List<int> nbLumieresTriggers;
+    public List<GameObject> eventsToAddPrefabs;
 
     protected GameManager gm;
     protected MapManager map;
@@ -29,9 +37,7 @@ public class EventManager : MonoBehaviour {
     protected List<RandomEvent> randomEvents;
     protected GameObject randomEventsFolder;
 
-    public void Initialize()
-    {
-        // Initialisation
+    public void Initialize() {
         name = "EventManager";
         gm = FindObjectOfType<GameManager>();
         map = GameObject.Find("MapManager").GetComponent<MapManager>();
@@ -55,11 +61,9 @@ public class EventManager : MonoBehaviour {
             Destroy(randomEvent.gameObject);
     }
 
-    public virtual void OnLumiereCaptured(Lumiere.LumiereType type)
-    {
-        if (type == Lumiere.LumiereType.NORMAL)
-        {
-            int nbLumieres = map.GetLumieres().Count;
+    public virtual void OnLumiereCaptured(Lumiere.LumiereType type) {
+        int nbLumieres = map.GetLumieres().Count;
+        if (type == Lumiere.LumiereType.NORMAL) {
             if (nbLumieres == 0 && !isEndGameStarted) {
                 if (!bNoEndgame) {
                     gm.soundManager.PlayEndGameMusic(); // Ici car lorsqu'il y a plusieurs end-games on ne veut pas que la musique restart !
@@ -68,10 +72,11 @@ public class EventManager : MonoBehaviour {
                     WinGame();
                 }
             }
-        }
-        else if (type == Lumiere.LumiereType.FINAL) {
+        } else if (type == Lumiere.LumiereType.FINAL) {
             WinGame();
         }
+        AddEventsBasedOnLumiereCount(nbLumieres);
+        gm.console.OnLumiereCaptured();
     }
 
 
@@ -190,10 +195,7 @@ public class EventManager : MonoBehaviour {
         if (gameIsEnded)
             return;
         gameIsEnded = true;
-        if (coroutineDeathCubesCreation != null)
-            StopCoroutine(coroutineDeathCubesCreation);
-        if (coroutineCubesDestructions != null)
-            StopCoroutine(coroutineCubesDestructions);
+        StopEventsAndEndEvents();
 
         if (reason != DeathReason.FALL_OUT)
             gm.FreezeTime();
@@ -217,10 +219,7 @@ public class EventManager : MonoBehaviour {
             return;
         gameIsEnded = true;
         gameIsWin = true;
-        if (coroutineDeathCubesCreation != null)
-            StopCoroutine(coroutineDeathCubesCreation);
-        if (coroutineCubesDestructions != null)
-            StopCoroutine(coroutineCubesDestructions);
+        StopEventsAndEndEvents();
 
         gm.FreezeTime();
         gm.player.FreezePouvoirs();
@@ -235,6 +234,15 @@ public class EventManager : MonoBehaviour {
         RememberGameResult(success: true);
 
         StartCoroutine(gm.QuitInSeconds(7));
+    }
+
+    private void StopEventsAndEndEvents()
+    {
+        if (coroutineDeathCubesCreation != null)
+            StopCoroutine(coroutineDeathCubesCreation);
+        if (coroutineCubesDestructions != null)
+            StopCoroutine(coroutineCubesDestructions);
+        StopEvents();
     }
 
     protected void RememberGameResult(bool success) {
@@ -385,5 +393,22 @@ public class EventManager : MonoBehaviour {
 
     public bool IsEndGameStarted() {
         return isEndGameStarted;
+    }
+
+    protected void StopEvents() {
+        foreach(RandomEvent randomEvent in randomEvents) {
+            randomEvent.StopEvent();
+        }
+    }
+
+    protected void AddEventsBasedOnLumiereCount(int nbLumieres) {
+        for(int i = 0; i < nbLumieresTriggers.Count; i++) {
+            int nbLumieresTrigger = nbLumieresTriggers[i];
+            if(nbLumieresTrigger == nbLumieres) {
+                RandomEvent newEvent = AddEvent(eventsToAddPrefabs[i]);
+                newEvent.Start();
+                newEvent.TriggerEvent();
+            }
+        }
     }
 }

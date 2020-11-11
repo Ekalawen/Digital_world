@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,7 +16,7 @@ public abstract class RandomEvent : MonoBehaviour {
     protected Timer timer;
     protected GameManager gm;
 
-    protected virtual void Start() {
+    public virtual void Start() {
         gm = GameManager.Instance;
         timer = new Timer(NextTime());
     }
@@ -23,14 +24,20 @@ public abstract class RandomEvent : MonoBehaviour {
     protected void Update() {
         if(timer.IsOver() && !gm.eventManager.IsGameOver()) {
             if (!bEventIsOn) {
-                bEventIsOn = true;
-                dureeCourante = GaussianGenerator.Next(esperanceDuree, varianceDuree, 0.0f, 2 * esperanceDuree);
-                StartEvent();
-                gm.soundManager.PlayEventStartClip();
-                StartEventConsoleMessage();
-                StartCoroutine(CEndEvent());
+                TriggerEvent();
             }
             timer = new Timer(NextTime());
+        }
+    }
+
+    public void TriggerEvent() {
+        if (CanBeStarted()) {
+            bEventIsOn = true;
+            dureeCourante = GaussianGenerator.Next(esperanceDuree, varianceDuree, 0.0f, 2 * esperanceDuree);
+            StartEvent();
+            gm.soundManager.PlayEventStartClip();
+            StartEventConsoleMessage();
+            StartCoroutine(CEndEvent());
         }
     }
 
@@ -46,7 +53,12 @@ public abstract class RandomEvent : MonoBehaviour {
         return GaussianGenerator.Next(esperanceApparition, varianceApparition, 0.0f, 2 * esperanceApparition) + dureeCourante;
     }
 
-    public abstract void StartEvent();
-    public abstract void EndEvent();
-    public abstract void StartEventConsoleMessage();
+    public virtual bool CanBeStarted() {
+        return true;
+    }
+
+    protected abstract void StartEvent();
+    protected abstract void EndEvent();  // End naturally
+    public abstract void StopEvent();  // Stopped by an external source
+    protected abstract void StartEventConsoleMessage();
 }

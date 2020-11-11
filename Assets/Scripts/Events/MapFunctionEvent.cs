@@ -11,16 +11,19 @@ public class MapFunctionEvent : RandomEvent {
     [SerializeField]
     public TimedMessage startEventMessageImportant;
 
-    public override void StartEventConsoleMessage() {
+    protected override void StartEventConsoleMessage() {
         gm.console.AjouterMessage(startEventMessage);
         gm.console.AjouterMessageImportant(startEventMessageImportant, bAfficherInConsole: false);
     }
 
-    public override void StartEvent() {
+    protected override void StartEvent() {
         mapFunction.Initialize();
         mapFunction.Activate();
     }
 
-    public override void EndEvent() {
+    protected override void EndEvent() {
+    }
+
+    public override void StopEvent() {
     }
 }

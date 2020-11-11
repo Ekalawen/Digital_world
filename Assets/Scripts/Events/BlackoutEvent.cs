@@ -15,7 +15,7 @@ public class BlackoutEvent : RandomEvent {
     protected float oldAmbientIntensity;
     protected float oldReflectionIntensity;
 
-    public override void StartEvent() {
+    protected override void StartEvent() {
         StartCoroutine(BlinkStart());
     }
 
@@ -41,11 +41,11 @@ public class BlackoutEvent : RandomEvent {
         SwitchOff(dureeCourante - dureeBlink);
     }
 
-    public override void EndEvent() {
+    protected override void EndEvent() {
         SwitchOn();
     }
 
-    public override void StartEventConsoleMessage() {
+    protected override void StartEventConsoleMessage() {
         gm.console.BlackoutMessage();
     }
 
@@ -74,5 +74,8 @@ public class BlackoutEvent : RandomEvent {
         yield return new WaitForSeconds(duree);
         if (light != null)
             light.intensity *= (1 / coefficiantAttenuationLumieres);
+    }
+
+    public override void StopEvent() {
     }
 }

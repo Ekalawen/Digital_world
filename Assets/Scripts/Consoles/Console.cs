@@ -21,6 +21,22 @@ public class Console : MonoBehaviour {
 
 	public enum TypeText {BASIC_TEXT, ENNEMI_TEXT, ALLY_TEXT};
 
+    [Header("Messages")]
+    public List<string> conseils; // Les conseils à dispenser au joueur !
+    public List<TimedMessage> timedMessages;
+
+    [Header("OnLumiereCapturedMessages")]
+    public List<int> nbLumieresTriggers;
+    public List<TimedMessage> nbLumieresTriggeredMessages;
+
+    [Header("Special Messages")]
+    public bool useAltitudeCritique = true; // Si on doit utiliser altitude critique ou pas dans cette partie !
+
+    [Header("Random messages")]
+	public Vector2 tempsAvantPhraseRandom; // Le temps avant de générer une phrase aléatoire dans la console
+	public Vector2 tempsAvantConseiller; // Le temps avant de générer un conseil
+
+    [Header("Text parameters")]
 	public Color basicColor; // La couleur avec laquelle on écrit la plupart du temps
 	public Color ennemiColor; // La couleur des messages ennemis
 	public Color allyColor; // La couleur des messages alliées
@@ -28,21 +44,20 @@ public class Console : MonoBehaviour {
 	public string ennemiPrefix; // Le préfixe à mettre devant chaque message ennemi
 	public string allyPrefix; // Le préfixe à mettre devant chaque message allié
 	public Font font; // La police de charactère des messages
-	public GameObject textContainer; // Là où l'on va afficher les lignes
 	public int tailleTexte; // La taille du texte affiché
-	public Vector2 tempsAvantPhraseRandom; // Le temps avant de générer une phrase aléatoire dans la console
-	public Vector2 tempsAvantConseiller; // Le temps avant de générer un conseil
-	public Text importantText; // Là où l'on affiche les informations importantes
-    public bool useAltitudeCritique = true; // Si on doit utiliser altitude critique ou pas dans cette partie !
-    public List<string> conseils; // Les conseils à dispenser au joueur !
-    public List<TimedMessage> timedMessages;
 
+    [Header("Pouvoirs")]
     public PouvoirDisplayInGame pouvoirDisplayA;
     public PouvoirDisplayInGame pouvoirDisplayE;
     public PouvoirDisplayInGame pouvoirDisplayLeftClick;
     public PouvoirDisplayInGame pouvoirDisplayRightClick;
 
-	[HideInInspector]
+    [Header("Links")]
+	public GameObject textContainer; // Là où l'on va afficher les lignes
+	public Text importantText; // Là où l'on affiche les informations importantes
+
+
+    [HideInInspector]
 	public GameManager gm;
 	[HideInInspector]
 	public MapManager map;
@@ -61,8 +76,9 @@ public class Console : MonoBehaviour {
     protected List<TimerMessage> timersMessages;
     protected string detectedMessage = "DÉTECTÉ !";
     protected string dissimuleMessage = "DISSIMULÉ !";
+    protected Transform messagesFolder;
 
-	void Start () {
+    void Start () {
 	}
 
     public virtual void Initialize() {
@@ -70,6 +86,8 @@ public class Console : MonoBehaviour {
 		name = "Console";
         gm = GameManager.Instance;
         map = gm.map;
+        messagesFolder = new GameObject("Messages").transform;
+        messagesFolder.parent = transform;
 		lines = new List<GameObject> ();
 		numLines = new List<int> ();
         player = gm.player;
@@ -88,7 +106,18 @@ public class Console : MonoBehaviour {
         InitPouvoirsDisplays();
     }
 
-	public virtual void Update () {
+    public void OnLumiereCaptured() {
+        int nbLumieres = gm.map.GetLumieres().Count;
+        for(int i = 0; i < nbLumieresTriggers.Count; i++) {
+            int nbLumieresTrigger = nbLumieresTriggers[i];
+            if(nbLumieresTrigger == nbLumieres) {
+                TimedMessage timedMessage = nbLumieresTriggeredMessages[i];
+                AjouterMessageImportant(timedMessage);
+            }
+        }
+    }
+
+public virtual void Update () {
         if(useAltitudeCritique)
             AltitudeCritique();
 
@@ -351,7 +380,8 @@ public class Console : MonoBehaviour {
 	}
 
     public void AddTimedMessageToHistory(string message, Console.TypeText type, float time, float duree) {
-        TimedMessage tm = new GameObject().AddComponent<TimedMessage>();
+        TimedMessage tm = new GameObject(message).AddComponent<TimedMessage>();
+        tm.transform.parent = messagesFolder;
         tm.Initialize(message, type, time, duree);
         gm.historyManager.AddConsoleMessage(tm);
     }

@@ -16,31 +16,17 @@ public class DeathCube : Cube {
     }
 
     public override void AddColor(Color addedColor) {
-        Color color = ThresholdColorSaturation(GetColor() + addedColor);
+        Color color = ColorSource.LimiteColorSaturation(GetColor() + addedColor, minColorSaturationAndValue);
         GetComponent<MeshRenderer>().material.color = color;
     }
 
     public override void SetColor(Color newColor) {
-        Color color = ThresholdColorSaturation(newColor);
+        Color color = ColorSource.LimiteColorSaturation(newColor, minColorSaturationAndValue);
         GetComponent<MeshRenderer>().material.color = color;
-    }
-
-    protected Color ThresholdColorSaturation(Color color) {
-        float mean = (color.r + color.g + color.b) / 3.0f;
-        if(mean < minColorSaturationAndValue) {
-            float ecart = minColorSaturationAndValue - mean;
-            return new Color(color.r + ecart, color.g + ecart, color.b + ecart, color.a);
-        }
-        return color;
     }
 
     public override void InteractWithPlayer() {
         Debug.Log("Looooooooooooooooose ! :'(");
         gm.eventManager.LoseGame(EventManager.DeathReason.TOUCHED_DEATH_CUBE);
     }
-
-    //public void Update() {
-    //    //GetComponent<MeshRenderer>().material.GetTexture("Albedo").
-    //    GetComponent<MeshRenderer>().material.color = Color.cyan;
-    //}
 }
