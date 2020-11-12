@@ -4,6 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+public class LevenshteinDifferences {
+    public int nbSuppressions = 0;
+    public int nbAjouts = 0;
+    public int nbRemplacements = 0;
+}
+
 public class Trace {
 
     public static string GenerateTrace() {
@@ -134,14 +140,24 @@ public class Trace {
         if (!goodTrace) {
             return "Ce n'est pas la bonne Trace.";
         }
-        int levenshteinDist = GetDistanceDeLevenshtein(passe, truePasse);
-        if (levenshteinDist <= 6) {
-            return $"Presque ! Il vous faut faire {levenshteinDist} ajout, suppression ou remplacement dans votre Passe pour arriver au bon Passe.";
+        int[,] levenshteinMatrice = GetLevenshteinMatrice(passe, truePasse);
+        if (GetDistanceDeLevenshtein(passe, truePasse, levenshteinMatrice) <= 6) {
+            LevenshteinDifferences differences = GetDifferencesDeLevenshtein(passe, truePasse, levenshteinMatrice);
+            string remplacementsS = differences.nbRemplacements > 1 ? "s" : "";
+            string remplacements = differences.nbRemplacements > 0 ? $"{differences.nbRemplacements} remplacement{remplacementsS}" : "";
+            string virgule1 = remplacements != "" ? (differences.nbAjouts > 0 && differences.nbSuppressions > 0 ? ", " : (differences.nbAjouts == 0 || differences.nbSuppressions == 0 ? " et " : "")) : "";
+            string ajoutsS = differences.nbAjouts > 1 ? "s" : "";
+            string ajouts = differences.nbAjouts > 0 ? $"{differences.nbAjouts} ajout{ajoutsS}" : "";
+            string virgule2 = remplacements != "" && ajouts != "" && differences.nbSuppressions > 0 ? " et " : "";
+            string suppressionsS = differences.nbSuppressions > 1 ? "s" : "";
+            string suppressions = differences.nbSuppressions > 0 ? $"{differences.nbSuppressions} suppression{suppressionsS}" : "";
+            Debug.Log($"{differences.nbRemplacements} {differences.nbAjouts} {differences.nbSuppressions}");
+            return $"Presque ! Il vous faut faire {remplacements}{virgule1}{ajouts}{virgule2}{suppressions} dans votre Passe pour arriver au bon Passe.";
         }
         return "Ce n'est pas le bon Passe.";
     }
 
-    public static int GetDistanceDeLevenshtein(string passe, string truePasse) {
+    public static int[,] GetLevenshteinMatrice(string passe, string truePasse) {
         int N = passe.Length;
         int M = truePasse.Length;
         int[,] dists = new int[N + 1, M + 1];
@@ -163,6 +179,50 @@ public class Trace {
                 dists[i, j] = Mathf.Min(modifyPasse, modifyTruePasse, substitution);
             }
         }
-        return dists[N, M];
+        return dists;
+    }
+
+    public static int GetDistanceDeLevenshtein(string passe, string truePasse, int[,] matrice) {
+        int N = passe.Length;
+        int M = truePasse.Length;
+        return matrice[N, M];
+    }
+
+    public static LevenshteinDifferences GetDifferencesDeLevenshtein(string passe, string truePasse, int[,] matrice) {
+        Debug.Log($"{passe} + {truePasse}");
+        int N = passe.Length;
+        int M = truePasse.Length;
+        LevenshteinDifferences differences = new LevenshteinDifferences();
+        int i = N;
+        int j = M;
+        while(i != 0 || j != 0) {
+            if(i == 0) {
+                differences.nbAjouts++;
+                j--;
+            } else if (j == 0) {
+                differences.nbSuppressions++;
+                i--;
+            } else {
+                if (passe[i - 1] == truePasse[j - 1]) {
+                    i--;
+                    j--;
+                } else {
+                    int dist = matrice[i, j];
+                    int preDist = Mathf.Max(0, dist - 1);
+                    if (matrice[i - 1, j - 1] == preDist) {
+                        differences.nbRemplacements++;
+                        i--;
+                        j--;
+                    } else if (matrice[i - 1, j] == preDist) {
+                        differences.nbSuppressions++;
+                        i--;
+                    } else {
+                        differences.nbAjouts++;
+                        j--;
+                    }
+                }
+            }
+        }
+        return differences;
     }
 }
