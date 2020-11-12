@@ -140,13 +140,14 @@ public class SelectorLevel : MonoBehaviour {
             string de = $"de{(nbWin > 1 ? "s" : "")}";
             string unite = (menuLevel.levelType == MenuLevel.LevelType.REGULAR) ? "victoire" : "block";
             string victoire = $"{unite}{(nbWin > 1 ? "s" : "")}";
-            congrats += $"Félicitation ! Vous venez de débloquer le pallier " +
+            congrats += $"Pallier " +
                 $"{de} <color={UIHelper.GREEN}>{nbWin} {victoire}</color> vers le niveau " +
-                $"<color={UIHelper.BLUE}>{nextLevel}</color> !\n";
+                $"<color={UIHelper.BLUE}>{nextLevel}</color> débloqué !\n";
         }
         string le = $"le{((nbWins.Count > 1) ? "s" : "")}";
         selectorManager.RunPopup(
             "Pallier débloqué !",
+            "Félicitations !\n" + 
             congrats +
             $"Allez {le} consulter dans les Données Hackées !",
             theme: TexteExplicatif.Theme.POSITIF);
