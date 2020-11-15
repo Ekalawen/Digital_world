@@ -1,12 +1,21 @@
-﻿using System.Collections;
+﻿using EZCameraShake;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class JumpEvent : RandomEvent {
 
+    [Header("Delais")]
     public float delaisAvantJump = 1.5f;
+
+    [Header("Malus")]
     public float timeMalus = 10f;
     public float dureeStun = 5.0f;
+
+    [Header("ScreenShake")]
+    public float screenShakeMagnitude = 10;
+    public float screenShakeRoughness = 5;
 
     protected override void StartEvent() {
         StartCoroutine(JumpEffect());
@@ -41,10 +50,12 @@ public class JumpEvent : RandomEvent {
     }
 
     protected IEnumerator UnStun() {
+        CameraShakeInstance cameraShakeInstance = CameraShaker.Instance.StartShake(screenShakeMagnitude, screenShakeRoughness, 0.1f);
         yield return new WaitForSeconds(dureeStun);
         gm.player.FreezePouvoirs(false);
         gm.player.bIsStun = false;
         gm.soundManager.PlayJumpEventUnStunClip();
+        cameraShakeInstance.StartFadeOut(0.1f);
     }
 
     protected IEnumerator AfficherMessagesPreventifs() {
