@@ -17,15 +17,18 @@ public class JumpEvent : RandomEvent {
     public float screenShakeMagnitude = 10;
     public float screenShakeRoughness = 5;
 
+    protected List<Coroutine> coroutines = new List<Coroutine>();
+
     protected override void StartEvent() {
-        StartCoroutine(JumpEffect());
+        coroutines.Clear();
+        coroutines.Add(StartCoroutine(JumpEffect()));
     }
 
     protected override void EndEvent() {
     }
 
     protected override void StartEventConsoleMessage() {
-        StartCoroutine(AfficherMessagesPreventifs());
+        coroutines.Add(StartCoroutine(AfficherMessagesPreventifs()));
     }
 
     protected IEnumerator JumpEffect() {
@@ -46,16 +49,21 @@ public class JumpEvent : RandomEvent {
 
         gm.soundManager.PlayJumpEventStunClip();
 
-        StartCoroutine(UnStun());
+        StartCoroutine(CScreenShake());
+        coroutines.Add(StartCoroutine(UnStun()));
+    }
+
+    protected IEnumerator CScreenShake() {
+        CameraShakeInstance cameraShakeInstance = CameraShaker.Instance.StartShake(screenShakeMagnitude, screenShakeRoughness, 0.1f);
+        yield return new WaitForSeconds(dureeStun);
+        cameraShakeInstance.StartFadeOut(0.1f);
     }
 
     protected IEnumerator UnStun() {
-        CameraShakeInstance cameraShakeInstance = CameraShaker.Instance.StartShake(screenShakeMagnitude, screenShakeRoughness, 0.1f);
         yield return new WaitForSeconds(dureeStun);
         gm.player.FreezePouvoirs(false);
         gm.player.bIsStun = false;
         gm.soundManager.PlayJumpEventUnStunClip();
-        cameraShakeInstance.StartFadeOut(0.1f);
     }
 
     protected IEnumerator AfficherMessagesPreventifs() {
@@ -72,5 +80,9 @@ public class JumpEvent : RandomEvent {
     }
 
     public override void StopEvent() {
+        foreach(Coroutine coroutine in coroutines) {
+            if (coroutine != null)
+                StopCoroutine(coroutine);
+        }
     }
 }
