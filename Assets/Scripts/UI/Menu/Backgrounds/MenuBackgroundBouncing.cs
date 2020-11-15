@@ -30,12 +30,10 @@ public class MenuBackgroundBouncing : MonoBehaviour {
         for (int i = 0; i < GetNbPanels(); i++) {
             GameObject go = Instantiate(panelPrefab) as GameObject;
             PanelBouncing panel = go.GetComponent<PanelBouncing>();
-            panel.menu = this;
 
             int x = i / nbPanelsY;
             int y = i % nbPanelsY;
-            panel.x = x;
-            panel.y = y;
+            panel.Initialize(x, y, this);
             panelsPos[x, y] = panel;
 
             panel.GetComponent<Image>().color = Color.black;
@@ -63,7 +61,7 @@ public class MenuBackgroundBouncing : MonoBehaviour {
         List<ColorSource.ThemeSource> themes) {
         for(int i = 0; i < nbPanelsX; i++) {
             for(int j = 0; j < nbPanelsY; j++) {
-                panelsPos[i, j].isSource = (UnityEngine.Random.Range(0.0f, 1.0f) < probaSource);
+                panelsPos[i, j].SetSource(UnityEngine.Random.Range(0.0f, 1.0f) < probaSource);
                 panelsPos[i, j].probaSource = probaSource;
                 panelsPos[i, j].distanceSource = distanceSource;
                 panelsPos[i, j].decroissanceSource = decroissanceSource;

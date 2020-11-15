@@ -20,7 +20,7 @@ public class PanelPositionLeader {
     }
 
     public virtual void Update() {
-        Vector2 currentPos = panel.realPosition;
+        Vector2 currentPos = panel.GetRealPosition();
         Vector2 finalPos = (coefficiantDeRapprochement) * position + (1.0f - coefficiantDeRapprochement) * currentPos;
         Debug.LogFormat("currentPos = {0} finalPos = {1}", currentPos, finalPos);
         panel.SetPosition(position, background.panelSize, background.rectToFill);
