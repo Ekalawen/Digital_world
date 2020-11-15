@@ -216,6 +216,8 @@ public class EventManager : MonoBehaviour {
 
         gm.soundManager.PlayDefeatClip();
 
+        gm.timerManager.StopScreenShake();
+
         RememberGameResult(success: false);
 
         StartCoroutine(gm.QuitInSeconds(7));
@@ -242,6 +244,8 @@ public class EventManager : MonoBehaviour {
         gm.console.WinGame();
 
         gm.soundManager.PlayVictoryClip();
+
+        gm.timerManager.StopScreenShake();
 
         RememberGameResult(success: true);
 

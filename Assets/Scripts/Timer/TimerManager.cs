@@ -1,22 +1,34 @@
-﻿using System;
+﻿using EZCameraShake;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class TimerManager : MonoBehaviour {
 
-    public float initialTime = 40.0f;
+    [Header("Time")]
     public bool isInfinitTime = false;
+    [ConditionalHide("isInfinitTime")]
+    public float initialTime = 40.0f;
+
+    [Header("ScreenShake on remaining time")]
+    public float timeToStartScreenShake = 5;
+    public Vector2 screenShakeMagnitudeInterval;
+    public Vector2 screenShakeRoughnessInterval;
+
+    [Header("UI")]
     public bool shouldDisplayGameTimer = true;
     public int fontSize = 20;
     public float fontSizeBounceCoef = 1.2f;
     public CounterDisplayer timerDisplayer;
+
 
     protected float totalTime;
     protected float debutTime;
     protected GameManager gm;
     protected Timer soundTimeOutTimer;
     protected Timer gameTimer;
+    protected CameraShakeInstance cameraShakeInstance;
 
     public void Initialize() {
 		// Initialisation
@@ -26,6 +38,7 @@ public class TimerManager : MonoBehaviour {
         totalTime = initialTime;
         soundTimeOutTimer = new Timer(1.0f);
         gameTimer = new Timer(0.0f);
+        cameraShakeInstance = CameraShaker.Instance.StartShake(0, 0, 0);
     }
 
     private void Update() {
@@ -36,6 +49,8 @@ public class TimerManager : MonoBehaviour {
             DisplayGameTimer();
         else
             HideGameTimer();
+
+        ScreenShakeOnRemainingTime();
     }
 
     private void HideGameTimer() {
@@ -139,5 +154,21 @@ public class TimerManager : MonoBehaviour {
 
     public bool HasGameStarted() {
         return gameTimer.GetElapsedTime() >= 0.1f;
+    }
+
+    protected void ScreenShakeOnRemainingTime() {
+        float remainingTime = GetRemainingTime();
+        if (remainingTime <= timeToStartScreenShake) {
+            float avancement = 1 - remainingTime / timeToStartScreenShake;
+            cameraShakeInstance.Magnitude = screenShakeMagnitudeInterval[0] + avancement * (screenShakeMagnitudeInterval[1] - screenShakeMagnitudeInterval[0]);
+            cameraShakeInstance.Roughness = screenShakeRoughnessInterval[0] + avancement * (screenShakeRoughnessInterval[1] - screenShakeRoughnessInterval[0]);
+        } else {
+            cameraShakeInstance.Magnitude = 0;
+            cameraShakeInstance.Roughness = 0;
+        }
+    }
+
+    public void StopScreenShake() {
+        cameraShakeInstance.StartFadeOut(0);
     }
 }
