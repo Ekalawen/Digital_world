@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EZCameraShake;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,6 +11,10 @@ public class Lumiere : MonoBehaviour {
     public LumiereType type;
     public float timeBonus = 10.0f;
     public GameObject rewardLumierePrefab;
+
+    [Header("ScreenShake")]
+    public float screenShakeMagnitude = 10;
+    public float screenShakeRoughness = 10;
 
     protected GameManager gm;
 
@@ -39,7 +44,13 @@ public class Lumiere : MonoBehaviour {
 
         gm.soundManager.PlayGetLumiereClip(transform.position);
 
+        ScreenShakeOnLumiereCapture();
+
         gm.timerManager.AddTime(timeBonus);
+    }
+
+    protected void ScreenShakeOnLumiereCapture() {
+        CameraShaker.Instance.ShakeOnce(screenShakeMagnitude, screenShakeRoughness, 0.05f, 0.05f);
     }
 
     protected virtual void NotifyConsoleLumiereCatpure() {
