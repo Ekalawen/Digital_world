@@ -1,10 +1,17 @@
-﻿using System.Collections;
+﻿using EZCameraShake;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class Item : MonoBehaviour {
 
+    [Header("Repop")]
     public bool shouldRepop = false;
+
+    [Header("ScreenShake")]
+    public float screenShakeMagnitude = 10;
+    public float screenShakeRoughness = 10;
 
     protected GameManager gm;
     protected GameObject itemPrefab;
@@ -17,9 +24,14 @@ public abstract class Item : MonoBehaviour {
 		if (hit.gameObject.name == "Joueur"){
             gm.soundManager.PlayGetItemClip(transform.position);
             OnTrigger(hit);
+            ScreenShakeOnCapture();
             Disappear();
 		}
 	}
+
+    protected void ScreenShakeOnCapture() {
+        CameraShaker.Instance.ShakeOnce(screenShakeMagnitude, screenShakeRoughness, 0.1f, 0.1f);
+    }
 
     public abstract void OnTrigger(Collider hit);
 
