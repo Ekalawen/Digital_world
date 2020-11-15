@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Sonde : Ennemi {
 
+    [Header("Poussee")]
 	public float distancePoussee; // La distance sur laquelle on va pousser le personnage !
 	public float tempsPoussee; // Le temps pendant lequel le personnage est poussé !
 

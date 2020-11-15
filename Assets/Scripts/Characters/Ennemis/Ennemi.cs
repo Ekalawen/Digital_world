@@ -1,12 +1,19 @@
-﻿using System.Collections;
+﻿using EZCameraShake;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class Ennemi : Character {
 
+    [Header("Hit times")]
     public float timeMalusOnHit = 5.0f; // Le temps que perd le joueur lorsqu'il se fait touché !
     public float timeBetweenTwoHits = 1.0f;
     public float timeBetweenTwoHitsDamages = 1.0f;
+
+    [Header("Screen Shake")]
+    public float screenShakeMagnitude = 5.0f;
+    public float screenShakeRoughness = 15.0f;
 
 	protected GameManager gm;
 	protected Player player;
@@ -50,7 +57,13 @@ public abstract class Ennemi : Character {
             }
             DisplayHitMessage();
             PlayHitSound();
+            ShakeScreen();
         }
+    }
+
+    protected void ShakeScreen() {
+        CameraShaker cs = CameraShaker.Instance;
+        cs.ShakeOnce(screenShakeMagnitude, screenShakeRoughness, 0.1f, timeBetweenTwoHits);
     }
 
     public virtual void DisplayHitMessage() {
