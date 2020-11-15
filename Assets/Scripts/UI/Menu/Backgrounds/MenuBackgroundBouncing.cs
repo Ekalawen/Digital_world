@@ -18,12 +18,25 @@ public class MenuBackgroundBouncing : MonoBehaviour {
 
 	public void Initialize ()
     {
-        nbPanelsX = (int)(rectToFill.rect.width / panelSize) + 2; // +2 pour être vraiment sur que ça dépasse de tous les cotés !
-        nbPanelsY = (int)(rectToFill.rect.height / panelSize) + 2;
+        nbPanelsX = (int)(rectToFill.rect.width / panelSize) + 1; // +1 pour être sur que ça dépasse de tous les cotés !
+        nbPanelsY = (int)(rectToFill.rect.height / panelSize) + 1;
         panels = new List<GameObject>();
         panelsPos = new PanelBouncing[nbPanelsX, nbPanelsY];
 
         CreateAllPanels();
+    }
+
+    public void Update() {
+        if(Input.GetMouseButton(0)) {
+            AddSourceWhereIsMouse();
+        }
+    }
+
+    protected void AddSourceWhereIsMouse() {
+        Vector3 mousePosition = Camera.main.ScreenToViewportPoint(Input.mousePosition);
+        int correspondingX = (int)(mousePosition.x * (nbPanelsX - 1));
+        int correspondingY = (int)(mousePosition.y * (nbPanelsY - 1));
+        panelsPos[correspondingX, correspondingY].BecameOrUpdateSource();
     }
 
     protected void CreateAllPanels() {

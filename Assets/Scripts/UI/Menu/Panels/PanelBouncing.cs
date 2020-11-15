@@ -52,9 +52,24 @@ public class PanelBouncing : MonoBehaviour {
         }
     }
 
-    protected void BecameSource() {
+    public void BecameSource() {
         isSource = true;
         colorIfSource = ColorManager.GetColor(themes);
+    }
+
+    public void BecameOrUpdateSource() {
+        if (!isSource) {
+            BecameSource();
+        } else {
+            UpdateSource();
+        }
+    }
+
+    protected void UpdateSource() {
+        float h, s, v;
+        Color.RGBToHSV(colorIfSource, out h, out s, out v);
+        v = 1.0f;
+        colorIfSource = Color.HSVToRGB(h, s, v);
     }
 
     public void SetSource(bool value) {
