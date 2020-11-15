@@ -13,7 +13,7 @@ public class LoadingWheel : MonoBehaviour {
     public void Initialize(List<PanelBouncing> panels, MenuBackgroundBouncing background) {
         this.panels = panels;
         leaders = new List<PanelPositionLeader>();
-        Vector2 center = new Vector2(background.rect.rect.width / 2, background.rect.rect.height / 2);
+        Vector2 center = new Vector2(background.rectToFill.rect.width / 2, background.rectToFill.rect.height / 2);
         int i = 0;
         foreach(PanelBouncing panel in panels) {
             CirclePanelPositionLeader leader = new CirclePanelPositionLeader(

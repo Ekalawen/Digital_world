@@ -82,8 +82,8 @@ public class PanelBouncing : MonoBehaviour {
         // On rajoute toutes les influence de toutes les sources suffisamment proches !
         for(int i = x - distanceSource; i <= x + distanceSource; i++) {
             for(int j = y - distanceSource; j <= y + distanceSource; j++) {
-                if(menu.isIn(i, j)) {
-                    PanelBouncing p = menu.getPanelXY(i, j);
+                if(menu.IsIn(i, j)) {
+                    PanelBouncing p = menu.GetPanelByPosition(i, j);
                     int distance = DistanceCarre(p);
                     if(p.isSource && distance <= distanceSource) {
                         float coefDistance = (float)distance / (float)distanceSource;
