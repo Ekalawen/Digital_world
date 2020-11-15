@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EZCameraShake;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,11 @@ public class EventManager : MonoBehaviour {
     public float endGameFrameRate = 0.2f;
     public EndGameType endGameType = EndGameType.DEATH_CUBES;
     public bool bNoEndgame = false;
+
+    [Header("ScreenShake on Endgame")]
+    public float screenShakeMagnitude = 2;
+    public float screenShakeRoughness = 15;
+    public float dureeScreenShake = 3;
 
     [Header("StarEvents")]
     public List<GameObject> randomEventsPrefabs;
@@ -206,11 +212,17 @@ public class EventManager : MonoBehaviour {
 
         gm.console.LoseGame(reason);
 
+        ScreenShakeOnLoseGame();
+
         gm.soundManager.PlayDefeatClip();
 
         RememberGameResult(success: false);
 
         StartCoroutine(gm.QuitInSeconds(7));
+    }
+
+    protected void ScreenShakeOnLoseGame() {
+        CameraShaker.Instance.ShakeOnce(screenShakeMagnitude, screenShakeRoughness, 0.1f, dureeScreenShake);
     }
 
     public void WinGame()
