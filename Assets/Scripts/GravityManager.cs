@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using EZCameraShake;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,9 +8,15 @@ public class GravityManager : MonoBehaviour {
 
     public enum Direction { HAUT, BAS, GAUCHE, DROITE, AVANT, ARRIERE };
 
+    [Header("Gravity initial")]
     public Direction initialGravityDirection = Direction.BAS;
     public float initialGravityIntensity = 5; // 5 est la gravity par défautl !
     public float dureeGravityTransition = 0.4f; // Le temps pendant lequel on fait tourner la caméra quand on change de gravité !
+
+    [Header("ScreenShake on SetGravity")]
+    public float screenShakeMagnitude = 10;
+    public float screenShakeRoughness = 5;
+    public float screenShakeFadeInPercentage = 0.5f;
 
     [HideInInspector]
     public Direction gravityDirection;
@@ -18,16 +26,9 @@ public class GravityManager : MonoBehaviour {
 
     protected Timer timer;
 
-    public void Update() {
-        //if (timer.IsOver()) {
-        //    SetGravity(GetRandomDirection(), gravityIntensity);
-        //    timer.Reset();
-        //}
-    }
-
     public static Direction GetRandomDirection() {
         System.Array enumValues = System.Enum.GetValues(typeof(Direction));
-        return (Direction)enumValues.GetValue(Random.Range(0, enumValues.Length));
+        return (Direction)enumValues.GetValue(UnityEngine.Random.Range(0, enumValues.Length));
     }
 
     public static Direction GetRandomDirection(Direction differentFrom) {
@@ -40,7 +41,6 @@ public class GravityManager : MonoBehaviour {
     public void Initialize() {
         gm = GameManager.Instance;
         timer = new Timer(5);
-        //SetGravity(initialGravityDirection, initialGravityIntensity);
         gravityDirection = initialGravityDirection;
         gravityIntensity = initialGravityIntensity;
     }
@@ -68,7 +68,15 @@ public class GravityManager : MonoBehaviour {
         gravityIntensity = newGravityIntensity;
 
         gm.player.bSetUpRotation = false;
+        ScreenShakeOnGravityChange();
         StartCoroutine(RotateCamera(axe, angle));
+    }
+
+    protected void ScreenShakeOnGravityChange() {
+        float timeShake = dureeGravityTransition;
+        float timeFadeIn = timeShake * screenShakeFadeInPercentage;
+        float timeFadeOut = timeShake * (1 - screenShakeFadeInPercentage);
+        CameraShaker.Instance.ShakeOnce(screenShakeMagnitude, screenShakeRoughness, timeFadeIn, timeFadeOut);
     }
 
     public void LookAt(Vector3 newDirection) {
