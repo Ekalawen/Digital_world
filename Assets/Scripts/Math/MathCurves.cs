@@ -68,7 +68,7 @@ public class MathCurves {
     }
 
     public static float Exp(float min, float max, float avancement) {
-        return Linear(min, max, Mathf.Exp(avancement));
+        return Linear(min, max, Mathf.Exp(avancement) / Mathf.Exp(1));
     }
 
     public static float ExpRandom(float min, float max) {
@@ -77,7 +77,7 @@ public class MathCurves {
     }
 
     public static float Log(float min, float max, float avancement) {
-        return Linear(min, max, Mathf.Log(avancement));
+        return Linear(min, max, Mathf.Log(avancement + 1) / Mathf.Log(2));
     }
 
     public static float LogRandom(float min, float max) {

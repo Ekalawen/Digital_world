@@ -89,7 +89,8 @@ public class MenuManager : MonoBehaviour {
 	}
 
     public void SetRandomBackground() {
-        float probaSource = Random.Range(0.00002f, 0.0035f);
+        float probaSource = MathCurves.CubicRandom(0.0002f, 0.0035f);
+        //float probaSource = Random.Range(0.00002f, 0.0035f);
         int distanceSource = Random.Range(1, 12);
         float decroissanceSource = Random.Range(0.002f, 0.02f);
         List<ColorSource.ThemeSource> themes = new List<ColorSource.ThemeSource>();
