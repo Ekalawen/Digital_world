@@ -82,7 +82,7 @@ public class ColorManager : MonoBehaviour {
         }
     }
 
-    public void GenerateColorSourcesInCubes(List<Cube> cubes) {
+    public void GenerateColorSourcesInCubes(List<Cube> cubes, int nbSourcesMin = 0) {
         // On calcul le nombre de sources
         List<Vector3> possiblesPos = new List<Vector3>();
         foreach (Cube cube in cubes) possiblesPos.Add(cube.transform.position);
@@ -91,6 +91,7 @@ public class ColorManager : MonoBehaviour {
         float mean = N * P;
         float variance = N * P * (1.0f - P);
         int nbSources = (int)GaussianGenerator.Next(mean, variance, 0, N);
+        nbSources = Mathf.Max(nbSources, nbSourcesMin);
 
         // Puis on les réparties ! C'est pas grâve si plusieurs sources sont au même endroit !
         for(int i = 0; i < nbSources; i++) {

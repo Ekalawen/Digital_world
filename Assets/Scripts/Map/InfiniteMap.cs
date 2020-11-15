@@ -172,7 +172,6 @@ public class InfiniteMap : MapManager {
             float distanceToFarestCube = Vector3.Distance(farestCube.transform.position, gm.player.transform.position);
             if (distanceToFarestCube <= distanceToStartScreenShake) {
                 float avancement = 1 - distanceToFarestCube / distanceToStartScreenShake;
-                Debug.Log($"cube = {distanceToFarestCube} distanceMin = {distanceToStartScreenShake} Avancement = {avancement}");
                 cameraShakeInstance.Magnitude = screenShakeMagnitudeInterval[0] + avancement * (screenShakeMagnitudeInterval[1] - screenShakeMagnitudeInterval[0]);
                 cameraShakeInstance.Roughness = screenShakeRoughnessInterval[0] + avancement * (screenShakeRoughnessInterval[1] - screenShakeRoughnessInterval[0]);
             } else {

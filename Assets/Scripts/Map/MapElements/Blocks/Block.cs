@@ -38,7 +38,7 @@ public class Block : MonoBehaviour {
     public void RegisterCubesToColorSources() {
         foreach (Cube cube in cubes)
             cube.ShouldRegisterToColorSources();
-        gm.colorManager.GenerateColorSourcesInCubes(cubes);
+        gm.colorManager.GenerateColorSourcesInCubes(cubes, nbSourcesMin: 1);
         gm.colorManager.CheckCubeSaturationInCubes(cubes);
     }
 
