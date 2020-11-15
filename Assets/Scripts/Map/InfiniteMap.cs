@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using EZCameraShake;
 
 public class InfiniteMap : MapManager {
 
@@ -30,6 +31,11 @@ public class InfiniteMap : MapManager {
     public float rangeChangeColorBlocks;
     public float speedChangeColorBlocks;
 
+    [Header("ScreenShaker")]
+    public float distanceToStartScreenShake = 10;
+    public Vector2 screenShakeMagnitudeInterval;
+    public Vector2 screenShakeRoughnessInterval;
+
     [Header("Others")]
     public CounterDisplayer nbBlocksDisplayer;
     public GameObject bestScoreMarkerPrefab;
@@ -47,6 +53,7 @@ public class InfiniteMap : MapManager {
     Timer timerSinceLastBlock;
     bool hasMadeNewBestScore = false;
     bool startsBlockDestruction = false;
+    CameraShakeInstance cameraShakeInstance;
 
     protected override void InitializeSpecific() {
         blocks = new List<Block>();
@@ -61,6 +68,7 @@ public class InfiniteMap : MapManager {
 
         ResetAllBlocksTime();
         CreateFirstBlocks();
+        cameraShakeInstance = CameraShaker.Instance.StartShake(0, 0, 0);
     }
 
     protected override void Update() {
@@ -69,6 +77,8 @@ public class InfiniteMap : MapManager {
         ManageBlockDestruction();
 
         MakeCubesLookDangerous();
+
+        ShakeProportionalyToDangerosite();
     }
 
     protected void CreateFirstBlocks() {
@@ -139,14 +149,36 @@ public class InfiniteMap : MapManager {
         }
     }
 
+    protected Cube GetFarestCube() {
+        List<Cube> farestCubes = blocks.First().GetCubes();
+        farestCubes = farestCubes.Where(c => c != null).ToList();
+        Cube farestCube = farestCubes.OrderBy(cube => Vector3.Distance(cube.transform.position, Vector3.zero)).First();
+        return farestCube;
+    }
+
     protected void MakeCubesLookDangerous() {
         if (startsBlockDestruction) {
-            List<Cube> farestCubes = blocks.First().GetCubes();
-            farestCubes = farestCubes.Where(c => c != null).ToList();
-            Cube farestCube = farestCubes.OrderBy(cube => Vector3.Distance(cube.transform.position, gm.player.transform.position)).Last();
+            Cube farestCube = GetFarestCube();
             List<ColorSource> closestSources = gm.colorManager.GetColorSourcesInRange(farestCube.transform.position, rangeChangeColorBlocks);
             foreach (ColorSource source in closestSources)
                 source.GoToColor(colorChangeColorBlocks, speedChangeColorBlocks);
+
+        }
+    }
+
+    protected void ShakeProportionalyToDangerosite() {
+        if (startsBlockDestruction) {
+            Cube farestCube = GetFarestCube();
+            float distanceToFarestCube = Vector3.Distance(farestCube.transform.position, gm.player.transform.position);
+            if (distanceToFarestCube <= distanceToStartScreenShake) {
+                float avancement = 1 - distanceToFarestCube / distanceToStartScreenShake;
+                Debug.Log($"cube = {distanceToFarestCube} distanceMin = {distanceToStartScreenShake} Avancement = {avancement}");
+                cameraShakeInstance.Magnitude = screenShakeMagnitudeInterval[0] + avancement * (screenShakeMagnitudeInterval[1] - screenShakeMagnitudeInterval[0]);
+                cameraShakeInstance.Roughness = screenShakeRoughnessInterval[0] + avancement * (screenShakeRoughnessInterval[1] - screenShakeRoughnessInterval[0]);
+            } else {
+                cameraShakeInstance.Magnitude = 0;
+                cameraShakeInstance.Roughness = 0;
+            }
         }
     }
 
