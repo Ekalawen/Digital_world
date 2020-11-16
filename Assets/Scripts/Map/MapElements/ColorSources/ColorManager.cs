@@ -253,4 +253,24 @@ public class ColorManager : MonoBehaviour {
         Color.RGBToHSV(color, out H, out S, out V);
         return V;
     }
+
+    public void MakeAllColorSourcesBounceToColor(Color targetColor, float fadeIn, float fadeOut) {
+        StartCoroutine(CMakeAllColorSourcesBounceToColor(targetColor, fadeIn, fadeOut));
+    }
+
+    public IEnumerator CMakeAllColorSourcesBounceToColor(Color targetColor, float fadeIn, float fadeOut) {
+        List<Color> initialColors = this.sources.Select(s => s.color).ToList();
+        List<ColorSource> sources = this.sources;
+        foreach(ColorSource source in sources) {
+            source.GoToColor(targetColor, fadeIn);
+        }
+        yield return new WaitForSeconds(fadeIn);
+        yield return null;
+        for(int i = 0; i < sources.Count; i++) {
+            ColorSource source = sources[i];
+            if (source != null) {
+                source.GoToColor(initialColors[i], fadeOut);
+            }
+        }
+    }
 }

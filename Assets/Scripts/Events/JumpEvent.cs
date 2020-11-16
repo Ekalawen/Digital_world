@@ -17,6 +17,10 @@ public class JumpEvent : RandomEvent {
     public float screenShakeMagnitude = 10;
     public float screenShakeRoughness = 5;
 
+    [Header("Flash")]
+    public float dureeFadeFlash = 0.1f;
+    public Color colorFlash = Color.white;
+
     protected List<Coroutine> coroutines = new List<Coroutine>();
 
     protected override void StartEvent() {
@@ -32,8 +36,9 @@ public class JumpEvent : RandomEvent {
     }
 
     protected IEnumerator JumpEffect() {
-        yield return new WaitForSeconds(delaisAvantJump);
-
+        yield return new WaitForSeconds(delaisAvantJump - dureeFadeFlash);
+        gm.colorManager.MakeAllColorSourcesBounceToColor(colorFlash, dureeFadeFlash, dureeFadeFlash);
+        yield return new WaitForSeconds(dureeFadeFlash);
         if(gm.player.GetEtat() != Player.EtatPersonnage.EN_CHUTE
         && gm.player.GetEtat() != Player.EtatPersonnage.EN_SAUT) {
             Stun();
