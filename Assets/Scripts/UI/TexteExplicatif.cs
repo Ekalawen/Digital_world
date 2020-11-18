@@ -27,6 +27,8 @@ public class TexteExplicatif : MonoBehaviour {
     public Color negatifThemeColor;
     public Color neutralThemeColor;
 
+    public float nbCharactersPrintedBySeconds = 150;
+
     public bool dontDisableOnSpace = false;
 
     protected SelectorManager selectorManager;
@@ -79,7 +81,30 @@ public class TexteExplicatif : MonoBehaviour {
             SetText(UseReplacementList(mainText.text));
         }
 
-        PutMainTextOnBottom();
+        //PutMainTextOnBottom();
+
+        StartRevealingCharacters();
+    }
+
+    protected void StartRevealingCharacters() {
+        StartCoroutine(CStartRevealingCharacters());
+    }
+
+    protected IEnumerator CStartRevealingCharacters() {
+        int nbCharacters = mainText.text.Length;
+        mainText.maxVisibleCharacters = 0;
+        Timer timer = new Timer((float)nbCharacters / nbCharactersPrintedBySeconds);
+        while (!timer.IsOver()) {
+            int nbCharactersVisibles = (int)(nbCharacters * timer.GetAvancement());
+            mainText.maxVisibleCharacters = nbCharactersVisibles;
+            ScrollRect sr = mainText.transform.parent.GetComponent<ScrollRect>();
+            sr.verticalScrollbar.value = 1;
+            if(Input.anyKey || Input.mouseScrollDelta != Vector2.zero) {
+                break;
+            }
+            yield return null;
+        }
+        mainText.maxVisibleCharacters = nbCharacters;
     }
 
     public string ComputeText(int textTreshold = 0) {
