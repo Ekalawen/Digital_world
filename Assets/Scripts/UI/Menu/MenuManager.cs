@@ -111,7 +111,7 @@ public class MenuManager : MonoBehaviour {
     }
 
     public void RunPopup(string title, string text) {
-        popup.SetText(title, text);
+        popup.SetTextAndTitle(title, text);
         popup.Run();
     }
 }

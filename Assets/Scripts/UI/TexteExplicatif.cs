@@ -16,7 +16,7 @@ public class TexteExplicatif : MonoBehaviour {
     public GameObject content;
     public Text titleTextSource;
     public Text titleTextTarget;
-    public Text mainText;
+    public TMPro.TMP_Text mainText;
     public bool useTextAsset = false;
     public TextAsset textAsset;
 
@@ -50,7 +50,7 @@ public class TexteExplicatif : MonoBehaviour {
             CleanReplacements();
         }
         this.titleTextTarget.text = title;
-        this.mainText.text = mainText;
+        SetText(mainText);
         this.useTextAsset = useTextAsset;
         this.textAsset = textAsset;
         SetColorTheme(theme);
@@ -74,9 +74,9 @@ public class TexteExplicatif : MonoBehaviour {
         firstFrame = true;
 
         if (useTextAsset) {
-            mainText.text = ComputeText(textTreshold);
+            SetText(ComputeText(textTreshold));
         } else {
-            mainText.text = UseReplacementList(mainText.text);
+            SetText(UseReplacementList(mainText.text));
         }
 
         PutMainTextOnBottom();
@@ -92,9 +92,13 @@ public class TexteExplicatif : MonoBehaviour {
         mainText.rectTransform.position = pos;
     }
 
-    public void SetText(string newTitle, string newText) {
+    public void SetTextAndTitle(string newTitle, string newText) {
         titleTextTarget.text = newTitle;
-        mainText.text = newText;
+        SetText(newText);
+    }
+
+    public void SetText(string newText) {
+        mainText.text = $"<color=white>{newText}</color>";
     }
 
     private void Update() {

@@ -36,7 +36,8 @@ public class MenuBackgroundBouncing : MonoBehaviour {
         Vector3 mousePosition = Camera.main.ScreenToViewportPoint(Input.mousePosition);
         int correspondingX = (int)(mousePosition.x * (nbPanelsX - 1));
         int correspondingY = (int)(mousePosition.y * (nbPanelsY - 1));
-        panelsPos[correspondingX, correspondingY].BecameOrUpdateSource();
+        if(0 <= correspondingX && correspondingX < nbPanelsX && 0 <= correspondingY && correspondingY < nbPanelsY)
+            panelsPos[correspondingX, correspondingY].BecameOrUpdateSource();
     }
 
     protected void CreateAllPanels() {
