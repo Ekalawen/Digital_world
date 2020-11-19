@@ -317,7 +317,7 @@ public class MenuLevel : MonoBehaviour {
     }
 
     public static string SurroundWithBlueColor(Match match) {
-        return "<color=blue>" + match.Value + "</color>";
+        return UIHelper.SurroundWithColor(match.Value, UIHelper.BLUE);
     }
 
     protected void InitTextesExplicatifs() {
@@ -336,9 +336,9 @@ public class MenuLevel : MonoBehaviour {
         texteExplicatifDonneesHackesSuccess.AddReplacementEvaluator(@"Traces?", evaluator);
         // L'ajout des next palliers se fait dans la fonction AddNextPallierMessageToAllFragments()
 
-        texteInformations.AddReplacement("[Cilliannelle Crittefigiée]", $"<color={UIHelper.PURE_GREEN}>[Cilliannelle Crittefigiée]</color>");
-        texteInformations.AddReplacement("[Morgensoul*]", $"<color={UIHelper.CYAN}>[Morgensoul*]</color>");
-        texteInformations.AddReplacement("[V1P3R]", $"<color={UIHelper.CYAN}>[V1P3R]</color>");
+        texteInformations.AddReplacement("[Cilliannelle Crittefigiée]", UIHelper.SurroundWithColor("[Cilliannelle Crittefigiée]", UIHelper.PURE_GREEN));
+        texteInformations.AddReplacement("[Morgensoul*]", UIHelper.SurroundWithColor("[Morgensoul*]", UIHelper.CYAN));
+        texteInformations.AddReplacement("[V1P3R]", UIHelper.SurroundWithColor("[V1P3R]", UIHelper.CYAN));
     }
 
     public bool HasJustWin() {

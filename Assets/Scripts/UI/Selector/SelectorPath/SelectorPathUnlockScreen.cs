@@ -118,7 +118,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
             "Et pourtant ce n'est plus le bon mot de passe.\n" +
             $"Le mot de passe était {password}.\n",
             theme: TexteExplicatif.Theme.NEUTRAL);
-        selectorManager.popup.AddReplacement(password, $"<color=green>{password}</color>");
+        selectorManager.popup.AddReplacement(password, UIHelper.SurroundWithColor(password, UIHelper.GREEN));
         selectorManager.popup.Run();
     }
 

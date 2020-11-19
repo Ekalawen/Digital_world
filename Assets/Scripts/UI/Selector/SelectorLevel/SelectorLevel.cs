@@ -54,7 +54,7 @@ public class SelectorLevel : MonoBehaviour {
     protected void RewardNewBestScore() {
         string bestScoreString = menuLevel.GetBestScoreToString();
         selectorManager.popup.CleanReplacements();
-        selectorManager.popup.AddReplacement(bestScoreString, $"<color=green>{bestScoreString}</color>");
+        selectorManager.popup.AddReplacement(bestScoreString, UIHelper.SurroundWithColor(bestScoreString, UIHelper.GREEN));
         selectorManager.RunPopup("MEILLEUR SCORE !!!",
             "Incroyable !\n" +
             "Vous avez battu votre record et fais le Meilleur Score !\n" +
@@ -141,8 +141,8 @@ public class SelectorLevel : MonoBehaviour {
             string unite = (menuLevel.levelType == MenuLevel.LevelType.REGULAR) ? "victoire" : "block";
             string victoire = $"{unite}{(nbWin > 1 ? "s" : "")}";
             congrats += $"Pallier " +
-                $"{de} <color={UIHelper.GREEN}>{nbWin} {victoire}</color> vers le niveau " +
-                $"<color={UIHelper.BLUE}>{nextLevel}</color> débloqué !\n";
+                $"{de} {UIHelper.SurroundWithColor($"{nbWin} {victoire}", UIHelper.GREEN)} vers le niveau " +
+                $"{UIHelper.SurroundWithColor(nextLevel, UIHelper.BLUE)} débloqué !\n";
         }
         string le = $"le{((nbWins.Count > 1) ? "s" : "")}";
         selectorManager.RunPopup(
@@ -161,7 +161,7 @@ public class SelectorLevel : MonoBehaviour {
             if (shouldCongrats) {
                 selectorManager.RunPopup(
                     title: "Niveau débloqué !",
-                    text: $"Félicitation ! Vous venez de débloquer le niveau <color={UIHelper.BLUE}>{GetName()}</color> !\n" + 
+                    text: $"Félicitation ! Vous venez de débloquer le niveau {UIHelper.SurroundWithColor(GetName(), UIHelper.BLUE)} !\n" + 
                     "Continuez comme ça !\n" +
                     "Et Happy Hacking ! :)",
                     theme: TexteExplicatif.Theme.POSITIF);

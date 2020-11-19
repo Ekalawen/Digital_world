@@ -80,6 +80,7 @@ public class TexteExplicatif : MonoBehaviour {
         } else {
             SetText(UseReplacementList(mainText.text));
         }
+        ApplyColorReplacements();
 
         //PutMainTextOnBottom();
 
@@ -123,7 +124,7 @@ public class TexteExplicatif : MonoBehaviour {
     }
 
     public void SetText(string newText) {
-        mainText.text = $"<color=white>{newText}</color>";
+        mainText.text = UIHelper.SurroundWithColorWithoutB(newText, UIHelper.WHITE);
     }
 
     private void Update() {
@@ -210,6 +211,14 @@ public class TexteExplicatif : MonoBehaviour {
         doneButton.GetComponent<Image>().color = saturated;
     }
 
+    protected void ApplyColorReplacements() {
+        string t = mainText.text;
+        foreach(Tuple<string, string> color in UIHelper.GetColorMapping()) {
+            t = t.Replace(color.Item1, color.Item2);
+        }
+        mainText.text = t;
+    }
+
     public TresholdText GetTresholdText() {
         return tresholdText;
     }
@@ -234,14 +243,14 @@ public class TexteExplicatif : MonoBehaviour {
     }
 
     public static string SurroundWithRedColor(Match match) {
-        return $"<color={UIHelper.RED}>" + match.Value + "</color>";
+        return UIHelper.SurroundWithColor(match.Value, UIHelper.RED);
     }
 
     public static string SurroundWithGreenColor(Match match) {
-        return $"<color={UIHelper.GREEN}>" + match.Value + "</color>";
+        return UIHelper.SurroundWithColor(match.Value, UIHelper.GREEN);
     }
 
     public static string SurroundWithBlueColor(Match match) {
-        return $"<color={UIHelper.BLUE}>" + match.Value + "</color>";
+        return UIHelper.SurroundWithColor(match.Value, UIHelper.BLUE);
     }
 }
