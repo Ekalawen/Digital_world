@@ -15,7 +15,8 @@ public class TexteExplicatif : MonoBehaviour {
 
     public GameObject content;
     public Text titleTextSource;
-    public Text titleTextTarget;
+    //public Text titleTextTarget;
+    public TMPro.TMP_Text titleTextTarget;
     public TMPro.TMP_Text mainText;
     public bool useTextAsset = false;
     public TextAsset textAsset;
