@@ -50,14 +50,14 @@ public class MenuLevel : MonoBehaviour {
     [Header("Scores")]
     public GameObject scoresRegular;
     public GameObject scoresInfinite;
-    public Text score_nbTries;
-    public Text score_nbWins;
-    public Text score_winrate;
-    public Text score_highestScore;
-    public Text score_nbGames;
-    public Text score_meanScore;
-    public Text score_sinceLastBestScore;
-    public Text score_bestScore;
+    public TMPro.TMP_Text score_nbTries;
+    public TMPro.TMP_Text score_nbWins;
+    public TMPro.TMP_Text score_winrate;
+    public TMPro.TMP_Text score_highestScore;
+    public TMPro.TMP_Text score_nbGames;
+    public TMPro.TMP_Text score_meanScore;
+    public TMPro.TMP_Text score_sinceLastBestScore;
+    public TMPro.TMP_Text score_bestScore;
 
     [Header("Other Links")]
     public SelectorManager selectorManager;
