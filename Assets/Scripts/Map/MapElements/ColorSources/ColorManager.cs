@@ -194,6 +194,13 @@ public class ColorManager : MonoBehaviour {
         return (ColorSource.ThemeSource)enumValues.GetValue(Random.Range(0, enumValues.Length));
     }
 
+    public static ColorSource.ThemeSource GetRandomThemeNotNoir() {
+        ColorSource.ThemeSource theme = GetRandomTheme();
+        while(theme == ColorSource.ThemeSource.NOIR)
+            theme = GetRandomTheme();
+        return theme;
+    }
+
     public static Color InterpolateColors(Color c1, Color c2, float avancement = 0.5f) {
         return (1 - avancement) * c1 + avancement * c2;
     }
