@@ -203,6 +203,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
             fragment.text = pallierNumberText + fragment.text;
         }
         texteExplicatif.mainText.text = texteExplicatif.ComputeText(textTreshold);
+        texteExplicatif.ApplyColorReplacements();
     }
 
     protected string GetNextPallierText(TresholdFragment fragment, List<TresholdFragment> fragments, int textTreshold) {

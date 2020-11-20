@@ -15,7 +15,6 @@ public class TexteExplicatif : MonoBehaviour {
 
     public GameObject content;
     public Text titleTextSource;
-    //public Text titleTextTarget;
     public TMPro.TMP_Text titleTextTarget;
     public TMPro.TMP_Text mainText;
     public bool useTextAsset = false;
@@ -24,6 +23,7 @@ public class TexteExplicatif : MonoBehaviour {
     public Color color;
     public Button doneButton;
     public Image fondSombre;
+    public Image fondClair;
     public Color positifThemeColor;
     public Color negatifThemeColor;
     public Color neutralThemeColor;
@@ -207,12 +207,15 @@ public class TexteExplicatif : MonoBehaviour {
 
     protected void InitColor() {
         fondSombre.color = color;
+        Color halfSaturated = color;
+        halfSaturated.a = 0.90f;
+        fondClair.color = halfSaturated;
         Color saturated = color;
         saturated.a = 1.0f;
         doneButton.GetComponent<Image>().color = saturated;
     }
 
-    protected void ApplyColorReplacements() {
+    public void ApplyColorReplacements() {
         string t = mainText.text;
         foreach(Tuple<string, string> color in UIHelper.GetColorMapping()) {
             t = t.Replace(color.Item1, color.Item2);
