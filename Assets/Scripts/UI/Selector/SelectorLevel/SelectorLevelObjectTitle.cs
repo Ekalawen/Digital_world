@@ -8,7 +8,7 @@ public class SelectorLevelObjectTitle : MonoBehaviour {
 
     public SelectorLevelObject objectLevel;
 
-    public Text text;
+    public TMPro.TMP_Text text;
     public Image background;
     public Color normalColor;
     public Color focusedColor;
@@ -19,6 +19,7 @@ public class SelectorLevelObjectTitle : MonoBehaviour {
 
     protected void SetTitleToLevelName() {
         text.text = objectLevel.level.menuLevel.textLevelName.text;
+        UIHelper.FitTextHorizontaly(objectLevel.level.menuLevel.textLevelName.text, text);
     }
 
     public void SetFocused() {
