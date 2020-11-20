@@ -62,7 +62,7 @@ public class MenuLevel : MonoBehaviour {
     [Header("Other Links")]
     public SelectorManager selectorManager;
     public MenuBackgroundBouncing menuBouncingBackground;
-    public Text textLevelName;
+    public TMPro.TMP_Text textLevelName;
     public InputField inputFieldNext;
 
     [HideInInspector]
@@ -82,6 +82,7 @@ public class MenuLevel : MonoBehaviour {
 
         string key = GetName() + CURRENT_INPUT_FIELD_KEY;
         inputFieldNext.text = PlayerPrefs.GetString(key);
+        UIHelper.FitTextHorizontaly(textLevelName.text, textLevelName);
     }
 
     private void Update() {

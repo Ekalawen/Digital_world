@@ -9,8 +9,8 @@ using UnityEngine.UI;
 public class SelectorPathUnlockScreen : MonoBehaviour {
 
     [Header("Links")]
-    public Text fromLevelTitle;
-    public Text toLevelTitle;
+    public TMPro.TMP_Text fromLevelTitle;
+    public TMPro.TMP_Text toLevelTitle;
     public GameObject openCadena;
     public GameObject closedCadena;
     public InputField input;

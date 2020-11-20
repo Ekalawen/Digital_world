@@ -53,6 +53,17 @@ public class UIHelper {
             text.fontSize -= 1;
     }
 
+    public static bool IsOverflowing(string content, TMPro.TMP_Text text) {
+        float preferedWidth = LayoutUtility.GetPreferredWidth(text.rectTransform);
+        float maxWidth = text.GetComponent<RectTransform>().rect.width;
+        return preferedWidth > maxWidth;
+    }
+
+    public static void FitTextHorizontaly(string content, TMPro.TMP_Text text) {
+        while (text.fontSize > 1 && IsOverflowing(content, text))
+            text.fontSize -= 1;
+    }
+
     public static string SurroundWithColor(string text, Color color) {
         string htmlColor = $"#{ColorUtility.ToHtmlStringRGBA(color)}";
         return SurroundWithColor(text, htmlColor);
