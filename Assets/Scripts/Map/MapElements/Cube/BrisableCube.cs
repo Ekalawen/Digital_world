@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,6 +15,7 @@ public class BrisableCube : Cube {
         base.Start();
         Material material = GetComponent<Renderer>().material;
         material.mainTexture = textures[UnityEngine.Random.Range(0, textures.Count)];
+        SetOpacity(1);
     }
 
     public void DestroyInSeconds() {
@@ -22,8 +24,12 @@ public class BrisableCube : Cube {
     }
 
     protected IEnumerator CDestroyInSeconds() {
-        SetColor(preDestructionColor);
-        yield return new WaitForSeconds(dureeBeforeDestruction);
+        Timer timer = new Timer(dureeBeforeDestruction);
+        while(!timer.IsOver()) {
+            float alpha = MathCurves.Power(0, 1, 1 - timer.GetAvancement(), 1.5f);
+            SetOpacity(alpha);
+            yield return null;
+        }
         Explode();
     }
 

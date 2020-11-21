@@ -92,4 +92,10 @@ public class Cube : MonoBehaviour {
 
     public virtual void InteractWithPlayer() {
     }
+
+    public void SetOpacity(float alpha) {
+        Color currentColor = GetColor();
+        currentColor.a = alpha;
+        SetColor(currentColor);
+    }
 }
