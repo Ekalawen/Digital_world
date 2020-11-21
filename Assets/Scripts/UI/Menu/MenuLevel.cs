@@ -231,7 +231,10 @@ public class MenuLevel : MonoBehaviour {
     }
 
     public float GetWinrate() {
-        return (float)GetNbWins() / (float)GetNbTries();
+        int nbTries = GetNbTries();
+        if (nbTries == 0)
+            return 0;
+        return (float)GetNbWins() / (float)nbTries;
     }
 
     public float GetMeanScore() {
