@@ -16,6 +16,8 @@ public class OnlyDisplayOnTyping : MonoBehaviour {
     }
 
     public void OnValueChanged(string str) {
+        if (!enabled)
+            return;
         input.contentType = InputField.ContentType.Standard;
         if (coroutine != null)
             StopCoroutine(coroutine);
@@ -31,14 +33,15 @@ public class OnlyDisplayOnTyping : MonoBehaviour {
     protected IEnumerator CSetBackToPassword() {
         yield return new WaitForSeconds(delay);
         input.contentType = InputField.ContentType.Password;
-        NotifyInput();
+        NotifyInput(input);
     }
 
-    protected void NotifyInput() {
+    public static void NotifyInput(InputField input) {
         // Just to notify x) Sinon l'input ne se met pas à jour :/
         string oldValue = input.text;
+        int oldCaretPosition = input.caretPosition;
         input.SetTextWithoutNotify("pingouin" + oldValue); // Quelquechose de différent ! :)
         input.SetTextWithoutNotify(oldValue);
-        input.caretPosition = oldValue.Length;
+        input.caretPosition = oldCaretPosition;
     }
 }
