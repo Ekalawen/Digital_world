@@ -849,8 +849,8 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_textAlignment: 257
-  m_characterSpacing: -5.9
-  m_wordSpacing: -17.95
+  m_characterSpacing: -8.29
+  m_wordSpacing: -11.31
   m_lineSpacing: 0
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
@@ -879,7 +879,7 @@ MonoBehaviour:
   m_firstVisibleCharacter: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: 10, w: 0}
   m_textInfo:
     textComponent: {fileID: 1612311806740605200}
     characterCount: 167
@@ -1468,6 +1468,16 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -145
       objectReference: {fileID: 0}
+    - target: {fileID: 4850725371062341167, guid: df108c3e51959b046aaa9a02ab191c65,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4850725371062341167, guid: df108c3e51959b046aaa9a02ab191c65,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6408735524314510494, guid: df108c3e51959b046aaa9a02ab191c65,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
@@ -1498,21 +1508,6 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
-    - target: {fileID: 225466149259831616, guid: df108c3e51959b046aaa9a02ab191c65,
-        type: 3}
-      propertyPath: m_Text
-      value: Done()
-      objectReference: {fileID: 0}
-    - target: {fileID: 4850725371062341167, guid: df108c3e51959b046aaa9a02ab191c65,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4850725371062341167, guid: df108c3e51959b046aaa9a02ab191c65,
-        type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7596890694149930210, guid: df108c3e51959b046aaa9a02ab191c65,
         type: 3}
       propertyPath: m_text
@@ -1522,6 +1517,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_textInfo.characterCount
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 225466149259831616, guid: df108c3e51959b046aaa9a02ab191c65,
+        type: 3}
+      propertyPath: m_Text
+      value: Done()
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: df108c3e51959b046aaa9a02ab191c65, type: 3}

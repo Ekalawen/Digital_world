@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -11,6 +12,7 @@ public class MenuManager : MonoBehaviour {
 
     public static bool DISABLE_HOTKEYS = false;
     public static string FIRST_TIME_CONNEXION_KEY = "firstTimeConnexionKey";
+    public static string HAVE_THINK_ABOUT_TUTORIAL_KEY = "haveThinkAboutTutorialKey";
     public static string SHOULD_SET_RANDOM_BACKGROUND_KEY = "shouldSetRandomBackgroundKey";
     public static string TRUE = "true";
     public static string FALSE = "false";
@@ -52,13 +54,32 @@ public class MenuManager : MonoBehaviour {
 	// Lorsqu'on appui sur le bouton jouer
 	public void OnPlayPress() {
 		Debug.Log("On a appuyé sur Play !");
-        //menuLevelSelector.Run(0);
-        SceneManager.LoadScene("SelectorScene");
+        if (!HaveThinkAboutTutorial()) {
+            AdvicePlayTutorial();
+        } else {
+            SceneManager.LoadScene("SelectorScene");
+        }
     }
 
-	// Lorsqu'on appui sur le bouton tutoriel
-	public void OnTutorialPress() {
+    protected bool HaveThinkAboutTutorial() {
+        return PlayerPrefs.HasKey(HAVE_THINK_ABOUT_TUTORIAL_KEY);
+    }
+
+    protected void AdvicePlayTutorial() {
+        string tutoriel = UIHelper.SurroundWithColor("Tutoriel()", UIHelper.BLUE);
+        RunPopup(
+            title: "Tutoriel() recommandé !", 
+            text: $"Tentative de passer le {tutoriel} détectée !\n" +
+            $"Nos Datas indiquent que réaliser le {tutoriel} augmente les chances de succès de {UIHelper.SurroundWithColor("999999.999%", UIHelper.GREEN)}.\n" + 
+            $"Synthèse : {tutoriel} fortement recommendé.",
+            theme: TexteExplicatif.Theme.NEUTRAL);
+        PlayerPrefs.SetString(HAVE_THINK_ABOUT_TUTORIAL_KEY, MenuManager.TRUE);
+    }
+
+    // Lorsqu'on appui sur le bouton tutoriel
+    public void OnTutorialPress() {
 		Debug.Log("On a appuyé sur Tutoriel !");
+        PlayerPrefs.SetString(HAVE_THINK_ABOUT_TUTORIAL_KEY, MenuManager.TRUE);
         menuLevelSelector.CleanLevelIndice();
         PlayerPrefs.SetString(MenuLevel.LEVEL_NAME_KEY, "Tutoriel");
 		SceneManager.LoadScene("TutorialScene");
@@ -90,11 +111,10 @@ public class MenuManager : MonoBehaviour {
 
     public void SetRandomBackground() {
         float probaSource = MathCurves.CubicRandom(0.0002f, 0.0035f);
-        //float probaSource = Random.Range(0.00002f, 0.0035f);
-        int distanceSource = Random.Range(1, 12);
-        float decroissanceSource = Random.Range(0.002f, 0.02f);
+        int distanceSource = UnityEngine.Random.Range(1, 12);
+        float decroissanceSource = UnityEngine.Random.Range(0.002f, 0.02f);
         List<ColorSource.ThemeSource> themes = new List<ColorSource.ThemeSource>();
-        int nbThemes = Random.Range(1, 4);
+        int nbThemes = UnityEngine.Random.Range(1, 4);
         for(int i = 0; i < nbThemes; i++)
             themes.Add(ColorManager.GetRandomThemeNotNoir());
         menuBouncingBackground.SetParameters(probaSource, distanceSource, decroissanceSource, themes);
@@ -110,8 +130,8 @@ public class MenuManager : MonoBehaviour {
         }
     }
 
-    public void RunPopup(string title, string text) {
-        popup.SetTextAndTitle(title, text);
+    public void RunPopup(string title, string text, TexteExplicatif.Theme theme, bool cleanReplacements = true) {
+        popup.Initialize(title: title, mainText: text, theme: theme, cleanReplacements: cleanReplacements);
         popup.Run();
     }
 }
