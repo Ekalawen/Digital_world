@@ -12,10 +12,6 @@ public class GameManager : MonoBehaviour {
     public static GameManager Instance { get { return _instance ?? (_instance = new GameObject().AddComponent<GameManager>()); } }
 
 
-    //////////////////////////////////////////////////////////////////////////////////////
-    // ATTRIBUTS PUBLIQUES
-    //////////////////////////////////////////////////////////////////////////////////////
-
     public GameObject playerPrefab; // On récupère le personnage !
 	public GameObject consolePrefab; // On récupère la console !
 	public GameObject pointeurPrefab; // Pour avoir un visuel du centre de l'écran
@@ -30,10 +26,6 @@ public class GameManager : MonoBehaviour {
     public GameObject gravityManagerPrefab; // Pour gérer la gravité !
     public GameObject scanManagerPrefab; // Pour gérer les scans !
     public GameObject historyManagerPrefab; // Pour retenir des infos sur la partie !
-
-    //////////////////////////////////////////////////////////////////////////////////////
-    // ATTRIBUTS PRIVÉES
-    //////////////////////////////////////////////////////////////////////////////////////
 
 	[HideInInspector]
 	public MapManager map;
@@ -70,16 +62,11 @@ public class GameManager : MonoBehaviour {
     [HideInInspector]
     protected bool timeFreezed = false;
 
-    //////////////////////////////////////////////////////////////////////////////////////
-    // METHODES
-    //////////////////////////////////////////////////////////////////////////////////////
-
     void Awake() {
         if (!_instance) { _instance = this; }
     }
 
     void Start () {
-        // On crée ce dont on a besoin
         managerFolder = new GameObject("Managers");
         timerManager = Instantiate(timerManagerPrefab, managerFolder.transform).GetComponent<TimerManager>();
         gravityManager = Instantiate(gravityManagerPrefab, managerFolder.transform).GetComponent<GravityManager>();
@@ -100,7 +87,6 @@ public class GameManager : MonoBehaviour {
 	}
 
     protected virtual void Initialize() {
-        // Puis on les initialises !
         timerManager.Initialize();
         gravityManager.Initialize();
         map.Initialize();
@@ -118,14 +104,11 @@ public class GameManager : MonoBehaviour {
         historyManager.Initialize();
     }
 
-	// Update is called once per frame
 	void Update () {
-        // Si on a appuyé sur la touche Escape, on quitte le jeu !
         if (Input.GetKey (KeyCode.Escape)) {
 			QuitterPartie();
 		}
 
-		// Si on a appuyé sur F1 on récupère la souris, ou on la cache ! :D
 		if(Input.GetKeyDown(KeyCode.F1)) {
 			if(Cursor.visible) {
 				Cursor.lockState = CursorLockMode.Locked;
@@ -161,15 +144,11 @@ public class GameManager : MonoBehaviour {
 
     public IEnumerator QuitInSeconds(int tps) {
 		yield return new WaitForSeconds (tps);
-		// QuitGame ();
 		QuitterPartie();
 	}
 
 	public void QuitGame() {
-		// save any game data here
 		#if UNITY_EDITOR
-			// Application.Quit() does not work in the editor so
-			// UnityEditor.EditorApplication.isPlaying need to be set to false to end the game
 			UnityEditor.EditorApplication.isPlaying = false;
 		#else
 			Application.Quit();
@@ -177,7 +156,6 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void QuitterPartie() {
-		// On détruit tout !
 		Object.Destroy(map);
 		Object.Destroy(player);
 		Object.Destroy(console);
@@ -189,8 +167,10 @@ public class GameManager : MonoBehaviour {
 		Cursor.lockState = CursorLockMode.None;
 		Cursor.visible = true;
 
-        if(eventManager.IsWin() && SceneManager.GetActiveScene().name != "TutorialScene") {
+        if(eventManager.IsWin()) {
             SceneManager.LoadScene("RewardScene");
+        } else if (SceneManager.GetActiveScene().name == "TutorialScene") {
+            SceneManager.LoadScene("MenuScene");
         } else {
             SceneManager.LoadScene("SelectorScene");
         }
