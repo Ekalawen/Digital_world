@@ -15,8 +15,6 @@ public struct TimerMessage {
     }
 }
 
-// La Console a pour but de gérer l'interface graphique de l'utilisateur.
-// Elle gérera notemment tous les affichages dans le Terminal du personnage.
 public class Console : MonoBehaviour {
 
 	public enum TypeText {BASIC_TEXT, ENNEMI_TEXT, ALLY_TEXT};
