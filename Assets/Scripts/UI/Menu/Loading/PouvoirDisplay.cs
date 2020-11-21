@@ -8,8 +8,8 @@ public class PouvoirDisplay : MonoBehaviour {
     public static string NULL_NAME_VALUE = "404 Not Found";
     public static string NULL_DESCRIPTION_VALUE = "Null";
 
-    public Text textName;
-    public Text textDescription;
+    public TMPro.TMP_Text textName;
+    public TMPro.TMP_Text textDescription;
     public Image image;
     public Image bordure;
     public Color bordureColorActive;

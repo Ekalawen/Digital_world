@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class LoadingMenu : MonoBehaviour {
 
     public GameObject appuyezSurUneToucheTexte;
-    public Text conseilText;
+    public TMPro.TMP_Text conseilText;
     public PouvoirDisplay pouvoirA;
     public PouvoirDisplay pouvoirE;
     public PouvoirDisplay pouvoirLeftClick;

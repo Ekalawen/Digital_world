@@ -104,7 +104,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   appuyezSurUneToucheTexte: {fileID: 7436007453579325641}
-  conseilText: {fileID: 3563410021305339926}
+  conseilText: {fileID: 7238202340334822971}
   pouvoirA: {fileID: 6233218651406501441}
   pouvoirE: {fileID: 2875580204238247605}
   pouvoirLeftClick: {fileID: 2875580203608432337}
@@ -232,6 +232,15 @@ PrefabInstance:
       value: '<color=#00ff00ff>Click Gauche</color>
 
         <color=#ff0000ff>%PouvoirName%</color>
+
+'
+      objectReference: {fileID: 0}
+    - target: {fileID: 9026821314669180265, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+        type: 3}
+      propertyPath: m_text
+      value: '<b><color=#00ff00ff>Click Gauche</color>
+
+        <color=#ff0000ff>%PouvoirName%</color></b>
 
 '
       objectReference: {fileID: 0}
@@ -372,6 +381,11 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 2095940852470841702, guid: 162182fc2409c2e448c05f095f1864e2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2095940852470841696, guid: 162182fc2409c2e448c05f095f1864e2,
         type: 3}
       propertyPath: m_Color.r
@@ -391,6 +405,83 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Text
       value: Appuyez sur n'importe quelle touche.
+      objectReference: {fileID: 0}
+    - target: {fileID: 5194553885589976909, guid: 162182fc2409c2e448c05f095f1864e2,
+        type: 3}
+      propertyPath: m_text
+      value: Appuyez sur n'importe quelle touche.
+      objectReference: {fileID: 0}
+    - target: {fileID: 5194553885589976909, guid: 162182fc2409c2e448c05f095f1864e2,
+        type: 3}
+      propertyPath: m_firstOverflowCharacterIndex
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5194553885589976909, guid: 162182fc2409c2e448c05f095f1864e2,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 36
+      objectReference: {fileID: 0}
+    - target: {fileID: 5194553885589976909, guid: 162182fc2409c2e448c05f095f1864e2,
+        type: 3}
+      propertyPath: m_textInfo.spaceCount
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5194553885589976909, guid: 162182fc2409c2e448c05f095f1864e2,
+        type: 3}
+      propertyPath: m_textInfo.wordCount
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5194553885589976909, guid: 162182fc2409c2e448c05f095f1864e2,
+        type: 3}
+      propertyPath: m_textInfo.lineCount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5194553885589976909, guid: 162182fc2409c2e448c05f095f1864e2,
+        type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: da76f951fb759b74e938e0eed1e5ae3e,
+        type: 2}
+    - target: {fileID: 5194553885589976909, guid: 162182fc2409c2e448c05f095f1864e2,
+        type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -403750935843946944, guid: da76f951fb759b74e938e0eed1e5ae3e,
+        type: 2}
+    - target: {fileID: 5194553885589976909, guid: 162182fc2409c2e448c05f095f1864e2,
+        type: 3}
+      propertyPath: m_fontSize
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 5194553885589976909, guid: 162182fc2409c2e448c05f095f1864e2,
+        type: 3}
+      propertyPath: m_fontSizeBase
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 5194553885589976909, guid: 162182fc2409c2e448c05f095f1864e2,
+        type: 3}
+      propertyPath: m_fontColor.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5194553885589976909, guid: 162182fc2409c2e448c05f095f1864e2,
+        type: 3}
+      propertyPath: m_fontColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5194553885589976909, guid: 162182fc2409c2e448c05f095f1864e2,
+        type: 3}
+      propertyPath: m_fontColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5194553885589976909, guid: 162182fc2409c2e448c05f095f1864e2,
+        type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4278190080
+      objectReference: {fileID: 0}
+    - target: {fileID: 5194553885589976909, guid: 162182fc2409c2e448c05f095f1864e2,
+        type: 3}
+      propertyPath: m_fontStyle
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 162182fc2409c2e448c05f095f1864e2, type: 3}
@@ -526,9 +617,18 @@ PrefabInstance:
     - target: {fileID: 7817840737000059275, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
         type: 3}
       propertyPath: m_Text
-      value: '<color=#00ff00ff>E</color>
+      value: '<b><color=#00ff00ff>E</color>
 
-        <color=#ff0000ff>%PouvoirName%</color>
+        <color=#ff0000ff>%PouvoirName%</color></b>
+
+'
+      objectReference: {fileID: 0}
+    - target: {fileID: 9026821314669180265, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+        type: 3}
+      propertyPath: m_text
+      value: '<b><color=#00ff00ff>E</color>
+
+        <color=#ff0000ff>%PouvoirName%</color></b>
 
 '
       objectReference: {fileID: 0}
@@ -689,6 +789,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2095940852470841702, guid: 162182fc2409c2e448c05f095f1864e2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2095940852470841696, guid: 162182fc2409c2e448c05f095f1864e2,
         type: 3}
       propertyPath: m_Color.r
@@ -726,6 +831,65 @@ PrefabInstance:
       propertyPath: m_FontData.m_HorizontalOverflow
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5194553885589976909, guid: 162182fc2409c2e448c05f095f1864e2,
+        type: 3}
+      propertyPath: m_text
+      value: '<color=#00ff00ff>Astuce :</color>
+
+'
+      objectReference: {fileID: 0}
+    - target: {fileID: 5194553885589976909, guid: 162182fc2409c2e448c05f095f1864e2,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 65
+      objectReference: {fileID: 0}
+    - target: {fileID: 5194553885589976909, guid: 162182fc2409c2e448c05f095f1864e2,
+        type: 3}
+      propertyPath: m_textInfo.wordCount
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5194553885589976909, guid: 162182fc2409c2e448c05f095f1864e2,
+        type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 2cd58012a4e648549bfcdf4cfdeac686,
+        type: 2}
+    - target: {fileID: 5194553885589976909, guid: 162182fc2409c2e448c05f095f1864e2,
+        type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -403750935843946944, guid: 2cd58012a4e648549bfcdf4cfdeac686,
+        type: 2}
+    - target: {fileID: 5194553885589976909, guid: 162182fc2409c2e448c05f095f1864e2,
+        type: 3}
+      propertyPath: m_fontSize
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 5194553885589976909, guid: 162182fc2409c2e448c05f095f1864e2,
+        type: 3}
+      propertyPath: m_fontSizeBase
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 5194553885589976909, guid: 162182fc2409c2e448c05f095f1864e2,
+        type: 3}
+      propertyPath: m_textInfo.spaceCount
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 5194553885589976909, guid: 162182fc2409c2e448c05f095f1864e2,
+        type: 3}
+      propertyPath: m_textInfo.lineCount
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5194553885589976909, guid: 162182fc2409c2e448c05f095f1864e2,
+        type: 3}
+      propertyPath: m_characterSpacing
+      value: -8.29
+      objectReference: {fileID: 0}
+    - target: {fileID: 5194553885589976909, guid: 162182fc2409c2e448c05f095f1864e2,
+        type: 3}
+      propertyPath: m_wordSpacing
+      value: -11.32
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 162182fc2409c2e448c05f095f1864e2, type: 3}
 --- !u!224 &7650418409988727819 stripped
@@ -734,16 +898,16 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 3199105571718025590}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &3563410021305339926 stripped
+--- !u!114 &7238202340334822971 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2095940852470841696, guid: 162182fc2409c2e448c05f095f1864e2,
+  m_CorrespondingSourceObject: {fileID: 5194553885589976909, guid: 162182fc2409c2e448c05f095f1864e2,
     type: 3}
   m_PrefabInstance: {fileID: 3199105571718025590}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &3199105571962840546
@@ -869,6 +1033,15 @@ PrefabInstance:
       value: '<color=#00ff00ff>Click Droit</color>
 
         <color=#ff0000ff>%PouvoirName%</color>
+
+'
+      objectReference: {fileID: 0}
+    - target: {fileID: 9026821314669180265, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+        type: 3}
+      propertyPath: m_text
+      value: '<b><color=#00ff00ff>Click Droit</color>
+
+        <color=#ff0000ff>%PouvoirName%</color></b>
 
 '
       objectReference: {fileID: 0}
@@ -1015,6 +1188,15 @@ PrefabInstance:
       value: '<color=#00ff00ff>A</color>
 
         <color=#ff0000ff>%PouvoirName%</color>
+
+'
+      objectReference: {fileID: 0}
+    - target: {fileID: 9026821314669180265, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+        type: 3}
+      propertyPath: m_text
+      value: '<b><color=#00ff00ff>A</color>
+
+        <color=#ff0000ff>%PouvoirName%</color></b>
 
 '
       objectReference: {fileID: 0}
