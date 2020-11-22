@@ -25,6 +25,8 @@ public class MapManager : MonoBehaviour {
 	public GameObject cubePrefab; // On récupère ce qu'est un cube !
     public GameObject deathCubePrefab; // On récupère ce qu'est qu'un cube de la mort ! :)
 	public GameObject indestructibleCubePrefab; // On récupère ce qu'est qu'un cube indestructible ! :)
+	public GameObject brisableCubePrefab; // On récupère ce qu'est qu'un cube brisable ! :)
+	public GameObject bouncyCubePrefab; // On récupère ce qu'est qu'un cube bouncy ! :)
 	public GameObject specialCubePrefab; // On récupère ce qu'est qu'un cube special ! :)
 
     [Header("Lumières Prefabs")]
@@ -138,6 +140,10 @@ public class MapManager : MonoBehaviour {
                 return deathCubePrefab;
             case Cube.CubeType.INDESTRUCTIBLE:
                 return indestructibleCubePrefab;
+            case Cube.CubeType.BOUNCY:
+                return bouncyCubePrefab;
+            case Cube.CubeType.BRISABLE:
+                return brisableCubePrefab;
             case Cube.CubeType.SPECIAL:
                 return specialCubePrefab;
         }

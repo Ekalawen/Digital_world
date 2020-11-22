@@ -52,6 +52,10 @@ MonoBehaviour:
     type: 3}
   indestructibleCubePrefab: {fileID: 406734865765331425, guid: 92497eb394ff68645bfe5e5cad5bcba7,
     type: 3}
+  brisableCubePrefab: {fileID: 4305637335355529576, guid: 5452711fcf413de418879722d0617e7b,
+    type: 3}
+  bouncyCubePrefab: {fileID: 5530073751766344457, guid: 81de282916522a848a81f9f281e714d8,
+    type: 3}
   specialCubePrefab: {fileID: 0}
   lumierePrefab: {fileID: 1106701525400260, guid: e464862985a8e4bb3a14bf8d90846952,
     type: 3}
@@ -97,12 +101,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cubeType: 0
-  useNbCaves: 0
-  nbCaves: 0
+  generateMode: 0
   proportionCaves: 0.3
+  nbCaves: 0
   tailleMinCave: 3
   tailleMaxCave: 5
   makeSpaceArround: 0
+  dontCollideWithOthersCaves: 0
+  distanceWithOthersCaves: 0
   preserveMapBordure: 0
   nbLumieresPerCaves: 1
   offsetLumieresFromCenter: 1

@@ -30,7 +30,8 @@ public class Character : MonoBehaviour {
             }
         }
 
-        foreach(Poussee poussee in poussees) {
+        for(int i = 0; i < poussees.Count; i++) {
+            Poussee poussee = poussees[i];
             poussee.ApplyPoussee(controller);
         }
     }

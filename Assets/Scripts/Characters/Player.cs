@@ -23,7 +23,8 @@ public class Player : Character {
 	public float dureeSaut; // la durée totale d'un saut
 	public float dureeEfficaciteSaut; // le pourcentage de temps où le saut nous surélève
 	public float gravite; // la force de la gravité
-	public float sensibilite; // la sensibilité de la souris
+
+    public float sensibilite; // la sensibilité de la souris
 	public float dureeMur; // le temps que l'on peut rester accroché au mur
 	public float distanceMurMax; // la distance maximale de laquelle on peut s'éloigner du mur
 
@@ -473,8 +474,9 @@ public class Player : Character {
 		}
 	}
 
-	IEnumerator StopJump(float debut) {
-		while (Time.timeSinceLevelLoad - debut < dureeSaut && Input.GetButton ("Jump")) {
+	IEnumerator StopJump() {
+        Timer timerSaut = new Timer(dureeSaut);
+		while (!timerSaut.IsOver() && !Input.GetButtonUp ("Jump")) {
 			yield return null;
 		}
 		if (etat != EtatPersonnage.AU_MUR) {
@@ -576,10 +578,18 @@ public class Player : Character {
         } else {
             Debug.Log("On saute depuis un endroit non autorisé !");
         }
+        PlayJumpSound();
+        StartCoroutine(StopJump());
+    }
+
+    public void PlayJumpSound() {
         if (!gm.eventManager.IsGameOver()) {
             gm.soundManager.PlayJumpClip(transform.position);
         }
-        StartCoroutine (StopJump (debutSaut));
+    }
+
+    public void SetCarefulJumping(EtatPersonnage from) {
+        Jump(from);
     }
 
     protected void TryUsePouvoirs() {
@@ -656,19 +666,6 @@ public class Player : Character {
             Vector3.one * cube.transform.localScale.x / 2,
             transform.position,
             controller.radius + controller.skinWidth);
-        //Vector3 playerPos = transform.position;
-        //Vector3 cubePos = cube.transform.position;
-        //float playerExtends = controller.radius + controller.skinWidth;
-        //float cubeExtends = cube.transform.localScale.x / 2;
-
-        //// Get the closest point to the sphere by clamping
-        //float x = Mathf.Clamp(playerPos.x, cubePos.x - cubeExtends, cubePos.x + cubeExtends);
-        //float y = Mathf.Clamp(playerPos.y, cubePos.y - cubeExtends, cubePos.y + cubeExtends);
-        //float z = Mathf.Clamp(playerPos.z, cubePos.z - cubeExtends, cubePos.z + cubeExtends);
-        //Vector3 closestPoint = new Vector3(x, y, z);
-
-        //float distance = Vector3.Distance(closestPoint, playerPos);
-        //return distance <= playerExtends;
     }
 
     public int GetNbDoubleSautsMax() {
