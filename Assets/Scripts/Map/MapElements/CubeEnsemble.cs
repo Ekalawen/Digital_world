@@ -4,13 +4,26 @@ using UnityEngine;
 
 public abstract class CubeEnsemble : MapElement {
 
+    public enum CubeEnsembleType {
+        CAVE,
+        ARBRE,
+        FULL_BLOCK,
+        MAP_CONTAINER,
+        MUR,
+        PONT,
+        SPIKES,
+        SURFACE_INTERPOLANTE
+    };
+
     protected List<Cube> cubes;
     protected GameObject cubesEnsembleFolder;
+    protected CubeEnsembleType cubeEnsembleType;
 
     protected CubeEnsemble() : base() {
         cubes = new List<Cube>();
         cubesEnsembleFolder = new GameObject(GetName());
         cubesEnsembleFolder.transform.SetParent(map.cubesFolder.transform);
+        InitializeCubeEnsembleType();
     }
 
     public abstract string GetName();
@@ -34,4 +47,10 @@ public abstract class CubeEnsemble : MapElement {
             cube.shouldRegisterToColorSources = true;
             //cube.RegisterCubeToColorSources();
     }
+
+    public CubeEnsembleType GetCubeEnsembleType() {
+        return cubeEnsembleType;
+    }
+
+    protected abstract void InitializeCubeEnsembleType();
 }

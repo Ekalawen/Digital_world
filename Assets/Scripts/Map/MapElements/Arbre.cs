@@ -36,6 +36,10 @@ public class Arbre : CubeEnsemble {
         return "Arbre";
     }
 
+    protected override void InitializeCubeEnsembleType() {
+        cubeEnsembleType = CubeEnsembleType.ARBRE;
+    }
+
 	// Génère un arbre ! <3
 	// Les arbres sont des structures verticales que le joueur devra escalader pour récupérer la récompense à son sommet ! <3
 	void GenerateArbre() {

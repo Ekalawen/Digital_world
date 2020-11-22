@@ -803,6 +803,22 @@ public class MapManager : MonoBehaviour {
         return res;
     }
 
+    public List<Cube> GetAllRegularCubes() {
+        List<Cube> res = new List<Cube>();
+        foreach(Cube cube in cubesRegular) {
+            if (cube != null)
+                res.Add(cube);
+        }
+        return res;
+    }
+
+    public List<Cube> GetAllNonRegularCubes() {
+        List<Cube> res = new List<Cube>();
+        foreach (Cube cube in cubesNonRegular)
+            res.Add(cube);
+        return res;
+    }
+
     public List<Vector3> GetAllNonRegularCubePos() {
         List<Vector3> res = new List<Vector3>();
         foreach (Cube cube in cubesNonRegular)
@@ -956,6 +972,14 @@ public class MapManager : MonoBehaviour {
             }
         }
         return elements;
+    }
+
+    public List<CubeEnsemble> GetCubeEnsembles() {
+        return GetMapElementsOfType<CubeEnsemble>();
+    }
+
+    public List<CubeEnsemble> GetCubeEnsemblesOfType(CubeEnsemble.CubeEnsembleType cubeEnsembleType) {
+        return GetCubeEnsembles().FindAll(ce => ce.GetCubeEnsembleType() == cubeEnsembleType);
     }
 
     protected void ApplyAllMapFunctionsComponents() {

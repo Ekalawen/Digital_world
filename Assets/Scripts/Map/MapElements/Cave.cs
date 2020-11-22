@@ -24,6 +24,10 @@ public class Cave : CubeEnsemble {
         return "Cave";
     }
 
+    protected override void InitializeCubeEnsembleType() {
+        cubeEnsembleType = CubeEnsembleType.CAVE;
+    }
+
     // Génère un cube plein qui part d'un point de départ et qui va dans 3 directions avec 3 distances !
     protected void GenererCubePlein() {
 		// On remplit tout

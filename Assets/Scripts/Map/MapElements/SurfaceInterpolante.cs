@@ -60,6 +60,10 @@ public class SurfaceInterpolante : CubeEnsemble {
 		}
 	}
 
+    protected override void InitializeCubeEnsembleType() {
+        cubeEnsembleType = CubeEnsembleType.SURFACE_INTERPOLANTE;
+    }
+
 	// Génère des points de contrôle sur une surface d'une certaine taille avec une certaine amplitude maximum de hauteur
 	// Avec un certain pas pour les points de contrôle
 	public static Vector3[,] GeneratePointsDeControle(Vector2Int tailleSurface, float hauteurMaxPdc, int ecartsPdc) {

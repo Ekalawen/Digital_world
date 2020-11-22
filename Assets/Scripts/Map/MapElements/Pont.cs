@@ -20,6 +20,10 @@ public class Pont : CubeEnsemble {
         GenererPont();
     }
 
+    protected override void InitializeCubeEnsembleType() {
+        cubeEnsembleType = CubeEnsembleType.PONT;
+    }
+
     public Pont CreatePontWithPoints(Vector3 depart, Vector3 arriveeDirection, int nbCubes) {
         return new Pont(
             depart,

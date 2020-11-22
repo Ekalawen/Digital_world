@@ -2,20 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MapContainer : CubeEnsemble
-{
+public class MapContainer : CubeEnsemble {
 
     Vector3 origin;
     Vector3 nbCubesParAxe;
     List<Mur> murs;
 
-    public MapContainer(Vector3 origin, Vector3 nbCubesParAxe) : base()
-    {
+    public MapContainer(Vector3 origin, Vector3 nbCubesParAxe) : base() {
         this.origin = origin;
         this.nbCubesParAxe = nbCubesParAxe;
         this.murs = new List<Mur>();
 
         GenerateMapContainer();
+    }
+
+    protected override void InitializeCubeEnsembleType() {
+        cubeEnsembleType = CubeEnsembleType.MAP_CONTAINER;
     }
 
     // nbCubesParAxe = 1 + halfExtents * 2
@@ -69,10 +71,6 @@ public class MapContainer : CubeEnsemble
         murs.Add(mur);
         cubes.AddRange(mur.GetCubes());
     }
-
-    /// TODO !
-    //public List<Cube> GetCoins() {
-    //}
 
     public List<Mur> GetMurs() {
         return murs;

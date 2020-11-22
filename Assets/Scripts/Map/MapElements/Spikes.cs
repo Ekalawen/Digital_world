@@ -39,6 +39,10 @@ public class Spikes : CubeEnsemble
         GenerateStartsOfSpikes();
     }
 
+    protected override void InitializeCubeEnsembleType() {
+        cubeEnsembleType = CubeEnsembleType.SPIKES;
+    }
+
     public static Spikes GenerateSpikesFromMur(Mur mur, int offsetBetweenSpikes, bool bGoToEnd, int spikesMaxRange, Vector3 aPointInTheInside) {
         Vector3 spikesDirectionFromPoint = Vector3.Cross(mur.direction1, mur.direction2).normalized;
         if (Vector3.Dot(spikesDirectionFromPoint, (aPointInTheInside - mur.depart)) < 0) {
