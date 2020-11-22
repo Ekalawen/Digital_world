@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public class GetCubesHelper {
+public class GetCubesHelper : MonoBehaviour {
     public enum HowToGetCubes {
         ALL,
         OF_TYPE,
@@ -16,17 +16,17 @@ public class GetCubesHelper {
     };
 
     public HowToGetCubes howToGetCubes = HowToGetCubes.ALL;
-    [ConditionalHide("!howToGetCubes", HowToGetCubes.OF_TYPE)]
+    [ConditionalHide("howToGetCubes", HowToGetCubes.OF_TYPE)]
     public Cube.CubeType cubeType = Cube.CubeType.NORMAL;
-    [ConditionalHide("!howToGetCubes", HowToGetCubes.IN_BOX_AREA)]
+    [ConditionalHide("howToGetCubes", HowToGetCubes.IN_BOX_AREA)]
     public Vector3 areaBoxCenter = Vector3.zero;
-    [ConditionalHide("!howToGetCubes", HowToGetCubes.IN_BOX_AREA)]
+    [ConditionalHide("howToGetCubes", HowToGetCubes.IN_BOX_AREA)]
     public Vector3 areaBoxHalfExtents = Vector3.zero;
-    [ConditionalHide("!howToGetCubes", HowToGetCubes.IN_SPHERE_AREA)]
+    [ConditionalHide("howToGetCubes", HowToGetCubes.IN_SPHERE_AREA)]
     public Vector3 areaSphereCenter = Vector3.zero;
-    [ConditionalHide("!howToGetCubes", HowToGetCubes.IN_SPHERE_AREA)]
+    [ConditionalHide("howToGetCubes", HowToGetCubes.IN_SPHERE_AREA)]
     public float areaSphereRadius = 0f;
-    [ConditionalHide("!howToGetCubes", HowToGetCubes.IN_CUBE_ENSEMBLES)]
+    [ConditionalHide("howToGetCubes", HowToGetCubes.IN_CUBE_ENSEMBLES)]
     public CubeEnsemble.CubeEnsembleType cubeEnsembleType;
 
     public List<Cube> Get() {

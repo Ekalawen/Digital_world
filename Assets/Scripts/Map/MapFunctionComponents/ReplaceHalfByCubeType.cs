@@ -6,6 +6,8 @@ using UnityEngine;
 public class ReplaceHalfByCubeType : GenerateCubesMapFunction {
 
     public GetCubesHelper getCubesHelper;
+    public int moduloParam = 2;
+    public int agglomerationParam = 1;
 
     public override void Activate() {
         List<Cube> cubes = getCubesHelper.Get();
@@ -18,6 +20,9 @@ public class ReplaceHalfByCubeType : GenerateCubesMapFunction {
 
     protected bool ShouldBeReplaced(Cube cube) {
         Vector3Int posInt = MathTools.RoundToInt(cube.transform.position);
-        return (posInt.x + posInt.y + posInt.z) % 2 == 0;
+        posInt.x /= agglomerationParam;
+        posInt.y /= agglomerationParam;
+        posInt.z /= agglomerationParam;
+        return (posInt.x + posInt.y + posInt.z) % moduloParam == 0;
     }
 }
