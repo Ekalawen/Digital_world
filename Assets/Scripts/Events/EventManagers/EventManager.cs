@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class EventManager : MonoBehaviour {
     public enum DeathReason { TIME_OUT, CAPTURED, FALL_OUT, TOUCHED_DEATH_CUBE, OUT_OF_BLOCKS };
-    public enum EndGameType { DEATH_CUBES, CUBES_DESTRUCTIONS };
+    public enum EndGameType { DEATH_CUBES, CUBES_DESTRUCTIONS, HALF_DEATH_CUBES };
 
     [Header("Ejection")]
     public bool ejectionTresholdUseLastCubePosition = false;
@@ -99,7 +99,7 @@ public class EventManager : MonoBehaviour {
         //gm.console.StartEndGame();
 
         // On lance la création des blocks de la mort !
-        if (endGameType == EndGameType.DEATH_CUBES)
+        if (endGameType == EndGameType.DEATH_CUBES || endGameType == EndGameType.HALF_DEATH_CUBES)
             coroutineDeathCubesCreation = StartCoroutine(FillMapWithDeathCubes(finalLight.transform.position));
         else if (endGameType == EndGameType.CUBES_DESTRUCTIONS)
             coroutineCubesDestructions = StartCoroutine(DestroyAllCubesProgressively(finalLight.transform.position));
@@ -126,7 +126,7 @@ public class EventManager : MonoBehaviour {
             int nbCubesDestroyed = (int)Mathf.Min(nbCubesToDestroy, allEmptyPositions.Count);
             for (int i = 0; i < nbCubesDestroyed; i++)
             {
-                Cube cube = map.AddCube(allEmptyPositions[i], Cube.CubeType.DEATH);
+                Cube cube = CreateCubeForDeathCubesEvent(allEmptyPositions[i]);
                 deathCubes.Add(cube);
                 barycentre += allEmptyPositions[i];
             }
@@ -152,6 +152,22 @@ public class EventManager : MonoBehaviour {
             gm.soundManager.PlayCreateCubeClip(barycentre);
             yield return new WaitForSeconds(endGameFrameRate);
         }
+    }
+
+    protected Cube CreateCubeForDeathCubesEvent(Vector3 pos) {
+        Cube cube = null;
+        if (endGameType == EndGameType.DEATH_CUBES) {
+            cube = map.AddCube(pos, Cube.CubeType.DEATH);
+        } else if (endGameType == EndGameType.HALF_DEATH_CUBES) {
+            Vector3Int posInt = MathTools.RoundToInt(pos);
+            if ((posInt.x + posInt.y + posInt.z) % 2 == 0)
+                cube = map.AddCube(pos, Cube.CubeType.DEATH);
+            else {
+                cube = map.AddCube(pos, Cube.CubeType.NORMAL);
+                cube.ShouldRegisterToColorSources();
+            }
+        }
+        return cube;
     }
 
     protected IEnumerator DestroyAllCubesProgressively(Vector3 centerPos) {
