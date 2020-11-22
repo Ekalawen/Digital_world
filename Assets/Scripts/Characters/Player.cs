@@ -476,8 +476,9 @@ public class Player : Character {
 
 	IEnumerator StopJump() {
         Timer timerSaut = new Timer(dureeSaut);
-		while (!timerSaut.IsOver() && !Input.GetButtonUp ("Jump")) {
-			yield return null;
+        while (!timerSaut.IsOver() && !Input.GetButtonUp("Jump")) {
+        //while (!timerSaut.IsOver() && Input.GetButton("Jump")) {
+            yield return null;
 		}
 		if (etat != EtatPersonnage.AU_MUR) {
 			etat = EtatPersonnage.EN_CHUTE;

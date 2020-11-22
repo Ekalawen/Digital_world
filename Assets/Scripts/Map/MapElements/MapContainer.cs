@@ -32,42 +32,32 @@ public class MapContainer : CubeEnsemble {
         return "MapContainer";
     }
 
-    protected void GenerateMapContainer()
-    {
-        // Haut
-        Mur mur = new Mur(origin + Vector3.up * (nbCubesParAxe[2] - 1),
-            Vector3.right, (int)nbCubesParAxe[0],
-            Vector3.forward, (int)nbCubesParAxe[1]);
+    protected void GenerateMapContainer() {
+        int x = (int)nbCubesParAxe[0];
+        int y = (int)nbCubesParAxe[1];
+        int z = (int)nbCubesParAxe[2];
+        // bas
+        Mur mur = new Mur(origin, Vector3.right, x, Vector3.forward, z);
         murs.Add(mur);
         cubes.AddRange(mur.GetCubes());
-        // bas
-        mur = new Mur(origin,
-            Vector3.right, (int)nbCubesParAxe[0],
-            Vector3.forward, (int)nbCubesParAxe[1]);
+        // haut
+        mur = new Mur(origin + Vector3.up * (y - 1), Vector3.right, x, Vector3.forward, z);
         murs.Add(mur);
         cubes.AddRange(mur.GetCubes());
         // gauche
-        mur = new Mur(origin,
-            Vector3.forward, (int)nbCubesParAxe[1],
-            Vector3.up, (int)nbCubesParAxe[2]);
+        mur = new Mur(origin, Vector3.forward, z, Vector3.up, y);
         murs.Add(mur);
         cubes.AddRange(mur.GetCubes());
         // droite
-        mur = new Mur(origin + Vector3.right * (nbCubesParAxe[0] - 1),
-            Vector3.forward, (int)nbCubesParAxe[1],
-            Vector3.up, (int)nbCubesParAxe[2]);
+        mur = new Mur(origin + Vector3.right * (x - 1), Vector3.forward, z, Vector3.up, y);
         murs.Add(mur);
         cubes.AddRange(mur.GetCubes());
         // avant
-        mur = new Mur(origin,
-            Vector3.right, (int)nbCubesParAxe[0],
-            Vector3.up, (int)nbCubesParAxe[2]);
+        mur = new Mur(origin, Vector3.right, x, Vector3.up, y);
         murs.Add(mur);
         cubes.AddRange(mur.GetCubes());
         // arrière
-        mur = new Mur(origin + Vector3.forward * (nbCubesParAxe[1] - 1),
-            Vector3.right, (int)nbCubesParAxe[0],
-            Vector3.up, (int)nbCubesParAxe[2]);
+        mur = new Mur(origin + Vector3.forward * (z - 1), Vector3.right, x, Vector3.up, y);
         murs.Add(mur);
         cubes.AddRange(mur.GetCubes());
     }

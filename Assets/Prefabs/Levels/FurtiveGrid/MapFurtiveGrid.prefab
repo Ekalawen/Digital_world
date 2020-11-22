@@ -31,10 +31,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a91d627960a7f3e489c3e2e01a074c03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cubeType: 5
+  cubeType: 3
   getCubesHelper: {fileID: -1688522200445734413}
-  moduloParam: 4
-  agglomerationParam: 1
+  moduloParam: 2
+  agglomerationParam: 2
 --- !u!114 &5849220178988783058
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -49,7 +49,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cubeType: 0
   generateMode: 0
-  proportionCaves: 0.3
+  proportionCaves: 0.7
   nbCaves: 0
   tailleMinCave: 3
   tailleMaxCave: 4
@@ -125,8 +125,18 @@ PrefabInstance:
         type: 3}
       propertyPath: specialCubePrefab
       value: 
-      objectReference: {fileID: 4305637335355529576, guid: 5452711fcf413de418879722d0617e7b,
+      objectReference: {fileID: 3202327663746152411, guid: c1acbe8fcee5693488b1b04f42fb3476,
         type: 3}
+    - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
+        type: 3}
+      propertyPath: tailleMap.y
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
+        type: 3}
+      propertyPath: tailleMap.z
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 3014360596586505460, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: m_LocalPosition.x
