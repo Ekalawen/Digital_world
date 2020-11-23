@@ -144,7 +144,7 @@ public class InfiniteMap : MapManager {
             return destroyTime * timeDifficultyCoefficient;
         else {
             float difficultyCoefficient = timeDifficultyOffset / Mathf.Pow(Mathf.Max(nbBlocksDestroyed, 1), 1 / timeDifficultyProgression);
-            nbBlocksDisplayer.AddVolatileText(difficultyCoefficient.ToString(), Color.blue);
+            //nbBlocksDisplayer.AddVolatileText(difficultyCoefficient.ToString(), Color.blue);
             return destroyTime * difficultyCoefficient;
         }
     }
