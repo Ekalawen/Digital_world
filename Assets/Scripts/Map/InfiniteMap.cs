@@ -48,12 +48,14 @@ public class InfiniteMap : MapManager {
     int nbBlocksDestroyed;
     int nbBlocksCreated = 0;
     List<BlockWeight> blockWeights;
-    List<Block> blocks;
+    List<Block> blocks; // Les blocks vont des blocks en train de se faire détruire jusqu'à nbBlocksForwards blocks devant la position du joueur
     Timer destructionBlockTimer;
     Timer timerSinceLastBlock;
     bool hasMadeNewBestScore = false;
     bool startsBlockDestruction = false;
     CameraShakeInstance cameraShakeInstance;
+    List<string> blocksNameToNotifyPlayerToPressShift = new List<string>();
+
 
     protected override void InitializeSpecific() {
         blocks = new List<Block>();
@@ -96,6 +98,10 @@ public class InfiniteMap : MapManager {
 
         Block newBlock = Instantiate(blockPrefab, blockPosition, Quaternion.identity, blocksFolder).GetComponent<Block>();
         newBlock.Initialize(blocksFolder, blockPrefab.GetComponent<Block>());
+        if (blocksNameToNotifyPlayerToPressShift.Contains(newBlock.name)) {
+            newBlock.ShouldNotifyPlayerHowToPressShift();
+            blocksNameToNotifyPlayerToPressShift.Remove(newBlock.name);
+        }
         nbBlocksCreated += 1;
 
         blocks.Add(newBlock);
@@ -213,6 +219,7 @@ public class InfiniteMap : MapManager {
             RememberTimeNeededForBlock(indice, indiceCurrentBlock);
             timerSinceLastBlock.Reset();
             indiceCurrentBlock = indice;
+            block.NotifyPlayerToPressShiftIfNeeded();
             if(GetNonStartNbBlocksRun() == 1)
                 StartBlocksDestruction();
         }
@@ -274,5 +281,42 @@ public class InfiniteMap : MapManager {
 
     public int GetNonStartNbBlocksRun() {
         return Mathf.Max(0, nbBlocksRun - nbFirstBlocks);
+    }
+
+    public void PlayerForgotToPressShift(Block block) {
+        if (TryNotifyCurrentBlockIfSame(block)) {
+        } else if (TryNotifyInstantiatedBlocks(block)) {
+        } else {
+            RegisterBlockNameToBlocksToNotify(block);
+        }
+    }
+
+    protected bool RegisterBlockNameToBlocksToNotify(Block block) {
+        blocksNameToNotifyPlayerToPressShift.Add(block.name);
+        return true;
+    }
+
+    protected bool TryNotifyInstantiatedBlocks(Block block) {
+        int indice = blocks.IndexOf(block);
+        string blockName = block.name;
+        for (int i = indice + 1; i < blocks.Count; i++) {
+            Block b = blocks[i];
+            if (b.name == blockName) {
+                b.ShouldNotifyPlayerHowToPressShift();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    protected bool TryNotifyCurrentBlockIfSame(Block block) {
+        if (indiceCurrentBlock < 0)
+            return false;
+        Block currentBlock = blocks[indiceCurrentBlock];
+        if(currentBlock.name == block.name) {
+            currentBlock.NotifyPlayerToPressShift();
+            return true;
+        }
+        return false;
     }
 }

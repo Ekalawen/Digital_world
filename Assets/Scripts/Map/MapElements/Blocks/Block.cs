@@ -17,11 +17,13 @@ public class Block : MonoBehaviour {
     public Transform endPoint;
     public Transform cubeFolder;
     public List<float> timesForFinishing; // { private get; set; }  // Don't use this directly ! Use GetTimeList() !
+    public bool shouldPlayerPressShift = false;
 
-    GameManager gm;
-    MapManager map;
-    List<Cube> cubes;
-    Block originalBlockPrefab;
+    protected GameManager gm;
+    protected MapManager map;
+    protected List<Cube> cubes;
+    protected Block originalBlockPrefab;
+    protected bool shouldNotifyToPressShift = false;
 
 
     public void Initialize(Transform blocksFolder, Block originalBlockPrefab) {
@@ -138,5 +140,23 @@ public class Block : MonoBehaviour {
 
     protected bool ShouldKeepRememberingTimes() {
         return GetTimeList().Count < maxTimesCountForAveraging;
+    }
+
+    public void ShouldNotifyPlayerHowToPressShift() {
+        if (shouldPlayerPressShift) {
+            shouldNotifyToPressShift = true;
+        }
+    }
+
+    public void NotifyPlayerToPressShiftIfNeeded() {
+        if(shouldPlayerPressShift && shouldNotifyToPressShift) {
+            NotifyPlayerToPressShift();
+        }
+    }
+
+    public void NotifyPlayerToPressShift() {
+        gm.console.AjouterMessageImportant("MAINTIENT SHIFT !", Console.TypeText.ALLY_TEXT, 2.0f, bAfficherInConsole: false);
+        gm.console.AjouterMessage("Maintient SHIFT pour te décrocher et glisser le long du mur !", Console.TypeText.ALLY_TEXT);
+        shouldNotifyToPressShift = false;
     }
 }

@@ -8,10 +8,13 @@ using UnityEngine;
 public class EventManager : MonoBehaviour {
     public enum DeathReason { TIME_OUT, CAPTURED, FALL_OUT, TOUCHED_DEATH_CUBE, OUT_OF_BLOCKS };
     public enum EndGameType { DEATH_CUBES, CUBES_DESTRUCTIONS, HALF_DEATH_CUBES };
+    public enum EjectionType { FIX_TRESHOLD, LOWEST_CUBE_TRESHOLD, LOWEST_CUBE_ARROUND_TRESHOLD };
 
     [Header("Ejection")]
-    public bool ejectionTresholdUseLastCubePosition = false;
+    public EjectionType ejectionType = EjectionType.FIX_TRESHOLD;
     public float ejectionTreshold = -10.0f;
+    [ConditionalHide("ejectionType", EjectionType.LOWEST_CUBE_ARROUND_TRESHOLD)]
+    public float ejectionCubesArroundRadius = 20.0f;
 
     [Header("Endgame")]
     public float endGameDuration = 20.0f;
@@ -367,17 +370,24 @@ public class EventManager : MonoBehaviour {
     }
 
     protected virtual bool IsPlayerEjected() {
-        if (!ejectionTresholdUseLastCubePosition)
-            return gm.gravityManager.GetHigh(gm.player.transform.position) < ejectionTreshold;
-        else {
-            float lowest = GetLessHighCubeAltitude();
-            return gm.gravityManager.GetHigh(gm.player.transform.position) < lowest + ejectionTreshold;
+        switch(ejectionType) {
+            case EjectionType.FIX_TRESHOLD:
+                return gm.gravityManager.GetHigh(gm.player.transform.position) < ejectionTreshold;
+            case EjectionType.LOWEST_CUBE_TRESHOLD:
+                float lowest = GetLessHighCubeAltitude(gm.map.GetAllCubes());
+                return gm.gravityManager.GetHigh(gm.player.transform.position) < lowest + ejectionTreshold;
+            case EjectionType.LOWEST_CUBE_ARROUND_TRESHOLD:
+                List<Cube> cubesArround = gm.map.GetCubesInSphere(gm.player.transform.position, ejectionCubesArroundRadius);
+                if (cubesArround.Count == 0)
+                    return true;
+                float lowestHeight = GetLessHighCubeAltitude(cubesArround);
+                return gm.gravityManager.GetHigh(gm.player.transform.position) < lowestHeight + ejectionTreshold;
+            default:
+                return true;
         }
     }
 
-    protected float GetLessHighCubeAltitude()
-    {
-        List<Cube> cubes = gm.map.GetAllCubes();
+    protected float GetLessHighCubeAltitude(List<Cube> cubes) {
         if (!cubes.Any())
             return 0;
         float lowest = gm.gravityManager.GetHigh(cubes[0].transform.position);
