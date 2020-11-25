@@ -1,5 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using UnityEngine;
 
 public class EventManagerWhileTrue : EventManager {
@@ -21,18 +24,30 @@ public class EventManagerWhileTrue : EventManager {
             if(nbLumieresFinalesAttrappees == nbLumieresFinales) {
                 WinGame();
             } else {
-                StopCoroutine(coroutineDeathCubesCreation);
-                DestroyAllDeathCubes();
-                StartEndGame();
-                if(messagesAChaqueLumiere.Count > 0)
-                    gm.console.AjouterMessageImportant(messagesAChaqueLumiere[nbLumieresFinalesAttrappees - 1], Console.TypeText.ALLY_TEXT, 2f);
+                StartCoroutine(CResetDeathCubes());
             }
         }
     }
 
-    protected void DestroyAllDeathCubes() {
+    protected IEnumerator CResetDeathCubes() {
+        StopCoroutine(coroutineDeathCubesCreation);
+        if(messagesAChaqueLumiere.Count > 0)
+            gm.console.AjouterMessageImportant(messagesAChaqueLumiere[nbLumieresFinalesAttrappees - 1], Console.TypeText.ALLY_TEXT, 2f);
+        yield return CDestroyAllDeathCubes();
+        StartEndGame();
+    }
+
+    protected IEnumerator CDestroyAllDeathCubes() {
+        int nbCubesToDestroyByFrame = 15;  // Equivalent à 10ms sur mon ordi :)
+        deathCubes = deathCubes.OrderBy(dc => Vector3.SqrMagnitude(dc.transform.position - gm.player.transform.position)).ToList();
+        int nbCubesDestroyed = 0;
         foreach(Cube cube in deathCubes) {
-            map.DeleteCube(cube, bJustInactive: true);
+            map.DeleteCube(cube);
+            nbCubesDestroyed++;
+            if(nbCubesDestroyed >= nbCubesToDestroyByFrame) {
+                nbCubesDestroyed = 0;
+                yield return new WaitForSeconds(1f / 60f);
+            }
         }
         deathCubes.Clear();
     }
