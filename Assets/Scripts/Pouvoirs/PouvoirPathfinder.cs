@@ -16,9 +16,8 @@ public class PouvoirPathfinder : IPouvoir {
         {
             List<Vector3> positions = GetAllInterestPoints();
 
-            if (!player.CanUseLocalisation() || positions.Count == 0)
-            {
-                gm.console.FailLocalisation();
+            if (!player.CanUseLocalisation() || positions.Count == 0) {
+                gm.console.FailLocalisationUnauthorized();
                 gm.soundManager.PlayFailActionClip();
                 return false;
             }
@@ -32,7 +31,7 @@ public class PouvoirPathfinder : IPouvoir {
                     NotifyOnlyVisibleOnTriggerItems();
             } catch (System.Exception e) {
                 Debug.LogWarning($"Pouvoir Detection fails :\n{e.StackTrace}");
-                gm.console.FailLocalisation();
+                gm.console.FailLocalisationObjectifInateignable();
                 gm.soundManager.PlayFailActionClip();
                 return false;
             }

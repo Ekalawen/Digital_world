@@ -14,7 +14,7 @@ public class PouvoirDetection : IPouvoir {
 
     protected override bool UsePouvoir() {
         if (!player.CanUseLocalisation()) {
-            gm.console.FailLocalisation();
+            gm.console.FailLocalisationUnauthorized();
             gm.soundManager.PlayFailActionClip();
             return false;
         }

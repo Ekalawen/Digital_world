@@ -6,9 +6,9 @@ using UnityEngine;
 public class AutoBouncer : MonoBehaviour {
 
     public float intervalTime = 0.6f;
-    public float bounceSize = 1.5f;
     public float timeToBounceSize = 0.1f;
     public float timeToNormalSize = 0.2f;
+    public float bounceSize = 1.5f;
 
     protected Timer timer;
 

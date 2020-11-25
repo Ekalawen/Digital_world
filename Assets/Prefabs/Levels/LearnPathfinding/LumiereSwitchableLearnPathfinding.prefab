@@ -16,7 +16,9 @@ MonoBehaviour:
   timeBonus: 10
   rewardLumierePrefab: {fileID: 1106701525400260, guid: ac149a286b180d040930adfc92e867c2,
     type: 3}
-  lumiereOn: {fileID: 2073627854840724276}
+  screenShakeMagnitude: 10
+  screenShakeRoughness: 10
+  lumiereOn: {fileID: 2194138398486499089}
   lumiereOff: {fileID: 2194138399058720334}
   startState: 0
 --- !u!1001 &2125751867817750536
@@ -30,6 +32,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: LumiereEconomique
+      objectReference: {fileID: 0}
+    - target: {fileID: 92096758339111740, guid: f0c58b58a31aa504ea831d6a2910acb0,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 92888658893499998, guid: f0c58b58a31aa504ea831d6a2910acb0,
         type: 3}
@@ -89,12 +96,6 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 59491342099990074, guid: f0c58b58a31aa504ea831d6a2910acb0, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: f0c58b58a31aa504ea831d6a2910acb0, type: 3}
---- !u!1 &2073627854840724276 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 92096758339111740, guid: f0c58b58a31aa504ea831d6a2910acb0,
-    type: 3}
-  m_PrefabInstance: {fileID: 2125751867817750536}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8177471692019406294
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -165,7 +166,7 @@ PrefabInstance:
     - target: {fileID: 8002634931756079815, guid: 66f584d58e0a8ac4a92fbe87da96096c,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 8002048369439641197, guid: 66f584d58e0a8ac4a92fbe87da96096c, type: 3}
@@ -179,6 +180,12 @@ GameObject:
 --- !u!4 &2193477000609438650 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8002048369439641196, guid: 66f584d58e0a8ac4a92fbe87da96096c,
+    type: 3}
+  m_PrefabInstance: {fileID: 8177471692019406294}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2194138398486499089 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8002634931756079815, guid: 66f584d58e0a8ac4a92fbe87da96096c,
     type: 3}
   m_PrefabInstance: {fileID: 8177471692019406294}
   m_PrefabAsset: {fileID: 0}

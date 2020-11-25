@@ -38,17 +38,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cubeType: 0
   generateMode: 0
-  proportionCaves: 0.3
+  proportionCaves: 1
   nbCaves: 0
   tailleMinCave: 3
   tailleMaxCave: 4
-  makeSpaceArround: 1
+  makeSpaceArround: 0
   dontCollideWithOthersCaves: 0
   distanceWithOthersCaves: 0
   preserveMapBordure: 1
   nbLumieresPerCaves: 0
   offsetLumieresFromCenter: 0
-  caveOffsetFromSides: 2
+  caveOffsetFromSides: 1
   useCaveFixedOffset: 0
   useCaveFixedOffsetX: 0
   caveFixedOffsetX: 0
@@ -69,7 +69,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 1
-  shouldDrawRaycastToNewLumiere: 0
+  shouldDrawRaycastToNewLumiere: 1
   trailPrefab: {fileID: 2355022440795677279, guid: 3aeb445d2ee23b240ae4946f1f9c7864,
     type: 3}
 --- !u!114 &9101069895266962256
@@ -201,6 +201,12 @@ PrefabInstance:
       propertyPath: mapFunctionComponents.Array.data[6]
       value: 
       objectReference: {fileID: 3788960618236628272}
+    - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
+        type: 3}
+      propertyPath: lumiereFinalePrefab
+      value: 
+      objectReference: {fileID: 5346374347928523498, guid: cb6fede809a3cc04ba799a1bc67a886f,
+        type: 3}
     - target: {fileID: 3425981728395409398, guid: 129f4eb78691940da993d749688543fd,
         type: 3}
       propertyPath: proportionCaves

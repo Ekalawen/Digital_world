@@ -36,7 +36,8 @@ public class Console : MonoBehaviour {
 
     [Header("Text parameters")]
 	public Color basicColor; // La couleur avec laquelle on écrit la plupart du temps
-	public Color ennemiColor; // La couleur des messages ennemis
+
+    public Color ennemiColor; // La couleur des messages ennemis
 	public Color allyColor; // La couleur des messages alliées
 	public string basicPrefix; // Le préfixe à mettre devant chaque message basic
 	public string ennemiPrefix; // Le préfixe à mettre devant chaque message ennemi
@@ -591,9 +592,15 @@ public virtual void Update () {
         AjouterMessage ("Ok on l'a trouvé, va en " + position + " !", Console.TypeText.ALLY_TEXT);
 	}
 
-    // Quand on essaye de faire une localisation alors qu'on peut pas !
-    public void FailLocalisation() {
+    // Quand on essaye de faire une localisation alors qu'il n'a pas le droit !
+    public void FailLocalisationUnauthorized() {
 		AjouterMessage ("Ils brouillent le réseau, objectifs introuvables !", Console.TypeText.ALLY_TEXT);
+    }
+
+    // Quand on essaye de faire une localisation et qu'on ne trouve pas de chemin !
+    public void FailLocalisationObjectifInateignable() {
+        string message = "Objectif inateignale !";
+		AjouterMessageImportant(message, Console.TypeText.ENNEMI_TEXT, 2.0f, messageToReplace: message);
     }
 
 	// Quand le joueur attérit d'un grand saut

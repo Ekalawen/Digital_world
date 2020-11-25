@@ -37,7 +37,7 @@ public class JumpEvent : RandomEvent {
 
     protected IEnumerator JumpEffect() {
         yield return new WaitForSeconds(delaisAvantJump - dureeFadeFlash);
-        gm.colorManager.MakeAllColorSourcesBounceToColor(colorFlash, dureeFadeFlash, dureeFadeFlash);
+        //gm.colorManager.MakeAllColorSourcesBounceToColor(colorFlash, dureeFadeFlash, dureeFadeFlash);
         yield return new WaitForSeconds(dureeFadeFlash);
         if(gm.player.GetEtat() != Player.EtatPersonnage.EN_CHUTE
         && gm.player.GetEtat() != Player.EtatPersonnage.EN_SAUT) {
