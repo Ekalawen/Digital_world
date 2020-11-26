@@ -24,6 +24,7 @@ public class SoundManager : MonoBehaviour {
     public AudioClipParams newBlockClips;
     public AudioClipParams eventStartClips;
     public AudioClipParams eventEndClips;
+    public AudioClipParams jumpEventStartClips;
     public AudioClipParams jumpSuccessClips;
     public AudioClipParams jumpEventStunClips;
     public AudioClipParams jumpEventUnStunClips;
@@ -114,6 +115,9 @@ public class SoundManager : MonoBehaviour {
     public void PlayEventEndClip() {
         // reverse !
         PlayClipsOnSource(eventStartClips);
+    }
+    public void PlayJumpEventStartClip(float duration) {
+        PlayClipsOnSource(jumpEventStartClips, duration: duration);
     }
     public void PlayJumpSuccessClip() {
         PlayClipsOnSource(jumpSuccessClips);

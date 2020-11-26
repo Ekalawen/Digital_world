@@ -91,4 +91,8 @@ public class JumpEvent : RandomEvent {
                 StopCoroutine(coroutine);
         }
     }
+
+    protected override void PlayStartSound() {
+        gm.soundManager.PlayJumpEventStartClip(delaisAvantJump + 0.4f);
+    }
 }

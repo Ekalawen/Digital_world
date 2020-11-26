@@ -31,14 +31,19 @@ public abstract class RandomEvent : MonoBehaviour {
     }
 
     public void TriggerEvent() {
-        if (CanBeStarted()) {
+        if (CanBeStarted())
+        {
             bEventIsOn = true;
             dureeCourante = GaussianGenerator.Next(esperanceDuree, varianceDuree, 0.0f, 2 * esperanceDuree);
             StartEvent();
-            gm.soundManager.PlayEventStartClip();
+            PlayStartSound();
             StartEventConsoleMessage();
             StartCoroutine(CEndEvent());
         }
+    }
+
+    protected virtual void PlayStartSound() {
+        gm.soundManager.PlayEventStartClip();
     }
 
     protected IEnumerator CEndEvent() {
