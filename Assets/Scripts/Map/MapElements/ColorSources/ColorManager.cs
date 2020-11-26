@@ -280,4 +280,26 @@ public class ColorManager : MonoBehaviour {
             }
         }
     }
+
+    public void MakeLightIntensityBounce(float intensityVariation, float fadeIn, float fadeOut) {
+        StartCoroutine(CMakeLightIntensityBounce(intensityVariation, fadeIn, fadeOut));
+    }
+
+    public IEnumerator CMakeLightIntensityBounce(float intensityVariation, float fadeIn, float fadeOut) {
+        Color startColor = RenderSettings.ambientLight;
+        intensityVariation = Mathf.Pow(2, intensityVariation);
+        Timer fadeInTimer = new Timer(fadeIn);
+        while(!fadeInTimer.IsOver()) {
+            float coef = MathCurves.Linear(1, 1 + intensityVariation, fadeInTimer.GetAvancement());
+            RenderSettings.ambientLight = startColor * coef;
+            yield return null;
+        }
+        Timer fadeOutTimer = new Timer(fadeOut);
+        while(!fadeOutTimer.IsOver()) {
+            float coef = MathCurves.Linear(1, 1 + intensityVariation, 1 - fadeOutTimer.GetAvancement());
+            RenderSettings.ambientLight = startColor * coef;
+            yield return null;
+        }
+        RenderSettings.ambientLight = startColor;
+    }
 }
