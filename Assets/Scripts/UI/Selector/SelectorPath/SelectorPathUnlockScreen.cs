@@ -168,7 +168,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         selectorManager.RunPopup(
             title: "Data Hackées",
             text: "Vous n'avez encore jamais hacké niveau.\n" +
-            "Aucune Data accessibles.",
+            "Aucune Data accessible.",
             theme: TexteExplicatif.Theme.NEUTRAL);
     }
 
@@ -179,7 +179,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
             title: "Data Hackées",
             text: "Vous n'avez encore jamais hacké niveau.\n" +
             $"Premier pallier à {firstTreshold} {unite}.\n" +
-            "Aucune Data accessibles.",
+            "Aucune Data accessible.",
             theme: TexteExplicatif.Theme.NEUTRAL);
     }
 
