@@ -145,13 +145,6 @@ public virtual void Update () {
 		AjouterMessage ("[Niveau]: Initialisation de la Matrix ...", TypeText.BASIC_TEXT, bUsePrefix: false);
 		AjouterMessageImportant (map.GetLumieres().Count + " Datas trouvées !", TypeText.ALLY_TEXT, 5);
 		AjouterMessage (gm.ennemiManager.ennemis.Count + " Ennemis détectés !", TypeText.ALLY_TEXT);
-
-		//AjouterMessage ("Chargement de la Matrix ...", TypeText.BASIC_TEXT);
-		//AjouterMessage ("Détection des Bases de Données ...", TypeText.BASIC_TEXT);
-		//AjouterMessageImportant (map.lumieres.Count + " Datas trouvées ! À vous de jouer !", TypeText.ALLY_TEXT, 5);
-		//AjouterMessage ("DÉTECTION INTRUSION ...", TypeText.ENNEMI_TEXT);
-		//AjouterMessage ("ANTI-VIRUS ACTIVÉS DANS 5 SECONDES !", TypeText.ENNEMI_TEXT);
-		//AjouterMessage ("On détecte " + gm.ennemiManager.ennemis.Count + " Ennemis !", TypeText.ALLY_TEXT);
 	}
 
     public void PouvoirsDesactives() {

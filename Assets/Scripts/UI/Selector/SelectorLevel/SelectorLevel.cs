@@ -149,7 +149,7 @@ public class SelectorLevel : MonoBehaviour {
             "Pallier débloqué !",
             "Félicitations !\n" + 
             congrats +
-            $"Allez {le} consulter dans les Données Hackées !",
+            $"Allez {le} consulter dans les Data Hackées !",
             theme: TexteExplicatif.Theme.POSITIF);
     }
 

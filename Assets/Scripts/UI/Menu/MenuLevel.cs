@@ -371,7 +371,8 @@ public class MenuLevel : MonoBehaviour {
             if(tresholds.Contains(GetNbWins())) {
                 MenuManager.Instance.RunPopup(
                     "Pallier débloqué !", 
-                    "Félicitation ! Vous venez de débloquer le pallier de" + (GetNbWins() > 1 ? "s" : "") + " " + GetNbWins() + " victoire" + ((GetNbWins() > 1) ? "s" : "") + " !\nAllez le consulter dans les Données Hackées !",
+                    "Félicitation ! Vous venez de débloquer le pallier de" + (GetNbWins() > 1 ? "s" : "") + " " + GetNbWins() + " victoire" + ((GetNbWins() > 1) ? "s" : "") + " !\n" +
+                    "Allez le consulter dans les Data Hackées !",
                     TexteExplicatif.Theme.POSITIF);
             }
             SetNotJustWin();
