@@ -16,7 +16,7 @@ public class TooltipActivator : MonoBehaviour,
 
     protected Coroutine showingCoroutine = null;
 
-    public void Show() {
+    public virtual void Show() {
         showingCoroutine = StartCoroutine(CShowInTime());
     }
 

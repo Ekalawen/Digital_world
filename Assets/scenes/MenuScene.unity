@@ -648,6 +648,34 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 193853830}
   m_CullTransparentMesh: 0
+--- !u!1 &330042552 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6132519329659876958, guid: df108c3e51959b046aaa9a02ab191c65,
+    type: 3}
+  m_PrefabInstance: {fileID: 1103572957}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &330042553
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 330042552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f2bf4a8babcfed468e63c4985c52370, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  message: 
+  timeBeforeShowing: 0.4
+  messages:
+  - NOOOOOOOOOOOOOON !!!
+  - Quitter le jeu :'(
+  - (ECHAP)
+  - Nos Data indiquent qu'il y a 99.999% de chance que ce soit une erreur
+  - Pour quitter le jeu appuyez sur Start() !
+  - "Juste une derni\xE8re partie ?"
+  - Effacer le disque dur de votre ordinateur
 --- !u!224 &347095675 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4257432511998629381, guid: 195280cc830f6204397049d2644e8665,
@@ -1566,9 +1594,10 @@ PrefabInstance:
     - target: {fileID: 5102976413086570045, guid: df108c3e51959b046aaa9a02ab191c65,
         type: 3}
       propertyPath: message
-      value: Quitter le jeu :'(
+      value: Quitter le jeu :'( (ECHAP)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5102976413086570045, guid: df108c3e51959b046aaa9a02ab191c65, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: df108c3e51959b046aaa9a02ab191c65, type: 3}
 --- !u!224 &1103572958 stripped
 RectTransform:
@@ -3506,7 +3535,7 @@ PrefabInstance:
     - target: {fileID: 5102976413086570045, guid: df108c3e51959b046aaa9a02ab191c65,
         type: 3}
       propertyPath: message
-      value: Retourner au menu principal
+      value: Retourner au menu principal (ECHAP)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: df108c3e51959b046aaa9a02ab191c65, type: 3}
@@ -5443,7 +5472,7 @@ PrefabInstance:
     - target: {fileID: 6598797709879794470, guid: 4da58b4f8d281c045aff77aee59ada72,
         type: 3}
       propertyPath: message
-      value: Jouer au jeu !
+      value: "Jouer au jeu ! (ENTR\xC9E, ESPACE)"
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4da58b4f8d281c045aff77aee59ada72, type: 3}
