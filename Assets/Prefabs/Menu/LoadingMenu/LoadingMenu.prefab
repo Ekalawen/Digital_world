@@ -109,6 +109,34 @@ MonoBehaviour:
   pouvoirE: {fileID: 2875580204238247605}
   pouvoirLeftClick: {fileID: 2875580203608432337}
   pouvoirRightClick: {fileID: 2875580204494247645}
+--- !u!114 &2653454249589881971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7436007453579325641}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbd415a19dcac79448965bbe22a15aea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  message: Vous pouvez lancer la partie !
+  timeBeforeShowing: 0.4
+--- !u!114 &8425453472755555614
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7436007455064732780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbd415a19dcac79448965bbe22a15aea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  message: Astuces de pro-player ;)
+  timeBeforeShowing: 0.4
 --- !u!1001 &3199105570706484718
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -226,6 +254,35 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 9026821314669180265, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+        type: 3}
+      propertyPath: m_text
+      value: '<b><color=#00ff00ff>Click Gauche</color>
+
+        <color=#ff0000ff>%PouvoirName%</color></b>
+
+'
+      objectReference: {fileID: 0}
+    - target: {fileID: 9026821314669180265, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 27
+      objectReference: {fileID: 0}
+    - target: {fileID: 9026821314669180265, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+        type: 3}
+      propertyPath: m_textInfo.spaceCount
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 9026821314669180265, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+        type: 3}
+      propertyPath: m_textInfo.wordCount
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 9026821314669180265, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+        type: 3}
+      propertyPath: m_textInfo.lineCount
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7817840737000059275, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
         type: 3}
       propertyPath: m_Text
@@ -235,14 +292,10 @@ PrefabInstance:
 
 '
       objectReference: {fileID: 0}
-    - target: {fileID: 9026821314669180265, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+    - target: {fileID: 226677021833350979, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
         type: 3}
-      propertyPath: m_text
-      value: '<b><color=#00ff00ff>Click Gauche</color>
-
-        <color=#ff0000ff>%PouvoirName%</color></b>
-
-'
+      propertyPath: message
+      value: "Pouvoir associ\xE9 au click gauche"
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8d06d2acc7beb93439a4a883fd9c61fa, type: 3}
@@ -386,26 +439,6 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2095940852470841696, guid: 162182fc2409c2e448c05f095f1864e2,
-        type: 3}
-      propertyPath: m_Color.r
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2095940852470841696, guid: 162182fc2409c2e448c05f095f1864e2,
-        type: 3}
-      propertyPath: m_Color.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2095940852470841696, guid: 162182fc2409c2e448c05f095f1864e2,
-        type: 3}
-      propertyPath: m_Color.b
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2095940852470841696, guid: 162182fc2409c2e448c05f095f1864e2,
-        type: 3}
-      propertyPath: m_Text
-      value: Appuyez sur n'importe quelle touche.
-      objectReference: {fileID: 0}
     - target: {fileID: 5194553885589976909, guid: 162182fc2409c2e448c05f095f1864e2,
         type: 3}
       propertyPath: m_text
@@ -482,6 +515,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_fontStyle
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2095940852470841696, guid: 162182fc2409c2e448c05f095f1864e2,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2095940852470841696, guid: 162182fc2409c2e448c05f095f1864e2,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2095940852470841696, guid: 162182fc2409c2e448c05f095f1864e2,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2095940852470841696, guid: 162182fc2409c2e448c05f095f1864e2,
+        type: 3}
+      propertyPath: m_Text
+      value: Appuyez sur n'importe quelle touche.
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 162182fc2409c2e448c05f095f1864e2, type: 3}
@@ -614,6 +667,35 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 9026821314669180265, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+        type: 3}
+      propertyPath: m_text
+      value: '<b><color=#00ff00ff>E</color>
+
+        <color=#ff0000ff>%PouvoirName%</color></b>
+
+'
+      objectReference: {fileID: 0}
+    - target: {fileID: 9026821314669180265, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 9026821314669180265, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+        type: 3}
+      propertyPath: m_textInfo.spaceCount
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9026821314669180265, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+        type: 3}
+      propertyPath: m_textInfo.wordCount
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9026821314669180265, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+        type: 3}
+      propertyPath: m_textInfo.lineCount
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7817840737000059275, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
         type: 3}
       propertyPath: m_Text
@@ -623,14 +705,10 @@ PrefabInstance:
 
 '
       objectReference: {fileID: 0}
-    - target: {fileID: 9026821314669180265, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+    - target: {fileID: 226677021833350979, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
         type: 3}
-      propertyPath: m_text
-      value: '<b><color=#00ff00ff>E</color>
-
-        <color=#ff0000ff>%PouvoirName%</color></b>
-
-'
+      propertyPath: message
+      value: "Pouvoir associ\xE9 \xE0 la touche E"
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8d06d2acc7beb93439a4a883fd9c61fa, type: 3}
@@ -794,6 +872,65 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5194553885589976909, guid: 162182fc2409c2e448c05f095f1864e2,
+        type: 3}
+      propertyPath: m_text
+      value: '<color=#00ff00ff>Astuce :</color>
+
+'
+      objectReference: {fileID: 0}
+    - target: {fileID: 5194553885589976909, guid: 162182fc2409c2e448c05f095f1864e2,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 5194553885589976909, guid: 162182fc2409c2e448c05f095f1864e2,
+        type: 3}
+      propertyPath: m_textInfo.wordCount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5194553885589976909, guid: 162182fc2409c2e448c05f095f1864e2,
+        type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 2cd58012a4e648549bfcdf4cfdeac686,
+        type: 2}
+    - target: {fileID: 5194553885589976909, guid: 162182fc2409c2e448c05f095f1864e2,
+        type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -403750935843946944, guid: 2cd58012a4e648549bfcdf4cfdeac686,
+        type: 2}
+    - target: {fileID: 5194553885589976909, guid: 162182fc2409c2e448c05f095f1864e2,
+        type: 3}
+      propertyPath: m_fontSize
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 5194553885589976909, guid: 162182fc2409c2e448c05f095f1864e2,
+        type: 3}
+      propertyPath: m_fontSizeBase
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 5194553885589976909, guid: 162182fc2409c2e448c05f095f1864e2,
+        type: 3}
+      propertyPath: m_textInfo.spaceCount
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5194553885589976909, guid: 162182fc2409c2e448c05f095f1864e2,
+        type: 3}
+      propertyPath: m_textInfo.lineCount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5194553885589976909, guid: 162182fc2409c2e448c05f095f1864e2,
+        type: 3}
+      propertyPath: m_characterSpacing
+      value: -8.29
+      objectReference: {fileID: 0}
+    - target: {fileID: 5194553885589976909, guid: 162182fc2409c2e448c05f095f1864e2,
+        type: 3}
+      propertyPath: m_wordSpacing
+      value: -11.32
+      objectReference: {fileID: 0}
     - target: {fileID: 2095940852470841696, guid: 162182fc2409c2e448c05f095f1864e2,
         type: 3}
       propertyPath: m_Color.r
@@ -831,67 +968,14 @@ PrefabInstance:
       propertyPath: m_FontData.m_HorizontalOverflow
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5194553885589976909, guid: 162182fc2409c2e448c05f095f1864e2,
-        type: 3}
-      propertyPath: m_text
-      value: '<color=#00ff00ff>Astuce :</color>
-
-'
-      objectReference: {fileID: 0}
-    - target: {fileID: 5194553885589976909, guid: 162182fc2409c2e448c05f095f1864e2,
-        type: 3}
-      propertyPath: m_textInfo.characterCount
-      value: 65
-      objectReference: {fileID: 0}
-    - target: {fileID: 5194553885589976909, guid: 162182fc2409c2e448c05f095f1864e2,
-        type: 3}
-      propertyPath: m_textInfo.wordCount
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 5194553885589976909, guid: 162182fc2409c2e448c05f095f1864e2,
-        type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: 2cd58012a4e648549bfcdf4cfdeac686,
-        type: 2}
-    - target: {fileID: 5194553885589976909, guid: 162182fc2409c2e448c05f095f1864e2,
-        type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: -403750935843946944, guid: 2cd58012a4e648549bfcdf4cfdeac686,
-        type: 2}
-    - target: {fileID: 5194553885589976909, guid: 162182fc2409c2e448c05f095f1864e2,
-        type: 3}
-      propertyPath: m_fontSize
-      value: 14
-      objectReference: {fileID: 0}
-    - target: {fileID: 5194553885589976909, guid: 162182fc2409c2e448c05f095f1864e2,
-        type: 3}
-      propertyPath: m_fontSizeBase
-      value: 14
-      objectReference: {fileID: 0}
-    - target: {fileID: 5194553885589976909, guid: 162182fc2409c2e448c05f095f1864e2,
-        type: 3}
-      propertyPath: m_textInfo.spaceCount
-      value: 11
-      objectReference: {fileID: 0}
-    - target: {fileID: 5194553885589976909, guid: 162182fc2409c2e448c05f095f1864e2,
-        type: 3}
-      propertyPath: m_textInfo.lineCount
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 5194553885589976909, guid: 162182fc2409c2e448c05f095f1864e2,
-        type: 3}
-      propertyPath: m_characterSpacing
-      value: -8.29
-      objectReference: {fileID: 0}
-    - target: {fileID: 5194553885589976909, guid: 162182fc2409c2e448c05f095f1864e2,
-        type: 3}
-      propertyPath: m_wordSpacing
-      value: -11.32
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 162182fc2409c2e448c05f095f1864e2, type: 3}
+--- !u!1 &7436007455064732780 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5428949646706992410, guid: 162182fc2409c2e448c05f095f1864e2,
+    type: 3}
+  m_PrefabInstance: {fileID: 3199105571718025590}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &7650418409988727819 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5066055436202243453, guid: 162182fc2409c2e448c05f095f1864e2,
@@ -1027,6 +1111,35 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 9026821314669180265, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+        type: 3}
+      propertyPath: m_text
+      value: '<b><color=#00ff00ff>Click Droit</color>
+
+        <color=#ff0000ff>%PouvoirName%</color></b>
+
+'
+      objectReference: {fileID: 0}
+    - target: {fileID: 9026821314669180265, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 26
+      objectReference: {fileID: 0}
+    - target: {fileID: 9026821314669180265, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+        type: 3}
+      propertyPath: m_textInfo.spaceCount
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 9026821314669180265, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+        type: 3}
+      propertyPath: m_textInfo.wordCount
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 9026821314669180265, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+        type: 3}
+      propertyPath: m_textInfo.lineCount
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7817840737000059275, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
         type: 3}
       propertyPath: m_Text
@@ -1036,14 +1149,10 @@ PrefabInstance:
 
 '
       objectReference: {fileID: 0}
-    - target: {fileID: 9026821314669180265, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+    - target: {fileID: 226677021833350979, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
         type: 3}
-      propertyPath: m_text
-      value: '<b><color=#00ff00ff>Click Droit</color>
-
-        <color=#ff0000ff>%PouvoirName%</color></b>
-
-'
+      propertyPath: message
+      value: "Pouvoir associ\xE9 au click droit"
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8d06d2acc7beb93439a4a883fd9c61fa, type: 3}
@@ -1182,6 +1291,35 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 9026821314669180265, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+        type: 3}
+      propertyPath: m_text
+      value: '<b><color=#00ff00ff>A</color>
+
+        <color=#ff0000ff>%PouvoirName%</color></b>
+
+'
+      objectReference: {fileID: 0}
+    - target: {fileID: 9026821314669180265, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 9026821314669180265, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+        type: 3}
+      propertyPath: m_textInfo.spaceCount
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9026821314669180265, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+        type: 3}
+      propertyPath: m_textInfo.wordCount
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9026821314669180265, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+        type: 3}
+      propertyPath: m_textInfo.lineCount
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7817840737000059275, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
         type: 3}
       propertyPath: m_Text
@@ -1191,14 +1329,10 @@ PrefabInstance:
 
 '
       objectReference: {fileID: 0}
-    - target: {fileID: 9026821314669180265, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+    - target: {fileID: 226677021833350979, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
         type: 3}
-      propertyPath: m_text
-      value: '<b><color=#00ff00ff>A</color>
-
-        <color=#ff0000ff>%PouvoirName%</color></b>
-
-'
+      propertyPath: message
+      value: "Pouvoir associ\xE9 \xE0 la touche A"
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8d06d2acc7beb93439a4a883fd9c61fa, type: 3}

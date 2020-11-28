@@ -48,7 +48,9 @@ MonoBehaviour:
   endLevel: {fileID: 0}
   intermediatePoints: []
   donneesHackees: {fileID: 0}
-  password: passwd
+  passwordPasse: passwd
+  dontUseAdvice: 0
+  dontUseTrace: 0
   timeBetweenTrails: 0.3
   trailColorUnlocked:
     serializedVersion: 2
@@ -111,6 +113,20 @@ MonoBehaviour:
   trailPrefab: {fileID: 1168935213390774, guid: 9b0707c978ffad244849b2fbb542f4d7,
     type: 3}
   cadena: {fileID: 2924448267360880393}
+--- !u!114 &2744473643893958605
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2747297089814667258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbd415a19dcac79448965bbe22a15aea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  message: 
+  timeBeforeShowing: 0.4
 --- !u!1001 &6492116574664539345
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -183,6 +199,11 @@ PrefabInstance:
       propertyPath: selectorPath
       value: 
       objectReference: {fileID: 1080110162462154181}
+    - target: {fileID: 2461477049864876500, guid: f41635011ffbc3f4da6a7b12afc9e081,
+        type: 3}
+      propertyPath: tooltipActivator
+      value: 
+      objectReference: {fileID: 2744473643893958605}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f41635011ffbc3f4da6a7b12afc9e081, type: 3}
 --- !u!4 &6578463556024073371 stripped
@@ -203,3 +224,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc565f78d9fe4a6499722f6fe0f548ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &2747297089814667258 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8951183009144382251, guid: f41635011ffbc3f4da6a7b12afc9e081,
+    type: 3}
+  m_PrefabInstance: {fileID: 6492116574664539345}
+  m_PrefabAsset: {fileID: 0}

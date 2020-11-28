@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -17,19 +18,32 @@ public class Tooltip : MonoBehaviour {
     }
 
     public void Update() {
+        SetPositionToMouse();
+    }
+
+    protected void SetPositionToMouse() {
         Vector2 localPoint;
+        RectTransform rectTransform = GetComponent<RectTransform>();
+        RectTransform screen = transform.parent.GetComponent<RectTransform>();
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
-            transform.parent.GetComponent<RectTransform>(), 
+            screen, 
             Input.mousePosition, 
             null, 
             out localPoint);
-        transform.localPosition = localPoint;
+        rectTransform.localPosition = localPoint;
+        Vector2 minPosition = screen.rect.min - rectTransform.rect.min;
+        Vector2 maxPosition = screen.rect.max - text.GetPreferredValues();
+        Vector2 clampedPos = new Vector2(
+            Mathf.Clamp(rectTransform.localPosition.x, minPosition.x, maxPosition.x),
+            Mathf.Clamp(rectTransform.localPosition.y, minPosition.y, maxPosition.y));
+        rectTransform.localPosition = clampedPos;
     }
 
     protected void ShowProtected(string message) {
-        gameObject.SetActive(true);
-        text.text = message;
+        text.SetText(message);
         background.sizeDelta = text.GetPreferredValues(message);
+        SetPositionToMouse();
+        gameObject.SetActive(true);
     }
 
     protected void HideProtected() {

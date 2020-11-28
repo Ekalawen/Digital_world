@@ -1,30 +1,42 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class TooltipActivator : MonoBehaviour {
+public class TooltipActivator : MonoBehaviour,
+    IPointerEnterHandler,
+    IPointerExitHandler
+{
 
     public string message = "TooltipActivatorMessage";
+    public float timeBeforeShowing = 0.4f;
 
-    protected RectTransform trigger;
-    protected bool wasContaining = false;
+    protected Coroutine showingCoroutine = null;
 
-    public void Start() {
-        trigger = GetComponent<RectTransform>();
-        if (trigger == null)
-            Debug.LogWarning("Un TooltipActivator doit être placé sur un GameObject avec un RectTransform ! ;)");
+    public void Show() {
+        showingCoroutine = StartCoroutine(CShowInTime());
     }
 
-    public void Update() {
-        bool currentlyContaining = RectTransformUtility.RectangleContainsScreenPoint(trigger, Input.mousePosition);
-        if(currentlyContaining && !wasContaining) {
-            Tooltip.Show(message);
-        }
-        if(!currentlyContaining && wasContaining) {
-            Tooltip.Hide();
-        }
-        wasContaining = currentlyContaining;
+    protected IEnumerator CShowInTime() {
+        yield return new WaitForSeconds(timeBeforeShowing);
+        string parsedMessage = message.Replace("\\n", "\n");
+        Tooltip.Show(parsedMessage);
+    }
+
+    public void Hide() {
+        if (showingCoroutine != null)
+            StopCoroutine(showingCoroutine);
+        Tooltip.Hide();
+    }
+
+    public void OnPointerEnter(PointerEventData eventData) {
+        Show();
+    }
+
+    public void OnPointerExit(PointerEventData eventData) {
+        Hide();
     }
 }

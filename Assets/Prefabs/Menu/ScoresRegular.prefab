@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7127508548158473436}
   - component: {fileID: 8179888231630293741}
   - component: {fileID: 5874428769051064863}
+  - component: {fileID: 973964490496854601}
   m_Layer: 5
   m_Name: Winrate
   m_TagString: Untagged
@@ -35,7 +36,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: -6}
-  m_SizeDelta: {x: 120, y: 15}
+  m_SizeDelta: {x: 120, y: 10}
   m_Pivot: {x: 1, y: 1}
 --- !u!222 &8179888231630293741
 CanvasRenderer:
@@ -158,6 +159,20 @@ MonoBehaviour:
   - {fileID: 0}
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &973964490496854601
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1733992014060882164}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbd415a19dcac79448965bbe22a15aea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  message: "La probabilit\xE9 avec laquelle vous avez gagn\xE9"
+  timeBeforeShowing: 0.4
 --- !u!1 &3649216869391516787
 GameObject:
   m_ObjectHideFlags: 0
@@ -169,6 +184,7 @@ GameObject:
   - component: {fileID: 7519195241938586733}
   - component: {fileID: 7369879979914629164}
   - component: {fileID: 4940290741812748633}
+  - component: {fileID: 7024087777175197056}
   m_Layer: 5
   m_Name: BestScore
   m_TagString: Untagged
@@ -193,7 +209,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
   m_AnchoredPosition: {x: 0, y: 6}
-  m_SizeDelta: {x: 120, y: 15}
+  m_SizeDelta: {x: 120, y: 10}
   m_Pivot: {x: 1, y: 0}
 --- !u!222 &7369879979914629164
 CanvasRenderer:
@@ -293,7 +309,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 4940290741812748633}
-    characterCount: 17
+    characterCount: 14
     spriteCount: 0
     spaceCount: 3
     wordCount: 3
@@ -316,6 +332,20 @@ MonoBehaviour:
   - {fileID: 0}
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &7024087777175197056
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3649216869391516787}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbd415a19dcac79448965bbe22a15aea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  message: Votre meilleur score !
+  timeBeforeShowing: 0.4
 --- !u!1 &6212435650581712193
 GameObject:
   m_ObjectHideFlags: 0
@@ -406,6 +436,7 @@ GameObject:
   - component: {fileID: 3083776209946981385}
   - component: {fileID: 1971023832683522994}
   - component: {fileID: 7701715350163561703}
+  - component: {fileID: 1428902314312170473}
   m_Layer: 5
   m_Name: NbTries
   m_TagString: Untagged
@@ -430,7 +461,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 7, y: -6}
-  m_SizeDelta: {x: 100, y: 15}
+  m_SizeDelta: {x: 100, y: 10}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &1971023832683522994
 CanvasRenderer:
@@ -553,6 +584,20 @@ MonoBehaviour:
   - {fileID: 0}
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &1428902314312170473
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6522115344115524096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbd415a19dcac79448965bbe22a15aea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  message: "Le nombre de fois o\xF9 vous \xEAtes mort"
+  timeBeforeShowing: 0.4
 --- !u!1 &9215277475481725439
 GameObject:
   m_ObjectHideFlags: 0
@@ -564,6 +609,7 @@ GameObject:
   - component: {fileID: 8489757173349207122}
   - component: {fileID: 4915878482378067142}
   - component: {fileID: 6152414880273149214}
+  - component: {fileID: 558688539449711249}
   m_Layer: 5
   m_Name: NbWins
   m_TagString: Untagged
@@ -588,7 +634,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 7, y: 6}
-  m_SizeDelta: {x: 100, y: 15}
+  m_SizeDelta: {x: 100, y: 10}
   m_Pivot: {x: 0, y: 0}
 --- !u!222 &4915878482378067142
 CanvasRenderer:
@@ -711,3 +757,17 @@ MonoBehaviour:
   - {fileID: 0}
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &558688539449711249
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9215277475481725439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbd415a19dcac79448965bbe22a15aea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  message: "Le nombre de fois o\xF9 vous avez r\xE9ussi !"
+  timeBeforeShowing: 0.4

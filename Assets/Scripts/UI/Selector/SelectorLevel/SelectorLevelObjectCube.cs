@@ -10,6 +10,7 @@ public class SelectorLevelObjectCube : MonoBehaviour {
     public Material normalMaterial;
     public Material focusedMaterial;
     public Material lockedMaterial;
+    public TooltipActivator tooltipActivator;
 
     protected SelectorManager selectorManager;
     protected bool hasClickedDown = false;
@@ -17,6 +18,7 @@ public class SelectorLevelObjectCube : MonoBehaviour {
     public void Initialize() {
         selectorManager = SelectorManager.Instance;
         SetMaterial(focus: false);
+        tooltipActivator.message = $"Niveau {selectorLevel.GetName()}";
     }
 
     public void OnMouseEnter() {
@@ -24,6 +26,7 @@ public class SelectorLevelObjectCube : MonoBehaviour {
             objectLevel.level.OnMouseEnter();
             SetMaterial(focus: true);
             objectLevel.title.SetFocused();
+            tooltipActivator.Show();
         }
     }
 
@@ -32,6 +35,7 @@ public class SelectorLevelObjectCube : MonoBehaviour {
         SetMaterial(focus: false);
         objectLevel.title.SetUnfocused();
         hasClickedDown = false;
+        tooltipActivator.Hide();
     }
 
     public void OnMouseDown() {
