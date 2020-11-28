@@ -22,7 +22,7 @@ public class SelectorLevelObjectCube : MonoBehaviour {
     }
 
     public void OnMouseEnter() {
-        if (!selectorManager.PopupIsEnabled()) {
+        if (IsCubeClickable()) {
             objectLevel.level.OnMouseEnter();
             SetMaterial(focus: true);
             objectLevel.title.SetFocused();
@@ -31,11 +31,13 @@ public class SelectorLevelObjectCube : MonoBehaviour {
     }
 
     public void OnMouseExit() {
-        objectLevel.level.OnMouseExit();
-        SetMaterial(focus: false);
-        objectLevel.title.SetUnfocused();
-        hasClickedDown = false;
-        tooltipActivator.Hide();
+        if (IsCubeClickable()) {
+            objectLevel.level.OnMouseExit();
+            SetMaterial(focus: false);
+            objectLevel.title.SetUnfocused();
+            hasClickedDown = false;
+            tooltipActivator.Hide();
+        }
     }
 
     public void OnMouseDown() {
@@ -45,12 +47,16 @@ public class SelectorLevelObjectCube : MonoBehaviour {
     public void OnMouseUp() {
         if (hasClickedDown) {
             hasClickedDown = false;
-            if (!selectorManager.PopupIsEnabled()
-            && !selectorManager.HasSelectorLevelOpen()
-            && !selectorManager.HasSelectorPathUnlockScreenOpen()) {
+            if (IsCubeClickable()) {
                 objectLevel.level.OnMouseDown();
             }
         }
+    }
+
+    private bool IsCubeClickable() {
+        return !selectorManager.PopupIsEnabled()
+            && !selectorManager.HasSelectorLevelOpen()
+            && !selectorManager.HasSelectorPathUnlockScreenOpen();
     }
 
     public void SetMaterial(bool focus) {
