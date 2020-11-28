@@ -49,6 +49,7 @@ public class SelectorLevelObjectCube : MonoBehaviour {
             hasClickedDown = false;
             if (IsCubeClickable()) {
                 objectLevel.level.OnMouseDown();
+                tooltipActivator.Hide();
             }
         }
     }

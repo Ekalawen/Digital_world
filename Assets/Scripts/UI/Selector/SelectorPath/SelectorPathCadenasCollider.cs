@@ -39,6 +39,7 @@ public class SelectorPathCadenasCollider : MonoBehaviour {
             hasClickedDown = false;
             if (IsCadenasClickable()) {
                 cadenas.selectorPath.OnCadenaClicked();
+                tooltipActivator.Hide();
             }
         }
     }
