@@ -6,18 +6,16 @@ using System.Collections.Generic;
 
 public class UIHelper {
 
-    //public static string RED = "#800000ff";
-    //public static string GREEN = "#008000ff";
-    //public static string BLUE = "#0000ffff";
-    //public static string CYAN = "#00ffffff";
     public static string RED = "#ff0000ff";
     public static string GREEN = "#00ff00ff";
     public static string BLUE = "#0000ffff";
     public static string WHITE = "#ffffffff";
     public static string BLACK = "#000000ff";
     public static string CYAN = "#00ffffff";
-    public static string ORANGE = "#00ffffff";
-    public static string YELLOW = "#00ffffff";
+    public static string DARK_CYAN = "#008888ff";
+    public static string ELECTRIC_BLUE = "#88ffffff";
+    public static string ORANGE = "#ff8888ff";
+    public static string YELLOW = "#ffff00ff";
     public static string PURE_RED = "#ff0000ff";
     public static string PURE_GREEN = "#00ff00ff";
     public static string PURE_BLUE = "#0000ffff";
@@ -30,6 +28,8 @@ public class UIHelper {
             new Tuple<string, string>("#GREEN", GREEN),
             new Tuple<string, string>("#BLUE", BLUE),
             new Tuple<string, string>("#CYAN", CYAN),
+            new Tuple<string, string>("#DARK_CYAN", DARK_CYAN),
+            new Tuple<string, string>("#ELECTRIC_BLUE", ELECTRIC_BLUE),
             new Tuple<string, string>("#WHITE", WHITE),
             new Tuple<string, string>("#BLACK", BLACK),
             new Tuple<string, string>("#ORANGE", ORANGE),
