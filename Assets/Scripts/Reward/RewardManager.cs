@@ -88,13 +88,16 @@ public class RewardManager : MonoBehaviour {
     }
 
     public void TestExit() {
-        // Si on a appuyé sur la touche Escape, on revient au menu !
         if (Input.GetKey (KeyCode.Escape) 
          || Input.GetKey(KeyCode.KeypadEnter)
          || Input.GetKey(KeyCode.Return)
          || Input.GetKey(KeyCode.Space)) {
-            SceneManager.LoadScene("SelectorScene");
+            Exit();
 		}
+    }
+
+    public void Exit() {
+        SceneManager.LoadScene("SelectorScene");
     }
 
     protected float ComputeDurationTrail(float dureeGame) {
