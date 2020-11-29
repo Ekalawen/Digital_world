@@ -556,14 +556,13 @@ public virtual void Update () {
 
 	// Quand on attrape une lumière
 	public void AttraperLumiere(int nbLumieresRestantes) {
-		//AjouterMessage ("ON A DES INFOS !", Console.TypeText.ALLY_TEXT);
+        string messagePrecedent = "Plus que " + (nbLumieresRestantes + 1) + " !";
 		if (!gm.eventManager.IsEndGameStarted() && nbLumieresRestantes > 0) {
             string messageCurrent = "Plus que " + nbLumieresRestantes + " !";
-            string messagePrecedent = "Plus que " + (nbLumieresRestantes + 1) + " !";
-            //EffacerImportantMessage(messageCurrent);
             AjouterMessageImportant(messageCurrent, Console.TypeText.ALLY_TEXT, 1.2f, true, messagePrecedent);
 		} else {
             if (!gm.eventManager.IsWin() && gm.eventManager.GetComponent<EventManagerWhileTrue>() == null) { // Ehhhh x)
+                EffacerImportantMessage("Plus que 1 !");
                 AjouterMessage("ON LES A TOUTES !", Console.TypeText.ALLY_TEXT);
                 AjouterMessageImportant("FAUT SE BARRER MAINTENANT !!!", Console.TypeText.ALLY_TEXT, 2f);
             }
