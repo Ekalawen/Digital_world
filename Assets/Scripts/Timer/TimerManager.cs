@@ -135,11 +135,18 @@ public class TimerManager : MonoBehaviour {
             return 99999.99f;
     }
 
-    public void AddTime(float time) {
+    public void AddTime(float time, bool showVolatileText = true) {
         if (gm.eventManager.IsGameOver())
             return;
 
         totalTime += time;
+
+        if (showVolatileText) {
+            ShowVolatileTextOnAddTime(time);
+        }
+    }
+
+    protected void ShowVolatileTextOnAddTime(float time) {
         int secondes = time >= 0 ? Mathf.FloorToInt(time) : Mathf.CeilToInt(time);
         int centiseconds = Mathf.Abs(Mathf.FloorToInt((time - secondes) * 100));
         string volatileText = (time >= 0 ? "+" : "") + secondes + ":" + centiseconds.ToString("D2");
@@ -147,6 +154,11 @@ public class TimerManager : MonoBehaviour {
         timerDisplayer.AddVolatileText(volatileText, volatileColor);
     }
 
+    public void SetTime(float settedTime, bool showVolatileText = true) {
+        float currentTime = GetRemainingTime();
+        float timeToRemove = settedTime - currentTime;
+        AddTime(timeToRemove, showVolatileText);
+    }
 
     public float GetElapsedTime() {
         return gameTimer.GetElapsedTime();

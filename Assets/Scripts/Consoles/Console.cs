@@ -139,12 +139,14 @@ public virtual void Update () {
         }
     }
 
-	public virtual void PremiersMessages() {
+    public virtual void PremiersMessages() {
         string levelName = PlayerPrefs.GetString(MenuLevel.LEVEL_NAME_KEY);
-		AjouterMessage ("[Niveau]: " + levelName, TypeText.BASIC_TEXT, bUsePrefix: false);
-		AjouterMessage ("[Niveau]: Initialisation de la Matrix ...", TypeText.BASIC_TEXT, bUsePrefix: false);
-		AjouterMessageImportant (map.GetLumieres().Count + " Datas trouvées !", TypeText.ALLY_TEXT, 5);
-		AjouterMessage (gm.ennemiManager.ennemis.Count + " Ennemis détectés !", TypeText.ALLY_TEXT);
+        AjouterMessage("[Niveau]: " + levelName, TypeText.BASIC_TEXT, bUsePrefix: false);
+        AjouterMessage("[Niveau]: Initialisation de la Matrix ...", TypeText.BASIC_TEXT, bUsePrefix: false);
+        string s = map.GetLumieres().Count > 1 ? "s" : "";
+        AjouterMessageImportant($"{map.GetLumieres().Count} Data{s} trouvée{s} !", TypeText.ALLY_TEXT, 5);
+        s = gm.ennemiManager.ennemis.Count > 1 ? "s" : "";
+		AjouterMessage ($"{gm.ennemiManager.ennemis.Count} Ennemi{s} détecté{s} !", TypeText.ALLY_TEXT);
 	}
 
     public void PouvoirsDesactives() {
@@ -647,7 +649,15 @@ public virtual void Update () {
 
     // Lorsque l'on capture la première lumière dans la map Analyze
     public void AnalyzeLevelDeuxiemeSalve() {
-        AjouterMessageImportant("On les a alertés et ils ont répliqué les Datas !", TypeText.ALLY_TEXT, 3);
+        StartCoroutine(CAnalyzeLevelDeuxiemeSalve());
+    }
+    protected IEnumerator CAnalyzeLevelDeuxiemeSalve() {
+        float tempsPremierMessage = 1.5f;
+        float tempsDeuxiemeMessage = 1.5f;
+        AjouterMessageImportant("ALERTE INTRUSION !", TypeText.ENNEMI_TEXT, tempsPremierMessage);
+        yield return new WaitForSeconds(tempsPremierMessage);
+        yield return null;
+        AjouterMessageImportant("Réplication des Data !", TypeText.ENNEMI_TEXT, tempsDeuxiemeMessage);
     }
 
     // Lorsque le joueur tombe, typiquement dans le tutoriel !

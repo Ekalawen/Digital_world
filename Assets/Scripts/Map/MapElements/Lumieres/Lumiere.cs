@@ -8,8 +8,11 @@ public class Lumiere : MonoBehaviour {
 
     public enum LumiereType { NORMAL, FINAL, SPECIAL };
 
+    [Header("Propriétés")]
     public LumiereType type;
     public float timeBonus = 10.0f;
+
+    [Header("Reward")]
     public GameObject rewardLumierePrefab;
 
     [Header("ScreenShake")]
@@ -19,11 +22,9 @@ public class Lumiere : MonoBehaviour {
     protected GameManager gm;
 
     protected virtual void Start () {
-        //ParticleSystem ps = GetComponent<ParticleSystem> ();
         gm = GameManager.Instance;
 	}
 
-	// Si le joueur nous touche, on disparait !
 	protected virtual void OnTriggerEnter(Collider hit) {
 		if (hit.gameObject.name == "Joueur"){
             Captured();
@@ -32,13 +33,11 @@ public class Lumiere : MonoBehaviour {
 
     protected void Captured() {
         gm.map.RemoveLumiere(this);
-        Destroy (this.gameObject);
-
-        gm.console.UpdateLastLumiereAttrapee();
+        Destroy(this.gameObject);
 
         CapturedSpecific();
 
-        gm.eventManager.OnLumiereCaptured(type);
+        NotifyEventManagerLumiereCapture();
 
         NotifyConsoleLumiereCatpure();
 
@@ -49,12 +48,17 @@ public class Lumiere : MonoBehaviour {
         gm.timerManager.AddTime(timeBonus);
     }
 
+    protected virtual void NotifyEventManagerLumiereCapture() {
+        gm.eventManager.OnLumiereCaptured(type);
+    }
+
     protected void ScreenShakeOnLumiereCapture() {
         CameraShaker.Instance.ShakeOnce(screenShakeMagnitude, screenShakeRoughness, 0.05f, 0.05f);
     }
 
     protected virtual void NotifyConsoleLumiereCatpure() {
         gm.console.AttraperLumiere(gm.map.GetLumieres().Count);
+        gm.console.UpdateLastLumiereAttrapee();
     }
 
     protected virtual void CapturedSpecific() {
