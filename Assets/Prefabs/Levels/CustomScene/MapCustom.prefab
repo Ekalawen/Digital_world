@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cubeType: 0
   minDistanceRandomFilling: 1
+  useAllEmptyPositionsInstead: 0
   proportionRandomFilling: 0.02
   sizeCubeRandomFilling: 1
   registerToColorSources: 0
@@ -133,8 +134,13 @@ PrefabInstance:
         type: 3}
       propertyPath: cubePrefab
       value: 
-      objectReference: {fileID: 406734865765331425, guid: 92497eb394ff68645bfe5e5cad5bcba7,
+      objectReference: {fileID: 1586838666760998, guid: 166cc3691555747479ad6b1623980374,
         type: 3}
+    - target: {fileID: 5545246735722281776, guid: 800ea353fd52f8f458146bc8a84ea83e,
+        type: 3}
+      propertyPath: cubeType
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2908441275263901448, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: mapFunctionComponents.Array.size

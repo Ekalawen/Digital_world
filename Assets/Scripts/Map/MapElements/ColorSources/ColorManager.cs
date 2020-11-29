@@ -241,9 +241,11 @@ public class ColorManager : MonoBehaviour {
     public Color GetColorForPosition(Vector3 pos) {
         Color color = Color.black;
         foreach(ColorSource source in sources) {
-            float dist = Vector3.Distance(pos, source.transform.position);
-            if(dist < source.range) {
-                color += source.GetColorForPosition(pos);
+            if (source != null) {
+                float dist = Vector3.Distance(pos, source.transform.position);
+                if (dist < source.range) {
+                    color += source.GetColorForPosition(pos);
+                }
             }
         }
         return color;

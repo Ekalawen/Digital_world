@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CorruptedCube : Cube {
+public class CorruptedCube : NonBlackCube {
 
     public float dureeBeforeCorruption = 2.5f;
     public Material corruptionMaterial;

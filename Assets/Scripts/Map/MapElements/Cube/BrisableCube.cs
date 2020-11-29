@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BrisableCube : Cube {
+public class BrisableCube : NonBlackCube {
 
     public float dureeBeforeDestruction = 1.5f;
     public Color preDestructionColor = Color.gray;
