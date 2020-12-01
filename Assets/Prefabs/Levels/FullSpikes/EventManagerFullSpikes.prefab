@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &6950961195807844789
+--- !u!114 &3650609398557131173
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -9,22 +9,30 @@ MonoBehaviour:
   m_GameObject: {fileID: 2005818113718561989}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 692be00eff5da574d903e46f5b0fbfc0, type: 3}
+  m_Script: {fileID: 11500000, guid: 4d01bb9bf05938c419cbecdda218f247, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ejectionType: 0
   ejectionTreshold: -10
+  ejectionCubesArroundRadius: 20
   endGameDuration: 20
   endGameFrameRate: 0.1
+  endGameType: 0
   bNoEndgame: 0
+  screenShakeMagnitude: 2
+  screenShakeRoughness: 15
+  dureeScreenShake: 3
   randomEventsPrefabs: []
+  nbLumieresTriggers: 
+  eventsToAddPrefabs: []
   nbLumieresFinales: 10
   messagesAChaqueLumiere:
   - Ok c'est pas fini !
   - Ils relocalisent leurs Datas !
-  - Continue, je verrouille la cible !
-  - "Je commence \xE0 voir un pattern !"
+  - "Continue, je v\xE9rrouille la cible !"
+  - "Je commence \u28F6\xE0 voir un pattern !"
   - Plus que 3 !
-  - "Ok le plus dur est pass\xE9 stay focus !"
+  - "Ok le plus dur est pass\xE9 reste focus !"
   - Tiens bon ! ...
   - Mince ! Ils viennent d'en rajouter 2 !
   - On y est presque ! ...
@@ -37,7 +45,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1848378137720066, guid: 4ad9af6763aeb45c8962c1fadb06c2eb, type: 3}
       propertyPath: m_Name
-      value: EventManagerFullSpikesLevel
+      value: EventManagerFullSpikes
       objectReference: {fileID: 0}
     - target: {fileID: 4331339866297836, guid: 4ad9af6763aeb45c8962c1fadb06c2eb, type: 3}
       propertyPath: m_LocalPosition.x

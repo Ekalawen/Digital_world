@@ -15,8 +15,10 @@ public class NonBlackCube : Cube {
     }
 
     protected void InitColor() {
-        Color color = ColorSource.LimiteColorSaturation(Color.black, minColorSaturationAndValue);
-        GetComponent<MeshRenderer>().material.color = color;
+        if (GetColor() == Color.black) {
+            Color color = ColorSource.LimiteColorSaturation(Color.black, minColorSaturationAndValue);
+            GetComponent<MeshRenderer>().material.color = color;
+        }
     }
 
     protected void UninitColor() {
