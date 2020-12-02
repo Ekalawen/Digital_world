@@ -112,7 +112,9 @@ public class Block : MonoBehaviour {
 
     public void RememberTime(float time, CounterDisplayer nbBlocksDisplayer) {
         if (ShouldKeepRememberingTimes()) {
+#if UNITY_EDITOR
             EditorUtility.SetDirty(originalBlockPrefab);
+#endif
             GetTimeList().Add(time);
             nbBlocksDisplayer.AddVolatileText($"{time}s", Color.red);
             RemoveExtremeTimes();

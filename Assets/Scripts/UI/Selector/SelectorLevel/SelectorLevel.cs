@@ -213,23 +213,23 @@ public class SelectorLevel : MonoBehaviour {
     }
 }
 
-[CustomEditor(typeof(SelectorLevel)), CanEditMultipleObjects]
-public class SelectorLevelEditor : Editor
-{
-    public override void OnInspectorGUI()
-    {
-        DrawDefaultInspector();
-        SelectorLevel selectorLevel = target as SelectorLevel;
-        if (GUILayout.Button("Reset Scores"))
-        {
-            selectorLevel.ResetScores();
-        }
-        if (GUILayout.Button("Scores to Max Treshold"))
-        {
-            selectorLevel.SetScoresToMaxTreshold();
-        }
-    }
-}
+//[CustomEditor(typeof(SelectorLevel)), CanEditMultipleObjects]
+//public class SelectorLevelEditor : Editor
+//{
+//    public override void OnInspectorGUI()
+//    {
+//        DrawDefaultInspector();
+//        SelectorLevel selectorLevel = target as SelectorLevel;
+//        if (GUILayout.Button("Reset Scores"))
+//        {
+//            selectorLevel.ResetScores();
+//        }
+//        if (GUILayout.Button("Scores to Max Treshold"))
+//        {
+//            selectorLevel.SetScoresToMaxTreshold();
+//        }
+//    }
+//}
 
 //[CustomEditor(typeof(GenerateCaves)), CanEditMultipleObjects]
 //public class GenerateCavesEditor : Editor {

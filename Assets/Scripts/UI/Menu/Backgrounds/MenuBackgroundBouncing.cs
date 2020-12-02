@@ -13,11 +13,11 @@ public class MenuBackgroundBouncing : MonoBehaviour {
 	protected int nbPanelsX;
 	protected int nbPanelsY;
 	protected List<GameObject> panels;
-	protected PanelBouncing[,] panelsPos;
+    protected PanelBouncing[,] panelsPos;
+    protected bool isPaused = false;
 
 
-	public void Initialize ()
-    {
+	public void Initialize () {
         nbPanelsX = (int)(rectToFill.rect.width / panelSize) + 1; // +1 pour être sur que ça dépasse de tous les cotés !
         nbPanelsY = (int)(rectToFill.rect.height / panelSize) + 1;
         panels = new List<GameObject>();
@@ -95,5 +95,23 @@ public class MenuBackgroundBouncing : MonoBehaviour {
 
     public int GetNbPanels() {
         return nbPanelsX * nbPanelsY;
+    }
+
+    public void Pause() {
+        foreach(PanelBouncing panel in panelsPos) {
+            isPaused = true;
+            panel.Pause();
+        }
+    }
+
+    public void Unpause() {
+        foreach(PanelBouncing panel in panelsPos) {
+            isPaused = false;
+            panel.Unpause();
+        }
+    }
+
+    public bool IsPaused() {
+        return isPaused;
     }
 }

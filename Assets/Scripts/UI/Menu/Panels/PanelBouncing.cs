@@ -17,6 +17,7 @@ public class PanelBouncing : MonoBehaviour {
     protected Vector2 realPosition; // La véritable position en pixel à l'écran
     protected bool isSource;
     protected Color colorIfSource;
+    protected bool isPaused = false;
 
     public void Initialize(int x, int y, MenuBackgroundBouncing menuBackgroundBouncing) {
         this.x = x;
@@ -30,6 +31,9 @@ public class PanelBouncing : MonoBehaviour {
     }
 
     void Update () {
+        if (isPaused)
+            return;
+
         if(isSource) {
             DecroitreCouleur();
         }
@@ -124,5 +128,13 @@ public class PanelBouncing : MonoBehaviour {
 
     public Vector2 GetRealPosition() {
         return realPosition;
+    }
+
+    public void Pause() {
+        isPaused = true;
+    }
+
+    public void Unpause() {
+        isPaused = false;
     }
 }

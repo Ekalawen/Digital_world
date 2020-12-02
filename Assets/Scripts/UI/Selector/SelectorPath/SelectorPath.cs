@@ -181,15 +181,15 @@ public class SelectorPath : MonoBehaviour {
     }
 }
 
-[CustomEditor(typeof(SelectorPath)), CanEditMultipleObjects]
-public class SelectorPathEditor : Editor {
-    public override void OnInspectorGUI() {
-        DrawDefaultInspector();
-        SelectorPath selectorPath = target as SelectorPath;
-        if (GUILayout.Button("Unlock Path")) {
-            selectorPath.UnlockPath();
-        } if (GUILayout.Button("Lock Path")) {
-            selectorPath.LockPath();
-        }
-    }
-}
+//[CustomEditor(typeof(SelectorPath)), CanEditMultipleObjects]
+//public class SelectorPathEditor : Editor {
+//    public override void OnInspectorGUI() {
+//        DrawDefaultInspector();
+//        SelectorPath selectorPath = target as SelectorPath;
+//        if (GUILayout.Button("Unlock Path")) {
+//            selectorPath.UnlockPath();
+//        } if (GUILayout.Button("Lock Path")) {
+//            selectorPath.LockPath();
+//        }
+//    }
+//}
