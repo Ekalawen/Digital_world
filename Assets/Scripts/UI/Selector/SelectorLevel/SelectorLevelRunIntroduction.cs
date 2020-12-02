@@ -12,7 +12,7 @@ public class SelectorLevelRunIntroduction : MonoBehaviour {
         if (!selectorManager.HasThisSelectorLevelOpen(selectorLevel) || selectorManager.PopupIsEnabled())
             return;
         selectorManager.popup.Initialize(
-            title: "Bienvenue dans Digital World !",
+            title: "The Netrunner Awaken1ng",
             useTextAsset: true,
             textAsset: introductionTextAsset,
             theme: TexteExplicatif.Theme.NEUTRAL);
