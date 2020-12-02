@@ -214,14 +214,18 @@ public class SelectorLevel : MonoBehaviour {
 }
 
 [CustomEditor(typeof(SelectorLevel)), CanEditMultipleObjects]
-public class SelectorLevelEditor : Editor {
-    public override void OnInspectorGUI() {
+public class SelectorLevelEditor : Editor
+{
+    public override void OnInspectorGUI()
+    {
         DrawDefaultInspector();
         SelectorLevel selectorLevel = target as SelectorLevel;
-        if(GUILayout.Button("Reset Scores")) {
+        if (GUILayout.Button("Reset Scores"))
+        {
             selectorLevel.ResetScores();
         }
-        if(GUILayout.Button("Scores to Max Treshold")) {
+        if (GUILayout.Button("Scores to Max Treshold"))
+        {
             selectorLevel.SetScoresToMaxTreshold();
         }
     }
