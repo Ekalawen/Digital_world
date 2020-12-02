@@ -21,7 +21,7 @@ public class MenuLevel : MonoBehaviour {
     public static string HAS_JUST_WIN_KEY = "hasJustWin";
     public static string HAS_JUST_MAKE_BEST_SCORE_KEY = "hasJustMakeBestScore";
     public static string HAS_ALREADY_DISCOVER_LEVEL_KEY = "hasAlreadyDiscoverLevel";
-    public static string SUPER_CHEATED_PASSWORD = "lecreateurdecejeuestmonuniquedieuetmaitre";
+    public static string SUPER_CHEATED_PASSWORD = "supercheatedpassword"; // "lecreateurdecejeuestmonuniquedieuetmaitre";
 
 
     [Header("Name")]

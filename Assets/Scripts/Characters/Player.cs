@@ -7,35 +7,28 @@ using UnityEngine.Rendering.PostProcessing;
 
 public class Player : Character {
 
-    //////////////////////////////////////////////////////////////////////////////////////
-    // ENUMERATION
-    //////////////////////////////////////////////////////////////////////////////////////
-
-    public enum EtatPersonnage { AU_SOL, EN_SAUT, EN_CHUTE, AU_MUR, AU_POTEAU };
-
-    //////////////////////////////////////////////////////////////////////////////////////
-    // ATTRIBUTS PUBLIQUES
-    /////////////////////////////////////////////////////////////////////////////////////
+    public enum EtatPersonnage { AU_SOL, EN_SAUT, EN_CHUTE, AU_MUR };
 
     public static Player _instance;
+
+    [Header("Deplacements")]
 	public float vitesseDeplacement; // la vitesse de déplacement horizontale
 	public float vitesseSaut; // la vitesse d'élévation du saut
 	public float dureeSaut; // la durée totale d'un saut
 	public float dureeEfficaciteSaut; // le pourcentage de temps où le saut nous surélève
-	public float gravite; // la force de la gravité
-
-    public float sensibilite; // la sensibilité de la souris
 	public float dureeMur; // le temps que l'on peut rester accroché au mur
 	public float distanceMurMax; // la distance maximale de laquelle on peut s'éloigner du mur
+    public float sensibilite; // la sensibilité de la souris
+	//public float gravite; // la force de la gravité
 
+    [Header("Pouvoirs")]
     public GameObject pouvoirAPrefab; // Le pouvoir de la touche A (souvent la détection)
     public GameObject pouvoirEPrefab; // Le pouvoir de la touche E (souvent la localisation)
     public GameObject pouvoirLeftBoutonPrefab; // Le pouvoir du bouton gauche de la souris
     public GameObject pouvoirRightBoutonPrefab; // Le pouvoir du bouton droit de la souris
+
+    [Header("Camera")]
 	public new Camera camera; // La camera du joueur !
-	//////////////////////////////////////////////////////////////////////////////////////
-	// ATTRIBUTS PRIVÉES
-	//////////////////////////////////////////////////////////////////////////////////////
 
 	[HideInInspector]
 	public GameObject personnage;
@@ -217,7 +210,6 @@ public class Player : Character {
             return;
         }
 
-        // On récupère le mouvement dans le sens de l'orientation du personnage
         Vector3 move = Vector3.zero;
 
         if (!bIsStun) {
@@ -288,37 +280,36 @@ public class Player : Character {
                     break;
 
                 case EtatPersonnage.AU_MUR:
-                    // On peut se décrocher du mur en appuyant sur shift
                     ResetDoubleJump();
-                    if (Input.GetKey(KeyCode.LeftShift))
-                    {
+                    if (Input.GetKey(KeyCode.LeftShift)) {
+                        // On peut se décrocher du mur en appuyant sur shift
                         etat = EtatPersonnage.EN_CHUTE;
                         pointDebutSaut = transform.position;
                         origineSaut = EtatPersonnage.AU_SOL;
                         normaleOrigineSaut = normaleMur;
                         dureeMurRestante = dureeMurRestante - (Time.timeSinceLevelLoad - debutMur);
+
+                    } else if (Input.GetButtonDown("Jump") && gm.gravityManager.HasGravity()) {
                         // On peut encore sauter quand on est au mur ! 
-                    }
-                    else if (Input.GetButtonDown("Jump") && gm.gravityManager.HasGravity())
-                    { // Mais il faut appuyer à nouveau !
+                        // Mais il faut appuyer à nouveau !
                         Jump(from: EtatPersonnage.AU_MUR);
                         move = ApplyJumpMouvement(move);
                         dureeMurRestante = dureeMur;
-                    }
-                    else if (Input.GetButton("Jump"))
-                    { // On a le droit de terminer son saut lorsqu'on touche un mur
+
+                    } else if (Input.GetButton("Jump")) {
+                        // On a le droit de terminer son saut lorsqu'on touche un mur
                         move = ApplyJumpMouvement(move);
-                    }
-                    else
-                    {
+                    } else {
+                        // Si on ne fait rien, alors on ne chute pas.
                         move = gm.gravityManager.CounterGravity(move);
                     }
+
                     // Si ça fait trop longtemps qu'on est sur le mur
                     // Ou que l'on s'éloigne trop du mur on tombe
-                    float distanceMur = ((transform.position - pointMur) - Vector3.ProjectOnPlane((transform.position - pointMur), normaleMur)).magnitude; // pourtant c'est clair non ? Fais un dessins si tu comprends pas <3
+                    Vector3 pos2mur = transform.position - pointMur;
+                    float distanceMur = (pos2mur - Vector3.ProjectOnPlane(pos2mur, normaleMur)).magnitude; // pourtant c'est clair non ? Fais un dessins si tu comprends pas <3
                     if ((Time.timeSinceLevelLoad - debutMur) >= dureeMurRestante
-                        || distanceMur >= distanceMurMax)
-                    {
+                        || distanceMur >= distanceMurMax) {
                         etat = EtatPersonnage.EN_CHUTE;
                         pointDebutSaut = transform.position;
                         origineSaut = EtatPersonnage.AU_MUR;
@@ -329,20 +320,14 @@ public class Player : Character {
                     // Et on veut aussi vérifier que le mur continue encore à nos cotés !
                     // Pour ça on va lancer un rayon ! <3
                     Ray ray = new Ray(transform.position, -normaleMur);
-                    RaycastHit hit; // là où l'on récupère l'information du ray !
-                    if (!Physics.Raycast(ray, out hit, distanceMurMax) || hit.collider.tag != "Cube")
-                    {
-                        // En fait il faudrait passer en mode AU_POTEAU ici !
+                    RaycastHit hit;
+                    if (!Physics.Raycast(ray, out hit, distanceMurMax) || hit.collider.tag != "Cube") {
                         etat = EtatPersonnage.EN_CHUTE;
                         pointDebutSaut = transform.position;
                         origineSaut = EtatPersonnage.AU_MUR;
                         normaleOrigineSaut = normaleMur;
                         dureeMurRestante = dureeMur;
                     }
-
-                    break;
-                case EtatPersonnage.AU_POTEAU:
-                    // C'est possible de rajouter ça quand on voudra =)
                     break;
             }
         }
@@ -406,9 +391,9 @@ public class Player : Character {
                 continue;
             Vector3 n = hit.normal;
             float angle = Vector3.Angle(n, up);
-            if(gm.gravityManager.Down() == Vector3.down) {
-                normaleSol = n;
-            }
+            //if(gm.gravityManager.Down() == Vector3.down) {
+            //    normaleSol = n;
+            //}
             if (Mathf.Abs(angle) <= slideLimit) {
                 return true;
             }
@@ -460,7 +445,7 @@ public class Player : Character {
     void GetEtatPersonnage() {
         isGrounded = IsGrounded();
 		if (etat != EtatPersonnage.AU_MUR) {
-            int currentFrame = Time.frameCount;
+            //int currentFrame = Time.frameCount;
 			if (isGrounded) {
                 EtatPersonnage previousEtat = etat;
 				etat = EtatPersonnage.AU_SOL;
@@ -477,7 +462,6 @@ public class Player : Character {
 	IEnumerator StopJump() {
         Timer timerSaut = new Timer(dureeSaut);
         while (!timerSaut.IsOver() && !Input.GetButtonUp("Jump")) {
-        //while (!timerSaut.IsOver() && Input.GetButton("Jump")) {
             yield return null;
 		}
 		if (etat != EtatPersonnage.AU_MUR) {
@@ -509,29 +493,18 @@ public class Player : Character {
         // Pour ça il doit être dans les airs !
         // Et il ne doit PAS être en train d'appuyer sur SHIFT
         if ((etat == EtatPersonnage.EN_SAUT || etat == EtatPersonnage.EN_CHUTE) && !Input.GetKey(KeyCode.LeftShift)) {
+            // Si on vient d'un mur, on vérifie que la normale du mur précédent est suffisamment différente de la normale actuelle !
+            Vector3 n = hit.normal;
+            if(origineSaut == EtatPersonnage.AU_SOL
+            || (origineSaut == EtatPersonnage.AU_MUR && Vector3.Angle(normaleOrigineSaut, n) > 10)) {
 
-			/*// On ne peut pas s'aggriper si on a une distance horizontale trop petite !
-			Vector3 pointDepart = pointDebutSaut;
-			Vector3 pointDepartProject = Vector3.ProjectOnPlane (pointDepart, Vector3.up);
-			if(true) {//Vector3.Distance(pointDepartProject, Vector3.ProjectOnPlane(hit.point, Vector3.up)) >= 0.5f) {*/
-
-				// Si on vient d'un mur, on vérifie que la normale du mur précédent est suffisamment différente de la normale actuelle !
-				Vector3 n = hit.normal;
-				if(origineSaut == EtatPersonnage.AU_SOL
-                || (origineSaut == EtatPersonnage.AU_MUR && Vector3.Angle(normaleOrigineSaut, n) > 10)) {
-
-                    // Si la normale est au moins un peu à l'horizontale !
-                    Vector3 up = gm.gravityManager.Up();
-					Vector3 nProject = Vector3.ProjectOnPlane (n, up);
-					if (nProject != Vector3.zero && Mathf.Abs(Vector3.Angle (n, nProject)) < slideLimit) {
-                        /*// Si on détecte une collision avec un mur, on peut s'aggriper si l'angle entre la normale
-                        // au mur et le vecteur (pointDepartSaut/mur) est inférieur à slideLimit°
-                        Vector3 direction = pointDebutSaut - hit.point;
-                        Vector3 directionProject = Vector3.ProjectOnPlane(direction, Vector3.up);
-                        if (Mathf.Abs (Vector3.Angle (nProject, directionProject)) < slideLimit) {*/
-                        GripOn(hit);
-					}
-				}
+                // Si la normale est au moins un peu à l'horizontale !
+                Vector3 up = gm.gravityManager.Up();
+                Vector3 nProject = Vector3.ProjectOnPlane (n, up);
+                if (nProject != Vector3.zero && Mathf.Abs(Vector3.Angle (n, nProject)) < slideLimit) {
+                    GripOn(hit);
+                }
+            }
 		}
 	}
 
@@ -542,8 +515,8 @@ public class Player : Character {
         normaleMur = hit.normal;
         pointMur = hit.point;
         gm.postProcessManager.UpdateGripEffect(previousEtat);
-        //if(etat != previousEtat)
-        //    gm.soundManager.PlayGripClip(audioSource);
+        //if (etat != previousEtat)
+        //    gm.soundManager.PlayGripClip(transform.position);
     }
 
 	public void MajHauteurMaxSaut() {
@@ -559,12 +532,10 @@ public class Player : Character {
     protected Vector3 ApplyJumpMouvement(Vector3 move) {
         float percentSaut = (Time.timeSinceLevelLoad - debutSaut) / dureeSaut;
         if (percentSaut <= dureeEfficaciteSaut) {
-            move = gm.gravityManager.MoveOppositeDirectionOfGravity(move, vitesseSaut);
-            //move.y += vitesseSaut;
+            move += gm.gravityManager.Up() * vitesseSaut;
         } else {
-            move = gm.gravityManager.MoveOppositeDirectionOfGravity(move, gm.gravityManager.gravityIntensity);
+            move += gm.gravityManager.Up() * gm.gravityManager.gravityIntensity; // Pour contrer la gravité !
         }
-        //move = gm.gravityManager.CounterGravity(move);
         return move;
     }
 
