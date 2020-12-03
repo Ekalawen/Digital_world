@@ -269,7 +269,6 @@ public class Player : Character {
                     }
                     if(sautTimer.IsOver() || Input.GetButtonUp("Jump")) {
                         etat = EtatPersonnage.EN_CHUTE;
-                        Debug.Log($"Hauteur max saut = {transform.position.y}");
                     } else {
                         move = ApplyJumpMouvement(move);
                     }
