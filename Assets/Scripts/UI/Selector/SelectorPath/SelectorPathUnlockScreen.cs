@@ -94,13 +94,15 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         string registeredPassword = input.text;
         string goodPassword = selectorPath.GetPassword();
         string advice = GetPasswordAdvice(registeredPassword, goodPassword);
+        selectorManager.popup.AddReplacement("Data Hackées()", UIHelper.SurroundWithColor("Data Hackées()", UIHelper.ORANGE));
         selectorManager.RunPopup("Mot de passe érroné.",
             "Ce n'est pas le bon mot de passe.\n" +
             advice +
             "Réussissez ce niveau pour obtenir le mot de passe dans les Data Hackées().\n" +
             "\n" +
             "Bonne Chance !",
-            TexteExplicatif.Theme.NEGATIF);
+            TexteExplicatif.Theme.NEGATIF,
+            cleanReplacements: false);
     }
 
     protected string GetPasswordAdvice(string registeredPassword, string goodPassword) {
@@ -186,10 +188,11 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
     protected void AddReplacementForDonneesHackeesToPopup(TexteExplicatif popup) {
         popup.AddReplacement("%Trace%", UIHelper.SurroundWithColor(selectorPath.GetTrace(), UIHelper.PURE_GREEN));
         popup.AddReplacement("%Passe%", UIHelper.SurroundWithColor(selectorPath.passwordPasse, UIHelper.PURE_GREEN));
-        MatchEvaluator evaluator = new MatchEvaluator(TexteExplicatif.SurroundWithBlueColor);
-        popup.AddReplacementEvaluator(@"Passes?", evaluator);
-        popup.AddReplacementEvaluator(@"Traces?", evaluator);
-        popup.AddReplacementEvaluator(@"Donn[ée]es Hack[ée]es", evaluator);
+        MatchEvaluator blueSurrounder = new MatchEvaluator(TexteExplicatif.SurroundWithBlueColor);
+        MatchEvaluator orangeSurrounder = new MatchEvaluator(TexteExplicatif.SurroundWithOrangeColor);
+        popup.AddReplacementEvaluator(@"Passes?", blueSurrounder);
+        popup.AddReplacementEvaluator(@"Traces?", blueSurrounder);
+        popup.AddReplacementEvaluator(@"Data Hack[ée]es(?)?", orangeSurrounder);
     }
 
     protected void AddNextPallierMessage(TexteExplicatif texteExplicatif, int textTreshold) {

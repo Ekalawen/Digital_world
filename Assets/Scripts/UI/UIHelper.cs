@@ -14,7 +14,7 @@ public class UIHelper {
     public static string CYAN = "#00ffffff";
     public static string DARK_CYAN = "#008888ff";
     public static string ELECTRIC_BLUE = "#88ffffff";
-    public static string ORANGE = "#ff8888ff";
+    public static string ORANGE = "#ff8800ff";
     public static string YELLOW = "#ffff00ff";
     public static string PURE_RED = "#ff0000ff";
     public static string PURE_GREEN = "#00ff00ff";
@@ -22,8 +22,7 @@ public class UIHelper {
 
 
     public static List<Tuple<string, string>> GetColorMapping() {
-        List<Tuple<string, string>> colorMapping = new List<Tuple<string, string>>()
-        {
+        List<Tuple<string, string>> colorMapping = new List<Tuple<string, string>>() {
             new Tuple<string, string>("#RED", RED),
             new Tuple<string, string>("#GREEN", GREEN),
             new Tuple<string, string>("#BLUE", BLUE),

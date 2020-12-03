@@ -333,11 +333,11 @@ public class MenuLevel : MonoBehaviour {
         if(texteExplicatifIntroduction != null)
             texteExplicatifIntroduction.SetRootPath(rootPath);
 
-        MatchEvaluator evaluator = new MatchEvaluator(SurroundWithBlueColor);
+        MatchEvaluator blueSurrounder = new MatchEvaluator(SurroundWithBlueColor);
         texteExplicatifDonneesHackesSuccess.AddReplacement("%Trace%", GetTrace());
         texteExplicatifDonneesHackesSuccess.AddReplacement("%Passe%", nextPassword);
-        texteExplicatifDonneesHackesSuccess.AddReplacementEvaluator(@"Passes?", evaluator);
-        texteExplicatifDonneesHackesSuccess.AddReplacementEvaluator(@"Traces?", evaluator);
+        texteExplicatifDonneesHackesSuccess.AddReplacementEvaluator(@"Passes?", blueSurrounder);
+        texteExplicatifDonneesHackesSuccess.AddReplacementEvaluator(@"Traces?", blueSurrounder);
         // L'ajout des next palliers se fait dans la fonction AddNextPallierMessageToAllFragments()
 
         texteInformations.AddReplacement("[Cilliannelle Crittefigiée]", UIHelper.SurroundWithColor("[Cilliannelle Crittefigiée]", UIHelper.PURE_GREEN));

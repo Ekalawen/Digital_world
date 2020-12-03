@@ -145,12 +145,14 @@ public class SelectorLevel : MonoBehaviour {
                 $"{UIHelper.SurroundWithColor(nextLevel, UIHelper.BLUE)} débloqué !\n";
         }
         string le = $"le{((nbWins.Count > 1) ? "s" : "")}";
+        selectorManager.popup.AddReplacement("Data Hackées()", UIHelper.SurroundWithColor("Data Hackées()", UIHelper.ORANGE));
         selectorManager.RunPopup(
             "Pallier débloqué !",
             "Félicitations !\n" + 
             congrats +
-            $"Allez {le} consulter dans les Data Hackées !",
-            theme: TexteExplicatif.Theme.POSITIF);
+            $"Allez {le} consulter dans les Data Hackées() !",
+            theme: TexteExplicatif.Theme.POSITIF,
+            cleanReplacements: false);
     }
 
     protected bool DisplayPopupUnlockLevel() {

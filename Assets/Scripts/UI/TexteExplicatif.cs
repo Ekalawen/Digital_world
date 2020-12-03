@@ -257,4 +257,8 @@ public class TexteExplicatif : MonoBehaviour {
     public static string SurroundWithBlueColor(Match match) {
         return UIHelper.SurroundWithColor(match.Value, UIHelper.BLUE);
     }
+
+    public static string SurroundWithOrangeColor(Match match) {
+        return UIHelper.SurroundWithColor(match.Value, UIHelper.ORANGE);
+    }
 }
