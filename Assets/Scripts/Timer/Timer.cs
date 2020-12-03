@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -68,5 +69,9 @@ public class Timer {
 
     protected virtual float GetTimeSinceLevelLoad() {
         return Time.timeSinceLevelLoad;
+    }
+
+    public void AdvanceTimerBy(float fixedDeltaTime) {
+        debut -= fixedDeltaTime;
     }
 }
