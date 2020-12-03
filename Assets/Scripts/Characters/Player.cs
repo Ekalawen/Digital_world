@@ -55,6 +55,7 @@ public class Player : Character {
     protected int nbDoublesSautsCourrant = 0; // Le nombre de doubles sauts déjà utilisés
     protected float slideLimit; // La limite à partir de laquelle on va slider sur une surface.
     protected float skinWidthCoef = 1.1f;
+    protected float lastAvancementSaut;
 
     protected IPouvoir pouvoirA; // Le pouvoir de la touche A (souvent la détection)
     protected IPouvoir pouvoirE; // Le pouvoir de la touche E (souvent la localisation)
@@ -138,7 +139,7 @@ public class Player : Character {
     void ChoseStartingPosition() {
     }
 
-    void Update () {
+    void FixedUpdate () {
         // On met à jour la caméra
         UpdateCamera();
 
@@ -224,7 +225,7 @@ public class Player : Character {
 
         move = SlideBottomIfImportantSlope(move);
 
-        controller.Move(move * Time.deltaTime);
+        controller.Move(move * Time.fixedDeltaTime);
 
         ApplyPoussees();
     }
@@ -247,8 +248,10 @@ public class Player : Character {
                 }
                 if(sautTimer.IsOver() || Input.GetButtonUp("Jump")) {
                     etat = EtatPersonnage.EN_CHUTE;
+                    Debug.Log($"hauteur = {transform.position.y}");
+                } else {
+                    move = ApplyJumpMouvement(move);
                 }
-                move = ApplyJumpMouvement(move);
                 break;
 
             case EtatPersonnage.EN_CHUTE:
@@ -439,12 +442,10 @@ public class Player : Character {
         return move;
     }
 
-    // Pour mettre à jour l'état du personnage !
     void GetEtatPersonnage() {
         etatAvant = etat;
         isGrounded = IsGrounded();
 		if (etat != EtatPersonnage.AU_MUR) {
-            //int currentFrame = Time.frameCount;
 			if (isGrounded) {
                 EtatPersonnage previousEtat = etat;
 				etat = EtatPersonnage.AU_SOL;
@@ -473,8 +474,7 @@ public class Player : Character {
         MajHauteurMaxSaut();
 	}
 
-	void OnControllerColliderHit(ControllerColliderHit hit) {
-
+    void OnControllerColliderHit(ControllerColliderHit hit) {
         //// Si on a touché un cube spécial, on fait une action !
         Cube cube = hit.gameObject.GetComponent<Cube>();
         if (cube != null && DoubleCheckInteractWithCube(cube))
@@ -486,18 +486,17 @@ public class Player : Character {
         if ((etat == EtatPersonnage.EN_SAUT || etat == EtatPersonnage.EN_CHUTE) && !Input.GetKey(KeyCode.LeftShift)) {
             // Si on vient d'un mur, on vérifie que la normale du mur précédent est suffisamment différente de la normale actuelle !
             Vector3 n = hit.normal;
-            if(origineSaut == EtatPersonnage.AU_SOL
+            if (origineSaut == EtatPersonnage.AU_SOL
             || (origineSaut == EtatPersonnage.AU_MUR && Vector3.Angle(normaleOrigineSaut, n) > 10)) {
-
                 // Si la normale est au moins un peu à l'horizontale !
                 Vector3 up = gm.gravityManager.Up();
-                Vector3 nProject = Vector3.ProjectOnPlane (n, up);
-                if (nProject != Vector3.zero && Mathf.Abs(Vector3.Angle (n, nProject)) < slideLimit) {
+                Vector3 nProject = Vector3.ProjectOnPlane(n, up);
+                if (nProject != Vector3.zero && Mathf.Abs(Vector3.Angle(n, nProject)) < slideLimit) {
                     GripOn(hit);
                 }
             }
-		}
-	}
+        }
+    }
 
     protected void GripOn(ControllerColliderHit hit) {
         EtatPersonnage previousEtat = etat;
@@ -521,19 +520,25 @@ public class Player : Character {
 	}
 
     protected Vector3 ApplyJumpMouvement(Vector3 move) {
-        if (sautTimer.GetElapsedTime() <= dureeAscensionSaut) {
+        float proportionAscension = dureeAscensionSaut / GetDureeTotaleSaut();
+        float avancementSaut = sautTimer.GetAvancement();
+        if (avancementSaut <= proportionAscension) {
             move += gm.gravityManager.Up() * vitesseSaut;
-        } else {
-            move += gm.gravityManager.Up() * gm.gravityManager.gravityIntensity; // Pour contrer la gravité !
+        } else if (lastAvancementSaut < proportionAscension) {
+            float avancementRestant = (proportionAscension - lastAvancementSaut) / (avancementSaut - lastAvancementSaut);
+            move += gm.gravityManager.Up() * vitesseSaut * avancementRestant;
         }
+        move += gm.gravityManager.Up() * gm.gravityManager.gravityIntensity; // Pour contrer la gravité !
+        lastAvancementSaut = avancementSaut;
         return move;
     }
 
     protected void Jump(EtatPersonnage from) {
         etat = EtatPersonnage.EN_SAUT;
-        sautTimer = new Timer(GetDureeTotaleSaut());
+        sautTimer = new FixedTimer(GetDureeTotaleSaut());
         pointDebutSaut = transform.position;
         origineSaut = from;
+        lastAvancementSaut = 0f;
         if (from == EtatPersonnage.AU_SOL) {
         } else if (from == EtatPersonnage.AU_MUR) {
             normaleOrigineSaut = normaleMur;

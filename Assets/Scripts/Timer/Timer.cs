@@ -12,25 +12,25 @@ public class Timer {
 
     public Timer(float duree = 0) {
         this.duree = duree;
-        this.debut = Time.timeSinceLevelLoad;
+        this.debut = GetTimeSinceLevelLoad();
         this.lastAvancement = 0;
     }
 
     public bool IsOver() {
-        return !stoped && Time.timeSinceLevelLoad - debut > duree;
+        return !stoped && GetTimeSinceLevelLoad() - debut > duree;
     }
 
     public void Reset() {
         stoped = false;
-        debut = Time.timeSinceLevelLoad;
+        debut = GetTimeSinceLevelLoad();
     }
 
     public void SetOver() {
-        debut = Time.timeSinceLevelLoad - duree;
+        debut = GetTimeSinceLevelLoad() - duree;
     }
 
     public float GetAvancement() {
-        return (Time.timeSinceLevelLoad - debut) / duree;
+        return (GetTimeSinceLevelLoad() - debut) / duree;
     }
 
     public float GetNewAvancement() {
@@ -41,7 +41,7 @@ public class Timer {
     }
 
     public float GetElapsedTime() {
-        return Time.timeSinceLevelLoad - debut;
+        return GetTimeSinceLevelLoad() - debut;
     }
 
     public float GetDuree() {
@@ -53,16 +53,20 @@ public class Timer {
     }
 
     public float GetRemainingTime() {
-        return debut + duree - Time.timeSinceLevelLoad;
+        return debut + duree - GetTimeSinceLevelLoad();
     }
 
     public void Stop() {
         stoped = true;
-        stopedTiming = Time.timeSinceLevelLoad;
+        stopedTiming = GetTimeSinceLevelLoad();
     }
 
     public void UnStop() {
         stoped = false;
         debut = debut + duree - stopedTiming;
+    }
+
+    protected virtual float GetTimeSinceLevelLoad() {
+        return Time.timeSinceLevelLoad;
     }
 }

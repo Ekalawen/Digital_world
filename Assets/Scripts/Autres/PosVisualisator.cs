@@ -14,7 +14,7 @@ public class PosVisualisator : MonoBehaviour {
         gm = GameManager.Instance;
     }
 
-    void Update() {
+    void FixedUpdate() {
         if(Input.GetKeyDown(keyCode)) {
             CreateObjectAtPlayerPos();
         }
