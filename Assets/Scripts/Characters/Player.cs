@@ -13,7 +13,7 @@ public class Player : Character {
 
     [Header("Deplacements")]
 	public float vitesseDeplacement; // la vitesse de déplacement horizontale
-	public float vitesseSaut; // la vitesse d'élévation du saut
+	public float hauteurCulminanteSaut; // la hauteur culminante du saut
     public float dureeAscensionSaut;
     public float dureeHorizontalSaut;
 	public float dureeMur; // le temps que l'on peut rester accroché au mur
@@ -83,6 +83,8 @@ public class Player : Character {
         gm = FindObjectOfType<GameManager>();
         sensibilite = PlayerPrefs.GetFloat(MenuOptions.MOUSE_SPEED_KEY);
         bSetUpRotation = true;
+        sautTimer = new Timer(GetDureeTotaleSaut());
+        sautTimer.SetOver();
 
         transform.position = position;
 
@@ -207,6 +209,25 @@ public class Player : Character {
         }
     }
 
+    void GetEtatPersonnage() {
+        etatAvant = etat;
+        isGrounded = IsGrounded();
+		if (etat != EtatPersonnage.AU_MUR) {
+            if(Input.GetButton("Jump") && !sautTimer.IsOver()) {
+                etat = EtatPersonnage.EN_SAUT;
+            } else if (isGrounded) {
+				etat = EtatPersonnage.AU_SOL;
+                if (etat != etatAvant) {
+                    gm.soundManager.PlayLandClip(transform.position);
+                }
+			} else {
+                if (etat != EtatPersonnage.EN_SAUT) {
+                    etat = EtatPersonnage.EN_CHUTE;
+                }
+            }
+		}
+	}
+
     // On met à jour le mouvement du joueur
     void UpdateMouvement() {
         if (GameManager.Instance.IsTimeFreezed()) {
@@ -236,7 +257,7 @@ public class Player : Character {
             case EtatPersonnage.AU_SOL:
                 if (Input.GetButton("Jump") && gm.gravityManager.HasGravity()) {
                     Jump(from: EtatPersonnage.AU_SOL);
-                    move = ApplyJumpMouvement(move);
+                    //move = ApplyJumpMouvement(move);
                 }
                 ResetAuSol();
                 break;
@@ -249,6 +270,8 @@ public class Player : Character {
                 if(sautTimer.IsOver() || Input.GetButtonUp("Jump")) {
                     etat = EtatPersonnage.EN_CHUTE;
                     Debug.Log($"hauteur = {transform.position.y}");
+                    PosVisualisator pv = FindObjectOfType<PosVisualisator>();
+                    pv.CreateObjectAtPlayerPos();
                 } else {
                     move = ApplyJumpMouvement(move);
                 }
@@ -258,7 +281,7 @@ public class Player : Character {
                 if (Input.GetButtonDown("Jump") && gm.gravityManager.HasGravity() && CanDoubleJump()) {
                     AddDoubleJump();
                     Jump(from: origineSaut);
-                    move = ApplyJumpMouvement(move);
+                    //move = ApplyJumpMouvement(move);
                 }
                 break;
 
@@ -276,7 +299,7 @@ public class Player : Character {
                     // On peut encore sauter quand on est au mur ! 
                     // Mais il faut appuyer à nouveau !
                     Jump(from: EtatPersonnage.AU_MUR);
-                    move = ApplyJumpMouvement(move);
+                    //move = ApplyJumpMouvement(move);
                     dureeMurRestante = dureeMur;
 
                 } else if (Input.GetButton("Jump")) {
@@ -442,23 +465,6 @@ public class Player : Character {
         return move;
     }
 
-    void GetEtatPersonnage() {
-        etatAvant = etat;
-        isGrounded = IsGrounded();
-		if (etat != EtatPersonnage.AU_MUR) {
-			if (isGrounded) {
-                EtatPersonnage previousEtat = etat;
-				etat = EtatPersonnage.AU_SOL;
-                if (etat != previousEtat)
-                    gm.soundManager.PlayLandClip(transform.position);
-			} else {
-				if (etat != EtatPersonnage.EN_SAUT) {
-					etat = EtatPersonnage.EN_CHUTE;
-				}
-			}
-		}
-	}
-
     public float GetDureeTotaleSaut() {
         return dureeAscensionSaut + dureeHorizontalSaut;
     }
@@ -522,6 +528,7 @@ public class Player : Character {
     protected Vector3 ApplyJumpMouvement(Vector3 move) {
         float proportionAscension = dureeAscensionSaut / GetDureeTotaleSaut();
         float avancementSaut = sautTimer.GetAvancement();
+        float vitesseSaut = ComputeVitesseSaut();
         if (avancementSaut <= proportionAscension) {
             move += gm.gravityManager.Up() * vitesseSaut;
         } else if (lastAvancementSaut < proportionAscension) {
@@ -531,6 +538,12 @@ public class Player : Character {
         move += gm.gravityManager.Up() * gm.gravityManager.gravityIntensity; // Pour contrer la gravité !
         lastAvancementSaut = avancementSaut;
         return move;
+    }
+
+    protected float ComputeVitesseSaut() {
+        float sizePlayer = transform.localScale.y / 2 + controller.skinWidth;
+        float vitesseSaut = (hauteurCulminanteSaut - sizePlayer) / dureeAscensionSaut;
+        return vitesseSaut;
     }
 
     protected void Jump(EtatPersonnage from) {

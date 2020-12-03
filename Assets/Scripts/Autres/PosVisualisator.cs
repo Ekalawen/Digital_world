@@ -19,13 +19,13 @@ public class PosVisualisator : MonoBehaviour {
             CreateObjectAtPlayerPos();
         }
 
-        if(gm.player.GetEtat() == Player.EtatPersonnage.EN_CHUTE && etatPlayer != Player.EtatPersonnage.EN_CHUTE) {
-            CreateObjectAtPlayerPos();
-        }
-        etatPlayer = gm.player.GetEtat();
+        //if(gm.player.GetEtat() == Player.EtatPersonnage.EN_CHUTE && etatPlayer != Player.EtatPersonnage.EN_CHUTE) {
+        //    CreateObjectAtPlayerPos();
+        //}
+        //etatPlayer = gm.player.GetEtat();
     }
 
-    private void CreateObjectAtPlayerPos()
+    public void CreateObjectAtPlayerPos()
     {
         GameObject go = Instantiate(visualisatorPrefab, gm.player.transform.position, gm.player.transform.rotation);
         go.transform.localScale = gm.player.transform.localScale;
