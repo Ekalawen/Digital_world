@@ -245,6 +245,9 @@ public class Player : Character {
                     AddDoubleJump();
                     Jump(from: origineSaut);
                 }
+                if(sautTimer.IsOver() || Input.GetButtonUp("Jump")) {
+                    etat = EtatPersonnage.EN_CHUTE;
+                }
                 move = ApplyJumpMouvement(move);
                 break;
 
@@ -459,19 +462,6 @@ public class Player : Character {
         return dureeAscensionSaut + dureeHorizontalSaut;
     }
 
-	IEnumerator StopJump() {
-        Timer timerSaut = new Timer(GetDureeTotaleSaut());
-        while (!timerSaut.IsOver() && !Input.GetButtonUp("Jump")) {
-            yield return null;
-		}
-		if (etat != EtatPersonnage.AU_MUR) {
-			etat = EtatPersonnage.EN_CHUTE;
-			// On choisit de ne pas changer le point de debut volontairement !
-			// Sinon ça écraserait le point de départ du saut !
-			//pointDebutSaut = transform.position;
-		}
-	}
-
 	void DetecterGrandSaut(EtatPersonnage etatAvant) {
 		if((etatAvant == EtatPersonnage.EN_CHUTE || etatAvant == EtatPersonnage.EN_SAUT || etatAvant == EtatPersonnage.AU_MUR)
 		&& (etat == EtatPersonnage.AU_SOL || etat == EtatPersonnage.AU_MUR)) {
@@ -551,7 +541,6 @@ public class Player : Character {
             Debug.Log("On saute depuis un endroit non autorisé !");
         }
         PlayJumpSound();
-        StartCoroutine(StopJump());
     }
 
     public void PlayJumpSound() {
