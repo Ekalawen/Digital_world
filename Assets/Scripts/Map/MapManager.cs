@@ -1093,4 +1093,12 @@ public class MapManager : MonoBehaviour {
         }
         return true;
     }
+
+    public bool IsInInsidedVerticalEdges(Vector3 pos) {
+        pos = MathTools.Round(pos);
+        int nbEdges = 0;
+        nbEdges += (pos.x == 1 || pos.x == tailleMap.x - 1) ? 1 : 0;
+        nbEdges += (pos.z == 1 || pos.z == tailleMap.z - 1) ? 1 : 0;
+        return pos.y != 0 && pos.y != tailleMap.y && nbEdges == 2;
+    }
 }

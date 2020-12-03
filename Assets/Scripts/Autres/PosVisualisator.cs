@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -29,5 +30,10 @@ public class PosVisualisator : MonoBehaviour {
     {
         GameObject go = Instantiate(visualisatorPrefab, gm.player.transform.position, gm.player.transform.rotation);
         go.transform.localScale = gm.player.transform.localScale;
+    }
+
+    public void CreateObjectAtPos(Vector3 pos) {
+        GameObject go = Instantiate(visualisatorPrefab, pos, Quaternion.identity);
+        go.transform.localScale = Vector3.one * 0.1f;
     }
 }

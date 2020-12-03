@@ -23,7 +23,6 @@ public class ChangeCubesInVerticalEdges : GenerateCubesMapFunction {
         int nbEdges = 0;
         nbEdges += (pos.x <= offset || pos.x >= map.tailleMap.x - offset) ? 1 : 0;
         nbEdges += (pos.z <= offset || pos.z >= map.tailleMap.z - offset) ? 1 : 0;
-        return pos.y != 0 && pos.y != map.tailleMap.y
-            && nbEdges == 2;
+        return pos.y != 0 && pos.y != map.tailleMap.y && nbEdges == 2;
     }
 }

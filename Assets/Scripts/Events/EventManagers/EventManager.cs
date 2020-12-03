@@ -91,21 +91,21 @@ public class EventManager : MonoBehaviour {
     {
         isEndGameStarted = true;
 
-        // On crée la finaleLight
-        //float minRadius = 0.5f + Mathf.Sqrt(3) / 2.0f; // La demi taille de la sphère + la demi-diagonale d'un cube
-        //Vector3 posLumiere = map.GetFreeSphereLocation(minRadius);
-        Vector3 posLumiere = map.GetFarRoundedLocation(gm.player.transform.position);
-        Lumiere finalLight = map.CreateLumiere(posLumiere, Lumiere.LumiereType.FINAL); // Attention à la position qui est arrondi ici !
+        Lumiere finalLight = CreateFinalLight();
 
         gm.player.FreezeLocalisation();
-
-        //gm.console.StartEndGame();
 
         // On lance la création des blocks de la mort !
         if (endGameType == EndGameType.DEATH_CUBES || endGameType == EndGameType.HALF_DEATH_CUBES)
             coroutineDeathCubesCreation = StartCoroutine(FillMapWithDeathCubes(finalLight.transform.position));
         else if (endGameType == EndGameType.CUBES_DESTRUCTIONS)
             coroutineCubesDestructions = StartCoroutine(DestroyAllCubesProgressively(finalLight.transform.position));
+    }
+
+    protected virtual Lumiere CreateFinalLight() {
+        Vector3 posLumiere = map.GetFarRoundedLocation(gm.player.transform.position);
+        Lumiere finalLight = map.CreateLumiere(posLumiere, Lumiere.LumiereType.FINAL); // Attention à la position qui est arrondi ici !
+        return finalLight;
     }
 
     protected IEnumerator FillMapWithDeathCubes(Vector3 centerPos) {
