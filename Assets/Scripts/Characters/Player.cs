@@ -14,12 +14,11 @@ public class Player : Character {
     [Header("Deplacements")]
 	public float vitesseDeplacement; // la vitesse de déplacement horizontale
 	public float vitesseSaut; // la vitesse d'élévation du saut
-	public float dureeSaut; // la durée totale d'un saut
-	public float dureeEfficaciteSaut; // le pourcentage de temps où le saut nous surélève
+    public float dureeAscensionSaut;
+    public float dureeHorizontalSaut;
 	public float dureeMur; // le temps que l'on peut rester accroché au mur
 	public float distanceMurMax; // la distance maximale de laquelle on peut s'éloigner du mur
     public float sensibilite; // la sensibilité de la souris
-	//public float gravite; // la force de la gravité
 
     [Header("Pouvoirs")]
     public GameObject pouvoirAPrefab; // Le pouvoir de la touche A (souvent la détection)
@@ -456,8 +455,12 @@ public class Player : Character {
 		}
 	}
 
+    public float GetDureeTotaleSaut() {
+        return dureeAscensionSaut + dureeHorizontalSaut;
+    }
+
 	IEnumerator StopJump() {
-        Timer timerSaut = new Timer(dureeSaut);
+        Timer timerSaut = new Timer(GetDureeTotaleSaut());
         while (!timerSaut.IsOver() && !Input.GetButtonUp("Jump")) {
             yield return null;
 		}
@@ -528,8 +531,7 @@ public class Player : Character {
 	}
 
     protected Vector3 ApplyJumpMouvement(Vector3 move) {
-        float avancementSaut = sautTimer.GetAvancement();
-        if (avancementSaut <= dureeEfficaciteSaut) {
+        if (sautTimer.GetElapsedTime() <= dureeAscensionSaut) {
             move += gm.gravityManager.Up() * vitesseSaut;
         } else {
             move += gm.gravityManager.Up() * gm.gravityManager.gravityIntensity; // Pour contrer la gravité !
@@ -539,7 +541,7 @@ public class Player : Character {
 
     protected void Jump(EtatPersonnage from) {
         etat = EtatPersonnage.EN_SAUT;
-        sautTimer = new Timer(dureeSaut);
+        sautTimer = new Timer(GetDureeTotaleSaut());
         pointDebutSaut = transform.position;
         origineSaut = from;
         if (from == EtatPersonnage.AU_SOL) {
