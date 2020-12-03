@@ -4,8 +4,7 @@ using UnityEngine;
 
 // Définit une zone carré et une direction, puis permet de créer des piques qui partent de ce mur dans la direction choisit
 // jusqu'à atteindre un objectif ! :)
-public class Spikes : CubeEnsemble
-{
+public class Spikes : CubeEnsemble {
 
     // Base of the wall
     public Vector3Int departMur;
@@ -17,14 +16,22 @@ public class Spikes : CubeEnsemble
     // Parameters of the spikes
     public int offsetBetweenSpikes; // Number of entire free cubes between spikes, usually 1
     public bool bGoToEnd = false; // By default, spikes go until they found a wall, and stop 2 unit before (so that there is a space between the wall and the spike). Spikes go until they touch the wall if set to true.
+    public bool isHorizontalyShifted = false; // If we have to offset from 1 horizontaly 1 line over 2
     public int spikesMaxRange; // The max range of the spikes
     public Vector3Int spikesDirection; // The direction of the spikes
 
     protected List<Vector3> startsOfSpikes;
 
-    public Spikes(Vector3Int departMur, Vector3Int direction1Mur, int nbCubesInDirection1Mur,
-                               Vector3Int direction2Mur, int nbCubesInDirection2Mur,
-                               int offsetBetweenSpikes, bool bGoToEnd, int spikesMaxRange, Vector3Int spikesDirection) : base()
+    public Spikes(Vector3Int departMur,
+        Vector3Int direction1Mur, 
+        int nbCubesInDirection1Mur,
+        Vector3Int direction2Mur, 
+        int nbCubesInDirection2Mur, 
+        int offsetBetweenSpikes, 
+        bool bGoToEnd, 
+        bool isHorizontalyShifted, 
+        int spikesMaxRange, 
+        Vector3Int spikesDirection) : base()
     {
         this.departMur = departMur;
         this.direction1Mur = direction1Mur;
@@ -33,6 +40,7 @@ public class Spikes : CubeEnsemble
         this.nbCubesInDirection2Mur = nbCubesInDirection2Mur;
         this.offsetBetweenSpikes = offsetBetweenSpikes;
         this.bGoToEnd = bGoToEnd;
+        this.isHorizontalyShifted = isHorizontalyShifted;
         this.spikesMaxRange = spikesMaxRange;
         this.spikesDirection = spikesDirection;
 
@@ -43,7 +51,13 @@ public class Spikes : CubeEnsemble
         cubeEnsembleType = CubeEnsembleType.SPIKES;
     }
 
-    public static Spikes GenerateSpikesFromMur(Mur mur, int offsetBetweenSpikes, bool bGoToEnd, int spikesMaxRange, Vector3 aPointInTheInside) {
+    public static Spikes GenerateSpikesFromMur(Mur mur,
+        int offsetBetweenSpikes, 
+        bool bGoToEnd, 
+        bool isHorizontalyShifted, 
+        int spikesMaxRange, 
+        Vector3 aPointInTheInside)
+    {
         Vector3 spikesDirectionFromPoint = Vector3.Cross(mur.direction1, mur.direction2).normalized;
         if (Vector3.Dot(spikesDirectionFromPoint, (aPointInTheInside - mur.depart)) < 0) {
             spikesDirectionFromPoint *= -1;
@@ -55,6 +69,7 @@ public class Spikes : CubeEnsemble
             mur.nbCubesInDirection2,
             offsetBetweenSpikes,
             bGoToEnd,
+            isHorizontalyShifted,
             spikesMaxRange,
             MathTools.RoundToInt(spikesDirectionFromPoint));
     }
@@ -65,10 +80,16 @@ public class Spikes : CubeEnsemble
 
     protected void GenerateStartsOfSpikes() {
         startsOfSpikes = new List<Vector3>();
+        bool isEven = true;
         for (int i = offsetBetweenSpikes; i < nbCubesInDirection1Mur - offsetBetweenSpikes; i += offsetBetweenSpikes + 1) {
+            isEven = true;
             for (int j = offsetBetweenSpikes; j < nbCubesInDirection2Mur - offsetBetweenSpikes; j += offsetBetweenSpikes + 1) {
                 Vector3 start = departMur + i * (Vector3)direction1Mur + j * (Vector3)direction2Mur;
+                if(!isEven && isHorizontalyShifted) {
+                    start += (Vector3)direction1Mur;
+                }
                 startsOfSpikes.Add(start);
+                isEven = !isEven;
             }
         }
     }
@@ -78,7 +99,7 @@ public class Spikes : CubeEnsemble
         Vector3 start = startsOfSpikes[indStart];
         startsOfSpikes.RemoveAt(indStart);
 
-        Vector3 currentPosition = start;
+        Vector3 currentPosition = start + spikesDirection;
         int spikeSize = 0;
         while (CanContinueSpike(currentPosition, spikeSize)) {
             CreateCube(currentPosition);
@@ -92,11 +113,10 @@ public class Spikes : CubeEnsemble
             return false;
 
         Vector3 posPlusOne = currentPosition + 1 * (Vector3)spikesDirection;
-        Vector3 posPlusTwo = currentPosition + 2 * (Vector3)spikesDirection;
         if (bGoToEnd) {
-            return map.GetCubeAt(posPlusOne) == null;
+            return map.GetCubeAt(currentPosition) == null;
         } else {
-            return map.GetCubeAt(posPlusOne) == null && map.GetCubeAt(posPlusTwo) == null;
+            return map.GetCubeAt(currentPosition) == null && map.GetCubeAt(posPlusOne) == null;
         }
     }
 

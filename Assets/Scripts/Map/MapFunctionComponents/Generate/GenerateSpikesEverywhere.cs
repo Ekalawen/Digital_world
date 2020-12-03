@@ -6,6 +6,7 @@ public class GenerateSpikesEverywhere : GenerateCubesMapFunction {
 
     public int offsetBetweenSpikes = 1;
     public bool bGoToEnd = false;
+    public List<bool> isHorizontalyShifted;
     public int spikesMaxRange = 25;
 
     public override void Activate() {
@@ -15,8 +16,10 @@ public class GenerateSpikesEverywhere : GenerateCubesMapFunction {
     protected void GenerateSpikes() {
         List<Spikes> spikesGenerators = new List<Spikes>();
         MapContainer mapContainer = map.GetMapElementsOfType<MapContainer>()[0]; // Assertion bolzy !
-        foreach (Mur mur in mapContainer.GetMurs()) {
-            Spikes spikes = Spikes.GenerateSpikesFromMur(mur, offsetBetweenSpikes, bGoToEnd, spikesMaxRange, map.GetCenter());
+        List<Mur> murs = mapContainer.GetMurs();
+        for(int i = 0; i < murs.Count; i++) {
+            Mur mur = murs[i];
+            Spikes spikes = Spikes.GenerateSpikesFromMur(mur, offsetBetweenSpikes, bGoToEnd, isHorizontalyShifted[i], spikesMaxRange, map.GetCenter());
             spikesGenerators.Add(spikes);
         }
 
