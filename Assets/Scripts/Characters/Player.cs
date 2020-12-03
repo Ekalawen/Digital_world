@@ -41,7 +41,7 @@ public class Player : Character {
 	protected EtatPersonnage etat; // l'état du personnage
 	protected EtatPersonnage etatAvant; // l'état du personnage avant la frame
     protected bool isGrounded;
-    protected float debutSaut; // le timing où le personnage a débuté son dernier saut !
+    protected Timer sautTimer;
 	protected Vector3 pointDebutSaut; // le point de départ du saut !
 	protected EtatPersonnage origineSaut; // Permet de savoir depuis où (le sol ou un mur) le personnage a sauté !
 	protected Vector3 normaleOrigineSaut; // La normale au plan du mur duquel le personnage a sauté
@@ -209,7 +209,6 @@ public class Player : Character {
 
     // On met à jour le mouvement du joueur
     void UpdateMouvement() {
-        // Si le temps est freeze, on ne se déplace pas !
         if (GameManager.Instance.IsTimeFreezed()) {
             return;
         }
@@ -529,8 +528,8 @@ public class Player : Character {
 	}
 
     protected Vector3 ApplyJumpMouvement(Vector3 move) {
-        float percentSaut = (Time.timeSinceLevelLoad - debutSaut) / dureeSaut;
-        if (percentSaut <= dureeEfficaciteSaut) {
+        float avancementSaut = sautTimer.GetAvancement();
+        if (avancementSaut <= dureeEfficaciteSaut) {
             move += gm.gravityManager.Up() * vitesseSaut;
         } else {
             move += gm.gravityManager.Up() * gm.gravityManager.gravityIntensity; // Pour contrer la gravité !
@@ -540,7 +539,7 @@ public class Player : Character {
 
     protected void Jump(EtatPersonnage from) {
         etat = EtatPersonnage.EN_SAUT;
-        debutSaut = Time.timeSinceLevelLoad;
+        sautTimer = new Timer(dureeSaut);
         pointDebutSaut = transform.position;
         origineSaut = from;
         if (from == EtatPersonnage.AU_SOL) {
