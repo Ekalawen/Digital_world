@@ -141,7 +141,7 @@ public class Player : Character {
     void ChoseStartingPosition() {
     }
 
-    void FixedUpdate () {
+    void Update () {
         // On met à jour la caméra
         UpdateCamera();
 
@@ -246,7 +246,7 @@ public class Player : Character {
 
         move = SlideBottomIfImportantSlope(move);
 
-        controller.Move(move * Time.fixedDeltaTime);
+        controller.Move(move * Time.deltaTime);
 
         ApplyPoussees();
     }
@@ -547,8 +547,8 @@ public class Player : Character {
 
     protected void Jump(EtatPersonnage from) {
         etat = EtatPersonnage.EN_SAUT;
-        sautTimer = new FixedTimer(GetDureeTotaleSaut());
-        sautTimer.AdvanceTimerBy(Time.fixedDeltaTime);// Car on sait qu'on applique le jump tout de suite ! Comme ça on gagne une frame !
+        sautTimer = new Timer(GetDureeTotaleSaut());
+        sautTimer.AdvanceTimerBy(Time.deltaTime);// Car on sait qu'on applique le jump tout de suite ! Comme ça on gagne une frame !
         pointDebutSaut = transform.position;
         origineSaut = from;
         lastAvancementSaut = 0f;
