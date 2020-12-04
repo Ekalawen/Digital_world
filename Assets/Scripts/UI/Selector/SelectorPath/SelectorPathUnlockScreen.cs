@@ -192,7 +192,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         MatchEvaluator orangeSurrounder = new MatchEvaluator(TexteExplicatif.SurroundWithOrangeColor);
         popup.AddReplacementEvaluator(@"Passes?", blueSurrounder);
         popup.AddReplacementEvaluator(@"Traces?", blueSurrounder);
-        popup.AddReplacementEvaluator(@"Data Hack[ée]es(?)?", orangeSurrounder);
+        popup.AddReplacementEvaluator(@"Data Hack[ée]es\(?\)?", orangeSurrounder);
     }
 
     protected void AddNextPallierMessage(TexteExplicatif texteExplicatif, int textTreshold) {
