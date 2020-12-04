@@ -44,7 +44,7 @@ public class EventManager : MonoBehaviour {
     protected List<RandomEvent> randomEvents;
     protected GameObject randomEventsFolder;
 
-    public void Initialize() {
+    public virtual void Initialize() {
         name = "EventManager";
         gm = FindObjectOfType<GameManager>();
         map = GameObject.Find("MapManager").GetComponent<MapManager>();

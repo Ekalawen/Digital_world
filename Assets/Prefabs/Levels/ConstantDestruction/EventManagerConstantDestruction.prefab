@@ -1,0 +1,102 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &2032278694337537860
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2005818113718561989}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc9e39b4cfb900e498e700de3a13c0c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ejectionType: 0
+  ejectionTreshold: -10
+  ejectionCubesArroundRadius: 20
+  endGameDuration: 20
+  endGameFrameRate: 0.1
+  endGameType: 1
+  bNoEndgame: 0
+  screenShakeMagnitude: 2
+  screenShakeRoughness: 15
+  dureeScreenShake: 3
+  randomEventsPrefabs: []
+  nbLumieresTriggers: 
+  eventsToAddPrefabs: []
+  nbLumieresFinales: 10
+  messagesAChaqueLumiere:
+  - "Ils s'auto-d\xE9truisent !"
+  - La communication s'affaiblit !
+  - Il faut maintenir la connexion !
+  - Reconnexion en cours ...
+  - Stabilisation dans 5
+  - 4 ...
+  - 3 ..!
+  - 2 .!!
+  - 1 !!!
+--- !u!1001 &2004253452606249415
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1848378137720066, guid: 4ad9af6763aeb45c8962c1fadb06c2eb, type: 3}
+      propertyPath: m_Name
+      value: EventManagerConstantDestruction
+      objectReference: {fileID: 0}
+    - target: {fileID: 4331339866297836, guid: 4ad9af6763aeb45c8962c1fadb06c2eb, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4331339866297836, guid: 4ad9af6763aeb45c8962c1fadb06c2eb, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4331339866297836, guid: 4ad9af6763aeb45c8962c1fadb06c2eb, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4331339866297836, guid: 4ad9af6763aeb45c8962c1fadb06c2eb, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4331339866297836, guid: 4ad9af6763aeb45c8962c1fadb06c2eb, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4331339866297836, guid: 4ad9af6763aeb45c8962c1fadb06c2eb, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4331339866297836, guid: 4ad9af6763aeb45c8962c1fadb06c2eb, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4331339866297836, guid: 4ad9af6763aeb45c8962c1fadb06c2eb, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4331339866297836, guid: 4ad9af6763aeb45c8962c1fadb06c2eb, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4331339866297836, guid: 4ad9af6763aeb45c8962c1fadb06c2eb, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4331339866297836, guid: 4ad9af6763aeb45c8962c1fadb06c2eb, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 114622475871070300, guid: 4ad9af6763aeb45c8962c1fadb06c2eb, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: 4ad9af6763aeb45c8962c1fadb06c2eb, type: 3}
+--- !u!1 &2005818113718561989 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1848378137720066, guid: 4ad9af6763aeb45c8962c1fadb06c2eb,
+    type: 3}
+  m_PrefabInstance: {fileID: 2004253452606249415}
+  m_PrefabAsset: {fileID: 0}

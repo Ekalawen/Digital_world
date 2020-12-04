@@ -24,20 +24,23 @@ public class EventManagerWhileTrue : EventManager {
             if(nbLumieresFinalesAttrappees == nbLumieresFinales) {
                 WinGame();
             } else {
-                StartCoroutine(CResetDeathCubes());
+                StartCoroutine(CResetEndEvent());
             }
         }
     }
 
-    protected IEnumerator CResetDeathCubes() {
-        StopCoroutine(coroutineDeathCubesCreation);
+    protected IEnumerator CResetEndEvent() {
+        if(coroutineDeathCubesCreation != null)
+            StopCoroutine(coroutineDeathCubesCreation);
+        else
+            StopCoroutine(coroutineCubesDestructions);
         if(messagesAChaqueLumiere.Count > 0)
             gm.console.AjouterMessageImportant(messagesAChaqueLumiere[nbLumieresFinalesAttrappees - 1], Console.TypeText.ALLY_TEXT, 2f);
-        yield return CDestroyAllDeathCubes();
+        yield return CRestoreOriginalMap();
         StartEndGame();
     }
 
-    protected IEnumerator CDestroyAllDeathCubes() {
+    protected virtual IEnumerator CRestoreOriginalMap() {
         int nbCubesToDestroyByFrame = 15;  // Equivalent à 10ms sur mon ordi :)
         deathCubes = deathCubes.OrderBy(dc => Vector3.SqrMagnitude(dc.transform.position - gm.player.transform.position)).ToList();
         int nbCubesDestroyed = 0;

@@ -121,9 +121,8 @@ public class Cave : CubeEnsemble {
         // On veut détruire tous les cubes et lumières qui se trouvent dans notre cave !
         Vector3 center = GetCenter();
         Vector3 halfSize = new Vector3(Mathf.Abs(center.x - depart.x), Mathf.Abs(center.y - depart.y), Mathf.Abs(center.z - depart.z));
-        center -= new Vector3(0.5f, 0.5f, 0.5f); // Petit ajustement important
         if(bMakeSpaceArround)
-            halfSize += new Vector3(1f, 1f, 1f); // Petit ajustement important, pour laisser un espace autour de la cave !
+            halfSize += Vector3.one; // Petit ajustement important, pour laisser un espace autour de la cave !
         List<Cube> cubesToDelete = map.GetCubesInBox(center, halfSize);
         foreach (Cube cube in cubesToDelete) {
             if (preserveMapBordure) {
