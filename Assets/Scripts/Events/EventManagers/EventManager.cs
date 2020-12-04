@@ -109,27 +109,6 @@ public class EventManager : MonoBehaviour {
         return finalLight;
     }
 
-    protected IEnumerator FillMapWithDeathCubes(Vector3 centerPos) {
-        List<Vector3> allEmptyPositions = map.GetAllEmptyPositions();
-
-        Timer endGameTimer = new Timer(endGameDuration);
-        Timer timerSoundRate = new Timer(endGameFrameRate);
-        int nbTotalCubesToDestroy = allEmptyPositions.Count;
-        int nbCubesDestroyed = 0;
-        deathCubes = new List<Cube>();
-
-        while (allEmptyPositions.Count > 0) {
-            OrderPositionsFarFromPlayerAndPos(centerPos, allEmptyPositions);
-
-            int nbCubesToDestroy = GetNbCubesToDestroy(allEmptyPositions.Count, nbTotalCubesToDestroy, nbCubesDestroyed, endGameTimer);
-            Vector3 barycentre = DestroyFirstCubes(allEmptyPositions, nbCubesToDestroy);
-            nbCubesDestroyed += nbCubesToDestroy;
-
-            PlaySoundRate(timerSoundRate, nbCubesToDestroy, barycentre);
-            yield return null;
-        }
-    }
-
     protected void PlaySoundRate(Timer timerSoundRate, int nbCubesToDestroy, Vector3 barycentre) {
         if (timerSoundRate.IsOver() && nbCubesToDestroy > 0) {
             barycentre /= nbCubesToDestroy;
@@ -138,7 +117,7 @@ public class EventManager : MonoBehaviour {
         }
     }
 
-    protected Vector3 DestroyFirstCubes(List<Vector3> allEmptyPositions, int nbCubesToDestroy) {
+    protected Vector3 CreateFirstDeathCubes(List<Vector3> allEmptyPositions, int nbCubesToDestroy) {
         Vector3 barycentre = Vector3.zero;
         for (int i = 0; i < nbCubesToDestroy; i++) {
             Cube cube = CreateCubeForDeathCubesEvent(allEmptyPositions[0]);
@@ -150,11 +129,11 @@ public class EventManager : MonoBehaviour {
         return barycentre;
     }
 
-    protected int GetNbCubesToDestroy(int nbEmptyPositionsLeft, int nbTotalCubesToDestroy, int nbCubesDestroyed, Timer endGameTimer) {
+    protected int GetNbCubesToDo(int nbPositionsLeft, int nbTotalCubesToDo, int nbCubesDone, Timer endGameTimer) {
         float avancement = MathCurves.Power(0, 1, endGameTimer.GetAvancement(), 1f / avancementPowerSpeed);
-        int nbCubesToDestroy = (int)(avancement * nbTotalCubesToDestroy - nbCubesDestroyed);
-        nbCubesToDestroy = Mathf.Min(nbCubesToDestroy, nbEmptyPositionsLeft);
-        return nbCubesToDestroy;
+        int nbCubesToDo = (int)(avancement * nbTotalCubesToDo - nbCubesDone);
+        nbCubesToDo = Mathf.Min(nbCubesToDo, nbPositionsLeft);
+        return nbCubesToDo;
     }
 
     protected void OrderPositionsFarFromPlayerAndPos(Vector3 centerPos, List<Vector3> allEmptyPositions) {
@@ -182,44 +161,75 @@ public class EventManager : MonoBehaviour {
         return cube;
     }
 
+    protected IEnumerator FillMapWithDeathCubes(Vector3 centerPos) {
+        List<Vector3> allEmptyPositions = map.GetAllEmptyPositions();
+
+        Timer endGameTimer = new Timer(endGameDuration);
+        Timer timerSoundRate = new Timer(endGameFrameRate);
+        int nbTotalDeathCubesToCreate = allEmptyPositions.Count;
+        int nbDeathCubesCreated = 0;
+        deathCubes = new List<Cube>();
+
+        while (allEmptyPositions.Count > 0) {
+            OrderPositionsFarFromPlayerAndPos(centerPos, allEmptyPositions);
+
+            int nbDeathCubesToCreate = GetNbCubesToDo(allEmptyPositions.Count, nbTotalDeathCubesToCreate, nbDeathCubesCreated, endGameTimer);
+            Vector3 barycentre = CreateFirstDeathCubes(allEmptyPositions, nbDeathCubesToCreate);
+            nbDeathCubesCreated += nbDeathCubesToCreate;
+
+            PlaySoundRate(timerSoundRate, nbDeathCubesToCreate, barycentre);
+            yield return null;
+        }
+    }
+
     protected IEnumerator DestroyAllCubesProgressively(Vector3 centerPos) {
         List<Cube> cubes = map.GetAllCubes();
 
-        Vector3 playerPos = gm.player.transform.position;
-
-        float nbTimings = endGameDuration / endGameFrameRate;
-        int nbCubesToDestroy = (int)(cubes.Count / nbTimings);
-
+        Timer endGameTimer = new Timer(endGameDuration);
+        Timer timerSoundRate = new Timer(endGameFrameRate);
+        int nbTotalCubesToDestroy = cubes.Count;
+        int nbCubesDestroyed = 0;
         float seuilProximité = 2.5f;
+
         while (cubes.Count > 0) {
             // Pour récupérer les cubes crées pendant la destruction de la map !
             cubes = map.GetAllCubes();
             if (cubes.Count == 0) break;
 
-            // On détruit les cubes aléatoirement
-            MathTools.Shuffle(cubes);
+            OrderCubesByDistancesToPlayerAndPos(centerPos, cubes, seuilProximité);
 
-            // Sauf ceux qui sont proches de nous et du joueur, on les détruit en dernier !
-            playerPos = gm.player.transform.position;
-            cubes.Sort(delegate (Cube cubeA, Cube cubeB) {
-                Vector3 A = cubeA.transform.position;
-                Vector3 B = cubeB.transform.position;
-                bool AinSeuil = Vector3.Distance(A, centerPos) <= seuilProximité || Vector3.Distance(A, playerPos) <= seuilProximité;
-                bool BinSeuil = Vector3.Distance(B, centerPos) <= seuilProximité || Vector3.Distance(B, playerPos) <= seuilProximité;
-                return AinSeuil.CompareTo(BinSeuil);
-            });
+            int nbCubesToDestroy = GetNbCubesToDo(cubes.Count, nbTotalCubesToDestroy, nbCubesDestroyed, endGameTimer);
+            Vector3 barycentre = DestroyFirstCubes(cubes, nbCubesToDestroy);
+            nbCubesDestroyed += nbCubesToDestroy;
 
-            Vector3 barycentre = Vector3.zero;
-            int nbCubesDestroyed = (int)Mathf.Min(nbCubesToDestroy, cubes.Count);
-            for (int i = 0; i < nbCubesDestroyed; i++) {
-                barycentre += cubes[i].transform.position;
-                cubes[i].Explode();
-            }
-
-            barycentre /= nbCubesDestroyed;
-            gm.soundManager.PlayCreateCubeClip(barycentre);
-            yield return new WaitForSeconds(endGameFrameRate);
+            PlaySoundRate(timerSoundRate, nbCubesToDestroy, barycentre);
+            yield return null;
         }
+    }
+
+    protected Vector3 DestroyFirstCubes(List<Cube> cubes, int nbCubesToDestroy) {
+        Vector3 barycentre = Vector3.zero;
+        for (int i = 0; i < nbCubesToDestroy; i++) {
+            barycentre += cubes[i].transform.position;
+            cubes[i].Explode();
+        }
+
+        return barycentre;
+    }
+
+    protected void OrderCubesByDistancesToPlayerAndPos(Vector3 centerPos, List<Cube> cubes, float seuilProximité) {
+        // On détruit les cubes aléatoirement
+        MathTools.Shuffle(cubes);
+        // Sauf ceux qui sont proches de nous et du joueur, on les détruit en dernier !
+        Vector3 playerPos = gm.player.transform.position;
+        cubes.Sort(delegate (Cube cubeA, Cube cubeB)
+        {
+            Vector3 A = cubeA.transform.position;
+            Vector3 B = cubeB.transform.position;
+            bool AinSeuil = Vector3.Distance(A, centerPos) <= seuilProximité || Vector3.Distance(A, playerPos) <= seuilProximité;
+            bool BinSeuil = Vector3.Distance(B, centerPos) <= seuilProximité || Vector3.Distance(B, playerPos) <= seuilProximité;
+            return AinSeuil.CompareTo(BinSeuil);
+        });
     }
 
     public void LoseGame(DeathReason reason)
