@@ -643,7 +643,7 @@ public class Player : Character {
         return MathTools.AABBSphere(cube.transform.position,
             Vector3.one * cube.transform.localScale.x / 2,
             transform.position,
-            controller.radius + controller.skinWidth);
+            transform.localScale.x / 2 + controller.skinWidth);
     }
 
     public int GetNbDoubleSautsMax() {
