@@ -117,8 +117,8 @@ public class MenuLevel : MonoBehaviour {
         } else if (inputFieldNext.text == SUPER_CHEATED_PASSWORD) {
             menuLevelSelector?.Next();
             selectorManager?.Next();
-        } else {
-            texteExplicatifPasswdError.Run();
+        //} else {
+        //    texteExplicatifPasswdError.Run();
         }
     }
 
