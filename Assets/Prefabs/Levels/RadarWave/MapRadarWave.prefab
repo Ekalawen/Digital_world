@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 0
+  shouldDrawRaycastToNewLumiere: 1
   trailPrefab: {fileID: 2355022440795677279, guid: 3aeb445d2ee23b240ae4946f1f9c7864,
     type: 3}
 --- !u!114 &4173896761746040796
@@ -30,7 +31,7 @@ MonoBehaviour:
   cubeType: 0
   minDistanceRandomFilling: 1
   useAllEmptyPositionsInstead: 0
-  proportionRandomFilling: 0.02
+  proportionRandomFilling: 0.05
   sizeCubeRandomFilling: 1
   registerToColorSources: 0
 --- !u!114 &4963224664834293668
@@ -103,7 +104,7 @@ PrefabInstance:
     - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
         type: 3}
       propertyPath: mapFunctionComponents.Array.size
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
         type: 3}
@@ -134,6 +135,21 @@ PrefabInstance:
     - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
         type: 3}
       propertyPath: mapFunctionComponents.Array.data[4]
+      value: 
+      objectReference: {fileID: 8417146746499810755}
+    - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
+        type: 3}
+      propertyPath: mapFunctionComponents.Array.data[2]
+      value: 
+      objectReference: {fileID: 4173896761746040796}
+    - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
+        type: 3}
+      propertyPath: mapFunctionComponents.Array.data[3]
+      value: 
+      objectReference: {fileID: 5855454083202442719}
+    - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
+        type: 3}
+      propertyPath: mapFunctionComponents.Array.data[5]
       value: 
       objectReference: {fileID: 4963224664834293668}
     - target: {fileID: 3425981728395409398, guid: 129f4eb78691940da993d749688543fd,

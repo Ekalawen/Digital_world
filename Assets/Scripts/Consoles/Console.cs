@@ -561,6 +561,7 @@ public virtual void Update () {
         string messagePrecedent = "Plus que " + (nbLumieresRestantes + 1) + " !";
 		if (!gm.eventManager.IsEndGameStarted() && nbLumieresRestantes > 0) {
             string messageCurrent = "Plus que " + nbLumieresRestantes + " !";
+            EffacerImportantMessage(messageCurrent);
             AjouterMessageImportant(messageCurrent, Console.TypeText.ALLY_TEXT, 1.2f, true, messagePrecedent);
 		} else {
             if (!gm.eventManager.IsWin() && gm.eventManager.GetComponent<EventManagerWhileTrue>() == null) { // Ehhhh x)
