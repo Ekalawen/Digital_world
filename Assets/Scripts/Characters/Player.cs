@@ -66,7 +66,7 @@ public class Player : Character {
     public bool bIsStun = false;
 
     [HideInInspector]
-	public float lastNotContactEnnemy; // Le dernier temps où il ne touchait pas d'ennemi, utilisé pour la fin du jeu
+	public Timer ennemiCaptureTimer; // Le temps depuis lequel le joueur est en contact avec un ennemi
 
     protected GameManager gm;
 
@@ -85,6 +85,7 @@ public class Player : Character {
         bSetUpRotation = true;
         sautTimer = new Timer(GetDureeTotaleSaut());
         sautTimer.SetOver();
+        ennemiCaptureTimer = new Timer(5);
 
         transform.position = position;
 
@@ -155,7 +156,7 @@ public class Player : Character {
         DetecterGrandSaut(etatAvant);
 
         // Test pour savoir si on s'est fait capturé par un ennemi !
-        UpdateLastNotContactEnnemi();
+        UpdateCapturedByEnnemiTest();
 
         // On vérifie si le joueur a utilisé l'un de ses pouvoirs ! :)
         TryUsePouvoirs();
@@ -384,19 +385,14 @@ public class Player : Character {
         dureeMurRestante = dureeMur;
     }
 
-    // Permet de savoir la dernière fois qu'il a été en contact avec un ennemi !
-    void UpdateLastNotContactEnnemi() {
-		// On vérifie qu'il n'est pas en contact avec un ennemy !
+    void UpdateCapturedByEnnemiTest() {
 		Collider[] colliders = Physics.OverlapSphere (transform.position, 1f);
-		bool pasTouchee = true;
 		foreach (Collider collider in colliders) {
 			if (collider.tag == "Ennemi") {
-				pasTouchee = false;
+                return;
 			}
 		}
-		if (pasTouchee) {
-			lastNotContactEnnemy = Time.timeSinceLevelLoad;
-		}
+        ennemiCaptureTimer.Reset();
     }
 
     protected bool IsGrounded() {

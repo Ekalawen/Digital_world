@@ -417,34 +417,25 @@ public class EventManager : MonoBehaviour {
         return lowest;
     }
 
-    public bool PartieTermine() {
-		// Si le joueur est tombé du cube ...
-		if (IsPlayerEjected()) {
-            //console.JoueurEjecte();
+    public bool PartieTermine()
+    {
+        if (IsPlayerEjected())
+        {
             LoseGame(EventManager.DeathReason.FALL_OUT);
-			//// Si le joueur a perdu ...
-			//if (map.GetLumieres().Count > 0) {
-                ////console.JoueurEjecte();
-                //LoseGame(EventManager.DeathReason.FALL_OUT);
-			//// Si le joueur a gagné !
-			//} else {
-			//	gm.console.WinGame();
-			//}
-			return true;
-		}
+            return true;
+        }
 
-		// Ou qu'il est en contact avec un ennemiPrefabs depuis plus de 5 secondes
-		// C'est donc qu'il s'est fait conincé !
-		// Debug.Log("lastnotcontact = "+ player.GetComponent<Personnage>().lastNotContactEnnemy);
-		if (Time.timeSinceLevelLoad - gm.player.GetComponent<Player>().lastNotContactEnnemy >= 5f) {
+        if (IsPlayerCaptured()) {
             LoseGame(EventManager.DeathReason.CAPTURED);
-			//gm.console.LoseGame(EventManager.DeathReason.CAPTURED);
-			//gm.player.vitesseDeplacement = 0; // On immobilise le joueur
-			//gm.player.vitesseSaut = 0; // On immobilise le joueur
-			return true;
-		}
-		return false;
-	}
+            return true;
+        }
+
+        return false;
+    }
+
+    protected bool IsPlayerCaptured() {
+        return gm.player.ennemiCaptureTimer.IsOver();
+    }
 
     public bool IsWin() {
         return gameIsWin;
