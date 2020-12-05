@@ -17,6 +17,8 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
     public Button hackButton;
     public Button donneesHackeesButton;
     public Button returnButton;
+    public TMPro.TMP_Text traceHintText;
+    public GameObject traceHintContainer;
 
     [Header("Background Unlocked theme")]
     public float probaBackgroundUnlocked;
@@ -40,6 +42,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         SetCadenasAccordingToLockState();
         SetTitles();
         FillInputWithPasswordIfAlreayDiscovered();
+        FillTraceHint();
     }
 
     protected void SetTitles() {
@@ -260,6 +263,17 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
             input.text = selectorPath.GetPassword();
         } else {
             input.text = "";
+        }
+    }
+
+    protected void FillTraceHint() {
+        int currentTreshold = GetCurrentTreshold();
+        List<int> unlockedTresholds = selectorPath.GetTresholds().FindAll(i => i <= currentTreshold);
+        if(unlockedTresholds.Count >= selectorPath.nbTresholdsToSeeTraceHint) {
+            traceHintContainer.SetActive(true);
+            traceHintText.text = $"Trace : <b>{selectorPath.GetTrace()}</b>";
+        } else {
+            traceHintContainer.SetActive(false);
         }
     }
 }

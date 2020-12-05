@@ -13,6 +13,7 @@ public class SelectorPath : MonoBehaviour {
     public SelectorLevel endLevel;
     public List<GameObject> intermediatePoints;
     public TextAsset donneesHackees;
+    public int nbTresholdsToSeeTraceHint = 1;
 
     [Header("Password")]
     public string passwordPasse = "passwd";
@@ -180,16 +181,3 @@ public class SelectorPath : MonoBehaviour {
         return text.GetLastFragment().treshold;
     }
 }
-
-//[CustomEditor(typeof(SelectorPath)), CanEditMultipleObjects]
-//public class SelectorPathEditor : Editor {
-//    public override void OnInspectorGUI() {
-//        DrawDefaultInspector();
-//        SelectorPath selectorPath = target as SelectorPath;
-//        if (GUILayout.Button("Unlock Path")) {
-//            selectorPath.UnlockPath();
-//        } if (GUILayout.Button("Lock Path")) {
-//            selectorPath.LockPath();
-//        }
-//    }
-//}
