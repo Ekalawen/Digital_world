@@ -97,6 +97,8 @@ public class Player : Character {
 
 		pointDebutSaut = transform.position;
         slideLimit = controller.slopeLimit;
+        ResetAuSol();
+        ResetGrip();
 
         // On veut maintenant activer la caméra du playerPrefabs !
         personnage.GetComponentInChildren<Camera>().enabled = true;
