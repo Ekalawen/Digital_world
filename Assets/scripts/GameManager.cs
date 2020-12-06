@@ -167,10 +167,10 @@ public class GameManager : MonoBehaviour {
 		Cursor.lockState = CursorLockMode.None;
 		Cursor.visible = true;
 
-        if(eventManager.IsWin()) {
-            SceneManager.LoadScene("RewardScene");
-        } else if (SceneManager.GetActiveScene().name == "TutorialScene") {
+        if(SceneManager.GetActiveScene().name == "TutorialScene") {
             SceneManager.LoadScene("MenuScene");
+        } else if (eventManager.IsWin()) {
+            SceneManager.LoadScene("RewardScene");
         } else {
             SceneManager.LoadScene("SelectorScene");
         }

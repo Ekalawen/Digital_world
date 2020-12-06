@@ -122,9 +122,6 @@ public virtual void Update () {
 
         LancerConseils();
 
-        // On conseille d'appuyer sur TAB si le joueur galère a trouver des orbes
-        ConseillerUtiliserDetection();
-
         // On détecte si le joueur est safe ou pas !
         DetectPlayerSafeOrNot();
 
@@ -143,7 +140,7 @@ public virtual void Update () {
     {
         string levelName = PlayerPrefs.GetString(MenuLevel.LEVEL_NAME_KEY);
         AjouterMessage("[Niveau]: " + levelName, TypeText.BASIC_TEXT, bUsePrefix: false);
-        AjouterMessage("[Niveau]: Initialisation de la Matrix ...", TypeText.BASIC_TEXT, bUsePrefix: false);
+        AjouterMessage("[Niveau]: Initialisation de la Matrice ...", TypeText.BASIC_TEXT, bUsePrefix: false);
         DisplayDatasAndEnnemisCounts();
     }
 
@@ -193,7 +190,7 @@ public virtual void Update () {
 		}
     }
 
-    protected void ConseillerUtiliserDetection() {
+    protected virtual void ConseillerUtiliserDetection() {
         if (map.GetLumieres().Count > 0) {
 			if (Time.timeSinceLevelLoad - timeLastLumiereAttrapee > 25) {
 				timeLastLumiereAttrapee = Time.timeSinceLevelLoad;
@@ -591,8 +588,8 @@ public virtual void Update () {
 		} else {
             if (!gm.eventManager.IsWin() && gm.eventManager.GetComponent<EventManagerWhileTrue>() == null) { // Ehhhh x)
                 EffacerImportantMessage("Plus que 1 !");
-                AjouterMessage("ON LES A TOUTES !", Console.TypeText.ALLY_TEXT);
-                AjouterMessageImportant("FAUT SE BARRER MAINTENANT !!!", Console.TypeText.ALLY_TEXT, 2f);
+                //AjouterMessage("ON LES A TOUTES !", Console.TypeText.ALLY_TEXT);
+                //AjouterMessageImportant("FAUT SE BARRER MAINTENANT !!!", Console.TypeText.ALLY_TEXT, 2f);
             }
         }
 	}
@@ -624,7 +621,7 @@ public virtual void Update () {
     }
 
 	// Quand le joueur attérit d'un grand saut
-	public void GrandSaut(float hauteurSaut) {
+	public virtual void GrandSaut(float hauteurSaut) {
 		AjouterMessage("Wow quel saut ! " + ((int) hauteurSaut) + " mètres !", Console.TypeText.BASIC_TEXT);
 		AjouterMessage("duree = " + Time.timeSinceLevelLoad, TypeText.BASIC_TEXT);
 	}
@@ -688,7 +685,12 @@ public virtual void Update () {
 
     // Lorsque le joueur tombe, typiquement dans le tutoriel !
     public void SavedFromFalling() {
-        AjouterMessageImportant("Attention à ne être éjecté la prochaine fois !", TypeText.ALLY_TEXT, 3);
+        AjouterMessageImportant("Attention à ne être éjecté !", TypeText.ALLY_TEXT, 3);
+    }
+
+    // Lorsque le joueur touche un cube de la mort dans le tutoriel !
+    public void SavedFromDeathCube() {
+        AjouterMessageImportant("Attention aux Cubes de la Mort !", TypeText.ALLY_TEXT, 3);
     }
 
     // Lorsque le joueur capture un item double saut !

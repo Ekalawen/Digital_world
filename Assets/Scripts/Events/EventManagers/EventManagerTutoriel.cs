@@ -20,10 +20,14 @@ public class EventManagerTutoriel : EventManager {
 
     protected void Update() {
         if (gm.player.transform.position.y < teleportInSafeZoneTreshold) {
-            gm.player.transform.position = savedZone.posSaved.position;
-            gm.gravityManager.LookAt(savedZone.posSaved.forward);
+            GoBackToPreviousSaveZone();
             gm.console.SavedFromFalling();
         }
+    }
+
+    public void GoBackToPreviousSaveZone() {
+        gm.player.transform.position = savedZone.posSaved.position;
+        gm.gravityManager.LookAt(savedZone.posSaved.forward);
     }
 
     public void RegisterSavedZone(SaveZone savedZone) {

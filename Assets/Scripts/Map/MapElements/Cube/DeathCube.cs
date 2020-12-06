@@ -6,15 +6,23 @@ public class DeathCube : NonBlackCube {
 
     protected override void Start() {
         base.Start();
+        CheckPlayerCollisionOnStart();
+    }
+
+    protected virtual void CheckPlayerCollisionOnStart() {
         GameManager gm = GameManager.Instance;
         Vector3 playerPos = gm.player.transform.position;
-        if(gm.player.DoubleCheckInteractWithCube(this)) {
-            gm.eventManager.LoseGame(EventManager.DeathReason.TOUCHED_DEATH_CUBE);
+        if (gm.player.DoubleCheckInteractWithCube(this)) {
+            KillPlayer();
         }
     }
 
     public override void InteractWithPlayer() {
         Debug.Log("Looooooooooooooooose ! :'(");
+        KillPlayer();
+    }
+
+    public virtual void KillPlayer() {
         gm.eventManager.LoseGame(EventManager.DeathReason.TOUCHED_DEATH_CUBE);
     }
 }

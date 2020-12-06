@@ -7,6 +7,8 @@ public class MessageZone : IZone {
     public string message;
     public Console.TypeText typeTexte;
     public bool isImportant = false;
+    [ConditionalHide("isImportant")]
+    public float dureeImportantMessage = 2.0f;
     public bool isImportantOnly = false;
     public float frequence = 5.0f;
     public bool useSound = false;
@@ -38,7 +40,7 @@ public class MessageZone : IZone {
 
     public void DisplayMessage() {
         if(isImportant)
-            gm.console.AjouterMessageImportant(message, typeTexte, 2.0f, !isImportantOnly);
+            gm.console.AjouterMessageImportant(message, typeTexte, dureeImportantMessage, !isImportantOnly);
         else
             gm.console.AjouterMessage(message, typeTexte);
         if(useSound)
