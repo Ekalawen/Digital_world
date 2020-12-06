@@ -139,15 +139,40 @@ public virtual void Update () {
         }
     }
 
-    public virtual void PremiersMessages() {
+    public virtual void PremiersMessages()
+    {
         string levelName = PlayerPrefs.GetString(MenuLevel.LEVEL_NAME_KEY);
         AjouterMessage("[Niveau]: " + levelName, TypeText.BASIC_TEXT, bUsePrefix: false);
         AjouterMessage("[Niveau]: Initialisation de la Matrix ...", TypeText.BASIC_TEXT, bUsePrefix: false);
-        string s = map.GetLumieres().Count > 1 ? "s" : "";
-        AjouterMessageImportant($"{map.GetLumieres().Count} Data{s} trouvée{s} !", TypeText.ALLY_TEXT, 5);
-        s = gm.ennemiManager.ennemis.Count > 1 ? "s" : "";
-		AjouterMessage ($"{gm.ennemiManager.ennemis.Count} Ennemi{s} détecté{s} !", TypeText.ALLY_TEXT);
-	}
+        DisplayDatasAndEnnemisCounts();
+    }
+
+    public void DisplayDatasAndEnnemisCounts() {
+        if (gm.GetLevelType() == MenuLevel.LevelType.REGULAR) {
+            int nbEnnemis = gm.ennemiManager.ennemis.Count;
+            if (nbEnnemis > 0) {
+                AjouterMessageImportant(GetEnnemisCountDisplayMessage(), TypeText.ALLY_TEXT, 3, bAfficherInConsole: false);
+            }
+            int nbLumieres = map.GetLumieres().Count;
+            if (nbLumieres > 0) {
+                AjouterMessageImportant(GetDataCountDisplayMessage(), TypeText.ALLY_TEXT, 3, bAfficherInConsole: false);
+            }
+            AjouterMessage(GetDataCountDisplayMessage(), TypeText.ALLY_TEXT);
+            AjouterMessage(GetEnnemisCountDisplayMessage(), TypeText.ALLY_TEXT);
+        }
+    }
+
+    protected string GetDataCountDisplayMessage() {
+        int nbLumieres = map.GetLumieres().Count;
+        string s = nbLumieres > 1 ? "s" : "";
+        return $"{nbLumieres} Data{s} trouvée{s} !";
+    }
+
+    protected string GetEnnemisCountDisplayMessage() {
+        int nbEnnemis = gm.ennemiManager.ennemis.Count;
+        string s = nbEnnemis > 1 ? "s" : "";
+        return $"{nbEnnemis} Ennemi{s} détecté{s} !";
+    }
 
     public void PouvoirsDesactives() {
 		AjouterMessageImportant ("Pouvoirs Désactivés !", TypeText.ALLY_TEXT, 3);
