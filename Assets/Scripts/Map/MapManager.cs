@@ -40,6 +40,8 @@ public class MapManager : MonoBehaviour {
 
     public Vector3Int tailleMap; // La taille de la map, en largeur, hauteur et profondeur
 	public int nbLumieresInitial; // Le nombre de lumières lors de la création de la map
+    //public Transform alreadyExistingCubesFolder; // Le dossier contenant les cubes déjà existant !
+    //public Transform alreadyExistingLumiereFolder; // Le dossier contenant les data déjà existant !
 
 
     protected Cube[,,] cubesRegular; // Toutes les positions entières dans [0, tailleMap]
@@ -851,8 +853,22 @@ public class MapManager : MonoBehaviour {
         chosenCave.AddNLumiereInside(1);
     }
 
+    //protected List<Cube> GetCubesRecursivelyInHierarchy(Transform folder) {
+    //    List<Cube> newCubes = new List<Cube>();
+    //    foreach(Transform t in folder) {
+    //        Cube cube = t.GetComponent<Cube>();
+    //        if(cube == null) {
+    //            newCubes.AddRange(GetCubesRecursivelyInHierarchy(t));
+    //        } else {
+    //            newCubes.Add(cube);
+    //        }
+    //    }
+    //    return newCubes;
+    //}
+
     protected void GetAllAlreadyExistingCubesAndLumieres() {
         Cube[] newCubes = FindObjectsOfType<Cube>();
+        //List<Cube> newCubes = GetCubesRecursivelyInHierarchy(alreadyExistingCubesFolder);
         foreach(Cube cube in newCubes) {
             if(!cube.transform.IsChildOf(cubesFolder.transform)) {
                 Transform maxParent = cube.transform.parent;

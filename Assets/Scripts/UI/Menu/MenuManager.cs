@@ -19,6 +19,7 @@ public class MenuManager : MonoBehaviour {
 
     public MenuLevelSelector menuLevelSelector;
     public MenuOptions menuOptions;
+    public LoadingMenu loadingMenu;
     public MenuBackgroundBouncing menuBouncingBackground;
     public TexteExplicatif popup;
 
@@ -80,13 +81,20 @@ public class MenuManager : MonoBehaviour {
     public void OnTutorialPress() {
 		Debug.Log("On a appuyé sur Tutoriel !");
         PlayerPrefs.SetString(HAVE_THINK_ABOUT_TUTORIAL_KEY, MenuManager.TRUE);
-        menuLevelSelector.CleanLevelIndice();
         PlayerPrefs.SetString(MenuLevel.LEVEL_NAME_KEY, "Tutoriel");
-		SceneManager.LoadScene("TutorialScene");
-	}
+        menuLevelSelector.CleanLevelIndice();
 
-	// Lorsqu'on appui sur le bouton options
-	public void OnOptionPress() {
+		//SceneManager.LoadScene("TutorialScene");
+        AsyncOperation loading = SceneManager.LoadSceneAsync("TutorialScene");
+        loading.allowSceneActivation = false;
+
+        loadingMenu.gameObject.SetActive(true);
+        loadingMenu.InitializeWithTutoriel(loading);
+        gameObject.SetActive(false);
+    }
+
+    // Lorsqu'on appui sur le bouton options
+    public void OnOptionPress() {
 		Debug.Log("On a appuyé sur Option !");
         menuOptions.Run();
 	}
