@@ -11,6 +11,7 @@ public class TutorialMap : MapManager {
 
     // Génère la map du tutoriel ! =)
     void GenerateTutorialMap() {
+        //CreatePont(new Vector3(73, 3, 5), new Vector3(1/6f, 1/6f, 0), 43);
 		//// Première zone : Arrivée
   //      /*
 		//CreateMur(Vector3.zero, Vector3.right, 20, Vector3.forward, 10); // sol
