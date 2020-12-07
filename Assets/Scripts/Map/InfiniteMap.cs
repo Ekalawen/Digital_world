@@ -25,6 +25,7 @@ public class InfiniteMap : MapManager {
     [Header("Start")]
     public GameObject firstBlock;
     public int nbFirstBlocks = 3;
+    public int nbBlocksStartCubeDestruction = 1;
 
     [Header("Color Change")]
     public Color colorChangeColorBlocks;
@@ -220,14 +221,17 @@ public class InfiniteMap : MapManager {
             timerSinceLastBlock.Reset();
             indiceCurrentBlock = indice;
             block.NotifyPlayerToPressShiftIfNeeded();
-            if(GetNonStartNbBlocksRun() == 1)
+            if(GetNonStartNbBlocksRun() >= nbBlocksStartCubeDestruction)
                 StartBlocksDestruction();
         }
     }
 
     protected void StartBlocksDestruction() {
-        startsBlockDestruction = true;
-        DestroyFirstBlock();
+        if (!startsBlockDestruction) {
+            startsBlockDestruction = true;
+            gm.console.InfiniteRunnerStartCubeDestruction();
+            DestroyFirstBlock();
+        }
     }
 
     protected void RememberTimeNeededForBlock(int indiceBlockEntered, int indiceCurrentBlock) {

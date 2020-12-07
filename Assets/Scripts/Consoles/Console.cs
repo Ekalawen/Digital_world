@@ -749,4 +749,9 @@ public virtual void Update () {
     public void FullSpikesAutoDestructionEnclenche() {
         AjouterMessageImportant("Auto-Destruction enclenchée !", Console.TypeText.ENNEMI_TEXT, 2.0f);
     }
+
+    // Lorsque l'on commence à détruire les blocks dans l'infinite runner :)
+    public void InfiniteRunnerStartCubeDestruction() {
+        AjouterMessageImportant("Déconnexion enclenchée !", Console.TypeText.ENNEMI_TEXT, 2.0f);
+    }
 }
