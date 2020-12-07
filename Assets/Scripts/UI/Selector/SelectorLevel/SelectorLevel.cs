@@ -90,10 +90,12 @@ public class SelectorLevel : MonoBehaviour {
             foreach (SelectorPath selectorPath in selectorManager.GetOutPaths(this)) {
                 List<int> tresholds = selectorPath.GetTresholds();
                 List<int> candidateTresholds = tresholds.FindAll(t => (t <= bestScore && t > precedentBestScore));
+                candidateTresholds.Sort();
                 if (candidateTresholds.Count > 0) {
-                    int lastTreshold = candidateTresholds.Last();
-                    nextLevels.Add(selectorPath.endLevel.GetName());
-                    nextTresholds.Add(lastTreshold);
+                    foreach (int candidateTreshold in candidateTresholds) {
+                        nextLevels.Add(selectorPath.endLevel.GetName());
+                        nextTresholds.Add(candidateTreshold);
+                    }
                 }
             }
             if (nextLevels.Count > 0) {
