@@ -378,6 +378,11 @@ public class EventManager : MonoBehaviour {
         return PlayerPrefs.HasKey(keyBestScore) ? PlayerPrefs.GetFloat(keyBestScore) : 0;
     }
 
+    public float GetPrecedentBestScore() {
+        string keyPrecedentBestScore = GetKeyFor(MenuLevel.PRECEDENT_BEST_SCORE_KEY);
+        return PlayerPrefs.HasKey(keyPrecedentBestScore) ? PlayerPrefs.GetFloat(keyPrecedentBestScore) : 0;
+    }
+
     public bool IsNewBestScore() {
         float currentScore = GetScore();
         return currentScore > GetBestScore();

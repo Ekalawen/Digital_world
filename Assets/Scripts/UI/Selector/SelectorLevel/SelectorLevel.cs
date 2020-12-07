@@ -45,8 +45,11 @@ public class SelectorLevel : MonoBehaviour {
 
     protected void RewardIfNewBestScore() {
         string keyHasBestScore = GetName() + MenuLevel.HAS_JUST_MAKE_BEST_SCORE_KEY;
+        string keyPrecedentBestScore = GetName() + MenuLevel.PRECEDENT_BEST_SCORE_KEY;
         if (PlayerPrefs.HasKey(keyHasBestScore)) {
-            RewardNewBestScore();
+            if (PlayerPrefs.GetFloat(keyPrecedentBestScore) > 0) {
+                RewardNewBestScore();
+            }
             PlayerPrefs.DeleteKey(keyHasBestScore);
         }
     }
