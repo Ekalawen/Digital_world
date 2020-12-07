@@ -84,4 +84,14 @@ public class MathCurves {
         float randNumber = UnityEngine.Random.Range(0.0f, 1.0f);
         return Log(min, max, randNumber);
     }
+
+    public static float Norm(float min, float max, float avancement, float mean, float variance) {
+        float norm = 1 / (variance * Mathf.Sqrt(2 * Mathf.PI)) * Mathf.Exp(-Mathf.Pow(avancement - mean, 2) / (2 * Mathf.Pow(variance, 2)));
+        return Linear(min, max, norm);
+    }
+
+    public static float NormRandom(float min, float max, float mean, float variance) {
+        float randNumber = UnityEngine.Random.Range(0.0f, 1.0f);
+        return Norm(min, max, randNumber, mean, variance);
+    }
 }

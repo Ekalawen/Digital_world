@@ -19,7 +19,7 @@ public class EventManager : MonoBehaviour {
     [Header("Endgame")]
     public float endGameDuration = 20.0f;
     public float endGameFrameRate = 0.2f;
-    public float avancementPowerSpeed = 1.5f;
+    public AnimationCurve endEventCurveSpeed;
     public EndGameType endGameType = EndGameType.DEATH_CUBES;
     public bool bNoEndgame = false;
 
@@ -110,8 +110,12 @@ public class EventManager : MonoBehaviour {
     }
 
     protected void PlaySoundRate(Timer timerSoundRate, int nbCubesToDestroy, Vector3 barycentre) {
-        if (timerSoundRate.IsOver() && nbCubesToDestroy > 0) {
-            barycentre /= nbCubesToDestroy;
+        if (timerSoundRate.IsOver()) {
+            if(nbCubesToDestroy > 0) {
+                barycentre /= nbCubesToDestroy;
+            } else {
+                barycentre = gm.player.transform.position;
+            }
             gm.soundManager.PlayCreateCubeClip(barycentre);
             timerSoundRate.Reset();
         }
@@ -130,7 +134,7 @@ public class EventManager : MonoBehaviour {
     }
 
     protected int GetNbCubesToDo(int nbPositionsLeft, int nbTotalCubesToDo, int nbCubesDone, Timer endGameTimer) {
-        float avancement = MathCurves.Power(0, 1, endGameTimer.GetAvancement(), 1f / avancementPowerSpeed);
+        float avancement = endEventCurveSpeed.Evaluate(endGameTimer.GetAvancement());
         int nbCubesToDo = (int)(avancement * nbTotalCubesToDo - nbCubesDone);
         nbCubesToDo = Mathf.Min(nbCubesToDo, nbPositionsLeft);
         return nbCubesToDo;

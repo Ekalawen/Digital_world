@@ -588,6 +588,7 @@ public virtual void Update () {
 		} else {
             if (!gm.eventManager.IsWin() && gm.eventManager.GetComponent<EventManagerWhileTrue>() == null) { // Ehhhh x)
                 EffacerImportantMessage("Plus que 1 !");
+                StartEndGame();
                 //AjouterMessage("ON LES A TOUTES !", Console.TypeText.ALLY_TEXT);
                 //AjouterMessageImportant("FAUT SE BARRER MAINTENANT !!!", Console.TypeText.ALLY_TEXT, 2f);
             }
