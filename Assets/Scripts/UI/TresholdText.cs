@@ -41,14 +41,14 @@ public class TresholdText {
         this.textAsset = null;
         this.content = content;
         ComputeFragments();
-        RevertTresholdOrderFragments();
+        //RevertTresholdOrderFragments();
     }
 
     public TresholdText(TextAsset textAsset) {
         this.textAsset = textAsset;
         this.content = textAsset.text;
         ComputeFragments();
-        RevertTresholdOrderFragments();
+        //RevertTresholdOrderFragments();
     }
 
     protected string ReadLine() {

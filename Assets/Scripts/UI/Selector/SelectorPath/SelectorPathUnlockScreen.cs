@@ -165,8 +165,9 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
             textAsset: selectorPath.donneesHackees,
             theme: TexteExplicatif.Theme.NEUTRAL);
         AddReplacementForDonneesHackeesToPopup(selectorManager.popup);
-        selectorManager.popup.Run(textTreshold: treshold);
-        AddNextPallierMessage(selectorManager.popup, textTreshold: treshold);
+        selectorManager.popup.InitTresholdText();
+        AddNextPallierMessage(selectorManager.popup, currentTreshold: treshold);
+        selectorManager.popup.Run(textTreshold: treshold, shouldInitTresholdText: false);
     }
 
     protected void OpenDonneesHackeesJamaisHackee() {
@@ -198,18 +199,25 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         popup.AddReplacementEvaluator(@"Data Hack[ée]es\(?\)?", orangeSurrounder);
     }
 
-    protected void AddNextPallierMessage(TexteExplicatif texteExplicatif, int textTreshold) {
+    protected void AddNextPallierMessage(TexteExplicatif texteExplicatif, int currentTreshold) {
         TresholdText tresholdText = texteExplicatif.GetTresholdText();
         List<TresholdFragment> fragments = tresholdText.GetAllFragmentsOrdered();
         for(int i = 0; i < fragments.Count; i++) {
             TresholdFragment fragment = fragments[i];
-            string nextPallierText = GetNextPallierText(fragment, fragments, textTreshold);
-            string pallierNumberText = $"Pallier n°{i + 1} : {nextPallierText}\n";
+            string nextPallierText = GetNextPallierText(fragment, fragments, currentTreshold);
+            string textOfTreshold = GetTresholdTextForPallier(fragment.treshold);
+            string pallierNumberText = $"Pallier n°{i + 1} ({textOfTreshold}) : {nextPallierText}\n";
             pallierNumberText = UIHelper.SurroundWithColor(pallierNumberText, UIHelper.GREEN);
             fragment.text = pallierNumberText + fragment.text;
         }
-        texteExplicatif.mainText.text = texteExplicatif.ComputeText(textTreshold);
+        texteExplicatif.mainText.text = texteExplicatif.ComputeText(currentTreshold);
         texteExplicatif.ApplyColorReplacements();
+    }
+
+    protected string GetTresholdTextForPallier(int tresholdText) {
+        string s = (tresholdText > 1) ? "s" : "";
+        string unite = (selectorPath.startLevel.menuLevel.levelType == MenuLevel.LevelType.REGULAR) ? "victoire" : "block";
+        return $"{tresholdText} {unite}{s}";
     }
 
     protected string GetNextPallierText(TresholdFragment fragment, List<TresholdFragment> fragments, int textTreshold) {

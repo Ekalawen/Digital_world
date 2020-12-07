@@ -59,14 +59,14 @@ public class TexteExplicatif : MonoBehaviour {
         SetColorTheme(theme);
     }
 
-    protected void InitTresholdText() {
+    public void InitTresholdText() {
         tresholdText = new TresholdText(textAsset);
     }
 
-    public void Run(int textTreshold = 0) {
+    public void Run(int textTreshold = 0, bool shouldInitTresholdText = true) {
         InitColor();
 
-        if (useTextAsset) {
+        if (useTextAsset && shouldInitTresholdText) {
             InitTresholdText();
         }
 
