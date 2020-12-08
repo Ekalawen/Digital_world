@@ -70,6 +70,9 @@ public class Trace {
             return "Un password a toujours au moins 4 caractères.";
         string trace = password.Substring(0, 4);
         string passe = password.Substring(4, password.Length - 4);
+        if(HasSwapTraceAndPasse(password, truePassword)) {
+            return "La Trace est toujours avant le Passe.";
+        }
         if(!IsWellFormatedTrace(trace)) {
             return GetTraceAdvice(trace);
         }
@@ -77,6 +80,11 @@ public class Trace {
             return GetPasseAdvice(passe);
         }
         return GetWellFormatedPasswordAdvice(password, truePassword);
+    }
+
+    public static bool HasSwapTraceAndPasse(string password, string truePassword) {
+        string trueTrace = truePassword.Substring(0, 4);
+        return password.Length > 4 && password.Substring(password.Length - 4, 4) == trueTrace;
     }
 
     public static bool IsWellFormatedPasse(string passe) {
