@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RushPlayerController : EnnemiController {
     protected override void UpdateSpecific() {
-        Move(player.transform.position);
+        MoveToTarget(player.transform.position);
     }
 
     public override bool IsInactive() {

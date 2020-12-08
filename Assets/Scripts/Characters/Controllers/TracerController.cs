@@ -47,7 +47,7 @@ public class TracerController : EnnemiController {
 
                 // On va au premier point du chemin !
                 if (Time.timeSinceLevelLoad - lastTimePause > dureePauseEntreNodes) {
-                    Vector3 move = Move(path[0]);
+                    Vector3 move = MoveToTarget(path[0]);
 
                     // On essaye de se débloquer si on est bloqué !
                     TryUnStuck();

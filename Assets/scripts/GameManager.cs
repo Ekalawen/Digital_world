@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour {
     public GameObject gravityManagerPrefab; // Pour gérer la gravité !
     public GameObject scanManagerPrefab; // Pour gérer les scans !
     public GameObject historyManagerPrefab; // Pour retenir des infos sur la partie !
+    public GameObject flockManagerPrefab; // Pour gérer les flock controllers !
 
 	[HideInInspector]
 	public MapManager map;
@@ -56,6 +57,8 @@ public class GameManager : MonoBehaviour {
     [HideInInspector]
     public HistoryManager historyManager;
     [HideInInspector]
+    public FlockManager flockManager;
+    [HideInInspector]
     public GameObject managerFolder;
     [HideInInspector]
     public bool partieDejaTerminee = false;
@@ -82,6 +85,7 @@ public class GameManager : MonoBehaviour {
         postProcessManager = Instantiate(postProcessManagerPrefab, managerFolder.transform).GetComponent<PostProcessManager>();
         scanManager = Instantiate(scanManagerPrefab, managerFolder.transform).GetComponent<ScanManager>();
         historyManager = Instantiate(historyManagerPrefab, managerFolder.transform).GetComponent<HistoryManager>();
+        flockManager = Instantiate(flockManagerPrefab, managerFolder.transform).GetComponent<FlockManager>();
 
         Initialize();
 	}
@@ -102,6 +106,7 @@ public class GameManager : MonoBehaviour {
         postProcessManager.Initialize();
         scanManager.Initialize();
         historyManager.Initialize();
+        flockManager.Initialize();
     }
 
 	void Update () {

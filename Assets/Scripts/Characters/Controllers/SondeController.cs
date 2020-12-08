@@ -62,7 +62,7 @@ public class SondeController : EnnemiController {
 
     protected virtual void Wait() {
         // On va là où on a vu le joueur pour la dernière fois !
-        Vector3 move = Move(lastPositionSeen);
+        Vector3 move = MoveToTarget(lastPositionSeen);
 
         // Si le mouvement est trop petit, c'est que l'on est arrivé, donc on arrête le mouvement en lui ordonnant d'aller sur place
         if (Vector3.Magnitude(move) <= 0.001f && Vector3.Magnitude(move) != 0f) {
@@ -76,7 +76,7 @@ public class SondeController : EnnemiController {
 
     protected virtual void Track() {
         // Les ennemis se déplacent toujours vers le joueur de façon tout à fait linéaire !		
-        Move(player.transform.position);
+        MoveToTarget(player.transform.position);
 
         // Et on retient la position actuelle du joueur !
         lastPositionSeen = player.transform.position;

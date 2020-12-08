@@ -42,7 +42,7 @@ public class RunAwayPlayerController : IController {
                 //tr.GetComponent<Trail>().SetTarget(posObjectifWandering);
 
                 // Puis on y va
-                Move(posObjectifWandering, useCustomVitesse: true, wanderingVitesse);
+                MoveToTarget(posObjectifWandering, useCustomVitesse: true, wanderingVitesse);
                 //Vector3 direction = (posObjectifWandering - transform.position).normalized;
                 //Vector3 finalMouvement = direction * wanderingVitesse * Time.deltaTime;
                 //controller.Move(finalMouvement);
@@ -60,7 +60,7 @@ public class RunAwayPlayerController : IController {
                 //trf.GetComponent<Trail>().SetTarget(posObjectifFleeing);
 
                 // Puis on y va
-                Move(posObjectifFleeing, useCustomVitesse: true, fleeingVitesse);
+                MoveToTarget(posObjectifFleeing, useCustomVitesse: true, fleeingVitesse);
                 //Vector3 directionVisible = (posObjectifFleeing - transform.position).normalized;
                 //Vector3 finalMouvementVisible = directionVisible * fleeingVitesse * Time.deltaTime;
                 //controller.Move(finalMouvementVisible);

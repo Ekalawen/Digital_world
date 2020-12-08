@@ -9,13 +9,13 @@ public class GoToDirectionController : IController {
 
     protected override void UpdateSpecific() {
         Vector3 pointToGo = transform.position + direction.normalized * vitesse * 2;
-        Move(pointToGo);
+        MoveToTarget(pointToGo);
 
         // Si on est trop loin du jeu on s'auto-détruit ! :)
         if(Vector3.Distance(transform.position, gm.map.GetCenter()) >= distanceBeforeDestruction) {
             Ennemi ennemi = GetComponent<Ennemi>();
             if (ennemi != null)
-                ennemi.Destroy();
+                ennemi.DestroyEnnemi();
             else
                 Destroy(gameObject);
         }

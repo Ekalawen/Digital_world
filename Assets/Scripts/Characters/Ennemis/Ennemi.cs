@@ -93,7 +93,7 @@ public abstract class Ennemi : Character {
         return controller.IsInactive();
     }
 
-    public void Destroy() {
+    public void DestroyEnnemi() {
         gm.ennemiManager.RemoveEnnemi(this);
         Destroy(gameObject);
     }

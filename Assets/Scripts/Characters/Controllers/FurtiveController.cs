@@ -35,7 +35,7 @@ public class FurtiveController : IController {
                 }
 
                 // Puis on y va
-                Move(posObjectifHidden, useCustomVitesse: true, hiddenVitesse);
+                MoveToTarget(posObjectifHidden, useCustomVitesse: true, hiddenVitesse);
                 //Vector3 direction = (posObjectifHidden - transform.position).normalized;
                 //Vector3 finalMouvement = direction * hiddenVitesse * Time.deltaTime;
                 //controller.Move(finalMouvement);
@@ -55,7 +55,7 @@ public class FurtiveController : IController {
                 }
 
                 // Puis on y va
-                Move(posObjectifVisible, useCustomVitesse: true, vitesse * coefRapprochementAxe);
+                MoveToTarget(posObjectifVisible, useCustomVitesse: true, vitesse * coefRapprochementAxe);
                 //Vector3 directionVisible = (posObjectifVisible - transform.position).normalized;
                 //Vector3 finalMouvementVisible = directionVisible * visibleBaseVitesse * coefRapprochementAxe * Time.deltaTime;
                 //controller.Move(finalMouvementVisible);

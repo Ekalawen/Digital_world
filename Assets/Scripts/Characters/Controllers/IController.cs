@@ -34,12 +34,11 @@ public abstract class IController : MonoBehaviour {
     public abstract bool IsInactive();
     public abstract bool IsMoving();
 
-    protected Vector3 Move(Vector3 target, bool useCustomVitesse = false, float customVitesse = 0.0f) {
+    protected Vector3 MoveToTarget(Vector3 target, bool useCustomVitesse = false, float customVitesse = 0.0f) {
         float vitesseToUse = useCustomVitesse ? customVitesse : vitesse;
         Vector3 direction = (target - transform.position).normalized;
         Vector3 finalMouvement = direction * vitesseToUse * Time.deltaTime;
 
-        // Si c'est trop long, on ajuste
         if (Vector3.Magnitude(finalMouvement) > Vector3.Distance(transform.position, target)) {
             finalMouvement = target - transform.position;
         }
@@ -47,5 +46,11 @@ public abstract class IController : MonoBehaviour {
         controller.Move(finalMouvement);
 
         return finalMouvement;
+    }
+
+    protected Vector3 MoveWithMove(Vector3 move) {
+        move *= vitesse * Time.deltaTime;
+        controller.Move(move);
+        return move;
     }
 }
