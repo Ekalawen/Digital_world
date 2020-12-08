@@ -10,6 +10,7 @@ public class FlirdController : EnnemiController {
         base.Start();
         flockManager = gm.flockManager;
         flockManager.Register(this);
+        transform.rotation = UnityEngine.Random.rotationUniform;
     }
 
     protected void OnDestroy() {
@@ -17,8 +18,9 @@ public class FlirdController : EnnemiController {
     }
 
     protected override void UpdateSpecific() {
-        Vector3 move = flockManager.GetFlockMove(this);
+        Vector3 move = flockManager.CalculateMove(this);
         MoveWithMove(move);
+        transform.LookAt(transform.position + move);
     }
 
     public override bool IsMoving() {

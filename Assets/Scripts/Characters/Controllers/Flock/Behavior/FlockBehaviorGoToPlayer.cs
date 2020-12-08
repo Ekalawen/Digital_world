@@ -11,7 +11,7 @@ public class FlockBehaviorGoToPlayer : FlockBehavior {
         player = gm.player;
     }
 
-    public override Vector3 GetMove(IController flockController) {
+    public override Vector3 CalculateMove(IController flockController) {
         return (player.transform.position - flockController.transform.position).normalized;
     }
 }
