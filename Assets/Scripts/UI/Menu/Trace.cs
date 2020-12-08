@@ -141,7 +141,7 @@ public class Trace {
             return "Ce n'est pas la bonne Trace.";
         }
         int[,] levenshteinMatrice = GetLevenshteinMatrice(passe, truePasse);
-        if (GetDistanceDeLevenshtein(passe, truePasse, levenshteinMatrice) <= 6) {
+        if (GetDistanceDeLevenshtein(passe, truePasse, levenshteinMatrice) <= 4) {
             LevenshteinDifferences differences = GetDifferencesDeLevenshtein(passe, truePasse, levenshteinMatrice);
             string remplacementsS = differences.nbRemplacements > 1 ? "s" : "";
             string remplacements = differences.nbRemplacements > 0 ? $"{differences.nbRemplacements} remplacement{remplacementsS}" : "";
