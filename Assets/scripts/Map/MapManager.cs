@@ -278,6 +278,16 @@ public class MapManager : MonoBehaviour {
     }
 
     public List<Cube> GetCubesInSphere(Vector3 center, float radius) {
+        List<Cube> cubes = GetRegularCubesInSphere(center, radius);
+        foreach (Cube cube in cubesNonRegular) {
+            if (Vector3.Distance(cube.transform.position, center) <= radius) {
+                cubes.Add(cube);
+            }
+        }
+        return cubes;
+    }
+
+    public List<Cube> GetRegularCubesInSphere(Vector3 center, float radius) {
         List<Cube> cubes = new List<Cube>();
         int xMin = (int)Mathf.Floor(center.x - radius);
         int xMax = (int)Mathf.Ceil(center.x + radius);
@@ -297,11 +307,7 @@ public class MapManager : MonoBehaviour {
                 }
             }
         }
-        foreach (Cube cube in cubesNonRegular) {
-            if (Vector3.Distance(cube.transform.position, center) <= radius) {
-                cubes.Add(cube);
-            }
-        }
+
         return cubes;
     }
 

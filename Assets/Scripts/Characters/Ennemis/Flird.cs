@@ -17,7 +17,13 @@ public class Flird : Ennemi {
 	void OnControllerColliderHit(ControllerColliderHit hit) {
 		if (hit.collider.name == "Joueur") {
             HitPlayer();
-		}
+		} else {
+            Cube cube = hit.gameObject.GetComponent<Cube>();
+            if (cube != null) {
+                Debug.Log($"J'ai pris un mur m'sieu' ! ({gm.ennemiManager.ennemis.Count})");
+                Suicide();
+            }
+        }
 	}
 
     protected override void HitPlayerSpecific() {

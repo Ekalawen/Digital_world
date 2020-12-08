@@ -1,5 +1,37 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-5960734181247383757
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 359144622012535822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 131c84a63811d0743a222b5cb6d90db6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cubeType: 0
+  generateMode: 0
+  proportionCaves: 0.5
+  nbCaves: 0
+  tailleMinCave: 3
+  tailleMaxCave: 4
+  makeSpaceArround: 1
+  dontCollideWithOthersCaves: 0
+  distanceWithOthersCaves: 0
+  preserveMapBordure: 0
+  nbLumieresPerCaves: 1
+  offsetLumieresFromCenter: 1
+  caveOffsetFromSides: 2
+  useCaveFixedOffset: 0
+  useCaveFixedOffsetX: 0
+  caveFixedOffsetX: 0
+  useCaveFixedOffsetY: 0
+  caveFixedOffsetY: 0
+  useCaveFixedOffsetZ: 0
+  caveFixedOffsetZ: 0
 --- !u!114 &-182425863886122715
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -106,27 +138,7 @@ PrefabInstance:
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: mapFunctionComponents.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
-        type: 3}
-      propertyPath: mapFunctionComponents.Array.data[1]
-      value: 
-      objectReference: {fileID: -182425863886122715}
-    - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
-        type: 3}
-      propertyPath: mapFunctionComponents.Array.data[2]
-      value: 
-      objectReference: {fileID: -182425863886122715}
-    - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
-        type: 3}
-      propertyPath: mapFunctionComponents.Array.data[3]
-      value: 
-      objectReference: {fileID: -182425863886122715}
-    - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
-        type: 3}
-      propertyPath: mapFunctionComponents.Array.data[4]
-      value: 
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
@@ -154,6 +166,21 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1586838666760998, guid: 166cc3691555747479ad6b1623980374,
         type: 3}
+    - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
+        type: 3}
+      propertyPath: mapFunctionComponents.Array.data[1]
+      value: 
+      objectReference: {fileID: -5960734181247383757}
+    - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
+        type: 3}
+      propertyPath: mapFunctionComponents.Array.data[2]
+      value: 
+      objectReference: {fileID: 961951785206335748}
+    - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
+        type: 3}
+      propertyPath: mapFunctionComponents.Array.data[3]
+      value: 
+      objectReference: {fileID: 2942253692236491032}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: mapFunctionComponents.Array.data[0]

@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class FlockBehaviorGoToPlayer : FlockBehavior {
 
+    public float range = 5.0f;
+    public float interpolateFactor = 5;
+
     protected Player player;
 
     public override void Initialize() {
@@ -12,6 +15,11 @@ public class FlockBehaviorGoToPlayer : FlockBehavior {
     }
 
     public override Vector3 CalculateMove(IController flockController) {
-        return (player.transform.position - flockController.transform.position).normalized;
+        if (Vector3.Distance(player.transform.position, flockController.transform.position) <= range) {
+            Vector3 direction = (player.transform.position - flockController.transform.position).normalized;
+            return (direction + flockController.transform.forward * interpolateFactor) / (1 + interpolateFactor);
+        } else {
+            return Vector3.zero;
+        }
     }
 }
