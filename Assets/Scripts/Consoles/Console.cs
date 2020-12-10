@@ -686,7 +686,7 @@ public virtual void Update () {
 
     // Lorsque le joueur tombe, typiquement dans le tutoriel !
     public void SavedFromFalling() {
-        AjouterMessageImportant("Attention à ne être éjecté !", TypeText.ALLY_TEXT, 3);
+        AjouterMessageImportant("Attention à ne pas être éjecté !", TypeText.ALLY_TEXT, 3);
     }
 
     // Lorsque le joueur touche un cube de la mort dans le tutoriel !
