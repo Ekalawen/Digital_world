@@ -340,6 +340,8 @@ public class MenuLevel : MonoBehaviour {
         texteExplicatifDonneesHackesSuccess.AddReplacementEvaluator(@"Traces?", blueSurrounder);
         // L'ajout des next palliers se fait dans la fonction AddNextPallierMessageToAllFragments()
 
+        texteInformations.AddReplacement("CRINM", UIHelper.SurroundWithColor("CRINM", UIHelper.BLUE));
+        texteInformations.AddReplacement("H@ckers", UIHelper.SurroundWithColor("H@ckers", UIHelper.BLUE));
         texteInformations.AddReplacement("[Cilliannelle Crittefigiée]", UIHelper.SurroundWithColor("[Cilliannelle Crittefigiée]", UIHelper.PURE_GREEN));
         texteInformations.AddReplacement("[Morgensoul*]", UIHelper.SurroundWithColor("[Morgensoul*]", UIHelper.CYAN));
         texteInformations.AddReplacement("[V1P3R]", UIHelper.SurroundWithColor("[V1P3R]", UIHelper.CYAN));
