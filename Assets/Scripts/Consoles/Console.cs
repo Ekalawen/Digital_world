@@ -534,26 +534,27 @@ public virtual void Update () {
 
 	// Lorsque le joueur a été bloqué par les drones
 	public void LoseGame(EventManager.DeathReason reason) {
+        float timeDeathMessage = 5;
         switch(reason) {
             case EventManager.DeathReason.CAPTURED:
-                AjouterMessageImportant ("MENACE CAPTURÉE !", Console.TypeText.ENNEMI_TEXT, 5);
-                AjouterMessage("Cause de la mort : Vous avez été capturé par un ennemi !", Console.TypeText.ENNEMI_TEXT);
+                AjouterMessageImportant ("Cause : Encerclé par l'ennemi !", Console.TypeText.ENNEMI_TEXT, timeDeathMessage);
+                AjouterMessageImportant ("MENACE CAPTURÉE !", Console.TypeText.ENNEMI_TEXT, timeDeathMessage);
                 break;
             case EventManager.DeathReason.FALL_OUT:
-                AjouterMessageImportant ("MENACE ÉJECTÉE !", Console.TypeText.ENNEMI_TEXT, 5);
-                AjouterMessage("Cause de la mort : Vous êtes tombé !", Console.TypeText.ENNEMI_TEXT);
+                AjouterMessageImportant ("Cause : Vous êtes tombé !", Console.TypeText.ENNEMI_TEXT, timeDeathMessage);
+                AjouterMessageImportant ("MENACE ÉJECTÉE !", Console.TypeText.ENNEMI_TEXT, timeDeathMessage);
                 break;
             case EventManager.DeathReason.TIME_OUT:
-                AjouterMessageImportant ("MENACE DÉSYNCHRONISÉE !", Console.TypeText.ENNEMI_TEXT, 5);
-                AjouterMessage("Cause de la mort : Vous n'aviez plus de temps !", Console.TypeText.ENNEMI_TEXT);
+                AjouterMessageImportant ("Cause : Plus de temps !", Console.TypeText.ENNEMI_TEXT, timeDeathMessage);
+                AjouterMessageImportant ("MENACE DÉSYNCHRONISÉE !", Console.TypeText.ENNEMI_TEXT, timeDeathMessage);
                 break;
             case EventManager.DeathReason.TOUCHED_DEATH_CUBE:
-                AjouterMessageImportant ("MENACE ÉLIMINÉE !", Console.TypeText.ENNEMI_TEXT, 5);
-                AjouterMessage("Cause de la mort : Vous avez touché un Cube de la Mort !", Console.TypeText.ENNEMI_TEXT);
+                AjouterMessageImportant ("Cause : Cube de la Mort touché !", Console.TypeText.ENNEMI_TEXT, timeDeathMessage);
+                AjouterMessageImportant ("MENACE DÉSINTÉGRÉE !", Console.TypeText.ENNEMI_TEXT, timeDeathMessage);
                 break;
             case EventManager.DeathReason.OUT_OF_BLOCKS:
-                AjouterMessageImportant ("MENACE ÉLIMINÉE !", Console.TypeText.ENNEMI_TEXT, 5);
-                AjouterMessage("Cause de la mort : Vous avez été rattrapé par la Chute !", Console.TypeText.ENNEMI_TEXT);
+                AjouterMessageImportant ("Cause : Rattrapé par la Chute !", Console.TypeText.ENNEMI_TEXT, timeDeathMessage);
+                AjouterMessageImportant ("MENACE SEMÉE !", Console.TypeText.ENNEMI_TEXT, timeDeathMessage);
                 break;
         }
 		StartCoroutine (SeMoquer());
