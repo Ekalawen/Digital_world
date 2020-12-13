@@ -1,12 +1,64 @@
-#Patch-notes Version 0.3 :
+#Patch-notes Version 0.3 !!
 
 ## Développement
-- Ajout du splash-screen
+- Ajout du splash-screen.
 - Mise à jour des collisions dans la Sélection des niveaux.
+- Amélioration de la sensation du saut. Le saut va également légèrement plus haut.
+- Bug : la collision avec les cubes de la mort ne se fait plus de plus loin dans certaines conditions.
+- Bug : la collision par le dessus avec les cubes de la mort est maintenant bien pris en compte.
+- Bug : on peut maintenant s'accrocher aux murs dès que l'on commence le niveau, sans avoir à toucher le sol avant.
+
+## Tutoriel
+- Refonte complète.
+- Clarification du saut et de toutes ses possibilités : hauteur adaptative, accrochage automatique, possibilité
+de sauter à nouveau depuis un mur, ne peut pas s'accrocher deux fois d'affilé au même mur, pas besoin de regarder le mur pour s'y accrocher.
+- Explication des Cubes de la mort.
+- Suppression de la Cave.
+- Suppression des pouvoirs.
+- Suppression de la Sonde finale. Un autre final a été implémenté.
+- Ajout d'un écran de chargement.
 
 ## Design
-- Ajout d'un nouveau niveau pour se familliariser avec la destruction des cubes : Constant Destruction
+- Ajout d'un nouveau niveau pour se familliariser avec la destruction des cubes : Constant Destruction.
+- La Trace est maintenant visible sans avoir à rentrer dans les Data Hackées() si elle est débloqué.
+- Le message du nombre d'ennemis et du nombre de Data en début de partie est plus clair.
+- Affichage des palliers dans l'ordre dans les Data Hackées().
+- Affichage du seuil de chaque pallier dans les Data Hackées().
+- Lorsque l'on débloque plusieurs palliers d'un coup pour un même niveau, tous les palliers sont maintenant affichés.
+- Les Shake-Screens sont maintenant uniquement des rotations et plus aucunes translations.
 
 ## Narration
+- Ajout du texte de l'Archive du niveau First Infinite Runner.
+- Mise à jour du texte de l'Archive du niveau First Level.
+- Ajout du texte de l'Archive du niveau First Sonde.
+- Mise à jour du texte de l'Archive du niveau Discover of Sondes.
+
+## Mots de passes
+- Ajout d'un conseil si jamais la Trace est placé après le Passe.
+- Le mot de passe en Grec est maintenant correctement orthographié.
+- Ajout des mots de passes en lient avec le niveau Constant Destruction.
 
 ## Equilibrage
+- Le post-process de l'accrochage au mur est maintenant bien plus visible.
+- Le curseur au centre de l'écran change maintenant de couleur pour vous indiquer si vous êtes accroché au mur.
+
+### End events
+- Les end events ont maintenant une vitesse linéaire au début puis une vitesse de plus en plus décroissante en s'approchant de la fin de l'event.
+
+### Tous les Infinite Runners
+- La destruction des cubes commence maintenant après avoir atteint le 10ième block au lieu du 1er block.
+- La plupart des blocks ont été repensés pour être plus simple la première fois que vous les rencontrerez.
+- Les palliers ont été repensés pour s'assurer qu'il y en ait bien un tous les 10 blocks jusqu'à 50 blocks.
+
+### Niveau Inside the Transistor
+- Map moins haute.
+- Décalage des spikes pour rendre les sauts plus simples.
+- Empêcher les Data d'apparaître dans les coins.
+
+### Niveau Learn Intersection
+- Le dernier évènement (celui débloqué après 5 Data) passe d'une période de 2 à 4.
+- Le temps a été réduit de 10000s à 200s. Le temps n'est cependant toujours pas une difficulté dans ce niveau.
+
+### Niveau Learn Pathfinding
+- Le niveau est maintenant moins dense.
+- Le Pathfinder dure 4 secondes au lieu de 3 secondes.
