@@ -37,7 +37,7 @@ public class BouncyCube : Cube {
             player.PlayJumpSound();
         }
         if(dammageOnHit > 0.0f) {
-            gm.timerManager.AddTime(-dammageOnHit);
+            gm.timerManager.RemoveTime(dammageOnHit, EventManager.DeathReason.TOUCHED_BOUNCY_CUBE);
         }
         timerAddPoussee.Reset();
     }

@@ -62,12 +62,12 @@ public abstract class IPouvoir : MonoBehaviour {
     protected virtual void ApplyTimerMalus() {
         if (!timerMalusTimeProportional) {
             if (timerMalus != 0.0f) {
-                gm.timerManager.AddTime(-timerMalus);
+                gm.timerManager.RemoveTime(timerMalus, EventManager.DeathReason.POUVOIR_COST);
             }
         } else {
             float timeToRemove = gm.timerManager.GetRemainingTime() * timerMalusTimeProportion;
             if (timeToRemove != 0.0f) {
-                gm.timerManager.AddTime(-timeToRemove);
+                gm.timerManager.RemoveTime(timerMalus, EventManager.DeathReason.POUVOIR_COST);
             }
         }
     }

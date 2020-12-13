@@ -53,13 +53,15 @@ public abstract class Ennemi : Character {
             HitPlayerSpecific();
             if (timerHitDamages.IsOver()) {
                 timerHitDamages.Reset();
-                gm.timerManager.AddTime(-timeMalusToUse);
+                gm.timerManager.RemoveTime(timeMalusToUse, GetDeathReason());
             }
             DisplayHitMessage();
             PlayHitSound();
             ShakeScreen();
         }
     }
+
+    public abstract EventManager.DeathReason GetDeathReason();
 
     protected void ShakeScreen() {
         CameraShaker cs = CameraShaker.Instance;

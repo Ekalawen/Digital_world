@@ -536,25 +536,49 @@ public virtual void Update () {
 	public void LoseGame(EventManager.DeathReason reason) {
         float timeDeathMessage = 5;
         switch(reason) {
-            case EventManager.DeathReason.CAPTURED:
-                AjouterMessageImportant ("Cause : Encerclé par l'ennemi !", Console.TypeText.ENNEMI_TEXT, timeDeathMessage);
-                AjouterMessageImportant ("MENACE CAPTURÉE !", Console.TypeText.ENNEMI_TEXT, timeDeathMessage);
+            case EventManager.DeathReason.TIME_OUT:
+                AjouterMessageImportant ("Cause : Plus de temps !", Console.TypeText.ENNEMI_TEXT, timeDeathMessage);
+                AjouterMessageImportant ("MENACE DÉSYNCHRONISÉE !", Console.TypeText.ENNEMI_TEXT, timeDeathMessage);
                 break;
             case EventManager.DeathReason.FALL_OUT:
                 AjouterMessageImportant ("Cause : Vous êtes tombé !", Console.TypeText.ENNEMI_TEXT, timeDeathMessage);
                 AjouterMessageImportant ("MENACE ÉJECTÉE !", Console.TypeText.ENNEMI_TEXT, timeDeathMessage);
                 break;
-            case EventManager.DeathReason.TIME_OUT:
-                AjouterMessageImportant ("Cause : Plus de temps !", Console.TypeText.ENNEMI_TEXT, timeDeathMessage);
-                AjouterMessageImportant ("MENACE DÉSYNCHRONISÉE !", Console.TypeText.ENNEMI_TEXT, timeDeathMessage);
+            case EventManager.DeathReason.CAPTURED:
+                AjouterMessageImportant ("Cause : Encerclé par l'ennemi !", Console.TypeText.ENNEMI_TEXT, timeDeathMessage);
+                AjouterMessageImportant ("MENACE CAPTURÉE !", Console.TypeText.ENNEMI_TEXT, timeDeathMessage);
                 break;
             case EventManager.DeathReason.TOUCHED_DEATH_CUBE:
                 AjouterMessageImportant ("Cause : Cube de la Mort touché !", Console.TypeText.ENNEMI_TEXT, timeDeathMessage);
                 AjouterMessageImportant ("MENACE DÉSINTÉGRÉE !", Console.TypeText.ENNEMI_TEXT, timeDeathMessage);
                 break;
+            case EventManager.DeathReason.TOUCHED_BOUNCY_CUBE:
+                AjouterMessageImportant ("Cause : Cube rebondissant touché !", Console.TypeText.ENNEMI_TEXT, timeDeathMessage);
+                AjouterMessageImportant ("MENACE EXPULSÉE !", Console.TypeText.ENNEMI_TEXT, timeDeathMessage);
+                break;
+            case EventManager.DeathReason.POUVOIR_COST:
+                AjouterMessageImportant ("Cause : Trop de pouvoirs utilisés !", Console.TypeText.ENNEMI_TEXT, timeDeathMessage);
+                AjouterMessageImportant ("MENACE IDENTIFIÉE !", Console.TypeText.ENNEMI_TEXT, timeDeathMessage);
+                break;
             case EventManager.DeathReason.OUT_OF_BLOCKS:
                 AjouterMessageImportant ("Cause : Rattrapé par la Chute !", Console.TypeText.ENNEMI_TEXT, timeDeathMessage);
                 AjouterMessageImportant ("MENACE SEMÉE !", Console.TypeText.ENNEMI_TEXT, timeDeathMessage);
+                break;
+            case EventManager.DeathReason.FAILED_JUMP_EVENT:
+                AjouterMessageImportant ("Cause : Au sol ou au mur lors d'un Jump !", Console.TypeText.ENNEMI_TEXT, timeDeathMessage);
+                AjouterMessageImportant ("MENACE JUMPÉE !", Console.TypeText.ENNEMI_TEXT, timeDeathMessage);
+                break;
+            case EventManager.DeathReason.SONDE_HIT:
+                AjouterMessageImportant ("Cause : Touché par une Sonde !", Console.TypeText.ENNEMI_TEXT, timeDeathMessage);
+                AjouterMessageImportant ("MENACE SONDÉE !", Console.TypeText.ENNEMI_TEXT, timeDeathMessage);
+                break;
+            case EventManager.DeathReason.TRACER_HIT:
+                AjouterMessageImportant ("Cause : Touché par un Tracer !", Console.TypeText.ENNEMI_TEXT, timeDeathMessage);
+                AjouterMessageImportant ("MENACE TRACÉE !", Console.TypeText.ENNEMI_TEXT, timeDeathMessage);
+                break;
+            case EventManager.DeathReason.FLIRD_HIT:
+                AjouterMessageImportant ("Cause : Touché par un Flird !", Console.TypeText.ENNEMI_TEXT, timeDeathMessage);
+                AjouterMessageImportant ("MENACE FLIRDÉE !", Console.TypeText.ENNEMI_TEXT, timeDeathMessage);
                 break;
         }
 		StartCoroutine (SeMoquer());

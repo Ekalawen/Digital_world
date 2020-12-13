@@ -16,6 +16,6 @@ public class PouvoirRollbackBlackAndWhite : PouvoirRollback {
 
     protected override void ApplyTimerMalus() {
         float timeMalus = Mathf.Min(gm.timerManager.GetRemainingTime() / 3, maxTimerMalus);
-        gm.timerManager.AddTime(-timeMalus);
+        gm.timerManager.RemoveTime(timeMalus, EventManager.DeathReason.POUVOIR_COST);
     }
 }

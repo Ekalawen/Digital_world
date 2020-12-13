@@ -57,17 +57,19 @@ public class TimerManager : MonoBehaviour {
         timerDisplayer.Hide();
     }
 
-    protected void DisplayGameTimer() {
+    protected void DisplayGameTimer()
+    {
         float remainingTime = GetRemainingTime();
-        if(remainingTime <= 0) {
-            remainingTime = 0.0f;
-            gm.eventManager.LoseGame(EventManager.DeathReason.TIME_OUT);
-        }
-        timerDisplayer.Display(TimerManager.TimerToString(remainingTime));
+        TestLoseGame(EventManager.DeathReason.TIME_OUT);
 
         PlayTimeOutSound();
 
-        if(remainingTime >= 20.0f) {
+        SetVisualGameTimer(remainingTime);
+    }
+
+    private void SetVisualGameTimer(float remainingTime) {
+        timerDisplayer.Display(TimerManager.TimerToString(remainingTime));
+        if (remainingTime >= 20.0f) {
             timerDisplayer.SetColor(gm.console.allyColor);
             timerDisplayer.SetFontSize(fontSize);
         } else if (remainingTime >= 10.0f) {
@@ -83,6 +85,13 @@ public class TimerManager : MonoBehaviour {
                 size *= coefBounce;
             }
             timerDisplayer.SetFontSize((int)size);
+        }
+    }
+
+    public void TestLoseGame(EventManager.DeathReason reason) {
+        if (GetRemainingTime() <= 0) {
+            SetVisualGameTimer(0);
+            gm.eventManager.LoseGame(reason);
         }
     }
 
@@ -129,10 +138,12 @@ public class TimerManager : MonoBehaviour {
     }
 
     public float GetRemainingTime() {
-        if (!isInfinitTime)
-            return totalTime - (Time.timeSinceLevelLoad - debutTime);
-        else
+        if (!isInfinitTime) {
+            float remainingTime = totalTime - (Time.timeSinceLevelLoad - debutTime);
+            return Mathf.Max(0, remainingTime);
+        } else {
             return 99999.99f;
+        }
     }
 
     public void AddTime(float time, bool showVolatileText = true) {
@@ -144,6 +155,13 @@ public class TimerManager : MonoBehaviour {
         if (showVolatileText) {
             ShowVolatileTextOnAddTime(time);
         }
+    }
+
+    public void RemoveTime(float timeToRemove, EventManager.DeathReason reason) {
+        Debug.Log($"Remaining time before = {GetRemainingTime()}");
+        AddTime(-timeToRemove);
+        Debug.Log($"Remaining time before = {GetRemainingTime()}");
+        TestLoseGame(reason);
     }
 
     protected void ShowVolatileTextOnAddTime(float time) {

@@ -46,4 +46,8 @@ public class Sonde : Ennemi {
 
     protected override void HitContinuousPlayerSpecific() {
     }
+
+    public override EventManager.DeathReason GetDeathReason() {
+        return EventManager.DeathReason.SONDE_HIT;
+    }
 }

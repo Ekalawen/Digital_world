@@ -118,4 +118,8 @@ public class Tracer : Ennemi {
             gm.console.JoueurToucheTracer();
         }
     }
+
+    public override EventManager.DeathReason GetDeathReason() {
+        return EventManager.DeathReason.TRACER_HIT;
+    }
 }

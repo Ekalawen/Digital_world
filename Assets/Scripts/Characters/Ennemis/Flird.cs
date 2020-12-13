@@ -39,4 +39,8 @@ public class Flird : Ennemi {
     protected override void HitContinuousPlayerSpecific() {
         // Pas besoin pour le moment
     }
+
+    public override EventManager.DeathReason GetDeathReason() {
+        return EventManager.DeathReason.FLIRD_HIT;
+    }
 }

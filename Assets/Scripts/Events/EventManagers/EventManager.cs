@@ -6,7 +6,19 @@ using System.Linq;
 using UnityEngine;
 
 public class EventManager : MonoBehaviour {
-    public enum DeathReason { TIME_OUT, CAPTURED, FALL_OUT, TOUCHED_DEATH_CUBE, OUT_OF_BLOCKS };
+    public enum DeathReason {
+        TIME_OUT,
+        FALL_OUT,
+        CAPTURED,
+        TOUCHED_DEATH_CUBE,
+        TOUCHED_BOUNCY_CUBE,
+        POUVOIR_COST,
+        OUT_OF_BLOCKS,
+        FAILED_JUMP_EVENT,
+        SONDE_HIT,
+        TRACER_HIT,
+        FLIRD_HIT,
+    };
     public enum EndGameType { DEATH_CUBES, CUBES_DESTRUCTIONS, HALF_DEATH_CUBES };
     public enum EjectionType { FIX_TRESHOLD, LOWEST_CUBE_TRESHOLD, LOWEST_CUBE_ARROUND_TRESHOLD };
 

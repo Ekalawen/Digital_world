@@ -49,7 +49,7 @@ public class JumpEvent : RandomEvent {
     }
 
     protected virtual void Stun() {
-        gm.timerManager.AddTime(-timeMalus);
+        gm.timerManager.RemoveTime(timeMalus, EventManager.DeathReason.FAILED_JUMP_EVENT);
         gm.player.FreezePouvoirs(true);
         gm.player.bIsStun = true;
 
