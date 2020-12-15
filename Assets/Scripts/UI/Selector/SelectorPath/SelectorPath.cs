@@ -7,6 +7,7 @@ using UnityEngine;
 public class SelectorPath : MonoBehaviour {
 
     public static string IS_UNLOCKED_PATH_KEY = "IS_UNLOCKED_PATH_KEY";
+    public static string IS_HIGHLIGHTED_PATH_KEY = "IS_HIGHLIGHTED_PATH_KEY";
 
     [Header("Path")]
     public SelectorLevel startLevel;
@@ -33,7 +34,6 @@ public class SelectorPath : MonoBehaviour {
     protected Timer trailTimer;
     protected List<GameObject> pathPoints;
     protected SelectorPathUnlockScreen unlockScreen;
-    protected bool isHithlighted = false;
 
     public void Initialize(SelectorPathUnlockScreen unlockScreen) {
         selectorManager = SelectorManager.Instance;
@@ -41,6 +41,7 @@ public class SelectorPath : MonoBehaviour {
         trailTimer = new Timer(timeBetweenTrails);
         LinkAllPoints();
         SetCadenaPosition();
+        HighlightCadena(GetHighlitedState());
     }
 
     protected void LinkAllPoints() {
@@ -114,7 +115,7 @@ public class SelectorPath : MonoBehaviour {
     public void OnCadenaClicked() {
         selectorManager.FadeIn(selectorManager.background.gameObject, selectorManager.dureeFading);
         unlockScreen.gameObject.SetActive(true);
-        unlockScreen.Initialize(this, isHithlighted);
+        unlockScreen.Initialize(this, GetHighlitedState());
         selectorManager.FadeIn(unlockScreen.gameObject, selectorManager.dureeFading);
         selectorManager.SetSelectorPathUnlockScreenOpenness(true);
     }
@@ -183,7 +184,18 @@ public class SelectorPath : MonoBehaviour {
     }
 
     public void HighlightPath(bool state) {
-        isHithlighted = state;
+        string key = GetName() + IS_HIGHLIGHTED_PATH_KEY;
+        PlayerPrefs.SetString(key, state ? MenuManager.TRUE : MenuManager.FALSE);
+        HighlightCadena(state);
+    }
+
+    public void HighlightCadena(bool state) {
         cadena.GetComponent<AutoBouncer>().enabled = state;
+    }
+
+    public bool GetHighlitedState() {
+        string key = GetName() + IS_HIGHLIGHTED_PATH_KEY;
+        bool state = PlayerPrefs.HasKey(key) && PlayerPrefs.GetString(key) == MenuManager.TRUE;
+        return state;
     }
 }
