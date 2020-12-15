@@ -158,9 +158,7 @@ public class TimerManager : MonoBehaviour {
     }
 
     public void RemoveTime(float timeToRemove, EventManager.DeathReason reason) {
-        Debug.Log($"Remaining time before = {GetRemainingTime()}");
         AddTime(-timeToRemove);
-        Debug.Log($"Remaining time before = {GetRemainingTime()}");
         TestLoseGame(reason);
     }
 

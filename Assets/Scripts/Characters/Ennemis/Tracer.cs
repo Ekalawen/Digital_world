@@ -114,7 +114,7 @@ public class Tracer : Ennemi {
     }
 
     public override void DisplayHitMessage() {
-        if (!gm.partieDejaTerminee) {
+        if (!gm.eventManager.IsGameOver()) {
             gm.console.JoueurToucheTracer();
         }
     }

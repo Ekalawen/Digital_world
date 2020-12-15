@@ -70,6 +70,17 @@
     <Compile Include="Assets\Imported\EZ Camera Shake\Scripts\CameraShakePresets.cs" />
     <Compile Include="Assets\Imported\EZ Camera Shake\Scripts\CameraShaker.cs" />
     <Compile Include="Assets\Imported\EZ Camera Shake\Scripts\Utilities\CameraUtilities.cs" />
+    <Compile Include="Assets\Imported\Moments\Moments Recorder\Demo\Scripts\CubeKiller.cs" />
+    <Compile Include="Assets\Imported\Moments\Moments Recorder\Demo\Scripts\CubeSpawner.cs" />
+    <Compile Include="Assets\Imported\Moments\Moments Recorder\Demo\Scripts\Record.cs" />
+    <Compile Include="Assets\Imported\Moments\Moments Recorder\Scripts\Gif\GifEncoder.cs" />
+    <Compile Include="Assets\Imported\Moments\Moments Recorder\Scripts\Gif\GifFrame.cs" />
+    <Compile Include="Assets\Imported\Moments\Moments Recorder\Scripts\Gif\LzwEncoder.cs" />
+    <Compile Include="Assets\Imported\Moments\Moments Recorder\Scripts\Gif\NeuQuant.cs" />
+    <Compile Include="Assets\Imported\Moments\Moments Recorder\Scripts\MinAttribute.cs" />
+    <Compile Include="Assets\Imported\Moments\Moments Recorder\Scripts\Recorder.cs" />
+    <Compile Include="Assets\Imported\Moments\Moments Recorder\Scripts\ReflectionUtils.cs" />
+    <Compile Include="Assets\Imported\Moments\Moments Recorder\Scripts\Worker.cs" />
     <Compile Include="Assets\Imported\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
     <Compile Include="Assets\Imported\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01_UGUI.cs" />
     <Compile Include="Assets\Imported\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark02.cs" />
@@ -380,6 +391,7 @@
     <None Include="Assets\Resources\Texts\Levels\Labyrinthe\DatasSuccess.txt" />
     <None Include="Assets\Resources\Texts\Levels\Labyrinthe\Informations.txt" />
     <None Include="Assets\Resources\Texts\Levels\Analyze\DatasLocked.txt" />
+    <None Include="Assets\Imported\Moments\LICENSE.txt" />
     <None Include="Assets\Resources\Paths\ToParkourTraining\DonneesHackeesToParkourTraining.txt" />
     <None Include="Assets\Resources\Paths\ToTheFall\DonneesHackeesToTheFallFromSecondRunner.txt" />
     <None Include="Assets\Resources\Texts\Levels\DiscoverOfTracers\DatasLocked.txt" />
@@ -470,8 +482,14 @@
     <Reference Include="Unity.RenderPipelines.Core.Runtime">
       <HintPath>D:/alexys/programmation/unity/Digital_world_2/Digital_world/Library/ScriptAssemblies/Unity.RenderPipelines.Core.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.Recorder.Editor">
+      <HintPath>D:/alexys/programmation/unity/Digital_world_2/Digital_world/Library/ScriptAssemblies/Unity.Recorder.Editor.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.TextMeshPro.Editor">
       <HintPath>D:/alexys/programmation/unity/Digital_world_2/Digital_world/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Recorder">
+      <HintPath>D:/alexys/programmation/unity/Digital_world_2/Digital_world/Library/ScriptAssemblies/Unity.Recorder.dll</HintPath>
     </Reference>
     <Reference Include="Unity.RenderPipelines.Lightweight.Runtime">
       <HintPath>D:/alexys/programmation/unity/Digital_world_2/Digital_world/Library/ScriptAssemblies/Unity.RenderPipelines.Lightweight.Runtime.dll</HintPath>
@@ -502,6 +520,9 @@
     </Reference>
     <Reference Include="Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary">
       <HintPath>D:/alexys/programmation/unity/Digital_world_2/Digital_world/Library/ScriptAssemblies/Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Recorder.Base">
+      <HintPath>D:/alexys/programmation/unity/Digital_world_2/Digital_world/Library/ScriptAssemblies/Unity.Recorder.Base.dll</HintPath>
     </Reference>
     <Reference Include="Unity.2D.Sprite.Editor">
       <HintPath>D:/alexys/programmation/unity/Digital_world_2/Digital_world/Library/ScriptAssemblies/Unity.2D.Sprite.Editor.dll</HintPath>

@@ -56,6 +56,8 @@ public class EventManager : MonoBehaviour {
     protected bool gameIsWin = false;
     protected List<RandomEvent> randomEvents;
     protected GameObject randomEventsFolder;
+    protected bool shouldAutomaticallyQuitScene = true;
+    protected Coroutine automaticallyQuitSceneCoroutine = null;
 
     public virtual void Initialize() {
         name = "EventManager";
@@ -272,7 +274,13 @@ public class EventManager : MonoBehaviour {
 
         RememberGameResult(success: false);
 
-        StartCoroutine(gm.QuitInSeconds(7));
+        QuitSceneInseconds();
+    }
+
+    protected void QuitSceneInseconds() {
+        if (shouldAutomaticallyQuitScene) {
+            automaticallyQuitSceneCoroutine = StartCoroutine(gm.QuitInSeconds(7));
+        }
     }
 
     protected void ScreenShakeOnLoseGame() {
@@ -301,7 +309,7 @@ public class EventManager : MonoBehaviour {
 
         RememberGameResult(success: true);
 
-        StartCoroutine(gm.QuitInSeconds(7));
+        QuitSceneInseconds();
     }
 
     private void StopEventsAndEndEvents()
@@ -480,6 +488,13 @@ public class EventManager : MonoBehaviour {
                 newEvent.Start();
                 newEvent.TriggerEvent();
             }
+        }
+    }
+
+    public void ShouldNotAutomaticallyQuit() {
+        shouldAutomaticallyQuitScene = false;
+        if(automaticallyQuitSceneCoroutine != null) {
+            StopCoroutine(automaticallyQuitSceneCoroutine);
         }
     }
 }

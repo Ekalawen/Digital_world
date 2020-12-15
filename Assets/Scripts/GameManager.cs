@@ -124,11 +124,12 @@ public class GameManager : MonoBehaviour {
 			}
 		}
 
-		// Si c'est la fin de la partie, on quitte après 7 secondes !
-		if (!partieDejaTerminee && eventManager.PartieTermine()) {
-			partieDejaTerminee = true;
-			StartCoroutine (QuitInSeconds(7));
-		}
+#if UNITY_EDITOR
+        if (Input.GetKeyDown(KeyCode.G)) {
+            Debug.Log("On ne quittera pas la scène.");
+            eventManager.ShouldNotAutomaticallyQuit();
+        }
+#endif
 
         // On a un cheat code qui nous permet d'instantanément gagner la partie !
         TestCheatCodeWinGame();
