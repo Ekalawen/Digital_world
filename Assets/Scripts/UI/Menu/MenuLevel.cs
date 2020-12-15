@@ -21,6 +21,7 @@ public class MenuLevel : MonoBehaviour {
     public static string HAS_JUST_WIN_KEY = "hasJustWin";
     public static string HAS_JUST_MAKE_BEST_SCORE_KEY = "hasJustMakeBestScore";
     public static string HAS_ALREADY_DISCOVER_LEVEL_KEY = "hasAlreadyDiscoverLevel";
+    public static string IS_LEVEL_HIGHLIGHTED_KEY = "isLevelHighlighted";
     public static string SUPER_CHEATED_PASSWORD = "supercheatedpassword"; // "lecreateurdecejeuestmonuniquedieuetmaitre";
 
 
@@ -76,7 +77,6 @@ public class MenuLevel : MonoBehaviour {
 
         MenuManager.DISABLE_HOTKEYS = false;
         InitTextesExplicatifs();
-        HighlightBackButton(false);
 
         /// This is now done in SelectorLevel !
         //DisplayPopupUnlockLevel();
@@ -420,6 +420,14 @@ public class MenuLevel : MonoBehaviour {
     }
 
     public void HighlightBackButton(bool state) {
+        string key = GetName() + IS_LEVEL_HIGHLIGHTED_KEY;
+        PlayerPrefs.SetString(key, state ? MenuManager.TRUE : MenuManager.FALSE);
+        backButton.GetComponent<ButtonHighlighter>().enabled = state;
+    }
+
+    public void HighlightBackButtonBasedOnSave() {
+        string key = GetName() + IS_LEVEL_HIGHLIGHTED_KEY;
+        bool state = PlayerPrefs.HasKey(key) && PlayerPrefs.GetString(key) == MenuManager.TRUE;
         backButton.GetComponent<ButtonHighlighter>().enabled = state;
     }
 }

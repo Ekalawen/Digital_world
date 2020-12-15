@@ -186,6 +186,7 @@ public class SelectorManager : MonoBehaviour {
     public void TryDisplayLevel(SelectorLevel selectorLevel, bool instantDisplay = false) {
         if(IsLevelAccessible(selectorLevel)) {
             DisplayLevel(selectorLevel, instantDisplay);
+            selectorLevel.menuLevel.HighlightBackButton(false);
         } else {
             RunPopup("Niveau vérouillé !",
                 "Niveau vérouillé.\n" +
@@ -263,8 +264,10 @@ public class SelectorManager : MonoBehaviour {
 
     protected void DisplayCurrentLevel() {
         SelectorLevel currentLevel = GetLastLevelSaved();
-        if(currentLevel != null)
-            DisplayLevel(currentLevel, instantDisplay:true);
+        if (currentLevel != null) {
+            DisplayLevel(currentLevel, instantDisplay: true);
+            currentLevel.menuLevel.HighlightBackButtonBasedOnSave();
+        }
     }
 
     public void RunPopup(string title, string text, TexteExplicatif.Theme theme, bool cleanReplacements = true) {

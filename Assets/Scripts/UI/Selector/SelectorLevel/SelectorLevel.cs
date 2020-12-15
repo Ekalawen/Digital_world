@@ -206,6 +206,7 @@ public class SelectorLevel : MonoBehaviour {
             MenuLevel.HAS_JUST_WIN_KEY,
             MenuLevel.HAS_JUST_MAKE_BEST_SCORE_KEY,
             MenuLevel.HAS_ALREADY_DISCOVER_LEVEL_KEY,
+            MenuLevel.IS_LEVEL_HIGHLIGHTED_KEY,
         };
         foreach(string keySuffix in keysSuffix) {
             string key = GetName() + keySuffix;
