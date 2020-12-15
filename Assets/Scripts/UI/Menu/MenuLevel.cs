@@ -64,6 +64,7 @@ public class MenuLevel : MonoBehaviour {
     public MenuBackgroundBouncing menuBouncingBackground;
     public TMPro.TMP_Text textLevelName;
     public InputField inputFieldNext;
+    public Button backButton;
 
     [HideInInspector]
     public MenuLevelSelector menuLevelSelector;
@@ -75,6 +76,7 @@ public class MenuLevel : MonoBehaviour {
 
         MenuManager.DISABLE_HOTKEYS = false;
         InitTextesExplicatifs();
+        HighlightBackButton(false);
 
         /// This is now done in SelectorLevel !
         //DisplayPopupUnlockLevel();
@@ -415,5 +417,9 @@ public class MenuLevel : MonoBehaviour {
 
     public bool IsSucceeded() {
         return GetNbWins() > 0;
+    }
+
+    public void HighlightBackButton(bool state) {
+        backButton.GetComponent<ButtonHighlighter>().enabled = state;
     }
 }

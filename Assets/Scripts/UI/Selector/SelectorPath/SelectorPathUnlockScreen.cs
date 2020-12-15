@@ -35,7 +35,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
     protected SelectorManager selectorManager;
     protected SelectorPath selectorPath;
 
-    public void Initialize(SelectorPath selectorPath) {
+    public void Initialize(SelectorPath selectorPath, bool shouldHighlightDataHackees) {
         this.selectorManager = SelectorManager.Instance;
         this.selectorPath = selectorPath;
         SetBackgroundAccordingToLockState();
@@ -43,6 +43,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         SetTitles();
         FillInputWithPasswordIfAlreayDiscovered();
         FillTraceHint();
+        HighlightDataHackees(shouldHighlightDataHackees);
     }
 
     protected void SetTitles() {
@@ -145,6 +146,8 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         } else {
             OpenDonneesHackeesWithTreshold(currentTreshold);
         }
+        selectorPath.HighlightPath(false);
+        HighlightDataHackees(false);
     }
 
     protected int GetCurrentTreshold() {
@@ -283,5 +286,9 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         } else {
             traceHintContainer.SetActive(false);
         }
+    }
+
+    protected void HighlightDataHackees(bool state) {
+        donneesHackeesButton.GetComponent<ButtonHighlighter>().enabled = state;
     }
 }

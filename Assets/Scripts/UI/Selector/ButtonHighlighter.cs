@@ -12,6 +12,7 @@ public class ButtonHighlighter : MonoBehaviour {
 
     protected Timer timer;
     protected RectTransform rect;
+    protected Vector3 startScale = Vector3.one;
 
     void Start() {
         timer = new Timer(intervalTime);
@@ -30,7 +31,7 @@ public class ButtonHighlighter : MonoBehaviour {
 
     protected IEnumerator CBounce() {
         Timer toBounceTimer = new Timer(timeToBounceSize);
-        Vector3 startScale = rect.localScale;
+        startScale = rect.localScale;
         while (!toBounceTimer.IsOver()) {
             float avancement = toBounceTimer.GetAvancement();
             rect.localScale = startScale * (1 + (bounceSize - 1) * avancement);
@@ -43,6 +44,10 @@ public class ButtonHighlighter : MonoBehaviour {
             rect.localScale = startScale * (1 + (bounceSize - 1) * (1 - avancement));
             yield return null;
         }
+        rect.localScale = startScale;
+    }
+
+    protected void OnDisable() {
         rect.localScale = startScale;
     }
 }

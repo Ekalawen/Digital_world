@@ -66,21 +66,32 @@ public class SelectorLevel : MonoBehaviour {
             cleanReplacements: false);
     }
 
-    public void DisplayInitialPopup() {
+    public void DisplayInitialPopup()
+    {
         bool hasDisplay = false;
         hasDisplay = DisplayPopupUnlockLevel();
         if (hasDisplay)
             return;
-        if(menuLevel.levelType == MenuLevel.LevelType.REGULAR) {
+        hasDisplay = DisplayNewPallierMessage();
+        if (hasDisplay)
+        {
+            menuLevel.SetNotJustMakeNewBestScore();
+            return;
+        }
+        RewardIfNewBestScore();
+    }
+
+    private bool DisplayNewPallierMessage() {
+        bool hasDisplay = false;
+        if (menuLevel.levelType == MenuLevel.LevelType.REGULAR) {
             hasDisplay = DisplayNewPallierMessageRegular();
         } else {
             hasDisplay = DisplayNewPallierMessageInfinite();
         }
         if (hasDisplay) {
-            menuLevel.SetNotJustMakeNewBestScore();
-            return;
+            menuLevel.HighlightBackButton(true);
         }
-        RewardIfNewBestScore();
+        return hasDisplay;
     }
 
     protected bool DisplayNewPallierMessageInfinite() {
@@ -98,6 +109,7 @@ public class SelectorLevel : MonoBehaviour {
                     foreach (int candidateTreshold in candidateTresholds) {
                         nextLevels.Add(selectorPath.endLevel.GetName());
                         nextTresholds.Add(candidateTreshold);
+                        selectorPath.HighlightPath(true);
                     }
                 }
             }
@@ -119,6 +131,7 @@ public class SelectorLevel : MonoBehaviour {
                 List<int> tresholds = selectorPath.GetTresholds();
                 if (tresholds.Contains(nbWins)) {
                     nextLevels.Add(selectorPath.endLevel.GetName());
+                    selectorPath.HighlightPath(true);
                 }
             }
             if (nextLevels.Count > 0) {
@@ -158,6 +171,7 @@ public class SelectorLevel : MonoBehaviour {
             $"Allez {le} consulter dans les Data Hackées() !",
             theme: TexteExplicatif.Theme.POSITIF,
             cleanReplacements: false);
+        selectorManager.popup.HighlightDoneButton(true);
     }
 
     protected bool DisplayPopupUnlockLevel() {

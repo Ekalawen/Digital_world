@@ -11,6 +11,7 @@ public class AutoBouncer : MonoBehaviour {
     public float bounceSize = 1.5f;
 
     protected Timer timer;
+    protected Vector3 startScale = Vector3.one;
 
     void Start() {
         timer = new Timer(intervalTime);
@@ -25,7 +26,7 @@ public class AutoBouncer : MonoBehaviour {
 
     protected IEnumerator CBounce() {
         Timer toBounceTimer = new Timer(timeToBounceSize);
-        Vector3 startScale = transform.localScale;
+        startScale = transform.localScale;
         while(!toBounceTimer.IsOver()) {
             float avancement = toBounceTimer.GetAvancement();
             transform.localScale = startScale * (1 + (bounceSize - 1) * avancement);
@@ -37,6 +38,10 @@ public class AutoBouncer : MonoBehaviour {
             transform.localScale = startScale * (1 + (bounceSize - 1) * (1 - avancement));
             yield return null;
         }
+        transform.localScale = startScale;
+    }
+
+    protected void OnDisable() {
         transform.localScale = startScale;
     }
 }

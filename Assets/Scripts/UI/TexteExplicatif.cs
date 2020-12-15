@@ -261,4 +261,8 @@ public class TexteExplicatif : MonoBehaviour {
     public static string SurroundWithOrangeColor(Match match) {
         return UIHelper.SurroundWithColor(match.Value, UIHelper.ORANGE);
     }
+
+    public void HighlightDoneButton(bool state) {
+        doneButton.GetComponent<ButtonHighlighter>().enabled = state;
+    }
 }

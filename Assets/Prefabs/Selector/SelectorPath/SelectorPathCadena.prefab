@@ -491,6 +491,7 @@ GameObject:
   - component: {fileID: 95635936953811018}
   - component: {fileID: 8254284017415977944}
   - component: {fileID: 5697869209045713852}
+  - component: {fileID: 4923678424821373782}
   m_Layer: 0
   m_Name: SelectorPathCadena
   m_TagString: Untagged
@@ -545,6 +546,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   transformToLookAt: {fileID: 0}
+--- !u!114 &4923678424821373782
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8009125918623935449}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 467f212db7f5f884392cf6744fedcc7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  intervalTime: 0.5
+  timeToBounceSize: 0.033
+  timeToNormalSize: 0.166
+  bounceSize: 1.35
 --- !u!1 &8099784024278025875
 GameObject:
   m_ObjectHideFlags: 0
@@ -678,3 +695,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cadenas: {fileID: 8254284017415977944}
+  tooltipActivator: {fileID: 0}

@@ -33,6 +33,7 @@ public class SelectorPath : MonoBehaviour {
     protected Timer trailTimer;
     protected List<GameObject> pathPoints;
     protected SelectorPathUnlockScreen unlockScreen;
+    protected bool isHithlighted = false;
 
     public void Initialize(SelectorPathUnlockScreen unlockScreen) {
         selectorManager = SelectorManager.Instance;
@@ -113,7 +114,7 @@ public class SelectorPath : MonoBehaviour {
     public void OnCadenaClicked() {
         selectorManager.FadeIn(selectorManager.background.gameObject, selectorManager.dureeFading);
         unlockScreen.gameObject.SetActive(true);
-        unlockScreen.Initialize(this);
+        unlockScreen.Initialize(this, isHithlighted);
         selectorManager.FadeIn(unlockScreen.gameObject, selectorManager.dureeFading);
         selectorManager.SetSelectorPathUnlockScreenOpenness(true);
     }
@@ -179,5 +180,10 @@ public class SelectorPath : MonoBehaviour {
     public int GetMaxTreshold() {
         TresholdText text = new TresholdText(donneesHackees.text);
         return text.GetLastFragment().treshold;
+    }
+
+    public void HighlightPath(bool state) {
+        isHithlighted = state;
+        cadena.GetComponent<AutoBouncer>().enabled = state;
     }
 }
