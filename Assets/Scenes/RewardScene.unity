@@ -322,6 +322,7 @@ GameObject:
   - component: {fileID: 278439638}
   - component: {fileID: 278439637}
   - component: {fileID: 278439640}
+  - component: {fileID: 278439641}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -407,6 +408,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   thetaSpeed: 0.5
+--- !u!114 &278439641
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 278439636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89c9e893a65938748a11b49fde6b095f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &344903117
 GameObject:
   m_ObjectHideFlags: 0
@@ -872,6 +885,16 @@ PrefabInstance:
       propertyPath: rewardCamera
       value: 
       objectReference: {fileID: 278439640}
+    - target: {fileID: 1586392827639462890, guid: e574d352e00bdbc4fa38b9e33af33947,
+        type: 3}
+      propertyPath: regularCamera
+      value: 
+      objectReference: {fileID: 278439640}
+    - target: {fileID: 1586392827639462890, guid: e574d352e00bdbc4fa38b9e33af33947,
+        type: 3}
+      propertyPath: infiniteCamera
+      value: 
+      objectReference: {fileID: 278439641}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e574d352e00bdbc4fa38b9e33af33947, type: 3}
 --- !u!114 &5546358679559184363 stripped

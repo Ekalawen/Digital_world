@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -8,15 +9,23 @@ public class RewardManager : MonoBehaviour {
     static RewardManager _instance;
     public static RewardManager Instance { get { return _instance ?? (_instance = new GameObject().AddComponent<RewardManager>()); } }
 
-    public GameObject playerTrailPrefab;
-    public GameObject ennemiTrailPrefab;
-    public GameObject lumiereObjectPrefab;
-    public GameObject consolePrefab; // On récupère la console !
+    [Header("Parameters")]
     public float delayBetweenTrails = 10.0f;
     public float durationTrailMinimum = 10.0f;
     public float durationTrailLogarithmer = 10.0f;
     public float pourcentageEnnemiTrailTime = 0.2f;
     public float pointDisplayerScaleFactor = 0.2f;
+
+    [Header("Prefabs")]
+    public GameObject playerTrailPrefab;
+    public GameObject ennemiTrailPrefab;
+    public GameObject lumiereObjectPrefab;
+    public GameObject consolePrefab; // On récupère la console !
+
+    [Header("Links")]
+    public RegularRewardCamera regularCamera;
+    public InfiniteRewardCamera infiniteCamera;
+
 
     protected Transform displayersFolder;
     protected RewardTrailThemeDisplayer playerDisplayer;
@@ -26,6 +35,7 @@ public class RewardManager : MonoBehaviour {
 
     protected HistoryManager hm;
 	protected RewardConsole console;
+    protected RewardCamera camera;
 
     void Awake() {
         if (!_instance) { _instance = this; }
@@ -81,6 +91,17 @@ public class RewardManager : MonoBehaviour {
         }
         console.Initialize();
         console.SetDureeReward(dureeReward, delayBetweenTrails);
+
+        InitializeCamera();
+    }
+
+    protected void InitializeCamera() {
+        if(hm.GetMapType() == MenuLevel.LevelType.REGULAR) {
+            camera = regularCamera;
+        } else {
+            camera = infiniteCamera;
+        }
+        camera.Initialize();
     }
 
     public void Update() {

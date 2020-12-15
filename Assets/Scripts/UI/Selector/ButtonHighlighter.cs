@@ -48,6 +48,8 @@ public class ButtonHighlighter : MonoBehaviour {
     }
 
     protected void OnDisable() {
-        rect.localScale = startScale;
+        if (rect != null) {
+            rect.localScale = startScale;
+        }
     }
 }

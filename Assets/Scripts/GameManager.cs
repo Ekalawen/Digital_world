@@ -164,7 +164,8 @@ public class GameManager : MonoBehaviour {
 
         if(SceneManager.GetActiveScene().name == "TutorialScene") {
             SceneManager.LoadScene("MenuScene");
-        } else if (eventManager.IsWin()) {
+        } else if ((GetLevelType() == MenuLevel.LevelType.REGULAR && eventManager.IsWin())
+            || GetLevelType() == MenuLevel.LevelType.INFINITE && eventManager.IsNewBestScoreAfterBestScoreAssignation()) {
             SceneManager.LoadScene("RewardScene");
         } else {
             SceneManager.LoadScene("SelectorScene");

@@ -414,6 +414,11 @@ public class EventManager : MonoBehaviour {
         return currentScore > GetBestScore();
     }
 
+    public bool IsNewBestScoreAfterBestScoreAssignation() {
+        string key = GetKeyFor(MenuLevel.HAS_JUST_MAKE_BEST_SCORE_KEY);
+        return PlayerPrefs.HasKey(key) && PlayerPrefs.GetString(key) == MenuManager.TRUE;
+    }
+
     protected string GetKeyFor(string keySuffix) {
         string levelNameKey = PlayerPrefs.GetString(MenuLevel.LEVEL_NAME_KEY);
         return levelNameKey + keySuffix;

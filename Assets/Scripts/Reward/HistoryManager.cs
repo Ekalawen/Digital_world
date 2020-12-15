@@ -50,6 +50,7 @@ public class HistoryManager : MonoBehaviour {
     protected List<TimedMessage> timedMessages;
     protected Timer echantillonnageTimer;
     protected float dureeGame;
+    protected MenuLevel.LevelType mapType;
 
     private void Awake() {
         if (!_instance) { _instance = this; }
@@ -58,6 +59,7 @@ public class HistoryManager : MonoBehaviour {
 
     public void Initialize() {
         gm = GameManager.Instance;
+        SetMapType(gm.GetLevelType());
 
         playerHistory = new ObjectHistory(gm.player);
         if(ennemisHistory == null)
@@ -181,5 +183,13 @@ public class HistoryManager : MonoBehaviour {
 
     public List<TimedMessage> GetTimedMessages() {
         return timedMessages;
+    }
+
+    public MenuLevel.LevelType GetMapType() {
+        return mapType;
+    }
+
+    public void SetMapType(MenuLevel.LevelType type) {
+        mapType = type;
     }
 }
