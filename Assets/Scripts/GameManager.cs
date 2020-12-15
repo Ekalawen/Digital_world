@@ -27,8 +27,9 @@ public class GameManager : MonoBehaviour {
     public GameObject scanManagerPrefab; // Pour gérer les scans !
     public GameObject historyManagerPrefab; // Pour retenir des infos sur la partie !
     public GameObject flockManagerPrefab; // Pour gérer les flock controllers !
+    public GameObject cheatCodeManagerPrefab; // Pour gérer les cheat codes ! :)
 
-	[HideInInspector]
+    [HideInInspector]
 	public MapManager map;
 	[HideInInspector]
 	public Player player;
@@ -59,6 +60,8 @@ public class GameManager : MonoBehaviour {
     [HideInInspector]
     public FlockManager flockManager;
     [HideInInspector]
+    public CheatCodeManager cheatCodeManager;
+    [HideInInspector]
     public GameObject managerFolder;
     [HideInInspector]
     public bool partieDejaTerminee = false;
@@ -86,6 +89,7 @@ public class GameManager : MonoBehaviour {
         scanManager = Instantiate(scanManagerPrefab, managerFolder.transform).GetComponent<ScanManager>();
         historyManager = Instantiate(historyManagerPrefab, managerFolder.transform).GetComponent<HistoryManager>();
         flockManager = Instantiate(flockManagerPrefab, managerFolder.transform).GetComponent<FlockManager>();
+        cheatCodeManager = Instantiate(cheatCodeManagerPrefab, managerFolder.transform).GetComponent<CheatCodeManager>();
 
         Initialize();
 	}
@@ -107,6 +111,7 @@ public class GameManager : MonoBehaviour {
         scanManager.Initialize();
         historyManager.Initialize();
         flockManager.Initialize();
+        cheatCodeManager.Initialize();
     }
 
 	void Update () {
@@ -130,23 +135,7 @@ public class GameManager : MonoBehaviour {
             eventManager.ShouldNotAutomaticallyQuit();
         }
 #endif
-
-        // On a un cheat code qui nous permet d'instantanément gagner la partie !
-        TestCheatCodeWinGame();
 	}
-
-    protected int cheatCodeState = 0;
-    protected void TestCheatCodeWinGame() {
-        if(Input.GetKeyDown(KeyCode.Keypad7) && cheatCodeState == 0) {
-            cheatCodeState = 1;
-        } else if (Input.GetKeyDown(KeyCode.Keypad8) && cheatCodeState == 1) {
-            cheatCodeState = 2;
-        } else if (Input.GetKeyDown(KeyCode.Keypad9) && cheatCodeState == 2) {
-            eventManager.WinGame();
-        } else if (Input.anyKeyDown) {
-            cheatCodeState = 0;
-        }
-    }
 
     public IEnumerator QuitInSeconds(int tps) {
 		yield return new WaitForSeconds (tps);

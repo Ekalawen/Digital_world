@@ -73,6 +73,8 @@ public class EventManager : MonoBehaviour {
 
     public void Update() {
         CheckPartiePerdu();
+
+        TestCheatCode();
     }
 
     public RandomEvent AddEvent(GameObject randomEventPrefab) {
@@ -498,5 +500,8 @@ public class EventManager : MonoBehaviour {
         if(automaticallyQuitSceneCoroutine != null) {
             StopCoroutine(automaticallyQuitSceneCoroutine);
         }
+    }
+
+    protected void TestCheatCode() {
     }
 }

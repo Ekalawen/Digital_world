@@ -214,8 +214,7 @@ public class InfiniteMap : MapManager {
         int indice = blocks.IndexOf(block);
         if(indice > indiceCurrentBlock) {
             int nbBlocksAdded = indice - indiceCurrentBlock;
-            nbBlocksRun += nbBlocksAdded;
-            RewardPlayerForNewBlock(nbBlocksAdded);
+            AddBlockRun(nbBlocksAdded);
             CreateNewBlocks(nbBlocksAdded);
             RememberTimeNeededForBlock(indice, indiceCurrentBlock);
             timerSinceLastBlock.Reset();
@@ -224,6 +223,15 @@ public class InfiniteMap : MapManager {
             if(GetNonStartNbBlocksRun() >= nbBlocksStartCubeDestruction)
                 StartBlocksDestruction();
         }
+    }
+
+    public void AddBlockRun(int nbBlocksToAdd) {
+        nbBlocksRun += nbBlocksToAdd;
+        RewardPlayerForNewBlock(nbBlocksToAdd);
+    }
+
+    public void Add10BlockRun() {
+        AddBlockRun(10);
     }
 
     protected void StartBlocksDestruction() {
