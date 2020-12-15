@@ -74,4 +74,16 @@ public class RewardObjectDisplayer : MonoBehaviour {
         if(!durationTimer.IsOver() && obj != null)
             obj.transform.position = curve.GetAvancement(avancement);
     }
+
+    public Curve GetCurve() {
+        return curve;
+    }
+
+    public Timer GetDurationTimer() {
+        return durationTimer;
+    }
+
+    public GameObject GetObject() {
+        return obj;
+    }
 }

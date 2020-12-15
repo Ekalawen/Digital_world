@@ -98,8 +98,12 @@ public class RewardManager : MonoBehaviour {
     protected void InitializeCamera() {
         if(hm.GetMapType() == MenuLevel.LevelType.REGULAR) {
             camera = regularCamera;
+            regularCamera.enabled = true;
+            infiniteCamera.enabled = false;
         } else {
             camera = infiniteCamera;
+            regularCamera.enabled = false;
+            infiniteCamera.enabled = true;
         }
         camera.Initialize();
     }
@@ -131,5 +135,9 @@ public class RewardManager : MonoBehaviour {
 
     public Transform GetDisplayersFolder() {
         return displayersFolder;
+    }
+
+    public RewardTrailThemeDisplayer GetPlayerDisplayer() {
+        return playerDisplayer;
     }
 }

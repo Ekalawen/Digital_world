@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -20,5 +21,9 @@ public class RewardTrailThemeDisplayer : RewardTrailDisplayer {
         base.Update();
         if(trail != null)
             trail.time = durationTimer.GetRemainingTime();
+    }
+
+    public float GetAcceleration() {
+        return acceleration;
     }
 }
