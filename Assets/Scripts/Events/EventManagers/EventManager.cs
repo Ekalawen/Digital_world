@@ -71,6 +71,10 @@ public class EventManager : MonoBehaviour {
         }
     }
 
+    public void Update() {
+        CheckPartiePerdu();
+    }
+
     public RandomEvent AddEvent(GameObject randomEventPrefab) {
         RandomEvent randomEvent = Instantiate(randomEventPrefab, randomEventsFolder.transform).GetComponent<RandomEvent>();
         randomEvents.Add(randomEvent);
@@ -446,10 +450,8 @@ public class EventManager : MonoBehaviour {
         return lowest;
     }
 
-    public bool PartieTermine()
-    {
-        if (IsPlayerEjected())
-        {
+    public bool CheckPartiePerdu() {
+        if (IsPlayerEjected()) {
             LoseGame(EventManager.DeathReason.FALL_OUT);
             return true;
         }
