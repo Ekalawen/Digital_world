@@ -13,6 +13,7 @@ public class SelectorCameraController : MonoBehaviour {
     [Header("ElasticitySphere")]
     public Vector2 sizeElasticitySphere;
     public Vector2 elasticitySphereCoefficiant;
+    public float idealDistanceFromLevel = 20f;
 
     [Header("Links")]
     public SelectorManager selectorManager;
@@ -162,7 +163,7 @@ public class SelectorCameraController : MonoBehaviour {
     }
 
     public float GetIdealDistanceFromLevel() {
-        return sizeElasticitySphere[0];
+        return idealDistanceFromLevel;
     }
 
     public void PlaceAt(Vector3 posToGoTo) {
