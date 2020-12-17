@@ -68,7 +68,10 @@ public class SelectorCameraController : MonoBehaviour {
         Vector3 centralProjection = GetCentralProjection();
         Vector3 right = -Vector3.Cross(centralProjection - transform.position, Vector3.up).normalized;
         move += right * speedX;
-        if (speedX != 0) {
+        List<Vector3> interestPoints = GetAllInterestPoints();
+        float maxY = interestPoints.Max(p => p.y);
+        float minY = interestPoints.Min(p => p.y);
+        if (speedX != 0 || transform.position.y > maxY || transform.position.y < minY) {
             if (rotationCoroutine != null) {
                 StopCoroutine(rotationCoroutine);
                 rotationCoroutine = null;
@@ -87,7 +90,7 @@ public class SelectorCameraController : MonoBehaviour {
         move *= Time.deltaTime;
         controller.Move(move);
 
-        isMoving = move != Vector3.zero || Input.GetMouseButton(0);
+        isMoving = move != Vector3.zero || Input.GetMouseButton(0) || transform.position.y > maxY || transform.position.y < minY;
         if(isMoving) {
             lastIsMovingTimer.Reset();
         }
