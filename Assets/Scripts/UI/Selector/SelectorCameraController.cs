@@ -13,6 +13,9 @@ public class SelectorCameraController : MonoBehaviour {
     public float dureeBeforeFocusToInterestPoint = 0.1f;
     public float mouseSmoothing = 0.3f;
 
+    [Header("InterestPoints")]
+    public float poidsDistanceInInterestScore = 0.5f;
+
     [Header("ElasticitySphere")]
     public Vector2 sizeElasticitySphere;
     public Vector2 elasticitySphereCoefficiant;
@@ -100,9 +103,10 @@ public class SelectorCameraController : MonoBehaviour {
             return;
         }
 
-        Vector3 closest = GetClosestInterestPoint(transform.position);
+        //Vector3 closest = GetClosestInterestPoint(transform.position);
+        Vector3 bestPoint = GetBestInterestPoint();
         if (rotationCoroutine != null) {
-            if (closest == lastClosestLevelPosition)
+            if (bestPoint == lastClosestLevelPosition)
                 return;
             else {
                 StopCoroutine(rotationCoroutine);
@@ -110,12 +114,12 @@ public class SelectorCameraController : MonoBehaviour {
             }
         }
 
-        if(closest == lastClosestLevelPosition)
-            transform.LookAt(closest);
+        if(bestPoint == lastClosestLevelPosition)
+            transform.LookAt(bestPoint);
         else
-            rotationCoroutine = ProgressivelyLookAt(closest);
+            rotationCoroutine = ProgressivelyLookAt(bestPoint);
 
-        lastClosestLevelPosition = closest;
+        lastClosestLevelPosition = bestPoint;
     }
 
     protected Vector3 GetCentralProjection() {
@@ -176,6 +180,17 @@ public class SelectorCameraController : MonoBehaviour {
         List<Vector3> cadenasPositions = GetCadenasPositions();
         List<Vector3> interestPoints = levelsPositions.Concat(cadenasPositions).ToList();
         return interestPoints;
+    }
+
+    protected Vector3 GetBestInterestPoint() {
+        List<Vector3> interestPoints = GetAllInterestPoints();
+        return interestPoints.OrderBy(p => ComputeIntereset(p)).First();
+    }
+
+    protected float ComputeIntereset(Vector3 point) {
+        float distance = Vector3.Distance(point, transform.position);
+        float distanceToCentreVision = Vector3.Distance(point, transform.position + Vector3.Project(point, transform.forward));
+        return distance * poidsDistanceInInterestScore + distanceToCentreVision * (1 - poidsDistanceInInterestScore);
     }
 
     public Coroutine ProgressivelyLookAt(Vector3 point) {
