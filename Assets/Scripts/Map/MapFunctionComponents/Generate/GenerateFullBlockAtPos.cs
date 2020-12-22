@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class GenerateFullBlockAtPos : GenerateCubesMapFunction {
 
-    public Vector3Int size;
     public Vector3Int position;
+    public Vector3Int size;
     public bool makeSpaceArround = false;
 
     public override void Activate() {
