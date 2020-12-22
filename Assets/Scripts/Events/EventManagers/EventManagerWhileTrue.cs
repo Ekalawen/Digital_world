@@ -11,6 +11,15 @@ public class EventManagerWhileTrue : EventManager {
     public List<string> messagesAChaqueLumiere;
 
     protected int nbLumieresFinalesAttrappees = 0;
+    protected bool isFirstStartEndGame = true;
+
+
+    protected override void StartEndGame() {
+        base.StartEndGame();
+        if (isFirstStartEndGame) {
+            gm.console.WhileTrueEndEventAutoDestructionEnclenche();
+        }
+    }
 
     public override void OnLumiereCaptured(Lumiere.LumiereType type) {
         if (type == Lumiere.LumiereType.NORMAL) {
@@ -18,6 +27,7 @@ public class EventManagerWhileTrue : EventManager {
             if (nbLumieres == 0 && !isEndGameStarted) {
                 gm.soundManager.PlayEndGameMusic();
                 StartEndGame();
+                isFirstStartEndGame = false;
             }
         } else if (type == Lumiere.LumiereType.FINAL) {
             nbLumieresFinalesAttrappees++;

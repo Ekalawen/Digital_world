@@ -772,7 +772,7 @@ public virtual void Update () {
         AjouterMessageImportant("Meilleur Score !!!", TypeText.ALLY_TEXT, 3, bAfficherInConsole: true);
     }
 
-    public void FullSpikesAutoDestructionEnclenche() {
+    public void WhileTrueEndEventAutoDestructionEnclenche() {
         AjouterMessageImportant("Auto-Destruction enclenchée !", Console.TypeText.ENNEMI_TEXT, 2.0f);
     }
 

@@ -18,7 +18,6 @@ public class EventManagerWhileTrueConstantDestruction : EventManagerWhileTrue {
         if(isFirstStartEndGame) {
             gm.timerManager.isInfinitTime = false;
             gm.timerManager.SetTime(gm.timerManager.initialTime, showVolatileText: false);
-            gm.console.FullSpikesAutoDestructionEnclenche();
             isFirstStartEndGame = false;
         }
     }
