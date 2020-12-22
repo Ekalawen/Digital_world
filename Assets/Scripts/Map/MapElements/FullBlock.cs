@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class FullBlock : Cave {
 
-    public FullBlock(Vector3 depart, Vector3Int nbCubesParAxe, bool bMakeSpaceArround = false) :
-        base(depart, nbCubesParAxe, bMakeSpaceArround, bDigInside: false) {
+    public FullBlock(Vector3 depart, Vector3Int nbCubesParAxe, bool makeSpaceArround = false) :
+        base(depart, nbCubesParAxe, makeSpaceArround, bDigInside: false) {
     }
 
     public override string GetName() {
