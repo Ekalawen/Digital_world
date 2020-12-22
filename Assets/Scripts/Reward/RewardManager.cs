@@ -12,7 +12,8 @@ public class RewardManager : MonoBehaviour {
     [Header("Parameters")]
     public float delayBetweenTrails = 10.0f;
     public float durationTrailMinimum = 10.0f;
-    public float durationTrailLogarithmer = 10.0f;
+    public float durationLogarithmeRegular = 1.3f;
+    public float durationDividerInfinite = 3.0f;
     public float pourcentageEnnemiTrailTime = 0.2f;
     public float pointDisplayerScaleFactor = 0.2f;
 
@@ -125,10 +126,14 @@ public class RewardManager : MonoBehaviour {
     }
 
     protected float ComputeDurationTrail(float dureeGame) {
-        if (dureeGame <= durationTrailMinimum)
+        if (dureeGame <= durationTrailMinimum) {
             return dureeGame;
-        else {
-            return Mathf.Max(durationTrailMinimum, Mathf.Log(dureeGame, durationTrailLogarithmer));
+        } else {
+            if (hm.GetMapType() == MenuLevel.LevelType.REGULAR) {
+                return Mathf.Max(durationTrailMinimum, Mathf.Log(dureeGame, durationLogarithmeRegular));
+            } else {
+                return Mathf.Max(durationTrailMinimum, dureeGame / durationDividerInfinite);
+            }
         }
     }
 

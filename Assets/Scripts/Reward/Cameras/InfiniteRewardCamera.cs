@@ -48,7 +48,6 @@ public class InfiniteRewardCamera : RewardCamera {
         float rewardPlayerTimeOffset = playerTimeOffset * acceleration * Mathf.Clamp01(1 - timer.GetAvancement());
         float currentVerticalOffset = Mathf.Max(minVerticalOffset, verticalOffsetCoef * verticalOffsetCurve.Evaluate(timer.GetAvancement()));
         float smoothingCoef = smoothingCurve.Evaluate(timer.GetAvancement());
-        Debug.Log($"timeOffset = {rewardPlayerTimeOffset} verticalOffset = {currentVerticalOffset} smmothingCoef = {smoothingCoef}");
 
         return smoothedPosition;
     }
