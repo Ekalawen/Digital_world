@@ -134,9 +134,14 @@ public class EventManager : MonoBehaviour {
     }
 
     protected virtual Lumiere CreateFinalLight() {
-        Vector3 posLumiere = map.GetFarRoundedLocation(gm.player.transform.position);
+        Vector3 posLumiere = GetFinalLightPos();
         Lumiere finalLight = map.CreateLumiere(posLumiere, Lumiere.LumiereType.FINAL); // Attention à la position qui est arrondi ici !
         return finalLight;
+    }
+
+    protected virtual Vector3 GetFinalLightPos() {
+        Vector3 posLumiere = map.GetFarRoundedLocation(gm.player.transform.position);
+        return posLumiere;
     }
 
     protected void PlaySoundRate(Timer timerSoundRate, int nbCubesToDestroy, Vector3 barycentre) {

@@ -6,7 +6,12 @@ using UnityEngine;
 
 public class Lumiere : MonoBehaviour {
 
-    public enum LumiereType { NORMAL, FINAL, SPECIAL };
+    public enum LumiereType {
+        NORMAL,
+        FINAL,
+        ALMOST_FINAL,
+        SPECIAL,
+    };
 
     [Header("Propriétés")]
     public LumiereType type;

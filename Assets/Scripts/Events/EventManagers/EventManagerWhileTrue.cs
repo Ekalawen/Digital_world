@@ -54,4 +54,14 @@ public class EventManagerWhileTrue : EventManager {
         }
         deathCubes.Clear();
     }
+
+    protected override Lumiere CreateFinalLight() {
+        if (nbLumieresFinalesAttrappees == nbLumieresFinales - 1) {
+            return base.CreateFinalLight();
+        } else {
+            Vector3 posLumiere = GetFinalLightPos();
+            Lumiere finalLight = map.CreateLumiere(posLumiere, Lumiere.LumiereType.ALMOST_FINAL);
+            return finalLight;
+        }
+    }
 }

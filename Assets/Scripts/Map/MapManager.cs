@@ -34,6 +34,7 @@ public class MapManager : MonoBehaviour {
 	public GameObject lumierePrefab; // On récupère les lumières !
 	public GameObject lumiereSpecialePrefab; // On récupère les lumières !
 	public GameObject lumiereFinalePrefab; // On récupère les lumières finales !
+	public GameObject lumiereAlmostFinalePrefab; // On récupère les lumières presque finales !
 
     [Header("Map Construction")]
     public List<MapFunctionComponent> mapFunctionComponents;
@@ -385,6 +386,8 @@ public class MapManager : MonoBehaviour {
                 return lumiereSpecialePrefab;
             case Lumiere.LumiereType.FINAL:
                 return lumiereFinalePrefab;
+            case Lumiere.LumiereType.ALMOST_FINAL:
+                return lumiereAlmostFinalePrefab;
         }
         return null;
     }

@@ -19,7 +19,6 @@ public class RewardManager : MonoBehaviour {
     [Header("Prefabs")]
     public GameObject playerTrailPrefab;
     public GameObject ennemiTrailPrefab;
-    public GameObject lumiereObjectPrefab;
     public GameObject consolePrefab; // On récupère la console !
 
     [Header("Links")]
@@ -71,7 +70,7 @@ public class RewardManager : MonoBehaviour {
         lumieresDisplayers = new List<RewardPointDisplayer>();
         foreach(ObjectHistory history in lumieresHistory) {
             RewardPointDisplayer displayer = gameObject.AddComponent<RewardPointDisplayer>();
-            displayer.Initialize(history.prefab, history, dureeReward, delayBetweenTrails, accelerationCoefficiant, pointDisplayerScaleFactor);
+            displayer.Initialize(history.prefab, history, dureeReward, delayBetweenTrails, accelerationCoefficiant, history.prefab.gameObject.transform.localScale.x);
             lumieresDisplayers.Add(displayer);
         }
 

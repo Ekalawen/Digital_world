@@ -17,16 +17,15 @@ public class EventManagerWhileTrueFullSpikes : EventManagerWhileTrue {
         }
     }
 
-    protected override Lumiere CreateFinalLight() {
+    protected override Vector3 GetFinalLightPos() {
         int kmax = 1000;
         for(int k = 0; k < kmax; k++) {
             Vector3 posLumiere = map.GetFarRoundedLocation(gm.player.transform.position);
             if(!map.IsInInsidedVerticalEdges(posLumiere)) {
-                Lumiere finalLight = map.CreateLumiere(posLumiere, Lumiere.LumiereType.FINAL);
-                return finalLight;
+                return posLumiere;
             }
         }
         Debug.LogError("Erreur dans CreateFinalLight(). Toutes les lumières sont dans les coins.");
-        return null;
+        return Vector3.zero;
     }
 }
