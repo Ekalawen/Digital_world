@@ -19,8 +19,17 @@ public class EventManager : MonoBehaviour {
         TRACER_HIT,
         FLIRD_HIT,
     };
-    public enum EndGameType { DEATH_CUBES, CUBES_DESTRUCTIONS, HALF_DEATH_CUBES };
-    public enum EjectionType { FIX_TRESHOLD, LOWEST_CUBE_TRESHOLD, LOWEST_CUBE_ARROUND_TRESHOLD };
+    public enum EndEventType {
+        DEATH_CUBES,
+        HALF_DEATH_CUBES,
+        CUBES_DESTRUCTIONS,
+        EMPTY_END_EVENT,
+    };
+    public enum EjectionType {
+        FIX_TRESHOLD,
+        LOWEST_CUBE_TRESHOLD,
+        LOWEST_CUBE_ARROUND_TRESHOLD,
+    };
 
     [Header("Ejection")]
     public EjectionType ejectionType = EjectionType.FIX_TRESHOLD;
@@ -32,7 +41,7 @@ public class EventManager : MonoBehaviour {
     public float endGameDuration = 20.0f;
     public float endGameFrameRate = 0.2f;
     public AnimationCurve endEventCurveSpeed;
-    public EndGameType endGameType = EndGameType.DEATH_CUBES;
+    public EndEventType endGameType = EndEventType.DEATH_CUBES;
     public bool bNoEndgame = false;
 
     [Header("ScreenShake on Endgame")]
@@ -117,10 +126,11 @@ public class EventManager : MonoBehaviour {
         gm.player.FreezeLocalisation();
 
         // On lance la création des blocks de la mort !
-        if (endGameType == EndGameType.DEATH_CUBES || endGameType == EndGameType.HALF_DEATH_CUBES)
+        if (endGameType == EndEventType.DEATH_CUBES || endGameType == EndEventType.HALF_DEATH_CUBES) {
             coroutineDeathCubesCreation = StartCoroutine(FillMapWithDeathCubes(finalLight.transform.position));
-        else if (endGameType == EndGameType.CUBES_DESTRUCTIONS)
+        } else if (endGameType == EndEventType.CUBES_DESTRUCTIONS) {
             coroutineCubesDestructions = StartCoroutine(DestroyAllCubesProgressively(finalLight.transform.position));
+        }
     }
 
     protected virtual Lumiere CreateFinalLight() {
@@ -171,9 +181,9 @@ public class EventManager : MonoBehaviour {
 
     protected Cube CreateCubeForDeathCubesEvent(Vector3 pos) {
         Cube cube = null;
-        if (endGameType == EndGameType.DEATH_CUBES) {
+        if (endGameType == EndEventType.DEATH_CUBES) {
             cube = map.AddCube(pos, Cube.CubeType.DEATH);
-        } else if (endGameType == EndGameType.HALF_DEATH_CUBES) {
+        } else if (endGameType == EndEventType.HALF_DEATH_CUBES) {
             Vector3Int posInt = MathTools.RoundToInt(pos);
             if ((posInt.x + posInt.y + posInt.z) % 2 == 0)
                 cube = map.AddCube(pos, Cube.CubeType.DEATH);
