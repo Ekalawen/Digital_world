@@ -96,6 +96,7 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaAO: 1
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
+    m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
   m_UseShadowmask: 1
 --- !u!196 &4
@@ -130,7 +131,6 @@ GameObject:
   m_Component:
   - component: {fileID: 585911341}
   - component: {fileID: 585911340}
-  - component: {fileID: 585911339}
   - component: {fileID: 585911338}
   - component: {fileID: 585911337}
   m_Layer: 0
@@ -149,14 +149,6 @@ AudioListener:
   m_GameObject: {fileID: 585911336}
   m_Enabled: 0
 --- !u!124 &585911338
-Behaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 585911336}
-  m_Enabled: 1
---- !u!92 &585911339
 Behaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -233,6 +225,10 @@ PrefabInstance:
       value: GameManager
       objectReference: {fileID: 0}
     - target: {fileID: 4967802568132008, guid: 2f044af0d329a42599a07ccb83e3f05c, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4967802568132008, guid: 2f044af0d329a42599a07ccb83e3f05c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -243,6 +239,10 @@ PrefabInstance:
     - target: {fileID: 4967802568132008, guid: 2f044af0d329a42599a07ccb83e3f05c, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4967802568132008, guid: 2f044af0d329a42599a07ccb83e3f05c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4967802568132008, guid: 2f044af0d329a42599a07ccb83e3f05c, type: 3}
       propertyPath: m_LocalRotation.x
@@ -256,19 +256,22 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4967802568132008, guid: 2f044af0d329a42599a07ccb83e3f05c, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4967802568132008, guid: 2f044af0d329a42599a07ccb83e3f05c, type: 3}
-      propertyPath: m_RootOrder
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 114265298467235390, guid: 2f044af0d329a42599a07ccb83e3f05c,
         type: 3}
-      propertyPath: mapManagerPrefabs
+      propertyPath: myNewTexture
       value: 
-      objectReference: {fileID: 1698300190402578, guid: ecbaffac8ade5431b8f47c4954b2e624,
+      objectReference: {fileID: 8900000, guid: 5fd23db43d3079749a1cd22ae1370c02, type: 3}
+    - target: {fileID: 114265298467235390, guid: 2f044af0d329a42599a07ccb83e3f05c,
+        type: 3}
+      propertyPath: playerPrefab
+      value: 
+      objectReference: {fileID: 2639523973670688047, guid: 2a36d7ff0b2fb6548b0f48b68b7d7578,
+        type: 3}
+    - target: {fileID: 114265298467235390, guid: 2f044af0d329a42599a07ccb83e3f05c,
+        type: 3}
+      propertyPath: consolePrefab
+      value: 
+      objectReference: {fileID: 7057529666416004901, guid: 917dea9d6cf4e1b409733749f123fd0d,
         type: 3}
     - target: {fileID: 114265298467235390, guid: 2f044af0d329a42599a07ccb83e3f05c,
         type: 3}
@@ -278,26 +281,21 @@ PrefabInstance:
         type: 2}
     - target: {fileID: 114265298467235390, guid: 2f044af0d329a42599a07ccb83e3f05c,
         type: 3}
-      propertyPath: playerPrefab
-      value: 
-      objectReference: {fileID: 2639523973670688047, guid: 2a36d7ff0b2fb6548b0f48b68b7d7578,
-        type: 3}
-    - target: {fileID: 114265298467235390, guid: 2f044af0d329a42599a07ccb83e3f05c,
-        type: 3}
-      propertyPath: myNewTexture
-      value: 
-      objectReference: {fileID: 8900000, guid: 5fd23db43d3079749a1cd22ae1370c02, type: 3}
-    - target: {fileID: 114265298467235390, guid: 2f044af0d329a42599a07ccb83e3f05c,
-        type: 3}
       propertyPath: mapManagerPrefab
       value: 
       objectReference: {fileID: 8990514721042306462, guid: 35873e674be6202419f265e3e3435327,
         type: 3}
     - target: {fileID: 114265298467235390, guid: 2f044af0d329a42599a07ccb83e3f05c,
         type: 3}
-      propertyPath: timerManagerPrefab
+      propertyPath: itemManagerPrefab
       value: 
-      objectReference: {fileID: 8282305916252410023, guid: 8528f989ebbfdfa4eb32b19f5d080024,
+      objectReference: {fileID: 2722882582704883049, guid: fbe2d775c23074a4e999d994aaaf819d,
+        type: 3}
+    - target: {fileID: 114265298467235390, guid: 2f044af0d329a42599a07ccb83e3f05c,
+        type: 3}
+      propertyPath: mapManagerPrefabs
+      value: 
+      objectReference: {fileID: 1698300190402578, guid: ecbaffac8ade5431b8f47c4954b2e624,
         type: 3}
     - target: {fileID: 114265298467235390, guid: 2f044af0d329a42599a07ccb83e3f05c,
         type: 3}
@@ -313,21 +311,15 @@ PrefabInstance:
         type: 3}
     - target: {fileID: 114265298467235390, guid: 2f044af0d329a42599a07ccb83e3f05c,
         type: 3}
-      propertyPath: itemManagerPrefab
+      propertyPath: timerManagerPrefab
       value: 
-      objectReference: {fileID: 2722882582704883049, guid: fbe2d775c23074a4e999d994aaaf819d,
+      objectReference: {fileID: 8282305916252410023, guid: 8528f989ebbfdfa4eb32b19f5d080024,
         type: 3}
     - target: {fileID: 114265298467235390, guid: 2f044af0d329a42599a07ccb83e3f05c,
         type: 3}
       propertyPath: ennemiManagerPrefab
       value: 
       objectReference: {fileID: 8964305910077050636, guid: 5245853b69c624a4aa5a3d6136e5cd47,
-        type: 3}
-    - target: {fileID: 114265298467235390, guid: 2f044af0d329a42599a07ccb83e3f05c,
-        type: 3}
-      propertyPath: consolePrefab
-      value: 
-      objectReference: {fileID: 7057529666416004901, guid: 917dea9d6cf4e1b409733749f123fd0d,
         type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2f044af0d329a42599a07ccb83e3f05c, type: 3}
@@ -356,8 +348,9 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1116643478}
   m_Enabled: 1
-  serializedVersion: 9
+  serializedVersion: 10
   m_Type: 1
+  m_Shape: 0
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
   m_Intensity: 1
   m_Range: 10
