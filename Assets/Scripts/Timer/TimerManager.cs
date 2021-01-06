@@ -68,16 +68,20 @@ public class TimerManager : MonoBehaviour {
         SetVisualGameTimer(remainingTime);
     }
 
-    public Color GetColorBasedOnRemainingTime(Color goodColor, Color badColor) {
+    public float GetAvancementOnRemainingTime() {
         float remainingTime = GetRemainingTime();
-        if(remainingTime >= 20.0f) {
-            return goodColor;
-        } else if (remainingTime >= 10.0f) {
-            float avancement = (remainingTime - 10.0f) / 10.0f;
-            return avancement * goodColor + (1.0f - avancement) * badColor;
+        if(remainingTime >= 20) {
+            return 1.0f;
+        } else if (remainingTime >= 10) {
+            return (remainingTime - 10) / 10;
         } else {
-            return badColor;
+            return 0;
         }
+    }
+
+    public Color GetColorBasedOnRemainingTime(Color goodColor, Color badColor) {
+        float avancement = GetAvancementOnRemainingTime();
+        return goodColor * avancement + badColor * (1.0f - avancement);
     }
 
     private void SetVisualGameTimer(float remainingTime) {
@@ -103,6 +107,9 @@ public class TimerManager : MonoBehaviour {
         if (gm.GetMapType() == MenuLevel.LevelType.REGULAR) {
             Color color = GetColorBasedOnRemainingTime(gm.console.basicColor, gm.console.ennemiColor);
             RenderSettings.skybox.SetColor("_RectangleColor", color);
+            float avancement = GetAvancementOnRemainingTime();
+            float proportion = MathCurves.Linear(gm.postProcessManager.skyboxProportionRectanglesCriticalBound, gm.postProcessManager.skyboxProportionRectangles, avancement);
+            RenderSettings.skybox.SetFloat("_ProportionRectangles", proportion);
         }
     }
 

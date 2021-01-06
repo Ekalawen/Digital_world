@@ -22,6 +22,7 @@ public class PostProcessManager : MonoBehaviour {
     [Header("Skybox")]
     public Color skyboxRectangleColor;
     public float skyboxProportionRectangles = 0.4f;
+    public float skyboxProportionRectanglesCriticalBound = 0.18f;
     public float skyboxScrollSpeedPower = 3.0f;
     public float skyboxVariationsAmplitude = 0.3f;
 
