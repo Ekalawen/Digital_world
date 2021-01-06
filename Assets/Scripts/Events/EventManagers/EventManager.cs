@@ -343,7 +343,7 @@ public class EventManager : MonoBehaviour {
     }
 
     protected void RememberGameResult(bool success) {
-        if (gm.GetLevelType() == MenuLevel.LevelType.INFINITE)
+        if (gm.GetMapType() == MenuLevel.LevelType.INFINITE)
             success = IsNewBestScore();
 
         RememberSincelastBestScore(success);
@@ -407,7 +407,7 @@ public class EventManager : MonoBehaviour {
     }
 
     public float GetScore() {
-        if(gm.GetLevelType() == MenuLevel.LevelType.REGULAR) {
+        if(gm.GetMapType() == MenuLevel.LevelType.REGULAR) {
             return gm.timerManager.GetRemainingTime();
         } else {
             return gm.GetInfiniteMap().GetNonStartNbBlocksRun();

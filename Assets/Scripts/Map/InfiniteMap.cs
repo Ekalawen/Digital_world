@@ -31,6 +31,7 @@ public class InfiniteMap : MapManager {
     public Color colorChangeColorBlocks;
     public float rangeChangeColorBlocks;
     public float speedChangeColorBlocks;
+    public float distanceToStartChangeSkyboxColor = 40.0f;
 
     [Header("ScreenShaker")]
     public float distanceToStartScreenShake = 10;
@@ -50,6 +51,7 @@ public class InfiniteMap : MapManager {
     int nbBlocksCreated = 0;
     List<BlockWeight> blockWeights;
     List<Block> blocks; // Les blocks vont des blocks en train de se faire détruire jusqu'à nbBlocksForwards blocks devant la position du joueur
+    Block lastlyDestroyedBlock = null;
     Timer destructionBlockTimer;
     Timer timerSinceLastBlock;
     bool hasMadeNewBestScore = false;
@@ -141,6 +143,7 @@ public class InfiniteMap : MapManager {
             indiceCurrentBlock--;
             blocks.Remove(firstBlock);
             destructionBlockTimer = new Timer(destroyTime);
+            lastlyDestroyedBlock = firstBlock;
         } else {
             gm.eventManager.LoseGame(EventManager.DeathReason.OUT_OF_BLOCKS);
         }
@@ -163,22 +166,52 @@ public class InfiniteMap : MapManager {
         return farestCube;
     }
 
+    protected float GetCurrentDistanceToDestruction() {
+        Vector3 destructionPosition = GetCurrentDestructionPosition();
+        float projectionFarestCube = Vector3.Dot(destructionPosition, FORWARD);
+        float projectionPlayer = Vector3.Dot(gm.player.transform.position, FORWARD);
+        float differenceProjections = projectionPlayer - projectionFarestCube;
+        return Mathf.Max(differenceProjections, 0);
+    }
+
+    protected Vector3 GetCurrentDestructionPosition() {
+        Block firstBlock = lastlyDestroyedBlock ?? blocks.First();
+        float lengthBlock = Vector3.Distance(firstBlock.startPoint.position, firstBlock.endPoint.position);
+        float averageTimeBlock = firstBlock.GetAverageTime();
+        float timeWithDifficulty = ApplyTimeDifficulty(averageTimeBlock);
+        float avancement = destructionBlockTimer.GetElapsedTime() / timeWithDifficulty;
+        Vector3 direction = firstBlock.endPoint.position - firstBlock.startPoint.position;
+        Vector3 position = firstBlock.startPoint.position + direction * avancement;
+        return position;
+    }
+
     protected void MakeCubesLookDangerous() {
         if (startsBlockDestruction) {
-            Cube farestCube = GetFarestCube();
-            List<ColorSource> closestSources = gm.colorManager.GetColorSourcesInRange(farestCube.transform.position, rangeChangeColorBlocks);
-            foreach (ColorSource source in closestSources)
+            Vector3 destructionPosition = GetCurrentDestructionPosition();
+            List<ColorSource> closestSources = gm.colorManager.GetColorSourcesInRange(destructionPosition, rangeChangeColorBlocks);
+            foreach (ColorSource source in closestSources) {
                 source.GoToColor(colorChangeColorBlocks, speedChangeColorBlocks);
+            }
+            UpdateSkyboxColorBasedOnDangerProximity();
+        }
+    }
 
+    protected void UpdateSkyboxColorBasedOnDangerProximity() {
+        float distanceToDestruction = GetCurrentDistanceToDestruction();
+        if (distanceToDestruction <= distanceToStartChangeSkyboxColor) {
+            float avancement = distanceToDestruction / distanceToStartChangeSkyboxColor;
+            Color color = gm.console.basicColor * avancement + gm.console.ennemiColor * (1 - avancement);
+            RenderSettings.skybox.SetColor("_RectangleColor", color);
+        } else {
+            RenderSettings.skybox.SetColor("_RectangleColor", gm.console.basicColor);
         }
     }
 
     protected void ShakeProportionalyToDangerosite() {
         if (startsBlockDestruction) {
-            Cube farestCube = GetFarestCube();
-            float distanceToFarestCube = Vector3.Distance(farestCube.transform.position, gm.player.transform.position);
-            if (distanceToFarestCube <= distanceToStartScreenShake) {
-                float avancement = 1 - distanceToFarestCube / distanceToStartScreenShake;
+            float distanceToDestruction = GetCurrentDistanceToDestruction();
+            if (distanceToDestruction <= distanceToStartScreenShake) {
+                float avancement = 1 - distanceToDestruction / distanceToStartScreenShake;
                 cameraShakeInstance.Magnitude = screenShakeMagnitudeInterval[0] + avancement * (screenShakeMagnitudeInterval[1] - screenShakeMagnitudeInterval[0]);
                 cameraShakeInstance.Roughness = screenShakeRoughnessInterval[0] + avancement * (screenShakeRoughnessInterval[1] - screenShakeRoughnessInterval[0]);
             } else {

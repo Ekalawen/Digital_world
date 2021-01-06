@@ -164,8 +164,8 @@ public class GameManager : MonoBehaviour {
 
         if(SceneManager.GetActiveScene().name == "TutorialScene") {
             SceneManager.LoadScene("MenuScene");
-        } else if ((GetLevelType() == MenuLevel.LevelType.REGULAR && eventManager.IsWin())
-            || GetLevelType() == MenuLevel.LevelType.INFINITE && eventManager.IsNewBestScoreAfterBestScoreAssignation()) {
+        } else if ((GetMapType() == MenuLevel.LevelType.REGULAR && eventManager.IsWin())
+            || GetMapType() == MenuLevel.LevelType.INFINITE && eventManager.IsNewBestScoreAfterBestScoreAssignation()) {
             SceneManager.LoadScene("RewardScene");
         } else {
             SceneManager.LoadScene("SelectorScene");
@@ -186,7 +186,7 @@ public class GameManager : MonoBehaviour {
         return map as InfiniteMap;
     }
 
-    internal MenuLevel.LevelType GetLevelType() {
+    internal MenuLevel.LevelType GetMapType() {
         if(map.gameObject.GetComponent<InfiniteMap>() == null) {
             return MenuLevel.LevelType.REGULAR;
         } else {

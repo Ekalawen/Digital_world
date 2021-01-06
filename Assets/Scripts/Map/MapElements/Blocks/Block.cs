@@ -102,6 +102,7 @@ public class Block : MonoBehaviour {
             if (allNull)
                 break;
         }
+        yield return new WaitForSeconds(1.0f); // Sécurité car on a besoin de cet objet pendant un peu plus longtemps !
         Destroy(gameObject);
     }
 

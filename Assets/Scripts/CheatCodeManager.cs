@@ -27,7 +27,7 @@ public class CheatCodeManager : MonoBehaviour {
         winCheatCode.action = gm.eventManager.WinGame;
         cheatCodes.Add(winCheatCode);
 
-        if (gm.GetLevelType() == MenuLevel.LevelType.INFINITE) {
+        if (gm.GetMapType() == MenuLevel.LevelType.INFINITE) {
             CheatCode plus10BlocksCheatCode = new CheatCode();
             plus10BlocksCheatCode.code = plus10Code;
             InfiniteMap infiniteMap = (InfiniteMap)gm.map;

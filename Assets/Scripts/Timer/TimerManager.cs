@@ -51,6 +51,7 @@ public class TimerManager : MonoBehaviour {
             HideGameTimer();
 
         ScreenShakeOnRemainingTime();
+        UpdateSkyboxColorBasedOnRemainingTime();
     }
 
     private void HideGameTimer() {
@@ -67,17 +68,27 @@ public class TimerManager : MonoBehaviour {
         SetVisualGameTimer(remainingTime);
     }
 
+    public Color GetColorBasedOnRemainingTime(Color goodColor, Color badColor) {
+        float remainingTime = GetRemainingTime();
+        if(remainingTime >= 20.0f) {
+            return goodColor;
+        } else if (remainingTime >= 10.0f) {
+            float avancement = (remainingTime - 10.0f) / 10.0f;
+            return avancement * goodColor + (1.0f - avancement) * badColor;
+        } else {
+            return badColor;
+        }
+    }
+
     private void SetVisualGameTimer(float remainingTime) {
         timerDisplayer.Display(TimerManager.TimerToString(remainingTime));
+        timerDisplayer.SetColor(GetColorBasedOnRemainingTime(gm.console.allyColor, gm.console.ennemiColor));
         if (remainingTime >= 20.0f) {
-            timerDisplayer.SetColor(gm.console.allyColor);
             timerDisplayer.SetFontSize(fontSize);
         } else if (remainingTime >= 10.0f) {
             float avancement = (remainingTime - 10.0f) / 10.0f;
-            timerDisplayer.SetColor(avancement * gm.console.allyColor + (1.0f - avancement) * gm.console.ennemiColor);
             timerDisplayer.SetFontSize(fontSize);
         } else {
-            timerDisplayer.SetColor(gm.console.ennemiColor);
             float avancement = remainingTime / 10.0f;
             float size = fontSize * (1.0f + (1.0f - avancement));
             if (remainingTime <= 10.0f) {
@@ -85,6 +96,13 @@ public class TimerManager : MonoBehaviour {
                 size *= coefBounce;
             }
             timerDisplayer.SetFontSize((int)size);
+        }
+    }
+
+    protected void UpdateSkyboxColorBasedOnRemainingTime() {
+        if (gm.GetMapType() == MenuLevel.LevelType.REGULAR) {
+            Color color = GetColorBasedOnRemainingTime(gm.console.basicColor, gm.console.ennemiColor);
+            RenderSettings.skybox.SetColor("_RectangleColor", color);
         }
     }
 

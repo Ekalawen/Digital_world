@@ -145,7 +145,7 @@ public virtual void Update () {
     }
 
     public void DisplayDatasAndEnnemisCounts() {
-        if (gm.GetLevelType() == MenuLevel.LevelType.REGULAR) {
+        if (gm.GetMapType() == MenuLevel.LevelType.REGULAR) {
             int nbEnnemis = gm.ennemiManager.ennemis.Count;
             if (nbEnnemis > 0) {
                 AjouterMessageImportant(GetEnnemisCountDisplayMessage(), TypeText.ALLY_TEXT, 3, bAfficherInConsole: false);

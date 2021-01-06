@@ -1,20 +1,29 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
 
 public class PostProcessManager : MonoBehaviour {
 
-    public float skyboxRotationSpeed = 25.0f;
+    [Header("Grip")]
     public float changeTimeGrip = 0.075f;
     public float intensityGrip = 0.315f;
     public PostProcessVolume gripVolume;
 
+    [Header("Hit")]
     public float changeTimeHit = 0.6f;
     public float intensityHit= 0.4f;
     public PostProcessVolume hitVolume;
 
+    [Header("Poussee")]
     public PostProcessVolume pousseeVolume;
+
+    [Header("Skybox")]
+    public Color skyboxRectangleColor;
+    public float skyboxProportionRectangles = 0.4f;
+    public float skyboxScrollSpeedPower = 3.0f;
+    public float skyboxVariationsAmplitude = 0.3f;
 
     protected Coroutine gripCoroutine = null;
     protected Coroutine hitCoroutine1 = null;
@@ -25,14 +34,15 @@ public class PostProcessManager : MonoBehaviour {
     public void Initialize() {
         gm = GameManager.Instance;
         camera = gm.player.camera;
+
+        ResetSkyboxParameters();
     }
 
-    public void Update() {
-        RotateSkybox();
-    }
-
-    protected void RotateSkybox() {
-        RenderSettings.skybox.SetFloat("_Rotation", Time.time * skyboxRotationSpeed);
+    protected void ResetSkyboxParameters() {
+        RenderSettings.skybox.SetColor("_RectangleColor", skyboxRectangleColor);
+        RenderSettings.skybox.SetFloat("_ProportionRectangles", skyboxProportionRectangles);
+        RenderSettings.skybox.SetFloat("_ScrollSpeedPower", skyboxScrollSpeedPower);
+        RenderSettings.skybox.SetFloat("_VariationsAmplitude", skyboxVariationsAmplitude);
     }
 
     public void UpdateGripEffect(Player.EtatPersonnage previousState) {

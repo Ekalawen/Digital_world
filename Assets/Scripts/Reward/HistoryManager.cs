@@ -60,7 +60,7 @@ public class HistoryManager : MonoBehaviour {
 
     public void Initialize() {
         gm = GameManager.Instance;
-        SetMapType(gm.GetLevelType());
+        SetMapType(gm.GetMapType());
 
         playerHistory = new ObjectHistory(gm.player);
         if(ennemisHistory == null)
