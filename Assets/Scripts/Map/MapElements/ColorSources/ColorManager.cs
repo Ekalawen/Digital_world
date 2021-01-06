@@ -75,10 +75,7 @@ public class ColorManager : MonoBehaviour {
         // Puis on les réparties ! C'est pas grâve si plusieurs sources sont au même endroit !
         for(int i = 0; i < nbSources; i++) {
             Vector3Int pos = new Vector3Int(Random.Range(0, size.x), Random.Range(0, size.y), Random.Range(0, size.z));
-            GameObject go = GameObject.Instantiate(colorSourcePrefab, pos, Quaternion.identity, colorSourceFolder.transform);
-            ColorSource source = go.GetComponent<ColorSource>();
-            source.Initialize(GetColor(themes), Random.Range(porteeSourceRange[0], porteeSourceRange[1]));
-            sources.Add(go.GetComponent<ColorSource>());
+            GenerateColorSourceAt(pos);
         }
     }
 
@@ -149,6 +146,7 @@ public class ColorManager : MonoBehaviour {
     public void CheckCubeSaturation() {
         List<Cube> cubes = map.GetAllCubes();
         CheckCubeSaturationInCubes(cubes);
+        EnsureNoCubeIsBlack(cubes);
     }
 
     public void CheckCubeSaturationInCubes(List<Cube> cubes) {
@@ -157,6 +155,16 @@ public class ColorManager : MonoBehaviour {
         foreach(Cube cube in cubes) {
             while(cube.GetLuminosity() > cubeLuminosityMax + 0.0001f) { // Car la luminosité n'est jamais à vraiment 0
                 RemoveClosestSource(cube.transform.position);
+            }
+        }
+    }
+
+    public void EnsureNoCubeIsBlack(List<Cube> cubes) {
+        MathTools.Shuffle(cubes);
+
+        foreach(Cube cube in cubes) {
+            if(cube.GetLuminosity() < 0.001f) {
+                GenerateColorSourceAt(cube.transform.position);
             }
         }
     }
