@@ -8,6 +8,10 @@ public class MathCurves {
         return min + (max - min) * avancement;
     }
 
+    public static float LinearReversed(float min, float max, float current) {
+        return Mathf.Clamp01((current - min) / (max - min));
+    }
+
     public static float LinearRandom(float min, float max) {
         float randNumber = UnityEngine.Random.Range(0.0f, 1.0f);
         return Linear(min, max, randNumber);

@@ -32,6 +32,7 @@ public class InfiniteMap : MapManager {
     public float rangeChangeColorBlocks;
     public float speedChangeColorBlocks;
     public float distanceToStartChangeSkyboxColor = 40.0f;
+    public float distanceAtCriticalSkyboxColor = 5.0f;
 
     [Header("ScreenShaker")]
     public float distanceToStartScreenShake = 10;
@@ -199,7 +200,7 @@ public class InfiniteMap : MapManager {
     protected void UpdateSkyboxColorBasedOnDangerProximity() {
         float distanceToDestruction = GetCurrentDistanceToDestruction();
         if (distanceToDestruction <= distanceToStartChangeSkyboxColor) {
-            float avancement = distanceToDestruction / distanceToStartChangeSkyboxColor;
+            float avancement = MathCurves.LinearReversed(distanceAtCriticalSkyboxColor, distanceToStartChangeSkyboxColor, distanceToDestruction);
             Color color = gm.console.basicColor * avancement + gm.console.ennemiColor * (1 - avancement);
             RenderSettings.skybox.SetColor("_RectangleColor", color);
             float proportion = MathCurves.Linear(gm.postProcessManager.skyboxProportionRectanglesCriticalBound, gm.postProcessManager.skyboxProportionRectangles, avancement);
