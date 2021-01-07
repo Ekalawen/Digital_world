@@ -31,7 +31,6 @@ public class EventManagerTutoriel : EventManager {
     }
 
     public void RegisterSavedZone(SaveZone savedZone) {
-        Debug.Log("Zone registered !");
         this.savedZone = savedZone;
     }
 }
