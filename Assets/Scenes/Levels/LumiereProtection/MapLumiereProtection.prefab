@@ -35,8 +35,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cubeType: 0
   minDistanceRandomFilling: 1
+  useAllEmptyPositionsInstead: 0
   proportionRandomFilling: 0.03
   sizeCubeRandomFilling: 1
+  registerToColorSources: 0
 --- !u!1001 &6406004073022886087
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -47,6 +49,10 @@ PrefabInstance:
     - target: {fileID: 1698300190402578, guid: 129f4eb78691940da993d749688543fd, type: 3}
       propertyPath: m_Name
       value: MapLumiereProtection
+      objectReference: {fileID: 0}
+    - target: {fileID: 4913549307214802, guid: 129f4eb78691940da993d749688543fd, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4913549307214802, guid: 129f4eb78691940da993d749688543fd, type: 3}
       propertyPath: m_LocalPosition.x
@@ -61,6 +67,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4913549307214802, guid: 129f4eb78691940da993d749688543fd, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4913549307214802, guid: 129f4eb78691940da993d749688543fd, type: 3}
       propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
@@ -70,14 +80,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4913549307214802, guid: 129f4eb78691940da993d749688543fd, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4913549307214802, guid: 129f4eb78691940da993d749688543fd, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4913549307214802, guid: 129f4eb78691940da993d749688543fd, type: 3}
-      propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4913549307214802, guid: 129f4eb78691940da993d749688543fd, type: 3}
@@ -92,127 +94,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
-        type: 3}
-      propertyPath: mapFunctionComponents.Array.size
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
-        type: 3}
-      propertyPath: lumierePrefab
-      value: 
-      objectReference: {fileID: 8907419764697859225, guid: 026d3d1704d6e8942a965d5f019d51fe,
-        type: 3}
-    - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
-        type: 3}
-      propertyPath: tailleMap.x
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
-        type: 3}
-      propertyPath: tailleMap.y
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
-        type: 3}
-      propertyPath: tailleMap.z
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
-        type: 3}
-      propertyPath: nbLumieresInitial
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
-        type: 3}
-      propertyPath: mapFunctionComponents.Array.data[4]
-      value: 
-      objectReference: {fileID: -61358244765720743}
-    - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
-        type: 3}
-      propertyPath: mapFunctionComponents.Array.data[1]
-      value: 
-      objectReference: {fileID: 8605599305803278129}
-    - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
-        type: 3}
-      propertyPath: mapFunctionComponents.Array.data[3]
-      value: 
-      objectReference: {fileID: 8417146746499810755}
-    - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
-        type: 3}
-      propertyPath: mapFunctionComponents.Array.data[2]
-      value: 
-      objectReference: {fileID: 5855454083202442719}
-    - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
-        type: 3}
-      propertyPath: mapFunctionComponents.Array.data[5]
-      value: 
-      objectReference: {fileID: 1926596135722756805}
-    - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
-        type: 3}
-      propertyPath: indestructibleCubePrefab
-      value: 
-      objectReference: {fileID: 7765281387075646581, guid: f4579decf9a895b41b9b68733a8257f0,
-        type: 3}
-    - target: {fileID: 3425981728395409398, guid: 129f4eb78691940da993d749688543fd,
-        type: 3}
-      propertyPath: proportionCaves
-      value: 0.4
-      objectReference: {fileID: 0}
-    - target: {fileID: 3425981728395409398, guid: 129f4eb78691940da993d749688543fd,
-        type: 3}
-      propertyPath: nbLumieresPerCaves
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3425981728395409398, guid: 129f4eb78691940da993d749688543fd,
-        type: 3}
-      propertyPath: offsetLumieresFromCenter
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3425981728395409398, guid: 129f4eb78691940da993d749688543fd,
-        type: 3}
-      propertyPath: makeSpaceArround
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3425981728395409398, guid: 129f4eb78691940da993d749688543fd,
-        type: 3}
-      propertyPath: tailleMinCave
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 3425981728395409398, guid: 129f4eb78691940da993d749688543fd,
-        type: 3}
-      propertyPath: tailleMaxCave
-      value: 5
-      objectReference: {fileID: 0}
     - target: {fileID: 114991096836358190, guid: 129f4eb78691940da993d749688543fd,
         type: 3}
       propertyPath: tailleMap
       value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 114991096836358190, guid: 129f4eb78691940da993d749688543fd,
-        type: 3}
-      propertyPath: proportionCaves
-      value: 0.3
-      objectReference: {fileID: 0}
-    - target: {fileID: 114991096836358190, guid: 129f4eb78691940da993d749688543fd,
-        type: 3}
-      propertyPath: nbLumieresPerCaves
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 114991096836358190, guid: 129f4eb78691940da993d749688543fd,
-        type: 3}
-      propertyPath: proportionSourcePont
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114991096836358190, guid: 129f4eb78691940da993d749688543fd,
-        type: 3}
-      propertyPath: tailleMaxCave
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 114991096836358190, guid: 129f4eb78691940da993d749688543fd,
-        type: 3}
-      propertyPath: nbLumieresInitial
-      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 114991096836358190, guid: 129f4eb78691940da993d749688543fd,
         type: 3}
@@ -236,6 +121,123 @@ PrefabInstance:
       objectReference: {fileID: 8907419764697859225, guid: 09698535f72ab0a4caecab6acfebd7a7,
         type: 3}
     - target: {fileID: 114991096836358190, guid: 129f4eb78691940da993d749688543fd,
+        type: 3}
+      propertyPath: tailleMaxCave
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114991096836358190, guid: 129f4eb78691940da993d749688543fd,
+        type: 3}
+      propertyPath: proportionCaves
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114991096836358190, guid: 129f4eb78691940da993d749688543fd,
+        type: 3}
+      propertyPath: nbLumieresInitial
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 114991096836358190, guid: 129f4eb78691940da993d749688543fd,
+        type: 3}
+      propertyPath: nbLumieresPerCaves
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114991096836358190, guid: 129f4eb78691940da993d749688543fd,
+        type: 3}
+      propertyPath: proportionSourcePont
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114991096836358190, guid: 129f4eb78691940da993d749688543fd,
+        type: 3}
+      propertyPath: offsetLumieresFromCenter
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
+        type: 3}
+      propertyPath: tailleMap.x
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
+        type: 3}
+      propertyPath: tailleMap.y
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
+        type: 3}
+      propertyPath: tailleMap.z
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
+        type: 3}
+      propertyPath: lumierePrefab
+      value: 
+      objectReference: {fileID: 6314060265175529593, guid: f2c3ac7ff47ce054fb32e2e423c767e7,
+        type: 3}
+    - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
+        type: 3}
+      propertyPath: nbLumieresInitial
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
+        type: 3}
+      propertyPath: indestructibleCubePrefab
+      value: 
+      objectReference: {fileID: 7765281387075646581, guid: f4579decf9a895b41b9b68733a8257f0,
+        type: 3}
+    - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
+        type: 3}
+      propertyPath: mapFunctionComponents.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
+        type: 3}
+      propertyPath: mapFunctionComponents.Array.data[1]
+      value: 
+      objectReference: {fileID: 8605599305803278129}
+    - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
+        type: 3}
+      propertyPath: mapFunctionComponents.Array.data[2]
+      value: 
+      objectReference: {fileID: 5855454083202442719}
+    - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
+        type: 3}
+      propertyPath: mapFunctionComponents.Array.data[3]
+      value: 
+      objectReference: {fileID: 8417146746499810755}
+    - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
+        type: 3}
+      propertyPath: mapFunctionComponents.Array.data[4]
+      value: 
+      objectReference: {fileID: -61358244765720743}
+    - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
+        type: 3}
+      propertyPath: mapFunctionComponents.Array.data[5]
+      value: 
+      objectReference: {fileID: 1926596135722756805}
+    - target: {fileID: 3425981728395409398, guid: 129f4eb78691940da993d749688543fd,
+        type: 3}
+      propertyPath: tailleMaxCave
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3425981728395409398, guid: 129f4eb78691940da993d749688543fd,
+        type: 3}
+      propertyPath: tailleMinCave
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3425981728395409398, guid: 129f4eb78691940da993d749688543fd,
+        type: 3}
+      propertyPath: proportionCaves
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3425981728395409398, guid: 129f4eb78691940da993d749688543fd,
+        type: 3}
+      propertyPath: makeSpaceArround
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3425981728395409398, guid: 129f4eb78691940da993d749688543fd,
+        type: 3}
+      propertyPath: nbLumieresPerCaves
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3425981728395409398, guid: 129f4eb78691940da993d749688543fd,
         type: 3}
       propertyPath: offsetLumieresFromCenter
       value: 0

@@ -34,16 +34,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cubeType: 0
+  generateMode: 0
   proportionCaves: 0.25
-  useNbCaves: 0
   nbCaves: 0
   tailleMinCave: 4
   tailleMaxCave: 5
   makeSpaceArround: 0
+  dontCollideWithOthersCaves: 0
+  distanceWithOthersCaves: 0
   preserveMapBordure: 0
   nbLumieresPerCaves: 2
   offsetLumieresFromCenter: 1
   caveOffsetFromSides: 2
+  useCaveFixedOffset: 0
+  useCaveFixedOffsetX: 0
+  caveFixedOffsetX: 0
+  useCaveFixedOffsetY: 0
+  caveFixedOffsetY: 0
+  useCaveFixedOffsetZ: 0
+  caveFixedOffsetZ: 0
 --- !u!114 &-2389542912466454808
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -70,8 +79,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cubeType: 0
   minDistanceRandomFilling: 2
+  useAllEmptyPositionsInstead: 0
   proportionRandomFilling: 0.03
   sizeCubeRandomFilling: 1
+  registerToColorSources: 0
 --- !u!1001 &7691521794360650721
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -83,10 +94,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: MapRedWire
       objectReference: {fileID: 0}
-    - target: {fileID: 8920559125049377290, guid: 07ee949b562654a39987364e97fa2358,
-        type: 3}
-      propertyPath: cubeType
-      value: 3
+    - target: {fileID: 4913549307214802, guid: 07ee949b562654a39987364e97fa2358, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4913549307214802, guid: 07ee949b562654a39987364e97fa2358, type: 3}
       propertyPath: m_LocalPosition.x
@@ -101,6 +111,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4913549307214802, guid: 07ee949b562654a39987364e97fa2358, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4913549307214802, guid: 07ee949b562654a39987364e97fa2358, type: 3}
       propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
@@ -110,14 +124,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4913549307214802, guid: 07ee949b562654a39987364e97fa2358, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4913549307214802, guid: 07ee949b562654a39987364e97fa2358, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4913549307214802, guid: 07ee949b562654a39987364e97fa2358, type: 3}
-      propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4913549307214802, guid: 07ee949b562654a39987364e97fa2358, type: 3}
@@ -134,21 +140,59 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 114837518253026026, guid: 07ee949b562654a39987364e97fa2358,
         type: 3}
-      propertyPath: mapFunctionComponents.Array.size
-      value: 7
+      propertyPath: tailleMap.x
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 114837518253026026, guid: 07ee949b562654a39987364e97fa2358,
+        type: 3}
+      propertyPath: tailleMap.y
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 114837518253026026, guid: 07ee949b562654a39987364e97fa2358,
+        type: 3}
+      propertyPath: tailleMap.z
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 114837518253026026, guid: 07ee949b562654a39987364e97fa2358,
         type: 3}
       propertyPath: lumierePrefab
       value: 
-      objectReference: {fileID: 8907419764697859225, guid: f669656f3b2f27d4288530059efa35f0,
+      objectReference: {fileID: 6314060265175529593, guid: 06d9c7241134907418789a012772d2db,
         type: 3}
+    - target: {fileID: 114837518253026026, guid: 07ee949b562654a39987364e97fa2358,
+        type: 3}
+      propertyPath: nbLumieresInitial
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 114837518253026026, guid: 07ee949b562654a39987364e97fa2358,
         type: 3}
       propertyPath: specialCubePrefab
       value: 
       objectReference: {fileID: 4305637335355529576, guid: 5452711fcf413de418879722d0617e7b,
         type: 3}
+    - target: {fileID: 114837518253026026, guid: 07ee949b562654a39987364e97fa2358,
+        type: 3}
+      propertyPath: lumiereFinalePrefab
+      value: 
+      objectReference: {fileID: 5816829342276544026, guid: 1773660cfdde3be48af02e96a567d79a,
+        type: 3}
+    - target: {fileID: 114837518253026026, guid: 07ee949b562654a39987364e97fa2358,
+        type: 3}
+      propertyPath: indestructibleCubePrefab
+      value: 
+      objectReference: {fileID: 7765281387075646581, guid: f4579decf9a895b41b9b68733a8257f0,
+        type: 3}
+    - target: {fileID: 114837518253026026, guid: 07ee949b562654a39987364e97fa2358,
+        type: 3}
+      propertyPath: lumiereAlmostFinalePrefab
+      value: 
+      objectReference: {fileID: 4031471433161669692, guid: 3b33a0c45c369684aa9082d456bede68,
+        type: 3}
+    - target: {fileID: 114837518253026026, guid: 07ee949b562654a39987364e97fa2358,
+        type: 3}
+      propertyPath: mapFunctionComponents.Array.size
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 114837518253026026, guid: 07ee949b562654a39987364e97fa2358,
         type: 3}
       propertyPath: mapFunctionComponents.Array.data[1]
@@ -171,40 +215,19 @@ PrefabInstance:
       objectReference: {fileID: 5993933274818801929}
     - target: {fileID: 114837518253026026, guid: 07ee949b562654a39987364e97fa2358,
         type: 3}
-      propertyPath: tailleMap.x
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 114837518253026026, guid: 07ee949b562654a39987364e97fa2358,
-        type: 3}
-      propertyPath: tailleMap.y
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 114837518253026026, guid: 07ee949b562654a39987364e97fa2358,
-        type: 3}
-      propertyPath: tailleMap.z
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 114837518253026026, guid: 07ee949b562654a39987364e97fa2358,
-        type: 3}
-      propertyPath: nbLumieresInitial
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 114837518253026026, guid: 07ee949b562654a39987364e97fa2358,
-        type: 3}
       propertyPath: mapFunctionComponents.Array.data[5]
       value: 
       objectReference: {fileID: -2389542912466454808}
     - target: {fileID: 114837518253026026, guid: 07ee949b562654a39987364e97fa2358,
         type: 3}
-      propertyPath: indestructibleCubePrefab
-      value: 
-      objectReference: {fileID: 7765281387075646581, guid: f4579decf9a895b41b9b68733a8257f0,
-        type: 3}
-    - target: {fileID: 114837518253026026, guid: 07ee949b562654a39987364e97fa2358,
-        type: 3}
       propertyPath: mapFunctionComponents.Array.data[6]
       value: 
       objectReference: {fileID: -8999235856147540099}
+    - target: {fileID: 8920559125049377290, guid: 07ee949b562654a39987364e97fa2358,
+        type: 3}
+      propertyPath: cubeType
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 07ee949b562654a39987364e97fa2358, type: 3}
 --- !u!1 &7690968157197468659 stripped
