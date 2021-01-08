@@ -76,7 +76,10 @@ public class Lumiere : MonoBehaviour {
     private void DestroyAnimation() {
         float turbulenceAttractionSpeed = vfx.GetFloat("EnveloppeSphereAttractionSpeed");
         vfx.SetFloat("EnveloppeSphereAttractionSpeed", -turbulenceAttractionSpeed);
+        float trailsEjectionSpeed = vfx.GetFloat("TrailsSphereSpeed") * 2;
+        vfx.SetFloat("TrailsEjectionSpeed", -trailsEjectionSpeed);
         vfx.SetFloat("EnveloppeSpawnRate", 0);
+        vfx.SetFloat("TrailsSpawnRate", 0);
         vfx.SetVector4("BeamColor", Vector4.zero);
         Destroy(pointLight);
     }
