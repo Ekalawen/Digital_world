@@ -164,8 +164,8 @@ public class GameManager : MonoBehaviour {
 
         if(SceneManager.GetActiveScene().name == "TutorialScene") {
             SceneManager.LoadScene("MenuScene");
-        } else if ((GetMapType() == MenuLevel.LevelType.REGULAR && eventManager.IsWin())
-            || GetMapType() == MenuLevel.LevelType.INFINITE && eventManager.IsNewBestScoreAfterBestScoreAssignation()) {
+        } else if ((GetMapType() == MenuLevel.LevelType.REGULAR && eventManager.IsWin())) {
+            //|| GetMapType() == MenuLevel.LevelType.INFINITE && eventManager.IsNewBestScoreAfterBestScoreAssignation()) {
             SceneManager.LoadScene("RewardScene");
         } else {
             SceneManager.LoadScene("SelectorScene");
