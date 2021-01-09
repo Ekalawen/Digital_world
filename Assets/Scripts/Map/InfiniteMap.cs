@@ -116,7 +116,7 @@ public class InfiniteMap : MapManager {
     protected void AddBestScoreMarker(Block block) {
         int bestScore = (int)gm.eventManager.GetBestScore();
         if(bestScore != 0 && (nbBlocksCreated - nbFirstBlocks) == bestScore + 1) {
-            Vector3 pos = block.endPoint.position + Vector3.up * 1.5f;
+            Vector3 pos = block.endPoint.position + Vector3.up * 1f;
             GameObject marker = Instantiate(bestScoreMarkerPrefab, pos, Quaternion.identity, block.transform.parent);
             marker.transform.LookAt(pos + FORWARD);
         }
