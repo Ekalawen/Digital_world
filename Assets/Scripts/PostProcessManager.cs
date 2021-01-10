@@ -26,6 +26,14 @@ public class PostProcessManager : MonoBehaviour {
     public float skyboxScrollSpeedPower = 3.0f;
     public float skyboxVariationsAmplitude = 0.3f;
 
+    [Header("CubeDissolve")]
+    public float dissolveRegularTime = 3.0f;
+    public float dissolveRegularPlayerProximityCoef = 0.037f;
+    public float dissolveInfiniteTime = 0.0f;
+    public float dissolveInfinitePlayerProximityCoef = -0.037f;
+    public float dissolveInGameTime = 1.0f;
+    public float dissolveInGamePlayerProximityCoef = 0.0f;
+
     protected Coroutine gripCoroutine = null;
     protected Coroutine hitCoroutine1 = null;
     protected Coroutine hitCoroutine2 = null;

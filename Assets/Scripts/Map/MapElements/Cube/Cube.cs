@@ -21,30 +21,40 @@ public class Cube : MonoBehaviour {
         material = GetComponent<Renderer>().material;
         if (shouldRegisterToColorSources)
             RegisterCubeToColorSources();
-        if (gm.map.IsInInsidedRegularMap(transform.position)) {
-            StartDissolveEffect();
-        } else {
-            StopDissolveEffect();
-        }
+        SetDissolveOnStart();
     }
 
-    protected void StopDissolveEffect() {
-        float dissolveTime = material.GetFloat("_DissolveTime");
-        material.SetFloat("_DissolveStartingTime", Time.time - dissolveTime);
+    protected void SetDissolveOnStart() {
+        if(gm.timerManager.GetElapsedTime() >= 1.0f) {
+            material.SetFloat("_DissolveTime", gm.postProcessManager.dissolveInGameTime);
+            material.SetFloat("_PlayerProximityCoef", gm.postProcessManager.dissolveInGamePlayerProximityCoef);
+            StartDissolveEffect();
+            return;
+        }
+
+        if (gm.GetMapType() == MenuLevel.LevelType.REGULAR) {
+            material.SetFloat("_DissolveTime", gm.postProcessManager.dissolveRegularTime);
+            material.SetFloat("_PlayerProximityCoef", gm.postProcessManager.dissolveRegularPlayerProximityCoef);
+            if (gm.map.IsInInsidedRegularMap(transform.position)) {
+                StartDissolveEffect();
+            } else {
+                StopDissolveEffect();
+            }
+        } else {
+            material.SetFloat("_DissolveTime", gm.postProcessManager.dissolveInfiniteTime);
+            material.SetFloat("_PlayerProximityCoef", gm.postProcessManager.dissolveInfinitePlayerProximityCoef);
+            material.SetFloat("_DissolveStartingTime", Time.time - gm.postProcessManager.dissolveInfiniteTime);
+        }
     }
 
     protected void StartDissolveEffect() {
         material.SetFloat("_DissolveStartingTime", Time.time);
         material.SetVector("_PlayerPosition", gm.player.transform.position);
-        //StartCoroutine(CUpdatePlayerPositionInShader());
     }
 
-    protected IEnumerator CUpdatePlayerPositionInShader() {
-        Timer timer = new Timer(material.GetFloat("_DissolveTime"));
-        while(!timer.IsOver()) {
-            material.SetVector("_PlayerPosition", gm.player.transform.position);
-            yield return null;
-        }
+    protected void StopDissolveEffect() {
+        float dissolveTime = material.GetFloat("_DissolveTime");
+        material.SetFloat("_DissolveStartingTime", Time.time - dissolveTime);
     }
 
     protected virtual void RegisterCubeToColorSources() {
