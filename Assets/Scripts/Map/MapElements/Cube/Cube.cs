@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,11 +14,18 @@ public class Cube : MonoBehaviour {
 
     [HideInInspector] public bool bIsRegular = true;
     protected GameManager gm;
+    protected Material material;
 
     protected virtual void Start() {
         gm = GameManager.Instance;
+        material = GetComponent<Renderer>().material;
         if (shouldRegisterToColorSources)
             RegisterCubeToColorSources();
+        StartDissolveEffect();
+    }
+
+    protected void StartDissolveEffect() {
+        material.SetFloat("_DissolveStartingTime", Time.time);
     }
 
     protected virtual void RegisterCubeToColorSources() {
