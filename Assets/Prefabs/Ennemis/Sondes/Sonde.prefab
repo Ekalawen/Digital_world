@@ -117,6 +117,10 @@ MonoBehaviour:
   screenShakeRoughness: 10
   distancePoussee: 10
   tempsPoussee: 0.5
+  spikesTimeOnHit: 0.5
+  wavesSizeWaiting: 0
+  wavesSizeActive: 0.1
+  maxSpikesSize: 1
 --- !u!114 &-641334895464681557
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -133,6 +137,7 @@ MonoBehaviour:
   tempsInactifDebutJeu: 3
   distanceDeDetection: 10
   canAlwaysSeePlayer: 0
+  spikesTimeOnDetectPlayer: 1
 --- !u!143 &143727705574006242
 CharacterController:
   m_ObjectHideFlags: 0

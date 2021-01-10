@@ -6,6 +6,8 @@ public class SondeController : EnnemiController {
 
 	public enum EtatSonde {WAITING, TRACKING, DEFENDING, RUSHING, WANDERING};
 
+    public float spikesTimeOnDetectPlayer = 0.3f;
+
 	protected EtatSonde etat;
 	protected Vector3 lastPositionSeen; // La dernière position à laquelle le joueur a été vu !
     protected Vector3 lastPosition;
@@ -39,19 +41,41 @@ public class SondeController : EnnemiController {
             etat = EtatSonde.TRACKING;
             // Si la sonde vient juste de le repérer, on l'annonce
             if (etat != previousEtat && lastPositionSeen == transform.position) {
-                gm.soundManager.PlayDetectionClip(transform.position, transform);
+                DetectPlayer();
             }
         } else {
             EtatSonde previousEtat = etat;
             etat = EtatSonde.WAITING;
             // Si la sonde vient juste de perdre sa trace, on l'annonce
-            if (etat != previousEtat)
-                gm.console.JoueurPerduDeVue(name);
+            if (etat != previousEtat) {
+                LostPlayerSight();
+            }
         }
     }
 
-	// Permet de savoir si le drone est en mouvement
-	public override bool IsMoving() {
+    protected void DetectPlayer() {
+        gm.soundManager.PlayDetectionClip(transform.position, transform);
+        Sonde sonde = GetComponent<Sonde>();
+        if(sonde != null) {
+            sonde.ActivateSpikes(spikesTimeOnDetectPlayer);
+            sonde.ActivateWaves(true);
+        }
+    }
+
+    protected void LostPlayerSight()
+    {
+        gm.console.JoueurPerduDeVue(name);
+    }
+
+    protected void UntrackPlayer() {
+        Sonde sonde = GetComponent<Sonde>();
+        if (sonde != null) {
+            sonde.ActivateWaves(false);
+        }
+    }
+
+    // Permet de savoir si le drone est en mouvement
+    public override bool IsMoving() {
 		return (etat == EtatSonde.TRACKING || etat == EtatSonde.RUSHING) || Vector3.Distance(lastPositionSeen, transform.position) > 1f;
 	}
 
@@ -71,6 +95,10 @@ public class SondeController : EnnemiController {
         // Si on arrive plus à bouger, on s'arrête :)
         if(Vector3.Distance(transform.position, lastPosition) <= 0.001f) {
             lastPositionSeen = transform.position;
+        }
+        // On vient juste de s'arrêter !
+        if(lastPositionSeen == transform.position && move != Vector3.zero) {
+            UntrackPlayer();
         }
     }
 

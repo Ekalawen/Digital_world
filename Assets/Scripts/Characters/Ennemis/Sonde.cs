@@ -1,25 +1,41 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Sonde : Ennemi {
 
-    [Header("Poussee")]
+    [Header("Hit")]
 	public float distancePoussee; // La distance sur laquelle on va pousser le personnage !
 	public float tempsPoussee; // Le temps pendant lequel le personnage est poussé !
+    public float spikesTimeOnHit = 0.3f;
+
+    [Header("Shader")]
+    public float wavesSizeWaiting = 0.0f;
+    public float wavesSizeActive = 0.1f;
+    public float maxSpikesSize = 1.0f;
 
     protected Poussee pousseeCurrent;
+    protected Coroutine spikesSizeCoroutine = null;
+    protected Material material;
 
 	public override void Start () {
         base.Start();
 		// Initialisation
-		name = "Sonde_" + Random.Range (0, 9999);
+		name = "Sonde_" + UnityEngine.Random.Range (0, 9999);
         gm = GameManager.Instance;
         player = gm.player;
+        material = GetComponent<Renderer>().material;
+        ActivateWaves(false);
+        SetSpikesSize(0.0f);
 	}
-	
-	// Update is called once per frame
-	public override void UpdateSpecific () {
+
+    protected void SetSpikesSize(float size) {
+        material.SetFloat("_SpikesSize", size);
+    }
+
+    // Update is called once per frame
+    public override void UpdateSpecific () {
 	}
 
 	// On vérifie si on a touché le joueur !!!
@@ -37,6 +53,7 @@ public class Sonde : Ennemi {
         Vector3 directionPoussee = player.transform.position - transform.position;
         directionPoussee.Normalize();
         pousseeCurrent = new Poussee(directionPoussee, tempsPoussee, distancePoussee);
+        ActivateSpikes(spikesTimeOnHit);
         player.AddPoussee(pousseeCurrent);
         player.ResetGrip(); // Pour que le joueur puisse à nouveau s'accrocher aux murs !
 
@@ -49,5 +66,26 @@ public class Sonde : Ennemi {
 
     public override EventManager.DeathReason GetDeathReason() {
         return EventManager.DeathReason.SONDE_HIT;
+    }
+
+    public void ActivateWaves(bool value) {
+        float size = value ? wavesSizeActive : wavesSizeWaiting;
+        material.SetFloat("_WavesSize", size);
+    }
+
+    public void ActivateSpikes(float time) {
+        if(spikesSizeCoroutine != null) {
+            StopCoroutine(spikesSizeCoroutine);
+        }
+        spikesSizeCoroutine = StartCoroutine(CActivateSpikes(time));
+    }
+
+    protected IEnumerator CActivateSpikes(float time) {
+        Timer timer = new Timer(time);
+        while(!timer.IsOver()) {
+            float avancement = 1 - timer.GetAvancement();
+            SetSpikesSize(maxSpikesSize * avancement);
+            yield return null;
+        }
     }
 }
