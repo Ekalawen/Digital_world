@@ -21,11 +21,30 @@ public class Cube : MonoBehaviour {
         material = GetComponent<Renderer>().material;
         if (shouldRegisterToColorSources)
             RegisterCubeToColorSources();
-        StartDissolveEffect();
+        if (gm.map.IsInInsidedRegularMap(transform.position)) {
+            StartDissolveEffect();
+        } else {
+            StopDissolveEffect();
+        }
+    }
+
+    protected void StopDissolveEffect() {
+        float dissolveTime = material.GetFloat("_DissolveTime");
+        material.SetFloat("_DissolveStartingTime", Time.time - dissolveTime);
     }
 
     protected void StartDissolveEffect() {
         material.SetFloat("_DissolveStartingTime", Time.time);
+        material.SetVector("_PlayerPosition", gm.player.transform.position);
+        //StartCoroutine(CUpdatePlayerPositionInShader());
+    }
+
+    protected IEnumerator CUpdatePlayerPositionInShader() {
+        Timer timer = new Timer(material.GetFloat("_DissolveTime"));
+        while(!timer.IsOver()) {
+            material.SetVector("_PlayerPosition", gm.player.transform.position);
+            yield return null;
+        }
     }
 
     protected virtual void RegisterCubeToColorSources() {
