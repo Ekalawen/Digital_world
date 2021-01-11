@@ -53,10 +53,39 @@ public class SelectorCameraController : MonoBehaviour {
          || selectorManager.HasSelectorPathUnlockScreenOpen())
             return;
 
+        Vector3 speeds = ComputeSpeedOnAxis();
+
+        LookAtCentralProjectionIfNeeded(speeds.x);
+
+        Vector3 move = Move(speeds);
+
+        SetIsMoving(move);
+    }
+
+    protected void SetIsMoving(Vector3 move) {
+        Vector2 bornesY = ComputesBornesYPoints();
+        isMoving = move != Vector3.zero || Input.GetMouseButton(0) || transform.position.y > bornesY[1] || transform.position.y < bornesY[0];
+        if (isMoving) {
+            lastIsMovingTimer.Reset();
+        }
+    }
+
+    protected Vector3 Move(Vector3 speeds) {
+        Vector3 move = Vector3.zero;
+        Vector3 centralProjection = GetCentralProjection();
+        Vector3 right = -Vector3.Cross(centralProjection - transform.position, Vector3.up).normalized;
+        move += right * speeds.x;
+        move += Vector3.up * speeds.y;
+        move += transform.forward * speeds.z;
+        move *= Time.deltaTime;
+        controller.Move(move);
+        return move;
+    }
+
+    protected Vector3 ComputeSpeedOnAxis() {
         float speedX = Input.GetAxis("HorizontalFullGravity") * speedKeyboard.x;
         float speedY = Input.GetAxis("Depth") * speedKeyboard.y;
         float speedZ = Input.GetAxis("Vertical") * speedKeyboard.z;
-
         if (Input.GetMouseButton(0)) {
             float mouseSpeedX = -Input.GetAxis("Mouse X") * (1 - mouseSmoothing) + oldMouseSpeedX * mouseSmoothing;
             float mouseSpeedY = -Input.GetAxis("Mouse Y") * (1 - mouseSmoothing) + oldMouseSpeedY * mouseSmoothing;
@@ -68,17 +97,14 @@ public class SelectorCameraController : MonoBehaviour {
             timeSincePressedLeftClick.Reset();
         }
         speedZ += Input.GetAxis("Mouse ScrollWheel") * speedMouse.z;
+        return new Vector3(speedX, speedY, speedZ);
+    }
 
-        Vector3 move = Vector3.zero;
-        Vector3 centralProjection = GetCentralProjection();
-        Vector3 right = -Vector3.Cross(centralProjection - transform.position, Vector3.up).normalized;
-        move += right * speedX;
-        List<Vector3> interestPoints = GetAllInterestPoints();
-        float maxY = interestPoints.Max(p => p.y);
-        float minY = interestPoints.Min(p => p.y);
+    protected void LookAtCentralProjectionIfNeeded(float speedX) {
+        Vector2 bornesY = ComputesBornesYPoints();
         if ((speedX != 0 && !Input.GetMouseButton(0))
         || (Input.GetMouseButton(0) && timeSincePressedLeftClick.GetElapsedTime() >= delayLeftClickRotation)
-        || transform.position.y > maxY || transform.position.y < minY) {
+        || transform.position.y > bornesY[1] || transform.position.y < bornesY[0]) {
             if (rotationCoroutine != null) {
                 StopCoroutine(rotationCoroutine);
                 rotationCoroutine = null;
@@ -92,15 +118,13 @@ public class SelectorCameraController : MonoBehaviour {
                 lookAtCentralProjectionCoroutine = null;
             }
         }
-        move += Vector3.up * speedY;
-        move += transform.forward * speedZ;
-        move *= Time.deltaTime;
-        controller.Move(move);
+    }
 
-        isMoving = move != Vector3.zero || Input.GetMouseButton(0) || transform.position.y > maxY || transform.position.y < minY;
-        if(isMoving) {
-            lastIsMovingTimer.Reset();
-        }
+    protected Vector2 ComputesBornesYPoints() {
+        List<Vector3> interestPoints = GetAllInterestPoints();
+        float minY = interestPoints.Min(p => p.y);
+        float maxY = interestPoints.Max(p => p.y);
+        return new Vector2(minY, maxY);
     }
 
     protected void LookAtClosestInterestPoint() {
