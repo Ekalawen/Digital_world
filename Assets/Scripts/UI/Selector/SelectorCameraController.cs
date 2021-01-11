@@ -12,6 +12,7 @@ public class SelectorCameraController : MonoBehaviour {
     public float speedLookAtCenter = 10;
     public float dureeBeforeFocusToInterestPoint = 0.1f;
     public float mouseSmoothing = 0.3f;
+    public float delayLeftClickRotation = 0.2f;
 
     [Header("InterestPoints")]
     public float poidsDistanceInInterestScore = 0.5f;
@@ -32,10 +33,12 @@ public class SelectorCameraController : MonoBehaviour {
     protected Coroutine lookAtCentralProjectionCoroutine = null;
     protected float oldMouseSpeedX = 0;
     protected float oldMouseSpeedY = 0;
+    protected Timer timeSincePressedLeftClick;
 
     public void Start() {
         speedMouse *= 100;
         lastIsMovingTimer = new Timer(dureeBeforeFocusToInterestPoint);
+        timeSincePressedLeftClick = new Timer();
     }
 
     public void Update() {
@@ -61,6 +64,8 @@ public class SelectorCameraController : MonoBehaviour {
             oldMouseSpeedY = mouseSpeedY;
             speedX += mouseSpeedX * speedMouse.x;
             speedY += mouseSpeedY * speedMouse.y;
+        } else {
+            timeSincePressedLeftClick.Reset();
         }
         speedZ += Input.GetAxis("Mouse ScrollWheel") * speedMouse.z;
 
@@ -71,7 +76,9 @@ public class SelectorCameraController : MonoBehaviour {
         List<Vector3> interestPoints = GetAllInterestPoints();
         float maxY = interestPoints.Max(p => p.y);
         float minY = interestPoints.Min(p => p.y);
-        if (speedX != 0 || transform.position.y > maxY || transform.position.y < minY) {
+        if ((speedX != 0 && !Input.GetMouseButton(0))
+        || (Input.GetMouseButton(0) && timeSincePressedLeftClick.GetElapsedTime() >= delayLeftClickRotation)
+        || transform.position.y > maxY || transform.position.y < minY) {
             if (rotationCoroutine != null) {
                 StopCoroutine(rotationCoroutine);
                 rotationCoroutine = null;
