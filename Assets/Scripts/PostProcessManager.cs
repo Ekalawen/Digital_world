@@ -2,7 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering.PostProcessing;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
+//using UnityEngine.Rendering.PostProcessing;
 
 public enum DissolveEffectType {
     REGULAR_MAP,
@@ -14,15 +16,15 @@ public class PostProcessManager : MonoBehaviour {
     [Header("Grip")]
     public float changeTimeGrip = 0.075f;
     public float intensityGrip = 0.315f;
-    public PostProcessVolume gripVolume;
+    public Volume gripVolume;
 
     [Header("Hit")]
     public float changeTimeHit = 0.6f;
     public float intensityHit= 0.4f;
-    public PostProcessVolume hitVolume;
+    public UnityEngine.Rendering.PostProcessing.PostProcessVolume hitVolume;
 
     [Header("Poussee")]
-    public PostProcessVolume pousseeVolume;
+    public UnityEngine.Rendering.PostProcessing.PostProcessVolume pousseeVolume;
 
     [Header("Skybox")]
     public Color skyboxRectangleColor;
@@ -79,7 +81,8 @@ public class PostProcessManager : MonoBehaviour {
 
     public void UpdateHitEffect() {
         hitVolume.enabled = true;
-        hitVolume.profile.GetSetting<Vignette>().intensity.Override(intensityHit);
+        // REMOVE THIS COMMENT !
+        //hitVolume.profile.GetSetting<Vignette>().intensity.Override(intensityHit);
         if (hitCoroutine1 != null) {
             StopCoroutine(hitCoroutine1);
             StopCoroutine(hitCoroutine2);
@@ -88,20 +91,25 @@ public class PostProcessManager : MonoBehaviour {
     }
 
     IEnumerator CUpdateHitEffect() {
-        hitCoroutine1 = StartCoroutine(SetVignette(0.0f, changeTimeHit, hitVolume));
+        // REMOVE THIS COMMENT !
+        //hitCoroutine1 = StartCoroutine(SetVignette(0.0f, changeTimeHit, hitVolume));
         yield return new WaitForSeconds(changeTimeHit);
         hitVolume.enabled = false;
     }
 
-    IEnumerator SetVignette(float targetValue, float changeTime, PostProcessVolume volumeVignette) {
-        Vignette vignette = volumeVignette.profile.GetSetting<Vignette>();
+    IEnumerator SetVignette(float targetValue, float changeTime, Volume volume) {
+        VolumeProfile profile = volume.profile;
+        Vignette vignette;
+        if(!profile.TryGet<Vignette>(out vignette)) {
+            Debug.LogError($"Le profil {profile} doit contenir une vignette !");
+        }
         float debut = Time.timeSinceLevelLoad;
         float current = Time.timeSinceLevelLoad;
-        float amountNeeded = targetValue - vignette.intensity;
+        float amountNeeded = targetValue - vignette.intensity.GetValue<float>();
 
         while(Time.timeSinceLevelLoad - debut < changeTime) {
             float percentToAdd = (Time.timeSinceLevelLoad - current) / changeTime;
-            float newValue = vignette.intensity + percentToAdd * amountNeeded;
+            float newValue = vignette.intensity.GetValue<float>() + percentToAdd * amountNeeded;
             vignette.intensity.Override(newValue);
             current = Time.timeSinceLevelLoad;
             yield return null;
