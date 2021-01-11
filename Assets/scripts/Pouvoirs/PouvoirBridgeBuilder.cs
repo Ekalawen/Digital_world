@@ -16,6 +16,7 @@ public class PouvoirBridgeBuilder : IPouvoir {
     public bool canDestroyIndestructibleCubes = false; // Permet de de détruire également les cubes indestructibles
     public float rayonDestruction; // Le rayon de destruction autour duquel on détruit les cubes pour pouvoir passe =)
     public bool untilLastCubeTouched = false; // Le rayon traverse jusqu'au dernier cube touché.
+    public float cubesDissolveTime = 0.3f; // Le temps de dissolve des cubes crées !
 
     protected override bool UsePouvoir() {
         Vector3 pointSource; // Le départ du pont
@@ -82,6 +83,7 @@ public class PouvoirBridgeBuilder : IPouvoir {
         // Créer le cube
         if (gm.map.CubeFarEnoughtFromLumieres(position)) {
             Cube cube = gm.map.AddCube(position, Cube.CubeType.NORMAL, orientation);
+            cube.SetDissolveTime(cubesDissolveTime);
             cube.ShouldRegisterToColorSources();
         }
 

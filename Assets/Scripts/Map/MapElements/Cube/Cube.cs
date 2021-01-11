@@ -15,6 +15,7 @@ public class Cube : MonoBehaviour {
     [HideInInspector] public bool bIsRegular = true;
     protected GameManager gm;
     protected Material material;
+    protected float dissolveTimeToUse = -1;
 
     protected virtual void Start() {
         gm = GameManager.Instance;
@@ -24,9 +25,14 @@ public class Cube : MonoBehaviour {
         SetDissolveOnStart();
     }
 
+    public void SetDissolveTime(float dissolveTime) {
+        dissolveTimeToUse = dissolveTime;
+    }
+
     protected void SetDissolveOnStart() {
         if(gm.timerManager.GetElapsedTime() >= 1.0f) {
-            material.SetFloat("_DissolveTime", gm.postProcessManager.dissolveInGameTime);
+            float dissolveTime = dissolveTimeToUse != -1 ? dissolveTimeToUse : gm.postProcessManager.dissolveInGameTime;
+            material.SetFloat("_DissolveTime", dissolveTime);
             material.SetFloat("_PlayerProximityCoef", gm.postProcessManager.dissolveInGamePlayerProximityCoef);
             StartDissolveEffect();
             return;
