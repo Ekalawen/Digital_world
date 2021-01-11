@@ -21,7 +21,7 @@ public class PostProcessManager : MonoBehaviour {
     [Header("Hit")]
     public float changeTimeHit = 0.6f;
     public float intensityHit= 0.4f;
-    public UnityEngine.Rendering.PostProcessing.PostProcessVolume hitVolume;
+    public Volume hitVolume;
 
     [Header("Poussee")]
     public UnityEngine.Rendering.PostProcessing.PostProcessVolume pousseeVolume;
@@ -52,6 +52,7 @@ public class PostProcessManager : MonoBehaviour {
         camera = gm.player.camera;
 
         ResetSkyboxParameters();
+        hitVolume.weight = 0;
     }
 
     protected void ResetSkyboxParameters() {
@@ -68,21 +69,26 @@ public class PostProcessManager : MonoBehaviour {
         Player.EtatPersonnage etat = gm.player.GetEtat();
         if(previousState != Player.EtatPersonnage.AU_MUR && etat == Player.EtatPersonnage.AU_MUR) {
             // Activer !
-            if(gripCoroutine != null)
+            if (gripCoroutine != null) {
                 StopCoroutine(gripCoroutine);
+            }
             gripCoroutine = StartCoroutine(SetVignette(intensityGrip, changeTimeGrip, gripVolume));
         } else if (previousState == Player.EtatPersonnage.AU_MUR && etat != Player.EtatPersonnage.AU_MUR) {
             // Désactiver !
-            if(gripCoroutine != null)
+            if (gripCoroutine != null) {
                 StopCoroutine(gripCoroutine);
+            }
             gripCoroutine = StartCoroutine(SetVignette(0.0f, changeTimeGrip, gripVolume));
         }
     }
 
     public void UpdateHitEffect() {
-        hitVolume.enabled = true;
-        // REMOVE THIS COMMENT !
-        //hitVolume.profile.GetSetting<Vignette>().intensity.Override(intensityHit);
+        hitVolume.weight = 1;
+        Vignette vignette;
+        if (!hitVolume.profile.TryGet<Vignette>(out vignette)) {
+            Debug.LogError($"Le profil {hitVolume.profile} doit contenir une vignette !");
+        }
+        vignette.intensity.Override(intensityHit);
         if (hitCoroutine1 != null) {
             StopCoroutine(hitCoroutine1);
             StopCoroutine(hitCoroutine2);
@@ -91,10 +97,13 @@ public class PostProcessManager : MonoBehaviour {
     }
 
     IEnumerator CUpdateHitEffect() {
-        // REMOVE THIS COMMENT !
-        //hitCoroutine1 = StartCoroutine(SetVignette(0.0f, changeTimeHit, hitVolume));
-        yield return new WaitForSeconds(changeTimeHit);
-        hitVolume.enabled = false;
+        hitCoroutine1 = StartCoroutine(SetVignette(0.0f, changeTimeHit, hitVolume));
+        Timer timer = new Timer(changeTimeHit);
+        while(!timer.IsOver()) {
+            hitVolume.weight = MathCurves.Quadratic(0, 1, 1 - timer.GetAvancement());
+            yield return null;
+        }
+        hitVolume.weight = 0;
     }
 
     IEnumerator SetVignette(float targetValue, float changeTime, Volume volume) {
@@ -103,15 +112,13 @@ public class PostProcessManager : MonoBehaviour {
         if(!profile.TryGet<Vignette>(out vignette)) {
             Debug.LogError($"Le profil {profile} doit contenir une vignette !");
         }
-        float debut = Time.timeSinceLevelLoad;
-        float current = Time.timeSinceLevelLoad;
-        float amountNeeded = targetValue - vignette.intensity.GetValue<float>();
+        float startValue = vignette.intensity.GetValue<float>();
+        float amountNeeded = targetValue - startValue;
 
-        while(Time.timeSinceLevelLoad - debut < changeTime) {
-            float percentToAdd = (Time.timeSinceLevelLoad - current) / changeTime;
-            float newValue = vignette.intensity.GetValue<float>() + percentToAdd * amountNeeded;
+        Timer timer = new Timer(changeTime);
+        while (!timer.IsOver()) {
+            float newValue = startValue + timer.GetAvancement() * amountNeeded;
             vignette.intensity.Override(newValue);
-            current = Time.timeSinceLevelLoad;
             yield return null;
         }
         vignette.intensity.Override(targetValue);
