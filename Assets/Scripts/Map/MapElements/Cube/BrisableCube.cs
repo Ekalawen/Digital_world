@@ -11,7 +11,7 @@ public class BrisableCube : NonBlackCube {
 
     protected Coroutine coroutine = null;
 
-    protected override void Start() {
+    public override void Start() {
         base.Start();
         Material material = GetComponent<Renderer>().material;
         material.mainTexture = textures[UnityEngine.Random.Range(0, textures.Count)];

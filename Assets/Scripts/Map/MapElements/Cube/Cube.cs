@@ -17,11 +17,12 @@ public class Cube : MonoBehaviour {
     protected Material material;
     protected float dissolveTimeToUse = -1;
 
-    protected virtual void Start() {
+    public virtual void Start() {
         gm = GameManager.Instance;
         material = GetComponent<Renderer>().material;
-        if (shouldRegisterToColorSources)
+        if (shouldRegisterToColorSources) {
             RegisterCubeToColorSources();
+        }
         SetDissolveOnStart();
     }
 
@@ -38,7 +39,7 @@ public class Cube : MonoBehaviour {
             return;
         }
 
-        if (gm.GetMapType() == MenuLevel.LevelType.REGULAR) {
+        if (gm.map.dissolveEffectType == DissolveEffectType.REGULAR_MAP) {
             material.SetFloat("_DissolveTime", gm.postProcessManager.dissolveRegularTime);
             material.SetFloat("_PlayerProximityCoef", gm.postProcessManager.dissolveRegularPlayerProximityCoef);
             if (gm.map.IsInInsidedRegularMap(transform.position)) {
@@ -46,7 +47,7 @@ public class Cube : MonoBehaviour {
             } else {
                 StopDissolveEffect();
             }
-        } else {
+        } else if (gm.map.dissolveEffectType == DissolveEffectType.INFINITE_MAP) {
             material.SetFloat("_DissolveTime", gm.postProcessManager.dissolveInfiniteTime);
             material.SetFloat("_PlayerProximityCoef", gm.postProcessManager.dissolveInfinitePlayerProximityCoef);
             material.SetFloat("_DissolveStartingTime", Time.time - gm.postProcessManager.dissolveInfiniteTime);

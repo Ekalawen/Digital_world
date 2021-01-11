@@ -13,7 +13,7 @@ public class BouncyCube : Cube {
 
     protected Timer timerAddPoussee;
 
-    protected override void Start() {
+    public override void Start() {
         base.Start();
         GameManager gm = GameManager.Instance;
         Vector3 playerPos = gm.player.transform.position;

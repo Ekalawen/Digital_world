@@ -15,7 +15,7 @@ public class CorruptedCube : NonBlackCube {
     protected Coroutine coroutine = null;
     protected Material initialMaterial;
 
-    protected override void Start() {
+    public override void Start() {
         base.Start();
         initialColor = GetColor();
         initialMaterial = GetComponent<MeshRenderer>().material;

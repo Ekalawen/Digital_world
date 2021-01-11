@@ -4,6 +4,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
 
+public enum DissolveEffectType {
+    REGULAR_MAP,
+    INFINITE_MAP,
+};
+
 public class PostProcessManager : MonoBehaviour {
 
     [Header("Grip")]

@@ -39,6 +39,7 @@ public class MapManager : MonoBehaviour {
     [Header("Map Construction")]
     public List<MapFunctionComponent> mapFunctionComponents;
 
+    public DissolveEffectType dissolveEffectType = DissolveEffectType.REGULAR_MAP;
     public Vector3Int tailleMap; // La taille de la map, en largeur, hauteur et profondeur
 	public int nbLumieresInitial; // Le nombre de lumières lors de la création de la map
     //public Transform alreadyExistingCubesFolder; // Le dossier contenant les cubes déjà existant !
@@ -886,6 +887,7 @@ public class MapManager : MonoBehaviour {
                 maxParent.SetParent(cubesFolder.transform);
             }
             AddCube(cube);
+            cube.Start();
         }
 
         Lumiere[] newLumieres = FindObjectsOfType<Lumiere>();

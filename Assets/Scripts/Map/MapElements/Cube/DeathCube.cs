@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DeathCube : NonBlackCube {
 
-    protected override void Start() {
+    public override void Start() {
         base.Start();
         CheckPlayerCollisionOnStart();
     }

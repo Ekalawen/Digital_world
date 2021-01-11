@@ -9,7 +9,7 @@ public class NonBlackCube : Cube {
 
     protected bool colorHasBeenChanged = false;
 
-    protected override void Start() {
+    public override void Start() {
         base.Start();
         InitColor();
     }
