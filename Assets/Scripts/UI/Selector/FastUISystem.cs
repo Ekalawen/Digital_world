@@ -51,7 +51,9 @@ public class FastUISystem : MonoBehaviour {
     }
 
     public void OnLevelButtonClick() {
-        selectorManager.BackToSelectorForFastUI();
+        if (selectorManager.IsLevelAccessible(level)) {
+            selectorManager.BackToSelectorForFastUI();
+        }
         selectorManager.TryDisplayLevel(level, instantDisplay: true);
     }
 

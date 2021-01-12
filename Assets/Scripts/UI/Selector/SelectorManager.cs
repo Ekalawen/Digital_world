@@ -188,9 +188,12 @@ public class SelectorManager : MonoBehaviour {
             DisplayLevel(selectorLevel, instantDisplay);
             selectorLevel.menuLevel.HighlightBackButton(false);
         } else {
+            popup.AddReplacement("Data Hackées()", UIHelper.SurroundWithColor("Data Hackées()", UIHelper.ORANGE));
             RunPopup("Niveau vérouillé !",
                 "Niveau vérouillé.\n" +
-                "Vous devez débloquer tous les chemins menant à ce niveau pour le dévérouiller !", TexteExplicatif.Theme.NEGATIF);
+                "Vous devez débloquer toutes les Data Hackées() menant à ce niveau pour le dévérouiller !",
+                TexteExplicatif.Theme.NEGATIF,
+                cleanReplacements: false);
         }
     }
 
