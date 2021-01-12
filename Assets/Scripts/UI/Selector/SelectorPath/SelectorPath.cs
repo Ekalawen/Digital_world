@@ -113,10 +113,21 @@ public class SelectorPath : MonoBehaviour {
     }
 
     public void OnCadenaClicked() {
-        selectorManager.FadeIn(selectorManager.background.gameObject, selectorManager.dureeFading);
+        OpenUnlockScreen();
+    }
+
+    public void OpenUnlockScreen(bool instantDisplay = false) {
         unlockScreen.gameObject.SetActive(true);
         unlockScreen.Initialize(this, GetHighlitedState());
-        selectorManager.FadeIn(unlockScreen.gameObject, selectorManager.dureeFading);
+        if (!instantDisplay) {
+            selectorManager.FadeIn(selectorManager.background.gameObject, selectorManager.dureeFading);
+            selectorManager.FadeIn(unlockScreen.gameObject, selectorManager.dureeFading);
+        } else {
+            selectorManager.background.gameObject.SetActive(true);
+            selectorManager.background.gameObject.GetComponent<CanvasGroup>().alpha = 1.0f;
+            unlockScreen.gameObject.SetActive(true);
+            unlockScreen.gameObject.GetComponent<CanvasGroup>().alpha = 1.0f;
+        }
         selectorManager.SetSelectorPathUnlockScreenOpenness(true);
     }
 

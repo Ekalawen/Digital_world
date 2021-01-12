@@ -234,6 +234,13 @@ public class SelectorManager : MonoBehaviour {
         FadeOut(background.gameObject, dureeFading);
     }
 
+    public void BackToSelectorForFastUI() {
+        if (!HasSelectorLevelOpen())
+            return;
+        hasLevelOpen = false;
+        currentSelectorLevel.menuLevel.gameObject.SetActive(false);
+    }
+
     public void Next() {
         if (!HasSelectorLevelOpen())
             return;

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System;
+using UnityEngine.Events;
 
 public class FastUISystem : MonoBehaviour {
 
@@ -15,11 +16,19 @@ public class FastUISystem : MonoBehaviour {
     public TMP_Text levelNameText;
     public Button levelButton;
     public Button unlockScreenButton;
+
+    protected SelectorManager selectorManager;
+    protected SelectorPath path;
+    protected SelectorLevel level;
     
     public void Initialize(SelectorPath path, DirectionType directionType) {
-        string levelName = GetLevelName(path, directionType);
+        selectorManager = SelectorManager.Instance;
+        this.path = path;
+        this.level = GetLevel(path, directionType);
+        string levelName = level.GetName();
         SetName(levelName);
         SetTooltips(levelName, directionType);
+        SetButtonsActivations();
     }
 
     protected void SetName(string levelName) {
@@ -34,11 +43,28 @@ public class FastUISystem : MonoBehaviour {
         levelButton.GetComponent<TooltipActivator>().message = $"Niveau {levelName}";
     }
 
-    protected string GetLevelName(SelectorPath path, DirectionType directionType) {
+    protected void SetButtonsActivations() {
+        UnityAction levelAction = new UnityAction(this.OnLevelButtonClick);
+        levelButton.onClick.AddListener(levelAction);
+        UnityAction unlockScreenAction = new UnityAction(this.OnUnlockScreenButtonClick);
+        unlockScreenButton.onClick.AddListener(unlockScreenAction);
+    }
+
+    public void OnLevelButtonClick() {
+        selectorManager.BackToSelectorForFastUI();
+        selectorManager.TryDisplayLevel(level, instantDisplay: true);
+    }
+
+    public void OnUnlockScreenButtonClick() {
+        selectorManager.BackToSelectorForFastUI();
+        path.OpenUnlockScreen(instantDisplay: true);
+    }
+
+    protected SelectorLevel GetLevel(SelectorPath path, DirectionType directionType) {
         if (directionType == DirectionType.FORWARD) {
-            return path.endLevel.GetName();
+            return path.endLevel;
         } else {
-            return path.startLevel.GetName();
+            return path.startLevel;
         }
     }
 }
