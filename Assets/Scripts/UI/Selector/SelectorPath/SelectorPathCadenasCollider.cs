@@ -12,7 +12,7 @@ public class SelectorPathCadenasCollider : MonoBehaviour {
 
     public void Start() {
         selectorManager = SelectorManager.Instance;
-        tooltipActivator.message = $"Déverouiller le niveau {cadenas.selectorPath.endLevel.GetName()}";
+        tooltipActivator.message = $"Data Hackées() du niveau {cadenas.selectorPath.endLevel.GetName()}";
     }
 
     public void OnMouseEnter() {

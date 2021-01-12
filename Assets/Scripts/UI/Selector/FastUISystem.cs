@@ -39,8 +39,8 @@ public class FastUISystem : MonoBehaviour {
     protected void SetTooltips(string levelName, DirectionType directionType) {
         string suivant = directionType == DirectionType.FORWARD ? "suivant" : "precedant";
         levelNameText.GetComponent<TooltipActivator>().message = $"Vers le niveau {suivant}";
-        unlockScreenButton.GetComponent<TooltipActivator>().message = $"Déverouiller {levelName}";
-        levelButton.GetComponent<TooltipActivator>().message = $"Niveau {levelName}";
+        unlockScreenButton.GetComponent<TooltipActivator>().message = $"Data Hackées()";
+        levelButton.GetComponent<TooltipActivator>().message = $"Niveau()";
     }
 
     protected void SetButtonsActivations() {
