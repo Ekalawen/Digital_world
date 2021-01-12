@@ -100,6 +100,8 @@ public class MenuLevel : MonoBehaviour {
         SelectorLevel selectorLevel = selectorManager.GetCurrentLevel();
         List<SelectorPath> nextPaths = selectorManager.GetOutPaths(selectorLevel);
         List<SelectorPath> previousPaths = selectorManager.GetInPaths(selectorLevel);
+        nextPaths.Reverse();
+        previousPaths.Reverse();
         for(int i = 0; i < nextPaths.Count; i++) {
             SelectorPath nextPath = nextPaths[i];
             float heightOffset = ComputeHeightOffset();
