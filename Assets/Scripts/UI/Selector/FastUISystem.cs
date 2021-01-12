@@ -61,11 +61,13 @@ public class FastUISystem : MonoBehaviour {
         if (fromType == FromType.LEVEL) {
             if (selectorManager.IsLevelAccessible(level)) {
                 selectorManager.BackToSelectorForFastUI();
+                selectorManager.PlaceCameraInFrontOfInterestPoint(level.objectLevel.transform.position);
             }
             selectorManager.TryDisplayLevel(level, instantDisplay: true);
         } else { // UnlockScreen
             if (selectorManager.IsLevelAccessible(level)) {
                 path.CloseUnlockScreenForFastUI();
+                selectorManager.PlaceCameraInFrontOfInterestPoint(level.objectLevel.transform.position);
             }
             selectorManager.TryDisplayLevel(level, instantDisplay: true);
         }
@@ -74,6 +76,7 @@ public class FastUISystem : MonoBehaviour {
     public void OnUnlockScreenButtonClick() {
         selectorManager.BackToSelectorForFastUI();
         path.OpenUnlockScreen(instantDisplay: true);
+        selectorManager.PlaceCameraInFrontOfInterestPoint(path.cadena.transform.position);
     }
 
     protected SelectorLevel GetLevel(SelectorPath path, DirectionType directionType) {

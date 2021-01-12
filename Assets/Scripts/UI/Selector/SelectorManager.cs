@@ -206,6 +206,7 @@ public class SelectorManager : MonoBehaviour {
         background.gameObject.SetActive(true);
         if (instantDisplay) {
             currentSelectorLevel.menuLevel.gameObject.SetActive(true);
+            currentSelectorLevel.menuLevel.gameObject.GetComponent<CanvasGroup>().alpha = 1.0f;
             background.gameObject.SetActive(true);
         } else {
             FadeIn(currentSelectorLevel.menuLevel.gameObject, dureeFading);
@@ -266,10 +267,22 @@ public class SelectorManager : MonoBehaviour {
     }
 
     protected void PlaceCameraInFrontOfCurrentLevel() {
+        PlaceCameraInFrontOfInterestPoint(currentSelectorLevel.transform.position);
+    }
+
+    public void PlaceCameraInFrontOfInterestPoint(Vector3 interestPos) {
         SelectorCameraController cameraController = camera.GetComponent<SelectorCameraController>();
-        Vector3 levelPos = currentSelectorLevel.transform.position;
-        Vector3 posToGoTo = levelPos + currentSelectorLevel.transform.forward * cameraController.GetIdealDistanceFromLevel();
+        Vector3 forward;
+        if(interestPos.x == 0.0f && interestPos.z == 0.0f) {
+            forward = Vector3.forward;
+        } else {
+            Vector3 projection = Vector3.Project(interestPos, Vector3.up);
+            Vector3 orthoToCenter = interestPos - projection;
+            forward = orthoToCenter.normalized;
+        }
+        Vector3 posToGoTo = interestPos + forward * cameraController.GetIdealDistanceFromLevel();
         cameraController.PlaceAt(posToGoTo);
+        cameraController.transform.LookAt(interestPos, Vector3.up);
     }
 
     protected void DisplayCurrentLevel() {
