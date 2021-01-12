@@ -13,6 +13,11 @@ public class FastUISystem : MonoBehaviour {
         BACKWARD,
     };
 
+    public enum FromType {
+        LEVEL,
+        UNLOCK_SCREEN,
+    };
+
     public TMP_Text levelNameText;
     public Button levelButton;
     public Button unlockScreenButton;
@@ -20,11 +25,13 @@ public class FastUISystem : MonoBehaviour {
     protected SelectorManager selectorManager;
     protected SelectorPath path;
     protected SelectorLevel level;
+    protected FromType fromType;
     
-    public void Initialize(SelectorPath path, DirectionType directionType) {
+    public void Initialize(SelectorPath path, DirectionType directionType, FromType fromType) {
         selectorManager = SelectorManager.Instance;
         this.path = path;
         this.level = GetLevel(path, directionType);
+        this.fromType = fromType;
         string levelName = level.GetName();
         SetName(levelName);
         SetTooltips(levelName, directionType);
@@ -51,10 +58,17 @@ public class FastUISystem : MonoBehaviour {
     }
 
     public void OnLevelButtonClick() {
-        if (selectorManager.IsLevelAccessible(level)) {
-            selectorManager.BackToSelectorForFastUI();
+        if (fromType == FromType.LEVEL) {
+            if (selectorManager.IsLevelAccessible(level)) {
+                selectorManager.BackToSelectorForFastUI();
+            }
+            selectorManager.TryDisplayLevel(level, instantDisplay: true);
+        } else { // UnlockScreen
+            if (selectorManager.IsLevelAccessible(level)) {
+                path.CloseUnlockScreenForFastUI();
+            }
+            selectorManager.TryDisplayLevel(level, instantDisplay: true);
         }
-        selectorManager.TryDisplayLevel(level, instantDisplay: true);
     }
 
     public void OnUnlockScreenButtonClick() {

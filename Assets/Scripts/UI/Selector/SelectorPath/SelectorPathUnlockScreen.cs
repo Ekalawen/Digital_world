@@ -32,6 +32,12 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
     public int distanceBackgroundLocked;
     public List<ColorSource.ThemeSource> themesBackgroundLocked;
 
+    [Header("FastUI")]
+    public GameObject fastUISystemNextPrefab;
+    public GameObject fastUISystemPreviousPrefab;
+    public RectTransform fastUISystemNextTransform;
+    public RectTransform fastUISystemPreviousTransform;
+
     protected SelectorManager selectorManager;
     protected SelectorPath selectorPath;
 
@@ -44,6 +50,22 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         FillInputWithPasswordIfAlreayDiscovered();
         FillTraceHint();
         HighlightDataHackees(shouldHighlightDataHackees);
+        GenerateNextAndPreviousButtons();
+    }
+
+    protected void GenerateNextAndPreviousButtons() {
+        if (fastUISystemNextTransform.childCount > 0 || fastUISystemPreviousTransform.childCount > 0) {
+            foreach(Transform t in fastUISystemNextTransform) {
+                Destroy(t.gameObject);
+            }
+            foreach(Transform t in fastUISystemPreviousTransform) {
+                Destroy(t.gameObject);
+            }
+        }
+        FastUISystem fastUISystemForward = Instantiate(fastUISystemNextPrefab, fastUISystemNextTransform).GetComponent<FastUISystem>();
+        fastUISystemForward.Initialize(selectorPath, FastUISystem.DirectionType.FORWARD, FastUISystem.FromType.UNLOCK_SCREEN);
+        FastUISystem fastUISystemBackward = Instantiate(fastUISystemPreviousPrefab, fastUISystemPreviousTransform).GetComponent<FastUISystem>();
+        fastUISystemBackward.Initialize(selectorPath, FastUISystem.DirectionType.BACKWARD, FastUISystem.FromType.UNLOCK_SCREEN);
     }
 
     protected void SetTitles() {

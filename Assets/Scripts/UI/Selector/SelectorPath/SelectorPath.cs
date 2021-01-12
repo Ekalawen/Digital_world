@@ -131,9 +131,22 @@ public class SelectorPath : MonoBehaviour {
         selectorManager.SetSelectorPathUnlockScreenOpenness(true);
     }
 
-    public void CloseUnlockScreen() {
-        selectorManager.FadeOut(selectorManager.background.gameObject, selectorManager.dureeFading);
-        selectorManager.FadeOut(unlockScreen.gameObject, selectorManager.dureeFading);
+    public void CloseUnlockScreen(bool instantDisplay = false) {
+        if (!instantDisplay) {
+            selectorManager.FadeOut(selectorManager.background.gameObject, selectorManager.dureeFading);
+            selectorManager.FadeOut(unlockScreen.gameObject, selectorManager.dureeFading);
+        } else {
+            selectorManager.background.gameObject.SetActive(false);
+            selectorManager.background.gameObject.GetComponent<CanvasGroup>().alpha = 0.0f;
+            unlockScreen.gameObject.SetActive(false);
+            unlockScreen.gameObject.GetComponent<CanvasGroup>().alpha = 0.0f;
+        }
+        StartCoroutine(CDisableScreenOpennessNextFrame());
+    }
+
+    public void CloseUnlockScreenForFastUI() {
+        unlockScreen.gameObject.SetActive(false);
+        unlockScreen.gameObject.GetComponent<CanvasGroup>().alpha = 0.0f;
         StartCoroutine(CDisableScreenOpennessNextFrame());
     }
 
