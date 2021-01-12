@@ -179,7 +179,7 @@ public class SelectorManager : MonoBehaviour {
         return null;
     }
 
-    private SelectorLevel GetCurrentLevel() {
+    public SelectorLevel GetCurrentLevel() {
         return currentSelectorLevel;
     }
 

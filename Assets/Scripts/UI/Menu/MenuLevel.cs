@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class MenuLevel : MonoBehaviour {
 
@@ -51,19 +52,25 @@ public class MenuLevel : MonoBehaviour {
     [Header("Scores")]
     public GameObject scoresRegular;
     public GameObject scoresInfinite;
-    public TMPro.TMP_Text score_nbTries;
-    public TMPro.TMP_Text score_nbWins;
-    public TMPro.TMP_Text score_winrate;
-    public TMPro.TMP_Text score_highestScore;
-    public TMPro.TMP_Text score_nbGames;
-    public TMPro.TMP_Text score_meanScore;
-    public TMPro.TMP_Text score_sinceLastBestScore;
-    public TMPro.TMP_Text score_bestScore;
+    public TMP_Text score_nbTries;
+    public TMP_Text score_nbWins;
+    public TMP_Text score_winrate;
+    public TMP_Text score_highestScore;
+    public TMP_Text score_nbGames;
+    public TMP_Text score_meanScore;
+    public TMP_Text score_sinceLastBestScore;
+    public TMP_Text score_bestScore;
+
+    [Header("FastUI")]
+    public GameObject fastUISystemNextPrefab;
+    public GameObject fastUISystemPreviousPrefab;
+    public RectTransform fastUISystemNextTransform;
+    public RectTransform fastUISystemPreviousTransform;
 
     [Header("Other Links")]
     public SelectorManager selectorManager;
     public MenuBackgroundBouncing menuBouncingBackground;
-    public TMPro.TMP_Text textLevelName;
+    public TMP_Text textLevelName;
     public InputField inputFieldNext;
     public Button backButton;
 
@@ -85,9 +92,23 @@ public class MenuLevel : MonoBehaviour {
         string key = GetName() + CURRENT_INPUT_FIELD_KEY;
         inputFieldNext.text = PlayerPrefs.GetString(key);
         UIHelper.FitTextHorizontaly(textLevelName.text, textLevelName);
+
+        GenerateNextAndPreviousButtons();
     }
 
-    private void Update() {
+    protected void GenerateNextAndPreviousButtons() {
+        SelectorLevel selectorLevel = selectorManager.GetCurrentLevel();
+        foreach(SelectorPath nextPath in selectorManager.GetOutPaths(selectorLevel)) {
+            FastUISystem fastUISystem = Instantiate(fastUISystemNextPrefab, fastUISystemNextTransform).GetComponent<FastUISystem>();
+            fastUISystem.Initialize(nextPath, FastUISystem.DirectionType.FORWARD);
+        }
+        foreach (SelectorPath previousPath in selectorManager.GetInPaths(selectorLevel)) {
+            FastUISystem fastUISystem = Instantiate(fastUISystemPreviousPrefab, fastUISystemPreviousTransform).GetComponent<FastUISystem>();
+            fastUISystem.Initialize(previousPath, FastUISystem.DirectionType.BACKWARD);
+        }
+    }
+
+    protected void Update() {
         // Si on appui sur Echap on quitte
         if (!MenuManager.DISABLE_HOTKEYS) {
             if (Input.GetKeyDown(KeyCode.Return)
