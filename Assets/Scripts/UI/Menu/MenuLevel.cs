@@ -98,14 +98,30 @@ public class MenuLevel : MonoBehaviour {
 
     protected void GenerateNextAndPreviousButtons() {
         SelectorLevel selectorLevel = selectorManager.GetCurrentLevel();
-        foreach(SelectorPath nextPath in selectorManager.GetOutPaths(selectorLevel)) {
-            FastUISystem fastUISystem = Instantiate(fastUISystemNextPrefab, fastUISystemNextTransform).GetComponent<FastUISystem>();
+        List<SelectorPath> nextPaths = selectorManager.GetOutPaths(selectorLevel);
+        List<SelectorPath> previousPaths = selectorManager.GetInPaths(selectorLevel);
+        for(int i = 0; i < nextPaths.Count; i++) {
+            SelectorPath nextPath = nextPaths[i];
+            float heightOffset = ComputeHeightOffset();
+            Vector3 pos = fastUISystemNextTransform.transform.position + Vector3.up * heightOffset * (i - (nextPaths.Count - 1) / 2.0f);
+            FastUISystem fastUISystem = Instantiate(fastUISystemNextPrefab, pos, Quaternion.identity, fastUISystemNextTransform).GetComponent<FastUISystem>();
             fastUISystem.Initialize(nextPath, FastUISystem.DirectionType.FORWARD);
         }
-        foreach (SelectorPath previousPath in selectorManager.GetInPaths(selectorLevel)) {
-            FastUISystem fastUISystem = Instantiate(fastUISystemPreviousPrefab, fastUISystemPreviousTransform).GetComponent<FastUISystem>();
+        for (int i = 0; i < previousPaths.Count; i++) {
+            SelectorPath previousPath = previousPaths[i];
+            float heightOffset = ComputeHeightOffset();
+            Vector3 pos = fastUISystemPreviousTransform.transform.position + Vector3.up * heightOffset * (i - (previousPaths.Count - 1) / 2.0f);
+            FastUISystem fastUISystem = Instantiate(fastUISystemPreviousPrefab, pos, Quaternion.identity, fastUISystemPreviousTransform).GetComponent<FastUISystem>();
             fastUISystem.Initialize(previousPath, FastUISystem.DirectionType.BACKWARD);
         }
+    }
+
+    protected float ComputeHeightOffset() {
+        //RectTransformUtility.ScreenPointToLocalPointInRectangle(fastUISystemNextPrefab.GetComponent<RectTransform>(), )
+        //float heightOffset = (fastUISystemNextPrefab.GetComponent<RectTransform>().rect.height + 5) * FindObjectOfType<Canvas>().scaleFactor;
+        float heightOffset = 55.0f;
+        Debug.Log($"heightOffset = {heightOffset}");
+        return heightOffset;
     }
 
     protected void Update() {
