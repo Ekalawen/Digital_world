@@ -97,6 +97,8 @@ public class MenuLevel : MonoBehaviour {
     }
 
     protected void GenerateNextAndPreviousButtons() {
+        if (fastUISystemNextTransform.childCount > 0 || fastUISystemPreviousTransform.childCount > 0)
+            return;
         SelectorLevel selectorLevel = selectorManager.GetCurrentLevel();
         List<SelectorPath> nextPaths = selectorManager.GetOutPaths(selectorLevel);
         List<SelectorPath> previousPaths = selectorManager.GetInPaths(selectorLevel);
