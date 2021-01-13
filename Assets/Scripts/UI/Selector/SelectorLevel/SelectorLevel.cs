@@ -12,12 +12,17 @@ public class SelectorLevel : MonoBehaviour {
 
     protected SelectorManager selectorManager;
 
-    public void Initialize(MenuBackgroundBouncing background) {
+    public void Initialize(MenuBackgroundBouncing background)
+    {
         selectorManager = SelectorManager.Instance;
         objectLevel.title.GetComponent<LookAtTransform>().transformToLookAt = selectorManager.camera.transform;
-        objectLevel.Initialize();
+        InitializeObject();
         menuLevel.selectorManager = selectorManager;
         menuLevel.menuBouncingBackground = background;
+    }
+
+    public void InitializeObject() {
+        objectLevel.Initialize(IsHighlighted());
     }
 
     public void OnMouseEnter() {
@@ -137,6 +142,10 @@ public class SelectorLevel : MonoBehaviour {
             }
         }
         return hasDisplayed;
+    }
+
+    public bool IsHighlighted() {
+        return IsAccessible() && selectorManager.GetOutPaths(this).Any(p => !p.IsUnlocked());
     }
 
     protected void DisplayNewPallierMessage(int nbWin, List<string> nextLevels) {

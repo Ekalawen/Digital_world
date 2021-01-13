@@ -11,8 +11,8 @@ public class SelectorLevelObject : MonoBehaviour {
     public GameObject collision;
     public SelectorLevelObjectTitle title;
 
-    public void Initialize() {
-        cube.Initialize();
+    public void Initialize(bool highlighted) {
+        cube.Initialize(highlighted);
         title.Initialize();
     }
 }

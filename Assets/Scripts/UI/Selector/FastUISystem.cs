@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using System;
 using UnityEngine.Events;
+using System.Linq;
 
 public class FastUISystem : MonoBehaviour {
 
@@ -128,6 +129,6 @@ public class FastUISystem : MonoBehaviour {
         }
 
         ButtonHighlighter levelHighlighter = levelButton.GetComponent<ButtonHighlighter>();
-        levelHighlighter.enabled = level.IsAccessible() && !level.IsSucceeded();
+        levelHighlighter.enabled = level.IsHighlighted();
     }
 }

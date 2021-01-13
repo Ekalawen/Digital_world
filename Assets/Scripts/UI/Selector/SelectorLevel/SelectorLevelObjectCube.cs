@@ -15,10 +15,11 @@ public class SelectorLevelObjectCube : MonoBehaviour {
     protected SelectorManager selectorManager;
     protected bool hasClickedDown = false;
 
-    public void Initialize() {
+    public void Initialize(bool hightlighted) {
         selectorManager = SelectorManager.Instance;
         SetMaterial(focus: false);
         tooltipActivator.message = $"Niveau {selectorLevel.GetName()}";
+        GetComponent<AutoBouncer>().enabled = hightlighted;
     }
 
     public void OnMouseEnter() {

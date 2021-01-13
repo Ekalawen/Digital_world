@@ -15,6 +15,7 @@ public class AutoBouncer : MonoBehaviour {
 
     void Start() {
         timer = new Timer(intervalTime);
+        timer.SetOver();
     }
 
     void Update() {

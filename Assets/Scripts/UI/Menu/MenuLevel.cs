@@ -487,7 +487,6 @@ public class MenuLevel : MonoBehaviour {
 
     protected void MakeBouncePlayButton() {
         SelectorLevel level = selectorManager.GetLevelFromMenuLevel(this);
-        bool shouldBeHighlighted = selectorManager.GetOutPaths(level).Any(p => !p.IsUnlocked());
-        playButton.GetComponent<ButtonHighlighter>().enabled = shouldBeHighlighted;
+        playButton.GetComponent<ButtonHighlighter>().enabled = level.IsHighlighted();
     }
 }
