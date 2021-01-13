@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Linq;
 
 public class MenuLevel : MonoBehaviour {
 
@@ -73,6 +74,7 @@ public class MenuLevel : MonoBehaviour {
     public TMP_Text textLevelName;
     public InputField inputFieldNext;
     public Button backButton;
+    public Button playButton;
 
     [HideInInspector]
     public MenuLevelSelector menuLevelSelector;
@@ -93,6 +95,7 @@ public class MenuLevel : MonoBehaviour {
         inputFieldNext.text = PlayerPrefs.GetString(key);
         UIHelper.FitTextHorizontaly(textLevelName.text, textLevelName);
 
+        MakeBouncePlayButton();
         GenerateNextAndPreviousButtons();
     }
 
@@ -480,5 +483,11 @@ public class MenuLevel : MonoBehaviour {
         string key = GetName() + IS_LEVEL_HIGHLIGHTED_KEY;
         bool state = PlayerPrefs.HasKey(key) && PlayerPrefs.GetString(key) == MenuManager.TRUE;
         backButton.GetComponent<ButtonHighlighter>().enabled = state;
+    }
+
+    protected void MakeBouncePlayButton() {
+        SelectorLevel level = selectorManager.GetLevelFromMenuLevel(this);
+        bool shouldBeHighlighted = selectorManager.GetOutPaths(level).Any(p => !p.IsUnlocked());
+        playButton.GetComponent<ButtonHighlighter>().enabled = shouldBeHighlighted;
     }
 }

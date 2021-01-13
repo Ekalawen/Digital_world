@@ -184,7 +184,6 @@ public class SelectorPath : MonoBehaviour {
     public void UnlockPath() {
         string key = name + IS_UNLOCKED_PATH_KEY;
         PlayerPrefs.SetString(key, MenuManager.TRUE);
-        Debug.Log($"{GetName()} unlocked !");
     }
 
     public string GetName() {
