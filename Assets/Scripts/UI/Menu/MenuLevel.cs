@@ -463,7 +463,11 @@ public class MenuLevel : MonoBehaviour {
     }
 
     public bool IsSucceeded() {
-        return GetNbWins() > 0;
+        if (levelType == LevelType.REGULAR) {
+            return GetNbWins() > 0;
+        } else {
+            return GetBestScore() >= 10;
+        }
     }
 
     public void HighlightBackButton(bool state) {

@@ -108,6 +108,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         SetCadenasAccordingToLockState();
         selectorPath.endLevel.objectLevel.cube.SetMaterial(focus: false);
         selectorPath.cadena.DisplayGoodCadena();
+        GenerateNextAndPreviousButtons();
         selectorManager.RunPopup("Path() hacké !",
             "Félicitation !\n" +
             "Vous avez trouvé le bon mot de passe pour hacker et dévérouiller ce Path() !" +

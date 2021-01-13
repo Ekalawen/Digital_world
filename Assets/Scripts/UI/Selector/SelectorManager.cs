@@ -312,4 +312,8 @@ public class SelectorManager : MonoBehaviour {
     public List<SelectorPath> GetInPaths(SelectorLevel selectorLevel) {
         return paths.FindAll(p => p.endLevel == selectorLevel);
     }
+
+    public SelectorLevel GetLevelFromMenuLevel(MenuLevel menuLevel) {
+        return levels.Find(l => l.menuLevel == menuLevel);
+    }
 }
