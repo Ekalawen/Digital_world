@@ -130,10 +130,8 @@ public class MenuLevel : MonoBehaviour {
     }
 
     protected float ComputeHeightOffset() {
-        //RectTransformUtility.ScreenPointToLocalPointInRectangle(fastUISystemNextPrefab.GetComponent<RectTransform>(), )
-        //float heightOffset = (fastUISystemNextPrefab.GetComponent<RectTransform>().rect.height + 5) * FindObjectOfType<Canvas>().scaleFactor;
-        float heightOffset = 55.0f;
-        Debug.Log($"heightOffset = {heightOffset}");
+        float scaleFactor = GetComponentInParent<Canvas>().GetComponent<RectTransform>().localScale.x;
+        float heightOffset = (fastUISystemNextPrefab.GetComponent<RectTransform>().rect.height + 3) * scaleFactor;
         return heightOffset;
     }
 
