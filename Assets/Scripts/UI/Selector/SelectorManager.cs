@@ -190,7 +190,8 @@ public class SelectorManager : MonoBehaviour {
             popup.AddReplacement("Data Hackées()", UIHelper.SurroundWithColor("Data Hackées()", UIHelper.ORANGE));
             RunPopup("Niveau vérouillé !",
                 "Niveau vérouillé.\n" +
-                "Vous devez débloquer toutes les Data Hackées() menant à ce niveau pour le dévérouiller !",
+                "Vous devez débloquer toutes les Data Hackées() menant à ce niveau pour le dévérouiller !\n" +
+                $"{GetNiveauxManquantToLevelString(selectorLevel)}",
                 TexteExplicatif.Theme.NEGATIF,
                 cleanReplacements: false);
         }
@@ -303,6 +304,21 @@ public class SelectorManager : MonoBehaviour {
     public bool IsLevelAccessible(SelectorLevel selectorLevel) {
         List<SelectorPath> precedentPaths = paths.FindAll(p => p.endLevel == selectorLevel);
         return precedentPaths.All(p => p.IsUnlocked());
+    }
+
+    protected string GetNiveauxManquantToLevelString(SelectorLevel selectorLevel) {
+        List<string> levelsName = paths.FindAll(p => p.endLevel == selectorLevel && !p.IsUnlocked()).Select(p => p.startLevel.GetName()).ToList();
+        if(levelsName.Count == 1) {
+            string name = UIHelper.SurroundWithColor(levelsName[0], UIHelper.BLUE);
+            return $"Il vous faut déverrouiller les Data Hackées() venant du niveau {name} !";
+        }
+        string res = "Il vous faut déverrouiller les Data Hackées() venant des niveaux :\n";
+        foreach(string levelName in levelsName) {
+            string name = UIHelper.SurroundWithColor(levelName, UIHelper.BLUE);
+            res = $"{res}- {name}\n";
+        }
+        res = $"{res.Substring(0, res.Length - 1)}";
+        return res;
     }
 
     public List<SelectorPath> GetOutPaths(SelectorLevel selectorLevel) {

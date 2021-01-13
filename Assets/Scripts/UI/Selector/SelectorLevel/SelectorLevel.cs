@@ -145,7 +145,8 @@ public class SelectorLevel : MonoBehaviour {
     }
 
     public bool IsHighlighted() {
-        return IsAccessible() && selectorManager.GetOutPaths(this).Any(p => !p.IsUnlocked());
+        List<SelectorPath> outPaths = selectorManager.GetOutPaths(this);
+        return IsAccessible() && (outPaths.Any(p => !p.IsUnlocked()) || outPaths.Count == 0);
     }
 
     protected void DisplayNewPallierMessage(int nbWin, List<string> nextLevels) {
