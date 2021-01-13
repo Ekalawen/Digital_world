@@ -186,7 +186,6 @@ public class SelectorManager : MonoBehaviour {
     public void TryDisplayLevel(SelectorLevel selectorLevel, bool instantDisplay = false) {
         if(IsLevelAccessible(selectorLevel)) {
             DisplayLevel(selectorLevel, instantDisplay);
-            selectorLevel.menuLevel.HighlightBackButton(false);
         } else {
             popup.AddReplacement("Data Hackées()", UIHelper.SurroundWithColor("Data Hackées()", UIHelper.ORANGE));
             RunPopup("Niveau vérouillé !",
@@ -201,8 +200,8 @@ public class SelectorManager : MonoBehaviour {
         currentSelectorLevel = selectorLevel;
         hasLevelOpen = true;
         selectorLevel.menuLevel.gameObject.SetActive(true);
-        selectorLevel.menuLevel.Initialize();
         selectorLevel.DisplayInitialPopup();
+        selectorLevel.menuLevel.Initialize();
         background.gameObject.SetActive(true);
         if (instantDisplay) {
             currentSelectorLevel.menuLevel.gameObject.SetActive(true);
@@ -289,7 +288,6 @@ public class SelectorManager : MonoBehaviour {
         SelectorLevel currentLevel = GetLastLevelSaved();
         if (currentLevel != null) {
             DisplayLevel(currentLevel, instantDisplay: true);
-            currentLevel.menuLevel.HighlightBackButtonBasedOnSave();
         }
     }
 

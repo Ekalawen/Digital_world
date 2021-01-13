@@ -97,8 +97,14 @@ public class MenuLevel : MonoBehaviour {
     }
 
     protected void GenerateNextAndPreviousButtons() {
-        if (fastUISystemNextTransform.childCount > 0 || fastUISystemPreviousTransform.childCount > 0)
-            return;
+        if (fastUISystemNextTransform.childCount > 0 || fastUISystemPreviousTransform.childCount > 0) {
+            foreach (Transform t in fastUISystemNextTransform) {
+                Destroy(t.gameObject);
+            }
+            foreach (Transform t in fastUISystemPreviousTransform) {
+                Destroy(t.gameObject);
+            }
+        }
         SelectorLevel selectorLevel = selectorManager.GetCurrentLevel();
         List<SelectorPath> nextPaths = selectorManager.GetOutPaths(selectorLevel);
         List<SelectorPath> previousPaths = selectorManager.GetInPaths(selectorLevel);

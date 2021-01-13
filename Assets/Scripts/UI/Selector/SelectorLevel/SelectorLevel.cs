@@ -73,8 +73,7 @@ public class SelectorLevel : MonoBehaviour {
         if (hasDisplay)
             return;
         hasDisplay = DisplayNewPallierMessage();
-        if (hasDisplay)
-        {
+        if (hasDisplay) {
             menuLevel.SetNotJustMakeNewBestScore();
             return;
         }
@@ -87,9 +86,6 @@ public class SelectorLevel : MonoBehaviour {
             hasDisplay = DisplayNewPallierMessageRegular();
         } else {
             hasDisplay = DisplayNewPallierMessageInfinite();
-        }
-        if (hasDisplay) {
-            menuLevel.HighlightBackButton(true);
         }
         return hasDisplay;
     }

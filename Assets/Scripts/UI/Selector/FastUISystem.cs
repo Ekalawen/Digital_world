@@ -36,6 +36,7 @@ public class FastUISystem : MonoBehaviour {
         SetName(levelName);
         SetTooltips(levelName, directionType);
         SetButtonsActivations();
+        SetHighlighterIfNeeded();
     }
 
     protected void SetName(string levelName) {
@@ -84,6 +85,17 @@ public class FastUISystem : MonoBehaviour {
             return path.endLevel;
         } else {
             return path.startLevel;
+        }
+    }
+
+    protected void SetHighlighterIfNeeded() {
+        ButtonHighlighter highlighter = unlockScreenButton.GetComponent<ButtonHighlighter>();
+        if (fromType == FromType.LEVEL) {
+            string key = path.GetName() + SelectorPath.IS_HIGHLIGHTED_PATH_KEY;
+            bool state = PlayerPrefs.HasKey(key) && PlayerPrefs.GetString(key) == MenuManager.TRUE;
+            highlighter.enabled = state;
+        } else {
+            highlighter.enabled = false;
         }
     }
 }
