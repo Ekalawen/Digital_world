@@ -57,10 +57,11 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: f4dc685936ddd034ba58bb68c6ee3bd5, type: 2}
+  - {fileID: 2100000, guid: fbefe32d8f186f24a9ee20ceaaa19c5b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -121,7 +122,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 420e6689b7553a647806306ac28d6d07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectorLevel: {fileID: 0}
   objectLevel: {fileID: 0}
-  normalMaterial: {fileID: 2100000, guid: f4dc685936ddd034ba58bb68c6ee3bd5, type: 2}
-  focusedMaterial: {fileID: 2100000, guid: dc67a77ef914b1640b43b7e4a8b61876, type: 2}
-  lockedMaterial: {fileID: 2100000, guid: 360c872d0f74f134cbf74ce1f0215c0d, type: 2}
+  normalMaterial: {fileID: 2100000, guid: fbefe32d8f186f24a9ee20ceaaa19c5b, type: 2}
+  focusedMaterial: {fileID: 2100000, guid: e927506325e75994a874d85354fcb4e7, type: 2}
+  lockedMaterial: {fileID: 2100000, guid: e22adc3b53b393e41820d93c753ade1b, type: 2}
+  tooltipActivator: {fileID: 0}
