@@ -120,6 +120,15 @@ public class Cube : MonoBehaviour {
         DestroyIn(duree);
     }
 
+    public void DecomposeIn(float dureeDecompose, float timeBeforeDecompose) {
+        StartCoroutine(CDecomposeIn(dureeDecompose, timeBeforeDecompose));
+    }
+
+    protected IEnumerator CDecomposeIn(float dureeDecompose, float timeBeforeDecompose) {
+        yield return new WaitForSeconds(timeBeforeDecompose);
+        Decompose(dureeDecompose);
+    }
+
     protected void DestroyIn(float duree) {
         StartCoroutine(CDestroyIn(duree));
     }
@@ -161,5 +170,10 @@ public class Cube : MonoBehaviour {
         Color currentColor = GetColor();
         currentColor.a = alpha;
         SetColor(currentColor);
+    }
+
+    internal void Decompose(object dureeDecompose)
+    {
+        throw new NotImplementedException();
     }
 }

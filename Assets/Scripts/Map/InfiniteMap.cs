@@ -43,6 +43,7 @@ public class InfiniteMap : MapManager {
     public CounterDisplayer nbBlocksDisplayer;
     public GameObject bestScoreMarkerPrefab;
     public bool shouldResetAllBlocksTime = false;
+    public float dureeDecompose = 5.0f;
 
     Transform blocksFolder;
 
@@ -139,7 +140,7 @@ public class InfiniteMap : MapManager {
             Block firstBlock = blocks.First();
             float destroyTime = firstBlock.GetAverageTime();
             destroyTime = ApplyTimeDifficulty(destroyTime);
-            firstBlock.Destroy(destroyTime);
+            firstBlock.Destroy(destroyTime, dureeDecompose);
             nbBlocksDestroyed += 1;
             indiceCurrentBlock--;
             blocks.Remove(firstBlock);

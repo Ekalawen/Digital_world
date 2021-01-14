@@ -74,7 +74,7 @@ public class Block : MonoBehaviour {
         return cubes;
     }
 
-    public void Destroy(float speedDestruction) {
+    public void Destroy(float speedDestruction, float dureeDecompose) {
         cubes.Sort(delegate (Cube A, Cube B) {
             float distAToStart = Vector3.Distance(A.transform.position, endPoint.position);
             float distBToStart = Vector3.Distance(B.transform.position, endPoint.position);
@@ -83,8 +83,9 @@ public class Block : MonoBehaviour {
         for(int i = 0; i < cubes.Count; i++) {
             Cube cube = cubes[i];
             float coef = (float)i / cubes.Count;
-            float timeBeforeExplosion = coef * speedDestruction;
-            cube.ExplodeIn(timeBeforeExplosion);
+            float timeBeforeDecompose = coef * speedDestruction;
+            //cube.ExplodeIn(timeBeforeExplosion);
+            cube.DecomposeIn(dureeDecompose, timeBeforeDecompose);
         }
         StartCoroutine(DestroyWhenAllCubesAreDestroyed());
     }

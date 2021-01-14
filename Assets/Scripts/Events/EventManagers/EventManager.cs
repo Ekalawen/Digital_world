@@ -42,6 +42,8 @@ public class EventManager : MonoBehaviour {
     public float endGameFrameRate = 0.2f;
     public AnimationCurve endEventCurveSpeed;
     public EndEventType endGameType = EndEventType.DEATH_CUBES;
+    [ConditionalHide("endGameType", EndEventType.CUBES_DESTRUCTIONS)]
+    public float dureeDecompose = 2.0f;
     public bool bNoEndgame = false;
 
     [Header("ScreenShake on Endgame")]
@@ -250,8 +252,7 @@ public class EventManager : MonoBehaviour {
         Vector3 barycentre = Vector3.zero;
         for (int i = 0; i < nbCubesToDestroy; i++) {
             barycentre += cubes[i].transform.position;
-            //cubes[i].Explode();
-            cubes[i].Decompose(3);
+            cubes[i].Decompose(dureeDecompose);
         }
 
         return barycentre;
