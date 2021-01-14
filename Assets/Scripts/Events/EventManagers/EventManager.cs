@@ -250,7 +250,8 @@ public class EventManager : MonoBehaviour {
         Vector3 barycentre = Vector3.zero;
         for (int i = 0; i < nbCubesToDestroy; i++) {
             barycentre += cubes[i].transform.position;
-            cubes[i].Explode();
+            //cubes[i].Explode();
+            cubes[i].Decompose(3);
         }
 
         return barycentre;

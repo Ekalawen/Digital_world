@@ -64,6 +64,11 @@ public class Cube : MonoBehaviour {
         material.SetFloat("_DissolveStartingTime", Time.time - dissolveTime);
     }
 
+    protected void StartDecomposeEffect(float duree) {
+        material.SetFloat("_DecomposeTime", duree);
+        material.SetFloat("_DecomposeStartingTime", Time.time);
+    }
+
     protected virtual void RegisterCubeToColorSources() {
         ColorManager colorManager = gm.colorManager;
         foreach(ColorSource colorSource in colorManager.sources) {
@@ -106,6 +111,21 @@ public class Cube : MonoBehaviour {
         float particuleTime = particle.main.duration;
         Destroy(go, particuleTime);
 
+        Destroy();
+    }
+
+    public void Decompose(float duree) {
+        gm = GameManager.Instance; // Sinon peut y avoir un bug si on essaie de le détruire dans la même frame que lorsqu'il est crée ! (Le Start a pas le temps de s'éxécuter :'()
+        StartDecomposeEffect(duree);
+        DestroyIn(duree);
+    }
+
+    protected void DestroyIn(float duree) {
+        StartCoroutine(CDestroyIn(duree));
+    }
+
+    protected IEnumerator CDestroyIn(float duree) {
+        yield return new WaitForSeconds(duree);
         Destroy();
     }
 
