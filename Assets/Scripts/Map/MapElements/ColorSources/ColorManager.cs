@@ -312,4 +312,26 @@ public class ColorManager : MonoBehaviour {
         }
         RenderSettings.ambientLight = startColor;
     }
+
+    public static Color InterpolateHSV(Color colorSource, Color colorCible, float avancement) {
+        float HS, SS, VS;
+        Color.RGBToHSV(colorSource, out HS, out SS, out VS);
+        float HC, SC, VC;
+        Color.RGBToHSV(colorCible, out HC, out SC, out VC);
+        float HR;
+        if (Mathf.Abs(HC - HS) <= Mathf.Abs(HS + (1 - HC))) {
+            HR = MathCurves.Linear(HS, HC, avancement);
+        } else {
+            if(HS < HC) {
+                HS += 1;
+            } else {
+                HC += 1;
+            }
+            HR = MathCurves.Linear(HS, HC, avancement);
+            HR = (HR > 1) ? HR - 1 : HR;
+        }
+        float SR = MathCurves.Linear(SS, SC, avancement);
+        float VR = MathCurves.Linear(VS, VC, avancement);
+        return Color.HSVToRGB(HR, SR, VR);
+    }
 }

@@ -81,12 +81,12 @@ public class TimerManager : MonoBehaviour {
 
     public Color GetColorBasedOnRemainingTime(Color goodColor, Color badColor) {
         float avancement = GetAvancementOnRemainingTime();
-        return goodColor * avancement + badColor * (1.0f - avancement);
+        return ColorManager.InterpolateHSV(goodColor, badColor, 1 - avancement);
     }
 
     private void SetVisualGameTimer(float remainingTime) {
         timerDisplayer.Display(TimerManager.TimerToString(remainingTime));
-        timerDisplayer.SetColor(GetColorBasedOnRemainingTime(gm.console.allyColor, gm.console.ennemiColor));
+        timerDisplayer.SetColor(ColorManager.InterpolateColors(gm.console.allyColor, gm.console.ennemiColor, 1 - GetAvancementOnRemainingTime()));
         if (remainingTime >= 20.0f) {
             timerDisplayer.SetFontSize(fontSize);
         } else if (remainingTime >= 10.0f) {

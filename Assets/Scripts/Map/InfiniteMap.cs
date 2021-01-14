@@ -201,7 +201,7 @@ public class InfiniteMap : MapManager {
         float distanceToDestruction = GetCurrentDistanceToDestruction();
         if (distanceToDestruction <= distanceToStartChangeSkyboxColor) {
             float avancement = MathCurves.LinearReversed(distanceAtCriticalSkyboxColor, distanceToStartChangeSkyboxColor, distanceToDestruction);
-            Color color = gm.console.basicColor * avancement + gm.console.ennemiColor * (1 - avancement);
+            Color color = ColorManager.InterpolateHSV(gm.console.basicColor, gm.console.ennemiColor, 1 - avancement);
             RenderSettings.skybox.SetColor("_RectangleColor", color);
             float proportion = MathCurves.Linear(gm.postProcessManager.skyboxProportionRectanglesCriticalBound, gm.postProcessManager.skyboxProportionRectangles, avancement);
             RenderSettings.skybox.SetFloat("_ProportionRectangles", proportion);
