@@ -26,6 +26,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - DissolveThickness: 0.015
+    - _DecomposeNoiseScale: 100
+    - _DecomposeOffsetBlack: 0.1
+    - _DecomposeStartingTime: 999999
+    - _DecomposeTime: 1
     - _DissolveNoiseScale: 2
     - _DissolveStartingTime: 0
     - _DissolveTime: 3
@@ -34,5 +38,7 @@ Material:
     - _Smoothness: 0.5
     m_Colors:
     - _Color: {r: 0, g: 0, b: 0, a: 1}
+    - _DecomposeColor: {r: 0, g: 0, b: 0, a: 0}
+    - _DecomposeTilling: {r: 10, g: 10, b: 0, a: 0}
     - _DissolveColor: {r: 0, g: 1, b: 1, a: 1}
     - _PlayerPosition: {r: 0, g: 0, b: 0, a: 0}
