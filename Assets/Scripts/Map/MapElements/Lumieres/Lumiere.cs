@@ -43,10 +43,8 @@ public class Lumiere : MonoBehaviour {
 		}
 	}
 
-    protected void Captured()
-    {
-        if (isCaptured)
-        {
+    protected void Captured() {
+        if (IsCaptured()) {
             return;
         }
         isCaptured = true;
@@ -98,5 +96,9 @@ public class Lumiere : MonoBehaviour {
     }
 
     protected virtual void CapturedSpecific() {
+    }
+
+    public bool IsCaptured() {
+        return isCaptured;
     }
 }

@@ -110,10 +110,13 @@ public class HistoryManager : MonoBehaviour {
     protected void EchantillonnerPositionsLumieres() {
         if(!gm.eventManager.IsWin() && echantillonnageTimer.IsOver()) {
             for(int i = 0; i < lumieresHistory.Count; i++) {
-                ObjectHistory ch = lumieresHistory[i];
-                if (ch.obj != null) {
-                    TimedVector3 tpos = new TimedVector3(ch.obj.transform.position, gm.timerManager.GetElapsedTime());
-                    ch.positions.Add(tpos);
+                ObjectHistory objectHistory = lumieresHistory[i];
+                if (objectHistory.obj != null) {
+                    Lumiere lumiere = (Lumiere)objectHistory.obj;
+                    if(!lumiere.IsCaptured()) {
+                        TimedVector3 tpos = new TimedVector3(objectHistory.obj.transform.position, gm.timerManager.GetElapsedTime());
+                        objectHistory.positions.Add(tpos);
+                    }
                 }
             }
         }
