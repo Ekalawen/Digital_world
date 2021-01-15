@@ -120,6 +120,11 @@ public class Cube : MonoBehaviour {
         DestroyIn(duree);
     }
 
+    public bool IsDecomposing() {
+        float decomposeStartingTime = material.GetFloat("_DecomposeStartingTime");
+        return Time.time >= decomposeStartingTime;
+    }
+
     public void DecomposeIn(float dureeDecompose, float timeBeforeDecompose) {
         StartCoroutine(CDecomposeIn(dureeDecompose, timeBeforeDecompose));
     }
@@ -170,10 +175,5 @@ public class Cube : MonoBehaviour {
         Color currentColor = GetColor();
         currentColor.a = alpha;
         SetColor(currentColor);
-    }
-
-    internal void Decompose(object dureeDecompose)
-    {
-        throw new NotImplementedException();
     }
 }

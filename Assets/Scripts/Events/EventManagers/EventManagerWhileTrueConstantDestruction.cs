@@ -27,13 +27,19 @@ public class EventManagerWhileTrueConstantDestruction : EventManagerWhileTrue {
         originalCubePositions = originalCubePositions.OrderBy(pos => Vector3.SqrMagnitude(pos - gm.player.transform.position)).ToList();
         int nbCubesCreated = 0;
         foreach(Vector3 pos in originalCubePositions) {
-            Cube cube = map.AddCube(pos, Cube.CubeType.NORMAL);
-            if (cube != null) {
-                cube.ShouldRegisterToColorSources();
-                nbCubesCreated++;
-                if (nbCubesCreated >= nbCubesToCreateByFrame) {
-                    nbCubesCreated = 0;
-                    yield return new WaitForSeconds(1f / 60f);
+            Cube precedantCube = map.GetCubeAt(pos);
+            if (precedantCube == null || precedantCube.IsDecomposing()) {
+                if(precedantCube != null) {
+                    map.DeleteCube(precedantCube);
+                }
+                Cube newCube = map.AddCube(pos, Cube.CubeType.NORMAL);
+                if (newCube != null) {
+                    newCube.ShouldRegisterToColorSources();
+                    nbCubesCreated++;
+                    if (nbCubesCreated >= nbCubesToCreateByFrame) {
+                        nbCubesCreated = 0;
+                        yield return new WaitForSeconds(1f / 60f);
+                    }
                 }
             }
         }
