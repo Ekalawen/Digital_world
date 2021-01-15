@@ -8,6 +8,7 @@ using UnityEngine;
 public class EventManagerWhileTrue : EventManager {
 
     public int nbLumieresFinales = 10;
+    public float decomposeTime = 1.0f;
     public List<string> messagesAChaqueLumiere;
 
     protected int nbLumieresFinalesAttrappees = 0;
@@ -55,13 +56,15 @@ public class EventManagerWhileTrue : EventManager {
         deathCubes = deathCubes.OrderBy(dc => Vector3.SqrMagnitude(dc.transform.position - gm.player.transform.position)).ToList();
         int nbCubesDestroyed = 0;
         foreach(Cube cube in deathCubes) {
-            map.DeleteCube(cube);
+            //map.DeleteCube(cube);
+            cube.Decompose(decomposeTime);
             nbCubesDestroyed++;
             if(nbCubesDestroyed >= nbCubesToDestroyByFrame) {
                 nbCubesDestroyed = 0;
                 yield return new WaitForSeconds(1f / 60f);
             }
         }
+        yield return new WaitForSeconds(decomposeTime);
         deathCubes.Clear();
     }
 
