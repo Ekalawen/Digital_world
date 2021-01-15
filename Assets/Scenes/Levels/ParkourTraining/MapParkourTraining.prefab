@@ -29,6 +29,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 0
+  shouldDrawRaycastToNewLumiere: 1
   trailPrefab: {fileID: 2355022440795677279, guid: 3aeb445d2ee23b240ae4946f1f9c7864,
     type: 3}
 --- !u!114 &6934784669668692901
@@ -51,10 +52,61 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
+        type: 3}
+      propertyPath: tailleMap.x
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
+        type: 3}
+      propertyPath: tailleMap.y
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
+        type: 3}
+      propertyPath: tailleMap.z
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
+        type: 3}
+      propertyPath: lumierePrefab
+      value: 
+      objectReference: {fileID: 5381103575702469303, guid: 8242dafc45ff26548a9359b86eb5f357,
+        type: 3}
+    - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
+        type: 3}
+      propertyPath: nbLumieresInitial
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
+        type: 3}
+      propertyPath: mapFunctionComponents.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
+        type: 3}
+      propertyPath: mapFunctionComponents.Array.data[1]
+      value: 
+      objectReference: {fileID: -825177163887323998}
+    - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
+        type: 3}
+      propertyPath: mapFunctionComponents.Array.data[2]
+      value: 
+      objectReference: {fileID: 6934784669668692901}
+    - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
+        type: 3}
+      propertyPath: mapFunctionComponents.Array.data[3]
+      value: 
+      objectReference: {fileID: 2043507741530955010}
     - target: {fileID: 3009060673421440820, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: m_Name
       value: MapParkourTraining
+      objectReference: {fileID: 0}
+    - target: {fileID: 3014360596586505460, guid: 800ea353fd52f8f458146bc8a84ea83e,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3014360596586505460, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
@@ -73,6 +125,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3014360596586505460, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3014360596586505460, guid: 800ea353fd52f8f458146bc8a84ea83e,
+        type: 3}
       propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
@@ -84,16 +141,6 @@ PrefabInstance:
     - target: {fileID: 3014360596586505460, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3014360596586505460, guid: 800ea353fd52f8f458146bc8a84ea83e,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3014360596586505460, guid: 800ea353fd52f8f458146bc8a84ea83e,
-        type: 3}
-      propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3014360596586505460, guid: 800ea353fd52f8f458146bc8a84ea83e,
@@ -111,52 +158,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
-        type: 3}
-      propertyPath: mapFunctionComponents.Array.size
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
-        type: 3}
-      propertyPath: lumierePrefab
-      value: 
-      objectReference: {fileID: 2193477000609438648, guid: 0b7b6f5ad5e10a948b623d0fdebd6d55,
-        type: 3}
-    - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
-        type: 3}
-      propertyPath: tailleMap.x
-      value: 12
-      objectReference: {fileID: 0}
-    - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
-        type: 3}
-      propertyPath: tailleMap.y
-      value: 12
-      objectReference: {fileID: 0}
-    - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
-        type: 3}
-      propertyPath: tailleMap.z
-      value: 12
-      objectReference: {fileID: 0}
-    - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
-        type: 3}
-      propertyPath: nbLumieresInitial
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
-        type: 3}
-      propertyPath: mapFunctionComponents.Array.data[1]
-      value: 
-      objectReference: {fileID: -825177163887323998}
-    - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
-        type: 3}
-      propertyPath: mapFunctionComponents.Array.data[2]
-      value: 
-      objectReference: {fileID: 6934784669668692901}
-    - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
-        type: 3}
-      propertyPath: mapFunctionComponents.Array.data[3]
-      value: 
-      objectReference: {fileID: 2043507741530955010}
     m_RemovedComponents:
     - {fileID: 2332915810247092798, guid: 800ea353fd52f8f458146bc8a84ea83e, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 800ea353fd52f8f458146bc8a84ea83e, type: 3}

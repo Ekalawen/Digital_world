@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class LumiereSwitchable : Lumiere {
 
@@ -12,6 +13,7 @@ public class LumiereSwitchable : Lumiere {
     public LumiereSwitchableState startState = LumiereSwitchableState.ON;
 
     protected LumiereSwitchableState state;
+    protected GameObject currentLumiere;
     protected bool capturedInSwitchingToOn = false;
 
     protected override void Start () {
@@ -21,10 +23,18 @@ public class LumiereSwitchable : Lumiere {
 
     public void SetState(LumiereSwitchableState newState, bool shouldCheckCollisionWithPlayer = true) {
         state = newState;
+        currentLumiere = (newState == LumiereSwitchableState.ON) ? lumiereOn : lumiereOff;
         lumiereOn.SetActive(state == LumiereSwitchableState.ON);
         lumiereOff.SetActive(state == LumiereSwitchableState.OFF);
-        if(shouldCheckCollisionWithPlayer)
+        SetVfxAndLight();
+        if (shouldCheckCollisionWithPlayer) {
             CheckNotCollideWithPlayer();
+        }
+    }
+
+    protected void SetVfxAndLight() {
+        vfx = currentLumiere.GetComponentInChildren<VisualEffect>();
+        pointLight = currentLumiere.GetComponentInChildren<Light>().gameObject;
     }
 
     protected void CheckNotCollideWithPlayer() {
