@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Material_CubeDecompose
-  m_Shader: {fileID: -6465566751694194690, guid: bd8ab787d594a3d42922ac4658000ab2,
+  m_Name: Material_CubeBrisable
+  m_Shader: {fileID: -6465566751694194690, guid: a53a2211812ab2d4a87749c4ea8da2fb,
     type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
@@ -26,6 +26,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - DissolveThickness: 0.015
+    - _BrisableNoiseScale: 100
     - _DecomposeNoiseScale: 100
     - _DecomposeStartingTime: 999999
     - _DecomposeTime: 1
@@ -37,6 +38,9 @@ Material:
     - _PlayerProximityCoef: 0.037
     - _Smoothness: 0.5
     m_Colors:
+    - _BrisableColor: {r: 1, g: 1, b: 1, a: 1}
+    - _BrisableIntensityCoefs: {r: 0, g: 0.5, b: 0, a: 0}
+    - _BrisableTilling: {r: 8, g: 8, b: 0, a: 0}
     - _Color: {r: 0, g: 0, b: 0, a: 1}
     - _DecomposeColor: {r: 0, g: 0, b: 0, a: 0}
     - _DecomposeTilling: {r: 10, g: 10, b: 0, a: 0}

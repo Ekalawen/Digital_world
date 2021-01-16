@@ -7,14 +7,11 @@ public class BrisableCube : NonBlackCube {
 
     public float dureeBeforeDestruction = 1.5f;
     public Color preDestructionColor = Color.gray;
-    public List<Texture> textures;
 
     protected Coroutine coroutine = null;
 
     public override void Start() {
         base.Start();
-        Material material = GetComponent<Renderer>().material;
-        material.mainTexture = textures[UnityEngine.Random.Range(0, textures.Count)];
         SetOpacity(1);
     }
 
@@ -34,6 +31,8 @@ public class BrisableCube : NonBlackCube {
     }
 
     public override void InteractWithPlayer() {
-        DestroyInSeconds();
+        if (!IsDecomposing()) {
+            Decompose(dureeBeforeDestruction);
+        }
     }
 }
