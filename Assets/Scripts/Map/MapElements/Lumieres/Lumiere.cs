@@ -79,6 +79,7 @@ public class Lumiere : MonoBehaviour {
         vfx.SetFloat("EnveloppeSpawnRate", 0);
         vfx.SetFloat("TrailsSpawnRate", 0);
         vfx.SetVector4("BeamColor", Vector4.zero);
+        vfx.SetFloat("TailSpawnRate", 0);
         Destroy(pointLight);
     }
 
