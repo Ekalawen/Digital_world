@@ -12,10 +12,12 @@ public class IntersectionEvent : RandomEvent {
     [Header("Effect")]
     public float timeIntersection = 1.0f;
     public Cube.CubeType cubeTypeWhileEffect = Cube.CubeType.SPECIAL;
+    public float cubeWhileEffectDissolveTime = 0.1f;
 
     [Header("End Effect")]
     public float timeBeforeSwapCubeTypeAgain = 1.0f;
     public Cube.CubeType cubeTypeAfterEffect = Cube.CubeType.SPECIAL;
+    public float cubeAfterEffectDissolveTime = 0.0f;
 
     protected static List<Cube> cubesAlreadyUsedInEvents = new List<Cube>();
 
@@ -88,6 +90,7 @@ public class IntersectionEvent : RandomEvent {
                 Cube cube = gm.map.AddCube(currentPosition, cubeTypeWhileEffect);
                 if (cube != null) {
                     cube.ShouldRegisterToColorSources();
+                    cube.SetDissolveTime(cubeWhileEffectDissolveTime);
                 }
             }
             soundHolder.transform.position = currentPosition;
@@ -119,7 +122,8 @@ public class IntersectionEvent : RandomEvent {
             yield return new WaitForSeconds(intervalle);
             Cube cube = gm.map.GetCubeAt(currentPosition);
             if (cube != null) {
-                gm.map.SwapCubeType(cube, cubeTypeAfterEffect);
+                cube = gm.map.SwapCubeType(cube, cubeTypeAfterEffect);
+                cube.SetDissolveTime(cubeWhileEffectDissolveTime);
             }
             soundHolder.transform.position = currentPosition;
             currentPosition += direction;
