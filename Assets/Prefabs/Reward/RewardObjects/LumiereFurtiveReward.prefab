@@ -1,33 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &5907634434123228686
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 904775344026434536}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a7100e7f70366ad4bb2065d985b90732, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  type: 0
-  timeBonus: 10
-  rewardLumierePrefab: {fileID: 3362648454826279228, guid: ee6bdc7d67f676c46bb49587d065b31b,
-    type: 3}
-  screenShakeMagnitude: 10
-  screenShakeRoughness: 10
-  dureeDestruction: 4
-  vfx: {fileID: 8685729988737892873}
-  pointLight: {fileID: 903895602821907660}
-  ennemiToGeneratePrefab: {fileID: 1252573298759596, guid: d49852f29496f46858edc6834aef370d,
-    type: 3}
-  timeBeforeEnnemisActivation: 3.01
-  lumiereGeneratedPrefab: {fileID: 473164739186614350, guid: 58f3cda65e595644b8565a4405711109,
-    type: 3}
-  nbLumieresToGenerate: 2
---- !u!1001 &729421182613281702
+--- !u!1001 &2899053888505815410
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -37,12 +10,32 @@ PrefabInstance:
     - target: {fileID: 473164739186614350, guid: 58f3cda65e595644b8565a4405711109,
         type: 3}
       propertyPath: m_Name
-      value: LumiereFurtiveTrapAnalyze
+      value: LumiereFurtiveReward
+      objectReference: {fileID: 0}
+    - target: {fileID: 474044475894898538, guid: 58f3cda65e595644b8565a4405711109,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 476313863838729516, guid: 58f3cda65e595644b8565a4405711109,
         type: 3}
       propertyPath: m_RootOrder
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 476313863838729516, guid: 58f3cda65e595644b8565a4405711109,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 476313863838729516, guid: 58f3cda65e595644b8565a4405711109,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 476313863838729516, guid: 58f3cda65e595644b8565a4405711109,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 476313863838729516, guid: 58f3cda65e595644b8565a4405711109,
         type: 3}
@@ -119,24 +112,24 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[4]
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 8256934114840631727, guid: 58f3cda65e595644b8565a4405711109,
+        type: 3}
+      propertyPath: m_PropertySheet.m_Float.m_Array.Array.data[17].m_Value
+      value: 0.13
+      objectReference: {fileID: 0}
+    - target: {fileID: 8256934114840631727, guid: 58f3cda65e595644b8565a4405711109,
+        type: 3}
+      propertyPath: m_PropertySheet.m_Float.m_Array.Array.data[18].m_Value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8256934114840631727, guid: 58f3cda65e595644b8565a4405711109,
+        type: 3}
+      propertyPath: m_PropertySheet.m_Float.m_Array.Array.data[21].m_Value
+      value: 0.13
+      objectReference: {fileID: 0}
     m_RemovedComponents:
+    - {fileID: 536937276128950604, guid: 58f3cda65e595644b8565a4405711109, type: 3}
+    - {fileID: -530453878346366207, guid: 58f3cda65e595644b8565a4405711109, type: 3}
+    - {fileID: 750443336349641351, guid: 58f3cda65e595644b8565a4405711109, type: 3}
     - {fileID: 8821695202811914478, guid: 58f3cda65e595644b8565a4405711109, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 58f3cda65e595644b8565a4405711109, type: 3}
---- !u!1 &904775344026434536 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 473164739186614350, guid: 58f3cda65e595644b8565a4405711109,
-    type: 3}
-  m_PrefabInstance: {fileID: 729421182613281702}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &903895602821907660 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 474044475894898538, guid: 58f3cda65e595644b8565a4405711109,
-    type: 3}
-  m_PrefabInstance: {fileID: 729421182613281702}
-  m_PrefabAsset: {fileID: 0}
---- !u!2083052967 &8685729988737892873 stripped
-VisualEffect:
-  m_CorrespondingSourceObject: {fileID: 8256934114840631727, guid: 58f3cda65e595644b8565a4405711109,
-    type: 3}
-  m_PrefabInstance: {fileID: 729421182613281702}
-  m_PrefabAsset: {fileID: 0}
