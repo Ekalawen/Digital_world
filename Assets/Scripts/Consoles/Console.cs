@@ -136,12 +136,19 @@ public virtual void Update () {
         }
     }
 
-    public virtual void PremiersMessages()
-    {
+    public virtual void PremiersMessages() {
         string levelName = PlayerPrefs.GetString(MenuLevel.LEVEL_NAME_KEY);
         AjouterMessage("[Niveau]: " + levelName, TypeText.BASIC_TEXT, bUsePrefix: false);
         AjouterMessage("[Niveau]: Initialisation de la Matrice ...", TypeText.BASIC_TEXT, bUsePrefix: false);
-        DisplayDatasAndEnnemisCounts();
+        if (gm.GetMapType() == MenuLevel.LevelType.REGULAR) {
+            DisplayDatasAndEnnemisCounts();
+        } else {
+            VaAussiLoinQueTuPeux();
+        }
+    }
+
+    protected void VaAussiLoinQueTuPeux() {
+        AjouterMessageImportant("Va aussi loin que tu peux !", TypeText.ALLY_TEXT, 3);
     }
 
     public void DisplayDatasAndEnnemisCounts() {
