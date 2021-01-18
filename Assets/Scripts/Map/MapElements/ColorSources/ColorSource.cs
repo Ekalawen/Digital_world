@@ -6,8 +6,6 @@ using UnityEngine;
 // Une ColorSource s'occupe de gérer la couleur des cubes
 public class ColorSource : MonoBehaviour {
 
-	public enum ThemeSource {JAUNE, VERT, BLEU_GLACE, BLEU_NUIT, VIOLET, ROUGE, MULTICOLOR, BLANC, NOIR, RANDOM};
-
     [HideInInspector] public Color color;
     [HideInInspector] public float range;
     [HideInInspector] public List<Cube> cubesInRange;

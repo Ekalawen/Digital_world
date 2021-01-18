@@ -6,7 +6,7 @@ using UnityEngine;
 [System.Serializable]
 public struct SavedTheme {
     public string key;
-    public List<ColorSource.ThemeSource> themes;
+    public List<ColorManager.Theme> themes;
 }
 [System.Serializable]
 public struct SavedColor {
@@ -16,17 +16,30 @@ public struct SavedColor {
 
 public class ColorManager : MonoBehaviour {
 
+	public enum Theme {
+        JAUNE,
+        VERT,
+        BLEU_GLACE,
+        BLEU_NUIT,
+        VIOLET,
+        ROUGE,
+        MULTICOLOR,
+        BLANC,
+        NOIR,
+        RANDOM
+    };
+
     public GameObject colorSourcePrefab;
     public bool bGenerateInCubes = false;
 
 	// On peut choisir le thème du cube =)
 	// 0.0 = automne, 0.1 = jaune, 0.3 = vert, O.5 = bleu, 0.65 = violet, 0.8 = rose, 0.9 = rouge
-	public List<ColorSource.ThemeSource> themes; // Le thème, cad la couleur de la map !
-	public List<SavedTheme> savedThemes; // Utile si on a besoin d'autres thèmes à d'autres moments !
+	public List<ColorManager.Theme> themes;
+	public List<SavedTheme> savedThemes;
 
     // Il faudra changer ça, les sources ne sont pas forcément des cubes !?
 	public float frequenceSources; // La frequence qu'un emplacement soit une source
-	public Vector2 porteeSourceRange; // La range de distance de coloration d'une source
+	public Vector2 porteeSourceRange;
     public bool bUseOwnLuminosity = false; // De base on utilise la luminosité des PlayerPrefs !
     public float cubeLuminosityMax; // Le maximum de luminosité d'un cube (pour éviter d'éblouir le joueur)
     public List<SavedColor> savedColors; // Utile si on a besoin de certaines couleurs à certains moments dans le jeu !
@@ -44,12 +57,12 @@ public class ColorManager : MonoBehaviour {
 
         // Si c'est random, alors on relance ! :)
         for (int i = 0; i < themes.Count; i++) {
-            if (themes[i] == ColorSource.ThemeSource.RANDOM) {
-                System.Array enumValues = System.Enum.GetValues(typeof(ColorSource.ThemeSource));
-                themes[i] = (ColorSource.ThemeSource)enumValues.GetValue(Random.Range(0, (int)ColorSource.ThemeSource.RANDOM));
-                while (themes[i] == ColorSource.ThemeSource.NOIR) { // On veut pas du noir ! x)
-                    enumValues = System.Enum.GetValues(typeof(ColorSource.ThemeSource));
-                    themes[i] = (ColorSource.ThemeSource)enumValues.GetValue(Random.Range(0, (int)ColorSource.ThemeSource.RANDOM));
+            if (themes[i] == ColorManager.Theme.RANDOM) {
+                System.Array enumValues = System.Enum.GetValues(typeof(ColorManager.Theme));
+                themes[i] = (ColorManager.Theme)enumValues.GetValue(Random.Range(0, (int)ColorManager.Theme.RANDOM));
+                while (themes[i] == ColorManager.Theme.NOIR) { // On veut pas du noir ! x)
+                    enumValues = System.Enum.GetValues(typeof(ColorManager.Theme));
+                    themes[i] = (ColorManager.Theme)enumValues.GetValue(Random.Range(0, (int)ColorManager.Theme.RANDOM));
                 }
             }
             Debug.Log(themes[i]);
@@ -107,33 +120,33 @@ public class ColorManager : MonoBehaviour {
         sources.Add(go.GetComponent<ColorSource>());
     }
 
-	public static Color GetColor(List<ColorSource.ThemeSource> currentThemes) {
+	public static Color GetColor(List<ColorManager.Theme> currentThemes) {
 		Color c;
 
         // On choisit notre thème parmis nos thème
-        ColorSource.ThemeSource themeChoisi = currentThemes[Random.Range(0, currentThemes.Count)];
+        ColorManager.Theme themeChoisi = currentThemes[Random.Range(0, currentThemes.Count)];
 
 		// Puis on l'applique !
 		switch (themeChoisi) {
-			case ColorSource.ThemeSource.JAUNE:
+			case ColorManager.Theme.JAUNE:
 				c = Color.HSVToRGB(Random.Range(0.1f, 0.2f), 0.8f, 0.5f); break;
-			case ColorSource.ThemeSource.VERT:
+			case ColorManager.Theme.VERT:
 				c = Color.HSVToRGB(Random.Range(0.27f, 0.37f), 1f, 0.5f); break;
-			case ColorSource.ThemeSource.BLEU_GLACE:
+			case ColorManager.Theme.BLEU_GLACE:
 				c = Color.HSVToRGB(Random.Range(0.5f, 0.6f), 1f, 0.7f); break;
-			case ColorSource.ThemeSource.BLEU_NUIT:
+			case ColorManager.Theme.BLEU_NUIT:
 				c = Color.HSVToRGB(Random.Range(0.6f, 0.7f), 1f, 0.4f); break;
-			case ColorSource.ThemeSource.VIOLET:
+			case ColorManager.Theme.VIOLET:
 				c = Color.HSVToRGB(Random.Range(0.7f, 0.8f), 1f, 0.7f); break;
-			case ColorSource.ThemeSource.ROUGE:
+			case ColorManager.Theme.ROUGE:
 				c = Color.HSVToRGB(Random.Range(0.98f, 1.02f), 1f, 0.7f); break;
-			case ColorSource.ThemeSource.MULTICOLOR:
+			case ColorManager.Theme.MULTICOLOR:
 				c = Color.HSVToRGB(Random.Range(0f, 1f), 1f, 0.7f); break;
-			case ColorSource.ThemeSource.BLANC:
+			case ColorManager.Theme.BLANC:
 				c = Color.HSVToRGB(0f, 0f, 0.6f); break;
-			case ColorSource.ThemeSource.NOIR:
+			case ColorManager.Theme.NOIR:
 				c = Color.HSVToRGB(0f, 0f, 0.001f); break;
-			case ColorSource.ThemeSource.RANDOM:
+			case ColorManager.Theme.RANDOM:
                 c = Color.HSVToRGB(Random.Range(0f, 1f), 1f, 1f); break;
 			default:
 				c = Color.black;
@@ -197,14 +210,14 @@ public class ColorManager : MonoBehaviour {
         closest.Delete();
     }
 
-    public static ColorSource.ThemeSource GetRandomTheme() {
-        System.Array enumValues = System.Enum.GetValues(typeof(ColorSource.ThemeSource));
-        return (ColorSource.ThemeSource)enumValues.GetValue(Random.Range(0, enumValues.Length));
+    public static ColorManager.Theme GetRandomTheme() {
+        System.Array enumValues = System.Enum.GetValues(typeof(ColorManager.Theme));
+        return (ColorManager.Theme)enumValues.GetValue(Random.Range(0, enumValues.Length));
     }
 
-    public static ColorSource.ThemeSource GetRandomThemeNotNoir() {
-        ColorSource.ThemeSource theme = GetRandomTheme();
-        while(theme == ColorSource.ThemeSource.NOIR)
+    public static ColorManager.Theme GetRandomThemeNotNoir() {
+        ColorManager.Theme theme = GetRandomTheme();
+        while(theme == ColorManager.Theme.NOIR)
             theme = GetRandomTheme();
         return theme;
     }
@@ -217,14 +230,14 @@ public class ColorManager : MonoBehaviour {
         return sources;
     }
 
-    public void ChangeTheme(List<ColorSource.ThemeSource> newThemes) {
+    public void ChangeTheme(List<ColorManager.Theme> newThemes) {
         themes = newThemes;
         foreach(ColorSource source in sources) {
             source.ChangeColor(GetColor(themes));
         }
     }
 
-    public List<ColorSource.ThemeSource> GetSavedTheme(string key) {
+    public List<ColorManager.Theme> GetSavedTheme(string key) {
         foreach(SavedTheme theme in savedThemes) {
             if (theme.key == key)
                 return theme.themes;
@@ -242,7 +255,7 @@ public class ColorManager : MonoBehaviour {
         return Color.magenta;
     }
 
-    public static bool AreSameThemes(List<ColorSource.ThemeSource> t1, List<ColorSource.ThemeSource> t2) {
+    public static bool AreSameThemes(List<ColorManager.Theme> t1, List<ColorManager.Theme> t2) {
         return MathTools.AreListEqual(t1, t2);
     }
 

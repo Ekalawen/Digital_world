@@ -8,7 +8,7 @@ public class BackgroundStarter : MonoBehaviour {
     public float probaSource;
     public int distanceSource = 5;
     public float decroissanceSource;
-    public List<ColorSource.ThemeSource> themes;
+    public List<ColorManager.Theme> themes;
 
     public void Start() {
         background.Initialize();

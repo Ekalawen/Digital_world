@@ -24,13 +24,13 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
     public float probaBackgroundUnlocked;
     public float decroissanceBackgroundUnlocked;
     public int distanceBackgroundUnlocked;
-    public List<ColorSource.ThemeSource> themesBackgroundUnlocked;
+    public List<ColorManager.Theme> themesBackgroundUnlocked;
 
     [Header("Background Locked theme")]
     public float probaBackgroundLocked;
     public float decroissanceBackgroundLocked;
     public int distanceBackgroundLocked;
-    public List<ColorSource.ThemeSource> themesBackgroundLocked;
+    public List<ColorManager.Theme> themesBackgroundLocked;
 
     [Header("FastUI")]
     public GameObject fastUISystemNextPrefab;

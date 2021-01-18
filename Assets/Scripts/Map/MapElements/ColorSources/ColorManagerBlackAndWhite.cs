@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class ColorManagerBlackAndWhite : ColorManager {
 
-    public List<ColorSource.ThemeSource> primaryTheme;
-    public List<ColorSource.ThemeSource> secondaryTheme;
+    public List<ColorManager.Theme> primaryTheme;
+    public List<ColorManager.Theme> secondaryTheme;
     public Color primaryColor;
     public Color secondaryColor;
 
@@ -19,11 +19,11 @@ public class ColorManagerBlackAndWhite : ColorManager {
         isCurrentlyPrimaryTheme = !isCurrentlyPrimaryTheme;
     }
 
-    public List<ColorSource.ThemeSource> GetCurrentTheme() {
+    public List<ColorManager.Theme> GetCurrentTheme() {
         return isCurrentlyPrimaryTheme ? primaryTheme : secondaryTheme;
     }
 
-    public List<ColorSource.ThemeSource> GetNotCurrentTheme() {
+    public List<ColorManager.Theme> GetNotCurrentTheme() {
         return !isCurrentlyPrimaryTheme ? primaryTheme : secondaryTheme;
     }
 

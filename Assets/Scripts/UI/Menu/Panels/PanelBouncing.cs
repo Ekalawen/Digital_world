@@ -9,7 +9,7 @@ public class PanelBouncing : MonoBehaviour {
     public float probaSource; // La probabilité d'être une source
     public int distanceSource; // La distance d'action de la source
     public float decroissanceSource; // La vitesse de décroissance de la source
-    public List<ColorSource.ThemeSource> themes; // Les thèmes pour choisir la couleur des sources
+    public List<ColorManager.Theme> themes; // Les thèmes pour choisir la couleur des sources
 
     protected MenuBackgroundBouncing menu;
     protected int x; // La position en indice
@@ -27,7 +27,7 @@ public class PanelBouncing : MonoBehaviour {
         isSource = false;
 
         if (themes == null)
-            themes = new List<ColorSource.ThemeSource> { ColorSource.ThemeSource.RANDOM };
+            themes = new List<ColorManager.Theme> { ColorManager.Theme.RANDOM };
     }
 
     void Update () {

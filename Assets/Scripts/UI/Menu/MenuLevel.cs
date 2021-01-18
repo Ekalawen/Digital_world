@@ -36,7 +36,7 @@ public class MenuLevel : MonoBehaviour {
     public float probaSource = 0.00035f;
     public int distanceSource = 8;
     public float decroissanceSource = 0.01f;
-    public List<ColorSource.ThemeSource> themes;
+    public List<ColorManager.Theme> themes;
 
     [Header("Links to Level")]
     public string nextPassword = "passwd";

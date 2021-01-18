@@ -43,7 +43,7 @@ public class HistoryManager : MonoBehaviour {
     [HideInInspector]
     public Vector3 mapCenter; // Different de mapSize pour le tutoriel !
     [HideInInspector]
-    public List<ColorSource.ThemeSource> themes;
+    public List<ColorManager.Theme> themes;
     protected ObjectHistory playerHistory;
     protected List<ObjectHistory> ennemisHistory;
     protected List<ObjectHistory> lumieresHistory;

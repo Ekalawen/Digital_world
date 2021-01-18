@@ -72,7 +72,7 @@ public class MenuBackgroundBouncing : MonoBehaviour {
     public void SetParameters(float probaSource,
         int distanceSource, 
         float decroissanceSource,
-        List<ColorSource.ThemeSource> themes) {
+        List<ColorManager.Theme> themes) {
         for(int i = 0; i < nbPanelsX; i++) {
             for(int j = 0; j < nbPanelsY; j++) {
                 panelsPos[i, j].SetSource(UnityEngine.Random.Range(0.0f, 1.0f) < probaSource);

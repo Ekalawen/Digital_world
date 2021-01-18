@@ -121,7 +121,7 @@ public class MenuManager : MonoBehaviour {
         float probaSource = MathCurves.CubicRandom(0.0002f, 0.0035f);
         int distanceSource = UnityEngine.Random.Range(1, 12);
         float decroissanceSource = UnityEngine.Random.Range(0.002f, 0.02f);
-        List<ColorSource.ThemeSource> themes = new List<ColorSource.ThemeSource>();
+        List<ColorManager.Theme> themes = new List<ColorManager.Theme>();
         int nbThemes = UnityEngine.Random.Range(1, 4);
         for(int i = 0; i < nbThemes; i++)
             themes.Add(ColorManager.GetRandomThemeNotNoir());
