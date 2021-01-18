@@ -1,0 +1,83 @@
+Salut @everyone !! :) Voici un nouveau Patch-notes comme vous les adorez ! ;)
+
+#Patch-notes Version 0.4 !!
+
+Ce patch-note a été quasiment exclusivement dédié à une refonte graphique du jeu.
+En effet, dans le but d'accéder à des fonctionnalités de graphismes avancés tel que la programmation de Shaders (des mini-programmes d'affichages graphiques calculés sur GPU) et la programmation de VFX (effets visuels de particules également calculés sur GPU) le pipeline de rendu graphique du jeu a été complètement refondu. C'était un gros chantier qui a pris beaucoup de temps et d'efforts. Mais c'est maintenant finit et le jeu a maintenant accès à pleins d'effets cools !
+
+## Graphismes
+### General
+- Changement du pipeline de rendu : on passe à URP pour pleins d'effets graphiques cools !
+- Suppression définitive de tous les cubes de couleurs noir : les cubes ont maintenant tous une couleur claire !
+- Mise à jour de la lumière ambiante.
+- Mise à jour des post-process.
+
+### Redesigns
+- Redesign de la Skybox. Celle-ci est maintenant dynamiquement lié à l'état du jeu.
+- Redesign du graphisme des Cubes.
+- Redesign du graphisme des Cubes de la mort.
+- Redesign du graphisme des Cubes transparents.
+- Redesign du graphisme des Cubes indestructibles.
+- Redesign du graphisme des Cubes brisables.
+- Redesign du graphisme des Data.
+- Redesign du graphisme des Data furtives.
+- Redesign du graphisme des Data switchables.
+- Redesign du graphisme des Sorties qui sont maintenant clairement identifiables des Data.
+- Ajout et redesign du graphisme des Sorties intermédiaires.
+- Redesign du graphisme des Sondes.
+- Redesign du marqueur de nouveau meilleur score dans les Infinite Runners.
+
+### Nouveaux effets
+- Ajout d'un effet lors de la création d'un Cube.
+- Ajout d'un effet lors de la destruction d'un Cube.
+- Ajout d'un effet visuel lors de la capture d'une Data ou d'une Sortie.
+- Ajout d'un signal visuel lorsque qu'une Sonde nous repère.
+- Ajout d'un signal visuel lorsque qu'une Sonde nous attaque.
+- Ajout d'un post-process de bloom.
+
+### Autres
+- Régression : perte des ombres générés par les Data et les Sorties jusqu'à mise à jour du moteur de jeu.
+
+
+## Développement
+- La raison de la mort est maintenant clairement spécifiée.
+- Ajout d'un bouton pour générer un GIF des 7 dernières secondes de jeu. Fonctionnalité non disponible dans vos builds.
+- Différentiation de couleur pour les Sorties et les Sorties intermédiaires.
+- L'effet de destruction des cubes dans les Infinites Runners est maintenant moins saccadé et plus précis.
+- Le Champs de Vision (Field of View ou FOV) de la caméra a été augmenté de 60 degrés à 75 degrés.
+
+## UI
+- Ajout des boutons d'interface FastUI pour permettre de passer rapidement d'un niveau à l'autre sans avoir à revenir sur la map.
+- Ajout d'un système de mise en évidences des boutons pour guider le joueur jusqu'au niveau ou Data Hackées() suivants.
+- Refonte du déplacement de la caméra dans le sélecteur de niveau. Celle-ci est maintenant plus simple et intuitive d'utilisation.
+- Lorsque l'on essaye d'accéder à un niveau bloquer, on nous précise maintenant quels sont les niveaux à débloquer pour y accéder.
+
+
+## Equilibrage
+
+### Nouveau niveau
+- Ajout du nouveau niveau Death Compression. Ce nouveau niveau est conçu spécifiquement pour apprendre au joueur l'évenement de fin de niveau des Cubes de la mort.
+
+### Evenements de fin de niveau
+- Suppression de l'évenement de fin de niveau des Cubes de la mort pour le niveau Hello World !
+- Suppression de l'évenement de fin de niveau des Cubes de la mort pour le niveau First Sonde.
+- Suppression de l'évenement de fin de niveau des Cubes de la mort pour le niveau In-Sondable.
+
+### Evenements ponctuels
+- La fréquence des évenements Jump dans le niveau Learn Jump a été réduit de 4 à 4.5.
+- La punition des évenements Jump dans le niveau Equilibrium a été réduit de 3 secondes à 1 seconde.
+- La fréquence des évenements Intersection dans le niveau Learn Intersection a été réduit de (5, 4, 4) à (5, 5, 5).
+
+### Génération des maps
+- Refonte de la génération procédurale de la map pour le niveau Hello World ! pour qu'elle soit plus lisible.
+- Refonte de la génération procédurale de la map pour le niveau In-Sondable pour qu'elle soit plus lisible.
+- Refonte de la génération procédurale de la map pour le niveau  pour qu'elle soit plus lisible.
+- Rajout de blocs dans les coins du niveau First Sonde pour simplifier l'atteinte de la Data.
+
+### Infinite Runners
+- Ajout d'un message au début de chaque Infinite Runner nous disant d'aller aussi loin que possible.
+- Les blocks du niveau Le Plongeon ont été revus pour être plus simples.
+- Le "paravent" des block des Tunnels dans les Infinite Runners a été supprimé.
+
+### Tutoriel
+- La fin du Tutoriel a été simplifié pour être moins longue et répétitive.
