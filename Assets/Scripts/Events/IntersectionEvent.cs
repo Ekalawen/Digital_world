@@ -69,7 +69,7 @@ public class IntersectionEvent : RandomEvent {
 
     protected Material PrevisualisationOfLine(Cube extremiteCube) {
         Material material = extremiteCube.GetComponent<Renderer>().material;
-        extremiteCube.GetComponent<Renderer>().material = previsualisationMaterial;
+        extremiteCube.SetMaterial(previsualisationMaterial);
         extremiteCube.SetColor(gm.colorManager.GetNotBlackColorForPosition(extremiteCube.transform.position));
         cubesAlreadyUsedInEvents.Add(extremiteCube);
         return material;

@@ -71,6 +71,11 @@ public class Cube : MonoBehaviour {
         GetMaterial().SetFloat("_DecomposeStartingTime", Time.time);
     }
 
+    public void SetMaterial(Material newMaterial) {
+        GetComponent<MeshRenderer>().material = newMaterial;
+        material = GetComponent<MeshRenderer>().material;
+    }
+
     protected virtual void RegisterCubeToColorSources() {
         ColorManager colorManager = gm.colorManager;
         foreach(ColorSource colorSource in colorManager.sources) {
@@ -180,7 +185,7 @@ public class Cube : MonoBehaviour {
 
     public Material GetMaterial() {
         if(material == null) {
-            material = GetComponent<Renderer>().material;
+            material = GetComponent<MeshRenderer>().material;
         }
         return material;
     }
