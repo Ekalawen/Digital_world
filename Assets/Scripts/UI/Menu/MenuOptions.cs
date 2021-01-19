@@ -26,7 +26,7 @@ public class MenuOptions : MonoBehaviour {
         int distanceSource = 1;
         float decroissanceSource = 0.003f;
         List<ColorManager.Theme> themes = new List<ColorManager.Theme>();
-        themes.Add(ColorManager.Theme.BLEU_NUIT);
+        themes.Add(ColorManager.Theme.BLEU);
         menuInitial.GetComponent<MenuManager>().menuBouncingBackground.SetParameters(
             probaSource, distanceSource, decroissanceSource, themes);
         menuOptions.SetActive(true);

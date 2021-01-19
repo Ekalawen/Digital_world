@@ -124,7 +124,7 @@ public class MenuManager : MonoBehaviour {
         List<ColorManager.Theme> themes = new List<ColorManager.Theme>();
         int nbThemes = UnityEngine.Random.Range(1, 4);
         for(int i = 0; i < nbThemes; i++)
-            themes.Add(ColorManager.GetRandomThemeNotNoir());
+            themes.Add(ColorManager.GetRandomTheme());
         menuBouncingBackground.SetParameters(probaSource, distanceSource, decroissanceSource, themes);
     }
 
