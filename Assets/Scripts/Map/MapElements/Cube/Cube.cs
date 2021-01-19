@@ -93,9 +93,18 @@ public class Cube : MonoBehaviour {
         GetComponent<MeshRenderer>().material.color = newColor;
     }
 
-    public float GetLuminosity() {
-        Color color = GetComponent<MeshRenderer>().material.color;
-        return ColorManager.GetLuminosity(color);
+    public float GetWhiteDistance() {
+        return 1f - ColorManager.RGBtoCIELAB(material.color)[0] / 100f; // L
+    }
+
+    public float GetLuminance() {
+        return ColorManager.RGBtoCIELAB(material.color)[0] / 100f; // L
+    }
+
+    public float GetBlackDistance() {
+        //return ColorManager.GetBlackDistance(material.color);
+        //return ColorManager.ColorDistanceCIELAB(material.color, Color.black);
+        return ColorManager.RGBtoCIELAB(material.color)[0] / 100f; // L
     }
 
     public void Explode() {

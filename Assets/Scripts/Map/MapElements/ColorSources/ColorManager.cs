@@ -47,7 +47,7 @@ public class ColorManager : MonoBehaviour {
     // Il faudra changer ça, les sources ne sont pas forcément des cubes !?
 	public float frequenceSources; // La frequence qu'un emplacement soit une source
 	public Vector2 porteeSourceRange;
-    public float cubeLuminosityMax; // Le maximum de luminosité d'un cube (pour éviter d'éblouir le joueur)
+    public float cubeLuminanceMax; // Le maximum de luminosité d'un cube (pour éviter d'éblouir le joueur)
     public List<SavedColor> savedColors; // Utile si on a besoin de certaines couleurs à certains moments dans le jeu !
 
     protected MapManager map;
@@ -227,7 +227,7 @@ public class ColorManager : MonoBehaviour {
         MathTools.Shuffle(cubes);
 
         foreach(Cube cube in cubes) {
-            while(cube.GetLuminosity() > cubeLuminosityMax + 0.0001f) { // Car la luminosité n'est jamais à vraiment 0
+            while(cube.GetLuminance() > cubeLuminanceMax) {
                 RemoveClosestSource(cube.transform.position);
             }
         }
@@ -237,7 +237,7 @@ public class ColorManager : MonoBehaviour {
         MathTools.Shuffle(cubes);
 
         foreach(Cube cube in cubes) {
-            if(cube.GetLuminosity() < 0.001f) {
+            if(cube.GetLuminance() < 0.01f) {
                 GenerateColorSourceAt(cube.transform.position);
             }
         }
@@ -270,18 +270,6 @@ public class ColorManager : MonoBehaviour {
         sources.Remove(closest);
         closest.Delete();
     }
-
-    //public static ColorManager.Theme GetRandomTheme() {
-    //    System.Array enumValues = System.Enum.GetValues(typeof(ColorManager.Theme));
-    //    return (ColorManager.Theme)enumValues.GetValue(Random.Range(0, enumValues.Length));
-    //}
-
-    //public static ColorManager.Theme GetRandomThemeNotNoir() {
-    //    ColorManager.Theme theme = GetRandomTheme();
-    //    while(theme == ColorManager.Theme.NOIR)
-    //        theme = GetRandomTheme();
-    //    return theme;
-    //}
 
     public static Color InterpolateColors(Color c1, Color c2, float avancement = 0.5f) {
         return (1 - avancement) * c1 + avancement * c2;
@@ -339,10 +327,133 @@ public class ColorManager : MonoBehaviour {
         return color;
     }
 
-    public static float GetLuminosity(Color color) {
-        float H, S, V;
-        Color.RGBToHSV(color, out H, out S, out V);
-        return V;
+    public static float GetLuminance(Color rgb) {
+        return RGBtoCIELAB(rgb)[0] / 100f;
+    }
+
+    public static float GetContrastRatioDangerous(Color color1, Color color2) {
+        // 1 is the minimum
+        // There is no maximum, but 4 or 5 is a lot
+        float color1Luminance = GetContrastRatioLuminanceDangerous(color1);
+        float color2Luminance = GetContrastRatioLuminanceDangerous(color2);
+        float maxLuminance = Mathf.Max(color1Luminance, color2Luminance);
+        float minLuminance = Mathf.Min(color1Luminance, color2Luminance);
+        return (maxLuminance + 0.05f) / (minLuminance + 0.05f);
+    }
+
+    public static float GetContrastRatioLuminanceDangerous(Color color) {
+        float R = GetContrastRatioLuminanceChannelDangerous(color.r);
+        float G = GetContrastRatioLuminanceChannelDangerous(color.g);
+        float B = GetContrastRatioLuminanceChannelDangerous(color.b);
+        return 0.2126f * R + 0.7152f * G + 0.0722f * B;
+    }
+
+    protected static float GetContrastRatioLuminanceChannelDangerous(float value) {
+        if(value <= 0.03928f) {
+            return value / 12.92f;
+        } else {
+            return Mathf.Pow((value + 0.055f) / 1.055f, 2.4f);
+        }
+    }
+
+    public static Vector3 RGBtoXYZ(Color rgb) {
+        float R = RGBtoXYZChannel(rgb.r);
+        float G = RGBtoXYZChannel(rgb.g);
+        float B = RGBtoXYZChannel(rgb.b);
+        R *= 100;
+        G *= 100;
+        B *= 100;
+        float X = 0.4124f * R + 0.3576f * G + 0.1805f * B;
+        float Y = 0.2126f * R + 0.7152f * G + 0.0722f * B;
+        float Z = 0.0193f * R + 0.1192f * G + 0.9505f * B;
+        return new Vector3(X, Y, Z);
+    }
+
+    protected static float RGBtoXYZChannel(float value) {
+        if(value > 0.04045f) {
+            return Mathf.Pow((value + 0.055f) / 1.055f, 2.4f);
+        } else {
+            return value / 12.92f;
+        }
+    }
+
+
+    public static Color XYZtoRGB(Vector3 xyz) {
+        float X = xyz.x / 100;
+        float Y = xyz.y / 100;
+        float Z = xyz.z / 100;
+        float R = 3.2406f * X + -1.5372f * Y + -0.4986f * Z;
+        float G = -0.9689f * X + 1.8758f * Y + 0.0415f * Z;
+        float B = 0.0557f * X + -0.2040f * Y + 1.0570f * Z;
+        return new Color(R, G, B);
+    }
+
+    protected static float XYZtoRGBChannel(float value) {
+        if(value > 0.0031308f) {
+            return 1.055f * (Mathf.Pow(value, 1.0f / 2.4f)) - 0.055f;
+        } else {
+            return 12.92f * value;
+        }
+    }
+
+    public static Vector3 XYZtoCIELAB(Vector3 xyz) {
+        // On prend 'E' donc Equal Energy
+        float X = xyz.x / 100f;
+        float Y = xyz.y / 100f;
+        float Z = xyz.z / 100f;
+        X = XYZtoCIELABChannel(X);
+        Y = XYZtoCIELABChannel(Y);
+        Z = XYZtoCIELABChannel(Z);
+        float L = 116f * Y - 16f;
+        float A = 500f * (X - Y);
+        float B = 200f * (Y - Z);
+        return new Vector3(L, A, B);
+    }
+
+    protected static float XYZtoCIELABChannel(float value) {
+        if(value > 0.008856f) {
+            return Mathf.Pow(value, 1.0f / 3.0f);
+        } else {
+            return 7.787f * value + 16f / 116f;
+        }
+    }
+
+    public static Vector3 CIELABtoXYZ(Vector3 cielab) {
+        float L = cielab[0];
+        float A = cielab[1];
+        float B = cielab[2];
+        float Y = (L + 16f) / 116f;
+        float X = A / 500f + Y;
+        float Z = Y - B / 200f;
+        X = CIELABtoXYZChannel(X);
+        Y = CIELABtoXYZChannel(Y);
+        Z = CIELABtoXYZChannel(Z);
+        X *= 100f;
+        Y *= 100f;
+        Z *= 100f;
+        return new Vector3(X, Y, Z);
+    }
+
+    protected static float CIELABtoXYZChannel(float value) {
+        if(value > 0.008856f) {
+            return Mathf.Pow(value, 3f);
+        } else {
+            return (value - (16f / 116f)) / 7.787f;
+        }
+    }
+
+    public static Vector3 RGBtoCIELAB(Color rgb) {
+        return XYZtoCIELAB(RGBtoXYZ(rgb));
+    }
+
+    public static Color CIELABtoRGB(Vector3 cielab) {
+        return XYZtoRGB(CIELABtoXYZ(cielab));
+    }
+
+    public static float ColorDistanceCIELAB(Color rgb1, Color rgb2) {
+        Vector3 cielab1 = RGBtoCIELAB(rgb1);
+        Vector3 cielab2 = RGBtoCIELAB(rgb2);
+        return Vector3.Distance(cielab1, cielab2) / 100.5168f; // où 100,5168f est la distance du blanc au noir pour avoir une distance dans [0, 1] :)
     }
 
     public void MakeAllColorSourcesBounceToColor(Color targetColor, float fadeIn, float fadeOut) {
