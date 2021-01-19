@@ -7,50 +7,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 6992610606586102587, guid: 5a74fb9735ae0a349a6a85c9a951f4bf,
+    - target: {fileID: 5554897416487289289, guid: 5a74fb9735ae0a349a6a85c9a951f4bf,
         type: 3}
-      propertyPath: m_Name
-      value: ScanManagerStandard
-      objectReference: {fileID: 0}
-    - target: {fileID: 6717675701963031218, guid: 5a74fb9735ae0a349a6a85c9a951f4bf,
-        type: 3}
-      propertyPath: useScan
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6717675701963031218, guid: 5a74fb9735ae0a349a6a85c9a951f4bf,
-        type: 3}
-      propertyPath: scanRange
-      value: 4.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6717675701963031218, guid: 5a74fb9735ae0a349a6a85c9a951f4bf,
-        type: 3}
-      propertyPath: scanFrequence
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6717675701963031218, guid: 5a74fb9735ae0a349a6a85c9a951f4bf,
-        type: 3}
-      propertyPath: scanDuree
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6717675701963031218, guid: 5a74fb9735ae0a349a6a85c9a951f4bf,
-        type: 3}
-      propertyPath: scanSpeed
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 6717675701963031218, guid: 5a74fb9735ae0a349a6a85c9a951f4bf,
-        type: 3}
-      propertyPath: scanWidth
-      value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6717675701963031218, guid: 5a74fb9735ae0a349a6a85c9a951f4bf,
-        type: 3}
-      propertyPath: useScans
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6717675701963031218, guid: 5a74fb9735ae0a349a6a85c9a951f4bf,
-        type: 3}
-      propertyPath: useVision
-      value: 1
+      propertyPath: m_RootOrder
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5554897416487289289, guid: 5a74fb9735ae0a349a6a85c9a951f4bf,
         type: 3}
@@ -69,6 +29,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5554897416487289289, guid: 5a74fb9735ae0a349a6a85c9a951f4bf,
         type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5554897416487289289, guid: 5a74fb9735ae0a349a6a85c9a951f4bf,
+        type: 3}
       propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
@@ -80,16 +45,6 @@ PrefabInstance:
     - target: {fileID: 5554897416487289289, guid: 5a74fb9735ae0a349a6a85c9a951f4bf,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5554897416487289289, guid: 5a74fb9735ae0a349a6a85c9a951f4bf,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5554897416487289289, guid: 5a74fb9735ae0a349a6a85c9a951f4bf,
-        type: 3}
-      propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5554897416487289289, guid: 5a74fb9735ae0a349a6a85c9a951f4bf,
@@ -106,6 +61,56 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6717675701963031218, guid: 5a74fb9735ae0a349a6a85c9a951f4bf,
+        type: 3}
+      propertyPath: useScan
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6717675701963031218, guid: 5a74fb9735ae0a349a6a85c9a951f4bf,
+        type: 3}
+      propertyPath: useScans
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6717675701963031218, guid: 5a74fb9735ae0a349a6a85c9a951f4bf,
+        type: 3}
+      propertyPath: scanDuree
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6717675701963031218, guid: 5a74fb9735ae0a349a6a85c9a951f4bf,
+        type: 3}
+      propertyPath: scanRange
+      value: 4.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6717675701963031218, guid: 5a74fb9735ae0a349a6a85c9a951f4bf,
+        type: 3}
+      propertyPath: scanSpeed
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6717675701963031218, guid: 5a74fb9735ae0a349a6a85c9a951f4bf,
+        type: 3}
+      propertyPath: scanWidth
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6717675701963031218, guid: 5a74fb9735ae0a349a6a85c9a951f4bf,
+        type: 3}
+      propertyPath: useVision
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6717675701963031218, guid: 5a74fb9735ae0a349a6a85c9a951f4bf,
+        type: 3}
+      propertyPath: visionRange
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6717675701963031218, guid: 5a74fb9735ae0a349a6a85c9a951f4bf,
+        type: 3}
+      propertyPath: scanFrequence
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992610606586102587, guid: 5a74fb9735ae0a349a6a85c9a951f4bf,
+        type: 3}
+      propertyPath: m_Name
+      value: ScanManagerStandard
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5a74fb9735ae0a349a6a85c9a951f4bf, type: 3}

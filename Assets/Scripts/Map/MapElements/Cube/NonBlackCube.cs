@@ -17,13 +17,13 @@ public class NonBlackCube : Cube {
     protected void InitColor() {
         if (GetColor() == Color.black) {
             Color color = ColorSource.LimiteColorSaturation(Color.black, minColorSaturationAndValue);
-            GetComponent<MeshRenderer>().material.color = color;
+            GetMaterial().color = color;
         }
     }
 
     protected void UninitColor() {
         if (!colorHasBeenChanged) {
-            GetComponent<MeshRenderer>().material.color = Color.black;
+            GetMaterial().color = Color.black;
             colorHasBeenChanged = true;
         }
     }
@@ -31,12 +31,12 @@ public class NonBlackCube : Cube {
     public override void AddColor(Color addedColor) {
         UninitColor();
         Color color = ColorSource.LimiteColorSaturation(GetColor() + addedColor, minColorSaturationAndValue);
-        GetComponent<MeshRenderer>().material.color = color;
+        GetMaterial().color = color;
     }
 
     public override void SetColor(Color newColor) {
         UninitColor();
         Color color = ColorSource.LimiteColorSaturation(newColor, minColorSaturationAndValue);
-        GetComponent<MeshRenderer>().material.color = color;
+        GetMaterial().color = color;
     }
 }
