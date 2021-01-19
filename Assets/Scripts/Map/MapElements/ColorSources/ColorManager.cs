@@ -60,7 +60,7 @@ public class ColorManager : MonoBehaviour {
         map = FindObjectOfType<MapManager>();
         colorSourceFolder = new GameObject("ColorSources");
 
-        ReplaceNonDeterministicColors();
+        themes = ReplaceNonDeterministicColors(themes);
 
         if (!bGenerateInCubes)
             GenerateColorSources(map.tailleMap);
@@ -80,14 +80,18 @@ public class ColorManager : MonoBehaviour {
         Debug.Log(s.Substring(0, s.Length - 2));
     }
 
-    protected void ReplaceNonDeterministicColors() {
+    public static List<Theme> ReplaceNonDeterministicColors(List<Theme> themes) {
+        List<Theme> newThemes = new List<Theme>();
         for (int i = 0; i < themes.Count; i++) {
             if (themes[i] == Theme.RANDOM) {
-                themes[i] = GetRandomTheme();
+                newThemes.Add(GetRandomTheme());
             } else if (themes[i] == Theme.RANDOM_NON_BRIGHT) {
-                themes[i] = GetRandomNonBrightTheme();
+                newThemes.Add(GetRandomNonBrightTheme());
+            } else {
+                newThemes.Add(themes[i]);
             }
         }
+        return newThemes;
     }
 
     public static Theme GetRandomTheme() {
@@ -211,7 +215,7 @@ public class ColorManager : MonoBehaviour {
                 c = Color.HSVToRGB(Random.Range(0f, 1f), 1f, 1f); break;
 			default:
 				c = Color.black;
-				Debug.LogWarning("Je ne connais pas ce thème !");
+				Debug.LogWarning($"Je ne connais pas ce thème {themeChoisi} !");
                 break;
 		}
 		return c;

@@ -26,8 +26,9 @@ public class PanelBouncing : MonoBehaviour {
 
         isSource = false;
 
-        if (themes == null)
+        if (themes == null) {
             themes = new List<ColorManager.Theme> { ColorManager.Theme.RANDOM };
+        }
     }
 
     void Update () {

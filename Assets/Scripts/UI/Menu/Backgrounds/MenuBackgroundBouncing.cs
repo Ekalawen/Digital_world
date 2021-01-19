@@ -73,13 +73,14 @@ public class MenuBackgroundBouncing : MonoBehaviour {
         int distanceSource, 
         float decroissanceSource,
         List<ColorManager.Theme> themes) {
+        List<ColorManager.Theme> themesUsed = ColorManager.ReplaceNonDeterministicColors(themes);
         for(int i = 0; i < nbPanelsX; i++) {
             for(int j = 0; j < nbPanelsY; j++) {
                 panelsPos[i, j].SetSource(UnityEngine.Random.Range(0.0f, 1.0f) < probaSource);
                 panelsPos[i, j].probaSource = probaSource;
                 panelsPos[i, j].distanceSource = distanceSource;
                 panelsPos[i, j].decroissanceSource = decroissanceSource;
-                panelsPos[i, j].themes = themes;
+                panelsPos[i, j].themes = themesUsed;
             }
         }
     }
