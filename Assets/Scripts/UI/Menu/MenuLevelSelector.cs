@@ -5,8 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class MenuLevelSelector : MonoBehaviour {
 
-    public static string LEVEL_INDICE_KEY = "levelIndiceKey";
-    public static string LEVEL_INDICE_MUST_BE_USED_KEY = "levelIndiceMustBeUsedKey";
+    public static string SAVE_LEVEL_NAME_KEY = "saveLevelNameKey";
+    public static string SAVE_LEVEL_NAME_MUST_BE_USED_KEY = "saveLevelNameMustBeUsedKey";
 
     public GameObject menuInitial;
     public List<GameObject> levels;
@@ -56,14 +56,16 @@ public class MenuLevelSelector : MonoBehaviour {
         menuInitial.GetComponent<MenuManager>().SetRandomBackground();
     }
 
-    public void SaveLevelIndice() {
-        PlayerPrefs.SetInt(LEVEL_INDICE_KEY, levelIndice);
+    public void SaveLevelName() {
+        string levelName = menuInitial.GetComponent<MenuLevel>().GetName();
+        PlayerPrefs.SetString(SAVE_LEVEL_NAME_KEY, levelName);
         PlayerPrefs.Save();
     }
 
     public void CleanLevelIndice() {
-        PlayerPrefs.SetInt(LEVEL_INDICE_KEY, -1);
-        PlayerPrefs.SetString(LEVEL_INDICE_MUST_BE_USED_KEY, "False");
+        PlayerPrefs.DeleteKey(SAVE_LEVEL_NAME_KEY);
+        //PlayerPrefs.SetString(SAVE_LEVEL_NAME_KEY, "Nope");
+        PlayerPrefs.SetString(SAVE_LEVEL_NAME_MUST_BE_USED_KEY, MenuManager.FALSE);
         PlayerPrefs.Save();
     }
 
@@ -76,7 +78,7 @@ public class MenuLevelSelector : MonoBehaviour {
         AsyncOperation loading = SceneManager.LoadSceneAsync(levelSceneName);
         loading.allowSceneActivation = false;
         menuLevel.SetPlayStarted();
-        SaveLevelIndice();
+        SaveLevelName();
         PlayerPrefs.SetString(MenuLevel.LEVEL_NAME_KEY, menuLevel.GetName());
 
         StartCoroutine(FadeOutMenuLevel(menuLevel.gameObject));

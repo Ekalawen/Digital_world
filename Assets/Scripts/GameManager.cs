@@ -157,9 +157,9 @@ public class GameManager : MonoBehaviour {
 		Object.Destroy(eventManager);
 		Object.Destroy(this); 
 
-        PlayerPrefs.SetString(MenuLevelSelector.LEVEL_INDICE_MUST_BE_USED_KEY, "True");
+        PlayerPrefs.SetString(SelectorManager.LAST_LEVEL_KEY, SceneManager.GetActiveScene().name);
 
-		Cursor.lockState = CursorLockMode.None;
+        Cursor.lockState = CursorLockMode.None;
 		Cursor.visible = true;
 
         if(SceneManager.GetActiveScene().name == "TutorialScene") {
