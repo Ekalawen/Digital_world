@@ -14,6 +14,7 @@ public class CheatCodeManager : MonoBehaviour {
 
     public List<KeyCode> winCode;
     public List<KeyCode> plus10Code;
+    public List<KeyCode> minus10Code;
 
     protected GameManager gm;
     protected List<CheatCode> cheatCodes;
@@ -39,6 +40,14 @@ public class CheatCodeManager : MonoBehaviour {
             plus10SecondesCheatCode.action = gm.timerManager.Add10Time;
             cheatCodes.Add(plus10SecondesCheatCode);
         }
+
+        if (gm.GetMapType() == MenuLevel.LevelType.REGULAR) {
+            CheatCode minus10SecondesCheatCode = new CheatCode();
+            minus10SecondesCheatCode.code = minus10Code;
+            minus10SecondesCheatCode.action = gm.timerManager.Minus10Time;
+            cheatCodes.Add(minus10SecondesCheatCode);
+        }
+
     }
 
     public void Update() {

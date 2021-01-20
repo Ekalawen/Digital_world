@@ -618,7 +618,7 @@ public virtual void Update () {
             EffacerImportantMessage(messageCurrent);
             AjouterMessageImportant(messageCurrent, Console.TypeText.ALLY_TEXT, 1.2f, true, messagePrecedent);
 		} else {
-            if (!gm.eventManager.IsWin() && gm.eventManager.GetComponent<EventManagerWhileTrue>() == null) { // Ehhhh x)
+            if (!gm.eventManager.IsGameWin() && gm.eventManager.GetComponent<EventManagerWhileTrue>() == null) { // Ehhhh x)
                 EffacerImportantMessage("Plus que 1 !");
                 StartEndGame();
                 //AjouterMessage("ON LES A TOUTES !", Console.TypeText.ALLY_TEXT);

@@ -186,6 +186,10 @@ public class TimerManager : MonoBehaviour {
         AddTime(10);
     }
 
+    public void Minus10Time() {
+        RemoveTime(10, EventManager.DeathReason.TIME_OUT);
+    }
+
     public void RemoveTime(float timeToRemove, EventManager.DeathReason reason) {
         AddTime(-timeToRemove);
         TestLoseGame(reason);

@@ -116,7 +116,7 @@ public class GameManager : MonoBehaviour {
 
 	void Update () {
         if (Input.GetKey (KeyCode.Escape)) {
-			QuitterPartie();
+            eventManager.QuitOrReload();
 		}
 
 		if(Input.GetKeyDown(KeyCode.F1)) {
@@ -137,7 +137,7 @@ public class GameManager : MonoBehaviour {
 #endif
 	}
 
-    public IEnumerator QuitInSeconds(int tps) {
+    public IEnumerator QuitInSeconds(float tps) {
 		yield return new WaitForSeconds (tps);
 		QuitterPartie();
 	}
@@ -164,7 +164,7 @@ public class GameManager : MonoBehaviour {
 
         if(SceneManager.GetActiveScene().name == "TutorialScene") {
             SceneManager.LoadScene("MenuScene");
-        } else if ((GetMapType() == MenuLevel.LevelType.REGULAR && eventManager.IsWin())) {
+        } else if ((GetMapType() == MenuLevel.LevelType.REGULAR && eventManager.IsGameWin())) {
             //|| GetMapType() == MenuLevel.LevelType.INFINITE && eventManager.IsNewBestScoreAfterBestScoreAssignation()) {
             SceneManager.LoadScene("RewardScene");
         } else {

@@ -89,14 +89,14 @@ public class HistoryManager : MonoBehaviour {
     }
 
     protected void EchantillonnerPositionPlayer() {
-        if(!gm.eventManager.IsWin() && echantillonnageTimer.IsOver()) {
+        if(!gm.eventManager.IsGameWin() && echantillonnageTimer.IsOver()) {
             TimedVector3 tpos = new TimedVector3(gm.player.transform.position, gm.timerManager.GetElapsedTime());
             playerHistory.positions.Add(tpos);
         }
     }
 
     protected void EchantillonnerPositionsEnnemis() {
-        if(!gm.eventManager.IsWin() && echantillonnageTimer.IsOver()) {
+        if(!gm.eventManager.IsGameWin() && echantillonnageTimer.IsOver()) {
             for(int i = 0; i < ennemisHistory.Count; i++) {
                 ObjectHistory ch = ennemisHistory[i];
                 if (ch.obj != null) { // Il est maintenant possible que certains ennemis soient détruits ! ==> peut engendrer des bugs !
@@ -108,7 +108,7 @@ public class HistoryManager : MonoBehaviour {
     }
 
     protected void EchantillonnerPositionsLumieres() {
-        if(!gm.eventManager.IsWin() && echantillonnageTimer.IsOver()) {
+        if(!gm.eventManager.IsGameWin() && echantillonnageTimer.IsOver()) {
             for(int i = 0; i < lumieresHistory.Count; i++) {
                 ObjectHistory objectHistory = lumieresHistory[i];
                 if (objectHistory.obj != null) {
@@ -123,7 +123,7 @@ public class HistoryManager : MonoBehaviour {
     }
 
     protected void EchantillonnerPositionsItems() {
-        if(!gm.eventManager.IsWin() && echantillonnageTimer.IsOver()) {
+        if(!gm.eventManager.IsGameWin() && echantillonnageTimer.IsOver()) {
             for(int i = 0; i < itemsHistory.Count; i++) {
                 ObjectHistory ch = itemsHistory[i];
                 if (ch.obj != null) {

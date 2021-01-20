@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class EventManager : MonoBehaviour {
     public enum DeathReason {
@@ -29,6 +30,10 @@ public class EventManager : MonoBehaviour {
         FIX_TRESHOLD,
         LOWEST_CUBE_TRESHOLD,
         LOWEST_CUBE_ARROUND_TRESHOLD,
+    };
+    public enum QuitType {
+        QUIT,
+        RELOAD,
     };
 
     [Header("Ejection")]
@@ -58,6 +63,10 @@ public class EventManager : MonoBehaviour {
     public List<int> nbLumieresTriggers;
     public List<GameObject> eventsToAddPrefabs;
 
+    [Header("ChangingScenesTimes")]
+    public float quitSceneTime = 7.0f;
+    public float reloadSceneTime = 3.0f;
+
     protected GameManager gm;
     protected MapManager map;
     protected Coroutine coroutineDeathCubesCreation, coroutineCubesDestructions;
@@ -65,6 +74,7 @@ public class EventManager : MonoBehaviour {
     protected List<Cube> deathCubes;
     protected bool gameIsEnded = false;
     protected bool gameIsWin = false;
+    protected bool gameIsLost = false;
     protected List<RandomEvent> randomEvents;
     protected GameObject randomEventsFolder;
     protected bool shouldAutomaticallyQuitScene = true;
@@ -273,11 +283,11 @@ public class EventManager : MonoBehaviour {
         });
     }
 
-    public void LoseGame(DeathReason reason)
-    {
+    public void LoseGame(DeathReason reason) {
         if (gameIsEnded)
             return;
         gameIsEnded = true;
+        gameIsLost = true;
         StopEventsAndEndEvents();
 
         if (reason != DeathReason.FALL_OUT)
@@ -297,12 +307,62 @@ public class EventManager : MonoBehaviour {
 
         RememberGameResult(success: false);
 
-        QuitSceneInseconds();
+        QuitOrReloadInSeconds();
     }
 
-    protected void QuitSceneInseconds() {
+    public void QuitOrReloadInSeconds() {
+        QuitType quitType = ShouldQuitOrReload();
+        if(quitType == QuitType.QUIT) {
+            QuitSceneInseconds(quitSceneTime);
+        } else {
+            ReloadSceneInSeconds(reloadSceneTime);
+        }
+    }
+
+    public void QuitOrReload() {
+        QuitType quitType = ShouldQuitOrReload();
+        if(quitType == QuitType.QUIT) {
+            gm.QuitterPartie();
+        } else {
+            ReloadScene();
+        }
+    }
+
+    public QuitType ShouldQuitOrReload() {
+        if(!IsGameOver()) {
+            return QuitType.QUIT;
+        }
+        if(IsGameWin()) {
+            return QuitType.QUIT;
+        }
+        if(gm.GetMapType() == MenuLevel.LevelType.REGULAR) {
+            return QuitType.RELOAD;
+        }
+        if(IsNewBestScoreAfterBestScoreAssignation()) {
+            return QuitType.QUIT;
+        }
+        return QuitType.RELOAD;
+    }
+
+    protected void ReloadSceneInSeconds(float seconds) {
+        if(shouldAutomaticallyQuitScene) {
+            automaticallyQuitSceneCoroutine = StartCoroutine(CReloadSceneInSeconds(seconds));
+        }
+    }
+
+    protected IEnumerator CReloadSceneInSeconds(float seconds) {
+        yield return new WaitForSeconds(seconds);
+        ReloadScene();
+    }
+
+    public void ReloadScene() {
+        string sceneName = SceneManager.GetActiveScene().name;
+        SceneManager.LoadScene(sceneName);
+    }
+
+    protected void QuitSceneInseconds(float seconds) {
         if (shouldAutomaticallyQuitScene) {
-            automaticallyQuitSceneCoroutine = StartCoroutine(gm.QuitInSeconds(7));
+            automaticallyQuitSceneCoroutine = StartCoroutine(gm.QuitInSeconds(seconds));
         }
     }
 
@@ -332,7 +392,7 @@ public class EventManager : MonoBehaviour {
 
         RememberGameResult(success: true);
 
-        QuitSceneInseconds();
+        QuitOrReloadInSeconds();
     }
 
     private void StopEventsAndEndEvents()
@@ -441,10 +501,6 @@ public class EventManager : MonoBehaviour {
         return levelNameKey + keySuffix;
     }
 
-    public bool IsGameOver() {
-        return gameIsEnded;
-    }
-
     protected virtual bool IsPlayerEjected() {
         switch(ejectionType) {
             case EjectionType.FIX_TRESHOLD:
@@ -492,8 +548,16 @@ public class EventManager : MonoBehaviour {
         return gm.player.ennemiCaptureTimer.IsOver();
     }
 
-    public bool IsWin() {
+    public bool IsGameOver() {
+        return gameIsEnded;
+    }
+
+    public bool IsGameWin() {
         return gameIsWin;
+    }
+
+    public bool IsGameLost() {
+        return gameIsLost;
     }
 
     public bool IsEndGameStarted() {
