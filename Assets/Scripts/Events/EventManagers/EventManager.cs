@@ -404,7 +404,7 @@ public class EventManager : MonoBehaviour {
         StopEvents();
     }
 
-    protected void RememberGameResult(bool success) {
+    public void RememberGameResult(bool success) {
         if (gm.GetMapType() == MenuLevel.LevelType.INFINITE)
             success = IsNewBestScore();
 
