@@ -406,13 +406,14 @@ public class Player : Character {
         foreach(RaycastHit hit in hits) {
             if (hit.collider.gameObject.tag == "Player"
              || hit.collider.gameObject.tag == "Objectif"
-             || hit.collider.gameObject.tag == "Trigger")
+             || hit.collider.gameObject.tag == "Trigger") {
                 continue;
+            }
+            if (hit.collider.gameObject.GetComponent<DeathCube>() != null) { // Pour empêcher de pouvoir sauter sur eux avant qu'ils nous tuent !
+                continue;
+            }
             Vector3 n = hit.normal;
             float angle = Vector3.Angle(n, up);
-            //if(gm.gravityManager.Down() == Vector3.down) {
-            //    normaleSol = n;
-            //}
             if (Mathf.Abs(angle) <= slideLimit) {
                 return true;
             }
