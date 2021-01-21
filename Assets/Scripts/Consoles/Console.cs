@@ -49,7 +49,6 @@ public class Console : MonoBehaviour {
 
     [Header("Pouvoirs")]
     public PouvoirDisplayInGame pouvoirDisplayA;
-
     public PouvoirDisplayInGame pouvoirDisplayE;
     public PouvoirDisplayInGame pouvoirDisplayLeftClick;
     public PouvoirDisplayInGame pouvoirDisplayRightClick;
@@ -57,6 +56,7 @@ public class Console : MonoBehaviour {
     [Header("Links")]
 	public GameObject textContainer; // Là où l'on va afficher les lignes
 	public Text importantText; // Là où l'on affiche les informations importantes
+    public GameObject escapeButton; // Le truc qui clignote pour nous dire d'appuyer sur Escape à la fin du jeu !
 
 
     [HideInInspector]
@@ -521,6 +521,7 @@ public virtual void Update () {
 		AjouterMessage ("NOOOOOOOOOOOOOOOOOON ...", Console.TypeText.ENNEMI_TEXT);
 		AjouterMessage ("J'ai échouée ...", Console.TypeText.ENNEMI_TEXT);
 		AjouterMessageImportant ("NOUS AVONS RÉUSSI !!!", Console.TypeText.ALLY_TEXT, 5);
+        DisplayEscapeButton();
 		StartCoroutine (Recompenser ());
 	}
 
@@ -592,6 +593,7 @@ public virtual void Update () {
                 AjouterMessageImportant ("MENACE FLIRDÉE !", Console.TypeText.ENNEMI_TEXT, timeDeathMessage);
                 break;
         }
+        DisplayEscapeButton();
 		StartCoroutine (SeMoquer());
 	}
 
@@ -812,5 +814,9 @@ public virtual void Update () {
         string message = "Raté : Sautez et n'accrochez pas les murs !";
         AjouterMessageImportant(message, TypeText.ENNEMI_TEXT, 2.0f, bAfficherInConsole: false, messageToReplace: "JUMP !");
         AjouterMessage("Lors d'un Jump vous devez être dans les airs sans être accroché à un mur lorsque le timer atteint 0.0 !", TypeText.ENNEMI_TEXT);
+    }
+
+    public void DisplayEscapeButton() {
+        escapeButton.SetActive(true);
     }
 }
