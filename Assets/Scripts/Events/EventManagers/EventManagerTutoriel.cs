@@ -16,7 +16,8 @@ public class EventManagerTutoriel : EventManager {
         gm.map.CreateLumiere(posFinalLight, Lumiere.LumiereType.FINAL);
     }
 
-    protected void Update() {
+    public override void Update() {
+        base.Update();
         if (gm.player.transform.position.y < teleportInSafeZoneTreshold) {
             GoBackToPreviousSaveZone();
             gm.console.SavedFromFalling();

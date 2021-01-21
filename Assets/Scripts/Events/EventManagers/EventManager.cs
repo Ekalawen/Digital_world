@@ -92,8 +92,10 @@ public class EventManager : MonoBehaviour {
         }
     }
 
-    public void Update() {
+    public virtual void Update() {
         CheckPartiePerdu();
+
+        CheckPlayerUsingArrowKeys();
 
         TestCheatCode();
     }
@@ -589,5 +591,14 @@ public class EventManager : MonoBehaviour {
     }
 
     protected void TestCheatCode() {
+    }
+
+    protected void CheckPlayerUsingArrowKeys() {
+        if(Input.GetKeyDown(KeyCode.UpArrow)
+        || Input.GetKeyDown(KeyCode.DownArrow)
+        || Input.GetKeyDown(KeyCode.LeftArrow)
+        || Input.GetKeyDown(KeyCode.RightArrow)) {
+            gm.console.DontUseArrowKeys();
+        }
     }
 }

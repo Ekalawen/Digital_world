@@ -78,9 +78,7 @@ public class Console : MonoBehaviour {
     protected string detectedMessage = "DÉTECTÉ !";
     protected string dissimuleMessage = "DISSIMULÉ !";
     protected Transform messagesFolder;
-
-    void Start () {
-	}
+    protected Timer arrowKeysTimer;
 
     public virtual void Initialize() {
 		// Initialisation des variables
@@ -94,6 +92,8 @@ public class Console : MonoBehaviour {
         player = gm.player;
 		importantText.text = "";
         eventManager = gm.eventManager;
+        arrowKeysTimer = new Timer(2);
+        arrowKeysTimer.SetOver();
 
 		// Les premiers messages
 		PremiersMessages();
@@ -594,8 +594,8 @@ public virtual void Update () {
 		StartCoroutine (SeMoquer());
 	}
 
-	// On se moque de lui
-	IEnumerator SeMoquer() {
+    // On se moque de lui
+    IEnumerator SeMoquer() {
 		yield return new WaitForSeconds (4);
 		string message;
 		while (true) {
@@ -797,5 +797,13 @@ public virtual void Update () {
 
     public void CleanAllImportantTexts() {
         importantText.text = "";
+    }
+
+    public void DontUseArrowKeys() {
+        if (arrowKeysTimer.IsOver()) {
+            string message = "Utilisez ZQSD plutôt que les flêches !";
+            AjouterMessageImportant(message, TypeText.BASIC_TEXT, arrowKeysTimer.GetDuree(), false, messageToReplace: message);
+            arrowKeysTimer.Reset();
+        }
     }
 }
