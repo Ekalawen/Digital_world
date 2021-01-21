@@ -35,30 +35,28 @@ public class Cube : MonoBehaviour {
 
         if(gm.timerManager.GetElapsedTime() >= 1.0f) {
             float dissolveTime = dissolveTimeToUse != -1 ? dissolveTimeToUse : gm.postProcessManager.dissolveInGameTime;
-            GetMaterial().SetFloat("_DissolveTime", dissolveTime);
-            GetMaterial().SetFloat("_PlayerProximityCoef", gm.postProcessManager.dissolveInGamePlayerProximityCoef);
-            StartDissolveEffect();
+            StartDissolveEffect(dissolveTime, gm.postProcessManager.dissolveInGamePlayerProximityCoef);
             return;
         }
 
         if (gm.map.dissolveEffectType == DissolveEffectType.REGULAR_MAP) {
-            GetMaterial().SetFloat("_DissolveTime", gm.postProcessManager.dissolveRegularTime);
-            GetMaterial().SetFloat("_PlayerProximityCoef", gm.postProcessManager.dissolveRegularPlayerProximityCoef);
             if (gm.map.IsInInsidedRegularMap(transform.position)) {
-                StartDissolveEffect();
+                StartDissolveEffect(gm.postProcessManager.dissolveRegularTime, gm.postProcessManager.dissolveRegularPlayerProximityCoef);
             } else {
                 StopDissolveEffect();
             }
         } else if (gm.map.dissolveEffectType == DissolveEffectType.INFINITE_MAP) {
-            GetMaterial().SetFloat("_DissolveTime", gm.postProcessManager.dissolveInfiniteTime);
-            GetMaterial().SetFloat("_PlayerProximityCoef", gm.postProcessManager.dissolveInfinitePlayerProximityCoef);
+            StartDissolveEffect(gm.postProcessManager.dissolveInfiniteTime, gm.postProcessManager.dissolveInfinitePlayerProximityCoef);
             GetMaterial().SetFloat("_DissolveStartingTime", Time.time - gm.postProcessManager.dissolveInfiniteTime);
         }
     }
 
-    protected void StartDissolveEffect() {
+    public void StartDissolveEffect(float dissolveTime, float playerProximityCoef = 0.0f) {
+        GetMaterial().SetFloat("_DissolveTime", dissolveTime);
+        GetMaterial().SetFloat("_PlayerProximityCoef", playerProximityCoef);
         GetMaterial().SetFloat("_DissolveStartingTime", Time.time);
         GetMaterial().SetVector("_PlayerPosition", gm.player.transform.position);
+        ReinitializeDecomposeEffect();
     }
 
     protected void StopDissolveEffect() {
@@ -69,6 +67,15 @@ public class Cube : MonoBehaviour {
     protected void StartDecomposeEffect(float duree) {
         GetMaterial().SetFloat("_DecomposeTime", duree);
         GetMaterial().SetFloat("_DecomposeStartingTime", Time.time);
+    }
+
+    public void FinishDecomposeEffect() {
+        float decomposeTime = GetMaterial().GetFloat("_DecomposeTime");
+        GetMaterial().SetFloat("_DecomposeStartingTime", Time.time + decomposeTime);
+    }
+
+    public void ReinitializeDecomposeEffect() {
+        GetMaterial().SetFloat("_DecomposeStartingTime", 999999f);
     }
 
     public void SetMaterial(Material newMaterial) {
