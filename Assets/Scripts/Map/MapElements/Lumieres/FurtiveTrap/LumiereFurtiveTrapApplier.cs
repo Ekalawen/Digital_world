@@ -22,6 +22,7 @@ public class LumiereFurtiveTrapApplier : MonoBehaviour {
         this.nbLumieresToGenerate = nbLumieresToGenerate;
         gm = GameManager.Instance;
         StartCoroutine(CApplyTrap());
+        FindObjectOfType<HelperAnalyze>().SetCaptureFirstData();
     }
 
     protected IEnumerator CApplyTrap() {

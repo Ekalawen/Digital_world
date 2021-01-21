@@ -7,7 +7,7 @@ using UnityEngine;
 public class HelperMessage {
 
     public TimedMessageStruct timedMessage;
-    public bool useSound;
+    public bool useSound = true;
 
     protected bool hasBeenDisplayed = false;
 
