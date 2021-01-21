@@ -38,9 +38,11 @@ public class Console : MonoBehaviour {
 	public Color basicColor; // La couleur avec laquelle on écrit la plupart du temps
 
     public Color ennemiColor; // La couleur des messages ennemis
-	public Color allyColor; // La couleur des messages alliées
+
+    public Color allyColor; // La couleur des messages alliées
 	public string basicPrefix; // Le préfixe à mettre devant chaque message basic
-	public string ennemiPrefix; // Le préfixe à mettre devant chaque message ennemi
+
+    public string ennemiPrefix; // Le préfixe à mettre devant chaque message ennemi
 	public string allyPrefix; // Le préfixe à mettre devant chaque message allié
 	public Font font; // La police de charactère des messages
 	public int tailleTexte; // La taille du texte affiché
@@ -425,8 +427,9 @@ public virtual void Update () {
     }
 
     public void CleanAllLines() {
-        while (numLines.Count > 0)
+        while (numLines.Count > 0) {
             AddBlankLine();
+        }
     }
 
 	void LancerPhraseRandom() {
@@ -786,5 +789,13 @@ public virtual void Update () {
     // Lorsque l'on commence à détruire les blocks dans l'infinite runner :)
     public void InfiniteRunnerStartCubeDestruction() {
         AjouterMessageImportant("Déconnexion enclenchée !", Console.TypeText.ENNEMI_TEXT, 2.0f);
+    }
+
+    public void AddGapInConsole() {
+        AjouterMessage("", TypeText.ALLY_TEXT, bUsePrefix: false);
+    }
+
+    public void CleanAllImportantTexts() {
+        importantText.text = "";
     }
 }

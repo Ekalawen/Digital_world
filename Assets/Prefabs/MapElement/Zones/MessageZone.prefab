@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 9067652129604489121}
   - component: {fileID: 9067652129604489126}
   - component: {fileID: 9067652129604489127}
+  - component: {fileID: 7659257925726160895}
   m_Layer: 0
   m_Name: MessageZone
   m_TagString: Trigger
@@ -56,6 +57,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -105,7 +107,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e076350444c7cd428f6c82ff02188e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  message: Je suis un message !
-  typeTexte: 2
-  frequence: 15
+  messages:
+  - 
+  typeTextes: 02000000
+  isImportant: 1
+  dureeImportantMessage: 2
+  isImportantOnly: 1
+  frequence: 30
   useSound: 1
+  addGapBeforeText: 0
+--- !u!114 &7659257925726160895
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9067652129604489124}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e076350444c7cd428f6c82ff02188e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  messages:
+  - 
+  typeTextes: 02000000
+  isImportant: 0
+  dureeImportantMessage: 2
+  isImportantOnly: 0
+  frequence: 30
+  useSound: 0
+  addGapBeforeText: 1

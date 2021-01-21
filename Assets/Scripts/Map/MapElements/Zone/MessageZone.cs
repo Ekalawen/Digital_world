@@ -1,17 +1,21 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class MessageZone : IZone {
 
-    public string message;
-    public Console.TypeText typeTexte;
+    public List<string> messages;
+    public List<Console.TypeText> typeTextes;
     public bool isImportant = false;
     [ConditionalHide("isImportant")]
     public float dureeImportantMessage = 2.0f;
+    [ConditionalHide("isImportant")]
     public bool isImportantOnly = false;
     public float frequence = 5.0f;
     public bool useSound = false;
+    public bool addGapBeforeText = false;
+    public bool cleanOtherImportantTexts = false;
 
     protected Timer timer;
     protected bool isIn = false;
@@ -24,7 +28,7 @@ public class MessageZone : IZone {
 
     private void Update() {
         if(isIn && timer.IsOver()) {
-            DisplayMessage();
+            DisplayMessages();
         }
     }
 
@@ -35,16 +39,39 @@ public class MessageZone : IZone {
     }
 
     protected override void OnExit(Collider other) {
-        isIn = false;
+        if (other.gameObject.tag == "Player") {
+            isIn = false;
+        }
     }
 
-    public void DisplayMessage() {
-        if(isImportant)
-            gm.console.AjouterMessageImportant(message, typeTexte, dureeImportantMessage, !isImportantOnly);
-        else
-            gm.console.AjouterMessage(message, typeTexte);
-        if(useSound)
+    public virtual void DisplayMessages() {
+        if(cleanOtherImportantTexts) {
+            gm.console.CleanAllImportantTexts();
+        }
+        if(isImportant) {
+            for(int i = messages.Count - 1; i >= 0; i--) {
+                DisplayMessageImportant(messages[i], typeTextes[i]);
+            }
+        }
+        if(!isImportant || (isImportant && !isImportantOnly)) {
+            if(addGapBeforeText) {
+                gm.console.AddGapInConsole();
+            }
+            for(int i = 0; i < messages.Count; i++) {
+                DisplayMessageInConsole(messages[i], typeTextes[i]);
+            }
+        }
+        if (useSound) {
             gm.soundManager.PlayReceivedMessageClip();
+        }
         timer.Reset();
+    }
+
+    protected void DisplayMessageImportant(string message, Console.TypeText typeTexte) {
+        gm.console.AjouterMessageImportant(message, typeTexte, dureeImportantMessage, bAfficherInConsole: false);
+    }
+
+    protected void DisplayMessageInConsole(string message, Console.TypeText typeTexte) {
+        gm.console.AjouterMessage(message, typeTexte);
     }
 }
