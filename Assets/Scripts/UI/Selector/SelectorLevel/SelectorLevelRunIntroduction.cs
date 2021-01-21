@@ -7,10 +7,11 @@ public class SelectorLevelRunIntroduction : MonoBehaviour {
     public SelectorLevel selectorLevel;
     public TextAsset introductionTextAsset;
 
-    public void RunIntroduction() {
+    public void RunIntroduction(bool forcePrint = false) {
         SelectorManager selectorManager = SelectorManager.Instance;
-        if (!selectorManager.HasThisSelectorLevelOpen(selectorLevel) || selectorManager.PopupIsEnabled())
+        if (!forcePrint && (!selectorManager.HasThisSelectorLevelOpen(selectorLevel) || selectorManager.PopupIsEnabled())) {
             return;
+        }
         selectorManager.popup.Initialize(
             title: "The Netrunner Awaken1ng",
             useTextAsset: true,

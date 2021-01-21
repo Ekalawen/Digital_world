@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 public class SelectorManager : MonoBehaviour {
 
     public static string LAST_LEVEL_KEY = "lastLevelKey";
+    public static string FIRST_TIME_SELECTOR_OPENED_KEY = "firstTimeSelectorOpenedKey";
 
     static SelectorManager _instance;
     //public static SelectorManager Instance { get { return _instance ?? (_instance = new GameObject().AddComponent<SelectorManager>()); } }
@@ -46,6 +47,7 @@ public class SelectorManager : MonoBehaviour {
         PlaceCameraInFrontOfCurrentLevel();
         DisplayCurrentLevel();
         CleanLastSavedLevel();
+        DisplayIntroductionText();
     }
 
     protected void CleanLastSavedLevel() {
@@ -201,8 +203,8 @@ public class SelectorManager : MonoBehaviour {
         currentSelectorLevel = selectorLevel;
         hasLevelOpen = true;
         selectorLevel.menuLevel.gameObject.SetActive(true);
-        selectorLevel.DisplayInitialPopup();
         selectorLevel.menuLevel.Initialize();
+        selectorLevel.DisplayInitialPopup();
         background.gameObject.SetActive(true);
         if (instantDisplay) {
             currentSelectorLevel.menuLevel.gameObject.SetActive(true);
@@ -331,5 +333,14 @@ public class SelectorManager : MonoBehaviour {
 
     public SelectorLevel GetLevelFromMenuLevel(MenuLevel menuLevel) {
         return levels.Find(l => l.menuLevel == menuLevel);
+    }
+
+    protected void DisplayIntroductionText() {
+        if (!PlayerPrefs.HasKey(FIRST_TIME_SELECTOR_OPENED_KEY)) {
+            MenuLevel firstLevel = levels[0].menuLevel;
+            SelectorLevelRunIntroduction introductionRunner = firstLevel.gameObject.GetComponent<SelectorLevelRunIntroduction>();
+            introductionRunner.RunIntroduction(forcePrint: true);
+            PlayerPrefs.SetString(FIRST_TIME_SELECTOR_OPENED_KEY, MenuManager.TRUE);
+        }
     }
 }

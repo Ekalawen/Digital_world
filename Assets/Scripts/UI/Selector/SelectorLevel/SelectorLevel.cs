@@ -183,8 +183,7 @@ public class SelectorLevel : MonoBehaviour {
     protected bool DisplayPopupUnlockLevel() {
         bool hasDisplayed = false;
         if (!menuLevel.HasAlreadyDiscoverLevel()) {
-            SelectorLevelRunIntroduction introductionRunner = menuLevel.gameObject.GetComponent<SelectorLevelRunIntroduction>();
-            bool shouldCongrats = introductionRunner == null;
+            bool shouldCongrats = !menuLevel.displayArchivesOnUnlock;
             if (shouldCongrats) {
                 selectorManager.RunPopup(
                     title: "Niveau débloqué !",
@@ -193,7 +192,7 @@ public class SelectorLevel : MonoBehaviour {
                     "Et Happy Hacking ! :)",
                     theme: TexteExplicatif.Theme.POSITIF);
             } else {
-                introductionRunner.RunIntroduction();
+                menuLevel.OpenArchives();
             }
             hasDisplayed = true;
             menuLevel.SetAlreadyDiscoverLevel();

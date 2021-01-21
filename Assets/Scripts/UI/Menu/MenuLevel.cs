@@ -44,7 +44,8 @@ public class MenuLevel : MonoBehaviour {
     public GameObject consolePrefab;
 
     [Header("Textes Explicatifs")]
-    public TexteExplicatif texteInformations;
+    public TexteExplicatif texteArchives;
+    public bool displayArchivesOnUnlock = false;
     public TexteExplicatif texteExplicatifPasswdError;
     public TexteExplicatif texteExplicatifDonneesHackes;
     public TexteExplicatif texteExplicatifDonneesHackesSuccess;
@@ -176,7 +177,7 @@ public class MenuLevel : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return))
             Next();
         else
-            texteInformations.EnableHotkeysNextFrame();
+            texteArchives.EnableHotkeysNextFrame();
     }
 
     public void Previous() {
@@ -189,10 +190,10 @@ public class MenuLevel : MonoBehaviour {
         selectorManager?.BackToSelector();
     }
 
-    public void OpenInformations() {
+    public void OpenArchives() {
         if (selectorManager != null && !selectorManager.HasSelectorLevelOpen())
             return;
-        texteInformations.Run(GetNbWins());
+        texteArchives.Run(GetNbWins());
     }
 
     public void OpenDonneesHackes() {
@@ -376,7 +377,7 @@ public class MenuLevel : MonoBehaviour {
 
     protected void InitTextesExplicatifs() {
         string rootPath = "Assets/Texts/Levels/" + levelFolderName + "/";
-        texteInformations.SetRootPath(rootPath);
+        texteArchives.SetRootPath(rootPath);
         texteExplicatifPasswdError.SetRootPath(rootPath);
         texteExplicatifDonneesHackes.SetRootPath(rootPath);
         texteExplicatifDonneesHackesSuccess.SetRootPath(rootPath);
@@ -390,11 +391,11 @@ public class MenuLevel : MonoBehaviour {
         texteExplicatifDonneesHackesSuccess.AddReplacementEvaluator(@"Traces?", blueSurrounder);
         // L'ajout des next palliers se fait dans la fonction AddNextPallierMessageToAllFragments()
 
-        texteInformations.AddReplacement("CRINM", UIHelper.SurroundWithColor("CRINM", UIHelper.BLUE));
-        texteInformations.AddReplacement("H@ckers", UIHelper.SurroundWithColor("H@ckers", UIHelper.BLUE));
-        texteInformations.AddReplacement("[Cilliannelle Crittefigiée]", UIHelper.SurroundWithColor("[Cilliannelle Crittefigiée]", UIHelper.PURE_GREEN));
-        texteInformations.AddReplacement("[Morgensoul*]", UIHelper.SurroundWithColor("[Morgensoul*]", UIHelper.CYAN));
-        texteInformations.AddReplacement("[V1P3R]", UIHelper.SurroundWithColor("[V1P3R]", UIHelper.CYAN));
+        texteArchives.AddReplacement("CRINM", UIHelper.SurroundWithColor("CRINM", UIHelper.BLUE));
+        texteArchives.AddReplacement("H@ckers", UIHelper.SurroundWithColor("H@ckers", UIHelper.BLUE));
+        texteArchives.AddReplacement("[Cilliannelle Crittefigiée]", UIHelper.SurroundWithColor("[Cilliannelle Crittefigiée]", UIHelper.PURE_GREEN));
+        texteArchives.AddReplacement("[Morgensoul*]", UIHelper.SurroundWithColor("[Morgensoul*]", UIHelper.CYAN));
+        texteArchives.AddReplacement("[V1P3R]", UIHelper.SurroundWithColor("[V1P3R]", UIHelper.CYAN));
     }
 
     public bool HasJustWin() {
