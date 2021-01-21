@@ -51,6 +51,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   endGameType: 0
+  dureeDecompose: 2
   bNoEndgame: 0
   screenShakeMagnitude: 2
   screenShakeRoughness: 15
@@ -58,7 +59,9 @@ MonoBehaviour:
   randomEventsPrefabs: []
   nbLumieresTriggers: 
   eventsToAddPrefabs: []
-  posFinalLight: {x: 254, y: 34, z: 5}
+  quitSceneTime: 7
+  reloadSceneTime: 3
+  posFinalLight: {x: 264, y: 32, z: 5}
   teleportInSafeZoneTreshold: -10
 --- !u!1001 &382247517341790049
 PrefabInstance:
@@ -70,6 +73,10 @@ PrefabInstance:
     - target: {fileID: 1848378137720066, guid: 4ad9af6763aeb45c8962c1fadb06c2eb, type: 3}
       propertyPath: m_Name
       value: EventManagerTutoriel
+      objectReference: {fileID: 0}
+    - target: {fileID: 4331339866297836, guid: 4ad9af6763aeb45c8962c1fadb06c2eb, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4331339866297836, guid: 4ad9af6763aeb45c8962c1fadb06c2eb, type: 3}
       propertyPath: m_LocalPosition.x
@@ -84,6 +91,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4331339866297836, guid: 4ad9af6763aeb45c8962c1fadb06c2eb, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4331339866297836, guid: 4ad9af6763aeb45c8962c1fadb06c2eb, type: 3}
       propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
@@ -93,14 +104,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4331339866297836, guid: 4ad9af6763aeb45c8962c1fadb06c2eb, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4331339866297836, guid: 4ad9af6763aeb45c8962c1fadb06c2eb, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4331339866297836, guid: 4ad9af6763aeb45c8962c1fadb06c2eb, type: 3}
-      propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4331339866297836, guid: 4ad9af6763aeb45c8962c1fadb06c2eb, type: 3}
