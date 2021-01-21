@@ -49,6 +49,7 @@ public class Console : MonoBehaviour {
 
     [Header("Pouvoirs")]
     public PouvoirDisplayInGame pouvoirDisplayA;
+
     public PouvoirDisplayInGame pouvoirDisplayE;
     public PouvoirDisplayInGame pouvoirDisplayLeftClick;
     public PouvoirDisplayInGame pouvoirDisplayRightClick;
@@ -805,5 +806,11 @@ public virtual void Update () {
             AjouterMessageImportant(message, TypeText.BASIC_TEXT, arrowKeysTimer.GetDuree(), false, messageToReplace: message);
             arrowKeysTimer.Reset();
         }
+    }
+
+    public void JumpStun() {
+        string message = "Raté : Sautez et n'accrochez pas les murs !";
+        AjouterMessageImportant(message, TypeText.ENNEMI_TEXT, 2.0f, bAfficherInConsole: false, messageToReplace: "JUMP !");
+        AjouterMessage("Lors d'un Jump vous devez être dans les airs sans être accroché à un mur lorsque le timer atteint 0.0 !", TypeText.ENNEMI_TEXT);
     }
 }

@@ -12,6 +12,7 @@ public class JumpEvent : RandomEvent {
     [Header("Malus")]
     public float timeMalus = 10f;
     public float dureeStun = 5.0f;
+    public bool shouldDisplayJumpRules = false;
 
     [Header("ScreenShake")]
     public float screenShakeMagnitude = 10;
@@ -54,6 +55,9 @@ public class JumpEvent : RandomEvent {
         gm.player.bIsStun = true;
 
         gm.soundManager.PlayJumpEventStunClip();
+        if (shouldDisplayJumpRules) {
+            gm.console.JumpStun();
+        }
 
         StartCoroutine(CScreenShake());
         coroutines.Add(StartCoroutine(UnStun()));
