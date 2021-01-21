@@ -51,6 +51,7 @@ public abstract class Ennemi : Character {
             timerHit.Reset();
 
             HitPlayerSpecific();
+            player.OnHit();
             if (timerHitDamages.IsOver()) {
                 timerHitDamages.Reset();
                 gm.timerManager.RemoveTime(timeMalusToUse, GetDeathReason());

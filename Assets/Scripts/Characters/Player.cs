@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 using UnityEngine.EventSystems;
 using UnityEngine.Rendering.PostProcessing;
+using UnityEngine.Events;
 
 public class Player : Character {
 
@@ -40,6 +41,7 @@ public class Player : Character {
 	protected EtatPersonnage etat; // l'état du personnage
 	protected EtatPersonnage etatAvant; // l'état du personnage avant la frame
     protected bool isGrounded;
+
     protected Timer sautTimer;
 	protected Vector3 pointDebutSaut; // le point de départ du saut !
 	protected EtatPersonnage origineSaut; // Permet de savoir depuis où (le sol ou un mur) le personnage a sauté !
@@ -64,6 +66,7 @@ public class Player : Character {
     protected bool bCanUseLocalisation = true;
     [HideInInspector]
     public bool bIsStun = false;
+    protected UnityEvent onHitEvent;
 
     [HideInInspector]
 	public Timer ennemiCaptureTimer; // Le temps depuis lequel le joueur est en contact avec un ennemi
@@ -86,6 +89,7 @@ public class Player : Character {
         sautTimer = new Timer(GetDureeTotaleSaut());
         sautTimer.SetOver();
         ennemiCaptureTimer = new Timer(5);
+        onHitEvent = new UnityEvent();
 
         transform.position = position;
 
@@ -668,6 +672,14 @@ public class Player : Character {
     }
     public IPouvoir GetPouvoirRightClick() {
         return pouvoirRightBouton;
+    }
+
+    public void OnHit() {
+        onHitEvent.Invoke();
+    }
+
+    public void RegisterOnHit(UnityAction call) {
+        onHitEvent.AddListener(call);
     }
 }
 
