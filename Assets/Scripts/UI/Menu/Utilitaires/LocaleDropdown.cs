@@ -29,6 +29,5 @@ public class LocaleDropdown : MonoBehaviour {
 
     static void LocaleSelected(int index) {
         LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[index];
-        Debug.Log($"Locale = {index}");
     }
 }
