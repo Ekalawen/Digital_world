@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Localization.Settings;
 using UnityEngine.SceneManagement;
 
 public class MenuManager : MonoBehaviour {
@@ -16,6 +17,7 @@ public class MenuManager : MonoBehaviour {
     public static string SHOULD_SET_RANDOM_BACKGROUND_KEY = "shouldSetRandomBackgroundKey";
     public static string TRUE = "true";
     public static string FALSE = "false";
+    public static string LOCALE_INDEX_KEY = "localeIndexKey";
 
     public MenuLevelSelector menuLevelSelector;
     public MenuOptions menuOptions;
@@ -28,6 +30,7 @@ public class MenuManager : MonoBehaviour {
     }
 
     private void Start() {
+        SetSavedLocale();
         menuBouncingBackground.Initialize();
         ResetPlayerPrefsIfFirstConnexion();
         SetRandomBackgroundIfNeeded();
@@ -141,5 +144,20 @@ public class MenuManager : MonoBehaviour {
     public void RunPopup(string title, string text, TexteExplicatif.Theme theme, bool cleanReplacements = true) {
         popup.Initialize(title: title, mainText: text, theme: theme, cleanReplacements: cleanReplacements);
         popup.Run();
+    }
+
+    protected void SetSavedLocale() {
+        StartCoroutine(CSetSavedLocale());
+    }
+
+    protected IEnumerator CSetSavedLocale() {
+        // Wait for the localization system to initialize, loading Locales, preloading etc.
+        yield return LocalizationSettings.InitializationOperation;
+
+        if (PlayerPrefs.HasKey(LOCALE_INDEX_KEY)) {
+            int index = PlayerPrefs.GetInt(LOCALE_INDEX_KEY);
+            Debug.Log($"index = {index}");
+            LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[index];
+        }
     }
 }
