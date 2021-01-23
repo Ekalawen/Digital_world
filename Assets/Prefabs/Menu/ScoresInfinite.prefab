@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5954149985369970701}
   - component: {fileID: 796593583223983166}
   - component: {fileID: 6980485391439261136}
+  - component: {fileID: 4319568925859041618}
   m_Layer: 5
   m_Name: NbGames
   m_TagString: Untagged
@@ -61,12 +62,11 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: Nb games = 0
+  m_text: Nb parties = 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b9bd0054aab42224d9d8026ce23736d0, type: 2}
   m_sharedMaterial: {fileID: -403750935843946944, guid: b9bd0054aab42224d9d8026ce23736d0,
@@ -136,7 +136,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 796593583223983166}
-    characterCount: 12
+    characterCount: 14
     spriteCount: 0
     spaceCount: 3
     wordCount: 3
@@ -173,6 +173,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   message: "Votre nombre de parties jou\xE9es"
   timeBeforeShowing: 0.4
+--- !u!114 &4319568925859041618
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4559324511870999576}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56eb0353ae6e5124bb35b17aff880f16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_StringReference:
+    m_TableReference:
+      m_TableCollectionName: GUID:935b749e225003c4d89dc5a758038440
+    m_TableEntryReference:
+      m_KeyId: 11060143955968
+      m_Key: 
+  m_FormatArguments: []
+  m_UpdateString:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 796593583223983166}
+        m_MethodName: set_text
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &6212435650581712193
 GameObject:
   m_ObjectHideFlags: 0
@@ -237,11 +270,10 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 21300000, guid: b3fbe2b181f27954bac030a82bb9175a, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
@@ -264,6 +296,7 @@ GameObject:
   - component: {fileID: 3949422527920590058}
   - component: {fileID: 2558899518542136491}
   - component: {fileID: 3042416216756155003}
+  - component: {fileID: 2808360537969495356}
   m_Layer: 5
   m_Name: BestScore
   m_TagString: Untagged
@@ -313,12 +346,11 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: Best score = 0
+  m_text: Meilleur Score = 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b9bd0054aab42224d9d8026ce23736d0, type: 2}
   m_sharedMaterial: {fileID: -403750935843946944, guid: b9bd0054aab42224d9d8026ce23736d0,
@@ -388,7 +420,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 2558899518542136491}
-    characterCount: 14
+    characterCount: 18
     spriteCount: 0
     spaceCount: 3
     wordCount: 3
@@ -425,6 +457,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   message: Votre meilleur score ! (en nombre d'obstacles franchis)
   timeBeforeShowing: 0.4
+--- !u!114 &2808360537969495356
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7682758498341868650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56eb0353ae6e5124bb35b17aff880f16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_StringReference:
+    m_TableReference:
+      m_TableCollectionName: GUID:935b749e225003c4d89dc5a758038440
+    m_TableEntryReference:
+      m_KeyId: 10633428049920
+      m_Key: 
+  m_FormatArguments: []
+  m_UpdateString:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2558899518542136491}
+        m_MethodName: set_text
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &8038343304786337001
 GameObject:
   m_ObjectHideFlags: 0
@@ -437,6 +502,7 @@ GameObject:
   - component: {fileID: 220510409130206992}
   - component: {fileID: 4417444346567818701}
   - component: {fileID: 1327979514952396276}
+  - component: {fileID: 6351222877289825312}
   m_Layer: 5
   m_Name: MeanScore
   m_TagString: Untagged
@@ -486,12 +552,11 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: Mean score = 0
+  m_text: Score moyen = 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b9bd0054aab42224d9d8026ce23736d0, type: 2}
   m_sharedMaterial: {fileID: -403750935843946944, guid: b9bd0054aab42224d9d8026ce23736d0,
@@ -561,7 +626,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 4417444346567818701}
-    characterCount: 14
+    characterCount: 15
     spriteCount: 0
     spaceCount: 3
     wordCount: 3
@@ -598,6 +663,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   message: Votre score en moyenne
   timeBeforeShowing: 0.4
+--- !u!114 &6351222877289825312
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8038343304786337001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56eb0353ae6e5124bb35b17aff880f16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_StringReference:
+    m_TableReference:
+      m_TableCollectionName: GUID:935b749e225003c4d89dc5a758038440
+    m_TableEntryReference:
+      m_KeyId: 11123289202688
+      m_Key: 
+  m_FormatArguments: []
+  m_UpdateString:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4417444346567818701}
+        m_MethodName: set_text
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &8972335183502084136
 GameObject:
   m_ObjectHideFlags: 0
@@ -610,6 +708,7 @@ GameObject:
   - component: {fileID: 749492380483207925}
   - component: {fileID: 3017790628019659199}
   - component: {fileID: 5980264924422676413}
+  - component: {fileID: 2945907426986663229}
   m_Layer: 5
   m_Name: SinceLastBestScore
   m_TagString: Untagged
@@ -659,12 +758,11 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: Since last best score = 0
+  m_text: Depuis Meilleur Score = 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b9bd0054aab42224d9d8026ce23736d0, type: 2}
   m_sharedMaterial: {fileID: -403750935843946944, guid: b9bd0054aab42224d9d8026ce23736d0,
@@ -736,8 +834,8 @@ MonoBehaviour:
     textComponent: {fileID: 3017790628019659199}
     characterCount: 25
     spriteCount: 0
-    spaceCount: 5
-    wordCount: 5
+    spaceCount: 4
+    wordCount: 4
     linkCount: 0
     lineCount: 1
     pageCount: 1
@@ -771,3 +869,36 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   message: Le nombre de parties depuis que vous avez battu votre record
   timeBeforeShowing: 0.4
+--- !u!114 &2945907426986663229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8972335183502084136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56eb0353ae6e5124bb35b17aff880f16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_StringReference:
+    m_TableReference:
+      m_TableCollectionName: GUID:935b749e225003c4d89dc5a758038440
+    m_TableEntryReference:
+      m_KeyId: 11270026928128
+      m_Key: 
+  m_FormatArguments: []
+  m_UpdateString:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3017790628019659199}
+        m_MethodName: set_text
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
