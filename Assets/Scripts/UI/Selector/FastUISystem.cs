@@ -90,13 +90,13 @@ public class FastUISystem : MonoBehaviour {
         if (fromType == FromType.LEVEL) {
             if (selectorManager.IsLevelAccessible(level)) {
                 selectorManager.BackToSelectorForFastUI();
-                selectorManager.PlaceCameraInFrontOfInterestPoint(level.objectLevel.transform.position);
+                selectorManager.PlaceCameraInFrontOfInterestTransform(level.objectLevel.transform);
             }
             selectorManager.TryDisplayLevel(level, instantDisplay: true);
         } else { // UnlockScreen
             if (selectorManager.IsLevelAccessible(level)) {
                 path.CloseUnlockScreenForFastUI();
-                selectorManager.PlaceCameraInFrontOfInterestPoint(level.objectLevel.transform.position);
+                selectorManager.PlaceCameraInFrontOfInterestTransform(level.objectLevel.transform);
             }
             selectorManager.TryDisplayLevel(level, instantDisplay: true);
         }

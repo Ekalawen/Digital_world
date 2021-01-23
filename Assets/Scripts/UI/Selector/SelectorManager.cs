@@ -268,23 +268,37 @@ public class SelectorManager : MonoBehaviour {
         return 0;
     }
 
-    protected void PlaceCameraInFrontOfCurrentLevel() {
-        PlaceCameraInFrontOfInterestPoint(currentSelectorLevel.transform.position);
+    public void PlaceCameraInFrontOfCurrentLevel() {
+        PlaceCameraInFrontOfInterestTransform(currentSelectorLevel.transform);
     }
 
-    public void PlaceCameraInFrontOfInterestPoint(Vector3 interestPos) {
+    public void PlaceCameraInFrontOfInterestTransform(Transform t) {
+        PlaceCameraInFrontOfInterestPoint(t.position, t.forward);
+    }
+
+    public void PlaceCameraInFrontOfInterestPoint(Vector3 point) {
+        Vector3 forward = GetForwardFromCenterProjection(point);
+        PlaceCameraInFrontOfInterestPoint(point, forward);
+    }
+
+    protected void PlaceCameraInFrontOfInterestPoint(Vector3 interestPos, Vector3 interestForward) {
         SelectorCameraController cameraController = camera.GetComponent<SelectorCameraController>();
+        Vector3 posToGoTo = interestPos + interestForward * cameraController.GetIdealDistanceFromLevel();
+        cameraController.PlaceAt(posToGoTo);
+        cameraController.transform.LookAt(interestPos, Vector3.up);
+    }
+
+    protected static Vector3 GetForwardFromCenterProjection(Vector3 interestPos) {
         Vector3 forward;
-        if(interestPos.x == 0.0f && interestPos.z == 0.0f) {
+        if (interestPos.x == 0.0f && interestPos.z == 0.0f) {
             forward = Vector3.forward;
         } else {
             Vector3 projection = Vector3.Project(interestPos, Vector3.up);
             Vector3 orthoToCenter = interestPos - projection;
             forward = orthoToCenter.normalized;
         }
-        Vector3 posToGoTo = interestPos + forward * cameraController.GetIdealDistanceFromLevel();
-        cameraController.PlaceAt(posToGoTo);
-        cameraController.transform.LookAt(interestPos, Vector3.up);
+
+        return forward;
     }
 
     protected void DisplayCurrentLevel() {
