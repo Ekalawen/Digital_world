@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Localization.Settings;
 using UnityEngine.UI;
 
 public class MenuOptions : MonoBehaviour {
@@ -85,6 +86,8 @@ public class MenuOptions : MonoBehaviour {
         OnMouseSpeedChange(1.81f);
         OnGripActivationPress(true);
         PlayerPrefs.SetString(MenuManager.FIRST_TIME_CONNEXION_KEY, "Done !");
+        int index = LocalizationSettings.AvailableLocales.Locales.IndexOf(LocalizationSettings.SelectedLocale);
+        PlayerPrefs.SetInt(MenuManager.LOCALE_INDEX_KEY, index);
         PlayerPrefs.Save();
     }
 }

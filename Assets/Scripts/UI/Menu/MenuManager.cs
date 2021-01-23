@@ -156,7 +156,6 @@ public class MenuManager : MonoBehaviour {
 
         if (PlayerPrefs.HasKey(LOCALE_INDEX_KEY)) {
             int index = PlayerPrefs.GetInt(LOCALE_INDEX_KEY);
-            Debug.Log($"index = {index}");
             LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[index];
         }
     }
