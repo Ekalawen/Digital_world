@@ -11,7 +11,6 @@ public class MenuOptions : MonoBehaviour {
     public Slider sliderMusic;
     public Slider sliderSon;
     public Slider sliderMouse;
-    public Slider sliderLuminosity;
     public Toggle toggleGrip;
 
     public static string MUSIC_VOLUME_KEY = "musicVolumeKey";
@@ -35,7 +34,6 @@ public class MenuOptions : MonoBehaviour {
         OnMusicVolumeChange(PlayerPrefs.GetFloat(MUSIC_VOLUME_KEY));
         OnSoundVolumeChange(PlayerPrefs.GetFloat(SOUND_VOLUME_KEY));
         OnMouseSpeedChange(PlayerPrefs.GetFloat(MOUSE_SPEED_KEY));
-        OnLuminosityChange(PlayerPrefs.GetFloat(LUMINOSITY_KEY));
         OnGripActivationPress(PlayerPrefs.GetString(GRIP_KEY) == "True");
     }
 
@@ -71,12 +69,6 @@ public class MenuOptions : MonoBehaviour {
         sliderMouse.GetComponent<SliderScript>().OnChange(newVal);
     }
 
-    public void OnLuminosityChange(float newVal) {
-        PlayerPrefs.SetFloat(LUMINOSITY_KEY, newVal);
-        sliderLuminosity.value = newVal;
-        sliderLuminosity.GetComponent<SliderScript>().OnChange(newVal);
-    }
-
     public void OnGripActivationPress(bool active) {
         PlayerPrefs.SetString(GRIP_KEY, active.ToString());
         toggleGrip.isOn = active;
@@ -91,7 +83,6 @@ public class MenuOptions : MonoBehaviour {
         OnMusicVolumeChange(1.0f);
         OnSoundVolumeChange(1.0f);
         OnMouseSpeedChange(1.81f);
-        OnLuminosityChange(1.1f);
         OnGripActivationPress(true);
         PlayerPrefs.SetString(MenuManager.FIRST_TIME_CONNEXION_KEY, "Done !");
         PlayerPrefs.Save();
