@@ -51,6 +51,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   endGameType: 0
+  dureeDecompose: 2
   bNoEndgame: 0
   screenShakeMagnitude: 2
   screenShakeRoughness: 15
@@ -58,17 +59,56 @@ MonoBehaviour:
   randomEventsPrefabs: []
   nbLumieresTriggers: 
   eventsToAddPrefabs: []
+  quitSceneTime: 7
+  reloadSceneTime: 3
   nbLumieresFinales: 10
+  decomposeTime: 1
   messagesAChaqueLumiere:
-  - Ok c'est pas fini !
-  - Ils relocalisent leurs Datas !
-  - "Continue, je v\xE9rrouille la cible !"
-  - "Je commence \u28F6\xE0 voir un pattern !"
-  - Plus que 3 !
-  - "Ok le plus dur est pass\xE9 reste focus !"
-  - Tiens bon ! ...
-  - Mince ! Ils viennent d'en rajouter 2 !
-  - On y est presque ! ...
+  - m_TableReference:
+      m_TableCollectionName: GUID:ca68cd80ed439e849817e90afd077d38
+    m_TableEntryReference:
+      m_KeyId: 507921014784
+      m_Key: 
+  - m_TableReference:
+      m_TableCollectionName: GUID:ca68cd80ed439e849817e90afd077d38
+    m_TableEntryReference:
+      m_KeyId: 545522950144
+      m_Key: 
+  - m_TableReference:
+      m_TableCollectionName: GUID:ca68cd80ed439e849817e90afd077d38
+    m_TableEntryReference:
+      m_KeyId: 558529486848
+      m_Key: 
+  - m_TableReference:
+      m_TableCollectionName: GUID:ca68cd80ed439e849817e90afd077d38
+    m_TableEntryReference:
+      m_KeyId: 575222816768
+      m_Key: 
+  - m_TableReference:
+      m_TableCollectionName: GUID:ca68cd80ed439e849817e90afd077d38
+    m_TableEntryReference:
+      m_KeyId: 587017199616
+      m_Key: 
+  - m_TableReference:
+      m_TableCollectionName: GUID:ca68cd80ed439e849817e90afd077d38
+    m_TableEntryReference:
+      m_KeyId: 595611328512
+      m_Key: 
+  - m_TableReference:
+      m_TableCollectionName: GUID:ca68cd80ed439e849817e90afd077d38
+    m_TableEntryReference:
+      m_KeyId: 615530078208
+      m_Key: 
+  - m_TableReference:
+      m_TableCollectionName: GUID:ca68cd80ed439e849817e90afd077d38
+    m_TableEntryReference:
+      m_KeyId: 623826411520
+      m_Key: 
+  - m_TableReference:
+      m_TableCollectionName: GUID:ca68cd80ed439e849817e90afd077d38
+    m_TableEntryReference:
+      m_KeyId: 634643521536
+      m_Key: 
 --- !u!1001 &2004253452606249415
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -79,6 +119,10 @@ PrefabInstance:
     - target: {fileID: 1848378137720066, guid: 4ad9af6763aeb45c8962c1fadb06c2eb, type: 3}
       propertyPath: m_Name
       value: EventManagerFullSpikes
+      objectReference: {fileID: 0}
+    - target: {fileID: 4331339866297836, guid: 4ad9af6763aeb45c8962c1fadb06c2eb, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4331339866297836, guid: 4ad9af6763aeb45c8962c1fadb06c2eb, type: 3}
       propertyPath: m_LocalPosition.x
@@ -93,6 +137,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4331339866297836, guid: 4ad9af6763aeb45c8962c1fadb06c2eb, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4331339866297836, guid: 4ad9af6763aeb45c8962c1fadb06c2eb, type: 3}
       propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
@@ -102,14 +150,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4331339866297836, guid: 4ad9af6763aeb45c8962c1fadb06c2eb, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4331339866297836, guid: 4ad9af6763aeb45c8962c1fadb06c2eb, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4331339866297836, guid: 4ad9af6763aeb45c8962c1fadb06c2eb, type: 3}
-      propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4331339866297836, guid: 4ad9af6763aeb45c8962c1fadb06c2eb, type: 3}

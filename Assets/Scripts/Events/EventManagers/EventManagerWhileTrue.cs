@@ -4,12 +4,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Localization;
 
 public class EventManagerWhileTrue : EventManager {
 
     public int nbLumieresFinales = 10;
     public float decomposeTime = 1.0f;
-    public List<string> messagesAChaqueLumiere;
+    public List<LocalizedString> messagesAChaqueLumiere;
 
     protected int nbLumieresFinalesAttrappees = 0;
     protected bool isFirstStartEndGame = true;
@@ -41,12 +42,13 @@ public class EventManagerWhileTrue : EventManager {
     }
 
     protected IEnumerator CResetEndEvent() {
-        if(coroutineDeathCubesCreation != null)
+        if (coroutineDeathCubesCreation != null) {
             StopCoroutine(coroutineDeathCubesCreation);
-        else
+        } else {
             StopCoroutine(coroutineCubesDestructions);
-        if(messagesAChaqueLumiere.Count > 0)
+        } if (messagesAChaqueLumiere.Count > 0) {
             gm.console.AjouterMessageImportant(messagesAChaqueLumiere[nbLumieresFinalesAttrappees - 1], Console.TypeText.ALLY_TEXT, 2f);
+        }
         yield return CRestoreOriginalMap();
         StartEndGame();
     }

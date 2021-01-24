@@ -45,7 +45,8 @@ public class Console : MonoBehaviour {
 	public string basicPrefix; // Le préfixe à mettre devant chaque message basic
 
     public string ennemiPrefix; // Le préfixe à mettre devant chaque message ennemi
-	public string allyPrefix; // Le préfixe à mettre devant chaque message allié
+
+    public string allyPrefix; // Le préfixe à mettre devant chaque message allié
 	public Font font; // La police de charactère des messages
 	public int tailleTexte; // La taille du texte affiché
 
@@ -251,6 +252,26 @@ public virtual void Update () {
             timedMessage.duree,
             bAfficherInConsole,
             messageToReplace);
+    }
+
+    public void AjouterMessageImportant(
+        LocalizedString localizedString,
+        TypeText type,
+        float tempsAffichage,
+        bool bAfficherInConsole = true,
+        string messageToReplace = "") {
+        StartCoroutine(CAjouterMessageImportant(localizedString, type, tempsAffichage, bAfficherInConsole, messageToReplace));
+    }
+
+    protected IEnumerator CAjouterMessageImportant(
+        LocalizedString localizedString,
+        TypeText type,
+        float tempsAffichage,
+        bool bAfficherInConsole,
+        string messageToReplace) {
+        AsyncOperationHandle<string> handle = localizedString.GetLocalizedString();
+        yield return handle;
+        AjouterMessageImportant(handle.Result, type, tempsAffichage, bAfficherInConsole, messageToReplace);
     }
 
     public void AjouterMessageImportant(
