@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
+using UnityEngine.Localization;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 public struct TimerMessage {
     public TimedMessage message;
@@ -20,7 +22,7 @@ public class Console : MonoBehaviour {
 	public enum TypeText {BASIC_TEXT, ENNEMI_TEXT, ALLY_TEXT};
 
     [Header("Messages")]
-    public List<string> conseils; // Les conseils à dispenser au joueur !
+    public List<LocalizedString> conseils; // Les conseils à dispenser au joueur !
     public List<TimedMessage> timedMessages;
 
     [Header("OnLumiereCapturedMessages")]
@@ -460,12 +462,19 @@ public virtual void Update () {
 		AjouterMessage (phrase, TypeText.BASIC_TEXT);
 	}
 
-    protected void Conseiller() {
+    protected void Conseiller()
+    {
         if (conseils.Count == 0)
             return;
 
-		string phrase = conseils[UnityEngine.Random.Range (0, conseils.Count)];
-		AjouterMessage(phrase, TypeText.BASIC_TEXT);
+        LocalizedString conseil = conseils[UnityEngine.Random.Range(0, conseils.Count)];
+        StartCoroutine(CConseiller(conseil));
+    }
+
+    protected IEnumerator CConseiller(LocalizedString localizedString) {
+        AsyncOperationHandle<string> handle = localizedString.GetLocalizedString();
+        yield return handle;
+        AjouterMessage(handle.Result, TypeText.BASIC_TEXT);
     }
 
     // Lorsqu'un ennemi repère le joueur

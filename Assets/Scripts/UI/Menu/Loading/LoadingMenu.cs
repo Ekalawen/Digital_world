@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Localization;
+using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -70,12 +72,18 @@ public class LoadingMenu : MonoBehaviour {
 
     protected void InitConseil() {
         if (level != null) {
-            Console console = level.consolePrefab.GetComponent<Console>();
-            string conseil = console.conseils[UnityEngine.Random.Range(0, console.conseils.Count - 1)];
-            conseilText.text += conseil;
+            StartCoroutine(CInitConseil());
         } else { // Tutoriel !
             conseilText.text = "Initialisation de la Matrice dans 3 ... 2 ... 1 ... 0 !";
         }
+    }
+
+    protected IEnumerator CInitConseil() {
+        Console console = level.consolePrefab.GetComponent<Console>();
+        LocalizedString conseil = console.conseils[UnityEngine.Random.Range(0, console.conseils.Count - 1)];
+        AsyncOperationHandle<string> handle = conseil.GetLocalizedString();
+        yield return handle;
+        conseilText.text += handle.Result;
     }
 
     protected void InitPouvoirs() {
