@@ -188,7 +188,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
 
     protected void OpenDonneesHackeesWithTreshold(int treshold) {
         selectorManager.popup.Initialize(
-            title: "Data Hackées",
+            title: "Data Hackées()",
             useTextAsset: true,
             textAsset: selectorPath.donneesHackees,
             theme: TexteExplicatif.Theme.NEUTRAL);
@@ -200,7 +200,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
 
     protected void OpenDonneesHackeesJamaisHackee() {
         selectorManager.RunPopup(
-            title: "Data Hackées",
+            title: "Data Hackées()",
             text: "Vous n'avez encore jamais hacké niveau.\n" +
             "Aucune Data accessible.",
             theme: TexteExplicatif.Theme.NEUTRAL);
@@ -210,7 +210,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         string unite = (GetStartLevelType() == MenuLevel.LevelType.INFINITE) ? "block" : "victoire";
         unite += (firstTreshold > 1) ? "s" : "";
         selectorManager.RunPopup(
-            title: "Data Hackées",
+            title: "Data Hackées()",
             text: "Vous n'avez encore jamais hacké niveau.\n" +
             $"Premier pallier à {firstTreshold} {unite}.\n" +
             "Aucune Data accessible.",
