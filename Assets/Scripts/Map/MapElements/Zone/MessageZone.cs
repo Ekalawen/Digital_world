@@ -2,10 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Localization;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class MessageZone : IZone {
 
-    public List<string> messages;
+    public List<LocalizedString> messages;
     public List<Console.TypeText> typeTextes;
     public bool isImportant = false;
     [ConditionalHide("isImportant")]
@@ -67,11 +69,33 @@ public class MessageZone : IZone {
         timer.Reset();
     }
 
-    protected void DisplayMessageImportant(string message, Console.TypeText typeTexte) {
-        gm.console.AjouterMessageImportant(message, typeTexte, dureeImportantMessage, bAfficherInConsole: false);
+    protected void DisplayMessageImportant(LocalizedString localizedString, Console.TypeText typeTexte) {
+        StartCoroutine(CDisplayMessageImportant(localizedString, typeTexte));
     }
 
-    protected void DisplayMessageInConsole(string message, Console.TypeText typeTexte) {
-        gm.console.AjouterMessage(message, typeTexte);
+    protected IEnumerator CDisplayMessageImportant(LocalizedString localizedString, Console.TypeText typeTexte) {
+        if (localizedString != null) {
+            AsyncOperationHandle<string> handle = localizedString.GetLocalizedString();
+            yield return handle;
+            string message = handle.Result;
+            gm.console.AjouterMessageImportant(message, typeTexte, dureeImportantMessage, bAfficherInConsole: false);
+        } else {
+            Debug.LogWarning($"{gameObject.name} possède un MessageZone avec un localizedMessage null !");
+        }
+    }
+
+    protected void DisplayMessageInConsole(LocalizedString localizedString, Console.TypeText typeTexte) {
+        StartCoroutine(CDisplayMessageInConsole(localizedString, typeTexte));
+    }
+
+    protected IEnumerator CDisplayMessageInConsole(LocalizedString localizedString, Console.TypeText typeTexte) {
+        if (localizedString != null) {
+            AsyncOperationHandle<string> handle = localizedString.GetLocalizedString();
+            yield return handle;
+            string message = handle.Result;
+            gm.console.AjouterMessage(message, typeTexte);
+        } else {
+            Debug.LogWarning($"{gameObject.name} possède un MessageZone avec un localizedMessage null !");
+        }
     }
 }
