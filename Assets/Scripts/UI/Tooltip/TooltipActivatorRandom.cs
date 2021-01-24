@@ -5,13 +5,14 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.Localization;
 
 public class TooltipActivatorRandom : TooltipActivator {
 
-    public List<string> messages;
+    public List<LocalizedString> localizedMessages;
 
     public override void Show() {
-        message = messages[UnityEngine.Random.Range(0, messages.Count)];
+        localizedMessage = localizedMessages[UnityEngine.Random.Range(0, localizedMessages.Count)];
         base.Show();
     }
 }

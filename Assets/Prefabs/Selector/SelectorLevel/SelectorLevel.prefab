@@ -12,7 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbd415a19dcac79448965bbe22a15aea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  message: Je suis un cube qui touuuuurne !! <3
+  localizedMessage:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
   timeBeforeShowing: 0.4
 --- !u!114 &6120637053101874488
 MonoBehaviour:
@@ -229,6 +234,16 @@ PrefabInstance:
       propertyPath: tooltipActivator
       value: 
       objectReference: {fileID: 1596582675980000488}
+    - target: {fileID: 1824891662954079005, guid: 406cd334c94cbe948906cb5aaeb2c739,
+        type: 3}
+      propertyPath: cubeNiveauSmartString.m_TableEntryReference.m_KeyId
+      value: 9905653391360
+      objectReference: {fileID: 0}
+    - target: {fileID: 1824891662954079005, guid: 406cd334c94cbe948906cb5aaeb2c739,
+        type: 3}
+      propertyPath: cubeNiveauSmartString.m_TableReference.m_TableCollectionName
+      value: GUID:424a6a0bc88e9244f84baacf95644b09
+      objectReference: {fileID: 0}
     - target: {fileID: 6893895824624143785, guid: 406cd334c94cbe948906cb5aaeb2c739,
         type: 3}
       propertyPath: m_IsTrigger

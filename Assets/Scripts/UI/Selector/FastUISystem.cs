@@ -6,6 +6,7 @@ using TMPro;
 using System;
 using UnityEngine.Events;
 using System.Linq;
+using UnityEngine.Localization;
 
 public class FastUISystem : MonoBehaviour {
 
@@ -19,11 +20,18 @@ public class FastUISystem : MonoBehaviour {
         UNLOCK_SCREEN,
     };
 
+    [Header("Links")]
     public TMP_Text levelNameText;
     public Button levelButtonOpenned;
     public Button levelButtonClosed;
     public Button unlockScreenButtonOpenned;
     public Button unlockScreenButtonClosed;
+
+    [Header("Localized Strings")]
+    public LocalizedString niveauPrecedantString;
+    public LocalizedString niveauSuivantString;
+    public LocalizedString dataHackeesString;
+    public LocalizedString niveauString;
 
     protected SelectorManager selectorManager;
     protected SelectorPath path;
@@ -69,12 +77,15 @@ public class FastUISystem : MonoBehaviour {
     }
 
     protected void SetTooltips(string levelName, DirectionType directionType) {
-        string suivant = directionType == DirectionType.FORWARD ? "suivant" : "precedant";
-        levelNameText.GetComponent<TooltipActivator>().message = $"Vers le niveau {suivant}";
-        if (unlockScreenButton != null) {
-            unlockScreenButton.GetComponent<TooltipActivator>().message = $"Data Hackées()";
+        if(directionType == DirectionType.FORWARD) {
+            levelNameText.GetComponent<TooltipActivator>().localizedMessage = niveauSuivantString;
+        } else {
+            levelNameText.GetComponent<TooltipActivator>().localizedMessage = niveauPrecedantString;
         }
-        levelButton.GetComponent<TooltipActivator>().message = $"Niveau()";
+        if (unlockScreenButton != null) {
+            unlockScreenButton.GetComponent<TooltipActivator>().localizedMessage = dataHackeesString;
+        }
+        levelButton.GetComponent<TooltipActivator>().localizedMessage = niveauString;
     }
 
     protected void SetButtonsActivations() {

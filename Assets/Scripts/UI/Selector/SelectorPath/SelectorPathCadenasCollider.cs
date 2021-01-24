@@ -1,18 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Localization;
 
 public class SelectorPathCadenasCollider : MonoBehaviour {
 
     public SelectorPathCadenas cadenas;
     public TooltipActivator tooltipActivator;
+    public LocalizedString dataHackeesOfLevelString;
 
     protected SelectorManager selectorManager;
     protected bool hasClickedDown = false;
 
     public void Start() {
         selectorManager = SelectorManager.Instance;
-        tooltipActivator.message = $"Data Hackées() du niveau {cadenas.selectorPath.endLevel.GetName()}";
+        //tooltipActivator.localizedMessage = $"Data Hackées() du niveau {cadenas.selectorPath.endLevel.GetName()}";
+        tooltipActivator.localizedMessage = dataHackeesOfLevelString;
+        tooltipActivator.localizedMessage.Arguments = new object[] { cadenas.selectorPath.endLevel.GetName() };
     }
 
     public void OnMouseEnter() {

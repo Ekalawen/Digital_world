@@ -99,7 +99,7 @@ LightmapSettings:
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 112000002, guid: 16c08d922765aaf4ea81828256e58fed,
     type: 2}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -348,6 +348,16 @@ PrefabInstance:
         type: 3}
       propertyPath: message
       value: Lancer le Tutoriel
+      objectReference: {fileID: 0}
+    - target: {fileID: 5102976413086570045, guid: df108c3e51959b046aaa9a02ab191c65,
+        type: 3}
+      propertyPath: localizedMessage.m_TableEntryReference.m_KeyId
+      value: 361434947584
+      objectReference: {fileID: 0}
+    - target: {fileID: 5102976413086570045, guid: df108c3e51959b046aaa9a02ab191c65,
+        type: 3}
+      propertyPath: localizedMessage.m_TableReference.m_TableCollectionName
+      value: GUID:424a6a0bc88e9244f84baacf95644b09
       objectReference: {fileID: 0}
     - target: {fileID: 6132519329659876958, guid: df108c3e51959b046aaa9a02ab191c65,
         type: 3}
@@ -720,16 +730,49 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f2bf4a8babcfed468e63c4985c52370, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  message: 
+  localizedMessage:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
   timeBeforeShowing: 0.4
-  messages:
-  - NOOOOOOOOOOOOOON !!!
-  - Quitter le jeu :'(
-  - "(\xC9CHAP)"
-  - Nos Data indiquent qu'il y a 99.999% de chance que ce soit une erreur
-  - Pour quitter le jeu appuyez sur Start() !
-  - "Juste une derni\xE8re partie ?"
-  - Effacer le disque dur de votre ordinateur
+  localizedMessages:
+  - m_TableReference:
+      m_TableCollectionName: GUID:424a6a0bc88e9244f84baacf95644b09
+    m_TableEntryReference:
+      m_KeyId: 701366509568
+      m_Key: 
+  - m_TableReference:
+      m_TableCollectionName: GUID:424a6a0bc88e9244f84baacf95644b09
+    m_TableEntryReference:
+      m_KeyId: 728986001408
+      m_Key: 
+  - m_TableReference:
+      m_TableCollectionName: GUID:424a6a0bc88e9244f84baacf95644b09
+    m_TableEntryReference:
+      m_KeyId: 781876174848
+      m_Key: 
+  - m_TableReference:
+      m_TableCollectionName: GUID:424a6a0bc88e9244f84baacf95644b09
+    m_TableEntryReference:
+      m_KeyId: 898343608320
+      m_Key: 
+  - m_TableReference:
+      m_TableCollectionName: GUID:424a6a0bc88e9244f84baacf95644b09
+    m_TableEntryReference:
+      m_KeyId: 1000013537280
+      m_Key: 
+  - m_TableReference:
+      m_TableCollectionName: GUID:424a6a0bc88e9244f84baacf95644b09
+    m_TableEntryReference:
+      m_KeyId: 1110764134400
+      m_Key: 
+  - m_TableReference:
+      m_TableCollectionName: GUID:424a6a0bc88e9244f84baacf95644b09
+    m_TableEntryReference:
+      m_KeyId: 1173393481728
+      m_Key: 
 --- !u!224 &347095675 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4257432511998629381, guid: 195280cc830f6204397049d2644e8665,
@@ -909,6 +952,16 @@ PrefabInstance:
       propertyPath: message
       value: "R\xE9initialise toute votre progression :\\n- Niveaux\\n- Scores\\n-
         Traces\\n- Options"
+      objectReference: {fileID: 0}
+    - target: {fileID: 5102976413086570045, guid: df108c3e51959b046aaa9a02ab191c65,
+        type: 3}
+      propertyPath: localizedMessage.m_TableEntryReference.m_KeyId
+      value: 1784277082112
+      objectReference: {fileID: 0}
+    - target: {fileID: 5102976413086570045, guid: df108c3e51959b046aaa9a02ab191c65,
+        type: 3}
+      propertyPath: localizedMessage.m_TableReference.m_TableCollectionName
+      value: GUID:424a6a0bc88e9244f84baacf95644b09
       objectReference: {fileID: 0}
     - target: {fileID: 6132519329659876958, guid: df108c3e51959b046aaa9a02ab191c65,
         type: 3}
@@ -1785,6 +1838,16 @@ PrefabInstance:
       propertyPath: message
       value: Volume des effets sonores
       objectReference: {fileID: 0}
+    - target: {fileID: 7592617666879000754, guid: 26bec361626e4b843981a21ba1409532,
+        type: 3}
+      propertyPath: localizedMessage.m_TableEntryReference.m_KeyId
+      value: 1559676297216
+      objectReference: {fileID: 0}
+    - target: {fileID: 7592617666879000754, guid: 26bec361626e4b843981a21ba1409532,
+        type: 3}
+      propertyPath: localizedMessage.m_TableReference.m_TableCollectionName
+      value: GUID:424a6a0bc88e9244f84baacf95644b09
+      objectReference: {fileID: 0}
     - target: {fileID: 7779337361195155182, guid: 26bec361626e4b843981a21ba1409532,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -2161,6 +2224,16 @@ PrefabInstance:
         type: 3}
       propertyPath: message
       value: Ouvrir les options de jeu
+      objectReference: {fileID: 0}
+    - target: {fileID: 5102976413086570045, guid: df108c3e51959b046aaa9a02ab191c65,
+        type: 3}
+      propertyPath: localizedMessage.m_TableEntryReference.m_KeyId
+      value: 589382787072
+      objectReference: {fileID: 0}
+    - target: {fileID: 5102976413086570045, guid: df108c3e51959b046aaa9a02ab191c65,
+        type: 3}
+      propertyPath: localizedMessage.m_TableReference.m_TableCollectionName
+      value: GUID:424a6a0bc88e9244f84baacf95644b09
       objectReference: {fileID: 0}
     - target: {fileID: 6132519329659876958, guid: df108c3e51959b046aaa9a02ab191c65,
         type: 3}
@@ -2647,6 +2720,16 @@ PrefabInstance:
       propertyPath: message
       value: "La vitesse de rotation de cam\xE9ra en jeu"
       objectReference: {fileID: 0}
+    - target: {fileID: 7592617666879000754, guid: 26bec361626e4b843981a21ba1409532,
+        type: 3}
+      propertyPath: localizedMessage.m_TableEntryReference.m_KeyId
+      value: 1593943760896
+      objectReference: {fileID: 0}
+    - target: {fileID: 7592617666879000754, guid: 26bec361626e4b843981a21ba1409532,
+        type: 3}
+      propertyPath: localizedMessage.m_TableReference.m_TableCollectionName
+      value: GUID:424a6a0bc88e9244f84baacf95644b09
+      objectReference: {fileID: 0}
     - target: {fileID: 7779337361195155182, guid: 26bec361626e4b843981a21ba1409532,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -2832,6 +2915,16 @@ PrefabInstance:
       propertyPath: message
       value: "Affiche ou non l'effet de bordure lorsque vous \xEAtes accroch\xE9
         au mur"
+      objectReference: {fileID: 0}
+    - target: {fileID: 424895681579518110, guid: 04a6b26c93b47274f8122b1962514bf6,
+        type: 3}
+      propertyPath: localizedMessage.m_TableEntryReference.m_KeyId
+      value: 1633990975488
+      objectReference: {fileID: 0}
+    - target: {fileID: 424895681579518110, guid: 04a6b26c93b47274f8122b1962514bf6,
+        type: 3}
+      propertyPath: localizedMessage.m_TableReference.m_TableCollectionName
+      value: GUID:424a6a0bc88e9244f84baacf95644b09
       objectReference: {fileID: 0}
     - target: {fileID: 2311951229896913443, guid: 04a6b26c93b47274f8122b1962514bf6,
         type: 3}
@@ -3229,7 +3322,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbd415a19dcac79448965bbe22a15aea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  message: Changez les options de jeu ici
+  localizedMessage:
+    m_TableReference:
+      m_TableCollectionName: GUID:424a6a0bc88e9244f84baacf95644b09
+    m_TableEntryReference:
+      m_KeyId: 1425987051520
+      m_Key: 
   timeBeforeShowing: 0.4
 --- !u!1001 &1610633216
 PrefabInstance:
@@ -3614,6 +3712,16 @@ PrefabInstance:
         type: 3}
       propertyPath: message
       value: Retourner au menu principal (ECHAP)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5102976413086570045, guid: df108c3e51959b046aaa9a02ab191c65,
+        type: 3}
+      propertyPath: localizedMessage.m_TableEntryReference.m_KeyId
+      value: 1946265296896
+      objectReference: {fileID: 0}
+    - target: {fileID: 5102976413086570045, guid: df108c3e51959b046aaa9a02ab191c65,
+        type: 3}
+      propertyPath: localizedMessage.m_TableReference.m_TableCollectionName
+      value: GUID:424a6a0bc88e9244f84baacf95644b09
       objectReference: {fileID: 0}
     - target: {fileID: 6132519329659876958, guid: df108c3e51959b046aaa9a02ab191c65,
         type: 3}
@@ -4143,6 +4251,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 109329164}
     m_Modifications:
+    - target: {fileID: 424895681579518110, guid: 389af64ef2c25e8468cfef3ff6a1862e,
+        type: 3}
+      propertyPath: localizedMessage.m_TableEntryReference.m_KeyId
+      value: 1744884178944
+      objectReference: {fileID: 0}
+    - target: {fileID: 424895681579518110, guid: 389af64ef2c25e8468cfef3ff6a1862e,
+        type: 3}
+      propertyPath: localizedMessage.m_TableReference.m_TableCollectionName
+      value: GUID:424a6a0bc88e9244f84baacf95644b09
+      objectReference: {fileID: 0}
     - target: {fileID: 2311951229896913443, guid: 389af64ef2c25e8468cfef3ff6a1862e,
         type: 3}
       propertyPath: m_text
@@ -5471,6 +5589,16 @@ PrefabInstance:
       propertyPath: message
       value: "Jouer au jeu ! (ENTR\xC9E, ESPACE)"
       objectReference: {fileID: 0}
+    - target: {fileID: 6598797709879794470, guid: 4da58b4f8d281c045aff77aee59ada72,
+        type: 3}
+      propertyPath: localizedMessage.m_TableEntryReference.m_KeyId
+      value: 201866846208
+      objectReference: {fileID: 0}
+    - target: {fileID: 6598797709879794470, guid: 4da58b4f8d281c045aff77aee59ada72,
+        type: 3}
+      propertyPath: localizedMessage.m_TableReference.m_TableCollectionName
+      value: GUID:424a6a0bc88e9244f84baacf95644b09
+      objectReference: {fileID: 0}
     - target: {fileID: 8360145961304644884, guid: 4da58b4f8d281c045aff77aee59ada72,
         type: 3}
       propertyPath: m_StringReference.m_TableEntryReference.m_KeyId
@@ -6442,6 +6570,16 @@ PrefabInstance:
         type: 3}
       propertyPath: message
       value: Volume de la musique de fond
+      objectReference: {fileID: 0}
+    - target: {fileID: 7592617666879000754, guid: 26bec361626e4b843981a21ba1409532,
+        type: 3}
+      propertyPath: localizedMessage.m_TableEntryReference.m_KeyId
+      value: 1488767393792
+      objectReference: {fileID: 0}
+    - target: {fileID: 7592617666879000754, guid: 26bec361626e4b843981a21ba1409532,
+        type: 3}
+      propertyPath: localizedMessage.m_TableReference.m_TableCollectionName
+      value: GUID:424a6a0bc88e9244f84baacf95644b09
       objectReference: {fileID: 0}
     - target: {fileID: 7779337361195155182, guid: 26bec361626e4b843981a21ba1409532,
         type: 3}

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Localization;
 
 public class SelectorLevelObjectCube : MonoBehaviour {
 
@@ -11,6 +12,7 @@ public class SelectorLevelObjectCube : MonoBehaviour {
     public Material focusedMaterial;
     public Material lockedMaterial;
     public TooltipActivator tooltipActivator;
+    public LocalizedString cubeNiveauSmartString;
 
     protected SelectorManager selectorManager;
     protected bool hasClickedDown = false;
@@ -18,7 +20,8 @@ public class SelectorLevelObjectCube : MonoBehaviour {
     public void Initialize(bool hightlighted) {
         selectorManager = SelectorManager.Instance;
         SetMaterial(focus: false);
-        tooltipActivator.message = $"Niveau {selectorLevel.GetName()}";
+        tooltipActivator.localizedMessage = cubeNiveauSmartString;
+        tooltipActivator.localizedMessage.Arguments = new object[] { selectorLevel.GetName() };
         GetComponent<AutoBouncer>().enabled = hightlighted;
     }
 
