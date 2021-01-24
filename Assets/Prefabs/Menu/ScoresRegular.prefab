@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 5874428769051064863}
   - component: {fileID: 973964490496854601}
   - component: {fileID: 4511616435180079457}
-  - component: {fileID: 8119724557378159928}
   m_Layer: 5
   m_Name: Winrate
   m_TagString: Untagged
@@ -207,39 +206,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &8119724557378159928
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1733992014060882164}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 56eb0353ae6e5124bb35b17aff880f16, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_StringReference:
-    m_TableReference:
-      m_TableCollectionName: 
-    m_TableEntryReference:
-      m_KeyId: 0
-      m_Key: 
-  m_FormatArguments: []
-  m_UpdateString:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5874428769051064863}
-        m_MethodName: set_text
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!1 &3649216869391516787
 GameObject:
   m_ObjectHideFlags: 0
@@ -253,7 +219,6 @@ GameObject:
   - component: {fileID: 4940290741812748633}
   - component: {fileID: 7024087777175197056}
   - component: {fileID: 5104395318324843634}
-  - component: {fileID: 8036983667181086407}
   m_Layer: 5
   m_Name: BestScore
   m_TagString: Untagged
@@ -447,39 +412,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &8036983667181086407
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3649216869391516787}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 56eb0353ae6e5124bb35b17aff880f16, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_StringReference:
-    m_TableReference:
-      m_TableCollectionName: GUID:935b749e225003c4d89dc5a758038440
-    m_TableEntryReference:
-      m_KeyId: 10633428049920
-      m_Key: 
-  m_FormatArguments: []
-  m_UpdateString:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4940290741812748633}
-        m_MethodName: set_text
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!1 &6212435650581712193
 GameObject:
   m_ObjectHideFlags: 0
@@ -571,7 +503,6 @@ GameObject:
   - component: {fileID: 7701715350163561703}
   - component: {fileID: 1428902314312170473}
   - component: {fileID: 3787882263870821223}
-  - component: {fileID: 8398562817083344103}
   m_Layer: 5
   m_Name: NbTries
   m_TagString: Untagged
@@ -730,42 +661,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbd415a19dcac79448965bbe22a15aea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  message: Votre nombre de morts
+  message: "Votre nombre de d\xE9faites"
   timeBeforeShowing: 0.4
 --- !u!114 &3787882263870821223
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6522115344115524096}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 56eb0353ae6e5124bb35b17aff880f16, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_StringReference:
-    m_TableReference:
-      m_TableCollectionName: GUID:935b749e225003c4d89dc5a758038440
-    m_TableEntryReference:
-      m_KeyId: 10150982426624
-      m_Key: 
-  m_FormatArguments: []
-  m_UpdateString:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7701715350163561703}
-        m_MethodName: set_text
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &8398562817083344103
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -811,7 +709,6 @@ GameObject:
   - component: {fileID: 6152414880273149214}
   - component: {fileID: 558688539449711249}
   - component: {fileID: 6567094779738678905}
-  - component: {fileID: 4131305719976213891}
   m_Layer: 5
   m_Name: NbWins
   m_TagString: Untagged
@@ -973,39 +870,6 @@ MonoBehaviour:
   message: Votre nombre de victoires
   timeBeforeShowing: 0.4
 --- !u!114 &6567094779738678905
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9215277475481725439}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 56eb0353ae6e5124bb35b17aff880f16, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_StringReference:
-    m_TableReference:
-      m_TableCollectionName: GUID:935b749e225003c4d89dc5a758038440
-    m_TableEntryReference:
-      m_KeyId: 10371061751808
-      m_Key: 
-  m_FormatArguments: []
-  m_UpdateString:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 6152414880273149214}
-        m_MethodName: set_text
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &4131305719976213891
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
