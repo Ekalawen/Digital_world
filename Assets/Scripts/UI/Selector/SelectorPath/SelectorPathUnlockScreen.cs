@@ -219,7 +219,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
 
     protected void AddReplacementForDonneesHackeesToPopup(TexteExplicatif popup) {
         popup.AddReplacement("%Trace%", UIHelper.SurroundWithColor(selectorPath.GetTrace(), UIHelper.PURE_GREEN));
-        popup.AddReplacement("%Passe%", UIHelper.SurroundWithColor(selectorPath.passwordPasse, UIHelper.PURE_GREEN));
+        popup.AddReplacement("%Passe%", UIHelper.SurroundWithColor(selectorPath.GetPasse(), UIHelper.PURE_GREEN));
         MatchEvaluator blueSurrounder = new MatchEvaluator(TexteExplicatif.SurroundWithBlueColor);
         MatchEvaluator orangeSurrounder = new MatchEvaluator(TexteExplicatif.SurroundWithOrangeColor);
         popup.AddReplacementEvaluator(@"Passes?", blueSurrounder);

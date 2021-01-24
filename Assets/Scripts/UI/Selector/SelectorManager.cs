@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Localization.Settings;
+using UnityEngine.Localization.Tables;
+using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.SceneManagement;
 
 public class SelectorManager : MonoBehaviour {
@@ -48,6 +51,7 @@ public class SelectorManager : MonoBehaviour {
         DisplayCurrentLevel();
         CleanLastSavedLevel();
         DisplayIntroductionText();
+        FakeLoadAllPasses();
     }
 
     protected void CleanLastSavedLevel() {
@@ -355,6 +359,19 @@ public class SelectorManager : MonoBehaviour {
             SelectorLevelRunIntroduction introductionRunner = firstLevel.gameObject.GetComponent<SelectorLevelRunIntroduction>();
             introductionRunner.RunIntroduction(forcePrint: true);
             PlayerPrefs.SetString(FIRST_TIME_SELECTOR_OPENED_KEY, MenuManager.TRUE);
+        }
+    }
+
+    protected void FakeLoadAllPasses() {
+        StartCoroutine(CFakeLoadAllPasses());
+    }
+
+    protected IEnumerator CFakeLoadAllPasses() {
+        AsyncOperationHandle<StringTable> handle = LocalizationSettings.StringDatabase.GetTableAsync("Passes");
+        yield return handle;
+        StringTable passesTable = handle.Result;
+        foreach (KeyValuePair<long, StringTableEntry> entry in passesTable) {
+            entry.Value.GetLocalizedString();
         }
     }
 }
