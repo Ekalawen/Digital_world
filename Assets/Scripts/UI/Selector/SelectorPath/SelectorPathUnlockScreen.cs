@@ -162,7 +162,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         if (!selectorManager.HasSelectorPathUnlockScreenOpen())
             return;
         int currentTreshold = GetCurrentTreshold();
-        int firstTreshold = new TresholdText(selectorPath.donneesHackees.text).GetFirstFragment().treshold;
+        int firstTreshold = new TresholdText(selectorPath.GetDataHackeesTextAsset().text).GetFirstFragment().treshold;
         if (currentTreshold == 0 || currentTreshold < firstTreshold) {
             if (currentTreshold == 0)
                 OpenDonneesHackeesJamaisHackee();
@@ -190,7 +190,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         selectorManager.popup.Initialize(
             title: "Data Hackées()",
             useTextAsset: true,
-            textAsset: selectorPath.donneesHackees,
+            textAsset: selectorPath.GetDataHackeesTextAsset(),
             theme: TexteExplicatif.Theme.NEUTRAL);
         AddReplacementForDonneesHackeesToPopup(selectorManager.popup);
         selectorManager.popup.InitTresholdText();

@@ -15,7 +15,8 @@ public class SelectorPath : MonoBehaviour {
     public SelectorLevel startLevel;
     public SelectorLevel endLevel;
     public List<GameObject> intermediatePoints;
-    public TextAsset donneesHackees;
+    //public TextAsset donneesHackees;
+    public LocalizedTextAsset donneesHackees;
     public int nbTresholdsToSeeTraceHint = 1;
 
     [Header("Password")]
@@ -83,8 +84,13 @@ public class SelectorPath : MonoBehaviour {
         }
     }
 
+    public TextAsset GetDataHackeesTextAsset() {
+        AsyncOperationHandle<TextAsset> handle = donneesHackees.LoadAssetAsync();
+        return handle.Result;
+    }
+
     public List<int> GetTresholds() {
-        return new TresholdText(donneesHackees).GetAllTresholds();
+        return new TresholdText(GetDataHackeesTextAsset()).GetAllTresholds();
     }
 
     protected void ThrowTrail(Vector3 source, Vector3 target, Gradient gradient) {
@@ -212,7 +218,7 @@ public class SelectorPath : MonoBehaviour {
     }
 
     public int GetMaxTreshold() {
-        TresholdText text = new TresholdText(donneesHackees.text);
+        TresholdText text = new TresholdText(GetDataHackeesTextAsset().text);
         return text.GetLastFragment().treshold;
     }
 
