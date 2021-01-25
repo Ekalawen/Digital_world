@@ -40,7 +40,8 @@ public class SelectorManager : MonoBehaviour {
         if (!_instance) { _instance = this; }
     }
 
-    public void Start() {
+    public IEnumerator Start() {
+        yield return LocalizationSettings.InitializationOperation;
         fadingObjects = new Dictionary<GameObject, Coroutine>();
         GatherPaths();
         GatherLevels();

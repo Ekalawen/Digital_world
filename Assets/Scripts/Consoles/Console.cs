@@ -24,6 +24,7 @@ public class Console : MonoBehaviour {
     [Header("Messages")]
     public List<LocalizedString> conseils; // Les conseils à dispenser au joueur !
     public List<TimedMessage> timedMessages;
+    public ConsoleStrings strings;
 
     [Header("OnLumiereCapturedMessages")]
     public List<int> nbLumieresTriggers;
@@ -144,8 +145,10 @@ public virtual void Update () {
 
     public virtual void PremiersMessages() {
         string levelName = PlayerPrefs.GetString(MenuLevel.LEVEL_NAME_KEY);
-        AjouterMessage("[Niveau]: " + levelName, TypeText.BASIC_TEXT, bUsePrefix: false);
-        AjouterMessage("[Niveau]: Initialisation de la Matrice ...", TypeText.BASIC_TEXT, bUsePrefix: false);
+        LocalizedString niveauString = strings.initialisationNiveau;
+        niveauString.Arguments = new object[] { levelName };
+        AjouterMessage(niveauString, TypeText.BASIC_TEXT, bUsePrefix: false);
+        AjouterMessage(strings.initialisationMatrice, TypeText.BASIC_TEXT, bUsePrefix: false);
         if (gm.GetMapType() == MenuLevel.LevelType.REGULAR) {
             DisplayDatasAndEnnemisCounts();
         } else {
@@ -154,7 +157,7 @@ public virtual void Update () {
     }
 
     protected void VaAussiLoinQueTuPeux() {
-        AjouterMessageImportant("Va aussi loin que tu peux !", TypeText.ALLY_TEXT, 3);
+        AjouterMessageImportant(strings.vaAussiLoinQueTuPeux, TypeText.ALLY_TEXT, 3);
     }
 
     public void DisplayDatasAndEnnemisCounts() {
@@ -172,22 +175,24 @@ public virtual void Update () {
         }
     }
 
-    protected string GetDataCountDisplayMessage() {
+    protected LocalizedString GetDataCountDisplayMessage() {
         int nbLumieres = map.GetLumieres().Count;
-        string s = nbLumieres > 1 ? "s" : "";
-        return $"{nbLumieres} Data{s} trouvée{s} !";
+        LocalizedString ls = strings.nbLumieresTrouvees;
+        ls.Arguments = new object[] { nbLumieres };
+        return ls;
     }
 
-    protected string GetEnnemisCountDisplayMessage() {
+    protected LocalizedString GetEnnemisCountDisplayMessage() {
         int nbEnnemis = gm.ennemiManager.ennemis.Count;
-        string s = nbEnnemis > 1 ? "s" : "";
-        return $"{nbEnnemis} Ennemi{s} détecté{s} !";
+        LocalizedString ls = strings.nbEnnemisTrouvees;
+        ls.Arguments = new object[] { nbEnnemis };
+        return ls;
     }
 
     public void PouvoirsDesactives() {
-		AjouterMessageImportant ("Pouvoirs Désactivés !", TypeText.ALLY_TEXT, 3);
-		AjouterMessageImportant ("Pouvoirs Désactivés !", TypeText.ENNEMI_TEXT, 3);
-		AjouterMessageImportant ("Pouvoirs Désactivés !", TypeText.BASIC_TEXT, 3);
+		AjouterMessageImportant (strings.pouvoirsDesactives, TypeText.ALLY_TEXT, 3);
+		AjouterMessageImportant (strings.pouvoirsDesactives, TypeText.ENNEMI_TEXT, 3);
+		AjouterMessageImportant (strings.pouvoirsDesactives, TypeText.BASIC_TEXT, 3);
     }
 
     protected void LancerConseils() {
@@ -207,7 +212,7 @@ public virtual void Update () {
         if (map.GetLumieres().Count > 0) {
 			if (Time.timeSinceLevelLoad - timeLastLumiereAttrapee > 25) {
 				timeLastLumiereAttrapee = Time.timeSinceLevelLoad;
-				AjouterMessage ("On peut te géolocaliser les Datas si tu appuies sur E ou A !", TypeText.ALLY_TEXT);
+				AjouterMessage (strings.geolocaliserData, TypeText.ALLY_TEXT);
 			}
 		}
     }
@@ -256,10 +261,45 @@ public virtual void Update () {
 
     public void AjouterMessageImportant(
         LocalizedString localizedString,
+        object[] argumentsString,
+        TypeText type,
+        float tempsAffichage,
+        bool bAfficherInConsole,
+        LocalizedString messageToReplace,
+        object[] argumentsReplace) {
+        StartCoroutine(CAjouterMessageImportant(localizedString, argumentsString, type, tempsAffichage, bAfficherInConsole, messageToReplace, argumentsReplace));
+    }
+
+    protected IEnumerator CAjouterMessageImportant(
+        LocalizedString localizedString,
+        object[] argumentsString,
+        TypeText type,
+        float tempsAffichage,
+        bool bAfficherInConsole,
+        LocalizedString messageToReplace,
+        object[] argumentsReplace) {
+        AsyncOperationHandle<string> handle = localizedString.GetLocalizedString(argumentsString);
+        yield return handle;
+        if (messageToReplace != null) {
+            AsyncOperationHandle<string> handleToReplace = messageToReplace.GetLocalizedString(argumentsReplace);
+            yield return handleToReplace;
+            AjouterMessageImportant(handle.Result, type, tempsAffichage, bAfficherInConsole, handleToReplace.Result);
+        } else {
+            AjouterMessageImportant(handle.Result, type, tempsAffichage, bAfficherInConsole);
+        }
+    }
+
+    public void AjouterMessageImportant(
+        LocalizedString localizedString,
         TypeText type,
         float tempsAffichage,
         bool bAfficherInConsole = true,
-        string messageToReplace = "") {
+        LocalizedString messageToReplace = null) {
+        //if (messageToReplace != null) {
+        //    AjouterMessageImportant(localizedString.GetLocalizedString().Result, type, tempsAffichage, bAfficherInConsole, messageToReplace.GetLocalizedString().Result);
+        //} else {
+        //    AjouterMessageImportant(localizedString.GetLocalizedString().Result, type, tempsAffichage, bAfficherInConsole);
+        //}
         StartCoroutine(CAjouterMessageImportant(localizedString, type, tempsAffichage, bAfficherInConsole, messageToReplace));
     }
 
@@ -268,10 +308,16 @@ public virtual void Update () {
         TypeText type,
         float tempsAffichage,
         bool bAfficherInConsole,
-        string messageToReplace) {
+        LocalizedString messageToReplace) {
         AsyncOperationHandle<string> handle = localizedString.GetLocalizedString();
         yield return handle;
-        AjouterMessageImportant(handle.Result, type, tempsAffichage, bAfficherInConsole, messageToReplace);
+        if (messageToReplace != null) {
+            AsyncOperationHandle<string> handleToReplace = messageToReplace.GetLocalizedString();
+            yield return handleToReplace;
+            AjouterMessageImportant(handle.Result, type, tempsAffichage, bAfficherInConsole, handleToReplace.Result);
+        } else {
+            AjouterMessageImportant(handle.Result, type, tempsAffichage, bAfficherInConsole);
+        }
     }
 
     public void AjouterMessageImportant(
@@ -292,12 +338,23 @@ public virtual void Update () {
         StartCoroutine(CEffacerImportantTextIn(message, tempsAffichage + 0.01f)); // On attends un peu pour laisse le temps à d'autres systèmes de prendre la main ^^'
     }
 
-    protected int EffacerImportantMessage(string messageToReplace) {
+    protected void EffacerImportantMessage(LocalizedString messageToErase) {
+        StartCoroutine(CEffacerImportantMessage(messageToErase));
+        //return EffacerImportantMessage(messageToErase.GetLocalizedString().Result);
+    }
+
+    protected IEnumerator CEffacerImportantMessage(LocalizedString messageToErase) {
+        AsyncOperationHandle<string> handle = messageToErase.GetLocalizedString();
+        yield return handle;
+        EffacerImportantMessage(handle.Result);
+    }
+
+    protected int EffacerImportantMessage(string messageToErase) {
         List<string> lines = GetImportantTextLines();
-        if (messageToReplace == "")
+        if (messageToErase == "")
             return 0;
         for(int i = 0; i < lines.Count; i++) {
-            if(lines[i].Contains(messageToReplace)) {
+            if(lines[i].Contains(messageToErase)) {
                 lines.RemoveAt(i);
                 importantText.text = String.Join("\n", lines);
                 return i;
@@ -336,6 +393,23 @@ public virtual void Update () {
 
     public List<string> GetImportantTextLines() {
         return importantText.text.Split('\n').OfType<string>().ToList();
+    }
+
+    public void AjouterMessage(
+        LocalizedString localizedString,
+        TypeText type,
+        bool bUsePrefix = true) {
+        //AjouterMessage(localizedString.GetLocalizedString().Result, type, bUsePrefix);
+        StartCoroutine(CAjouterMessage(localizedString, type, bUsePrefix));
+    }
+
+    protected IEnumerator CAjouterMessage(LocalizedString localizedString, TypeText type, bool bUsePrefix) {
+        AsyncOperationHandle<string> handle = localizedString.GetLocalizedString();
+        yield return handle;
+        AjouterMessage(
+            handle.Result,
+            type,
+            bUsePrefix);
     }
 
     public void AjouterMessage(
@@ -457,6 +531,7 @@ public virtual void Update () {
     }
 
 	void LancerPhraseRandom() {
+        // Cette fonction n'est plus utilisée, mais je la laisse parce que elle est cool :3
 		List<string> phrases = new List<string> ();
 		phrases.Add ("Wow vous êtes en forme !");
 		phrases.Add ("Happy Hacking ! :D");
@@ -502,14 +577,14 @@ public virtual void Update () {
     public void JoueurDetecte() {
         EffacerImportantMessage(dissimuleMessage);
         AjouterMessageImportant(detectedMessage, Console.TypeText.ENNEMI_TEXT, 2, bAfficherInConsole: false, detectedMessage);
-        AjouterMessage ("Je vous ai détecté, je sais où vous êtes !", Console.TypeText.ENNEMI_TEXT);
+        AjouterMessage (strings.jeSaisOuVousEtes, Console.TypeText.ENNEMI_TEXT);
 	}
 
 	// Quand le joueur réussit à semer toutes les sondes
 	public void SemerEnnemis() {
         EffacerImportantMessage(detectedMessage);
 		AjouterMessageImportant (dissimuleMessage, TypeText.ALLY_TEXT, 2, bAfficherInConsole: false, dissimuleMessage);
-        AjouterMessage("On les a semés, on est plus suivi !", TypeText.ALLY_TEXT);
+        AjouterMessage(strings.onLesASemes, TypeText.ALLY_TEXT);
 	}
 	
 	// Lorsqu'une sonde perd le joueur de vue
@@ -519,38 +594,21 @@ public virtual void Update () {
 
 	// Lorsque le joueur est touché
 	public void JoueurToucheSonde() {
-        string message = "TOUCHÉ !";
-		AjouterMessageImportant (message, Console.TypeText.ENNEMI_TEXT, 1, bAfficherInConsole: false, message);
-        AjouterMessage("TOUCHÉ par une Sonde !", Console.TypeText.ENNEMI_TEXT);
-		//AjouterMessageImportant ("TOUCHÉ ! Je vais vous avoir !", Console.TypeText.ENNEMI_TEXT, 1);
+		AjouterMessageImportant (strings.toucheParUneSondeImportant, Console.TypeText.ENNEMI_TEXT, 1, bAfficherInConsole: false, strings.toucheParUneSondeImportant);
+        AjouterMessage(strings.toucheParUneSondeConsole, Console.TypeText.ENNEMI_TEXT);
 	}
 
 	// Lorsque le joueur est touché
 	public void JoueurToucheTracer() {
-        string message = "TOUCHÉ !";
-		AjouterMessageImportant (message, Console.TypeText.ENNEMI_TEXT, 1, bAfficherInConsole: false, message);
-        AjouterMessage("TOUCHÉ par un Tracer !", Console.TypeText.ENNEMI_TEXT);
-	}
-
-	// Lorsque toutes les lumieres ont été attrapés
-	public void ToutesLesLumieresAttrapees() {
-		AjouterMessage ("Vous ne vous en sortirez pas comme ça !", Console.TypeText.ENNEMI_TEXT);
-		AjouterMessage ("OK Super maintenant faut sortir d'ici !", Console.TypeText.ALLY_TEXT);
-	}
-
-	// Lorsque le joueur est éjecté
-	public void JoueurEjecte() {
-		AjouterMessageImportant ("MENACE ÉJECTÉE !", Console.TypeText.ENNEMI_TEXT, 5);
-		AjouterMessage ("Désactivation du processus défensif ...", Console.TypeText.ENNEMI_TEXT);
-		AjouterMessage ("Vous avez été éjecté de la Matrix. ", Console.TypeText.BASIC_TEXT);
-		StartCoroutine (SeMoquer ());
+		AjouterMessageImportant (strings.toucheParUneTracerImportant, Console.TypeText.ENNEMI_TEXT, 1, bAfficherInConsole: false, strings.toucheParUneTracerImportant);
+        AjouterMessage(strings.toucheParUneTracerConsole, Console.TypeText.ENNEMI_TEXT);
 	}
 
 	// Lorsque le joueur réussi à s'échapper
 	public void WinGame() {
-		AjouterMessage ("NOOOOOOOOOOOOOOOOOON ...", Console.TypeText.ENNEMI_TEXT);
-		AjouterMessage ("J'ai échouée ...", Console.TypeText.ENNEMI_TEXT);
-		AjouterMessageImportant ("NOUS AVONS RÉUSSI !!!", Console.TypeText.ALLY_TEXT, 5);
+		AjouterMessage (strings.winGameConsole1, Console.TypeText.ENNEMI_TEXT);
+		AjouterMessage (strings.winGameConsole2, Console.TypeText.ENNEMI_TEXT);
+		AjouterMessageImportant (strings.winGameImportant, Console.TypeText.ALLY_TEXT, 5);
         DisplayEscapeButton();
 		StartCoroutine (Recompenser ());
 	}
@@ -558,18 +616,19 @@ public virtual void Update () {
 	// Text de récompense
 	IEnumerator Recompenser() {
 		yield return new WaitForSeconds (4);
-		string message;
 		while (true) {
-			message = "";
+            LocalizedString ls = strings.winRecompense;
+            string spaces = "";
+            string ss = "";
+            string exclamations = "";
 			for (int i = 0; i < UnityEngine.Random.Range (0, 6); i++)
-				message += " ";
-			message += "On a réussi YES";
+				spaces += " ";
 			for (int i = 0; i < UnityEngine.Random.Range (3, 12); i++)
-				message += "S";
-			message += " ";
+				ss += "S";
 			for (int i = 0; i < UnityEngine.Random.Range (1, 6); i++)
-				message += "!";
-			AjouterMessage (message, Console.TypeText.ALLY_TEXT);
+				exclamations += "!";
+            ls.Arguments = new object[] { spaces, ss, exclamations };
+			AjouterMessage (ls, Console.TypeText.ALLY_TEXT);
 			yield return null;
 		}
 	}
@@ -630,113 +689,118 @@ public virtual void Update () {
     // On se moque de lui
     IEnumerator SeMoquer() {
 		yield return new WaitForSeconds (4);
-		string message;
 		while (true) {
-			message = "";
+			string spaces = "";
+			string has = "";
+			string exclamations = "";
 			for (int i = 0; i < UnityEngine.Random.Range (0, 6); i++)
-				message += " ";
-			message += "Nous vous avons attrapé ... MOU";
+				spaces += " ";
 			for (int i = 0; i < UnityEngine.Random.Range (1, 6); i++)
-				message += "HA";
-			message += " ";
+				has += "HA";
 			for (int i = 0; i < UnityEngine.Random.Range (1, 6); i++)
-				message += "!";
-			AjouterMessage (message, Console.TypeText.ENNEMI_TEXT);
+				exclamations += "!";
+            LocalizedString ls = strings.loseRecompense;
+            ls.Arguments = new object[] { spaces, has, exclamations };
+            AjouterMessage(ls, Console.TypeText.ENNEMI_TEXT);
 			yield return null;
 		}
 	}
 
 	// Quand on attrape une lumière
 	public void AttraperLumiere(int nbLumieresRestantes) {
-        string messagePrecedent = "Plus que " + (nbLumieresRestantes + 1) + " !";
+        LocalizedString messagePrecedent = strings.plusQueX;
 		if (!gm.eventManager.IsEndGameStarted() && nbLumieresRestantes > 0) {
-            string messageCurrent = "Plus que " + nbLumieresRestantes + " !";
+            LocalizedString messageCurrent = strings.plusQueX;
+            messageCurrent.Arguments = new object[] { nbLumieresRestantes };
             EffacerImportantMessage(messageCurrent);
-            AjouterMessageImportant(messageCurrent, Console.TypeText.ALLY_TEXT, 1.2f, true, messagePrecedent);
+            AjouterMessageImportant(messageCurrent, new object[]{ nbLumieresRestantes }, Console.TypeText.ALLY_TEXT, 1.2f, true, messagePrecedent, new object[]{ nbLumieresRestantes + 1});
 		} else {
             if (!gm.eventManager.IsGameWin() && gm.eventManager.GetComponent<EventManagerWhileTrue>() == null) { // Ehhhh x)
-                EffacerImportantMessage("Plus que 1 !");
+                LocalizedString messageOne = strings.plusQueX;
+                messageOne.Arguments = new object[] { 1 };
+                EffacerImportantMessage(messageOne);
                 StartEndGame();
-                //AjouterMessage("ON LES A TOUTES !", Console.TypeText.ALLY_TEXT);
-                //AjouterMessageImportant("FAUT SE BARRER MAINTENANT !!!", Console.TypeText.ALLY_TEXT, 2f);
             }
         }
 	}
 
 	// Quand le joueur lance les trails
 	public void RunLocalisation(int nbLumieres, int nbItems) {
-        if (nbLumieres > 0)
-            AjouterMessage("Il te restes " + nbLumieres+ " Datas !", Console.TypeText.ALLY_TEXT);
-        if (nbItems > 0)
-            AjouterMessage("Il te restes " + nbItems + " Items !", Console.TypeText.ALLY_TEXT);
-        if(nbItems + nbLumieres == 0) 
-            AjouterMessage("On trouver rien à localiser !", Console.TypeText.ALLY_TEXT);
+        if (nbLumieres > 0) {
+            LocalizedString ls = strings.localisationIlTeResteXData;
+            ls.Arguments = new object[] { nbLumieres };
+            AjouterMessage(ls, Console.TypeText.ALLY_TEXT);
+        }
+        if (nbItems > 0) {
+            LocalizedString ls = strings.localisationIlTeResteXItems;
+            ls.Arguments = new object[] { nbItems };
+            AjouterMessage(ls, Console.TypeText.ALLY_TEXT);
+        }
+        if (nbItems + nbLumieres == 0) {
+            LocalizedString ls = strings.localisationRienTrouve;
+            AjouterMessage(ls, Console.TypeText.ALLY_TEXT);
+        }
 	}
 
 	// Quand le joueur lance la détection
 	public void RunDetection(Vector3 position) {
-        AjouterMessage ("Ok on l'a trouvé, va en " + position + " !", Console.TypeText.ALLY_TEXT);
+        LocalizedString ls = strings.runDetection;
+        ls.Arguments = new object[] { position.ToString() };
+        AjouterMessage (ls, Console.TypeText.ALLY_TEXT);
 	}
 
     // Quand on essaye de faire une localisation alors qu'il n'a pas le droit !
     public void FailLocalisationUnauthorized() {
-		AjouterMessage ("Ils brouillent le réseau, objectifs introuvables !", Console.TypeText.ALLY_TEXT);
+		AjouterMessage (strings.failLocalisationUnauthorized, Console.TypeText.ALLY_TEXT);
     }
 
     // Quand on essaye de faire une localisation et qu'on ne trouve pas de chemin !
     public void FailLocalisationObjectifInateignable() {
-        string message = "Objectif inateignale !";
-		AjouterMessageImportant(message, Console.TypeText.ENNEMI_TEXT, 2.0f, messageToReplace: message);
+		AjouterMessageImportant(strings.failLocalisationObjectifInateignable, Console.TypeText.ENNEMI_TEXT, 2.0f, true, strings.failLocalisationObjectifInateignable);
     }
 
 	// Quand le joueur attérit d'un grand saut
 	public virtual void GrandSaut(float hauteurSaut) {
-		AjouterMessage("Wow quel saut ! " + ((int) hauteurSaut) + " mètres !", Console.TypeText.BASIC_TEXT);
-		AjouterMessage("duree = " + Time.timeSinceLevelLoad, TypeText.BASIC_TEXT);
-	}
-
-	// Quand le joueur se fait voir au début par les sondes !
-	public void JoueurRepere() {
-		AjouterMessageImportant ("Nous t'avons trouvé !", TypeText.ENNEMI_TEXT, 2f);
+        LocalizedString ls = strings.wowQuelSaut;
+        ls.Arguments = new object[] { (int)hauteurSaut };
+		AjouterMessage(ls, Console.TypeText.BASIC_TEXT);
 	}
 
     // Lorsque le joueur tente de construire un pont avec une cible invalide !
     public void PouvoirBridgeBuilderInvalide() {
-        string message = "Ce n'est pas une cible valide !";
-        AjouterMessageImportant(message, TypeText.ENNEMI_TEXT, 1f, true, message);
+        AjouterMessageImportant(strings.bridgeBuilderInvalid, TypeText.ENNEMI_TEXT, 1f, true, strings.bridgeBuilderInvalid);
     }
 
     // Lorsque le joueur rentre dans l'EndGame
     public void StartEndGame() {
-        AjouterMessageImportant("Faut trouver la sortie maintenant !", TypeText.ALLY_TEXT, 1f);
+        AjouterMessageImportant(strings.fautTrouverLaSortie, TypeText.ALLY_TEXT, 1f);
     }
 
     // Si le joueur est trop haut, on l'informe !
     public virtual void AltitudeCritique() {
 		// On regarde si le joueur n'est pas trop haut en altitude
 		if (player.transform.position.y > map.tailleMap.y + 3) {
-			AjouterMessage ("Altitude critique !", TypeText.BASIC_TEXT);
+			AjouterMessage (strings.altitudeCritique, TypeText.BASIC_TEXT);
 		}
     }
 
     // Message lorsqu'un event de gravité se déclenche !
     public void GravityEventMessage(GravityManager.Direction direction, float intensité) {
-        string message = "Changement de gravité !";
-        AjouterMessageImportant(message, TypeText.ENNEMI_TEXT, 2, bAfficherInConsole: false, message);
+        AjouterMessageImportant(strings.changementDeGravite, TypeText.ENNEMI_TEXT, 2, bAfficherInConsole: false, strings.changementDeGravite);
         float pourcentage = intensité / 5.0f * 100.0f;
-        AjouterMessage("Gravité : direction = " + direction.ToString() + " intensité = " + pourcentage.ToString("N2") + "%", TypeText.ENNEMI_TEXT);
+        LocalizedString ls = strings.changementDeGraviteDirection;
+        ls.Arguments = new object[] { direction.ToString(), pourcentage.ToString("N2") };
+        AjouterMessage(ls, TypeText.ENNEMI_TEXT);
     }
 
     // Message lors d'un blackout !
     public void BlackoutMessage() {
-        string message = "Blackout !";
-        AjouterMessageImportant(message, TypeText.ENNEMI_TEXT, 2, bAfficherInConsole: true, message);
+        AjouterMessageImportant(strings.blackout, TypeText.ENNEMI_TEXT, 2, bAfficherInConsole: true, strings.blackout);
     }
 
     // Lorsque l'on alerte les tracers !
     public void AlerterTracers() {
-        string message = "Tracers Alertés !";
-        AjouterMessageImportant(message, TypeText.ENNEMI_TEXT, 2, bAfficherInConsole: true, message);
+        AjouterMessageImportant(strings.tracersAlertes, TypeText.ENNEMI_TEXT, 2, bAfficherInConsole: true, strings.tracersAlertes);
     }
 
     // Lorsque l'on capture la première lumière dans la map Analyze
@@ -746,57 +810,71 @@ public virtual void Update () {
     protected IEnumerator CAnalyzeLevelDeuxiemeSalve() {
         float tempsPremierMessage = 1.5f;
         float tempsDeuxiemeMessage = 1.5f;
-        AjouterMessageImportant("ALERTE INTRUSION !", TypeText.ENNEMI_TEXT, tempsPremierMessage);
+        AjouterMessageImportant(strings.analyzeLevelDeuxiemeSalveIntrusion, TypeText.ENNEMI_TEXT, tempsPremierMessage);
         yield return new WaitForSeconds(tempsPremierMessage);
         yield return null;
-        AjouterMessageImportant("Réplication des Data !", TypeText.ENNEMI_TEXT, tempsDeuxiemeMessage);
+        AjouterMessageImportant(strings.analyzeLevelDeuxiemeSalveReplication, TypeText.ENNEMI_TEXT, tempsDeuxiemeMessage);
     }
 
     // Lorsque le joueur tombe, typiquement dans le tutoriel !
     public void SavedFromFalling() {
-        AjouterMessageImportant("Attention à ne pas être éjecté !", TypeText.ALLY_TEXT, 3);
+        AjouterMessageImportant(strings.attentionANePasEtreEjecte, TypeText.ALLY_TEXT, 3);
     }
 
     // Lorsque le joueur touche un cube de la mort dans le tutoriel !
     public void SavedFromDeathCube() {
-        AjouterMessageImportant("Attention aux Cubes de la Mort !", TypeText.ALLY_TEXT, 3);
+        AjouterMessageImportant(strings.attentionAuxCubesDeLaMort, TypeText.ALLY_TEXT, 3);
     }
 
     // Lorsque le joueur capture un item double saut !
     public void CaptureAddDoubleJump() {
         if (player.GetNbDoubleSautsMax() == 1) {
-            AjouterMessageImportant("Double Saut Activé !", TypeText.ALLY_TEXT, 2, bAfficherInConsole: false);
+            AjouterMessageImportant(strings.doubleSautActive, TypeText.ALLY_TEXT, 2, bAfficherInConsole: false);
         } else {
-            AjouterMessageImportant("Double Saut + 1", TypeText.ALLY_TEXT, 2, bAfficherInConsole: false);
+            AjouterMessageImportant(strings.doubleSautPlusUn, TypeText.ALLY_TEXT, 2, bAfficherInConsole: false);
         }
-        AjouterMessage("Tu peux effectuer un Double Saut en appuyant à nouveau sur Espace !", TypeText.ALLY_TEXT);
+        AjouterMessage(strings.doubleSautExplications, TypeText.ALLY_TEXT);
     }
 
     // Lorsque le joueur capture un item pour voler !
     public void CapturePouvoirGiverVoler() {
-        AjouterMessageImportant("Vol Activé !", TypeText.ALLY_TEXT, 2, bAfficherInConsole: false);
-        AjouterMessage("Tu peux maintenant Voler ! Appuie sur Espace pour monter et sur Shift pour descendre !", TypeText.ALLY_TEXT);
+        AjouterMessageImportant(strings.volActive, TypeText.ALLY_TEXT, 2, bAfficherInConsole: false);
+        AjouterMessage(strings.volExplications, TypeText.ALLY_TEXT);
     }
 
     public void CapturePouvoirGiverItem(string pouvoirName, PouvoirGiverItem.PouvoirBinding pouvoirBinding) {
-        AjouterMessageImportant(pouvoirName + " Activé !", TypeText.ALLY_TEXT, 2, bAfficherInConsole: false);
-        string strBinding = "";
-        switch(pouvoirBinding) {
-            case PouvoirGiverItem.PouvoirBinding.A: strBinding = "A"; break;
-            case PouvoirGiverItem.PouvoirBinding.E: strBinding = "E"; break;
-            case PouvoirGiverItem.PouvoirBinding.LEFT_CLICK: strBinding = "le click gauche"; break;
-            case PouvoirGiverItem.PouvoirBinding.RIGHT_CLICK: strBinding = "le click droit"; break;
+        StartCoroutine(CCapturePouvoirGiverTime(pouvoirName, pouvoirBinding));
+    }
+
+    private IEnumerator CCapturePouvoirGiverTime(string pouvoirName, PouvoirGiverItem.PouvoirBinding pouvoirBinding) {
+        LocalizedString pouvoirGiverActive = strings.pouvoirGiverActive;
+        pouvoirGiverActive.Arguments = new object[] { pouvoirName };
+        AjouterMessageImportant(pouvoirGiverActive, TypeText.ALLY_TEXT, 2, bAfficherInConsole: false);
+        LocalizedString strBinding = null;
+        switch (pouvoirBinding) {
+            case PouvoirGiverItem.PouvoirBinding.A: strBinding = strings.keyA; break;
+            case PouvoirGiverItem.PouvoirBinding.E: strBinding = strings.keyE; break;
+            case PouvoirGiverItem.PouvoirBinding.LEFT_CLICK: strBinding = strings.keyClicGauche; break;
+            case PouvoirGiverItem.PouvoirBinding.RIGHT_CLICK: strBinding = strings.keyClicDroit; break;
         }
-        AjouterMessage("Tu peux utiliser le pouvoir " + pouvoirName + " en appuyant sur " + strBinding + " !", TypeText.ALLY_TEXT);
+        AsyncOperationHandle<string> handle = strBinding.GetLocalizedString();
+        yield return handle;
+        LocalizedString pouvoirGiverExplications = strings.pouvoirGiverActive;
+        pouvoirGiverExplications.Arguments = new object[] { pouvoirName, handle.Result };
+        AjouterMessage(pouvoirGiverExplications, TypeText.ALLY_TEXT);
     }
 
     public void FirstBossChangementDePhase(int newPhaseIndice, float duree) {
         StartCoroutine(CFirstBossChangementDePhase(newPhaseIndice, duree));
     }
     protected IEnumerator CFirstBossChangementDePhase(int newPhaseIndice, float duree) {
-        AjouterMessageImportant("Loading phase " + newPhaseIndice + " ...", TypeText.ENNEMI_TEXT, duree, bAfficherInConsole: true);
+        LocalizedString chargement = strings.bossChangementDePhaseChargement;
+        chargement.Arguments = new object[] { newPhaseIndice };
+        AjouterMessageImportant(chargement, TypeText.ENNEMI_TEXT, duree, bAfficherInConsole: true);
         yield return new WaitForSeconds(duree);
-        AjouterMessageImportant("Phase " + newPhaseIndice + " chargé !", TypeText.ENNEMI_TEXT, 2, bAfficherInConsole: true);
+        LocalizedString termine = strings.pouvoirGiverActive;
+        termine.Arguments = new object[] { newPhaseIndice };
+        AjouterMessageImportant(termine, TypeText.ENNEMI_TEXT, 2, bAfficherInConsole: true);
     }
 
     public void InitPouvoirsDisplays() {
@@ -812,16 +890,16 @@ public virtual void Update () {
     }
 
     public void RewardBestScore() {
-        AjouterMessageImportant("Meilleur Score !!!", TypeText.ALLY_TEXT, 3, bAfficherInConsole: true);
+        AjouterMessageImportant(strings.meilleurScore, TypeText.ALLY_TEXT, 3, bAfficherInConsole: true);
     }
 
     public void WhileTrueEndEventAutoDestructionEnclenche() {
-        AjouterMessageImportant("Auto-Destruction enclenchée !", Console.TypeText.ENNEMI_TEXT, 2.0f);
+        AjouterMessageImportant(strings.autoDestructionEnclenchee, Console.TypeText.ENNEMI_TEXT, 2.0f);
     }
 
     // Lorsque l'on commence à détruire les blocks dans l'infinite runner :)
     public void InfiniteRunnerStartCubeDestruction() {
-        AjouterMessageImportant("Déconnexion enclenchée !", Console.TypeText.ENNEMI_TEXT, 2.0f);
+        AjouterMessageImportant(strings.deconnexionEnclenchee, Console.TypeText.ENNEMI_TEXT, 2.0f);
     }
 
     public void AddGapInConsole() {
@@ -834,16 +912,14 @@ public virtual void Update () {
 
     public void DontUseArrowKeys() {
         if (arrowKeysTimer.IsOver()) {
-            string message = "Utilisez ZQSD plutôt que les flêches !";
-            AjouterMessageImportant(message, TypeText.BASIC_TEXT, arrowKeysTimer.GetDuree(), false, messageToReplace: message);
+            AjouterMessageImportant(strings.ZQSDinsteadOfArrows, TypeText.BASIC_TEXT, arrowKeysTimer.GetDuree(), false, strings.ZQSDinsteadOfArrows);
             arrowKeysTimer.Reset();
         }
     }
 
     public void JumpStun() {
-        string message = "Raté : Sautez et n'accrochez pas les murs !";
-        AjouterMessageImportant(message, TypeText.ENNEMI_TEXT, 2.0f, bAfficherInConsole: false, messageToReplace: "JUMP !");
-        AjouterMessage("Lors d'un Jump vous devez être dans les airs sans être accroché à un mur lorsque le timer atteint 0.0 !", TypeText.ENNEMI_TEXT);
+        AjouterMessageImportant(strings.jumpStunImportant, TypeText.ENNEMI_TEXT, 2.0f, bAfficherInConsole: false, messageToReplace: strings.jumpActivation);
+        AjouterMessage(strings.jumpStunConsole, TypeText.ENNEMI_TEXT);
     }
 
     public void DisplayEscapeButton() {
