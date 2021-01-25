@@ -51,7 +51,6 @@ public class SelectorManager : MonoBehaviour {
         DisplayCurrentLevel();
         CleanLastSavedLevel();
         DisplayIntroductionText();
-        FakeLoadAllPasses();
     }
 
     protected void CleanLastSavedLevel() {
