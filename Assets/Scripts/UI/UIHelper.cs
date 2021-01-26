@@ -73,6 +73,10 @@ public class UIHelper {
         return SurroundWithColorWithoutB(text, htmlColor);
     }
 
+    public static string SurroundWithB(string text) {
+        return $"<b>{text}</b>";
+    }
+
     public static string SurroundWithColor(string text, string htmlColor) {
         return $"<color={htmlColor}><b>{text}</b></color>";
     }

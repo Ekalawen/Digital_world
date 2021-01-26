@@ -176,12 +176,6 @@ public class SelectorPath : MonoBehaviour {
         AsyncOperationHandle<string> handle = passwordPasse.GetLocalizedString();
         Debug.Log($"Passe = {handle.Result}");
         return handle.Result; // Peut générer des bugs ! Dans l'idée il faudrait vérifier. Mais si c'est pas load, je sais pas comment attendre sans pourrir tout le code avec de l'async :/
-        //if (handle.IsDone) {
-        //    return handle.Result;
-        //} else {
-        //    Debug.LogError($"La LocalizedString {passwordPasse} n'est pas chargés à l'avance ! :'(");
-        //    return "";
-        //}
     }
 
     public string GetTrace() {

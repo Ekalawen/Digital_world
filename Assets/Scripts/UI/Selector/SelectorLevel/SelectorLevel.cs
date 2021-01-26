@@ -63,10 +63,8 @@ public class SelectorLevel : MonoBehaviour {
         string bestScoreString = menuLevel.GetBestScoreToString();
         selectorManager.popup.CleanReplacements();
         selectorManager.popup.AddReplacement(bestScoreString, UIHelper.SurroundWithColor(bestScoreString, UIHelper.GREEN));
-        selectorManager.RunPopup("MEILLEUR SCORE !!!",
-            "Incroyable !\n" +
-            "Vous avez battu votre record et fais le Meilleur Score !\n" +
-            $"Vous avez fait {bestScoreString} !",
+        selectorManager.RunPopup(selectorManager.strings.meilleurScoreTitre.GetLocalizedString().Result,
+            selectorManager.strings.meilleurScoreTexte.GetLocalizedString(bestScoreString).Result,
             TexteExplicatif.Theme.POSITIF,
             cleanReplacements: false);
     }
@@ -161,20 +159,17 @@ public class SelectorLevel : MonoBehaviour {
         for(int i = 0; i < nbWins.Count; i++) {
             int nbWin = nbWins[i];
             string nextLevel = nextLevels[i];
-            string de = $"de{(nbWin > 1 ? "s" : "")}";
-            string unite = (menuLevel.levelType == MenuLevel.LevelType.REGULAR) ? "victoire" : "block";
-            string victoire = $"{unite}{(nbWin > 1 ? "s" : "")}";
-            congrats += $"Pallier " +
-                $"{de} {UIHelper.SurroundWithColor($"{nbWin} {victoire}", UIHelper.GREEN)} vers le niveau " +
-                $"{UIHelper.SurroundWithColor(nextLevel, UIHelper.BLUE)} débloqué !\n";
+            string unites = UIHelper.SurroundWithColor(selectorManager.GetUnitesString(nbWin, menuLevel.levelType), UIHelper.GREEN);
+            string levelTitle = UIHelper.SurroundWithColor(nextLevel, UIHelper.BLUE);
+            congrats += selectorManager.strings.palierDebloqueUnPalier.GetLocalizedString(nbWin, unites, levelTitle).Result;
+            congrats += '\n';
         }
-        string le = $"le{((nbWins.Count > 1) ? "s" : "")}";
-        selectorManager.popup.AddReplacement("Data Hackées()", UIHelper.SurroundWithColor("Data Hackées()", UIHelper.ORANGE));
+
+        string dataHackeesString = selectorManager.strings.dataHackeesTitle.GetLocalizedString().Result;
+        selectorManager.popup.AddReplacement(dataHackeesString, UIHelper.SurroundWithColor(dataHackeesString, UIHelper.ORANGE));
         selectorManager.RunPopup(
-            "Pallier débloqué !",
-            "Félicitations !\n" + 
-            congrats +
-            $"Allez {le} consulter dans les Data Hackées() !",
+            selectorManager.strings.palierDebloqueTitre.GetLocalizedString().Result,
+            selectorManager.strings.palierDebloqueTexte.GetLocalizedString(congrats, nbWins.Count).Result,
             theme: TexteExplicatif.Theme.POSITIF,
             cleanReplacements: false);
         selectorManager.popup.HighlightDoneButton(true);
@@ -185,11 +180,10 @@ public class SelectorLevel : MonoBehaviour {
         if (!menuLevel.HasAlreadyDiscoverLevel()) {
             bool shouldCongrats = !menuLevel.displayArchivesOnUnlock;
             if (shouldCongrats) {
+                string levelString = UIHelper.SurroundWithColor(GetName(), UIHelper.BLUE);
                 selectorManager.RunPopup(
-                    title: "Niveau débloqué !",
-                    text: $"Félicitation ! Vous venez de débloquer le niveau {UIHelper.SurroundWithColor(GetName(), UIHelper.BLUE)} !\n" + 
-                    "Continuez comme ça !\n" +
-                    "Et Happy Hacking ! :)",
+                    title: selectorManager.strings.niveauDebloqueTitre.GetLocalizedString().Result,
+                    text: selectorManager.strings.niveauDebloqueTexte.GetLocalizedString(levelString).Result,
                     theme: TexteExplicatif.Theme.POSITIF);
             } else {
                 menuLevel.OpenArchives();

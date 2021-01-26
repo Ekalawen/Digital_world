@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
+using UnityEngine.Localization;
 using UnityEngine.UI;
 
 public class SelectorPathUnlockScreen : MonoBehaviour {
@@ -97,8 +98,8 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
 
     protected void SubmitGoodUnlocked() {
         selectorManager.RunPopup(
-            title: "Déjà débloqué !",
-            text: "Vous avez déjà dévérouillé ce Path() !",
+            title: selectorManager.strings.pathGoodUnlockedTitle,
+            text: selectorManager.strings.pathGoodUnlockedTexte,
             theme: TexteExplicatif.Theme.NEUTRAL);
     }
 
@@ -111,43 +112,32 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         GenerateNextAndPreviousButtons();
         selectorPath.startLevel?.InitializeObject();
         selectorPath.endLevel?.InitializeObject();
-        selectorManager.RunPopup("Path() hacké !",
-            "Félicitation !\n" +
-            "Vous avez trouvé le bon mot de passe pour hacker et dévérouiller ce Path() !" +
-            "\n" +
-            "Keep hacking !",
-            TexteExplicatif.Theme.POSITIF);
+        selectorManager.RunPopup(selectorManager.strings.pathGoodLockedTitle, selectorManager.strings.pathGoodLockedTexte, TexteExplicatif.Theme.POSITIF);
     }
 
     protected void SubmitFalseLocked() {
         string registeredPassword = input.text;
         string goodPassword = selectorPath.GetPassword();
         string advice = GetPasswordAdvice(registeredPassword, goodPassword);
-        selectorManager.popup.AddReplacement("Data Hackées()", UIHelper.SurroundWithColor("Data Hackées()", UIHelper.ORANGE));
-        selectorManager.RunPopup("Mot de passe érroné.",
-            "Ce n'est pas le bon mot de passe.\n" +
-            advice +
-            "Réussissez ce niveau pour obtenir le mot de passe dans les Data Hackées().\n" +
-            "\n" +
-            "Bonne Chance !",
-            TexteExplicatif.Theme.NEGATIF,
-            cleanReplacements: false);
+        LocalizedString texte = selectorManager.strings.pathFalseLockedTexte;
+        texte.Arguments = new object[] { advice };
+        string dataHackeesString = selectorManager.strings.dataHackeesTitle.GetLocalizedString().Result;
+        selectorManager.popup.AddReplacement(dataHackeesString, UIHelper.SurroundWithColor(dataHackeesString, UIHelper.ORANGE));
+        selectorManager.RunPopup(selectorManager.strings.pathFalseLockedTitle, texte, TexteExplicatif.Theme.NEGATIF, cleanReplacements: false);
     }
 
     protected string GetPasswordAdvice(string registeredPassword, string goodPassword) {
         if (selectorPath.dontUseAdvice)
             return "";
         string advice = Trace.GetPasswordAdvice(registeredPassword, goodPassword);
-        return UIHelper.SurroundWithColor(advice, UIHelper.GREEN) + "\n";
+        return UIHelper.SurroundWithColor(advice, UIHelper.GREEN);
     }
 
     protected void SubmitFalseUnlocked() {
         string password = selectorPath.GetPassword();
         selectorManager.popup.Initialize(
-            title: "C'était mieux avant.",
-            mainText: "Ce Path() est déjà dévérouillé !\n" +
-            "Et pourtant ce n'est plus le bon mot de passe.\n" +
-            $"Le mot de passe était {password}.\n",
+            title: selectorManager.strings.pathFalseUnlockedTitre.GetLocalizedString().Result,
+            mainText: selectorManager.strings.pathFalseUnlockedTexte.GetLocalizedString(password).Result,
             theme: TexteExplicatif.Theme.NEUTRAL);
         selectorManager.popup.AddReplacement(password, UIHelper.SurroundWithColor(password, UIHelper.GREEN));
         selectorManager.popup.Run();
@@ -164,10 +154,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         int currentTreshold = GetCurrentTreshold();
         int firstTreshold = new TresholdText(selectorPath.GetDataHackeesTextAsset().text).GetFirstFragment().treshold;
         if (currentTreshold == 0 || currentTreshold < firstTreshold) {
-            if (currentTreshold == 0)
-                OpenDonneesHackeesJamaisHackee();
-            else
-                OpenDonneesHackeesBeforeFirstTreshold(firstTreshold);
+            OpenDonneesHackeesJamaisHackee(firstTreshold);
         } else {
             OpenDonneesHackeesWithTreshold(currentTreshold);
         }
@@ -188,7 +175,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
 
     protected void OpenDonneesHackeesWithTreshold(int treshold) {
         selectorManager.popup.Initialize(
-            title: "Data Hackées()",
+            title: selectorManager.strings.dataHackeesTitle.GetLocalizedString().Result,
             useTextAsset: true,
             textAsset: selectorPath.GetDataHackeesTextAsset(),
             theme: TexteExplicatif.Theme.NEUTRAL);
@@ -198,22 +185,13 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         selectorManager.popup.Run(textTreshold: treshold, shouldInitTresholdText: false);
     }
 
-    protected void OpenDonneesHackeesJamaisHackee() {
+    protected void OpenDonneesHackeesJamaisHackee(int firstTreshold) {
+        string unite = selectorManager.GetUnitesString(firstTreshold, GetStartLevelType());
+        LocalizedString texte = selectorManager.strings.dataHackeesJamaisHackeesTexte;
+        texte.Arguments = new object[] { unite };
         selectorManager.RunPopup(
-            title: "Data Hackées()",
-            text: "Vous n'avez encore jamais hacké ce niveau.\n" +
-            "Aucune Data accessible.",
-            theme: TexteExplicatif.Theme.NEUTRAL);
-    }
-
-    protected void OpenDonneesHackeesBeforeFirstTreshold(int firstTreshold) {
-        string unite = (GetStartLevelType() == MenuLevel.LevelType.INFINITE) ? "block" : "victoire";
-        unite += (firstTreshold > 1) ? "s" : "";
-        selectorManager.RunPopup(
-            title: "Data Hackées()",
-            text: "Vous n'avez encore jamais hacké ce niveau.\n" +
-            $"Premier pallier à {firstTreshold} {unite}.\n" +
-            "Aucune Data accessible.",
+            title: selectorManager.strings.dataHackeesTitle,
+            text: texte,
             theme: TexteExplicatif.Theme.NEUTRAL);
     }
 
@@ -234,7 +212,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
             TresholdFragment fragment = fragments[i];
             string nextPallierText = GetNextPallierText(fragment, fragments, currentTreshold);
             string textOfTreshold = GetTresholdTextForPallier(fragment.treshold);
-            string pallierNumberText = $"Pallier n°{i + 1} ({textOfTreshold}) : {nextPallierText}\n";
+            string pallierNumberText = selectorManager.strings.palierTotalTexte.GetLocalizedString(i + 1, textOfTreshold, nextPallierText).Result;
             pallierNumberText = UIHelper.SurroundWithColor(pallierNumberText, UIHelper.GREEN);
             fragment.text = pallierNumberText + fragment.text;
         }
@@ -243,21 +221,20 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
     }
 
     protected string GetTresholdTextForPallier(int tresholdText) {
-        string s = (tresholdText > 1) ? "s" : "";
-        string unite = (selectorPath.startLevel.menuLevel.levelType == MenuLevel.LevelType.REGULAR) ? "victoire" : "block";
-        return $"{tresholdText} {unite}{s}";
+        return (selectorPath.startLevel.menuLevel.levelType == MenuLevel.LevelType.INFINITE) ?
+            selectorManager.strings.blocs.GetLocalizedString(tresholdText).Result :
+            selectorManager.strings.victoires.GetLocalizedString(tresholdText).Result;
     }
 
     protected string GetNextPallierText(TresholdFragment fragment, List<TresholdFragment> fragments, int textTreshold) {
         TresholdFragment currentFragment = fragments.FindAll(f => f.treshold <= textTreshold).Last();
         if(fragment == currentFragment) {
             if (fragment == fragments.Last()) {
-                return "(Dernier pallier)";
+                return selectorManager.strings.palierNextPalierDernier.GetLocalizedString().Result;
             } else {
                 int nextTreshold = fragments[fragments.FindIndex(f => f == currentFragment) + 1].treshold;
-                string unite = (GetStartLevelType() == MenuLevel.LevelType.INFINITE) ? "block" : "victoire";
-                unite += (nextTreshold > 1) ? "s" : "";
-                return $"(Prochain pallier à {nextTreshold} {unite})";
+                string unite = selectorManager.GetUnitesString(nextTreshold, GetStartLevelType());
+                return selectorManager.strings.palierNextPalierProchain.GetLocalizedString(unite).Result;
             }
         } else {
             return "";
@@ -307,7 +284,8 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         List<int> unlockedTresholds = selectorPath.GetTresholds().FindAll(i => i <= currentTreshold);
         if(unlockedTresholds.Count >= selectorPath.nbTresholdsToSeeTraceHint) {
             traceHintContainer.SetActive(true);
-            traceHintText.text = $"Trace : <b>{selectorPath.GetTrace()}</b>";
+            string traceString = UIHelper.SurroundWithB(selectorPath.GetTrace());
+            traceHintText.text = selectorManager.strings.traceDisplayer.GetLocalizedString(traceString).Result;
         } else {
             traceHintContainer.SetActive(false);
         }

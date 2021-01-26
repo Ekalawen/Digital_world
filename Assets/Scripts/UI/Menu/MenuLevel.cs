@@ -196,37 +196,37 @@ public class MenuLevel : MonoBehaviour {
         texteArchives.Run(GetNbWins());
     }
 
-    public void OpenDonneesHackes() {
-        if (selectorManager != null && !selectorManager.HasSelectorLevelOpen())
-            return;
-        // Changer le texte des données hackés en fonction du nombre de fois où l'on a gagné ce niveau !
-        string key = textLevelName.text + NB_WINS_KEY;
-        int nbVictoires = PlayerPrefs.HasKey(key) ? PlayerPrefs.GetInt(key) : 0;
-        if (nbVictoires == 0) {
-            texteExplicatifDonneesHackes.Run(GetNbWins());
-        } else {
-            texteExplicatifDonneesHackesSuccess.Run(GetNbWins());
-            AddNextPallierMessageToAllFragments();
-        }
-    }
+    //public void OpenDonneesHackes() {
+    //    if (selectorManager != null && !selectorManager.HasSelectorLevelOpen())
+    //        return;
+    //    // Changer le texte des données hackés en fonction du nombre de fois où l'on a gagné ce niveau !
+    //    string key = textLevelName.text + NB_WINS_KEY;
+    //    int nbVictoires = PlayerPrefs.HasKey(key) ? PlayerPrefs.GetInt(key) : 0;
+    //    if (nbVictoires == 0) {
+    //        texteExplicatifDonneesHackes.Run(GetNbWins());
+    //    } else {
+    //        texteExplicatifDonneesHackesSuccess.Run(GetNbWins());
+    //        AddNextPallierMessageToAllFragments();
+    //    }
+    //}
 
-    protected void AddNextPallierMessageToAllFragments() {
-        TresholdText tresholdText = texteExplicatifDonneesHackesSuccess.GetTresholdText();
-        List<TresholdFragment> fragments = tresholdText.GetAllFragmentsOrdered();
-        for (int i = 0; i < fragments.Count; i++) {
-            if (i < fragments.Count - 1) {
-                int nextTreshold = fragments[i + 1].treshold;
-                fragments[i].ApplyReplacementEvaluator(
-                    new Tuple<string, MatchEvaluator>(@"$(?![\r\n])", // Match EOF
-                    (Match match) => "Prochain pallier à " + nextTreshold + " victoires.\n\n\n"));
-            } else {
-                fragments[i].ApplyReplacementEvaluator(
-                    new Tuple<string, MatchEvaluator>(@"$(?![\r\n])", // Match EOF
-                    (Match match) => "Dernier pallier.\n\n\n"));
-            }
-        }
-        texteExplicatifDonneesHackesSuccess.mainText.text = texteExplicatifDonneesHackesSuccess.ComputeText(GetNbWins());
-    }
+    //protected void AddNextPallierMessageToAllFragments() {
+    //    TresholdText tresholdText = texteExplicatifDonneesHackesSuccess.GetTresholdText();
+    //    List<TresholdFragment> fragments = tresholdText.GetAllFragmentsOrdered();
+    //    for (int i = 0; i < fragments.Count; i++) {
+    //        if (i < fragments.Count - 1) {
+    //            int nextTreshold = fragments[i + 1].treshold;
+    //            fragments[i].ApplyReplacementEvaluator(
+    //                new Tuple<string, MatchEvaluator>(@"$(?![\r\n])", // Match EOF
+    //                (Match match) => "Prochain pallier à " + nextTreshold + " victoires.\n\n\n"));
+    //        } else {
+    //            fragments[i].ApplyReplacementEvaluator(
+    //                new Tuple<string, MatchEvaluator>(@"$(?![\r\n])", // Match EOF
+    //                (Match match) => "Dernier pallier.\n\n\n"));
+    //        }
+    //    }
+    //    texteExplicatifDonneesHackesSuccess.mainText.text = texteExplicatifDonneesHackesSuccess.ComputeText(GetNbWins());
+    //}
 
     public void SaveNextInputField() {
         if (inputFieldNext.text == GetPassword() || inputFieldNext.text == SUPER_CHEATED_PASSWORD) {
@@ -418,34 +418,34 @@ public class MenuLevel : MonoBehaviour {
         PlayerPrefs.DeleteKey(key);
     }
 
-    protected void DisplayPopupUnlockNewTreshold() {
-        if (HasJustWin()) {
-            List<int> tresholds = texteExplicatifDonneesHackesSuccess.GetAllTresholds();
-            if(tresholds.Contains(GetNbWins())) {
-                MenuManager.Instance.RunPopup(
-                    "Pallier débloqué !", 
-                    "Félicitation ! Vous venez de débloquer le pallier de" + (GetNbWins() > 1 ? "s" : "") + " " + GetNbWins() + " victoire" + ((GetNbWins() > 1) ? "s" : "") + " !\n" +
-                    "Allez le consulter dans les Data Hackées !",
-                    TexteExplicatif.Theme.POSITIF);
-            }
-            SetNotJustWin();
-        }
-    }
+    //protected void DisplayPopupUnlockNewTreshold() {
+    //    if (HasJustWin()) {
+    //        List<int> tresholds = texteExplicatifDonneesHackesSuccess.GetAllTresholds();
+    //        if(tresholds.Contains(GetNbWins())) {
+    //            MenuManager.Instance.RunPopup(
+    //                "Pallier débloqué !", 
+    //                "Félicitation ! Vous venez de débloquer le pallier de" + (GetNbWins() > 1 ? "s" : "") + " " + GetNbWins() + " victoire" + ((GetNbWins() > 1) ? "s" : "") + " !\n" +
+    //                "Allez le consulter dans les Data Hackées !",
+    //                TexteExplicatif.Theme.POSITIF);
+    //        }
+    //        SetNotJustWin();
+    //    }
+    //}
     
-    protected void DisplayPopupUnlockLevel() {
-        if (!HasAlreadyDiscoverLevel()) {
-            bool shouldCongrats = menuLevelSelector != null ? menuLevelSelector.GetLevelIndice() != 0 : selectorManager.GetLevelIndice() != 0;
-            if (shouldCongrats) {
-                MenuManager.Instance.RunPopup(
-                    "Niveau débloqué !",
-                    "Félicitation ! Vous venez de débloquer le niveau " + GetName() + " !\nContinuez comme ça !\nEt Happy Hacking ! :)",
-                    TexteExplicatif.Theme.POSITIF);
-            } else {
-                texteExplicatifIntroduction.Run();
-            }
-            SetAlreadyDiscoverLevel();
-        }
-    }
+    //protected void DisplayPopupUnlockLevel() {
+    //    if (!HasAlreadyDiscoverLevel()) {
+    //        bool shouldCongrats = menuLevelSelector != null ? menuLevelSelector.GetLevelIndice() != 0 : selectorManager.GetLevelIndice() != 0;
+    //        if (shouldCongrats) {
+    //            MenuManager.Instance.RunPopup(
+    //                "Niveau débloqué !",
+    //                "Félicitation ! Vous venez de débloquer le niveau " + GetName() + " !\nContinuez comme ça !\nEt Happy Hacking ! :)",
+    //                TexteExplicatif.Theme.POSITIF);
+    //        } else {
+    //            texteExplicatifIntroduction.Run();
+    //        }
+    //        SetAlreadyDiscoverLevel();
+    //    }
+    //}
 
     public bool HasAlreadyDiscoverLevel() {
         string key = GetName() + HAS_ALREADY_DISCOVER_LEVEL_KEY;

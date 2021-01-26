@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 using UnityEngine;
+using UnityEngine.Localization;
 using UnityEngine.UI;
 
 public class TexteExplicatif : MonoBehaviour {

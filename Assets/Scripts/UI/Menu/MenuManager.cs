@@ -25,11 +25,14 @@ public class MenuManager : MonoBehaviour {
     public MenuBackgroundBouncing menuBouncingBackground;
     public TexteExplicatif popup;
 
+    protected SelectorManager selectorManager;
+
     void Awake() {
         if (!_instance) { _instance = this; }
     }
 
     private void Start() {
+        selectorManager = SelectorManager.Instance;
         SetSavedLocale();
         menuBouncingBackground.Initialize();
         ResetPlayerPrefsIfFirstConnexion();
@@ -70,13 +73,13 @@ public class MenuManager : MonoBehaviour {
     }
 
     protected void AdvicePlayTutorial() {
-        string tutoriel = UIHelper.SurroundWithColor("Tutoriel()", UIHelper.BLUE);
+        string tutoriel = UIHelper.SurroundWithColor(selectorManager.strings.tutoriel.GetLocalizedString().Result, UIHelper.BLUE);
+        popup.AddReplacement("999999.999%", UIHelper.SurroundWithColor("999999.999%", UIHelper.GREEN));
         RunPopup(
-            title: "Tutoriel() recommandé !", 
-            text: $"Tentative de passer le {tutoriel} détectée !\n" +
-            $"Nos Datas indiquent que réaliser le {tutoriel} augmente les chances de succès de {UIHelper.SurroundWithColor("999999.999%", UIHelper.GREEN)}.\n" + 
-            $"Synthèse : {tutoriel} fortement recommendé.",
-            theme: TexteExplicatif.Theme.NEUTRAL);
+            title: selectorManager.strings.tutorielRecommandeTitre.GetLocalizedString().Result,
+            text: selectorManager.strings.tutorielRecommandeTexte.GetLocalizedString(tutoriel).Result,
+            theme: TexteExplicatif.Theme.NEUTRAL,
+            cleanReplacements: false);
         PlayerPrefs.SetString(HAVE_THINK_ABOUT_TUTORIAL_KEY, MenuManager.TRUE);
     }
 
