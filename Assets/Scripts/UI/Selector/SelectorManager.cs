@@ -41,7 +41,6 @@ public class SelectorManager : MonoBehaviour {
     }
 
     public IEnumerator Start() {
-        yield return LocalizationSettings.InitializationOperation;
         fadingObjects = new Dictionary<GameObject, Coroutine>();
         GatherPaths();
         GatherLevels();
@@ -49,6 +48,9 @@ public class SelectorManager : MonoBehaviour {
         background.gameObject.SetActive(false);
         SetCurrentLevelBasedOnLastSavedLevel();
         PlaceCameraInFrontOfCurrentLevel();
+        if (!LocalizationSettings.InitializationOperation.IsDone) {
+            yield return LocalizationSettings.InitializationOperation;
+        }
         DisplayCurrentLevel();
         CleanLastSavedLevel();
         DisplayIntroductionText();

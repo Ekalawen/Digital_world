@@ -56,6 +56,8 @@ public class SelectorPath : MonoBehaviour {
     }
 
     public void Update() {
+        if (selectorManager == null) // We don't want to update before being initialized !
+            return;
         LinkPathPoints();
         CloseIfEscape();
     }
