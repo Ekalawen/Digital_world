@@ -29,11 +29,11 @@ public class LumiereFurtiveTrapApplier : MonoBehaviour {
         float firstWaitingTime = 2.0f;
         gm.timerManager.isInfinitTime = false;
         gm.timerManager.SetTime(gm.timerManager.initialTime, showVolatileText: false);
-        gm.console.AjouterMessageImportant("Attends ...", Console.TypeText.ALLY_TEXT, firstWaitingTime);
+        gm.console.AjouterMessageImportant(gm.console.strings.analyzeTrapWait, Console.TypeText.ALLY_TEXT, firstWaitingTime);
         yield return new WaitForSeconds(firstWaitingTime);
         yield return null;
         float secondWaitingTime = 2.0f;
-        gm.console.AjouterMessageImportant("Où est la sortie ??", Console.TypeText.ALLY_TEXT, secondWaitingTime);
+        gm.console.AjouterMessageImportant(gm.console.strings.analyzeTrapSortie, Console.TypeText.ALLY_TEXT, secondWaitingTime);
         yield return new WaitForSeconds(secondWaitingTime);
         yield return null;
         PopEnnemis();

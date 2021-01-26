@@ -158,8 +158,7 @@ public class Block : MonoBehaviour {
     }
 
     public void NotifyPlayerToPressShift() {
-        gm.console.AjouterMessageImportant("MAINTIENT SHIFT !", Console.TypeText.ALLY_TEXT, 2.0f, bAfficherInConsole: false);
-        gm.console.AjouterMessage("Maintient SHIFT pour te décrocher et glisser le long du mur !", Console.TypeText.ALLY_TEXT);
+        gm.console.NotifyPlayerToPressShift();
         shouldNotifyToPressShift = false;
     }
 }

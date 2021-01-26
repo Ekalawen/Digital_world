@@ -3,6 +3,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Localization;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class JumpEvent : RandomEvent {
 
@@ -81,12 +83,15 @@ public class JumpEvent : RandomEvent {
         string precedantMessage = "";
         Timer timer = new Timer(delaisAvantJump);
         while(!timer.IsOver()) {
-            string message = "JUMP : " + TimerManager.TimerToClearerString(timer.GetRemainingTime());
-            gm.console.AjouterMessageImportant(message, Console.TypeText.ENNEMI_TEXT, dureeAttente, bAfficherInConsole: false, precedantMessage);
-            precedantMessage = message;
+            AsyncOperationHandle<string> messageHandle = gm.console.strings.jumpTimer.GetLocalizedString(new object[] { TimerManager.TimerToClearerString(timer.GetRemainingTime()) });
+            yield return messageHandle;
+            gm.console.AjouterMessageImportant(messageHandle.Result, Console.TypeText.ENNEMI_TEXT, dureeAttente, bAfficherInConsole: false, precedantMessage);
+            precedantMessage = messageHandle.Result;
             yield return null;
         }
-        gm.console.AjouterMessageImportant("JUMP !", Console.TypeText.ENNEMI_TEXT, dureeAttente, bAfficherInConsole: false, precedantMessage);
+        AsyncOperationHandle<string> messageFinalHandle = gm.console.strings.jumpActivation.GetLocalizedString();
+        yield return messageFinalHandle;
+        gm.console.AjouterMessageImportant(messageFinalHandle.Result, Console.TypeText.ENNEMI_TEXT, dureeAttente, bAfficherInConsole: false, precedantMessage);
     }
 
     public override void StopEvent() {

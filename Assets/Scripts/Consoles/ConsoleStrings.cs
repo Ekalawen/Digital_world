@@ -84,4 +84,12 @@ public class ConsoleStrings : ScriptableObject {
     public LocalizedString jumpStunImportant;
     public LocalizedString jumpStunConsole;
     public LocalizedString jumpActivation;
+    public LocalizedString detecte;
+    public LocalizedString dissimule;
+    public LocalizedString jumpTimer;
+    public LocalizedString pressShiftImportant;
+    public LocalizedString pressShiftConsole;
+    public LocalizedString analyzeTrapWait;
+    public LocalizedString analyzeTrapSortie;
+    public LocalizedString lumiereProtectionHacked;
 }

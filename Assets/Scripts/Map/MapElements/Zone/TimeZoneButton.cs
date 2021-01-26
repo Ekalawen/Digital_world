@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Localization;
 
 public class TimeZoneButton : IZone {
 
@@ -47,8 +48,9 @@ public class TimeZoneButton : IZone {
         }
 
         if (!gm.eventManager.IsGameOver()) {
-            currentMessage = "Hacké !";
-            gm.console.AjouterMessageImportant(currentMessage,
+            var hackedHandle = gm.console.strings.lumiereProtectionHacked.GetLocalizedString();
+            yield return hackedHandle;
+            gm.console.AjouterMessageImportant(hackedHandle.Result,
                 Console.TypeText.BASIC_TEXT,
                 1.0f,
                 bAfficherInConsole: true,
