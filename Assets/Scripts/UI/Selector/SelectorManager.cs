@@ -27,6 +27,7 @@ public class SelectorManager : MonoBehaviour {
     public SelectorPathUnlockScreen unlockScreen;
     public TexteExplicatif popup;
     public SelectorManagerStrings strings;
+    public SelectorLevelRunIntroduction introductionRunner;
 
     [Header("Parameters")]
     public float dureeFading = 0.5f;
@@ -374,8 +375,7 @@ public class SelectorManager : MonoBehaviour {
     protected void DisplayIntroductionText() {
         if (!PlayerPrefs.HasKey(FIRST_TIME_SELECTOR_OPENED_KEY)) {
             MenuLevel firstLevel = levels[0].menuLevel;
-            SelectorLevelRunIntroduction introductionRunner = firstLevel.gameObject.GetComponent<SelectorLevelRunIntroduction>();
-            introductionRunner.RunIntroduction(forcePrint: true);
+            introductionRunner.RunIntroduction();
             PlayerPrefs.SetString(FIRST_TIME_SELECTOR_OPENED_KEY, MenuManager.TRUE);
         }
     }

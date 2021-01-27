@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3396177535230050442}
   - component: {fileID: 3396177535230050443}
+  - component: {fileID: 8504838730164283862}
   m_Layer: 0
   m_Name: SelectorManager
   m_TagString: Untagged
@@ -51,4 +52,29 @@ MonoBehaviour:
   unlockScreen: {fileID: 0}
   popup: {fileID: 0}
   strings: {fileID: 11400000, guid: 1c8a1cf84d4de594eb307436248cbfa8, type: 2}
+  introductionRunner: {fileID: 8504838730164283862}
   dureeFading: 0.5
+--- !u!114 &8504838730164283862
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3396177535230050445}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52a5d8ec72d426c4eae53675a96ff674, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  introductionTitle:
+    m_TableReference:
+      m_TableCollectionName: GUID:4d654f7d0e6545a418a8dccbb9789ba4
+    m_TableEntryReference:
+      m_KeyId: 270155354710016
+      m_Key: 
+  introductionTextAsset:
+    m_TableReference:
+      m_TableCollectionName: GUID:05188c1b11f1cbd4591254b063908835
+    m_TableEntryReference:
+      m_KeyId: 360495423488
+      m_Key: 

@@ -6,21 +6,15 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class SelectorLevelRunIntroduction : MonoBehaviour {
 
-    public SelectorLevel selectorLevel;
     public LocalizedString introductionTitle;
     public LocalizedTextAsset introductionTextAsset;
 
-    public void RunIntroduction(bool forcePrint = false)
-    {
-        SelectorManager selectorManager = SelectorManager.Instance;
-        if (!forcePrint && (!selectorManager.HasThisSelectorLevelOpen(selectorLevel) || selectorManager.PopupIsEnabled()))
-        {
-            return;
-        }
-        StartCoroutine(RunInitializationPopup(selectorManager));
+    public void RunIntroduction() {
+        StartCoroutine(RunInitializationPopup());
     }
 
-    protected IEnumerator RunInitializationPopup(SelectorManager selectorManager) {
+    protected IEnumerator RunInitializationPopup() {
+        SelectorManager selectorManager = SelectorManager.Instance;
         AsyncOperationHandle<TextAsset> handleTexte = introductionTextAsset.LoadAssetAsync();
         yield return handleTexte;
         selectorManager.popup.Initialize(

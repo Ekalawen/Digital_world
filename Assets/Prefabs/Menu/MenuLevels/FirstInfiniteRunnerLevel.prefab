@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52a5d8ec72d426c4eae53675a96ff674, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectorLevel: {fileID: 0}
   introductionTitle:
     m_TableReference:
       m_TableCollectionName: GUID:4d654f7d0e6545a418a8dccbb9789ba4
@@ -366,6 +365,18 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1102100159028148201}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &9123583758460351095 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8202754042922485150, guid: 2552e1b8881a0d44ab3f3fc7850edf17,
+    type: 3}
+  m_PrefabInstance: {fileID: 1102100159028148201}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9123583758460351089}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccf0705c23ac93e4c8ed60a553363616, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &1985111446004448799 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1497440377134516726, guid: 2552e1b8881a0d44ab3f3fc7850edf17,
@@ -568,13 +579,13 @@ PrefabInstance:
     - target: {fileID: 6408735524314510494, guid: df108c3e51959b046aaa9a02ab191c65,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6408735524314510494, guid: df108c3e51959b046aaa9a02ab191c65,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 7112064749957928733}
+      objectReference: {fileID: 9123583758460351095}
     - target: {fileID: 6408735524314510494, guid: df108c3e51959b046aaa9a02ab191c65,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
@@ -707,7 +718,7 @@ PrefabInstance:
     - target: {fileID: 7126880526820848706, guid: 15bc17ce10363aa40b4772a21e53aba4,
         type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7126880526820848706, guid: 15bc17ce10363aa40b4772a21e53aba4,
         type: 3}

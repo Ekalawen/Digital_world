@@ -43,13 +43,9 @@ public class MenuLevel : MonoBehaviour {
     public GameObject joueurPrefab;
     public GameObject consolePrefab;
 
-    [Header("Textes Explicatifs")]
+    [Header("Archives")]
     public TexteExplicatif texteArchives;
     public bool displayArchivesOnUnlock = false;
-    public TexteExplicatif texteExplicatifPasswdError;
-    public TexteExplicatif texteExplicatifDonneesHackes;
-    public TexteExplicatif texteExplicatifDonneesHackesSuccess;
-    public TexteExplicatif texteExplicatifIntroduction;
 
     [Header("Scores")]
     public GameObject scoresRegular;
@@ -376,21 +372,6 @@ public class MenuLevel : MonoBehaviour {
     }
 
     protected void InitTextesExplicatifs() {
-        string rootPath = "Assets/Texts/Levels/" + levelFolderName + "/";
-        texteArchives.SetRootPath(rootPath);
-        texteExplicatifPasswdError.SetRootPath(rootPath);
-        texteExplicatifDonneesHackes.SetRootPath(rootPath);
-        texteExplicatifDonneesHackesSuccess.SetRootPath(rootPath);
-        if(texteExplicatifIntroduction != null)
-            texteExplicatifIntroduction.SetRootPath(rootPath);
-
-        MatchEvaluator blueSurrounder = new MatchEvaluator(SurroundWithBlueColor);
-        texteExplicatifDonneesHackesSuccess.AddReplacement("%Trace%", GetTrace());
-        texteExplicatifDonneesHackesSuccess.AddReplacement("%Passe%", nextPassword);
-        texteExplicatifDonneesHackesSuccess.AddReplacementEvaluator(@"Passes?", blueSurrounder);
-        texteExplicatifDonneesHackesSuccess.AddReplacementEvaluator(@"Traces?", blueSurrounder);
-        // L'ajout des next palliers se fait dans la fonction AddNextPallierMessageToAllFragments()
-
         texteArchives.AddReplacement("CRINM", UIHelper.SurroundWithColor("CRINM", UIHelper.BLUE));
         texteArchives.AddReplacement("H@ckers", UIHelper.SurroundWithColor("H@ckers", UIHelper.BLUE));
         texteArchives.AddReplacement("[Cilliannelle Crittefigiée]", UIHelper.SurroundWithColor("[Cilliannelle Crittefigiée]", UIHelper.PURE_GREEN));
@@ -487,5 +468,15 @@ public class MenuLevel : MonoBehaviour {
     protected void MakeBouncePlayButton() {
         SelectorLevel level = selectorManager.GetLevelFromMenuLevel(this);
         playButton.GetComponent<ButtonHighlighter>().enabled = level.IsHighlighted();
+    }
+
+    public void RunIntroduction() {
+        SelectorLevel selectorLevel = selectorManager.GetLevelFromMenuLevel(this);
+        if (selectorManager.HasThisSelectorLevelOpen(selectorLevel) && !selectorManager.PopupIsEnabled()) {
+            SelectorLevelRunIntroduction introductionRunner = GetComponent<SelectorLevelRunIntroduction>();
+            if(introductionRunner != null) {
+                introductionRunner.RunIntroduction();
+            }
+        }
     }
 }
