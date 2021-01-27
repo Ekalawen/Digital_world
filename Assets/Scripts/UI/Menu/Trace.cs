@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Localization.Settings;
 
 public class LevenshteinDifferences {
     public int nbSuppressions = 0;
@@ -65,13 +66,17 @@ public class Trace {
         return IsWellFormatedTrace(trace) && IsWellFormatedPasse(passe);
     }
 
+    protected static string GetStringForLocalizedStringReference(string reference, params object[] arguments) {
+        return LocalizationSettings.StringDatabase.GetLocalizedStringAsync("PasswordAdvices", reference, arguments).Result;
+    }
+
     public static string GetPasswordAdvice(string password, string truePassword) {
         if (password.Length < 4)
-            return "Un password a toujours au moins 4 caractères.";
+            return GetStringForLocalizedStringReference("AuMoins4Caracteres");
         string trace = password.Substring(0, 4);
         string passe = password.Substring(4, password.Length - 4);
         if(HasSwapTraceAndPasse(password, truePassword)) {
-            return "La Trace est toujours avant le Passe.";
+            return GetStringForLocalizedStringReference("TraceAvantPasse");
         }
         if(!IsWellFormatedTrace(trace)) {
             return GetTraceAdvice(trace);
@@ -97,10 +102,10 @@ public class Trace {
         bool noWhiteSpace = !passe.Any(c => Char.IsWhiteSpace(c));
         bool noUppercase = passe.ToLower() == passe;
         if(!noWhiteSpace) {
-            return "Un Passe ne doit pas contenir d'espaces ou de caractères blancs.";
+            return GetStringForLocalizedStringReference("PassePasDEspaces");
         }
         if(!noUppercase) {
-            return "Un Passe ne doit pas contenir de lettres majuscules.";
+            return GetStringForLocalizedStringReference("PassePasDeMajuscules");
         }
         return null;
     }
@@ -113,19 +118,18 @@ public class Trace {
 
     public static string GetTraceAdvice(string trace) {
         if (trace.Length != 4)
-            return "Une Trace contient toujours exactement 4 caractères.";
+            return GetStringForLocalizedStringReference("Trace4Caracteres");
         if(!IsBit(trace[0])) {
-            return "Le premier caractère de la Trace doit être soit '0', soit '1'.";
+            return GetStringForLocalizedStringReference("TracePremierCaractere");
         }
         if(!IsBit(trace[1])) {
-            return "Le deuxième caractère de la Trace doit être soit '0', soit '1'.";
+            return GetStringForLocalizedStringReference("TraceDeuxiemeCaractere");
         }
-        string hexadecimalValues = $"[{String.Join(", ", GetHexadecimalPossibilities())}]";
         if(!IsHexadecimal(trace[2])) {
-            return $"Le troisième caractère de la Trace doit être contenu dans {hexadecimalValues}.";
+            return GetStringForLocalizedStringReference("TraceTroisiemeCaractere");
         }
         if(!IsHexadecimal(trace[3])) {
-            return $"Le quatrième caractère de la Trace doit être contenu dans {hexadecimalValues}.";
+            return GetStringForLocalizedStringReference("TraceQuatriemeCaractere");
         }
         return null;
     }
@@ -146,23 +150,15 @@ public class Trace {
         bool goodTrace = trace == trueTrace;
         bool goodPasse = passe == truePasse;
         if (!goodTrace) {
-            return "Ce n'est pas la bonne Trace.";
+            return GetStringForLocalizedStringReference("MauvaiseTrace");
         }
         int[,] levenshteinMatrice = GetLevenshteinMatrice(passe, truePasse);
         if (GetDistanceDeLevenshtein(passe, truePasse, levenshteinMatrice) <= 4) {
             LevenshteinDifferences differences = GetDifferencesDeLevenshtein(passe, truePasse, levenshteinMatrice);
-            string remplacementsS = differences.nbRemplacements > 1 ? "s" : "";
-            string remplacements = differences.nbRemplacements > 0 ? $"{differences.nbRemplacements} remplacement{remplacementsS}" : "";
-            string virgule1 = remplacements != "" ? (differences.nbAjouts > 0 && differences.nbSuppressions > 0 ? ", " : (differences.nbAjouts == 0 || differences.nbSuppressions == 0 ? " et " : "")) : "";
-            string ajoutsS = differences.nbAjouts > 1 ? "s" : "";
-            string ajouts = differences.nbAjouts > 0 ? $"{differences.nbAjouts} ajout{ajoutsS}" : "";
-            string virgule2 = remplacements != "" && ajouts != "" && differences.nbSuppressions > 0 ? " et " : "";
-            string suppressionsS = differences.nbSuppressions > 1 ? "s" : "";
-            string suppressions = differences.nbSuppressions > 0 ? $"{differences.nbSuppressions} suppression{suppressionsS}" : "";
             Debug.Log($"{differences.nbRemplacements} {differences.nbAjouts} {differences.nbSuppressions}");
-            return $"Presque ! Il vous faut faire {remplacements}{virgule1}{ajouts}{virgule2}{suppressions} dans votre Passe pour arriver au bon Passe.";
+            return GetStringForLocalizedStringReference("PasseLevenshtein", differences.nbAjouts, differences.nbSuppressions, differences.nbRemplacements);
         }
-        return "Ce n'est pas le bon Passe.";
+        return GetStringForLocalizedStringReference("MauvaisPasse");
     }
 
     public static int[,] GetLevenshteinMatrice(string passe, string truePasse) {
