@@ -17,7 +17,7 @@ public class SelectorManagerStrings : ScriptableObject {
     public LocalizedString blocs;
     public LocalizedString victoires;
 
-    public LocalizedString dataHackeesTitle;
+    public LocalizedString dataHackees;
     public LocalizedString dataHackeesJamaisHackeesTexte;
 
     public LocalizedString palierTotalTexte;
@@ -45,4 +45,8 @@ public class SelectorManagerStrings : ScriptableObject {
     public LocalizedString tutorielRecommandeTitre;
     public LocalizedString tutorielRecommandeTexte;
 
+    public LocalizedString passe;
+    public LocalizedString passes;
+    public LocalizedString trace;
+    public LocalizedString traces;
 }

@@ -121,7 +121,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         string advice = GetPasswordAdvice(registeredPassword, goodPassword);
         LocalizedString texte = selectorManager.strings.pathFalseLockedTexte;
         texte.Arguments = new object[] { advice };
-        string dataHackeesString = selectorManager.strings.dataHackeesTitle.GetLocalizedString().Result;
+        string dataHackeesString = selectorManager.strings.dataHackees.GetLocalizedString().Result;
         selectorManager.popup.AddReplacement(dataHackeesString, UIHelper.SurroundWithColor(dataHackeesString, UIHelper.ORANGE));
         selectorManager.RunPopup(selectorManager.strings.pathFalseLockedTitle, texte, TexteExplicatif.Theme.NEGATIF, cleanReplacements: false);
     }
@@ -175,7 +175,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
 
     protected void OpenDonneesHackeesWithTreshold(int treshold) {
         selectorManager.popup.Initialize(
-            title: selectorManager.strings.dataHackeesTitle.GetLocalizedString().Result,
+            title: selectorManager.strings.dataHackees.GetLocalizedString().Result,
             useTextAsset: true,
             textAsset: selectorPath.GetDataHackeesTextAsset(),
             theme: TexteExplicatif.Theme.NEUTRAL);
@@ -190,7 +190,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         LocalizedString texte = selectorManager.strings.dataHackeesJamaisHackeesTexte;
         texte.Arguments = new object[] { unite };
         selectorManager.RunPopup(
-            title: selectorManager.strings.dataHackeesTitle,
+            title: selectorManager.strings.dataHackees,
             text: texte,
             theme: TexteExplicatif.Theme.NEUTRAL);
     }
@@ -200,9 +200,14 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         popup.AddReplacement("%Passe%", UIHelper.SurroundWithColor(selectorPath.GetPasse(), UIHelper.PURE_GREEN));
         MatchEvaluator blueSurrounder = new MatchEvaluator(TexteExplicatif.SurroundWithBlueColor);
         MatchEvaluator orangeSurrounder = new MatchEvaluator(TexteExplicatif.SurroundWithOrangeColor);
-        popup.AddReplacementEvaluator(@"Passes?", blueSurrounder);
-        popup.AddReplacementEvaluator(@"Traces?", blueSurrounder);
-        popup.AddReplacementEvaluator(@"Data Hack[ée]es\(?\)?", orangeSurrounder);
+        string passe = selectorManager.strings.passe.GetLocalizedString().Result;
+        string passes = selectorManager.strings.passes.GetLocalizedString().Result;
+        string trace = selectorManager.strings.trace.GetLocalizedString().Result;
+        string traces = selectorManager.strings.traces.GetLocalizedString().Result;
+        string dataHackees = selectorManager.strings.dataHackees.GetLocalizedString().Result;
+        popup.AddReplacementEvaluator($@"({passes}|{passe})", blueSurrounder);
+        popup.AddReplacementEvaluator($@"({traces}|{trace})", blueSurrounder);
+        popup.AddReplacementEvaluator($@"{dataHackees}", orangeSurrounder);
     }
 
     protected void AddNextPallierMessage(TexteExplicatif texteExplicatif, int currentTreshold) {

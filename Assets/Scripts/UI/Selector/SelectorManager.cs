@@ -209,7 +209,7 @@ public class SelectorManager : MonoBehaviour {
         if(IsLevelAccessible(selectorLevel)) {
             DisplayLevel(selectorLevel, instantDisplay);
         } else {
-            string dataHackeesTitre = strings.dataHackeesTitle.GetLocalizedString().Result;
+            string dataHackeesTitre = strings.dataHackees.GetLocalizedString().Result;
             popup.AddReplacement(dataHackeesTitre, UIHelper.SurroundWithColor(dataHackeesTitre, UIHelper.ORANGE));
             RunPopup(strings.niveauVerouilleTitre.GetLocalizedString().Result,
                 strings.niveauVerouilleTotalTexte.GetLocalizedString(GetNiveauxManquantToLevelString(selectorLevel)).Result,

@@ -169,7 +169,7 @@ public class SelectorLevel : MonoBehaviour {
             congrats += '\n';
         }
 
-        string dataHackeesString = selectorManager.strings.dataHackeesTitle.GetLocalizedString().Result;
+        string dataHackeesString = selectorManager.strings.dataHackees.GetLocalizedString().Result;
         selectorManager.popup.AddReplacement(dataHackeesString, UIHelper.SurroundWithColor(dataHackeesString, UIHelper.ORANGE));
         selectorManager.RunPopup(
             selectorManager.strings.palierDebloqueTitre.GetLocalizedString().Result,
