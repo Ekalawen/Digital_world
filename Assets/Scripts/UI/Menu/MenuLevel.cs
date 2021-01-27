@@ -7,6 +7,7 @@ using UnityEngine.UI;
 using TMPro;
 using System.Linq;
 using UnityEngine.Localization;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class MenuLevel : MonoBehaviour {
 
@@ -45,7 +46,8 @@ public class MenuLevel : MonoBehaviour {
     public GameObject consolePrefab;
 
     [Header("Archives")]
-    public TexteExplicatif texteArchives;
+    public TexteExplicatif texteArchivesLink;
+    public LocalizedTextAsset archivesTextAsset;
     public bool displayArchivesOnUnlock = false;
 
     [Header("Scores")]
@@ -175,7 +177,7 @@ public class MenuLevel : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return))
             Next();
         else
-            texteArchives.EnableHotkeysNextFrame();
+            texteArchivesLink.EnableHotkeysNextFrame();
     }
 
     public void Previous() {
@@ -191,7 +193,7 @@ public class MenuLevel : MonoBehaviour {
     public void OpenArchives() {
         if (selectorManager != null && !selectorManager.HasSelectorLevelOpen())
             return;
-        texteArchives.Run(GetNbWins());
+        texteArchivesLink.Run(GetNbWins());
     }
 
     //public void OpenDonneesHackes() {
@@ -377,12 +379,20 @@ public class MenuLevel : MonoBehaviour {
         return UIHelper.SurroundWithColor(match.Value, UIHelper.BLUE);
     }
 
-    protected void InitTextesExplicatifs() {
-        texteArchives.AddReplacement("CRINM", UIHelper.SurroundWithColor("CRINM", UIHelper.BLUE));
-        texteArchives.AddReplacement("H@ckers", UIHelper.SurroundWithColor("H@ckers", UIHelper.BLUE));
-        texteArchives.AddReplacement("[Cilliannelle Crittefigiée]", UIHelper.SurroundWithColor("[Cilliannelle Crittefigiée]", UIHelper.PURE_GREEN));
-        texteArchives.AddReplacement("[Morgensoul*]", UIHelper.SurroundWithColor("[Morgensoul*]", UIHelper.CYAN));
-        texteArchives.AddReplacement("[V1P3R]", UIHelper.SurroundWithColor("[V1P3R]", UIHelper.CYAN));
+    protected void InitTextesExplicatifs()
+    {
+        StartCoroutine(CInitTextesExplicatifs());
+    }
+
+    protected IEnumerator CInitTextesExplicatifs() {
+        AsyncOperationHandle<TextAsset> handle = archivesTextAsset.LoadAssetAsync();
+        yield return handle;
+        texteArchivesLink.textAsset = handle.Result;
+        texteArchivesLink.AddReplacement("CRINM", UIHelper.SurroundWithColor("CRINM", UIHelper.BLUE));
+        texteArchivesLink.AddReplacement("H@ckers", UIHelper.SurroundWithColor("H@ckers", UIHelper.BLUE));
+        texteArchivesLink.AddReplacement("[Cilliannelle Crittefigiée]", UIHelper.SurroundWithColor("[Cilliannelle Crittefigiée]", UIHelper.PURE_GREEN));
+        texteArchivesLink.AddReplacement("[Morgensoul*]", UIHelper.SurroundWithColor("[Morgensoul*]", UIHelper.CYAN));
+        texteArchivesLink.AddReplacement("[V1P3R]", UIHelper.SurroundWithColor("[V1P3R]", UIHelper.CYAN));
     }
 
     public bool HasJustWin() {
