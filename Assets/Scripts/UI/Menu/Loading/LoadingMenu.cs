@@ -16,6 +16,7 @@ public class LoadingMenu : MonoBehaviour {
     public PouvoirDisplay pouvoirE;
     public PouvoirDisplay pouvoirLeftClick;
     public PouvoirDisplay pouvoirRightClick;
+    public LocalizedString tutorielInitialisationMatrice;
 
     protected AsyncOperation loading;
     protected MenuLevel level;
@@ -74,7 +75,7 @@ public class LoadingMenu : MonoBehaviour {
         if (level != null) {
             StartCoroutine(CInitConseil());
         } else { // Tutoriel !
-            conseilText.text = "Initialisation de la Matrice dans 3 ... 2 ... 1 ... 0 !";
+            conseilText.text = tutorielInitialisationMatrice.GetLocalizedString().Result;
         }
     }
 
