@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using System.Linq;
 using UnityEngine.Localization;
 using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.Localization.Settings;
 
 public struct TimerMessage {
     public TimedMessage message;
@@ -40,15 +41,11 @@ public class Console : MonoBehaviour {
 
     [Header("Text parameters")]
 	public Color basicColor; // La couleur avec laquelle on écrit la plupart du temps
-
     public Color ennemiColor; // La couleur des messages ennemis
-
     public Color allyColor; // La couleur des messages alliées
-	public string basicPrefix; // Le préfixe à mettre devant chaque message basic
-
-    public string ennemiPrefix; // Le préfixe à mettre devant chaque message ennemi
-
-    public string allyPrefix; // Le préfixe à mettre devant chaque message allié
+	public LocalizedString basicPrefixLocalizedString; // Le préfixe à mettre devant chaque message basic
+    public LocalizedString ennemiPrefixLocalizedString; // Le préfixe à mettre devant chaque message ennemi
+    public LocalizedString allyPrefixLocalizedString; // Le préfixe à mettre devant chaque message allié
 	public Font font; // La police de charactère des messages
 	public int tailleTexte; // La taille du texte affiché
 
@@ -78,30 +75,41 @@ public class Console : MonoBehaviour {
 	protected float tempsImportantText;
 	protected float timeLastLumiereAttrapee; // Le dernier temps auquel le joueur n'a pas attrapé d'Orbe
     protected bool playerIsFollowed = false; // C'est pas vrai, mais c'est pour que l'algo fonctionne ^^
-    protected Timer timerPhraseRandom;
     protected Timer timerConseiller;
     protected List<TimerMessage> timersMessages;
     protected Transform messagesFolder;
     protected Timer arrowKeysTimer;
+    protected string basicPrefix;
+    protected string ennemiPrefix;
+    protected string allyPrefix;
+    protected bool isLocalizationLoaded = false;
 
-    public virtual void Initialize() {
-		// Initialisation des variables
-		name = "Console";
+    public virtual void Initialize()
+    {
+        // Initialisation des variables
+        name = "Console";
         gm = GameManager.Instance;
         map = gm.map;
         messagesFolder = new GameObject("Messages").transform;
         messagesFolder.parent = transform;
-		lines = new List<GameObject> ();
-		numLines = new List<int> ();
+        lines = new List<GameObject>();
+        numLines = new List<int>();
         player = gm.player;
-		importantText.text = "";
+        importantText.text = "";
         eventManager = gm.eventManager;
         arrowKeysTimer = new Timer(2);
         arrowKeysTimer.SetOver();
 
-		// Les premiers messages
-		PremiersMessages();
-        timerPhraseRandom = new Timer(UnityEngine.Random.Range(tempsAvantPhraseRandom.x, tempsAvantPhraseRandom.y));
+        StartCoroutine(CInitialize());
+    }
+
+    private IEnumerator CInitialize() {
+        yield return LocalizationSettings.InitializationOperation;
+        isLocalizationLoaded = true;
+
+        // Les premiers messages
+        InitPrefixs();
+        PremiersMessages();
         timerConseiller = new Timer(UnityEngine.Random.Range(tempsAvantConseiller.x, tempsAvantConseiller.y));
 
         // Setup les timers des timedMessages
@@ -122,9 +130,11 @@ public class Console : MonoBehaviour {
         }
     }
 
-public virtual void Update () {
-        if(useAltitudeCritique)
-            AltitudeCritique();
+    public virtual void Update () {
+        if (!isLocalizationLoaded)
+            return;
+
+        AltitudeCritique();
 
         LancerConseils();
 
@@ -777,6 +787,8 @@ public virtual void Update () {
 
     // Si le joueur est trop haut, on l'informe !
     public virtual void AltitudeCritique() {
+        if (!useAltitudeCritique)
+            return;
 		// On regarde si le joueur n'est pas trop haut en altitude
 		if (player.transform.position.y > map.tailleMap.y + 3) {
 			AjouterMessage (strings.altitudeCritique, TypeText.BASIC_TEXT);
@@ -928,5 +940,11 @@ public virtual void Update () {
     public void NotifyPlayerToPressShift() {
         gm.console.AjouterMessageImportant(strings.pressShiftImportant, Console.TypeText.ALLY_TEXT, 2.0f, bAfficherInConsole: false);
         gm.console.AjouterMessage(strings.pressShiftConsole, Console.TypeText.ALLY_TEXT);
+    }
+
+    protected void InitPrefixs() {
+        basicPrefix = basicPrefixLocalizedString.GetLocalizedString().Result;
+        ennemiPrefix = ennemiPrefixLocalizedString.GetLocalizedString().Result;
+        allyPrefix = allyPrefixLocalizedString.GetLocalizedString().Result;
     }
 }

@@ -500,7 +500,6 @@ public class EventManager : MonoBehaviour {
 
     protected string GetKeyFor(string keySuffix) {
         string levelNameKey = SceneManager.GetActiveScene().name;
-        Debug.Log($"levelnameKey = {levelNameKey}");
         return levelNameKey + keySuffix;
     }
 
