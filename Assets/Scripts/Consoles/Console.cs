@@ -22,6 +22,7 @@ public class Console : MonoBehaviour {
 	public enum TypeText {BASIC_TEXT, ENNEMI_TEXT, ALLY_TEXT};
 
     [Header("Messages")]
+    public LocalizedString levelVisualName;
     public List<LocalizedString> conseils; // Les conseils à dispenser au joueur !
     public List<TimedMessage> timedMessages;
     public ConsoleStrings strings;
@@ -142,7 +143,7 @@ public virtual void Update () {
     }
 
     public virtual void PremiersMessages() {
-        string levelName = PlayerPrefs.GetString(MenuLevel.LEVEL_NAME_KEY);
+        string levelName = levelVisualName.GetLocalizedString().Result;
         LocalizedString niveauString = strings.initialisationNiveau;
         niveauString.Arguments = new object[] { levelName };
         AjouterMessage(niveauString, TypeText.BASIC_TEXT, bUsePrefix: false);

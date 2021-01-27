@@ -21,7 +21,7 @@ public class SelectorLevelObjectCube : MonoBehaviour {
         selectorManager = SelectorManager.Instance;
         SetMaterial(focus: false);
         tooltipActivator.localizedMessage = cubeNiveauSmartString;
-        tooltipActivator.localizedMessage.Arguments = new object[] { selectorLevel.GetName() };
+        tooltipActivator.localizedMessage.Arguments = new object[] { selectorLevel.GetVisibleName() };
         GetComponent<AutoBouncer>().enabled = hightlighted;
     }
 

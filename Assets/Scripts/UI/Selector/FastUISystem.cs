@@ -46,7 +46,7 @@ public class FastUISystem : MonoBehaviour {
         this.path = path;
         this.level = GetLevel(path, directionType);
         this.fromType = fromType;
-        string levelName = level.GetName();
+        string levelName = level.GetVisibleName();
         ChoseGoodButtons(path);
         SetNameInRect(levelName);
         SetTooltips(levelName, directionType);

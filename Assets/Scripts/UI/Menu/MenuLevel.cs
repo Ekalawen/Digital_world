@@ -6,12 +6,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Linq;
+using UnityEngine.Localization;
 
 public class MenuLevel : MonoBehaviour {
 
     public enum LevelType { REGULAR, INFINITE };
 
-    public static string LEVEL_NAME_KEY = "levelNameKey";
+    //public static string LEVEL_NAME_ID_KEY = "levelNameIdKey";
     public static string CURRENT_INPUT_FIELD_KEY = "currentInputField";
     public static string NB_WINS_KEY = "nbVictoires";
     public static string NB_DEATHS_KEY = "nbTries";
@@ -29,7 +30,7 @@ public class MenuLevel : MonoBehaviour {
 
     [Header("Name")]
     public string levelSceneName;
-    public string levelFolderName;
+    public LocalizedString visibleName;
     public LevelType levelType;
 
     [Header("Background")]
@@ -88,12 +89,13 @@ public class MenuLevel : MonoBehaviour {
         //DisplayPopupUnlockLevel();
         //DisplayPopupUnlockNewTreshold();
 
-        string key = GetName() + CURRENT_INPUT_FIELD_KEY;
+        string key = GetNameId() + CURRENT_INPUT_FIELD_KEY;
         inputFieldNext.text = PlayerPrefs.GetString(key);
         UIHelper.FitTextHorizontaly(textLevelName.text, textLevelName);
 
         MakeBouncePlayButton();
         GenerateNextAndPreviousButtons();
+        SetLevelName();
     }
 
     protected void GenerateNextAndPreviousButtons() {
@@ -226,7 +228,7 @@ public class MenuLevel : MonoBehaviour {
 
     public void SaveNextInputField() {
         if (inputFieldNext.text == GetPassword() || inputFieldNext.text == SUPER_CHEATED_PASSWORD) {
-            string key = textLevelName.text + CURRENT_INPUT_FIELD_KEY;
+            string key = GetNameId() + CURRENT_INPUT_FIELD_KEY;
             PlayerPrefs.SetString(key, inputFieldNext.text);
         }
     }
@@ -259,17 +261,17 @@ public class MenuLevel : MonoBehaviour {
     }
 
     public int GetNbWins() {
-        string key = textLevelName.text + NB_WINS_KEY;
+        string key = GetNameId() + NB_WINS_KEY;
         return PlayerPrefs.HasKey(key) ? PlayerPrefs.GetInt(key) : 0;
     }
 
     public void SetNbWins(int nbWins) {
-        string key = textLevelName.text + NB_WINS_KEY;
+        string key = GetNameId() + NB_WINS_KEY;
         PlayerPrefs.SetInt(key, nbWins);
     }
 
     public int GetNbDeaths() {
-        string key = textLevelName.text + NB_DEATHS_KEY;
+        string key = GetNameId() + NB_DEATHS_KEY;
         return PlayerPrefs.HasKey(key) ? PlayerPrefs.GetInt(key) : 0;
     }
 
@@ -293,32 +295,32 @@ public class MenuLevel : MonoBehaviour {
     }
 
     public float GetSumOfAllTriesScores() {
-        string key = textLevelName.text + SUM_OF_ALL_TRIES_SCORES_KEY;
+        string key = GetNameId() + SUM_OF_ALL_TRIES_SCORES_KEY;
         return PlayerPrefs.HasKey(key) ? PlayerPrefs.GetFloat(key) : 0;
     }
 
     public bool HasBestScore() {
-        string key = textLevelName.text + BEST_SCORE_KEY;
+        string key = GetNameId() + BEST_SCORE_KEY;
         return PlayerPrefs.HasKey(key);
     }
 
     public float GetBestScore() {
-        string key = textLevelName.text + BEST_SCORE_KEY;
+        string key = GetNameId() + BEST_SCORE_KEY;
         return PlayerPrefs.HasKey(key) ? PlayerPrefs.GetFloat(key) : 0.0f;
     }
 
     public void SetBestScore(float bestScore) {
-        string key = textLevelName.text + BEST_SCORE_KEY;
+        string key = GetNameId() + BEST_SCORE_KEY;
         PlayerPrefs.SetFloat(key, bestScore);
     }
 
     public float GetPrecedentBestScore() {
-        string key = textLevelName.text + PRECEDENT_BEST_SCORE_KEY;
+        string key = GetNameId() + PRECEDENT_BEST_SCORE_KEY;
         return PlayerPrefs.HasKey(key) ? PlayerPrefs.GetFloat(key) : 0.0f;
     }
 
     public void SetPrecedentBestScore(float precedentScore) {
-        string key = textLevelName.text + PRECEDENT_BEST_SCORE_KEY;
+        string key = GetNameId() + PRECEDENT_BEST_SCORE_KEY;
         PlayerPrefs.SetFloat(key, precedentScore);
     }
 
@@ -330,7 +332,7 @@ public class MenuLevel : MonoBehaviour {
     }
 
     public int GetSinceLastBestScore() {
-        string key = textLevelName.text + SINCE_LAST_BEST_SCORE_KEY;
+        string key = GetNameId() + SINCE_LAST_BEST_SCORE_KEY;
         return PlayerPrefs.HasKey(key) ? PlayerPrefs.GetInt(key) : 0;
     }
 
@@ -341,7 +343,7 @@ public class MenuLevel : MonoBehaviour {
     }
 
     public string GetTrace() {
-        string key = textLevelName.text + TRACE_KEY;
+        string key = GetNameId() + TRACE_KEY;
         if (!PlayerPrefs.HasKey(key))
             InitTrace();
         return PlayerPrefs.GetString(key);
@@ -351,12 +353,16 @@ public class MenuLevel : MonoBehaviour {
         string trace = Trace.GenerateTrace();
         print(trace);
 
-        string key = textLevelName.text + TRACE_KEY;
+        string key = GetNameId() + TRACE_KEY;
         PlayerPrefs.SetString(key, trace);
     }
 
-    public string GetName() {
-        return textLevelName.text;
+    public string GetNameId() {
+        return levelSceneName;
+    }
+
+    public string GetVisibleName() {
+        return visibleName.GetLocalizedString().Result;
     }
 
     public string GetPasse() {
@@ -380,22 +386,22 @@ public class MenuLevel : MonoBehaviour {
     }
 
     public bool HasJustWin() {
-        string key = GetName() + HAS_JUST_WIN_KEY;
+        string key = GetNameId() + HAS_JUST_WIN_KEY;
         return PlayerPrefs.HasKey(key) && PlayerPrefs.GetString(key) == MenuManager.TRUE;
     }
 
     public void SetNotJustWin() {
-        string key = GetName() + HAS_JUST_WIN_KEY;
+        string key = GetNameId() + HAS_JUST_WIN_KEY;
         PlayerPrefs.DeleteKey(key);
     }
 
     public bool HasJustMakeNewBestScore() {
-        string key = GetName() + HAS_JUST_MAKE_BEST_SCORE_KEY;
+        string key = GetNameId() + HAS_JUST_MAKE_BEST_SCORE_KEY;
         return PlayerPrefs.HasKey(key) && PlayerPrefs.GetString(key) == MenuManager.TRUE;
     }
 
     public void SetNotJustMakeNewBestScore() {
-        string key = GetName() + HAS_JUST_MAKE_BEST_SCORE_KEY;
+        string key = GetNameId() + HAS_JUST_MAKE_BEST_SCORE_KEY;
         PlayerPrefs.DeleteKey(key);
     }
 
@@ -429,12 +435,12 @@ public class MenuLevel : MonoBehaviour {
     //}
 
     public bool HasAlreadyDiscoverLevel() {
-        string key = GetName() + HAS_ALREADY_DISCOVER_LEVEL_KEY;
+        string key = GetNameId() + HAS_ALREADY_DISCOVER_LEVEL_KEY;
         return PlayerPrefs.HasKey(key) && PlayerPrefs.GetString(key) == "True";
     }
 
     public void SetAlreadyDiscoverLevel() {
-        string key = GetName() + HAS_ALREADY_DISCOVER_LEVEL_KEY;
+        string key = GetNameId() + HAS_ALREADY_DISCOVER_LEVEL_KEY;
         PlayerPrefs.SetString(key, "True");
     }
 
@@ -454,13 +460,13 @@ public class MenuLevel : MonoBehaviour {
     }
 
     public void HighlightBackButton(bool state) {
-        string key = GetName() + IS_LEVEL_HIGHLIGHTED_KEY;
+        string key = GetNameId() + IS_LEVEL_HIGHLIGHTED_KEY;
         PlayerPrefs.SetString(key, state ? MenuManager.TRUE : MenuManager.FALSE);
         backButton.GetComponent<ButtonHighlighter>().enabled = state;
     }
 
     public void HighlightBackButtonBasedOnSave() {
-        string key = GetName() + IS_LEVEL_HIGHLIGHTED_KEY;
+        string key = GetNameId() + IS_LEVEL_HIGHLIGHTED_KEY;
         bool state = PlayerPrefs.HasKey(key) && PlayerPrefs.GetString(key) == MenuManager.TRUE;
         backButton.GetComponent<ButtonHighlighter>().enabled = state;
     }
@@ -478,5 +484,9 @@ public class MenuLevel : MonoBehaviour {
                 introductionRunner.RunIntroduction();
             }
         }
+    }
+
+    protected void SetLevelName() {
+        textLevelName.text = GetVisibleName();
     }
 }

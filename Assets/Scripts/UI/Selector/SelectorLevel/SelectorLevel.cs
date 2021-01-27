@@ -31,8 +31,12 @@ public class SelectorLevel : MonoBehaviour {
     public void OnMouseExit() {
     }
 
-    public string GetName() {
-        return menuLevel.textLevelName.text;
+    public string GetVisibleName() {
+        return menuLevel.GetVisibleName();
+    }
+
+    public string GetNameId() {
+        return menuLevel.GetNameId();
     }
 
     public void OnMouseDown() {
@@ -49,8 +53,8 @@ public class SelectorLevel : MonoBehaviour {
     }
 
     protected void RewardIfNewBestScore() {
-        string keyHasBestScore = GetName() + MenuLevel.HAS_JUST_MAKE_BEST_SCORE_KEY;
-        string keyPrecedentBestScore = GetName() + MenuLevel.PRECEDENT_BEST_SCORE_KEY;
+        string keyHasBestScore = GetNameId() + MenuLevel.HAS_JUST_MAKE_BEST_SCORE_KEY;
+        string keyPrecedentBestScore = GetNameId() + MenuLevel.PRECEDENT_BEST_SCORE_KEY;
         if (PlayerPrefs.HasKey(keyHasBestScore)) {
             if (PlayerPrefs.GetFloat(keyPrecedentBestScore) > 0) {
                 RewardNewBestScore();
@@ -106,7 +110,7 @@ public class SelectorLevel : MonoBehaviour {
                 candidateTresholds.Sort();
                 if (candidateTresholds.Count > 0) {
                     foreach (int candidateTreshold in candidateTresholds) {
-                        nextLevels.Add(selectorPath.endLevel.GetName());
+                        nextLevels.Add(selectorPath.endLevel.GetVisibleName());
                         nextTresholds.Add(candidateTreshold);
                         selectorPath.HighlightPath(true);
                     }
@@ -129,7 +133,7 @@ public class SelectorLevel : MonoBehaviour {
             foreach (SelectorPath selectorPath in selectorManager.GetOutPaths(this)) {
                 List<int> tresholds = selectorPath.GetTresholds();
                 if (tresholds.Contains(nbWins)) {
-                    nextLevels.Add(selectorPath.endLevel.GetName());
+                    nextLevels.Add(selectorPath.endLevel.GetVisibleName());
                     selectorPath.HighlightPath(true);
                 }
             }
@@ -180,7 +184,7 @@ public class SelectorLevel : MonoBehaviour {
         if (!menuLevel.HasAlreadyDiscoverLevel()) {
             bool shouldCongrats = !menuLevel.displayArchivesOnUnlock;
             if (shouldCongrats) {
-                string levelString = UIHelper.SurroundWithColor(GetName(), UIHelper.BLUE);
+                string levelString = UIHelper.SurroundWithColor(GetVisibleName(), UIHelper.BLUE);
                 selectorManager.RunPopup(
                     title: selectorManager.strings.niveauDebloqueTitre.GetLocalizedString().Result,
                     text: selectorManager.strings.niveauDebloqueTexte.GetLocalizedString(levelString).Result,
@@ -208,22 +212,22 @@ public class SelectorLevel : MonoBehaviour {
             MenuLevel.IS_LEVEL_HIGHLIGHTED_KEY,
         };
         foreach(string keySuffix in keysSuffix) {
-            string key = GetName() + keySuffix;
+            string key = GetNameId() + keySuffix;
             PlayerPrefs.DeleteKey(key);
         }
-        Debug.Log($"Scores of level {GetName()} reset !");
+        Debug.Log($"Scores of level {GetNameId()} reset !");
     }
 
     public void SetScoresToMaxTreshold() {
         int maxTreshold = GetMaxTreshold();
         if(menuLevel.levelType == MenuLevel.LevelType.REGULAR) {
             menuLevel.SetNbWins(maxTreshold);
-            Debug.Log($"{GetName()} a maintenant {maxTreshold} victoires !");
+            Debug.Log($"{GetNameId()} a maintenant {maxTreshold} victoires !");
         }
         if(menuLevel.levelType == MenuLevel.LevelType.INFINITE) {
             menuLevel.SetBestScore(maxTreshold);
             menuLevel.SetPrecedentBestScore(maxTreshold);
-            Debug.Log($"{GetName()} a maintenant un Meilleur Score de {maxTreshold} !");
+            Debug.Log($"{GetNameId()} a maintenant un Meilleur Score de {maxTreshold} !");
         }
     }
 

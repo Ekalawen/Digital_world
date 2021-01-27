@@ -499,7 +499,8 @@ public class EventManager : MonoBehaviour {
     }
 
     protected string GetKeyFor(string keySuffix) {
-        string levelNameKey = PlayerPrefs.GetString(MenuLevel.LEVEL_NAME_KEY);
+        string levelNameKey = SceneManager.GetActiveScene().name;
+        Debug.Log($"levelnameKey = {levelNameKey}");
         return levelNameKey + keySuffix;
     }
 

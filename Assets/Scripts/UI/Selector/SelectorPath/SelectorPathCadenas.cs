@@ -16,14 +16,16 @@ public class SelectorPathCadenas : MonoBehaviour {
     public Image cadenaClosed;
     public Image background;
     public Canvas canvas;
+    public SelectorPathCadenasCollider cadenaCollider;
 
     protected SelectorManager selectorManager;
 
-    public void Start() {
+    public void Initialize() {
         selectorManager = SelectorManager.Instance;
         DisplayGoodCadena();
         MakeCadenaLookAtCamera();
         RegisterCameraToCanvas();
+        cadenaCollider.Initialize();
     }
 
     protected void RegisterCameraToCanvas() {

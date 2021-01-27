@@ -87,7 +87,7 @@ public class MenuManager : MonoBehaviour {
     public void OnTutorialPress() {
 		Debug.Log("On a appuyé sur Tutoriel !");
         PlayerPrefs.SetString(HAVE_THINK_ABOUT_TUTORIAL_KEY, MenuManager.TRUE);
-        PlayerPrefs.SetString(MenuLevel.LEVEL_NAME_KEY, "Tutoriel");
+        //PlayerPrefs.SetString(MenuLevel.LEVEL_NAME_ID_KEY, "TutorialScene");
         menuLevelSelector.CleanLevelIndice();
 
 		//SceneManager.LoadScene("TutorialScene");

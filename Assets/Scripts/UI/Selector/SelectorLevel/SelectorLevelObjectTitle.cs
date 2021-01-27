@@ -18,8 +18,8 @@ public class SelectorLevelObjectTitle : MonoBehaviour {
     }
 
     protected void SetTitleToLevelName() {
-        text.text = objectLevel.level.menuLevel.textLevelName.text;
-        UIHelper.FitTextHorizontaly(objectLevel.level.menuLevel.textLevelName.text, text);
+        text.text = objectLevel.level.GetVisibleName();
+        UIHelper.FitTextHorizontaly(objectLevel.level.GetVisibleName(), text);
     }
 
     public void SetFocused() {

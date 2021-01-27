@@ -54,6 +54,8 @@ public class SelectorManager : MonoBehaviour {
         if (!LocalizationSettings.InitializationOperation.IsDone) {
             yield return LocalizationSettings.InitializationOperation;
         }
+        InitializePaths();
+        InitializeLevels();
         DisplayCurrentLevel();
         CleanLastSavedLevel();
         DisplayIntroductionText();
@@ -89,9 +91,14 @@ public class SelectorManager : MonoBehaviour {
         foreach(Transform child in pathsFolder) {
             SelectorPath path = child.gameObject.GetComponent<SelectorPath>();
             if (path != null) {
-                path.Initialize(unlockScreen);
                 paths.Add(path);
             }
+        }
+    }
+
+    protected void InitializePaths() {
+        foreach(SelectorPath path in paths) {
+            path.Initialize(unlockScreen);
         }
     }
 
@@ -100,12 +107,16 @@ public class SelectorManager : MonoBehaviour {
         foreach(Transform child in levelsFolder) {
             SelectorLevel level = child.gameObject.GetComponent<SelectorLevel>();
             if (level != null) {
-                level.Initialize(background);
                 levels.Add(level);
             }
         }
     }
 
+    protected void InitializeLevels() {
+        foreach(SelectorLevel level in levels) {
+            level.Initialize(background);
+        }
+    }
     public void Play(string levelSceneName) {
         if (!HasSelectorLevelOpen())
             return;
@@ -118,7 +129,7 @@ public class SelectorManager : MonoBehaviour {
         loading.allowSceneActivation = false;
         menuLevel.SetPlayStarted();
         SaveLastLevel();
-        PlayerPrefs.SetString(MenuLevel.LEVEL_NAME_KEY, menuLevel.GetName());
+        //PlayerPrefs.SetString(MenuLevel.LEVEL_NAME_ID_KEY, menuLevel.GetNameId());
 
         FadeOut(menuLevel.gameObject, dureeFading);
         FadeInLoadingMenu(loading, menuLevel);
@@ -211,7 +222,7 @@ public class SelectorManager : MonoBehaviour {
     }
 
     protected string GetNiveauxManquantToLevelString(SelectorLevel selectorLevel) {
-        List<string> levelsName = paths.FindAll(p => p.endLevel == selectorLevel && !p.IsUnlocked()).Select(p => p.startLevel.GetName()).ToList();
+        List<string> levelsName = paths.FindAll(p => p.endLevel == selectorLevel && !p.IsUnlocked()).Select(p => p.startLevel.GetVisibleName()).ToList();
         if(levelsName.Count == 1) {
             string name = UIHelper.SurroundWithColor(levelsName[0], UIHelper.BLUE);
             //return $"Il vous faut déverrouiller les Data Hackées() venant du niveau {name} !";

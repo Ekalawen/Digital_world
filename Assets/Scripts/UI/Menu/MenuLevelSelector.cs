@@ -57,7 +57,7 @@ public class MenuLevelSelector : MonoBehaviour {
     }
 
     public void SaveLevelName() {
-        string levelName = menuInitial.GetComponent<MenuLevel>().GetName();
+        string levelName = menuInitial.GetComponent<MenuLevel>().GetNameId();
         PlayerPrefs.SetString(SAVE_LEVEL_NAME_KEY, levelName);
         PlayerPrefs.Save();
     }
@@ -79,7 +79,7 @@ public class MenuLevelSelector : MonoBehaviour {
         loading.allowSceneActivation = false;
         menuLevel.SetPlayStarted();
         SaveLevelName();
-        PlayerPrefs.SetString(MenuLevel.LEVEL_NAME_KEY, menuLevel.GetName());
+        //PlayerPrefs.SetString(MenuLevel.LEVEL_NAME_ID_KEY, menuLevel.GetNameId());
 
         StartCoroutine(FadeOutMenuLevel(menuLevel.gameObject));
         StartCoroutine(FadeInLoadingMenu(loading, menuLevel));

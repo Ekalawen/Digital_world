@@ -12,11 +12,11 @@ public class SelectorPathCadenasCollider : MonoBehaviour {
     protected SelectorManager selectorManager;
     protected bool hasClickedDown = false;
 
-    public void Start() {
+    public void Initialize() {
         selectorManager = SelectorManager.Instance;
         //tooltipActivator.localizedMessage = $"Data Hackées() du niveau {cadenas.selectorPath.endLevel.GetName()}";
         tooltipActivator.localizedMessage = dataHackeesOfLevelString;
-        tooltipActivator.localizedMessage.Arguments = new object[] { cadenas.selectorPath.endLevel.GetName() };
+        tooltipActivator.localizedMessage.Arguments = new object[] { cadenas.selectorPath.endLevel.GetVisibleName() };
     }
 
     public void OnMouseEnter() {

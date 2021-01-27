@@ -43,6 +43,11 @@ public class SelectorPath : MonoBehaviour {
         this.unlockScreen = unlockScreen;
         trailTimer = new Timer(timeBetweenTrails);
         LinkAllPoints();
+        InitializeCadena();
+    }
+
+    protected void InitializeCadena() {
+        cadena.Initialize();
         SetCadenaPosition();
         HighlightCadena(GetHighlitedState());
     }
@@ -199,7 +204,7 @@ public class SelectorPath : MonoBehaviour {
     }
 
     public string GetName() {
-        return $"{startLevel.GetName()} ==> {endLevel.GetName()}";
+        return $"{startLevel.GetVisibleName()} ==> {endLevel.GetVisibleName()}";
     }
 
     public bool IsUnlocked() {
