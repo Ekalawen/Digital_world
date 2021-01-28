@@ -89,12 +89,29 @@ public class SelectorLevel : MonoBehaviour {
 
     private bool DisplayNewPallierMessage() {
         bool hasDisplay = false;
+        if(selectorManager.GetOutPaths(this).Count == 0) {
+            if(DisplayEndBetaMessage()) {
+                return true;
+            }
+        }
         if (menuLevel.levelType == MenuLevel.LevelType.REGULAR) {
             hasDisplay = DisplayNewPallierMessageRegular();
         } else {
             hasDisplay = DisplayNewPallierMessageInfinite();
         }
         return hasDisplay;
+    }
+
+    protected bool DisplayEndBetaMessage() {
+        if(menuLevel.HasJustWin()) {
+            selectorManager.RunPopup(
+                selectorManager.strings.endBetaTitre.GetLocalizedString().Result,
+                selectorManager.strings.endBetaTexte.LoadAssetAsync().Result.text,
+                theme: TexteExplicatif.Theme.POSITIF);
+            menuLevel.SetNotJustWin();
+            return true;
+        }
+        return false;
     }
 
     protected bool DisplayNewPallierMessageInfinite() {

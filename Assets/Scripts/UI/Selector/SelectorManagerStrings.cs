@@ -49,4 +49,7 @@ public class SelectorManagerStrings : ScriptableObject {
     public LocalizedString passes;
     public LocalizedString trace;
     public LocalizedString traces;
+
+    public LocalizedString endBetaTitre;
+    public LocalizedTextAsset endBetaTexte;
 }
