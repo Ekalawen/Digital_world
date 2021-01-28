@@ -11,6 +11,7 @@ public class PouvoirDash : IPouvoir {
         Vector3 direction = player.camera.transform.forward;
         Poussee poussee = new Poussee(direction, duree, distance);
         player.AddPoussee(poussee);
+        player.ResetGrip();
         return true;
     }
 }
