@@ -1,0 +1,107 @@
+Hey @everyone !! :) On est déjà à la version 0.5 dont voici le petit résumé ! Enjoy ! :)
+
+#Patch-notes Version 0.5 :
+
+Durant ce patch-notes, l'accent a été mis sur la Localisation du jeu, à savoir traduire le jeu en différentes langues, et notemment l'anglais. 
+Ca n'a pas été qu'un challenge linguistique mais surtout un challenge technique pour adapter la structure du code à pouvoir gérer facilement plusieurs langues à la fois.
+Et maintenant c'est fait ! On supporte le français et l'anglais et on peut rajouter autant de langues supplémentaires que l'on veut sans plus aucun autre soucis que la traduction ! <3
+J'ai également commencé à patcher tous les bugs ou incohérences que vous aviez trouvés et je continue sur cette voie-là ! Encore une fois c'est grâce à vos feedbacks, donc continuez comme ça ! ;)
+Oh ! J'ai failli oublié de vous dire : The NetRunner Awaken1ng participe en tant que jeu indépendant à l'Independant Games Festival (https://igf.com/) ! C'est notemment pour ça qu'on a mis un boost sur la Localisation ;)
+
+
+## Général
+- La caméra a été remonté pour moins donner l'impression d'être au ras du sol. La hauteur passe de 50% de la hauteur du personnage à 75% de sa hauteur.
+- Les niveaux sont maintenant automatiquement relancés en cas de défaite.
+- Le score dans les Infinite Runners est conservé même si l'on quitte prématurément la partie en appuyant sur ESCAPE.
+- Ajout d'un button fantomatique à la fin des niveaux pour nous inciter à appuyer sur ECHAP et passer plus rapidement la fin de niveau.
+
+
+## Narration
+- Les textes narratifs qui ont déjà étés écrits sont maintenant automatiquement affichés lorsque le joueur arrive dans un niveau pour la première fois.
+- Ajout d'un texte narratif pour le niveau Learn Jump.
+- Ajout d'un texte de remerciement lorsque le joueur a finit la bêta.
+- Les textes narratifs qui n'ont pas encore étés écrits indique maintenant que le jeu est encore en bêta.
+
+
+## Astuces
+A chaque niveau sont associés un certain nombre de petites phrases nous expliquant les spécificités des nouvelles mécaniques rencontrés. Ce sont les Astuces.
+- Toutes les astuces ont été revus pour être plus claires, moins redondantes et plus adaptées à la courbe de progression du joueur.
+- Les astuces n'apportant pas d'informations nouvelles (tel que des blagues nulles) ont été supprimées.
+
+
+## Mots de passes
+- L'énigme 1, 11, 12, 1121 a été clarifié. Son dernier palier est encore plus explicite.
+- Les accents sont maintenant interdits dans les Passes. Ainsi si un mot de passe avait un accent (comme "précipitation"), ce n'est maintenant plus le cas (et ça devient "precipitation").
+- Le mot "clé" signifiant "mot de passe" de manière figuré dans une énigme a été explicité.
+- L'énigme écrit à l'envers avait quelques erreurs de frappe. C'est corrigé.
+- Une clarification a été apporté à l'énigme sur l'information.
+
+
+## Gameplay
+- Le bug permettant de sauter sur les Cubes de la Mort a été corrigé.
+- Lorsque le joueur manque un Jump(), un texte explicatif lui indique ce qu'il aurait fallu faire.
+- La détection de la chute dans les Infinite Runners se déclenche maintenant beaucoup plus tôt pour permettre de relancer plus rapidement. Le seuil est passé de -10 à -2.
+- Le curseur au centre de l'écran a été refait pour être plus visible.
+
+### Pouvoirs
+- Ajout du Dash015 à partir du niveau LearnJump ! C'est un dash très rapide mais au très long temps de rechargement de 15 secondes.
+- Ce pouvoir est rajouté aussi tôt pour équilibrer la courbe de récompense du joueur (qui auparavant était à 0 jusqu'au dernier niveau ! :o).
+- Ce pouvoir sera amélioré au fur et à mesure de l'avancement du joueur dans le jeu ! :slight_smile:
+
+### Mouvements
+Lorsque le joueur bouge, sa vitesse augmente très progressivement (mais très rapidement) de 0 à sa vitesse maximum.
+- L'accélération pour passer de la vitesse 0 à la vitesse maximale est passé de 3 à 9. On accélère presque instantanément.
+- La décélération pour passer de la vitesse maximale à la vitesse 0 est passé de 3 à 18. On s'arrête net.
+
+
+## Ecran de récompense de victoire
+- Le trail représentant le joueur ne peut plus être rouge. On ne le confondra donc plus avec les ennemis.
+
+
+## Tutoriel
+- La couleur du Tutoriel a été changé de uniquement Vert à Vert, Bleu et Cyan.
+- La difficulté du Tutoriel a été revu à la baisse. Certains obstacles difficiles ont été supprimés ou simplifiés.
+- La spirale de la fin a notemment été réduite en taille (mais elle est toujours là ! :p).
+- Une plateforme invisible a été placé sous la Sortie pour empêcher les joueurs de tomber en manquant la Sortie. Celle-ci ne devient visible que en manquant la Sortie.
+- La clarté des indications du Tutoriel a été revu.
+- De nombreuses indications supplémentaires sont maintenant données dans le Terminal pour débloquer les joueurs en difficulté sur un obstacle.
+- Des textures particulières ont été rajoutés dans le Tutoriel pour indiquer certaines informations visuelles.
+- Les instructions "Saute !" effacent maintenant les autres textes du milieu de l'écran pour qu'on puisse mieux les voir.
+- Les instructions "Saute !" ne se déclenchent que si l'on est déjà accroché au mur.
+- Le temps de chute avant d'être remonté a été réduit.
+- Un texte informe le joueur qu'il vaut mieux utiliser ZQSD si jamais celui-ci utilise les flêches directionnelles.
+
+
+## Refonte de la génération procédurale des couleurs des niveaux
+- La couleur jaune et la couleur blanche ont été entièrement supprimées des couleurs générables.
+- La couleur jaune et la couleur blanche ont été rajoutées dans certains niveaux ne contenant pas de Data.
+- Ajout des nouvelles couleurs générables : Orange, VertClair, VertNeon, Cyan et Rose.
+- Amélioration du calcul de luminosité des couleurs en passant des espaces colorimétriques RGB et HSV à l'incroyable espace colorimétrique CIELAB ! :)
+- L'intensité lumineuse des Data a été baissé de 1 à 0.5.
+- Chaque niveau a maintenant son identité couleur propre.
+- De nombreux niveaux ont cependant une part d'aléatoire contrôlé dans leurs couleurs.
+- Association des couleurs des menus en fonction des couleurs de leur niveau associé.
+
+
+## Equilibrage
+- Ajout de 5 secondes supplémentaires pour le niveau Learn Jump.
+- Suppression de 5 secondes pour le niveau Hello World!
+- Les Data passent de +10 secondes à +5 secondes dans le niveau Hello World!. 
+- Les Data passent de +10 secondes à +5 secondes dans le niveau Learn Intersection.
+- La distance d'affichage du radar de proximité passe de 10 à 5 dans le niveau Imperfect Information.
+
+### Helpers
+Des helpers ont été rajoutés dans les niveaux au fonctionnement pas forcément évident. Les helpers sont des messages qui arrivent au boût d'un certain temps si l'on n'a pas réalisé une action.
+- Helper dans le niveau First Sonde si l'on a pas touché la Sonde après 50 secondes. Il nous conseille de toucher la Sonde.
+- Helper dans le niveau First Sonde après 150 secondes. Il nous dit de sauter sur la Sonde pour attraper la Data.
+- Helper dans le niveau Analyze and Conquer si l'on a pas attrapé la Data Furtive après 50 secondes. Il nous dit de que elle fuit notre regard.
+- Helper dans le niveau Analyze and Conquer si l'on a pas attrapé la Data Furtive après 150 secondes. Il nous dit de coincer la Data dans un coin avec le regard.
+
+
+## Localization
+- TOUUUUUUUUUUUUUS les textes du jeu ont étés traduits en anglais.
+- Ca à l'air facile comme ça hein ? :p
+- Ajout d'un dropdown dans les options pour pouvoir switcher de langue entre le français et l'anglais.
+- L'anglais est maintenant la langue par default.
+- Les mots de passes s'adaptent également à la langue choisi.
+
