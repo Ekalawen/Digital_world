@@ -78,7 +78,9 @@ public class MenuLevel : MonoBehaviour {
 
     [HideInInspector]
     public MenuLevelSelector menuLevelSelector;
+
     protected bool playStarted = false;
+    protected bool texteArchivesLinkIsReady = false;
 
     public void Initialize() {
         menuBouncingBackground.SetParameters(probaSource, distanceSource, decroissanceSource, themes);
@@ -190,9 +192,16 @@ public class MenuLevel : MonoBehaviour {
         selectorManager?.BackToSelector();
     }
 
-    public void OpenArchives() {
+    public void OpenArchives()
+    {
         if (selectorManager != null && !selectorManager.HasSelectorLevelOpen())
             return;
+        StartCoroutine(COpenArchives());
+    }
+
+    protected IEnumerator COpenArchives() {
+        while (!texteArchivesLinkIsReady)
+            yield return null;
         texteArchivesLink.Run(GetNbWins());
     }
 
@@ -393,6 +402,7 @@ public class MenuLevel : MonoBehaviour {
         texteArchivesLink.AddReplacement("[Cilliannelle Crittefigiée]", UIHelper.SurroundWithColor("[Cilliannelle Crittefigiée]", UIHelper.PURE_GREEN));
         texteArchivesLink.AddReplacement("[Morgensoul*]", UIHelper.SurroundWithColor("[Morgensoul*]", UIHelper.CYAN));
         texteArchivesLink.AddReplacement("[V1P3R]", UIHelper.SurroundWithColor("[V1P3R]", UIHelper.CYAN));
+        texteArchivesLinkIsReady = true;
     }
 
     public bool HasJustWin() {
