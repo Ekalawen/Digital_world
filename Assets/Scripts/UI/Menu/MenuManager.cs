@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
 using UnityEngine.SceneManagement;
 
@@ -19,11 +20,17 @@ public class MenuManager : MonoBehaviour {
     public static string FALSE = "false";
     public static string LOCALE_INDEX_KEY = "localeIndexKey";
 
+    [Header("Links")]
     public MenuLevelSelector menuLevelSelector;
     public MenuOptions menuOptions;
     public LoadingMenu loadingMenu;
     public MenuBackgroundBouncing menuBouncingBackground;
     public TexteExplicatif popup;
+
+    [Header("TutorielTexts")]
+    public LocalizedString tutoriel;
+    public LocalizedString tutorielRecommandeTitre;
+    public LocalizedString tutorielRecommandeTexte;
 
     protected SelectorManager selectorManager;
 
@@ -73,11 +80,24 @@ public class MenuManager : MonoBehaviour {
     }
 
     protected void AdvicePlayTutorial() {
-        string tutoriel = UIHelper.SurroundWithColor(selectorManager.strings.tutoriel.GetLocalizedString().Result, UIHelper.BLUE);
+        StartCoroutine(CAdvicePlayTutorial());
+    }
+
+    protected IEnumerator CAdvicePlayTutorial() {
+        var handleTutorial = tutoriel.GetLocalizedString();
+        yield return handleTutorial;
+
+        var handleTitre = tutorielRecommandeTitre.GetLocalizedString();
+        yield return handleTitre;
+
+        string tutorielFormate = UIHelper.SurroundWithColor(handleTutorial.Result, UIHelper.BLUE);
+        var handleTexte = tutorielRecommandeTexte.GetLocalizedString(tutorielFormate);
+        yield return handleTexte;
+
         popup.AddReplacement("999999.999%", UIHelper.SurroundWithColor("999999.999%", UIHelper.GREEN));
         RunPopup(
-            title: selectorManager.strings.tutorielRecommandeTitre.GetLocalizedString().Result,
-            text: selectorManager.strings.tutorielRecommandeTexte.GetLocalizedString(tutoriel).Result,
+            title: handleTitre.Result,
+            text: handleTexte.Result,
             theme: TexteExplicatif.Theme.NEUTRAL,
             cleanReplacements: false);
         PlayerPrefs.SetString(HAVE_THINK_ABOUT_TUTORIAL_KEY, MenuManager.TRUE);

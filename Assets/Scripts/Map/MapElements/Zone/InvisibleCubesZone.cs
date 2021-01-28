@@ -10,7 +10,7 @@ public class InvisibleCubesZone : IZone {
     protected List<Cube> cubes;
     protected bool haveCubesAppeared = false;
 
-    protected override void Start() {
+    public void Initialize() {
         base.Start();
         cubes = GatherCubes();
         MakeAllCubesDisappear();

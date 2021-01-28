@@ -55,7 +55,8 @@ public class Cube : MonoBehaviour {
         GetMaterial().SetFloat("_DissolveTime", dissolveTime);
         GetMaterial().SetFloat("_PlayerProximityCoef", playerProximityCoef);
         GetMaterial().SetFloat("_DissolveStartingTime", Time.time);
-        GetMaterial().SetVector("_PlayerPosition", gm.player.transform.position);
+        Vector3 playerPosition = gm.player.transform.position;
+        GetMaterial().SetVector("_PlayerPosition", playerPosition);
         ReinitializeDecomposeEffect();
     }
 

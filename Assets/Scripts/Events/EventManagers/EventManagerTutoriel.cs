@@ -9,6 +9,17 @@ public class EventManagerTutoriel : EventManager {
 
     protected SaveZone savedZone = null;
 
+    public override void Initialize() {
+        base.Initialize();
+        InitializeCubesZones();
+    }
+
+    protected void InitializeCubesZones() {
+        foreach (InvisibleCubesZone cubesZone in FindObjectsOfType<InvisibleCubesZone>()) {
+            cubesZone.Initialize();
+        }
+    }
+
     protected override void StartEndGame() {
         isEndGameStarted = true;
 

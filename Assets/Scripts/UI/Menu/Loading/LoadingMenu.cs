@@ -72,19 +72,21 @@ public class LoadingMenu : MonoBehaviour {
     }
 
     protected void InitConseil() {
-        if (level != null) {
-            StartCoroutine(CInitConseil());
-        } else { // Tutoriel !
-            conseilText.text = tutorielInitialisationMatrice.GetLocalizedString().Result;
-        }
+        StartCoroutine(CInitConseil());
     }
 
     protected IEnumerator CInitConseil() {
-        Console console = level.consolePrefab.GetComponent<Console>();
-        LocalizedString conseil = console.conseils[UnityEngine.Random.Range(0, console.conseils.Count - 1)];
-        AsyncOperationHandle<string> handle = conseil.GetLocalizedString();
-        yield return handle;
-        conseilText.text += handle.Result;
+        if (level != null) {
+            Console console = level.consolePrefab.GetComponent<Console>();
+            LocalizedString conseil = console.conseils[UnityEngine.Random.Range(0, console.conseils.Count)];
+            AsyncOperationHandle<string> handle = conseil.GetLocalizedString();
+            yield return handle.Task;
+            conseilText.text += handle.Result;
+        } else { // Tutoriel !
+            var handle = tutorielInitialisationMatrice.GetLocalizedString();
+            yield return handle;
+            conseilText.text = handle.Result;
+        }
     }
 
     protected void InitPouvoirs() {
