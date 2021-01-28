@@ -97,8 +97,8 @@ public class LoadingMenu : MonoBehaviour {
 
     protected void InitPouvoir(GameObject pouvoirPrefab, PouvoirDisplay display) {
         IPouvoir pouvoir = pouvoirPrefab ? pouvoirPrefab.GetComponent<IPouvoir>() : null;
-        string nom = pouvoir ? pouvoir.nom : PouvoirDisplay.NULL_NAME_VALUE;
-        string description = pouvoir ? pouvoir.description : PouvoirDisplay.NULL_DESCRIPTION_VALUE;
+        string nom = pouvoir ? pouvoir.nom.GetLocalizedString().Result : PouvoirDisplay.GetNullName();
+        string description = pouvoir ? pouvoir.description.GetLocalizedString().Result : PouvoirDisplay.GetNullDescription();
         Sprite sprite = pouvoir ? pouvoir.sprite : null;
         display.Initialize(nom, description, sprite);
     }

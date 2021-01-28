@@ -1,6 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.Localization;
 using UnityEngine.UI;
 
 public class PouvoirDisplayInGame : MonoBehaviour {
@@ -13,29 +16,46 @@ public class PouvoirDisplayInGame : MonoBehaviour {
     public Color bordureColorActive;
     public Color bordureColorSpecial;
     public float vitesseRotationLoadingCircle = 5.0f;
+    public Text keyText;
+    public LocalizedString keyLocalizedString;
 
     protected IPouvoir pouvoir;
 
     public void Initialize(IPouvoir pouvoir) {
-        if(pouvoir == null) {
+        if (pouvoir == null) {
             bordure.gameObject.SetActive(false);
             return;
         }
+        StartCoroutine(CInitialize(pouvoir));
+    }
 
+    protected IEnumerator CInitialize(IPouvoir pouvoir) {
         bordure.gameObject.SetActive(true);
         this.pouvoir = pouvoir;
-        string nom = pouvoir ? pouvoir.nom : PouvoirDisplay.NULL_NAME_VALUE;
-        string description = pouvoir ? pouvoir.description : PouvoirDisplay.NULL_DESCRIPTION_VALUE;
+        string nom = PouvoirDisplay.GetNullName();
+        string description = PouvoirDisplay.GetNullDescription();
+        if (pouvoir != null) {
+            var handleNom = pouvoir.nom.GetLocalizedString();
+            var handleDescrition = pouvoir.description.GetLocalizedString();
+            yield return handleNom;
+            yield return handleDescrition;
+            nom = handleNom.Result;
+            description = handleDescrition.Result;
+        }
         Sprite sprite = pouvoir ? pouvoir.sprite : null;
 
-        if(nom != PouvoirDisplay.NULL_NAME_VALUE) {
-            if(nom != "PathFinder" && nom != "Localisateur")
+        var handleKeyText = keyLocalizedString.GetLocalizedString();
+        yield return handleKeyText;
+        keyText.text = keyText.text.Replace("%PouvoirName%", handleKeyText.Result);
+
+        if (nom != PouvoirDisplay.GetNullName()) {
+            if (nom != "PathFinder" && nom != "Localisateur")
                 bordure.color = bordureColorSpecial;
             else
                 bordure.color = bordureColorActive;
         }
         this.image.sprite = sprite;
-        if(sprite != null)
+        if (sprite != null)
             this.image.color = Color.white; // Sinon c'est transparent !
     }
 

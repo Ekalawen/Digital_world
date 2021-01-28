@@ -860,13 +860,15 @@ public class Console : MonoBehaviour {
         AjouterMessage(strings.volExplications, TypeText.ALLY_TEXT);
     }
 
-    public void CapturePouvoirGiverItem(string pouvoirName, PouvoirGiverItem.PouvoirBinding pouvoirBinding) {
+    public void CapturePouvoirGiverItem(LocalizedString pouvoirName, PouvoirGiverItem.PouvoirBinding pouvoirBinding) {
         StartCoroutine(CCapturePouvoirGiverTime(pouvoirName, pouvoirBinding));
     }
 
-    private IEnumerator CCapturePouvoirGiverTime(string pouvoirName, PouvoirGiverItem.PouvoirBinding pouvoirBinding) {
+    private IEnumerator CCapturePouvoirGiverTime(LocalizedString pouvoirName, PouvoirGiverItem.PouvoirBinding pouvoirBinding) {
+        AsyncOperationHandle<string> handlePouvoirName = pouvoirName.GetLocalizedString();
+        yield return handlePouvoirName;
         LocalizedString pouvoirGiverActive = strings.pouvoirGiverActive;
-        pouvoirGiverActive.Arguments = new object[] { pouvoirName };
+        pouvoirGiverActive.Arguments = new object[] { handlePouvoirName.Result };
         AjouterMessageImportant(pouvoirGiverActive, TypeText.ALLY_TEXT, 2, bAfficherInConsole: false);
         LocalizedString strBinding = null;
         switch (pouvoirBinding) {
@@ -876,9 +878,9 @@ public class Console : MonoBehaviour {
             case PouvoirGiverItem.PouvoirBinding.RIGHT_CLICK: strBinding = strings.keyClicDroit; break;
         }
         AsyncOperationHandle<string> handle = strBinding.GetLocalizedString();
-        yield return handle;
+        yield return handlePouvoirName;
         LocalizedString pouvoirGiverExplications = strings.pouvoirGiverActive;
-        pouvoirGiverExplications.Arguments = new object[] { pouvoirName, handle.Result };
+        pouvoirGiverExplications.Arguments = new object[] { pouvoirName, handlePouvoirName.Result };
         AjouterMessage(pouvoirGiverExplications, TypeText.ALLY_TEXT);
     }
 

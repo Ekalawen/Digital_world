@@ -1,12 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Localization;
+using UnityEngine.Localization.Settings;
+using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.UI;
 
 public class PouvoirDisplay : MonoBehaviour {
-
-    public static string NULL_NAME_VALUE = "404 Not Found";
-    public static string NULL_DESCRIPTION_VALUE = "Null";
 
     public TMPro.TMP_Text textName;
     public TMPro.TMP_Text textDescription;
@@ -18,7 +18,7 @@ public class PouvoirDisplay : MonoBehaviour {
     public void Initialize(string name, string description, Sprite sprite) {
         textName.text = textName.text.Replace("%PouvoirName%", name);
         textDescription.text = description;
-        if(name != NULL_NAME_VALUE) {
+        if(name != GetNullName()) {
             if(name != "PathFinder" && name != "Localisateur")
                 bordure.color = bordureColorSpecial;
             else
@@ -27,5 +27,13 @@ public class PouvoirDisplay : MonoBehaviour {
         this.image.sprite = sprite;
         if(sprite != null)
             this.image.color = Color.white; // Sinon c'est transparent !
+    }
+
+    public static string GetNullName() {
+        return LocalizationSettings.StringDatabase.GetLocalizedStringAsync("Pouvoirs", "PouvoirNullName").Result;
+    }
+
+    public static string GetNullDescription() {
+        return LocalizationSettings.StringDatabase.GetLocalizedStringAsync("Pouvoirs", "PouvoirNullDescription").Result;
     }
 }

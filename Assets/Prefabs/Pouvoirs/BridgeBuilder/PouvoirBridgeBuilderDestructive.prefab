@@ -43,9 +43,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 988b31be1c083db4ca0396ff4c4ddb54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nom: BridgeBuilderDestructive
-  description: "Permet de cr\uB9F2 un pont en ciblant un cube en d\xE9truisant les
-    cubes alentours."
+  nom:
+    m_TableReference:
+      m_TableCollectionName: GUID:bdcfcf5557c4ec14ea653537ddc22373
+    m_TableEntryReference:
+      m_KeyId: 813744496640
+      m_Key: 
+  description:
+    m_TableReference:
+      m_TableCollectionName: GUID:bdcfcf5557c4ec14ea653537ddc22373
+    m_TableEntryReference:
+      m_KeyId: 852827021312
+      m_Key: 
   sprite: {fileID: 21300000, guid: 3fd16fbb97603244abf5f79e474d8f02, type: 3}
   cooldown: 0
   timerMalus: 5
@@ -65,3 +74,4 @@ MonoBehaviour:
   canDestroyIndestructibleCubes: 0
   rayonDestruction: 2
   untilLastCubeTouched: 0
+  cubesDissolveTime: 0.3

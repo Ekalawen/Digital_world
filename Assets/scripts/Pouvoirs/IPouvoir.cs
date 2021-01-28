@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Localization;
 
 /// <summary>
 /// Un pouvoir est un effet que le joueur peut activer en appuyant sur une touche.
@@ -9,8 +10,8 @@ using UnityEngine;
 /// </summary>
 public abstract class IPouvoir : MonoBehaviour {
 
-    public string nom;
-    public string description;
+    public LocalizedString nom;
+    public LocalizedString description;
     public Sprite sprite;
 
     public float cooldown = 0.0f;
