@@ -13,6 +13,10 @@ public class LumiereFurtiveTrap : LumiereFurtive {
     public GameObject lumiereGeneratedPrefab;
     public int nbLumieresToGenerate = 1;
 
+    [Header("Pouvoir donné")]
+    public GameObject pouvoirDashPrefab;
+    public PouvoirGiverItem.PouvoirBinding pouvoirBinding = PouvoirGiverItem.PouvoirBinding.LEFT_CLICK;
+
     protected override void NotifyEventManagerLumiereCapture() {
         // Don't notify the EventManager !
     }
@@ -24,6 +28,12 @@ public class LumiereFurtiveTrap : LumiereFurtive {
     protected override void CapturedSpecific() {
         base.CapturedSpecific();
         LumiereFurtiveTrapApplier applier = new GameObject("FurtiveTrapApplier").AddComponent<LumiereFurtiveTrapApplier>();
-        applier.ApplyTrap(ennemiToGeneratePrefab, timeBeforeEnnemisActivation, lumiereGeneratedPrefab, nbLumieresToGenerate);
+        applier.ApplyTrap(
+            ennemiToGeneratePrefab,
+            timeBeforeEnnemisActivation,
+            lumiereGeneratedPrefab,
+            nbLumieresToGenerate,
+            pouvoirDashPrefab,
+            pouvoirBinding);
     }
 }

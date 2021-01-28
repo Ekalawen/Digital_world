@@ -5,30 +5,39 @@ using UnityEngine;
 
 public class LumiereFurtiveTrapApplier : MonoBehaviour {
 
+
     protected GameManager gm;
     protected GameObject ennemiToGeneratePrefab;
     protected float timeBeforeEnnemisActivation = 3.0f;
     protected GameObject lumiereGeneratedPrefab;
     protected int nbLumieresToGenerate = 1;
+    protected GameObject pouvoirDashPrefab;
+    protected PouvoirGiverItem.PouvoirBinding pouvoirBinding;
 
     public void ApplyTrap(
         GameObject ennemiToGeneratePrefab,
         float timeBeforeEnnemisActivation,
         GameObject lumiereGeneratedPrefab,
-        int nbLumieresToGenerate) {
+        int nbLumieresToGenerate,
+        GameObject pouvoirDashPrefab,
+        PouvoirGiverItem.PouvoirBinding pouvoirBinding) {
         this.ennemiToGeneratePrefab = ennemiToGeneratePrefab;
         this.timeBeforeEnnemisActivation = timeBeforeEnnemisActivation;
         this.lumiereGeneratedPrefab = lumiereGeneratedPrefab;
         this.nbLumieresToGenerate = nbLumieresToGenerate;
+        this.pouvoirDashPrefab = pouvoirDashPrefab;
+        this.pouvoirBinding = pouvoirBinding;
         gm = GameManager.Instance;
         StartCoroutine(CApplyTrap());
         FindObjectOfType<HelperAnalyze>().SetCaptureFirstData();
     }
 
-    protected IEnumerator CApplyTrap() {
+    protected IEnumerator CApplyTrap()
+    {
         float firstWaitingTime = 2.0f;
         gm.timerManager.isInfinitTime = false;
         gm.timerManager.SetTime(gm.timerManager.initialTime, showVolatileText: false);
+        GiveBackDash();
         gm.console.AjouterMessageImportant(gm.console.strings.analyzeTrapWait, Console.TypeText.ALLY_TEXT, firstWaitingTime);
         yield return new WaitForSeconds(firstWaitingTime);
         yield return null;
@@ -41,6 +50,13 @@ public class LumiereFurtiveTrapApplier : MonoBehaviour {
         gm.console.AnalyzeLevelDeuxiemeSalve();
         gm.soundManager.PlayReceivedMessageClip();
         Destroy(this.gameObject);
+    }
+
+    protected void GiveBackDash() {
+        PouvoirGiverItem.PouvoirBinding pouvoirBinding = PouvoirGiverItem.PouvoirBinding.LEFT_CLICK;
+        gm.player.SetPouvoir(pouvoirDashPrefab, pouvoirBinding);
+        IPouvoir pouvoir = pouvoirDashPrefab.GetComponent<IPouvoir>();
+        gm.console.CapturePouvoirGiverItem(pouvoir.nom, pouvoirBinding);
     }
 
     protected void PopEnnemis() {

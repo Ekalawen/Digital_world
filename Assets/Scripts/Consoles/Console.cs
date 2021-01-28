@@ -877,10 +877,10 @@ public class Console : MonoBehaviour {
             case PouvoirGiverItem.PouvoirBinding.LEFT_CLICK: strBinding = strings.keyClicGauche; break;
             case PouvoirGiverItem.PouvoirBinding.RIGHT_CLICK: strBinding = strings.keyClicDroit; break;
         }
-        AsyncOperationHandle<string> handle = strBinding.GetLocalizedString();
-        yield return handlePouvoirName;
-        LocalizedString pouvoirGiverExplications = strings.pouvoirGiverActive;
-        pouvoirGiverExplications.Arguments = new object[] { pouvoirName, handlePouvoirName.Result };
+        AsyncOperationHandle<string> handlePouvoirBinding = strBinding.GetLocalizedString();
+        yield return handlePouvoirBinding;
+        LocalizedString pouvoirGiverExplications = strings.pouvoirGiverExplications;
+        pouvoirGiverExplications.Arguments = new object[] { handlePouvoirName.Result, handlePouvoirBinding.Result };
         AjouterMessage(pouvoirGiverExplications, TypeText.ALLY_TEXT);
     }
 
