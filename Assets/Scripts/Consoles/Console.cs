@@ -30,7 +30,7 @@ public class Console : MonoBehaviour {
 
     [Header("OnLumiereCapturedMessages")]
     public List<int> nbLumieresTriggers;
-    public List<TimedMessage> nbLumieresTriggeredMessages;
+    public List<TimedMessageStruct> nbLumieresTriggeredMessages;
 
     [Header("Special Messages")]
     public bool useAltitudeCritique = true; // Si on doit utiliser altitude critique ou pas dans cette partie !
@@ -124,7 +124,7 @@ public class Console : MonoBehaviour {
         for(int i = 0; i < nbLumieresTriggers.Count; i++) {
             int nbLumieresTrigger = nbLumieresTriggers[i];
             if(nbLumieresTrigger == nbLumieres) {
-                TimedMessage timedMessage = nbLumieresTriggeredMessages[i];
+                TimedMessageStruct timedMessage = nbLumieresTriggeredMessages[i];
                 AjouterMessageImportant(timedMessage);
             }
         }
@@ -269,6 +269,18 @@ public class Console : MonoBehaviour {
     }
 
     public void AjouterMessageImportant(
+        TimedMessageStruct timedMessage,
+        bool bAfficherInConsole = true,
+        LocalizedString messageToReplace = null) {
+        AjouterMessageImportant(
+            timedMessage.message,
+            timedMessage.type,
+            timedMessage.duree,
+            bAfficherInConsole,
+            messageToReplace);
+    }
+
+    public void AjouterMessageImportant(
         LocalizedString localizedString,
         object[] argumentsString,
         TypeText type,
@@ -304,11 +316,6 @@ public class Console : MonoBehaviour {
         float tempsAffichage,
         bool bAfficherInConsole = true,
         LocalizedString messageToReplace = null) {
-        //if (messageToReplace != null) {
-        //    AjouterMessageImportant(localizedString.GetLocalizedString().Result, type, tempsAffichage, bAfficherInConsole, messageToReplace.GetLocalizedString().Result);
-        //} else {
-        //    AjouterMessageImportant(localizedString.GetLocalizedString().Result, type, tempsAffichage, bAfficherInConsole);
-        //}
         StartCoroutine(CAjouterMessageImportant(localizedString, type, tempsAffichage, bAfficherInConsole, messageToReplace));
     }
 
