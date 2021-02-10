@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class EventManagerWhileTrueConstantDestruction : EventManagerWhileTrue {
 
-    protected bool isFirstStartEndGame = true;
     protected List<Vector3> originalCubePositions;
 
     public override void Initialize() {

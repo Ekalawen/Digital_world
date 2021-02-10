@@ -8,7 +8,6 @@ public class TimerManager : MonoBehaviour {
 
     [Header("Time")]
     public bool isInfinitTime = false;
-    [ConditionalHide("isInfinitTime")]
     public float initialTime = 40.0f;
 
     [Header("ScreenShake on remaining time")]
@@ -23,21 +22,16 @@ public class TimerManager : MonoBehaviour {
     public CounterDisplayer timerDisplayer;
 
 
-    protected float totalTime;
-    protected float debutTime;
     protected GameManager gm;
     protected Timer soundTimeOutTimer;
     protected Timer gameTimer;
     protected CameraShakeInstance cameraShakeInstance;
 
     public void Initialize() {
-		// Initialisation
 		name = "TimerManager";
         gm = FindObjectOfType<GameManager>();
-        debutTime = Time.timeSinceLevelLoad;
-        totalTime = initialTime;
+        gameTimer = new Timer(initialTime);
         soundTimeOutTimer = new Timer(1.0f);
-        gameTimer = new Timer(0.0f);
         cameraShakeInstance = CameraShaker.Instance.StartShake(0, 0, 0);
     }
 
@@ -164,7 +158,7 @@ public class TimerManager : MonoBehaviour {
 
     public float GetRemainingTime() {
         if (!isInfinitTime) {
-            float remainingTime = totalTime - (Time.timeSinceLevelLoad - debutTime);
+            float remainingTime = gameTimer.GetRemainingTime();
             return Mathf.Max(0, remainingTime);
         } else {
             return 99999.99f;
@@ -175,7 +169,7 @@ public class TimerManager : MonoBehaviour {
         if (gm.eventManager.IsGameOver())
             return;
 
-        totalTime += time;
+        gameTimer.AddDuree(time);
 
         if (showVolatileText) {
             ShowVolatileTextOnAddTime(time);
@@ -195,18 +189,20 @@ public class TimerManager : MonoBehaviour {
         TestLoseGame(reason);
     }
 
+    public void SetTime(float settedTime, bool showVolatileText = true) {
+        float oldTotalTime = gameTimer.GetRemainingTime();
+        gameTimer = new Timer(settedTime);
+        if(showVolatileText) {
+            ShowVolatileTextOnAddTime(settedTime - oldTotalTime);
+        }
+    }
+
     protected void ShowVolatileTextOnAddTime(float time) {
         int secondes = time >= 0 ? Mathf.FloorToInt(time) : Mathf.CeilToInt(time);
         int centiseconds = Mathf.Abs(Mathf.FloorToInt((time - secondes) * 100));
         string volatileText = (time >= 0 ? "+" : "") + secondes + ":" + centiseconds.ToString("D2");
         Color volatileColor = (time >= 0 ? gm.console.allyColor : gm.console.ennemiColor);
         timerDisplayer.AddVolatileText(volatileText, volatileColor);
-    }
-
-    public void SetTime(float settedTime, bool showVolatileText = true) {
-        float currentTime = GetRemainingTime();
-        float timeToRemove = settedTime - currentTime;
-        AddTime(timeToRemove, showVolatileText);
     }
 
     public float GetElapsedTime() {

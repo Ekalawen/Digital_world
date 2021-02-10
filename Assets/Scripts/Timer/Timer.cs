@@ -53,6 +53,10 @@ public class Timer {
         duree = newDuree;
     }
 
+    public void AddDuree(float addedDuree) {
+        duree += addedDuree;
+    }
+
     public float GetRemainingTime() {
         return debut + duree - GetTimeSinceLevelLoad();
     }
