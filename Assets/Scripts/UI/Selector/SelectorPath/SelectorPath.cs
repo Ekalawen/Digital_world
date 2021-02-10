@@ -203,8 +203,12 @@ public class SelectorPath : MonoBehaviour {
         PlayerPrefs.SetString(key, MenuManager.TRUE);
     }
 
-    public string GetName() {
+    public string GetVisibleName() {
         return $"{startLevel.GetVisibleName()} ==> {endLevel.GetVisibleName()}";
+    }
+
+    public string GetNameId() {
+        return $"{startLevel.GetNameId()} ==> {endLevel.GetNameId()}";
     }
 
     public bool IsUnlocked() {
@@ -215,7 +219,7 @@ public class SelectorPath : MonoBehaviour {
     public void LockPath() {
         string key = name + IS_UNLOCKED_PATH_KEY;
         PlayerPrefs.DeleteKey(key);
-        Debug.Log($"{GetName()} locked !");
+        Debug.Log($"{GetNameId()} locked !");
     }
 
     public int GetMaxTreshold() {
@@ -224,7 +228,7 @@ public class SelectorPath : MonoBehaviour {
     }
 
     public void HighlightPath(bool state) {
-        string key = GetName() + IS_HIGHLIGHTED_PATH_KEY;
+        string key = GetNameId() + IS_HIGHLIGHTED_PATH_KEY;
         PlayerPrefs.SetString(key, state ? MenuManager.TRUE : MenuManager.FALSE);
         HighlightCadena(state);
     }
@@ -234,7 +238,7 @@ public class SelectorPath : MonoBehaviour {
     }
 
     public bool GetHighlitedState() {
-        string key = GetName() + IS_HIGHLIGHTED_PATH_KEY;
+        string key = GetNameId() + IS_HIGHLIGHTED_PATH_KEY;
         bool state = PlayerPrefs.HasKey(key) && PlayerPrefs.GetString(key) == MenuManager.TRUE;
         return state;
     }
