@@ -312,6 +312,10 @@ public class EventManager : MonoBehaviour {
         QuitOrReloadInSeconds();
     }
 
+    public void LoseGameWithTimeOut() {
+        LoseGame(DeathReason.TIME_OUT);
+    }
+
     public void QuitOrReloadInSeconds() {
         QuitType quitType = ShouldQuitOrReload();
         if(quitType == QuitType.QUIT) {

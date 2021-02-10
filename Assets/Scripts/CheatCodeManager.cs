@@ -13,6 +13,7 @@ public class CheatCode {
 public class CheatCodeManager : MonoBehaviour {
 
     public List<KeyCode> winCode;
+    public List<KeyCode> loseCode;
     public List<KeyCode> plus10Code;
     public List<KeyCode> minus10Code;
 
@@ -27,6 +28,11 @@ public class CheatCodeManager : MonoBehaviour {
         winCheatCode.code = winCode;
         winCheatCode.action = gm.eventManager.WinGame;
         cheatCodes.Add(winCheatCode);
+
+        CheatCode loseCheatCode = new CheatCode();
+        loseCheatCode.code = loseCode;
+        loseCheatCode.action = gm.eventManager.LoseGameWithTimeOut;
+        cheatCodes.Add(loseCheatCode);
 
         if (gm.GetMapType() == MenuLevel.LevelType.INFINITE) {
             CheatCode plus10BlocksCheatCode = new CheatCode();
