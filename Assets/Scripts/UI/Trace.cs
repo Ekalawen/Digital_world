@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Text;
 using UnityEngine;
 using UnityEngine.Localization.Settings;
 
@@ -58,6 +60,20 @@ public class Trace {
         return new List<char> { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
     }
 
+    static string RemoveDiacritics(string text) {
+        string normalizedString = text.Normalize(NormalizationForm.FormD);
+        StringBuilder stringBuilder = new StringBuilder();
+
+        foreach (char c in normalizedString) {
+            UnicodeCategory unicodeCategory = CharUnicodeInfo.GetUnicodeCategory(c);
+            if (unicodeCategory != UnicodeCategory.NonSpacingMark) {
+                stringBuilder.Append(c);
+            }
+        }
+
+        return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
+    }
+
     public static bool IsWellFormatedPassword(string password) {
         if (password.Length < 4)
             return false;
@@ -95,17 +111,22 @@ public class Trace {
     public static bool IsWellFormatedPasse(string passe) {
         bool noWhiteSpace = !passe.Any(c => Char.IsWhiteSpace(c));
         bool noUppercase = passe.ToLower() == passe;
-        return noWhiteSpace && noUppercase;
+        bool noAccents = RemoveDiacritics(passe) == passe;
+        return noWhiteSpace && noUppercase && noAccents;
     }
 
     public static string GetPasseAdvice(string passe) {
         bool noWhiteSpace = !passe.Any(c => Char.IsWhiteSpace(c));
         bool noUppercase = passe.ToLower() == passe;
-        if(!noWhiteSpace) {
+        bool noAccents = RemoveDiacritics(passe) == passe;
+        if (!noWhiteSpace) {
             return GetStringForLocalizedStringReference("PassePasDEspaces");
         }
         if(!noUppercase) {
             return GetStringForLocalizedStringReference("PassePasDeMajuscules");
+        }
+        if(!noAccents) {
+            return GetStringForLocalizedStringReference("PassePasDAccents");
         }
         return null;
     }
