@@ -114,31 +114,55 @@ public class GameManager : MonoBehaviour {
         cheatCodeManager.Initialize();
     }
 
-	void Update () {
-        if (Input.GetKey (KeyCode.Escape)) {
-            if(GetMapType() == MenuLevel.LevelType.INFINITE && !eventManager.IsGameOver()) {
-                eventManager.RememberGameResult(success: false);
-            }
-            eventManager.QuitOrReload();
-		}
+	void Update ()
+    {
+        CheckQuitAndRestartGame();
 
-		if(Input.GetKeyDown(KeyCode.F1)) {
-			if(Cursor.visible) {
-				Cursor.lockState = CursorLockMode.Locked;
-				Cursor.visible = false;
-			} else {
-				Cursor.lockState = CursorLockMode.None;
-				Cursor.visible = true;
-			}
-		}
+        CheckCursorToggling();
 
 #if UNITY_EDITOR
+        CheckRecordMoments();
+#endif
+    }
+
+    protected void CheckRecordMoments() {
         if (Input.GetKeyDown(KeyCode.G)) {
             Debug.Log("On ne quittera pas la scène.");
             eventManager.ShouldNotAutomaticallyQuit();
         }
-#endif
-	}
+    }
+
+    protected static void CheckCursorToggling() {
+        if (Input.GetKeyDown(KeyCode.F1)) {
+            if (Cursor.visible) {
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+            } else {
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+            }
+        }
+    }
+
+    protected void CheckQuitAndRestartGame() {
+        if (Input.GetKey(KeyCode.Escape)) {
+            SaveGameResultIfIR();
+            eventManager.QuitOrReload();
+        }
+
+        if (Input.GetKey(KeyCode.R)) {
+            SaveGameResultIfIR();
+            eventManager.ReloadScene();
+        }
+    }
+
+    protected void SaveGameResultIfIR() {
+        if (GetMapType() == MenuLevel.LevelType.INFINITE
+        && !eventManager.IsGameOver()
+        && eventManager.IsNewBestScore()) {
+            eventManager.RememberGameResult(success: false);
+        }
+    }
 
     public IEnumerator QuitInSeconds(float tps) {
 		yield return new WaitForSeconds (tps);
