@@ -22,7 +22,9 @@ public class TooltipActivator : MonoBehaviour,
     }
 
     protected IEnumerator CShowInTime() {
-        yield return new WaitForSeconds(timeBeforeShowing);
+        if (timeBeforeShowing > 0.0f) {
+            yield return new WaitForSeconds(timeBeforeShowing);
+        }
         if (localizedMessage != null) {
             AsyncOperationHandle<string> handle = localizedMessage.GetLocalizedString();
             yield return handle;

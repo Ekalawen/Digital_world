@@ -59,6 +59,7 @@ public class Console : MonoBehaviour {
 	public GameObject textContainer; // Là où l'on va afficher les lignes
 	public Text importantText; // Là où l'on affiche les informations importantes
     public GameObject escapeButton; // Le truc qui clignote pour nous dire d'appuyer sur Escape à la fin du jeu !
+    public GameObject pauseMenu;
 
 
     [HideInInspector]
@@ -955,5 +956,13 @@ public class Console : MonoBehaviour {
         basicPrefix = basicPrefixLocalizedString.GetLocalizedString().Result;
         ennemiPrefix = ennemiPrefixLocalizedString.GetLocalizedString().Result;
         allyPrefix = allyPrefixLocalizedString.GetLocalizedString().Result;
+    }
+
+    public void OpenPauseMenu() {
+        pauseMenu.SetActive(true);
+    }
+
+    public void ClosePauseMenu() {
+        pauseMenu.SetActive(false);
     }
 }

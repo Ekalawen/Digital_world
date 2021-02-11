@@ -362,6 +362,7 @@ public class EventManager : MonoBehaviour {
     }
 
     public void ReloadScene() {
+        Time.timeScale = 1.0f;
         string sceneName = SceneManager.GetActiveScene().name;
         SceneManager.LoadScene(sceneName);
     }

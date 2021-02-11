@@ -170,6 +170,9 @@ public class Player : Character {
 
     // Utilisé pour gérer la caméra
     void UpdateCamera() {
+        if (gm.IsPaused())
+            return;
+
         // On mesure la rotation que l'on veut faire
         xRot = -Input.GetAxis("Mouse Y") * sensibilite;
         yRot = Input.GetAxis("Mouse X") * sensibilite;

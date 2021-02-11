@@ -67,6 +67,7 @@ public class GameManager : MonoBehaviour {
     public bool partieDejaTerminee = false;
     [HideInInspector]
     protected bool timeFreezed = false;
+    protected bool isPaused = false;
 
     void Awake() {
         if (!_instance) { _instance = this; }
@@ -114,15 +115,52 @@ public class GameManager : MonoBehaviour {
         cheatCodeManager.Initialize();
     }
 
-	void Update ()
-    {
-        CheckQuitAndRestartGame();
+	void Update () {
+        //CheckQuitGame();
+        CheckRestartGame();
+        CheckPauseToggling();
 
         CheckCursorToggling();
 
 #if UNITY_EDITOR
         CheckRecordMoments();
 #endif
+    }
+
+    private void CheckPauseToggling() {
+        if (Input.GetKeyDown(KeyCode.Escape)) {
+            if (!isPaused) {
+                if (eventManager.IsGameOver()) {
+                    SaveGameResultIfIR();
+                    eventManager.QuitOrReload();
+                } else {
+                    Pause();
+                }
+            } else {
+                UnPause();
+            }
+        }
+    }
+
+    public void Pause() {
+        isPaused = true;
+        Time.timeScale = 0.0f;
+        ShowCursor();
+        pointeur.SetActive(false);
+        console.OpenPauseMenu();
+    }
+
+    public void UnPause() {
+        isPaused = false;
+        Time.timeScale = 1.0f;
+        HideCursor();
+        pointeur.SetActive(true);
+        Tooltip.Hide();
+        console.ClosePauseMenu();
+    }
+
+    public bool IsPaused() {
+        return isPaused;
     }
 
     protected void CheckRecordMoments() {
@@ -135,25 +173,43 @@ public class GameManager : MonoBehaviour {
     protected static void CheckCursorToggling() {
         if (Input.GetKeyDown(KeyCode.F1)) {
             if (Cursor.visible) {
-                Cursor.lockState = CursorLockMode.Locked;
-                Cursor.visible = false;
+                HideCursor();
             } else {
-                Cursor.lockState = CursorLockMode.None;
-                Cursor.visible = true;
+                ShowCursor();
             }
         }
     }
 
-    protected void CheckQuitAndRestartGame() {
-        if (Input.GetKey(KeyCode.Escape)) {
-            SaveGameResultIfIR();
-            eventManager.QuitOrReload();
-        }
+    protected static void ShowCursor() {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
 
+    protected static void HideCursor() {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
+
+    //protected void CheckQuitGame() {
+    //    if (Input.GetKey(KeyCode.Escape)) {
+    //        QuitOrReloadGame();
+    //    }
+    //}
+
+    public void QuitOrReloadGame() {
+        SaveGameResultIfIR();
+        eventManager.QuitOrReload();
+    }
+
+    protected void CheckRestartGame() {
         if (Input.GetKey(KeyCode.R)) {
-            SaveGameResultIfIR();
-            eventManager.ReloadScene();
+            RestartGame();
         }
+    }
+
+    public void RestartGame() {
+        SaveGameResultIfIR();
+        eventManager.ReloadScene();
     }
 
     protected void SaveGameResultIfIR() {
@@ -188,6 +244,7 @@ public class GameManager : MonoBehaviour {
 
         Cursor.lockState = CursorLockMode.None;
 		Cursor.visible = true;
+        Time.timeScale = 1.0f;
 
         if(SceneManager.GetActiveScene().name == "TutorialScene") {
             SceneManager.LoadScene("MenuScene");
