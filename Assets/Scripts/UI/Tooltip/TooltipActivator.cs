@@ -22,9 +22,17 @@ public class TooltipActivator : MonoBehaviour,
     }
 
     protected IEnumerator CShowInTime() {
-        if (timeBeforeShowing > 0.0f) {
-            yield return new WaitForSeconds(timeBeforeShowing);
+        UnpausableTimer showingTimer = new UnpausableTimer(timeBeforeShowing);
+        Debug.Log("before the loop");
+        while(!showingTimer.IsOver()) {
+            Debug.Log($"showingTimer remaining = {showingTimer.GetRemainingTime()}");
+            Debug.Log("inside the loop");
+            yield return null;
         }
+        Debug.Log("after the loop");
+        //if (timeBeforeShowing > 0.0f) {
+        //    yield return new WaitForSeconds(timeBeforeShowing);
+        //}
         if (localizedMessage != null) {
             AsyncOperationHandle<string> handle = localizedMessage.GetLocalizedString();
             yield return handle;
