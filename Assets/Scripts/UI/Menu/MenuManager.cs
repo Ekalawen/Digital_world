@@ -21,7 +21,6 @@ public class MenuManager : MonoBehaviour {
     public static string LOCALE_INDEX_KEY = "localeIndexKey";
 
     [Header("Links")]
-    public MenuLevelSelector menuLevelSelector;
     public MenuOptions menuOptions;
     public LoadingMenu loadingMenu;
     public MenuBackgroundBouncing menuBouncingBackground;
@@ -108,7 +107,6 @@ public class MenuManager : MonoBehaviour {
 		Debug.Log("On a appuyé sur Tutoriel !");
         PlayerPrefs.SetString(HAVE_THINK_ABOUT_TUTORIAL_KEY, MenuManager.TRUE);
         //PlayerPrefs.SetString(MenuLevel.LEVEL_NAME_ID_KEY, "TutorialScene");
-        menuLevelSelector.CleanLevelIndice();
 
 		//SceneManager.LoadScene("TutorialScene");
         AsyncOperation loading = SceneManager.LoadSceneAsync("TutorialScene");

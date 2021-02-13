@@ -6,9 +6,27 @@ using UnityEngine.UI;
 
 public class MenuOptions : MonoBehaviour {
 
+    public enum PanelType {
+        CONTROLES,
+        AUDIO,
+        GAMEPLAY,
+        GRAPHISMS,
+        LANGUAGE,
+    };
+
+    [Header("Others menus")]
     public GameObject menuInitial;
     public GameObject menuOptions;
+    public GameObject mainPanel;
 
+    [Header("Panels")]
+    public GameObject panelControles;
+    public GameObject panelAudio;
+    public GameObject panelGameplay;
+    public GameObject panelGraphisms;
+    public GameObject panelLanguage;
+
+    [Header("Options")]
     public Slider sliderMusic;
     public Slider sliderSon;
     public Slider sliderMouse;
@@ -21,6 +39,8 @@ public class MenuOptions : MonoBehaviour {
     public static string GRIP_KEY = "gripKey";
     public static string LAST_LEVEL_KEY = "lastLevelKey";
 
+    protected bool hasPanelOpen = false;
+
     public void Run() {
         float probaSource = 0.03f;
         int distanceSource = 1;
@@ -31,6 +51,7 @@ public class MenuOptions : MonoBehaviour {
             probaSource, distanceSource, decroissanceSource, themes);
         menuOptions.SetActive(true);
         menuInitial.SetActive(false);
+        BackFromPanel();
 
         OnMusicVolumeChange(PlayerPrefs.GetFloat(MUSIC_VOLUME_KEY));
         OnSoundVolumeChange(PlayerPrefs.GetFloat(SOUND_VOLUME_KEY));
@@ -46,6 +67,14 @@ public class MenuOptions : MonoBehaviour {
     }
 
     public void Back() {
+        if(!hasPanelOpen) {
+            BackFromOptions();
+        } else {
+            BackFromPanel();
+        }
+    }
+
+    protected void BackFromOptions() {
         PlayerPrefs.Save();
         menuInitial.SetActive(true);
         menuOptions.SetActive(false);
@@ -89,5 +118,59 @@ public class MenuOptions : MonoBehaviour {
         int index = LocalizationSettings.AvailableLocales.Locales.IndexOf(LocalizationSettings.SelectedLocale);
         PlayerPrefs.SetInt(MenuManager.LOCALE_INDEX_KEY, index);
         PlayerPrefs.Save();
+    }
+
+    public void ChosePanel(PanelType panelType) {
+        mainPanel.SetActive(false);
+        hasPanelOpen = true;
+        CloseAllPanels();
+        Tooltip.Hide();
+        switch (panelType) {
+            case PanelType.CONTROLES:
+                panelControles.SetActive(true);
+                break;
+            case PanelType.AUDIO:
+                panelAudio.SetActive(true);
+                break;
+            case PanelType.GAMEPLAY:
+                panelGameplay.SetActive(true);
+                break;
+            case PanelType.GRAPHISMS:
+                panelGraphisms.SetActive(true);
+                break;
+            case PanelType.LANGUAGE:
+                panelLanguage.SetActive(true);
+                break;
+        }
+    }
+
+    public void ChosePanelControles() {
+        ChosePanel(PanelType.CONTROLES);
+    }
+    public void ChosePanelAudio() {
+        ChosePanel(PanelType.AUDIO);
+    }
+    public void ChosePanelGameplay() {
+        ChosePanel(PanelType.GAMEPLAY);
+    }
+    public void ChosePanelGraphisms() {
+        ChosePanel(PanelType.GRAPHISMS);
+    }
+    public void ChosePanelLanguage() {
+        ChosePanel(PanelType.LANGUAGE);
+    }
+
+    protected void CloseAllPanels() {
+        panelControles.SetActive(false);
+        panelAudio.SetActive(false);
+        panelGameplay.SetActive(false);
+        panelGraphisms.SetActive(false);
+        panelLanguage.SetActive(false);
+    }
+
+    public void BackFromPanel() {
+        hasPanelOpen = false;
+        mainPanel.SetActive(true);
+        CloseAllPanels();
     }
 }
