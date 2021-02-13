@@ -247,4 +247,10 @@ public class MenuOptions : MonoBehaviour {
         SetTitleText(mainTitle);
         CloseAllPanels();
     }
+
+    public void ResetMenu() {
+        hasPanelOpen = false;
+        mainPanel.SetActive(true);
+        CloseAllPanels();
+    }
 }

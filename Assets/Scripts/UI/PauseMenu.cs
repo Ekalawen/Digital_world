@@ -17,10 +17,12 @@ public class PauseMenu : MonoBehaviour {
             if(Input.GetKeyDown(KeyCode.Space)) {
                 Quitter();
             }
-            if(Input.GetKeyDown(KeyCode.O)) {
-                Options();
+            if(Input.GetKeyDown(KeyCode.Escape)) {
+                menuOptions.ResetMenu();
+                menuOptions.gameObject.SetActive(false);
+                Reprendre();
             }
-            // R and ESCAPE are already handled
+            // O and R are already handled
         }
     }
 
@@ -33,8 +35,9 @@ public class PauseMenu : MonoBehaviour {
     }
 
     public void Options() {
-        Tooltip.Hide();
+        menuOptions.gameObject.SetActive(true);
         menuOptions.Run();
+        Tooltip.Hide();
     }
 
     public void Quitter() {

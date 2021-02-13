@@ -116,9 +116,11 @@ public class GameManager : MonoBehaviour {
     }
 
 	void Update () {
-        //CheckQuitGame();
         CheckRestartGame();
+
         CheckPauseToggling();
+
+        CheckOptionsToggling();
 
         CheckCursorToggling();
 
@@ -127,7 +129,7 @@ public class GameManager : MonoBehaviour {
 #endif
     }
 
-    private void CheckPauseToggling() {
+    protected void CheckPauseToggling() {
         if (Input.GetKeyDown(KeyCode.Escape)) {
             if (!isPaused) {
                 if (eventManager.IsGameOver()) {
@@ -136,8 +138,16 @@ public class GameManager : MonoBehaviour {
                 } else {
                     Pause();
                 }
-            } else {
-                UnPause();
+            }
+            // Le UnPause se fait dans le PauseMenu ! :)
+        }
+    }
+
+    protected void CheckOptionsToggling() {
+        if (Input.GetKeyDown(KeyCode.O)) {
+            if (!isPaused && ! eventManager.IsGameOver()) {
+                Pause();
+                console.pauseMenu.GetComponentInChildren<PauseMenu>().Options();
             }
         }
     }
