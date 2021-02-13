@@ -70,11 +70,20 @@ public class MenuOptions : MonoBehaviour {
         menuOptions.SetActive(true);
         BackFromPanel();
         HideSomeOptionsInGame();
+        CenterInGamePanels();
 
         OnMusicVolumeChange(PlayerPrefs.GetFloat(MUSIC_VOLUME_KEY));
         OnSoundVolumeChange(PlayerPrefs.GetFloat(SOUND_VOLUME_KEY));
         OnMouseSpeedChange(PlayerPrefs.GetFloat(MOUSE_SPEED_KEY));
         OnGripActivationPress(PlayerPrefs.GetString(GRIP_KEY) == MenuManager.TRUE);
+    }
+
+    protected void CenterInGamePanels() {
+        if(isInGame) {
+            Vector2 pos = mainPanel.GetComponent<RectTransform>().anchoredPosition;
+            pos.y = -20;
+            mainPanel.GetComponent<RectTransform>().anchoredPosition = pos;
+        }
     }
 
     protected void HideSomeOptionsInGame() {
