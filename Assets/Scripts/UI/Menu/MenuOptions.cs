@@ -123,11 +123,15 @@ public class MenuOptions : MonoBehaviour {
     }
 
     public void OnSoundVolumeChange(float newVal) {
+        float oldVal = PlayerPrefs.GetFloat(SOUND_VOLUME_KEY);
         PlayerPrefs.SetFloat(SOUND_VOLUME_KEY, newVal);
         sliderSon.value = newVal;
         sliderSon.GetComponent<SliderScript>().OnChange(newVal);
         if(isInGame) {
             gm.soundManager.ApplyAudioVolumes();
+            if (newVal != oldVal) { // Pour éviter que ça fasse un son quand on ouvre le menu :)
+                gm.soundManager.PlayJumpClip(gm.player.transform.position);
+            }
         }
     }
 
