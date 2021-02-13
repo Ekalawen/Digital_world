@@ -78,13 +78,14 @@ public class Player : Character {
         base.Start();
     }
 
-    public void Initialize(Vector3 position, Vector2 orientationXY) {
+    public void Initialize(Vector3 position, Vector2 orientationXY)
+    {
         // On récupère le personnage
         personnage = gameObject;
         personnage.name = "Joueur";
-		controller = personnage.GetComponent<CharacterController> ();
+        controller = personnage.GetComponent<CharacterController>();
         gm = FindObjectOfType<GameManager>();
-        sensibilite = PlayerPrefs.GetFloat(MenuOptions.MOUSE_SPEED_KEY);
+        GetPlayerSensitivity();
         bSetUpRotation = true;
         sautTimer = new Timer(GetDureeTotaleSaut());
         sautTimer.SetOver();
@@ -99,7 +100,7 @@ public class Player : Character {
         camera.transform.RotateAround(camera.transform.position, cameraRight, orientationXY.x);
         camera.transform.RotateAround(camera.transform.position, up, orientationXY.y);
 
-		pointDebutSaut = transform.position;
+        pointDebutSaut = transform.position;
         slideLimit = controller.slopeLimit;
         ResetAuSol();
         ResetGrip();
@@ -109,11 +110,15 @@ public class Player : Character {
 
         // On empêche la souris de sortir de l'écran !
         Cursor.lockState = CursorLockMode.Locked;
-		Cursor.visible = false;
+        Cursor.visible = false;
 
         console = GameObject.FindObjectOfType<Console>();
 
         InitPouvoirs();
+    }
+
+    public void GetPlayerSensitivity() {
+        sensibilite = PlayerPrefs.GetFloat(MenuOptions.MOUSE_SPEED_KEY);
     }
 
     protected void InitPouvoirs() {

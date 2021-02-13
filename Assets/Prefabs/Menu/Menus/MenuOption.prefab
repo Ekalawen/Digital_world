@@ -476,7 +476,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8fbed266bd29914b84fef80bd899a8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  menuInitial: {fileID: 0}
+  isInGame: 0
+  menuPrecedent: {fileID: 0}
   menuOptions: {fileID: 8048471265298033819}
   mainPanel: {fileID: 5314482119167520159}
   panelControles: {fileID: 1950735539453855609}
@@ -488,6 +489,8 @@ MonoBehaviour:
   sliderSon: {fileID: 307418933096757659}
   sliderMouse: {fileID: 307418932854070389}
   toggleGrip: {fileID: 1596444337041240813}
+  resetButton: {fileID: 4227468481237914889}
+  panelLanguageButton: {fileID: 7578338313700669273}
 --- !u!114 &8048471265311957843
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1653,6 +1656,12 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 4337176850956255495}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &7578338313700669273 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6132519329659876958, guid: df108c3e51959b046aaa9a02ab191c65,
+    type: 3}
+  m_PrefabInstance: {fileID: 4337176850956255495}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8048471265780917079
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2046,6 +2055,12 @@ RectTransform:
 --- !u!224 &9213436782651237097 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1183701273442943422, guid: df108c3e51959b046aaa9a02ab191c65,
+    type: 3}
+  m_PrefabInstance: {fileID: 8048471265780917079}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &4227468481237914889 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6132519329659876958, guid: df108c3e51959b046aaa9a02ab191c65,
     type: 3}
   m_PrefabInstance: {fileID: 8048471265780917079}
   m_PrefabAsset: {fileID: 0}

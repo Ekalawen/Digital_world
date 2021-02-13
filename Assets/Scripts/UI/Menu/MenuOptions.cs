@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Localization.Settings;
@@ -14,8 +15,10 @@ public class MenuOptions : MonoBehaviour {
         LANGUAGE,
     };
 
+    public bool isInGame = false;
+
     [Header("Others menus")]
-    public GameObject menuInitial;
+    public GameObject menuPrecedent;
     public GameObject menuOptions;
     public GameObject mainPanel;
 
@@ -32,6 +35,10 @@ public class MenuOptions : MonoBehaviour {
     public Slider sliderMouse;
     public Toggle toggleGrip;
 
+    [Header("OtherLinks")]
+    public GameObject resetButton;
+    public GameObject panelLanguageButton;
+
     public static string MUSIC_VOLUME_KEY = "musicVolumeKey";
     public static string SOUND_VOLUME_KEY = "soundVolumeKey";
     public static string MOUSE_SPEED_KEY = "mouseSpeedKey";
@@ -40,30 +47,53 @@ public class MenuOptions : MonoBehaviour {
     public static string LAST_LEVEL_KEY = "lastLevelKey";
 
     protected bool hasPanelOpen = false;
+    protected GameManager gm;
 
     public void Run() {
-        float probaSource = 0.03f;
-        int distanceSource = 1;
-        float decroissanceSource = 0.003f;
-        List<ColorManager.Theme> themes = new List<ColorManager.Theme>();
-        themes.Add(ColorManager.Theme.BLEU);
-        menuInitial.GetComponent<MenuManager>().menuBouncingBackground.SetParameters(
-            probaSource, distanceSource, decroissanceSource, themes);
+        if(isInGame) {
+            gm = GameManager.Instance;
+        }
+        SetBackground();
+        menuPrecedent.SetActive(false);
         menuOptions.SetActive(true);
-        menuInitial.SetActive(false);
         BackFromPanel();
+        HideSomeOptionsInGame();
 
         OnMusicVolumeChange(PlayerPrefs.GetFloat(MUSIC_VOLUME_KEY));
         OnSoundVolumeChange(PlayerPrefs.GetFloat(SOUND_VOLUME_KEY));
         OnMouseSpeedChange(PlayerPrefs.GetFloat(MOUSE_SPEED_KEY));
-        OnGripActivationPress(PlayerPrefs.GetString(GRIP_KEY) == "True");
+        OnGripActivationPress(PlayerPrefs.GetString(GRIP_KEY) == MenuManager.TRUE);
+    }
+
+    protected void HideSomeOptionsInGame() {
+        if(isInGame) {
+            resetButton.SetActive(false);
+            panelLanguageButton.SetActive(false);
+        }
+    }
+
+    protected void SetBackground() {
+        if (!isInGame) {
+            float probaSource = 0.03f;
+            int distanceSource = 1;
+            float decroissanceSource = 0.003f;
+            List<ColorManager.Theme> themes = new List<ColorManager.Theme>();
+            themes.Add(ColorManager.Theme.BLEU);
+            menuPrecedent.GetComponent<MenuManager>().menuBouncingBackground.SetParameters(
+                probaSource, distanceSource, decroissanceSource, themes);
+        }
     }
 
     private void Update() {
-		// Si on appui sur Echap on quitte
-		if(!MenuManager.DISABLE_HOTKEYS && menuOptions.activeSelf == true && Input.GetKeyDown(KeyCode.Escape)) {
-            Back();
-		}
+        CheckForEscape();
+    }
+
+    protected void CheckForEscape() {
+        if(Input.GetKeyDown(KeyCode.Escape) && menuOptions.activeSelf == true) {
+            if(isInGame || !MenuManager.DISABLE_HOTKEYS) {
+                Back();
+            }
+        }
     }
 
     public void Back() {
@@ -76,31 +106,42 @@ public class MenuOptions : MonoBehaviour {
 
     protected void BackFromOptions() {
         PlayerPrefs.Save();
-        menuInitial.SetActive(true);
+        menuPrecedent.SetActive(true);
         menuOptions.SetActive(false);
-        menuInitial.GetComponent<MenuManager>().SetRandomBackground();
+        if (!isInGame) {
+            menuPrecedent.GetComponent<MenuManager>().SetRandomBackground();
+        }
     }
 
     public void OnMusicVolumeChange(float newVal) {
         PlayerPrefs.SetFloat(MUSIC_VOLUME_KEY, newVal);
         sliderMusic.value = newVal;
         sliderMusic.GetComponent<SliderScript>().OnChange(newVal);
+        if(isInGame) {
+            gm.soundManager.ApplyAudioVolumes();
+        }
     }
 
     public void OnSoundVolumeChange(float newVal) {
         PlayerPrefs.SetFloat(SOUND_VOLUME_KEY, newVal);
         sliderSon.value = newVal;
         sliderSon.GetComponent<SliderScript>().OnChange(newVal);
+        if(isInGame) {
+            gm.soundManager.ApplyAudioVolumes();
+        }
     }
 
     public void OnMouseSpeedChange(float newVal) {
         PlayerPrefs.SetFloat(MOUSE_SPEED_KEY, newVal);
         sliderMouse.value = newVal;
         sliderMouse.GetComponent<SliderScript>().OnChange(newVal);
+        if(isInGame) {
+            gm.player.GetPlayerSensitivity();
+        }
     }
 
     public void OnGripActivationPress(bool active) {
-        PlayerPrefs.SetString(GRIP_KEY, active.ToString());
+        PlayerPrefs.SetString(GRIP_KEY, MenuManager.BoolToString(active));
         toggleGrip.isOn = active;
     }
 

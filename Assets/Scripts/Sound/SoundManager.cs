@@ -45,13 +45,32 @@ public class SoundManager : MonoBehaviour {
     protected List<AudioSource> availableSources;
     protected List<AudioSource> usedSources;
     protected AudioSource normalMusicSource;
+    protected float musicVolume;
+    protected float soundVolume;
 
     public void Initialize() {
+        GetAudioVolumes();
         globalSoundsFolder = new GameObject("Sounds").transform;
-        //globalSource.volume = PlayerPrefs.GetFloat(MenuOptions.MUSIC_VOLUME_KEY);
         availableSources = new List<AudioSource>();
         usedSources = new List<AudioSource>();
         normalMusicSource = PlayClipsOnSource(normalMusics);
+    }
+
+    public void GetAudioVolumes() {
+        musicVolume = PlayerPrefs.GetFloat(MenuOptions.MUSIC_VOLUME_KEY);
+        soundVolume = PlayerPrefs.GetFloat(MenuOptions.SOUND_VOLUME_KEY);
+    }
+
+    public void ApplyAudioVolumes() {
+        float oldSoundVolume = soundVolume;
+        float oldMusicVolume = musicVolume;
+        GetAudioVolumes();
+        foreach(AudioSource source in usedSources) {
+            float sourceRelativeVolume = source.GetComponent<AudioClipParamsHolder>().clipParams.relativeVolume;
+            source.volume = sourceRelativeVolume * soundVolume * AudioClipParams.BASE_VOLUME;
+        }
+        float musicSourceRelativeVolume = normalMusicSource.GetComponent<AudioClipParamsHolder>().clipParams.relativeVolume;
+        normalMusicSource.volume = musicSourceRelativeVolume * musicVolume * AudioClipParams.BASE_VOLUME;
     }
 
     public AudioSource GetAvailableSource() {
@@ -81,6 +100,7 @@ public class SoundManager : MonoBehaviour {
 
         // Sinon on va devoir en créer une ! :)
         AudioSource newSource = new GameObject("Source").AddComponent<AudioSource>();
+        AudioClipParamsHolder clipHolder = newSource.gameObject.AddComponent<AudioClipParamsHolder>();
         usedSources.Add(newSource);
         return newSource;
     }
@@ -208,9 +228,9 @@ public class SoundManager : MonoBehaviour {
 
         // On set le volume
         if(audioClipParams.bIsMusic) {
-            source.volume = PlayerPrefs.GetFloat(MenuOptions.MUSIC_VOLUME_KEY);
+            source.volume = musicVolume;
         } else {
-            source.volume = PlayerPrefs.GetFloat(MenuOptions.SOUND_VOLUME_KEY);
+            source.volume = soundVolume;
         }
         source.volume *= AudioClipParams.BASE_VOLUME * audioClipParams.relativeVolume;
 
@@ -221,6 +241,7 @@ public class SoundManager : MonoBehaviour {
         // On get le bon clip
         AudioClip clip = audioClipParams.clips[Random.Range(0, audioClipParams.clips.Count)];
         source.clip = clip;
+        source.GetComponent<AudioClipParamsHolder>().clipParams = audioClipParams;
 
         // On vérifie si c'est reverse ou pas
         if(audioClipParams.bReverse) {

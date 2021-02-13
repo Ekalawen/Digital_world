@@ -180,4 +180,8 @@ public class MenuManager : MonoBehaviour {
             LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[index];
         }
     }
+
+    public static string BoolToString(bool input) {
+        return input ? TRUE : FALSE;
+    }
 }

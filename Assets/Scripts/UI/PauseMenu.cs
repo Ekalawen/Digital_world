@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PauseMenu : MonoBehaviour {
 
+    public MenuOptions menuOptions;
+
     protected GameManager gm;
 
     public void Start() {
@@ -31,7 +33,7 @@ public class PauseMenu : MonoBehaviour {
     }
 
     public void Options() {
-        // TODO
+        menuOptions.Run();
     }
 
     public void Quitter() {
