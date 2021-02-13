@@ -582,7 +582,7 @@ public class Player : Character {
     }
 
     protected void TryUsePouvoirs() {
-        if (gm.eventManager.IsGameOver())
+        if (gm.eventManager.IsGameOver() || gm.IsPaused())
             return;
         // A
         if(Input.GetKeyDown(KeyCode.A)) {
