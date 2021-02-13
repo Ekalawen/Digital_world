@@ -108,6 +108,7 @@ public class MenuOptions : MonoBehaviour {
         PlayerPrefs.Save();
         menuPrecedent.SetActive(true);
         menuOptions.SetActive(false);
+        Tooltip.Hide();
         if (!isInGame) {
             menuPrecedent.GetComponent<MenuManager>().SetRandomBackground();
         }

@@ -33,6 +33,7 @@ public class PauseMenu : MonoBehaviour {
     }
 
     public void Options() {
+        Tooltip.Hide();
         menuOptions.Run();
     }
 
