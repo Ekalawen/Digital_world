@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
+using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.UI;
 
 public class MenuOptions : MonoBehaviour {
@@ -38,6 +41,15 @@ public class MenuOptions : MonoBehaviour {
     [Header("OtherLinks")]
     public GameObject resetButton;
     public GameObject panelLanguageButton;
+
+    [Header("Titles")]
+    public TMP_Text titleText;
+    public LocalizedString mainTitle;
+    public LocalizedString controleTitle;
+    public LocalizedString audioTitle;
+    public LocalizedString gameplayTitle;
+    public LocalizedString graphismsTitle;
+    public LocalizedString languageTitle;
 
     public static string MUSIC_VOLUME_KEY = "musicVolumeKey";
     public static string SOUND_VOLUME_KEY = "soundVolumeKey";
@@ -174,20 +186,35 @@ public class MenuOptions : MonoBehaviour {
         switch (panelType) {
             case PanelType.CONTROLES:
                 panelControles.SetActive(true);
+                SetTitleText(controleTitle);
                 break;
             case PanelType.AUDIO:
                 panelAudio.SetActive(true);
+                SetTitleText(audioTitle);
                 break;
             case PanelType.GAMEPLAY:
                 panelGameplay.SetActive(true);
+                SetTitleText(gameplayTitle);
                 break;
             case PanelType.GRAPHISMS:
                 panelGraphisms.SetActive(true);
+                SetTitleText(graphismsTitle);
                 break;
             case PanelType.LANGUAGE:
                 panelLanguage.SetActive(true);
+                SetTitleText(languageTitle);
                 break;
         }
+    }
+
+    protected void SetTitleText(LocalizedString localizedString) {
+        StartCoroutine(CSetTitleText(localizedString));
+    }
+
+    protected IEnumerator CSetTitleText(LocalizedString localizedString) {
+        AsyncOperationHandle<string> handle = localizedString.GetLocalizedString();
+        yield return handle;
+        titleText.text = handle.Result;
     }
 
     public void ChosePanelControles() {
@@ -217,6 +244,7 @@ public class MenuOptions : MonoBehaviour {
     public void BackFromPanel() {
         hasPanelOpen = false;
         mainPanel.SetActive(true);
+        SetTitleText(mainTitle);
         CloseAllPanels();
     }
 }
