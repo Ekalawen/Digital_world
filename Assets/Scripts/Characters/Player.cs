@@ -357,25 +357,38 @@ public class Player : Character {
 
     protected Vector3 UpdateHorizontalMouvement(Vector3 move) {
         if (!bIsStun) {
-            move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+            move = GetHorizontalMouvementInput();
             move = camera.transform.TransformDirection(move);
             float magnitude = move.magnitude;
 
             // On va à l'horizontale si il y a de la gravité, sinon on peut "nager"
-            if (gm.gravityManager.HasGravity()) {
+            if (gm.gravityManager.HasGravity())
+            {
                 move = Vector3.ProjectOnPlane(move, gm.gravityManager.Up());
                 move = move.normalized * magnitude;
-            } else {
-                if (Input.GetKey(KeyCode.LeftShift)) {
+            }
+            else
+            {
+                if (Input.GetKey(KeyCode.LeftShift))
+                {
                     move += gm.gravityManager.Down();
                 }
-                if (Input.GetKey(KeyCode.Space)) {
+                if (Input.GetKey(KeyCode.Space))
+                {
                     move += gm.gravityManager.Up();
                 }
             }
         }
         move *= vitesseDeplacement;
         return move;
+    }
+
+    protected Vector3 GetHorizontalMouvementInput() {
+        if (KeybindingDropdown.GetKeybinding() == KeybindingDropdown.KeybindingType.AZERTY) {
+            return new Vector3(Input.GetAxis("HorizontalAZERTY"), 0, Input.GetAxis("VerticalAZERTY"));
+        } else {
+            return new Vector3(Input.GetAxis("HorizontalQWERTY"), 0, Input.GetAxis("VerticalQWERTY"));
+        }
     }
 
     protected void AddDoubleJump() {
