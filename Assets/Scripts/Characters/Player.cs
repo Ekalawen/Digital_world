@@ -303,7 +303,7 @@ public class Player : Character {
                         // On peut se décrocher du mur en appuyant sur shift
                         etat = EtatPersonnage.EN_CHUTE;
                         pointDebutSaut = transform.position;
-                        origineSaut = EtatPersonnage.AU_SOL;
+                        origineSaut = EtatPersonnage.AU_MUR;
                         normaleOrigineSaut = normaleMur;
                         dureeMurRestante = dureeMurRestante - (Time.timeSinceLevelLoad - debutMur);
 
@@ -402,6 +402,12 @@ public class Player : Character {
     protected void ResetAuSol() {
         ResetDoubleJump();
         ResetDureeMur();
+        ResetOrigineSaut();
+    }
+
+    protected void ResetOrigineSaut() {
+        normaleOrigineSaut = Vector3.zero;
+        origineSaut = EtatPersonnage.AU_SOL;
     }
 
     protected void ResetDoubleJump() {
@@ -502,7 +508,8 @@ public class Player : Character {
         MajHauteurMaxSaut();
 	}
 
-    void OnControllerColliderHit(ControllerColliderHit hit) {
+    void OnControllerColliderHit(ControllerColliderHit hit)
+    {
         //// Si on a touché un cube spécial, on fait une action !
         Cube cube = hit.gameObject.GetComponent<Cube>();
         if (cube != null && DoubleCheckInteractWithCube(cube))
@@ -511,19 +518,28 @@ public class Player : Character {
         // On regarde si le personnage s'accroche à un mur !
         // Pour ça il doit être dans les airs !
         // Et il ne doit PAS être en train d'appuyer sur SHIFT
-        if ((etat == EtatPersonnage.EN_SAUT || etat == EtatPersonnage.EN_CHUTE) && !Input.GetKey(KeyCode.LeftShift)) {
+        if (CanGrip()) {
             // Si on vient d'un mur, on vérifie que la normale du mur précédent est suffisamment différente de la normale actuelle !
-            Vector3 n = hit.normal;
-            if (origineSaut == EtatPersonnage.AU_SOL
-            || (origineSaut == EtatPersonnage.AU_MUR && Vector3.Angle(normaleOrigineSaut, n) > 10)) {
+            Vector3 wallNormal = hit.normal;
+            if (CanGripToWall(wallNormal)) {
                 // Si la normale est au moins un peu à l'horizontale !
                 Vector3 up = gm.gravityManager.Up();
-                Vector3 nProject = Vector3.ProjectOnPlane(n, up);
-                if (nProject != Vector3.zero && Mathf.Abs(Vector3.Angle(n, nProject)) < slideLimit) {
+                Vector3 nProject = Vector3.ProjectOnPlane(wallNormal, up);
+                if (nProject != Vector3.zero && Mathf.Abs(Vector3.Angle(wallNormal, nProject)) < slideLimit) {
                     GripOn(hit);
                 }
             }
         }
+    }
+
+    protected bool CanGrip() {
+        // AU_MUR pour pouvoir s'accrocher à un mur depuis un autre mur ! :)
+        return (etat == EtatPersonnage.EN_SAUT || etat == EtatPersonnage.EN_CHUTE || etat == EtatPersonnage.AU_MUR) && !Input.GetKey(KeyCode.LeftShift);
+    }
+
+    protected bool CanGripToWall(Vector3 wallNormal) {
+        return origineSaut == EtatPersonnage.AU_SOL
+           || (origineSaut == EtatPersonnage.AU_MUR && Vector3.Angle(normaleOrigineSaut, wallNormal) > 10);
     }
 
     protected void GripOn(ControllerColliderHit hit) {
@@ -532,7 +548,12 @@ public class Player : Character {
         debutMur = Time.timeSinceLevelLoad;
         normaleMur = hit.normal;
         pointMur = hit.point;
+
+        // Pour pouvoir s'accrocher à un autre mur depuis ce mur-ci !
+        origineSaut = EtatPersonnage.AU_MUR;
+        normaleOrigineSaut = normaleMur;
         gm.postProcessManager.UpdateGripEffect(previousEtat);
+
         //if (etat != previousEtat)
         //    gm.soundManager.PlayGripClip(transform.position);
     }
