@@ -20,6 +20,7 @@ public class Player : Character {
 	public float dureeMur; // le temps que l'on peut rester accroché au mur
 	public float distanceMurMax; // la distance maximale de laquelle on peut s'éloigner du mur
     public float sensibilite; // la sensibilité de la souris
+    public float dureeCanJumpAfterFalling = 0.1f; // La durée pendant laquelle on peut encore sauter si on vient de tomber depuis l'état AU_SOL
 
     [Header("Pouvoirs")]
     public GameObject pouvoirAPrefab; // Le pouvoir de la touche A (souvent la détection)
@@ -58,6 +59,7 @@ public class Player : Character {
     protected float slideLimit; // La limite à partir de laquelle on va slider sur une surface.
     protected float skinWidthCoef = 1.1f;
     protected float lastAvancementSaut;
+    protected Timer timerLastTimeAuSol;
 
     protected IPouvoir pouvoirA; // Le pouvoir de la touche A (souvent la détection)
     protected IPouvoir pouvoirE; // Le pouvoir de la touche E (souvent la localisation)
@@ -91,6 +93,8 @@ public class Player : Character {
         sautTimer.SetOver();
         ennemiCaptureTimer = new Timer(5);
         onHitEvent = new UnityEvent();
+        timerLastTimeAuSol = new Timer(dureeCanJumpAfterFalling);
+        timerLastTimeAuSol.SetOver();
 
         transform.position = position;
 
@@ -232,6 +236,7 @@ public class Player : Character {
                 etat = EtatPersonnage.EN_SAUT;
             } else if (isGrounded) {
 				etat = EtatPersonnage.AU_SOL;
+                timerLastTimeAuSol.Reset();
                 if (etat != etatAvant) {
                     gm.soundManager.PlayLandClip(transform.position);
                 }
@@ -290,10 +295,16 @@ public class Player : Character {
                     break;
 
                 case EtatPersonnage.EN_CHUTE:
-                    if (Input.GetButtonDown("Jump") && gm.gravityManager.HasGravity() && CanDoubleJump()) {
-                        AddDoubleJump();
-                        Jump(from: origineSaut);
-                        move = ApplyJumpMouvement(move);
+                    if (Input.GetButtonDown("Jump")) {
+                        if(!timerLastTimeAuSol.IsOver()) { // Permet de sauter quelques frames après être tombé d'une plateforme !
+                            timerLastTimeAuSol.SetOver();
+                            Jump(from: EtatPersonnage.AU_SOL);
+                            move = ApplyJumpMouvement(move);
+                        } else if (gm.gravityManager.HasGravity() && CanDoubleJump()) {
+                            AddDoubleJump();
+                            Jump(from: origineSaut);
+                            move = ApplyJumpMouvement(move);
+                        }
                     }
                     break;
 
