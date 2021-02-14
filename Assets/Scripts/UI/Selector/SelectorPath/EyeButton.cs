@@ -46,7 +46,6 @@ public class EyeButton : MonoBehaviour {
     protected void SetEnableOnlyDisplay(bool value) {
         OnlyDisplayOnTyping onlyDisplay = inputField.gameObject.GetComponent<OnlyDisplayOnTyping>();
         if (onlyDisplay != null) {
-            Debug.Log($"New value = {value}");
             onlyDisplay.enabled = value;
         }
     }
