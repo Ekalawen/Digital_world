@@ -51,6 +51,7 @@ public class Console : MonoBehaviour {
 
     [Header("Pouvoirs")]
     public PouvoirDisplayInGame pouvoirDisplayA;
+
     public PouvoirDisplayInGame pouvoirDisplayE;
     public PouvoirDisplayInGame pouvoirDisplayLeftClick;
     public PouvoirDisplayInGame pouvoirDisplayRightClick;
@@ -60,6 +61,7 @@ public class Console : MonoBehaviour {
 	public Text importantText; // Là où l'on affiche les informations importantes
     public GameObject escapeButton; // Le truc qui clignote pour nous dire d'appuyer sur Escape à la fin du jeu !
     public GameObject pauseMenu;
+    public CounterDisplayer dataCountDisplayer;
 
 
     [HideInInspector]
@@ -118,6 +120,8 @@ public class Console : MonoBehaviour {
 
         // Init les pouvoirs displays
         InitPouvoirsDisplays();
+
+        SetDataCountText(Lumiere.GetCurrentDataCount());
     }
 
     public void OnLumiereCaptured() {
@@ -964,5 +968,14 @@ public class Console : MonoBehaviour {
 
     public void ClosePauseMenu() {
         pauseMenu.SetActive(false);
+    }
+
+    public void SetDataCountText(int dataCount) {
+        dataCountDisplayer.Display($"Data Count : {dataCount.ToString()}");
+    }
+
+    public void AddToDataCountText(int dataCount, int dataCountAdded) {
+        SetDataCountText(dataCount);
+        dataCountDisplayer.AddVolatileText($"+ {dataCountAdded.ToString()}", dataCountDisplayer.GetTextColor());
     }
 }

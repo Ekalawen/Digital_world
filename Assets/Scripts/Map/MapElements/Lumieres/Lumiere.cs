@@ -71,10 +71,17 @@ public class Lumiere : MonoBehaviour {
         gm.timerManager.AddTime(timeBonus);
     }
 
-    protected void AddToDataCount() {
+    public static int GetCurrentDataCount() {
         string key = SceneManager.GetActiveScene().name + DATA_COUNT_KEY;
         int dataCount = PlayerPrefs.HasKey(key) ? PlayerPrefs.GetInt(key) : 0;
-        PlayerPrefs.SetInt(key, dataCount + 1);
+        return dataCount;
+    }
+
+    protected void AddToDataCount() {
+        string key = SceneManager.GetActiveScene().name + DATA_COUNT_KEY;
+        int dataCount = GetCurrentDataCount() + 1;
+        PlayerPrefs.SetInt(key, dataCount);
+        gm.console.AddToDataCountText(dataCount, 1);
     }
 
     private void AutoDestroy() {
