@@ -1,11 +1,13 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Pointeur : MonoBehaviour {
 
-    public RawImage pointeurImage;
+    public RawImage auMurPointeur;
+    public RawImage auSolPointeur;
 
     [Header("Couleurs")]
     public Color auSolColor;
@@ -23,26 +25,38 @@ public class Pointeur : MonoBehaviour {
 
     void Start() {
         gm = GameManager.Instance;
+        auSolPointeur.color = auSolColor;
+        auSolPointeur.rectTransform.sizeDelta = Vector2.one * auSolScale;
     }
 
     void Update() {
         switch(gm.player.GetEtat()) {
             case Player.EtatPersonnage.AU_SOL:
-                pointeurImage.color = auSolColor;
-                pointeurImage.rectTransform.sizeDelta = Vector2.one * auSolScale;
+                auMurPointeur.color = auSolColor;
+                auMurPointeur.rectTransform.sizeDelta = Vector2.one * auSolScale;
                 break;
             case Player.EtatPersonnage.EN_SAUT:
-                pointeurImage.color = enSautColor;
-                pointeurImage.rectTransform.sizeDelta = Vector2.one * enSautScale;
+                auMurPointeur.color = enSautColor;
+                auMurPointeur.rectTransform.sizeDelta = Vector2.one * enSautScale;
                 break;
             case Player.EtatPersonnage.EN_CHUTE:
-                pointeurImage.color = enChuteColor;
-                pointeurImage.rectTransform.sizeDelta = Vector2.one * enChuteScale;
+                auMurPointeur.color = enChuteColor;
+                auMurPointeur.rectTransform.sizeDelta = Vector2.one * enChuteScale;
                 break;
             case Player.EtatPersonnage.AU_MUR:
-                pointeurImage.color = auMurColor;
-                pointeurImage.rectTransform.sizeDelta = Vector2.one * auMurScale;
+                auMurPointeur.color = GetFinalColorAuMur();
+                auMurPointeur.rectTransform.sizeDelta = Vector2.one * GetFinalScaleAuMur();
                 break;
         }
+    }
+
+    protected Color GetFinalColorAuMur() {
+        float avancement = gm.player.GetDureeRestanteMur() / gm.player.dureeMur;
+        return ColorManager.InterpolateColors(auSolColor, auMurColor, avancement);
+    }
+
+    protected float GetFinalScaleAuMur() {
+        float avancement = gm.player.GetDureeRestanteMur() / gm.player.dureeMur;
+        return MathCurves.Linear(auSolScale, auMurScale, avancement);
     }
 }

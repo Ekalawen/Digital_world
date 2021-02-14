@@ -53,7 +53,7 @@ public class Player : Character {
 	protected Vector3 normaleMur; // la normale au mur sur lequel le personnage est accroché !
 	protected Vector3 pointMur; // un point du mur sur lequel le personnage est accroché ! En effet, la normale ne suffit pas :p
     protected Vector3 normaleSol; // La normale au sol lorsque l'on est au sol et que l'on essaye de slider vers le bas.
-    protected float dureeMurRestante; // Le temps qu'il nous reste à être accroché au mur (utile pour les shifts qui peuvent nous décrocher)
+    protected Timer dureeMurTimer; // Le temps qu'il nous reste à être accroché au mur (utile pour les shifts qui peuvent nous décrocher)
     protected int nbDoublesSautsMax = 0; // Nombre de doubles sauts
     protected int nbDoublesSautsCourrant = 0; // Le nombre de doubles sauts déjà utilisés
     protected float slideLimit; // La limite à partir de laquelle on va slider sur une surface.
@@ -95,6 +95,8 @@ public class Player : Character {
         onHitEvent = new UnityEvent();
         timerLastTimeAuSol = new Timer(dureeCanJumpAfterFalling);
         timerLastTimeAuSol.SetOver();
+        dureeMurTimer = new Timer(dureeMur);
+        dureeMurTimer.SetOver();
 
         transform.position = position;
 
@@ -316,14 +318,14 @@ public class Player : Character {
                         pointDebutSaut = transform.position;
                         origineSaut = EtatPersonnage.AU_MUR;
                         normaleOrigineSaut = normaleMur;
-                        dureeMurRestante = dureeMurRestante - (Time.timeSinceLevelLoad - debutMur);
+                        //dureeMurTimer = dureeMurTimer - (Time.timeSinceLevelLoad - debutMur);
 
                     } else if (Input.GetButtonDown("Jump") && gm.gravityManager.HasGravity()) {
                         // On peut encore sauter quand on est au mur ! 
                         // Mais il faut appuyer à nouveau !
                         Jump(from: EtatPersonnage.AU_MUR);
                         move = ApplyJumpMouvement(move);
-                        dureeMurRestante = dureeMur;
+                        //dureeMurTimer = dureeMur;
 
                     } else if (Input.GetButton("Jump")) {
                         // On a le droit de terminer son saut lorsqu'on touche un mur
@@ -337,14 +339,12 @@ public class Player : Character {
                     // Ou que l'on s'éloigne trop du mur on tombe
                     Vector3 pos2mur = transform.position - pointMur;
                     float distanceMur = (pos2mur - Vector3.ProjectOnPlane(pos2mur, normaleMur)).magnitude; // pourtant c'est clair non ? Fais un dessins si tu comprends pas <3
-                    if ((Time.timeSinceLevelLoad - debutMur) >= dureeMurRestante
-                        || distanceMur >= distanceMurMax)
-                    {
+                    //if ((Time.timeSinceLevelLoad - debutMur) >= dureeMurTimer
+                    if (dureeMurTimer.IsOver() || distanceMur >= distanceMurMax) {
                         etat = EtatPersonnage.EN_CHUTE;
                         pointDebutSaut = transform.position;
                         origineSaut = EtatPersonnage.AU_MUR;
                         normaleOrigineSaut = normaleMur;
-                        dureeMurRestante = dureeMur;
                     }
 
                     // Et on veut aussi vérifier que le mur continue encore à nos cotés !
@@ -356,7 +356,6 @@ public class Player : Character {
                         pointDebutSaut = transform.position;
                         origineSaut = EtatPersonnage.AU_MUR;
                         normaleOrigineSaut = normaleMur;
-                        dureeMurRestante = dureeMur;
                     }
                     break;
                 default: break;
@@ -426,7 +425,7 @@ public class Player : Character {
     }
 
     protected void ResetDureeMur() {
-        dureeMurRestante = dureeMur;
+        dureeMurTimer.Reset();
     }
 
     void UpdateCapturedByEnnemiTest() {
@@ -559,6 +558,7 @@ public class Player : Character {
         debutMur = Time.timeSinceLevelLoad;
         normaleMur = hit.normal;
         pointMur = hit.point;
+        dureeMurTimer.Reset();
 
         // Pour pouvoir s'accrocher à un autre mur depuis ce mur-ci !
         origineSaut = EtatPersonnage.AU_MUR;
@@ -733,6 +733,10 @@ public class Player : Character {
 
     public void RegisterOnHit(UnityAction call) {
         onHitEvent.AddListener(call);
+    }
+
+    public float GetDureeRestanteMur() {
+        return dureeMurTimer.GetRemainingTime();
     }
 }
 
