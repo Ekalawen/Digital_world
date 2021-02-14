@@ -3,9 +3,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.VFX;
 
 public class Lumiere : MonoBehaviour {
+
+    public static string DATA_COUNT_KEY = "dataCountKey";
 
     public enum LumiereType {
         NORMAL,
@@ -51,6 +54,8 @@ public class Lumiere : MonoBehaviour {
 
         gm.map.RemoveLumiere(this);
 
+        AddToDataCount();
+
         AutoDestroy();
 
         CapturedSpecific();
@@ -64,6 +69,12 @@ public class Lumiere : MonoBehaviour {
         ScreenShakeOnLumiereCapture();
 
         gm.timerManager.AddTime(timeBonus);
+    }
+
+    protected void AddToDataCount() {
+        string key = SceneManager.GetActiveScene().name + DATA_COUNT_KEY;
+        int dataCount = PlayerPrefs.HasKey(key) ? PlayerPrefs.GetInt(key) : 0;
+        PlayerPrefs.SetInt(key, dataCount + 1);
     }
 
     private void AutoDestroy() {

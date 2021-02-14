@@ -11,7 +11,6 @@ public class MenuManager : MonoBehaviour {
     static MenuManager _instance;
     public static MenuManager Instance { get { return _instance ?? (_instance = new GameObject().AddComponent<MenuManager>()); } }
 
-
     public static bool DISABLE_HOTKEYS = false;
     public static string FIRST_TIME_CONNEXION_KEY = "firstTimeConnexionKey";
     public static string HAVE_THINK_ABOUT_TUTORIAL_KEY = "haveThinkAboutTutorialKey";
