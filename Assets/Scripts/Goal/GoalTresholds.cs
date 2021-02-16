@@ -5,11 +5,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "GoalTresholds", menuName = "GoalTresholds")]
 public class GoalTresholds : ScriptableObject {
 
-    public enum GoalType {
-        DATA,
-        BLOCK,
-    }
-
-    public GoalType type;
+    public GoalManager.GoalType type;
     public List<int> tresholds;
 }

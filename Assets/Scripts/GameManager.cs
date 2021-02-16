@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour {
     public GameObject historyManagerPrefab; // Pour retenir des infos sur la partie !
     public GameObject flockManagerPrefab; // Pour gérer les flock controllers !
     public GameObject cheatCodeManagerPrefab; // Pour gérer les cheat codes ! :)
+    public GameObject goalManagerPrefab; // Pour gérer les goal tresholds ! :)
 
     [HideInInspector]
 	public MapManager map;
@@ -62,6 +63,8 @@ public class GameManager : MonoBehaviour {
     [HideInInspector]
     public CheatCodeManager cheatCodeManager;
     [HideInInspector]
+    public GoalManager goalManager;
+    [HideInInspector]
     public GameObject managerFolder;
     [HideInInspector]
     public bool partieDejaTerminee = false;
@@ -77,6 +80,7 @@ public class GameManager : MonoBehaviour {
         managerFolder = new GameObject("Managers");
         timerManager = Instantiate(timerManagerPrefab, managerFolder.transform).GetComponent<TimerManager>();
         gravityManager = Instantiate(gravityManagerPrefab, managerFolder.transform).GetComponent<GravityManager>();
+        goalManager = Instantiate(goalManagerPrefab, managerFolder.transform).GetComponent<GoalManager>();
 		map = Instantiate(mapManagerPrefab, managerFolder.transform).GetComponent<MapManager>();
         player = Instantiate(playerPrefab).GetComponent<Player>();
 		eventManager = Instantiate(eventManagerPrefab, managerFolder.transform).GetComponent<EventManager>();
@@ -98,6 +102,7 @@ public class GameManager : MonoBehaviour {
     protected virtual void Initialize() {
         timerManager.Initialize();
         gravityManager.Initialize();
+        goalManager.Initialize();
         map.Initialize();
         Vector3 playerPosition = map.GetPlayerStartPosition();
         Vector2 playerOrientationXY = map.GetPlayerStartOrientationXY(playerPosition);
