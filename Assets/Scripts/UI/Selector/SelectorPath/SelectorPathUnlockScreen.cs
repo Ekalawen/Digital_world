@@ -152,19 +152,14 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         if (!selectorManager.HasSelectorPathUnlockScreenOpen())
             return;
         int currentTreshold = GetCurrentTreshold();
-        int firstTreshold = new TresholdText(selectorPath.GetDataHackeesTextAsset().text).GetFirstFragment().treshold;
-        //if (currentTreshold == 0 || currentTreshold < firstTreshold) {
-        //    OpenDonneesHackeesJamaisHackee(firstTreshold);
-        //} else {
-            OpenDonneesHackeesWithTreshold(currentTreshold);
-        //}
+        OpenDonneesHackeesWithCurrentTreshold(currentTreshold);
         selectorPath.HighlightPath(false);
         HighlightDataHackees(false);
     }
 
     protected int GetCurrentTreshold() {
         if (GetStartLevelType() == MenuLevel.LevelType.REGULAR)
-            return selectorPath.startLevel.menuLevel.GetNbWins();
+            return selectorPath.startLevel.menuLevel.GetDataCount();
         else
             return (int)selectorPath.startLevel.menuLevel.GetBestScore();
     }
@@ -173,7 +168,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         return selectorPath.startLevel.menuLevel.levelType;
     }
 
-    protected void OpenDonneesHackeesWithTreshold(int treshold) {
+    protected void OpenDonneesHackeesWithCurrentTreshold(int currentTreshold) {
         selectorManager.popup.Initialize(
             title: selectorManager.strings.dataHackees.GetLocalizedString().Result,
             useTextAsset: true,
@@ -181,18 +176,19 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
             theme: TexteExplicatif.Theme.NEUTRAL);
         AddReplacementForDonneesHackeesToPopup(selectorManager.popup);
         selectorManager.popup.InitTresholdText();
-        AddNextPallierMessage(selectorManager.popup, currentTreshold: treshold);
+        ReplaceTresholdsWithGoalTresholds(selectorManager.popup, selectorPath.goalTresholds);
+        AddNextPallierMessage(selectorManager.popup, currentTreshold: currentTreshold);
         selectorManager.popup.Run(textTreshold: selectorManager.popup.GetMaxTreshold(), shouldInitTresholdText: false);
     }
 
-    protected void OpenDonneesHackeesJamaisHackee(int firstTreshold) {
-        string unite = selectorManager.GetUnitesString(firstTreshold, GetStartLevelType());
-        LocalizedString texte = selectorManager.strings.dataHackeesJamaisHackeesTexte;
-        texte.Arguments = new object[] { unite };
-        selectorManager.RunPopup(
-            title: selectorManager.strings.dataHackees,
-            text: texte,
-            theme: TexteExplicatif.Theme.NEUTRAL);
+    protected void ReplaceTresholdsWithGoalTresholds(TexteExplicatif texteExplicatif, GoalTresholds goalTresholds) {
+        if(texteExplicatif.GetTresholdText().GetAllFragments().Count != goalTresholds.tresholds.Count) {
+            Debug.LogError($"Il n'y a pas le même nombre de tresholds dans le texte explicatif et dans le goalTreshold pour le path {selectorPath.GetNameId()} !");
+        }
+        List<TresholdFragment> fragments = texteExplicatif.GetTresholdText().GetAllFragmentsOrdered();
+        for(int i = 0; i < goalTresholds.tresholds.Count; i++) {
+            fragments[i].treshold = goalTresholds.tresholds[i];
+        }
     }
 
     protected void AddReplacementForDonneesHackeesToPopup(TexteExplicatif popup) {
@@ -213,13 +209,14 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
     protected void AddNextPallierMessage(TexteExplicatif texteExplicatif, int currentTreshold) {
         TresholdText tresholdText = texteExplicatif.GetTresholdText();
         List<TresholdFragment> fragments = tresholdText.GetAllFragmentsOrdered();
+        bool levelSucceeded = selectorPath.startLevel.IsSucceeded();
         for(int i = 0; i < fragments.Count; i++) {
             TresholdFragment fragment = fragments[i];
             //string nextPallierText = GetNextPallierText(fragment, fragments);
             string textOfTreshold = GetTresholdTextForPallier(fragment.treshold);
             string pallierNumberText = selectorManager.strings.palierTotalTexte.GetLocalizedString(i + 1, textOfTreshold, "").Result;
             pallierNumberText = UIHelper.SurroundWithColor(pallierNumberText, UIHelper.GREEN);
-            if (fragment.treshold <= currentTreshold) {
+            if (levelSucceeded && fragment.treshold <= currentTreshold) {
                 fragment.text = pallierNumberText + fragment.text;
             } else {
                 string palierNotUnlockedYet = selectorManager.strings.palierNotUnlockedYet.GetLocalizedString().Result;

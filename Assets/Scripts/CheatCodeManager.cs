@@ -16,6 +16,7 @@ public class CheatCodeManager : MonoBehaviour {
     public List<KeyCode> loseCode;
     public List<KeyCode> plus10Code;
     public List<KeyCode> minus10Code;
+    public List<KeyCode> plus10DataCount;
 
     protected GameManager gm;
     protected List<CheatCode> cheatCodes;
@@ -54,6 +55,12 @@ public class CheatCodeManager : MonoBehaviour {
             cheatCodes.Add(minus10SecondesCheatCode);
         }
 
+        if (gm.GetMapType() == MenuLevel.LevelType.REGULAR) {
+            CheatCode plus10DataCountCheatCode = new CheatCode();
+            plus10DataCountCheatCode.code = plus10DataCount;
+            plus10DataCountCheatCode.action = gm.eventManager.Add10DataCount;
+            cheatCodes.Add(plus10DataCountCheatCode);
+        }
     }
 
     public void Update() {

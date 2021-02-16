@@ -606,4 +606,10 @@ public class EventManager : MonoBehaviour {
             gm.console.DontUseArrowKeys();
         }
     }
+
+    public void Add10DataCount() {
+        int nb = 10;
+        int dataCount = Lumiere.IncrementDataCount(nb);
+        gm.console.AddToDataCountText(dataCount, nb);
+    }
 }

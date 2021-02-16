@@ -144,20 +144,27 @@ public class SelectorLevel : MonoBehaviour {
 
     protected bool DisplayNewPallierMessageRegular() {
         bool hasDisplayed = false;
-        if (menuLevel.HasJustWin()) {
-            int nbWins = menuLevel.GetNbWins();
+        if (menuLevel.GetNbWins() > 0 && menuLevel.HasJustIncreaseDataCount()) {
+            List<int> tresholdUnlocked = new List<int>();
+            int currentDataCount = menuLevel.GetDataCount();
+            int precedentDataCount = menuLevel.GetPrecedentDataCount();
             List<string> nextLevels = new List<string>();
             foreach (SelectorPath selectorPath in selectorManager.GetOutPaths(this)) {
                 List<int> tresholds = selectorPath.GetTresholds();
-                if (tresholds.Contains(nbWins)) {
-                    nextLevels.Add(selectorPath.endLevel.GetVisibleName());
-                    selectorPath.HighlightPath(true);
+                foreach(int treshold in tresholds) {
+                    if(treshold == 0 && precedentDataCount == 0
+                    || (precedentDataCount < treshold && treshold <= currentDataCount)) {
+                        nextLevels.Add(selectorPath.endLevel.GetVisibleName());
+                        tresholdUnlocked.Add(treshold);
+                        selectorPath.HighlightPath(true);
+                    }
                 }
             }
             if (nextLevels.Count > 0) {
-                DisplayNewPallierMessage(nbWins, nextLevels);
+                DisplayNewPallierMessage(tresholdUnlocked, nextLevels);
                 hasDisplayed = true;
                 menuLevel.SetNotJustWin();
+                menuLevel.SetNotJustIncreaseDataCount();
             }
         }
         return hasDisplayed;
@@ -168,21 +175,15 @@ public class SelectorLevel : MonoBehaviour {
         return IsAccessible() && (outPaths.Any(p => !p.IsUnlocked()) || outPaths.Count == 0);
     }
 
-    protected void DisplayNewPallierMessage(int nbWin, List<string> nextLevels) {
-        List<int> nbWins = new List<int>();
-        for (int i = 0; i < nextLevels.Count; i++)
-            nbWins.Add(nbWin);
-        DisplayNewPallierMessage(nbWins, nextLevels);
-    }
-    protected void DisplayNewPallierMessage(List<int> nbWins, List<string> nextLevels) {
+    protected void DisplayNewPallierMessage(List<int> tresholdsUnlocked, List<string> nextLevels) {
         string congrats = "";
         nextLevels.Sort();
-        for(int i = 0; i < nbWins.Count; i++) {
-            int nbWin = nbWins[i];
+        for(int i = 0; i < tresholdsUnlocked.Count; i++) {
+            int treshold = tresholdsUnlocked[i];
             string nextLevel = nextLevels[i];
-            string unites = UIHelper.SurroundWithColor(selectorManager.GetUnitesString(nbWin, menuLevel.levelType), UIHelper.GREEN);
+            string unites = UIHelper.SurroundWithColor(selectorManager.GetUnitesString(treshold, menuLevel.levelType), UIHelper.GREEN);
             string levelTitle = UIHelper.SurroundWithColor(nextLevel, UIHelper.BLUE);
-            congrats += selectorManager.strings.palierDebloqueUnPalier.GetLocalizedString(nbWin, unites, levelTitle).Result;
+            congrats += selectorManager.strings.palierDebloqueUnPalier.GetLocalizedString(treshold, unites, levelTitle).Result;
             congrats += '\n';
         }
 
@@ -190,7 +191,7 @@ public class SelectorLevel : MonoBehaviour {
         selectorManager.popup.AddReplacement(dataHackeesString, UIHelper.SurroundWithColor(dataHackeesString, UIHelper.ORANGE));
         selectorManager.RunPopup(
             selectorManager.strings.palierDebloqueTitre.GetLocalizedString().Result,
-            selectorManager.strings.palierDebloqueTexte.GetLocalizedString(congrats, nbWins.Count).Result,
+            selectorManager.strings.palierDebloqueTexte.GetLocalizedString(congrats, tresholdsUnlocked.Count).Result,
             theme: TexteExplicatif.Theme.POSITIF,
             cleanReplacements: false);
         selectorManager.popup.HighlightDoneButton(true);

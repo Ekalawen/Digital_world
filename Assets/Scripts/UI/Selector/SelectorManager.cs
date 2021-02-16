@@ -408,7 +408,10 @@ public class SelectorManager : MonoBehaviour {
         if (levelType == MenuLevel.LevelType.INFINITE) {
             return strings.blocs.GetLocalizedString(nbUnite).Result;
         } else {
-            return strings.victoires.GetLocalizedString(nbUnite).Result;
+            if(nbUnite != 0)
+                return strings.victoires.GetLocalizedString(nbUnite).Result;
+            else
+                return strings.victoiresZero.GetLocalizedString().Result;
         }
     }
 }

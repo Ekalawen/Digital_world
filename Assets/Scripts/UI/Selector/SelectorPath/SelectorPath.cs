@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Localization;
@@ -15,8 +16,10 @@ public class SelectorPath : MonoBehaviour {
     public SelectorLevel startLevel;
     public SelectorLevel endLevel;
     public List<GameObject> intermediatePoints;
-    //public TextAsset donneesHackees;
+
+    [Header("DonneesHackees")]
     public LocalizedTextAsset donneesHackees;
+    public GoalTresholds goalTresholds;
     public int nbTresholdsToSeeTraceHint = 1;
 
     [Header("Password")]
@@ -97,7 +100,7 @@ public class SelectorPath : MonoBehaviour {
     }
 
     public List<int> GetTresholds() {
-        return new TresholdText(GetDataHackeesTextAsset()).GetAllTresholds();
+        return goalTresholds.tresholds;
     }
 
     protected void ThrowTrail(Vector3 source, Vector3 target, Gradient gradient) {
@@ -223,8 +226,7 @@ public class SelectorPath : MonoBehaviour {
     }
 
     public int GetMaxTreshold() {
-        TresholdText text = new TresholdText(GetDataHackeesTextAsset().text);
-        return text.GetLastFragment().treshold;
+        return GetTresholds().Max();
     }
 
     public void HighlightPath(bool state) {

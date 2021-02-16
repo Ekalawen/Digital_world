@@ -9,6 +9,8 @@ using UnityEngine.VFX;
 public class Lumiere : MonoBehaviour {
 
     public static string DATA_COUNT_KEY = "dataCountKey";
+    public static string PRECEDENT_DATA_COUNT_KEY = "precedentDataCountKey";
+    public static string HAS_JUST_INCREASED_DATA_COUNT_KEY = "hasJustIncreaseDataCountKey";
 
     public enum LumiereType {
         NORMAL,
@@ -77,10 +79,17 @@ public class Lumiere : MonoBehaviour {
         return dataCount;
     }
 
-    protected void AddToDataCount() {
+    public static int IncrementDataCount(int nbAdded) {
         string key = SceneManager.GetActiveScene().name + DATA_COUNT_KEY;
-        int dataCount = GetCurrentDataCount() + 1;
+        int dataCount = GetCurrentDataCount() + nbAdded;
         PlayerPrefs.SetInt(key, dataCount);
+        string keyHasJustIncreased = SceneManager.GetActiveScene().name + HAS_JUST_INCREASED_DATA_COUNT_KEY;
+        PlayerPrefs.SetString(keyHasJustIncreased, MenuManager.TRUE);
+        return dataCount;
+    }
+
+    protected void AddToDataCount() {
+        int dataCount = IncrementDataCount(1);
         gm.console.AddToDataCountText(dataCount, 1);
     }
 

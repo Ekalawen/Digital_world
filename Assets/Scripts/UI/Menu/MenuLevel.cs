@@ -349,9 +349,31 @@ public class MenuLevel : MonoBehaviour {
         return PlayerPrefs.HasKey(key) ? PlayerPrefs.GetInt(key) : 0;
     }
 
-    public string GetDataCountToString() {
+    public int GetDataCount() {
         string key = GetNameId() + Lumiere.DATA_COUNT_KEY;
-        int dataCount = PlayerPrefs.HasKey(key) ? PlayerPrefs.GetInt(key) : 0;
+        return PlayerPrefs.HasKey(key) ? PlayerPrefs.GetInt(key) : 0;
+    }
+
+    public int GetPrecedentDataCount() {
+        string key = GetNameId() + Lumiere.PRECEDENT_DATA_COUNT_KEY;
+        return PlayerPrefs.HasKey(key) ? PlayerPrefs.GetInt(key) : 0;
+    }
+
+    public bool HasJustIncreaseDataCount() {
+        string key = GetNameId() + Lumiere.HAS_JUST_INCREASED_DATA_COUNT_KEY;
+        return PlayerPrefs.HasKey(key) ? (PlayerPrefs.GetString(key) == MenuManager.TRUE) : false;
+    }
+
+    public void SetNotJustIncreaseDataCount() {
+        string keyHasJustIncreased = GetNameId() + Lumiere.HAS_JUST_INCREASED_DATA_COUNT_KEY;
+        PlayerPrefs.SetString(keyHasJustIncreased, MenuManager.FALSE);
+        string keyPrecedentDataCount = GetNameId() + Lumiere.PRECEDENT_DATA_COUNT_KEY;
+        PlayerPrefs.SetInt(keyPrecedentDataCount, GetDataCount());
+    }
+
+
+    public string GetDataCountToString() {
+        int dataCount = GetDataCount();
         SelectorLevel selectorLevel = selectorManager.GetLevelFromMenuLevel(this);
         List<SelectorPath> outPaths = selectorManager.GetOutPaths(selectorLevel);
         List<int> tresholds = outPaths.SelectMany(path => path.GetTresholds()).Distinct().OrderBy(n => n).ToList();
@@ -489,7 +511,7 @@ public class MenuLevel : MonoBehaviour {
         if (levelType == LevelType.REGULAR) {
             return GetNbWins() > 0;
         } else {
-            return GetBestScore() >= 10;
+            return GetBestScore() > 0;
         }
     }
 
