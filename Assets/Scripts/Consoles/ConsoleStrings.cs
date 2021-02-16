@@ -92,4 +92,5 @@ public class ConsoleStrings : ScriptableObject {
     public LocalizedString analyzeTrapWait;
     public LocalizedString analyzeTrapSortie;
     public LocalizedString lumiereProtectionHacked;
+    public LocalizedString dataCount;
 }

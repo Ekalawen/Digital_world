@@ -972,8 +972,14 @@ public class Console : MonoBehaviour {
     }
 
     public void SetDataCountText(int dataCount) {
+        StartCoroutine(CSetDataCountText(dataCount));
+    }
+
+    protected IEnumerator CSetDataCountText(int dataCount) {
         string nextTresholdSymbol = gm.goalManager.GetNextTresholdSymbolFor(dataCount);
-        dataCountDisplayer.Display($"Data Count : {dataCount.ToString()}/{nextTresholdSymbol}");
+        AsyncOperationHandle<string> handle = strings.dataCount.GetLocalizedString(dataCount, nextTresholdSymbol);
+        yield return handle;
+        dataCountDisplayer.Display(handle.Result);
     }
 
     public void AddToDataCountText(int dataCount, int dataCountAdded) {
