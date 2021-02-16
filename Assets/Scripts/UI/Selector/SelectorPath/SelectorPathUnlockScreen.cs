@@ -153,11 +153,11 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
             return;
         int currentTreshold = GetCurrentTreshold();
         int firstTreshold = new TresholdText(selectorPath.GetDataHackeesTextAsset().text).GetFirstFragment().treshold;
-        if (currentTreshold == 0 || currentTreshold < firstTreshold) {
-            OpenDonneesHackeesJamaisHackee(firstTreshold);
-        } else {
+        //if (currentTreshold == 0 || currentTreshold < firstTreshold) {
+        //    OpenDonneesHackeesJamaisHackee(firstTreshold);
+        //} else {
             OpenDonneesHackeesWithTreshold(currentTreshold);
-        }
+        //}
         selectorPath.HighlightPath(false);
         HighlightDataHackees(false);
     }
@@ -182,7 +182,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         AddReplacementForDonneesHackeesToPopup(selectorManager.popup);
         selectorManager.popup.InitTresholdText();
         AddNextPallierMessage(selectorManager.popup, currentTreshold: treshold);
-        selectorManager.popup.Run(textTreshold: treshold, shouldInitTresholdText: false);
+        selectorManager.popup.Run(textTreshold: selectorManager.popup.GetMaxTreshold(), shouldInitTresholdText: false);
     }
 
     protected void OpenDonneesHackeesJamaisHackee(int firstTreshold) {
@@ -215,25 +215,34 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         List<TresholdFragment> fragments = tresholdText.GetAllFragmentsOrdered();
         for(int i = 0; i < fragments.Count; i++) {
             TresholdFragment fragment = fragments[i];
-            string nextPallierText = GetNextPallierText(fragment, fragments, currentTreshold);
+            //string nextPallierText = GetNextPallierText(fragment, fragments);
             string textOfTreshold = GetTresholdTextForPallier(fragment.treshold);
-            string pallierNumberText = selectorManager.strings.palierTotalTexte.GetLocalizedString(i + 1, textOfTreshold, nextPallierText).Result;
+            string pallierNumberText = selectorManager.strings.palierTotalTexte.GetLocalizedString(i + 1, textOfTreshold, "").Result;
             pallierNumberText = UIHelper.SurroundWithColor(pallierNumberText, UIHelper.GREEN);
-            fragment.text = pallierNumberText + fragment.text;
+            if (fragment.treshold <= currentTreshold) {
+                fragment.text = pallierNumberText + fragment.text;
+            } else {
+                string palierNotUnlockedYet = selectorManager.strings.palierNotUnlockedYet.GetLocalizedString().Result;
+                fragment.text = pallierNumberText + palierNotUnlockedYet;
+            }
         }
-        texteExplicatif.mainText.text = texteExplicatif.ComputeText(currentTreshold);
+        int maxTreshold = texteExplicatif.GetMaxTreshold();
+        texteExplicatif.mainText.text = texteExplicatif.ComputeText(maxTreshold);
         texteExplicatif.ApplyColorReplacements();
     }
 
     protected string GetTresholdTextForPallier(int tresholdText) {
         return (selectorPath.startLevel.menuLevel.levelType == MenuLevel.LevelType.INFINITE) ?
             selectorManager.strings.blocs.GetLocalizedString(tresholdText).Result :
-            selectorManager.strings.victoires.GetLocalizedString(tresholdText).Result;
+            (tresholdText == 0 ?
+            selectorManager.strings.victoiresZero.GetLocalizedString().Result :
+            selectorManager.strings.victoires.GetLocalizedString(tresholdText).Result);
     }
 
-    protected string GetNextPallierText(TresholdFragment fragment, List<TresholdFragment> fragments, int textTreshold) {
-        TresholdFragment currentFragment = fragments.FindAll(f => f.treshold <= textTreshold).Last();
-        if(fragment == currentFragment) {
+    protected string GetNextPallierText(TresholdFragment fragment, List<TresholdFragment> fragments) {
+        //TresholdFragment currentFragment = fragments.FindAll(f => f.treshold <= textTreshold).Last();
+        TresholdFragment currentFragment = fragments.Last();
+        if (fragment == currentFragment) {
             if (fragment == fragments.Last()) {
                 return selectorManager.strings.palierNextPalierDernier.GetLocalizedString().Result;
             } else {

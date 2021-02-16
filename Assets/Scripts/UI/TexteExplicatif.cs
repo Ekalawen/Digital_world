@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.Localization;
@@ -265,5 +266,9 @@ public class TexteExplicatif : MonoBehaviour {
 
     public void HighlightDoneButton(bool state) {
         doneButton.GetComponent<ButtonHighlighter>().enabled = state;
+    }
+
+    public int GetMaxTreshold() {
+        return GetTresholdText().GetAllTresholds().Last();
     }
 }
