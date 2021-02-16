@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Localization;
 
-[CreateAssetMenu(fileName = "SelectorManagerStrings", menuName = "SelectorManager")]
+[CreateAssetMenu(fileName = "SelectorManagerStrings", menuName = "SelectorManagerStrings")]
 public class SelectorManagerStrings : ScriptableObject {
 
     public LocalizedString pathGoodUnlockedTitle;

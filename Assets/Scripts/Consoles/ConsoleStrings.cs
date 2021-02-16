@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Localization;
 
-[CreateAssetMenu(fileName = "ConsoleStrings", menuName = "Console")]
+[CreateAssetMenu(fileName = "ConsoleStrings", menuName = "ConsoleStrings")]
 public class ConsoleStrings : ScriptableObject {
 
     public LocalizedString initialisationNiveau;
