@@ -38,8 +38,18 @@ public class GoalManager : MonoBehaviour {
     public List<int> GetAllTresholds() {
         if (allTresholds == null) {
             allTresholds = goalTresholds.SelectMany(gt => gt.tresholds).Distinct().OrderBy(n => n).ToList();
+            allTresholds.Add(int.MaxValue);
         }
         Debug.Log($"allTresholds = {allTresholds}");
         return allTresholds;
+    }
+
+    public int GetNextTresholdFor(int dataCount) {
+        return GetAllTresholds().Find(n => n > dataCount);
+    }
+
+    public string GetNextTresholdSymbolFor(int dataCount) {
+        int nextTreshold = GetNextTresholdFor(dataCount);
+        return nextTreshold == int.MaxValue ? "∞" : nextTreshold.ToString();
     }
 }

@@ -971,7 +971,8 @@ public class Console : MonoBehaviour {
     }
 
     public void SetDataCountText(int dataCount) {
-        dataCountDisplayer.Display($"Data Count : {dataCount.ToString()}");
+        string nextTresholdSymbol = gm.goalManager.GetNextTresholdSymbolFor(dataCount);
+        dataCountDisplayer.Display($"Data Count : {dataCount.ToString()}/{nextTresholdSymbol}");
     }
 
     public void AddToDataCountText(int dataCount, int dataCountAdded) {
