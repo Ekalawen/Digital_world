@@ -61,6 +61,7 @@ public class MenuLevel : MonoBehaviour {
     public TMP_Text score_meanScore;
     public TMP_Text score_sinceLastBestScore;
     public TMP_Text score_bestScore;
+    public TMP_Text score_dataCount;
 
     [Header("FastUI")]
     public GameObject fastUISystemNextPrefab;
@@ -262,6 +263,7 @@ public class MenuLevel : MonoBehaviour {
         string winrateString = (100.0f * GetWinrate()).ToString("N2") + "%";
         score_winrate.text = ChangeLastWord(score_winrate.text, winrateString);
         score_highestScore.text = ChangeLastWord(score_highestScore.text, GetBestScoreToString());
+        score_dataCount.text = ChangeLastWord(score_dataCount.text, GetDataCountToString());
     }
 
     protected void SetInfiniteScores() {
@@ -345,6 +347,18 @@ public class MenuLevel : MonoBehaviour {
     public int GetSinceLastBestScore() {
         string key = GetNameId() + SINCE_LAST_BEST_SCORE_KEY;
         return PlayerPrefs.HasKey(key) ? PlayerPrefs.GetInt(key) : 0;
+    }
+
+    public string GetDataCountToString() {
+        string key = GetNameId() + Lumiere.DATA_COUNT_KEY;
+        int dataCount = PlayerPrefs.HasKey(key) ? PlayerPrefs.GetInt(key) : 0;
+        SelectorLevel selectorLevel = selectorManager.GetLevelFromMenuLevel(this);
+        List<SelectorPath> outPaths = selectorManager.GetOutPaths(selectorLevel);
+        List<int> tresholds = outPaths.SelectMany(path => path.GetTresholds()).Distinct().OrderBy(n => n).ToList();
+        tresholds.Add(int.MaxValue);
+        int nextTreshold = tresholds.Find(t => t > dataCount);
+        string tresholdSymbol = nextTreshold == int.MaxValue ? "∞" : nextTreshold.ToString();
+        return $"{dataCount}/{tresholdSymbol}";
     }
 
     public static string ChangeLastWord(string str, string lastWordReplacement) {

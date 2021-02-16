@@ -66,7 +66,8 @@ public class InfiniteMap : MapManager {
         blocks = new List<Block>();
         blocksFolder = new GameObject("Blocks").transform;
         blocksFolder.transform.SetParent(cubesFolder.transform);
-        nbBlocksDisplayer.Display(nbBlocksRun.ToString());
+        string nextTresholdSymbol = gm.goalManager.GetNextTresholdSymbolFor(nbBlocksRun);
+        nbBlocksDisplayer.Display($"{nbBlocksRun.ToString()}/{nextTresholdSymbol}");
         timerSinceLastBlock = new Timer();
         nbBlocksRun = 0;
         nbBlocksDestroyed = 0;
@@ -298,10 +299,12 @@ public class InfiniteMap : MapManager {
     protected void RewardPlayerForNewBlock(int nbBlocksAdded) {
         if (nbBlocksRun > nbFirstBlocks)
         {
-            nbBlocksDisplayer.Display(GetNonStartNbBlocksRun().ToString());
+            int nbBlocksNonStart = GetNonStartNbBlocksRun();
+            string nextTresholdSymbol = gm.goalManager.GetNextTresholdSymbolFor(nbBlocksNonStart);
+            nbBlocksDisplayer.Display($"{nbBlocksNonStart.ToString()}/{nextTresholdSymbol}");
             nbBlocksDisplayer.AddVolatileText($"+ {nbBlocksAdded.ToString()}", nbBlocksDisplayer.GetTextColor());
             gm.soundManager.PlayNewBlockClip();
-            if (IsNewBestScore(GetNonStartNbBlocksRun())) {
+            if (IsNewBestScore(nbBlocksNonStart)) {
                 gm.console.RewardBestScore();
                 gm.soundManager.PlayRewardBestScore();
                 hasMadeNewBestScore = true;

@@ -40,7 +40,6 @@ public class GoalManager : MonoBehaviour {
             allTresholds = goalTresholds.SelectMany(gt => gt.tresholds).Distinct().OrderBy(n => n).ToList();
             allTresholds.Add(int.MaxValue);
         }
-        Debug.Log($"allTresholds = {allTresholds}");
         return allTresholds;
     }
 

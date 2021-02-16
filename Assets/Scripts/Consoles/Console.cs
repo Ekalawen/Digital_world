@@ -102,6 +102,7 @@ public class Console : MonoBehaviour {
         eventManager = gm.eventManager;
         arrowKeysTimer = new Timer(2);
         arrowKeysTimer.SetOver();
+        HideDataCountDisplayerIfIR();
 
         StartCoroutine(CInitialize());
     }
@@ -978,5 +979,11 @@ public class Console : MonoBehaviour {
     public void AddToDataCountText(int dataCount, int dataCountAdded) {
         SetDataCountText(dataCount);
         dataCountDisplayer.AddVolatileText($"+ {dataCountAdded.ToString()}", dataCountDisplayer.GetTextColor());
+    }
+
+    protected void HideDataCountDisplayerIfIR() {
+        if(gm.GetMapType() == MenuLevel.LevelType.INFINITE) {
+            dataCountDisplayer.gameObject.SetActive(false);
+        }
     }
 }
