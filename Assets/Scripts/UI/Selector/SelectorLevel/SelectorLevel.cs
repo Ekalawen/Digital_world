@@ -228,6 +228,9 @@ public class SelectorLevel : MonoBehaviour {
             MenuLevel.HAS_JUST_MAKE_BEST_SCORE_KEY,
             MenuLevel.HAS_ALREADY_DISCOVER_LEVEL_KEY,
             MenuLevel.IS_LEVEL_HIGHLIGHTED_KEY,
+            Lumiere.DATA_COUNT_KEY,
+            Lumiere.PRECEDENT_DATA_COUNT_KEY,
+            Lumiere.HAS_JUST_INCREASED_DATA_COUNT_KEY,
         };
         foreach(string keySuffix in keysSuffix) {
             string key = GetNameId() + keySuffix;
@@ -239,8 +242,9 @@ public class SelectorLevel : MonoBehaviour {
     public void SetScoresToMaxTreshold() {
         int maxTreshold = GetMaxTreshold();
         if(menuLevel.levelType == MenuLevel.LevelType.REGULAR) {
-            menuLevel.SetNbWins(maxTreshold);
-            Debug.Log($"{GetNameId()} a maintenant {maxTreshold} victoires !");
+            menuLevel.SetNbWins(1);
+            menuLevel.SetDataCount(maxTreshold);
+            Debug.Log($"{GetNameId()} a maintenant {maxTreshold} de Data Count !");
         }
         if(menuLevel.levelType == MenuLevel.LevelType.INFINITE) {
             menuLevel.SetBestScore(maxTreshold);

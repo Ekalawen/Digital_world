@@ -354,6 +354,11 @@ public class MenuLevel : MonoBehaviour {
         return PlayerPrefs.HasKey(key) ? PlayerPrefs.GetInt(key) : 0;
     }
 
+    public void SetDataCount(int value) {
+        string key = GetNameId() + Lumiere.DATA_COUNT_KEY;
+        PlayerPrefs.SetInt(key, value);
+    }
+
     public int GetPrecedentDataCount() {
         string key = GetNameId() + Lumiere.PRECEDENT_DATA_COUNT_KEY;
         return PlayerPrefs.HasKey(key) ? PlayerPrefs.GetInt(key) : 0;
