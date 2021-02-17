@@ -11,6 +11,7 @@ public class SelectorManagerStrings : ScriptableObject {
     public LocalizedString pathGoodLockedTexte;
     public LocalizedString pathFalseLockedTitle;
     public LocalizedString pathFalseLockedTexte;
+    public LocalizedString pathFalseLockedTexteWithoutAdvice;
     public LocalizedString pathFalseUnlockedTitre;
     public LocalizedString pathFalseUnlockedTexte;
 

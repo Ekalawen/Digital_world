@@ -119,8 +119,14 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         string registeredPassword = input.text;
         string goodPassword = selectorPath.GetPassword();
         string advice = GetPasswordAdvice(registeredPassword, goodPassword);
-        LocalizedString texte = selectorManager.strings.pathFalseLockedTexte;
-        texte.Arguments = new object[] { advice };
+        LocalizedString texte = null;
+        if (advice != "") {
+            advice = UIHelper.SurroundWithColor(advice, UIHelper.GREEN);
+            texte = selectorManager.strings.pathFalseLockedTexte;
+            texte.Arguments = new object[] { advice };
+        } else {
+            texte = selectorManager.strings.pathFalseLockedTexteWithoutAdvice;
+        }
         string dataHackeesString = selectorManager.strings.dataHackees.GetLocalizedString().Result;
         selectorManager.popup.AddReplacement(dataHackeesString, UIHelper.SurroundWithColor(dataHackeesString, UIHelper.ORANGE));
         selectorManager.RunPopup(selectorManager.strings.pathFalseLockedTitle, texte, TexteExplicatif.Theme.NEGATIF, cleanReplacements: false);
@@ -128,7 +134,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
 
     protected string GetPasswordAdvice(string registeredPassword, string goodPassword) {
         string advice = Trace.GetPasswordAdvice(registeredPassword, goodPassword, selectorPath.adviceType);
-        return UIHelper.SurroundWithColor(advice, UIHelper.GREEN);
+        return advice;
     }
 
     protected void SubmitFalseUnlocked() {
