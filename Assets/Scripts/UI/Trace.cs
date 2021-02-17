@@ -140,7 +140,7 @@ public class Trace {
         if(!IsWellFormatedPasse(passe)) {
             return GetPasseAdvice(passe);
         }
-        return GetWellFormatedPasswordAdvice(password, truePassword);
+        return GetWellFormatedOnlyPasseAdvice(password, truePassword);
     }
 
     public static bool HasSwapTraceAndPasse(string password, string truePassword) {
@@ -230,6 +230,19 @@ public class Trace {
             return GetStringForLocalizedStringReference("MauvaiseTrace");
         }
         return ""; // On ne devrait pas arriver ici pour les only Trace !
+    }
+
+    public static string GetWellFormatedOnlyPasseAdvice(string password, string truePassword) {
+        string passe = password;
+        string truePasse = truePassword;
+        bool goodPasse = passe == truePasse;
+        int[,] levenshteinMatrice = GetLevenshteinMatrice(passe, truePasse);
+        if (GetDistanceDeLevenshtein(passe, truePasse, levenshteinMatrice) <= 4) {
+            LevenshteinDifferences differences = GetDifferencesDeLevenshtein(passe, truePasse, levenshteinMatrice);
+            Debug.Log($"{differences.nbRemplacements} {differences.nbAjouts} {differences.nbSuppressions}");
+            return GetStringForLocalizedStringReference("PasseLevenshtein", differences.nbAjouts, differences.nbSuppressions, differences.nbRemplacements);
+        }
+        return GetStringForLocalizedStringReference("MauvaisPasse");
     }
 
     public static int[,] GetLevenshteinMatrice(string passe, string truePasse) {
