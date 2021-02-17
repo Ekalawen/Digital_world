@@ -17,7 +17,7 @@ public class BouncyCube : Cube {
         base.Start();
         GameManager gm = GameManager.Instance;
         Vector3 playerPos = gm.player.transform.position;
-        timerAddPoussee = new Timer(0.01f);
+        timerAddPoussee = new Timer(0.1f);
         timerAddPoussee.SetOver();
         if(gm.player.DoubleCheckInteractWithCube(this)) {
             InteractWithPlayer();
@@ -31,12 +31,13 @@ public class BouncyCube : Cube {
         Vector3 direction = GetDirectionPoussee(player.transform.position);
         player.AddPoussee(new Poussee(direction, dureePoussee, distancePoussee));
         player.ResetGrip();
-        if (Vector3.Dot(direction, gm.gravityManager.Up()) > 0) {
+        if (Vector3.Dot(direction, gm.gravityManager.Up()) > 0 && Input.GetKey(KeyCode.Space)) {
             player.SetCarefulJumping(Player.EtatPersonnage.AU_SOL);
         } else {
-            player.PlayJumpSound();
+            player.RemoveGravityEffectFor(dureePoussee); // La gravité est déjà artificiellement annulée lors d'un saut :)
+            player.PlayJumpSound(); // Juste ici car il est déjà joué dans la simulation du saut ! :)
         }
-        if(dammageOnHit > 0.0f) {
+        if (dammageOnHit > 0.0f) {
             gm.timerManager.RemoveTime(dammageOnHit, EventManager.DeathReason.TOUCHED_BOUNCY_CUBE);
         }
         timerAddPoussee.Reset();

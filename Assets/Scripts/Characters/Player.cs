@@ -60,6 +60,7 @@ public class Player : Character {
     protected float skinWidthCoef = 1.1f;
     protected float lastAvancementSaut;
     protected Timer timerLastTimeAuSol;
+    protected bool isGravityEffectRemoved = false;
 
     protected IPouvoir pouvoirA; // Le pouvoir de la touche A (souvent la détection)
     protected IPouvoir pouvoirE; // Le pouvoir de la touche E (souvent la localisation)
@@ -251,8 +252,10 @@ public class Player : Character {
 	}
 
     // On met à jour le mouvement du joueur
-    void UpdateMouvement() {
-        if (GameManager.Instance.IsTimeFreezed()) {
+    void UpdateMouvement()
+    {
+        if (GameManager.Instance.IsTimeFreezed())
+        {
             return;
         }
 
@@ -264,7 +267,7 @@ public class Player : Character {
 
         move = UpdateJumpMouvement(move);
 
-        move = gm.gravityManager.ApplyGravity(move);
+        move = ApplyGravity(move);
 
         move = SlideBottomIfImportantSlope(move);
 
@@ -401,6 +404,13 @@ public class Player : Character {
         }
     }
 
+    protected Vector3 ApplyGravity(Vector3 move) {
+        if(!isGravityEffectRemoved) {
+            move = gm.gravityManager.ApplyGravity(move);
+        }
+        return move;
+    }
+
     protected void AddDoubleJump() {
         nbDoublesSautsCourrant++;
     }
@@ -450,7 +460,8 @@ public class Player : Character {
              || hit.collider.gameObject.tag == "Trigger") {
                 continue;
             }
-            if (hit.collider.gameObject.GetComponent<DeathCube>() != null) { // Pour empêcher de pouvoir sauter sur eux avant qu'ils nous tuent !
+            if (hit.collider.gameObject.GetComponent<DeathCube>() != null
+            ||  hit.collider.gameObject.GetComponent<BouncyCube>() != null) { // Pour empêcher de pouvoir sauter sur eux avant qu'ils nous tuent !
                 continue;
             }
             Vector3 n = hit.normal;
@@ -693,6 +704,7 @@ public class Player : Character {
     public void ResetGrip() {
         // Permet de s'accrocher à nouveau à un mur !
         origineSaut = EtatPersonnage.AU_SOL;
+        dureeMurTimer.Reset();
     }
 
     public bool DoubleCheckInteractWithCube(Cube cube) {
@@ -737,6 +749,23 @@ public class Player : Character {
 
     public float GetDureeRestanteMur() {
         return dureeMurTimer.GetRemainingTime();
+    }
+
+    public void RemoveGravityEffect() {
+        isGravityEffectRemoved = true;
+    }
+
+    public void UnremoveGravityEffect() {
+        isGravityEffectRemoved = false;
+    }
+
+    public void RemoveGravityEffectFor(float duree) {
+        StartCoroutine(CRemoveGravityEffectFor(duree));
+    }
+    public IEnumerator CRemoveGravityEffectFor(float duree) {
+        RemoveGravityEffect();
+        yield return new WaitForSeconds(duree);
+        UnremoveGravityEffect();
     }
 }
 

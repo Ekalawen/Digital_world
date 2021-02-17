@@ -12,7 +12,6 @@ public class Block : MonoBehaviour {
     protected static int minTimesCountForAveraging = 3;
     protected static int maxTimesCountForAveraging = 10;
 
-    public Vector3Int size;
     public Transform startPoint;
     public Transform endPoint;
     public Transform cubeFolder;
