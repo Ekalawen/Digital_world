@@ -127,9 +127,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
     }
 
     protected string GetPasswordAdvice(string registeredPassword, string goodPassword) {
-        if (selectorPath.dontUseAdvice)
-            return "";
-        string advice = Trace.GetPasswordAdvice(registeredPassword, goodPassword);
+        string advice = Trace.GetPasswordAdvice(registeredPassword, goodPassword, selectorPath.adviceType);
         return UIHelper.SurroundWithColor(advice, UIHelper.GREEN);
     }
 

@@ -24,8 +24,8 @@ public class SelectorPath : MonoBehaviour {
 
     [Header("Password")]
     public LocalizedString passwordPasse;
-    public bool dontUseAdvice = false;
     public bool dontUseTrace = false;
+    public Trace.AdviceType adviceType = Trace.AdviceType.COMPLETE;
 
     [Header("Trails")]
     public float timeBetweenTrails = 0.3f;

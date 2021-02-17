@@ -15,6 +15,13 @@ public class LevenshteinDifferences {
 
 public class Trace {
 
+    public enum AdviceType {
+        COMPLETE,
+        ONLY_TRACE,
+        ONLY_PASSE,
+        NO_ADVICE,
+    };
+
     public static string GenerateTrace() {
         string trace = "";
         trace += GetRandomBit();
@@ -86,7 +93,22 @@ public class Trace {
         return LocalizationSettings.StringDatabase.GetLocalizedStringAsync("PasswordAdvices", reference, arguments).Result;
     }
 
-    public static string GetPasswordAdvice(string password, string truePassword) {
+    public static string GetPasswordAdvice(string password, string truePassword, AdviceType adviceType) {
+        switch (adviceType) {
+            case AdviceType.COMPLETE:
+                return GetPasswordAdviceComplete(password, truePassword);
+            case AdviceType.ONLY_TRACE:
+                return GetPasswordAdviceOnlyTrace(password, truePassword);
+            case AdviceType.ONLY_PASSE:
+                return GetPasswordAdviceOnlyPasse(password, truePassword);
+            case AdviceType.NO_ADVICE:
+                return "";
+            default:
+                return "Nope.";
+        }
+    }
+
+    public static string GetPasswordAdviceComplete(string password, string truePassword) {
         if (password.Length < 4)
             return GetStringForLocalizedStringReference("AuMoins4Caracteres");
         string trace = password.Substring(0, 4);
@@ -97,6 +119,24 @@ public class Trace {
         if(!IsWellFormatedTrace(trace)) {
             return GetTraceAdvice(trace);
         }
+        if(!IsWellFormatedPasse(passe)) {
+            return GetPasseAdvice(passe);
+        }
+        return GetWellFormatedPasswordAdvice(password, truePassword);
+    }
+
+    public static string GetPasswordAdviceOnlyTrace(string password, string truePassword) {
+        string trace = password;
+        if (trace.Length != 4)
+            return GetStringForLocalizedStringReference("TraceExactement4Caracteres");
+        if(!IsWellFormatedTrace(trace)) {
+            return GetTraceAdvice(trace);
+        }
+        return GetWellFormatedOnlyTraceAdvice(password, truePassword);
+    }
+
+    public static string GetPasswordAdviceOnlyPasse(string password, string truePassword) {
+        string passe = password;
         if(!IsWellFormatedPasse(passe)) {
             return GetPasseAdvice(passe);
         }
@@ -128,7 +168,7 @@ public class Trace {
         if(!noAccents) {
             return GetStringForLocalizedStringReference("PassePasDAccents");
         }
-        return null;
+        return "";
     }
 
     public static bool IsWellFormatedTrace(string trace) {
@@ -152,7 +192,7 @@ public class Trace {
         if(!IsHexadecimal(trace[3])) {
             return GetStringForLocalizedStringReference("TraceQuatriemeCaractere");
         }
-        return null;
+        return "";
     }
 
     public static bool IsBit(char c) {
@@ -180,6 +220,16 @@ public class Trace {
             return GetStringForLocalizedStringReference("PasseLevenshtein", differences.nbAjouts, differences.nbSuppressions, differences.nbRemplacements);
         }
         return GetStringForLocalizedStringReference("MauvaisPasse");
+    }
+
+    public static string GetWellFormatedOnlyTraceAdvice(string password, string truePassword) {
+        string trace = password;
+        string trueTrace = truePassword;
+        bool goodTrace = trace == trueTrace;
+        if (!goodTrace) {
+            return GetStringForLocalizedStringReference("MauvaiseTrace");
+        }
+        return ""; // On ne devrait pas arriver ici pour les only Trace !
     }
 
     public static int[,] GetLevenshteinMatrice(string passe, string truePasse) {
