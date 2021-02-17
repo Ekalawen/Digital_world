@@ -436,8 +436,9 @@ public class EventManager : MonoBehaviour {
             string keyHasJustBestScore = GetKeyFor(MenuLevel.HAS_JUST_MAKE_BEST_SCORE_KEY);
             PlayerPrefs.SetString(keyHasJustBestScore, MenuManager.TRUE);
 
-            string keyPrecedentBestScore = GetKeyFor(MenuLevel.PRECEDENT_BEST_SCORE_KEY);
-            PlayerPrefs.SetFloat(keyPrecedentBestScore, GetBestScore());
+            // Attention ça pourrait casser d'autres features ! (je fais ça pour pouvoir retenir plusieurs paliers débloqués sur plusieurs Restart du niveau à la fois !)
+            //string keyPrecedentBestScore = GetKeyFor(MenuLevel.PRECEDENT_BEST_SCORE_KEY);
+            //PlayerPrefs.SetFloat(keyPrecedentBestScore, GetBestScore());
         }
 
         string keyHighestScore = GetKeyFor(MenuLevel.BEST_SCORE_KEY);
@@ -489,8 +490,8 @@ public class EventManager : MonoBehaviour {
     }
 
     public float GetPrecedentBestScore() {
-        string keyPrecedentBestScore = GetKeyFor(MenuLevel.PRECEDENT_BEST_SCORE_KEY);
-        return PlayerPrefs.HasKey(keyPrecedentBestScore) ? PlayerPrefs.GetFloat(keyPrecedentBestScore) : 0;
+        string key = GetKeyFor(MenuLevel.PRECEDENT_BEST_SCORE_KEY);
+        return PlayerPrefs.HasKey(key) ? PlayerPrefs.GetFloat(key) : 0;
     }
 
     public bool IsNewBestScore() {

@@ -463,37 +463,9 @@ public class MenuLevel : MonoBehaviour {
 
     public void SetNotJustMakeNewBestScore() {
         string key = GetNameId() + HAS_JUST_MAKE_BEST_SCORE_KEY;
-        PlayerPrefs.DeleteKey(key);
+        PlayerPrefs.SetString(key, MenuManager.FALSE);
+        SetPrecedentBestScore(GetBestScore());
     }
-
-    //protected void DisplayPopupUnlockNewTreshold() {
-    //    if (HasJustWin()) {
-    //        List<int> tresholds = texteExplicatifDonneesHackesSuccess.GetAllTresholds();
-    //        if(tresholds.Contains(GetNbWins())) {
-    //            MenuManager.Instance.RunPopup(
-    //                "Pallier débloqué !", 
-    //                "Félicitation ! Vous venez de débloquer le pallier de" + (GetNbWins() > 1 ? "s" : "") + " " + GetNbWins() + " victoire" + ((GetNbWins() > 1) ? "s" : "") + " !\n" +
-    //                "Allez le consulter dans les Data Hackées !",
-    //                TexteExplicatif.Theme.POSITIF);
-    //        }
-    //        SetNotJustWin();
-    //    }
-    //}
-    
-    //protected void DisplayPopupUnlockLevel() {
-    //    if (!HasAlreadyDiscoverLevel()) {
-    //        bool shouldCongrats = menuLevelSelector != null ? menuLevelSelector.GetLevelIndice() != 0 : selectorManager.GetLevelIndice() != 0;
-    //        if (shouldCongrats) {
-    //            MenuManager.Instance.RunPopup(
-    //                "Niveau débloqué !",
-    //                "Félicitation ! Vous venez de débloquer le niveau " + GetName() + " !\nContinuez comme ça !\nEt Happy Hacking ! :)",
-    //                TexteExplicatif.Theme.POSITIF);
-    //        } else {
-    //            texteExplicatifIntroduction.Run();
-    //        }
-    //        SetAlreadyDiscoverLevel();
-    //    }
-    //}
 
     public bool HasAlreadyDiscoverLevel() {
         string key = GetNameId() + HAS_ALREADY_DISCOVER_LEVEL_KEY;
