@@ -30,7 +30,7 @@ public class Block : MonoBehaviour {
         map = gm.map;
         this.originalBlockPrefab = originalBlockPrefab;
         GatherCubes();
-        AddCubesToMap();
+        RegisterCubesToMap();
         if(gm.timerManager.HasGameStarted()) {
             RegisterCubesToColorSources();
         }
@@ -42,18 +42,21 @@ public class Block : MonoBehaviour {
         gm.colorManager.EnsureNoCubeIsBlack(cubes);
     }
 
-    private void AddCubesToMap() {
+    private void RegisterCubesToMap() {
         for(int i = 0; i < cubes.Count; i++) {
             Cube cube = cubes[i];
-            Vector3 cubePosition = cube.transform.position;
-            Cube newCube = map.AddCube(cubePosition, cube.type, cube.transform.rotation, parent: cubeFolder);
-            if(newCube == null) {
-                cubes.RemoveAt(i);
-                i--;
-            } else {
-                cubes[i] = newCube;
+            Cube newCube = map.RegisterAlreadyExistingCube(cube, cubeFolder);
+            if(cube != newCube) {
+                Destroy(cube.gameObject);
             }
-            Destroy(cube.gameObject);
+            //Cube newCube = map.AddCube(cubePosition, cube.type, cube.transform.rotation, parent: cubeFolder);
+            //if(newCube == null) {
+            //    cubes.RemoveAt(i);
+            //    i--;
+            //} else {
+            //    cubes[i] = newCube;
+            //}
+            //Destroy(cube.gameObject);
         }
     }
 

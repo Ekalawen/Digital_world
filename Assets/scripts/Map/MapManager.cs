@@ -114,18 +114,38 @@ public class MapManager : MonoBehaviour {
     protected virtual void Update() {
     }
 
-    private void AddCube(Cube cube) {
+    private Cube AddCube(Cube cube) {
         Vector3 pos = cube.transform.position;
+        Cube cubeAtPos = GetCubeAt(pos);
         if (cube.transform.rotation == Quaternion.identity
          && IsInRegularMap(pos)
          && MathTools.IsRounded(pos)) {
-            if (GetCubeAt(pos) == null) {
+            if (cubeAtPos == null) {
                 cubesRegular[(int)pos.x, (int)pos.y, (int)pos.z] = cube;
+                return cube;
+            } else {
+                return cubeAtPos;
             }
         } else {
-            cubesNonRegular.Add(cube);
-            cube.bIsRegular = false;
+            if (cubeAtPos == null) {
+                cubesNonRegular.Add(cube);
+                cube.bIsRegular = false;
+                return cube;
+            } else {
+                return cubeAtPos;
+            }
         }
+    }
+
+    public Cube RegisterAlreadyExistingCube(Cube cube, Transform parent = null) {
+        Cube cubeAtPos = GetCubeAt(cube.transform.position);
+        if (cubeAtPos != null) {// Si il y a déjà un cube à cette position on renvoie ce cube !
+            cube = cubeAtPos;
+        }
+        if (parent != null) {
+            cube.transform.SetParent(parent);
+        }
+        return AddCube(cube);
     }
 
     public Cube AddCube(Vector3 pos, Cube.CubeType cubeType, Quaternion quaternion = new Quaternion(), Transform parent = null) {
