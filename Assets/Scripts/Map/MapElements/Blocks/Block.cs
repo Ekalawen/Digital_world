@@ -48,15 +48,9 @@ public class Block : MonoBehaviour {
             Cube newCube = map.RegisterAlreadyExistingCube(cube, cubeFolder);
             if(cube != newCube) {
                 Destroy(cube.gameObject);
+                cubes.RemoveAt(i);
+                i--;
             }
-            //Cube newCube = map.AddCube(cubePosition, cube.type, cube.transform.rotation, parent: cubeFolder);
-            //if(newCube == null) {
-            //    cubes.RemoveAt(i);
-            //    i--;
-            //} else {
-            //    cubes[i] = newCube;
-            //}
-            //Destroy(cube.gameObject);
         }
     }
 
