@@ -10,12 +10,8 @@ public class BouncyCube : Cube {
     public float distancePoussee = 3.0f;
     public float dureePoussee = 0.3f;
     public float dammageOnHit = 0.0f;
-    public Transform particlesFolder;
 
     protected Timer timerAddPoussee;
-    protected float particulesConstantSpawnRate;
-    protected float particulesPeriodicSpawnRate;
-    protected List<VisualEffect> particles = null;
 
     public override void Start() {
         base.Start();
@@ -23,9 +19,6 @@ public class BouncyCube : Cube {
         Vector3 playerPos = gm.player.transform.position;
         timerAddPoussee = new Timer(0.1f);
         timerAddPoussee.SetOver();
-        particulesConstantSpawnRate = GetParticules()[0].GetFloat("ConstantSpawnRate");
-        particulesPeriodicSpawnRate = GetParticules()[0].GetFloat("PeriodicSpawnRate");
-        StopParticles(); // On les lances dans StartDissolveEffect ! :)
         if(gm.player.DoubleCheckInteractWithCube(this)) {
             InteractWithPlayer();
         }
@@ -65,62 +58,5 @@ public class BouncyCube : Cube {
             transform.up,
             - transform.up,
         };
-    }
-
-    protected override IEnumerator CDestroyIn(float duree) {
-        float dureeMaxParticles = GetParticules()[0].GetVector2("Lifetime").y;
-        float duree1 = Mathf.Max(duree - dureeMaxParticles, 0);
-        float duree2 = duree - duree1;
-        yield return new WaitForSeconds(duree1);
-        StopParticles();
-        yield return new WaitForSeconds(duree2);
-        Destroy();
-    }
-
-    protected List<VisualEffect> GetParticules() {
-        if (particles == null) {
-            particles = particlesFolder.GetComponentsInChildren<VisualEffect>().ToList();
-        }
-        return particles;
-    }
-
-    protected void StopParticles() {
-        foreach(VisualEffect vfx in GetParticules()) {
-            vfx.SetFloat("ConstantSpawnRate", 0);
-            vfx.SetFloat("PeriodicSpawnRate", 0);
-        }
-    }
-
-    protected void StartParticles() {
-        foreach(VisualEffect vfx in GetParticules()) {
-            vfx.SetFloat("ConstantSpawnRate", particulesConstantSpawnRate);
-            vfx.SetFloat("PeriodicSpawnRate", particulesPeriodicSpawnRate);
-        }
-    }
-
-    public override void StartDissolveEffect(float dissolveTime, float playerProximityCoef = 0) {
-        base.StartDissolveEffect(dissolveTime, playerProximityCoef);
-        // On refait le calcul compliqué qui se trouve dans le shader pour trouver quand le cube commencera à se dissolve, et donc quand il faudra StartParticules ! :)
-        float dissolveStartingTime = Time.time;
-        float playerDistance = Vector3.Distance(transform.position, gm.player.transform.position);
-        float playerInfluence = playerDistance * playerProximityCoef;
-        // On cherche time tel que finalTime = 1; ==> parce que finalTime = 0 ça marche pas :'(
-        // float time = Time.time;
-        // float finalTime = 1 - ((Mathf.Max(time - dissolveStartingTime, 0) / dissolveTime) + playerInfluence);
-        // 1 - ((Mathf.Max(time - dissolveStartingTime, 0) / dissolveTime) + playerInfluence) = 1
-        // (Mathf.Max(time - dissolveStartingTime, 0) / dissolveTime) + playerInfluence = 0
-        // Mathf.Max(time - dissolveStartingTime, 0) = (0 - playerInfluence) * dissolveTime
-        // time - dissolveStartingTime = (0 - playerInfluence) * dissolveTime // car time >= dissolveStartingTime ! :)
-        // time = (0 - playerInfluence) * dissolveTime + dissolveStartingTime
-        float timeActivation = (0 - playerInfluence) * dissolveTime + dissolveStartingTime;
-        float periode = GetParticules()[0].GetFloat("Periode");
-        timeActivation = timeActivation + (periode - (timeActivation % periode));
-        float dureeActivation = timeActivation - Time.time;
-        StartCoroutine(StartParticlesIn(dureeActivation));
-    }
-
-    protected IEnumerator StartParticlesIn(float dureeActivation) {
-        yield return new WaitForSeconds(dureeActivation);
-        StartParticles();
     }
 }
