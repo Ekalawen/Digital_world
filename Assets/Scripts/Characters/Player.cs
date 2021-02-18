@@ -539,7 +539,7 @@ public class Player : Character {
         // On regarde si le personnage s'accroche à un mur !
         // Pour ça il doit être dans les airs !
         // Et il ne doit PAS être en train d'appuyer sur SHIFT
-        if (CanGrip()) {
+        if (CanGrip(cube)) {
             // Si on vient d'un mur, on vérifie que la normale du mur précédent est suffisamment différente de la normale actuelle !
             Vector3 wallNormal = hit.normal;
             if (CanGripToWall(wallNormal)) {
@@ -553,9 +553,11 @@ public class Player : Character {
         }
     }
 
-    protected bool CanGrip() {
+    protected bool CanGrip(Cube cube) {
         // AU_MUR pour pouvoir s'accrocher à un mur depuis un autre mur ! :)
-        return (etat == EtatPersonnage.EN_SAUT || etat == EtatPersonnage.EN_CHUTE || etat == EtatPersonnage.AU_MUR) && !Input.GetKey(KeyCode.LeftShift);
+        return (etat == EtatPersonnage.EN_SAUT || etat == EtatPersonnage.EN_CHUTE || etat == EtatPersonnage.AU_MUR)
+            && !Input.GetKey(KeyCode.LeftShift)
+            && cube.gameObject.GetComponent<BouncyCube>() == null; // On ne veut pas s'accrocher sur les bouncy cubes ! :)
     }
 
     protected bool CanGripToWall(Vector3 wallNormal) {
@@ -708,13 +710,17 @@ public class Player : Character {
     }
 
     public bool DoubleCheckInteractWithCube(Cube cube) {
-        if (transform.rotation == Quaternion.identity) {
+        if (cube.transform.rotation == Quaternion.identity) {
             return MathTools.AABBSphere(cube.transform.position,
                 Vector3.one * cube.transform.localScale.x / 2,
                 transform.position,
                 transform.localScale.x / 2 + controller.skinWidth * skinWidthCoef);
         } else {
-            return true;
+            return MathTools.OBBSphere(cube.transform.position,
+                Vector3.one * cube.transform.localScale.x / 2,
+                cube.transform.rotation,
+                transform.position,
+                transform.localScale.x / 2 + controller.skinWidth * skinWidthCoef);
         }
     }
 

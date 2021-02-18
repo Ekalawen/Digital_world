@@ -80,7 +80,6 @@ public class BouncyCube : Cube {
     protected List<VisualEffect> GetParticules() {
         if (particles == null) {
             particles = particlesFolder.GetComponentsInChildren<VisualEffect>().ToList();
-            Debug.Log($"particules = {particles.Count}");
         }
         return particles;
     }

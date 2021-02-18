@@ -88,4 +88,87 @@ public static class MathTools
         bool collisionZ = halfExtents1.z + halfExtents2.z > centersDistances.z;
         return collisionX && collisionY && collisionZ;
     }
+
+
+    public static bool OBBSphere(Vector3 obbCenter, Vector3 obbHalfExtents, Quaternion obbRotation, Vector3 sphereCenter, float sphereRayon) {
+        Quaternion alignRotation = Quaternion.Inverse(obbRotation);
+        Vector3 newObbCenter = alignRotation * obbCenter;
+        Vector3 newSphereCenter = alignRotation * sphereCenter;
+        bool collision = AABBSphere(newObbCenter, obbHalfExtents, newSphereCenter, sphereRayon);
+        Debug.Log($"obb = ({obbCenter}, {obbHalfExtents}, {obbRotation}) sphere = ({sphereCenter}, {sphereRayon}) collision = {collision}");
+        return collision;
+
+        /// Pour si un jour on fait des tests XD
+        //Vector3 obbCenter = new Vector3(0, 0, 0);
+        //Vector3 obbHalfExtent = Vector3.one;
+        //Quaternion rotation = Quaternion.identity;
+        //Vector3 sphereCenter = new Vector3(2, 2, 2);
+        //float sphereRayon = 1.73f;
+        //bool collision = MathTools.OBBSphere(obbCenter, obbHalfExtent, rotation, sphereCenter, sphereRayon);
+        //Debug.Log($"obb = ({obbCenter}, {rotation}) sphere = ({sphereCenter}, {sphereRayon}) collision = {collision}");
+        //// Doit retourner FALSE;
+
+        //obbCenter = new Vector3(0, 0, 0);
+        //obbHalfExtent = Vector3.one;
+        //rotation = Quaternion.identity;
+        //sphereCenter = new Vector3(2, 2, 2);
+        //sphereRayon = 1.74f;
+        //collision = MathTools.OBBSphere(obbCenter, obbHalfExtent, rotation, sphereCenter, sphereRayon);
+        //Debug.Log($"obb = ({obbCenter}, {rotation}) sphere = ({sphereCenter}, {sphereRayon}) collision = {collision}");
+        //// Doit retourner TRUE;
+
+        //obbCenter = new Vector3(0, 0, 0);
+        //obbHalfExtent = Vector3.one;
+        //rotation = Quaternion.Euler(0, 0, 0);
+        //sphereCenter = new Vector3(2, 0, 0);
+        //sphereRayon = 0.9f;
+        //collision = MathTools.OBBSphere(obbCenter, obbHalfExtent, rotation, sphereCenter, sphereRayon);
+        //Debug.Log($"obb = ({obbCenter}, {rotation}) sphere = ({sphereCenter}, {sphereRayon}) collision = {collision}");
+        //// Doit retourner FALSE;
+
+        //obbCenter = new Vector3(0, 0, 0);
+        //obbHalfExtent = Vector3.one;
+        //rotation = Quaternion.Euler(0, 0, 0);
+        //sphereCenter = new Vector3(2, 0, 0);
+        //sphereRayon = 1.1f;
+        //collision = MathTools.OBBSphere(obbCenter, obbHalfExtent, rotation, sphereCenter, sphereRayon);
+        //Debug.Log($"obb = ({obbCenter}, {rotation}) sphere = ({sphereCenter}, {sphereRayon}) collision = {collision}");
+        //// Doit retourner TRUE;
+
+        //obbCenter = new Vector3(0, 0, 0);
+        //obbHalfExtent = Vector3.one;
+        //rotation = Quaternion.Euler(0, 0, 45);
+        //sphereCenter = new Vector3(2, 0, 0);
+        //sphereRayon = 0.58f;
+        //collision = MathTools.OBBSphere(obbCenter, obbHalfExtent, rotation, sphereCenter, sphereRayon);
+        //Debug.Log($"obb = ({obbCenter}, {rotation}) sphere = ({sphereCenter}, {sphereRayon}) collision = {collision}");
+        //// Doit retourner FALSE;
+
+        //obbCenter = new Vector3(0, 0, 0);
+        //obbHalfExtent = Vector3.one;
+        //rotation = Quaternion.Euler(0, 0, 45);
+        //sphereCenter = new Vector3(2, 0, 0);
+        //sphereRayon = 0.60f;
+        //collision = MathTools.OBBSphere(obbCenter, obbHalfExtent, rotation, sphereCenter, sphereRayon);
+        //Debug.Log($"obb = ({obbCenter}, {rotation}) sphere = ({sphereCenter}, {sphereRayon}) collision = {collision}");
+        //// Doit retourner TRUE;
+
+        //obbCenter = new Vector3(10, 100, 0);
+        //obbHalfExtent = Vector3.one;
+        //rotation = Quaternion.Euler(45, 0, 0);
+        //sphereCenter = new Vector3(10, 100, 2);
+        //sphereRayon = 0.58f;
+        //collision = MathTools.OBBSphere(obbCenter, obbHalfExtent, rotation, sphereCenter, sphereRayon);
+        //Debug.Log($"obb = ({obbCenter}, {rotation}) sphere = ({sphereCenter}, {sphereRayon}) collision = {collision}");
+        //// Doit retourner FALSE;
+
+        //obbCenter = new Vector3(10, 100, 0);
+        //obbHalfExtent = Vector3.one;
+        //rotation = Quaternion.Euler(45, 0, 0);
+        //sphereCenter = new Vector3(10, 100, 2);
+        //sphereRayon = 0.60f;
+        //collision = MathTools.OBBSphere(obbCenter, obbHalfExtent, rotation, sphereCenter, sphereRayon);
+        //Debug.Log($"obb = ({obbCenter}, {rotation}) sphere = ({sphereCenter}, {sphereRayon}) collision = {collision}");
+        //// Doit retourner TRUE;
+    }
 }
