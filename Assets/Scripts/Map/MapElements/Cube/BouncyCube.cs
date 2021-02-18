@@ -113,7 +113,8 @@ public class BouncyCube : Cube {
         // time - dissolveStartingTime = (0 - playerInfluence) * dissolveTime // car time >= dissolveStartingTime ! :)
         // time = (0 - playerInfluence) * dissolveTime + dissolveStartingTime
         float timeActivation = (0 - playerInfluence) * dissolveTime + dissolveStartingTime;
-        //timeActivation = timeActivation + (0.5f - (timeActivation % 0.5f));
+        float periode = GetParticules()[0].GetFloat("Periode");
+        timeActivation = timeActivation + (periode - (timeActivation % periode));
         float dureeActivation = timeActivation - Time.time;
         StartCoroutine(StartParticlesIn(dureeActivation));
     }
