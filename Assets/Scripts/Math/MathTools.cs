@@ -95,7 +95,6 @@ public static class MathTools
         Vector3 newObbCenter = alignRotation * obbCenter;
         Vector3 newSphereCenter = alignRotation * sphereCenter;
         bool collision = AABBSphere(newObbCenter, obbHalfExtents, newSphereCenter, sphereRayon);
-        Debug.Log($"obb = ({obbCenter}, {obbHalfExtents}, {obbRotation}) sphere = ({sphereCenter}, {sphereRayon}) collision = {collision}");
         return collision;
 
         /// Pour si un jour on fait des tests XD
