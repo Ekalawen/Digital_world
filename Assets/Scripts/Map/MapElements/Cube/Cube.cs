@@ -51,7 +51,7 @@ public class Cube : MonoBehaviour {
         }
     }
 
-    public void StartDissolveEffect(float dissolveTime, float playerProximityCoef = 0.0f) {
+    public virtual void StartDissolveEffect(float dissolveTime, float playerProximityCoef = 0.0f) {
         GetMaterial().SetFloat("_DissolveTime", dissolveTime);
         GetMaterial().SetFloat("_PlayerProximityCoef", playerProximityCoef);
         GetMaterial().SetFloat("_DissolveStartingTime", Time.time);
@@ -152,7 +152,7 @@ public class Cube : MonoBehaviour {
         StartCoroutine(CDestroyIn(duree));
     }
 
-    protected IEnumerator CDestroyIn(float duree) {
+    protected virtual IEnumerator CDestroyIn(float duree) {
         yield return new WaitForSeconds(duree);
         Destroy();
     }
