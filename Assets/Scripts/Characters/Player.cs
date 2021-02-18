@@ -708,10 +708,14 @@ public class Player : Character {
     }
 
     public bool DoubleCheckInteractWithCube(Cube cube) {
-        return MathTools.AABBSphere(cube.transform.position,
-            Vector3.one * cube.transform.localScale.x / 2,
-            transform.position,
-            transform.localScale.x / 2 + controller.skinWidth * skinWidthCoef);
+        if (transform.rotation == Quaternion.identity) {
+            return MathTools.AABBSphere(cube.transform.position,
+                Vector3.one * cube.transform.localScale.x / 2,
+                transform.position,
+                transform.localScale.x / 2 + controller.skinWidth * skinWidthCoef);
+        } else {
+            return true;
+        }
     }
 
     public int GetNbDoubleSautsMax() {

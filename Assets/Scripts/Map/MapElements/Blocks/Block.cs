@@ -46,7 +46,7 @@ public class Block : MonoBehaviour {
         for(int i = 0; i < cubes.Count; i++) {
             Cube cube = cubes[i];
             Vector3 cubePosition = cube.transform.position;
-            Cube newCube = map.AddCube(cubePosition, cube.type, parent: cubeFolder);
+            Cube newCube = map.AddCube(cubePosition, cube.type, cube.transform.rotation, parent: cubeFolder);
             if(newCube == null) {
                 cubes.RemoveAt(i);
                 i--;
