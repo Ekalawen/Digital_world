@@ -35,8 +35,8 @@ public class BouncyCube : Cube {
             player.SetCarefulJumping(Player.EtatPersonnage.AU_SOL);
         } else {
             player.RemoveGravityEffectFor(dureePoussee); // La gravité est déjà artificiellement annulée lors d'un saut :)
-            player.PlayJumpSound(); // Juste ici car il est déjà joué dans la simulation du saut ! :)
         }
+        gm.soundManager.PlayBounceClip();
         if (dammageOnHit > 0.0f) {
             gm.timerManager.RemoveTime(dammageOnHit, EventManager.DeathReason.TOUCHED_BOUNCY_CUBE);
         }

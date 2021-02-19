@@ -34,6 +34,7 @@ public class SoundManager : MonoBehaviour {
     public AudioClipParams notFoundPouvoirClips;
     public AudioClipParams timeZoneButtonInClips;
     public AudioClipParams timeZoneButtonOutClips;
+    public AudioClipParams bounceClips;
     public AudioClipParams rewardBestScoreClips;
     public AudioClipParams victoryClips;
     public AudioClipParams defeatClips;
@@ -214,6 +215,9 @@ public class SoundManager : MonoBehaviour {
     }
     public void PlayDefeatClip() {
         PlayClipsOnSource(defeatClips);
+    }
+    public void PlayBounceClip() {
+        PlayClipsOnSource(bounceClips);
     }
 
     //protected void PlayClipsOnSource(List<AudioClip> clips, AudioSource source, bool bReverse = false) {
