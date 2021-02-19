@@ -301,6 +301,10 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
     protected void FillTraceHint() {
         int currentTreshold = GetCurrentTreshold();
         List<int> unlockedTresholds = selectorPath.GetTresholds().FindAll(i => i <= currentTreshold);
+        MenuLevel menuLevel = selectorPath.startLevel.menuLevel;
+        if(menuLevel.levelType == MenuLevel.LevelType.REGULAR && menuLevel.GetNbWins() == 0) {
+            unlockedTresholds.Clear();
+        }
         if(unlockedTresholds.Count >= selectorPath.nbTresholdsToSeeTraceHint) {
             traceHintContainer.SetActive(true);
             string traceString = UIHelper.SurroundWithB(selectorPath.GetTrace());
