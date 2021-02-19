@@ -23,7 +23,7 @@ public class InfiniteMap : MapManager {
     public float timeDifficultyProgression = 6f;
 
     [Header("Start")]
-    public GameObject firstBlock;
+    public List<GameObject> firstBlocks;
     public int nbFirstBlocks = 3;
     public int nbBlocksStartCubeDestruction = 1;
 
@@ -91,11 +91,15 @@ public class InfiniteMap : MapManager {
 
     protected void CreateFirstBlocks() {
         for (int i = 0; i < nbBlocksForward + 1; i++) {
-            if(i < nbFirstBlocks)
-                CreateBlock(firstBlock);
-            else
-                CreateBlock(GetRandomBlockPrefab());
+            CreateNextBlock();
         }
+    }
+
+    protected void CreateNextBlock() {
+        if (nbBlocksCreated < firstBlocks.Count)
+            CreateBlock(firstBlocks[nbBlocksCreated]);
+        else
+            CreateBlock(GetRandomBlockPrefab());
     }
 
     protected void CreateBlock(GameObject blockPrefab) {
@@ -292,7 +296,7 @@ public class InfiniteMap : MapManager {
 
     private void CreateNewBlocks(int nbBlocksAdded) {
         for (int i = 0; i < nbBlocksAdded; i++) {
-            CreateBlock(GetRandomBlockPrefab());
+            CreateNextBlock();
         }
     }
 
