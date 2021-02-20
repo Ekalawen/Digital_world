@@ -12,7 +12,7 @@ public class PouvoirPathfinder : IPouvoir {
     public float vitessePath = 30.0f;
 
     protected override bool UsePouvoir() {
-		if (Input.GetKeyDown (KeyCode.A))
+		if (Input.GetKeyDown (Player.GetPouvoirAKeyCode()))
         {
             List<Vector3> positions = GetAllInterestPoints();
 

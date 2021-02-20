@@ -678,13 +678,21 @@ public class Player : Character {
         Jump(from);
     }
 
+    public static KeyCode GetPouvoirAKeyCode() {
+        if (KeybindingDropdown.GetKeybinding() == KeybindingDropdown.KeybindingType.AZERTY) {
+            return KeyCode.A;
+        } else {
+            return KeyCode.Q;
+        }
+    }
+
     protected void TryUsePouvoirs() {
         if (gm.eventManager.IsGameOver() || gm.IsPaused())
             return;
         // A
-        if(Input.GetKeyDown(KeyCode.A)) {
+        if(Input.GetKeyDown(GetPouvoirAKeyCode())) {
             if (pouvoirA != null)
-                pouvoirA.TryUsePouvoir(KeyCode.A);
+                pouvoirA.TryUsePouvoir(GetPouvoirAKeyCode());
             else
                 gm.soundManager.PlayNotFoundPouvoirClip();
         }
