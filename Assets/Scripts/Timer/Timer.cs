@@ -61,6 +61,10 @@ public class Timer {
         return debut + duree - GetTimeSinceLevelLoad();
     }
 
+    public void SetRemainingTime(float remainingTime) {
+        debut = remainingTime - duree + GetTimeSinceLevelLoad();
+    }
+
     public void Stop() {
         stoped = true;
         stopedTiming = GetTimeSinceLevelLoad();

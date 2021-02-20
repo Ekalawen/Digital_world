@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public static class MathTools
@@ -169,5 +170,21 @@ public static class MathTools
         //collision = MathTools.OBBSphere(obbCenter, obbHalfExtent, rotation, sphereCenter, sphereRayon);
         //Debug.Log($"obb = ({obbCenter}, {rotation}) sphere = ({sphereCenter}, {sphereRayon}) collision = {collision}");
         //// Doit retourner TRUE;
+    }
+
+    public static List<Vector3> GetAllNormals(Transform t) {
+        return new List<Vector3>() {
+            t.forward,
+            - t.forward,
+            t.right,
+            - t.right,
+            t.up,
+            - t.up,
+        };
+    }
+
+    public static Vector3 GetClosestToNormals(Transform t, Vector3 currentNormal) {
+        List<Vector3> normals = MathTools.GetAllNormals(t);
+        return normals.OrderBy(n => Vector3.Dot(currentNormal, n)).Last();
     }
 }

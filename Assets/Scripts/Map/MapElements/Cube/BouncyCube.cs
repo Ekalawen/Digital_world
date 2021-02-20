@@ -44,19 +44,7 @@ public class BouncyCube : Cube {
     }
 
     protected Vector3 GetDirectionPoussee(Vector3 position) {
-        List<Vector3> normals = GetAllNormals();
         Vector3 direction = (position - transform.position).normalized;
-        return normals.OrderBy(n => Vector3.Dot(direction, n)).Last();
-    }
-
-    protected List<Vector3> GetAllNormals() {
-        return new List<Vector3>() {
-            transform.forward,
-            - transform.forward,
-            transform.right,
-            - transform.right,
-            transform.up,
-            - transform.up,
-        };
+        return MathTools.GetClosestToNormals(transform, direction);
     }
 }

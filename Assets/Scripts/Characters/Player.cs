@@ -5,6 +5,7 @@ using System;
 using UnityEngine.EventSystems;
 using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.Events;
+using System.Linq;
 
 public class Player : Character {
 
@@ -54,6 +55,7 @@ public class Player : Character {
 	protected Vector3 pointMur; // un point du mur sur lequel le personnage est accroché ! En effet, la normale ne suffit pas :p
     protected Vector3 normaleSol; // La normale au sol lorsque l'on est au sol et que l'on essaye de slider vers le bas.
     protected Timer dureeMurTimer; // Le temps qu'il nous reste à être accroché au mur (utile pour les shifts qui peuvent nous décrocher)
+    protected float dureeMurRestante = 0; // Le temps qu'il nous reste à être accroché au mur après s'en être détaché via SHIFT ! :)
     protected int nbDoublesSautsMax = 0; // Nombre de doubles sauts
     protected int nbDoublesSautsCourrant = 0; // Le nombre de doubles sauts déjà utilisés
     protected float slideLimit; // La limite à partir de laquelle on va slider sur une surface.
@@ -321,14 +323,13 @@ public class Player : Character {
                         pointDebutSaut = transform.position;
                         origineSaut = EtatPersonnage.AU_MUR;
                         normaleOrigineSaut = normaleMur;
-                        //dureeMurTimer = dureeMurTimer - (Time.timeSinceLevelLoad - debutMur);
+                        dureeMurRestante = dureeMurTimer.GetRemainingTime();
 
                     } else if (Input.GetButtonDown("Jump") && gm.gravityManager.HasGravity()) {
                         // On peut encore sauter quand on est au mur ! 
                         // Mais il faut appuyer à nouveau !
                         Jump(from: EtatPersonnage.AU_MUR);
                         move = ApplyJumpMouvement(move);
-                        //dureeMurTimer = dureeMur;
 
                     } else if (Input.GetButton("Jump")) {
                         // On a le droit de terminer son saut lorsqu'on touche un mur
@@ -344,21 +345,15 @@ public class Player : Character {
                     float distanceMur = (pos2mur - Vector3.ProjectOnPlane(pos2mur, normaleMur)).magnitude; // pourtant c'est clair non ? Fais un dessins si tu comprends pas <3
                     //if ((Time.timeSinceLevelLoad - debutMur) >= dureeMurTimer
                     if (dureeMurTimer.IsOver() || distanceMur >= distanceMurMax) {
-                        etat = EtatPersonnage.EN_CHUTE;
-                        pointDebutSaut = transform.position;
-                        origineSaut = EtatPersonnage.AU_MUR;
-                        normaleOrigineSaut = normaleMur;
+                        FallFromWall();
                     }
 
                     // Et on veut aussi vérifier que le mur continue encore à nos cotés !
                     // Pour ça on va lancer un rayon ! <3
                     Ray ray = new Ray(transform.position, -normaleMur);
-                    RaycastHit hit;
-                    if (!Physics.Raycast(ray, out hit, distanceMurMax) || hit.collider.tag != "Cube") {
-                        etat = EtatPersonnage.EN_CHUTE;
-                        pointDebutSaut = transform.position;
-                        origineSaut = EtatPersonnage.AU_MUR;
-                        normaleOrigineSaut = normaleMur;
+                    RaycastHit[] hits = Physics.SphereCastAll(ray, GetSizeRadius(), distanceMurMax);
+                    if (hits.Length == 0 || !hits.Select(h => h.collider.tag).Contains("Cube")) {
+                        FallFromWall();
                     }
                     break;
                 default: break;
@@ -366,6 +361,14 @@ public class Player : Character {
         }
 
         return move;
+    }
+
+    protected void FallFromWall() {
+        etat = EtatPersonnage.EN_CHUTE;
+        pointDebutSaut = transform.position;
+        origineSaut = EtatPersonnage.AU_MUR;
+        normaleOrigineSaut = normaleMur;
+        dureeMurRestante = 0;
     }
 
     protected Vector3 UpdateHorizontalMouvement(Vector3 move) {
@@ -541,15 +544,26 @@ public class Player : Character {
         // Et il ne doit PAS être en train d'appuyer sur SHIFT
         if (CanGrip(cube)) {
             // Si on vient d'un mur, on vérifie que la normale du mur précédent est suffisamment différente de la normale actuelle !
-            Vector3 wallNormal = hit.normal;
+            Vector3 wallNormal = GetWallNormalFromHit(hit);
             if (CanGripToWall(wallNormal)) {
                 // Si la normale est au moins un peu à l'horizontale !
                 Vector3 up = gm.gravityManager.Up();
                 Vector3 nProject = Vector3.ProjectOnPlane(wallNormal, up);
                 if (nProject != Vector3.zero && Mathf.Abs(Vector3.Angle(wallNormal, nProject)) < slideLimit) {
-                    GripOn(hit);
+                    GripOn(hit, wallNormal);
                 }
             }
+        }
+    }
+
+    protected Vector3 GetWallNormalFromHit(ControllerColliderHit hit) {
+        // Il est possible de supprimer cette fonctionnalité pour permettre au joueur d'être plus sticky sur les murs :) (et notemment les angles !)
+        Cube cube = hit.gameObject.GetComponent<Cube>();
+        if(cube != null && cube.transform.rotation == Quaternion.identity) {
+            Vector3 normalizedNormal = MathTools.GetClosestToNormals(cube.transform, hit.normal);
+            return normalizedNormal;
+        } else {
+            return hit.normal;
         }
     }
 
@@ -562,16 +576,26 @@ public class Player : Character {
 
     protected bool CanGripToWall(Vector3 wallNormal) {
         return origineSaut == EtatPersonnage.AU_SOL
-           || (origineSaut == EtatPersonnage.AU_MUR && Vector3.Angle(normaleOrigineSaut, wallNormal) > 10);
+           || (origineSaut == EtatPersonnage.AU_MUR && AreWallsNormalsDifferent(normaleOrigineSaut, wallNormal))
+           || (origineSaut == EtatPersonnage.AU_MUR && etat == EtatPersonnage.EN_CHUTE && dureeMurRestante > 0);
     }
 
-    protected void GripOn(ControllerColliderHit hit) {
+    public static bool AreWallsNormalsDifferent(Vector3 normalMur1, Vector3 normalMur2) {
+        return Vector3.Angle(normalMur1, normalMur2) > 10;
+    }
+
+    protected void GripOn(ControllerColliderHit hit, Vector3 wallNormal) {
         EtatPersonnage previousEtat = etat;
         etat = EtatPersonnage.AU_MUR; // YEAH !!!
         debutMur = Time.timeSinceLevelLoad;
-        normaleMur = hit.normal;
+        normaleMur = wallNormal;
         pointMur = hit.point;
-        dureeMurTimer.Reset();
+        if(normaleOrigineSaut == Vector3.zero || AreWallsNormalsDifferent(normaleOrigineSaut, normaleMur)) {
+            ResetDureeMur();
+            dureeMurRestante = 0;
+        } else {
+            dureeMurTimer.SetRemainingTime(dureeMurRestante);
+        }
 
         // Pour pouvoir s'accrocher à un autre mur depuis ce mur-ci !
         origineSaut = EtatPersonnage.AU_MUR;
@@ -608,9 +632,13 @@ public class Player : Character {
     }
 
     protected float ComputeVitesseSaut() {
-        float sizePlayer = transform.localScale.y / 2 + controller.skinWidth;
+        float sizePlayer = GetSizeRadius();
         float vitesseSaut = (hauteurCulminanteSaut - sizePlayer) / dureeAscensionSaut;
         return vitesseSaut;
+    }
+
+    public float GetSizeRadius() {
+        return transform.localScale.y / 2 + controller.skinWidth;
     }
 
     protected void Jump(EtatPersonnage from) {
@@ -703,10 +731,11 @@ public class Player : Character {
         gm.postProcessManager.SetBlur(poussees.Count > 0);
     }
 
+    // Permet de s'accrocher à nouveau à un mur !
     public void ResetGrip() {
-        // Permet de s'accrocher à nouveau à un mur !
         origineSaut = EtatPersonnage.AU_SOL;
-        dureeMurTimer.Reset();
+        ResetDureeMur();
+        dureeMurRestante = 0;
     }
 
     public bool DoubleCheckInteractWithCube(Cube cube) {
