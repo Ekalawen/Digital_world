@@ -43,4 +43,29 @@ public class PosVisualisator : MonoBehaviour {
         Debug.DrawLine(pos + Vector3.forward * sizeCross, pos - Vector3.forward * sizeCross, color, 10000, depthTest);
         Debug.DrawLine(pos + Vector3.right * sizeCross, pos - Vector3.right * sizeCross, color, 10000, depthTest);
     }
+
+    public static void CreateCube(Vector3 center, Vector3 halfExtents, Color color, bool depthTest = false) {
+        List<Tuple<Vector3, Vector3>> coords = new List<Tuple<Vector3, Vector3>>() {
+            // face du bas
+            new Tuple<Vector3, Vector3>(new Vector3(-1, -1, -1), new Vector3(-1, -1, 1)),
+            new Tuple<Vector3, Vector3>(new Vector3(-1, -1, -1), new Vector3(1, -1, -1)),
+            new Tuple<Vector3, Vector3>(new Vector3(1, -1, 1), new Vector3(-1, -1, 1)),
+            new Tuple<Vector3, Vector3>(new Vector3(1, -1, 1), new Vector3(1, -1, -1)),
+            // face du haut
+            new Tuple<Vector3, Vector3>(new Vector3(-1, 1, -1), new Vector3(-1, 1, 1)),
+            new Tuple<Vector3, Vector3>(new Vector3(-1, 1, -1), new Vector3(1, 1, -1)),
+            new Tuple<Vector3, Vector3>(new Vector3(1, 1, 1), new Vector3(-1, 1, 1)),
+            new Tuple<Vector3, Vector3>(new Vector3(1, 1, 1), new Vector3(1, 1, -1)),
+            // arêtes verticales
+            new Tuple<Vector3, Vector3>(new Vector3(-1, -1, -1), new Vector3(-1, 1, -1)),
+            new Tuple<Vector3, Vector3>(new Vector3(-1, -1, 1), new Vector3(-1, 1, 1)),
+            new Tuple<Vector3, Vector3>(new Vector3(1, -1, -1), new Vector3(1, 1, -1)),
+            new Tuple<Vector3, Vector3>(new Vector3(1, -1, 1), new Vector3(1, 1, 1)),
+        };
+        for(int i = 0; i < coords.Count; i++) {
+            Vector3 start = center + MathTools.VecMul(coords[i].Item1, halfExtents);
+            Vector3 end = center + MathTools.VecMul(coords[i].Item2, halfExtents);
+            Debug.DrawLine(start, end, color, 10000, depthTest: depthTest);
+        }
+    }
 }

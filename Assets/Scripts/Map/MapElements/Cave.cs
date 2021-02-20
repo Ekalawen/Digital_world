@@ -9,7 +9,8 @@ public class Cave : CubeEnsemble {
     public Vector3Int nbCubesParAxe;
     public Cube[,,] cubeMatrix;
 
-    public Cave(Vector3 depart, Vector3Int nbCubesParAxe, bool bMakeSpaceArround = false, bool bDigInside = true, bool bPreserveMapBordures = false) : base() {
+    public Cave(Vector3 depart, Vector3Int nbCubesParAxe, bool bMakeSpaceArround = false, bool bDigInside = true, bool bPreserveMapBordures = false) : base()
+    {
         this.depart = depart;
         this.nbCubesParAxe = nbCubesParAxe;
 
@@ -18,6 +19,7 @@ public class Cave : CubeEnsemble {
         GenererCubePlein();
         if (bDigInside)
             GeneratePaths();
+        DisplayDebugCave();
     }
 
     public override string GetName() {
@@ -354,5 +356,12 @@ public class Cave : CubeEnsemble {
             k++;
         }
         throw new System.Exception("Cette cave est pleine ! Impossible de trouver une free location !");
+    }
+
+    protected void DisplayDebugCave() {
+#if UNITY_EDITOR
+        List<ColorManager.Theme> theme = new List<ColorManager.Theme>() { ColorManager.GetRandomTheme() };
+        PosVisualisator.CreateCube(GetCenter(), GetHalfExtents(), ColorManager.GetColor(theme), depthTest: false);
+#endif
     }
 }

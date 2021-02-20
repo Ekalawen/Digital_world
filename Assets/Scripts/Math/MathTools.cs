@@ -187,4 +187,8 @@ public static class MathTools
         List<Vector3> normals = MathTools.GetAllNormals(t);
         return normals.OrderBy(n => Vector3.Dot(currentNormal, n)).Last();
     }
+
+    public static Vector3 VecMul(Vector3 vector1, Vector3 vector2) {
+        return new Vector3(vector1.x * vector2.x, vector1.y * vector2.y, vector1.z * vector2.z);
+    }
 }
