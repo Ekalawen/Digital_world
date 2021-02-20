@@ -127,9 +127,9 @@ public class EventManager : MonoBehaviour {
             WinGame();
         }
         AddEventsBasedOnLumiereCount(nbLumieres);
+        TestNewTresholdReached();
         gm.console.OnLumiereCaptured();
     }
-
 
     protected virtual void StartEndGame()
     {
@@ -612,5 +612,19 @@ public class EventManager : MonoBehaviour {
         int nb = 10;
         int dataCount = Lumiere.IncrementDataCount(nb);
         gm.console.AddToDataCountText(dataCount, nb);
+    }
+
+    protected void TestNewTresholdReached() {
+        if(gm.GetMapType() == MenuLevel.LevelType.REGULAR) {
+            int dataCount = Lumiere.GetCurrentDataCount();
+            if(gm.goalManager.GetAllTresholds().Contains(dataCount)) {
+                RewardForNewRegularTresholdReached(dataCount);
+            }
+        }
+    }
+
+    protected void RewardForNewRegularTresholdReached(int dataCount) {
+        gm.console.RewardNewRegularTreshold(dataCount);
+        gm.soundManager.PlayRewardBestScore();
     }
 }

@@ -66,7 +66,7 @@ public class InfiniteMap : MapManager {
         blocks = new List<Block>();
         blocksFolder = new GameObject("Blocks").transform;
         blocksFolder.transform.SetParent(cubesFolder.transform);
-        string nextTresholdSymbol = gm.goalManager.GetNextTresholdSymbolFor(nbBlocksRun);
+        string nextTresholdSymbol = gm.goalManager.GetNextNotUnlockedTresholdSymbolFor(nbBlocksRun);
         nbBlocksDisplayer.Display($"{nbBlocksRun.ToString()}/{nextTresholdSymbol}");
         timerSinceLastBlock = new Timer();
         nbBlocksRun = 0;
@@ -321,18 +321,30 @@ public class InfiniteMap : MapManager {
     }
 
     protected void RewardPlayerForNewBlock(int nbBlocksAdded) {
-        if (nbBlocksRun > nbFirstBlocks)
-        {
+        if (nbBlocksRun > nbFirstBlocks) {
             int nbBlocksNonStart = GetNonStartNbBlocksRun();
-            string nextTresholdSymbol = gm.goalManager.GetNextTresholdSymbolFor(nbBlocksNonStart);
+            string nextTresholdSymbol = gm.goalManager.GetNextNotUnlockedTresholdSymbolFor(nbBlocksNonStart);
             nbBlocksDisplayer.Display($"{nbBlocksNonStart.ToString()}/{nextTresholdSymbol}");
             nbBlocksDisplayer.AddVolatileText($"+ {nbBlocksAdded.ToString()}", nbBlocksDisplayer.GetTextColor());
             gm.soundManager.PlayNewBlockClip();
             if (IsNewBestScore(nbBlocksNonStart)) {
-                gm.console.RewardBestScore();
-                gm.soundManager.PlayRewardBestScore();
-                hasMadeNewBestScore = true;
+                RewardNewBestScore();
+            } else {
+                RewardNewInifiniteTresholdReached(nbBlocksNonStart);
             }
+        }
+    }
+
+    protected void RewardNewBestScore() {
+        gm.console.RewardBestScore();
+        gm.soundManager.PlayRewardBestScore();
+        hasMadeNewBestScore = true;
+    }
+
+    protected void RewardNewInifiniteTresholdReached(int nbBlocksNonStart) {
+        if (gm.goalManager.GetAllNotUnlockedTresholds().Contains(nbBlocksNonStart)) {
+            gm.console.RewardNewInfiniteTreshold(nbBlocksNonStart);
+            gm.soundManager.PlayRewardBestScore();
         }
     }
 

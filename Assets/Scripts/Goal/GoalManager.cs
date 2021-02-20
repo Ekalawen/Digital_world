@@ -43,12 +43,32 @@ public class GoalManager : MonoBehaviour {
         return allTresholds;
     }
 
+    public List<int> GetAllNotUnlockedTresholds() {
+        List<int> tresholds = GetAllTresholds();
+        float seuil;
+        if(GetGoalType() == GoalType.BLOCK) {
+            seuil = gm.eventManager.GetBestScore();
+        } else {
+            seuil = Lumiere.GetCurrentDataCount();
+        }
+        return tresholds.FindAll(t => t > seuil).ToList();
+    }
+
     public int GetNextTresholdFor(int dataCount) {
         return GetAllTresholds().Find(n => n > dataCount);
     }
 
+    public int GetNextNotUnlockedTresholdFor(int dataCount) {
+        return GetAllNotUnlockedTresholds().Find(n => n > dataCount);
+    }
+
     public string GetNextTresholdSymbolFor(int dataCount) {
         int nextTreshold = GetNextTresholdFor(dataCount);
+        return nextTreshold == int.MaxValue ? "∞" : nextTreshold.ToString();
+    }
+
+    public string GetNextNotUnlockedTresholdSymbolFor(int dataCount) {
+        int nextTreshold = GetNextNotUnlockedTresholdFor(dataCount);
         return nextTreshold == int.MaxValue ? "∞" : nextTreshold.ToString();
     }
 }

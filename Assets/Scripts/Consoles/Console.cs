@@ -292,8 +292,8 @@ public class Console : MonoBehaviour {
         TypeText type,
         float tempsAffichage,
         bool bAfficherInConsole,
-        LocalizedString messageToReplace,
-        object[] argumentsReplace) {
+        LocalizedString messageToReplace = null,
+        object[] argumentsReplace = null) {
         StartCoroutine(CAjouterMessageImportant(localizedString, argumentsString, type, tempsAffichage, bAfficherInConsole, messageToReplace, argumentsReplace));
     }
 
@@ -916,7 +916,17 @@ public class Console : MonoBehaviour {
     }
 
     public void RewardBestScore() {
-        AjouterMessageImportant(strings.meilleurScore, TypeText.ALLY_TEXT, 3, bAfficherInConsole: true);
+        AjouterMessageImportant(strings.meilleurScore, TypeText.BASIC_TEXT, 3, bAfficherInConsole: true);
+    }
+
+    public void RewardNewRegularTreshold(int dataCount) {
+        object[] argument = new object[] { dataCount };
+        AjouterMessageImportant(strings.rewardNewRegularTreshold, argument, TypeText.BASIC_TEXT, 3, bAfficherInConsole: true);
+    }
+
+    public void RewardNewInfiniteTreshold(int dataCount) {
+        object[] argument = new object[] { dataCount };
+        AjouterMessageImportant(strings.rewardNewInfinitereshold, argument, TypeText.BASIC_TEXT, 3, bAfficherInConsole: true);
     }
 
     public void WhileTrueEndEventAutoDestructionEnclenche() {
