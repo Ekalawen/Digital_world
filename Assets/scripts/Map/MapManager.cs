@@ -482,6 +482,7 @@ public class MapManager : MonoBehaviour {
         Debug.Log("Nombre cubes non-regular = " + cubesNonRegular.Count);
         Debug.Log("Nombre cubes non-regular NULL = " + (cubesNonRegular.Count - nbCubesNonRegularNonNull));
         LocaliseCubeOnLumieres();
+        PrintIfSeveralLumieresOnSamePos();
     }
 
     public Vector3 GetRoundedLocation() {
@@ -523,6 +524,14 @@ public class MapManager : MonoBehaviour {
         return center;
     }
 
+    public Vector3 GetFreeRoundedLocationWithoutLumiere(int offsetFromSides = 1) {
+        Vector3 pos = GetFreeRoundedLocation(offsetFromSides);
+        for(int k = 0; GetAllLumieresPositions().Contains(pos) && k < 1000; k++) {
+            pos = GetFreeRoundedLocation(offsetFromSides);
+        }
+        return pos;
+    }
+
     public Vector3 GetFreeBoxLocation(Vector3 halfExtents) {
         Vector3 center = new Vector3(UnityEngine.Random.Range(1.0f, (float)tailleMap.x),
                                      UnityEngine.Random.Range(1.0f, (float)tailleMap.y),
@@ -550,6 +559,16 @@ public class MapManager : MonoBehaviour {
                 cubeOn.SetColor(Color.white);
                 Debug.Log("Une lumiere dans un cube à la position " + cubeOn.transform.position + " !");
             }
+        }
+    }
+
+    protected void PrintIfSeveralLumieresOnSamePos() {
+        int nbLumieres = lumieres.Count;
+        int nbLumieresDistinctes = GetAllLumieresPositions().Distinct().Count();
+        if(nbLumieres != nbLumieresDistinctes) {
+            Debug.LogError($"Il y a {nbLumieres - nbLumieresDistinctes + 1} lumières au même endroit !");
+        } else {
+            Debug.Log($"Toutes les lumières sont uniques.");
         }
     }
 
@@ -838,10 +857,7 @@ public class MapManager : MonoBehaviour {
     }
 
     public List<Vector3> GetAllLumieresPositions() {
-        List<Vector3> res = new List<Vector3>();
-        foreach (Lumiere lumiere in lumieres)
-            res.Add(lumiere.transform.position);
-        return res;
+        return lumieres.Select(l => l.transform.position).ToList();
     }
 
     public List<Cube> GetAllRegularCubes() {
@@ -870,17 +886,6 @@ public class MapManager : MonoBehaviour {
     protected void CreateRandomLumiere() {
         Vector3 posLumiere = GetFreeRoundedLocation();
         CreateLumiere(posLumiere, Lumiere.LumiereType.NORMAL);
-    }
-
-    protected void CreateRandomLumiereInCave() {
-        List<Cave> caves = GetMapElementsOfType<Cave>();
-        List<Cave> cavesGrandes = new List<Cave>();
-        foreach(Cave cave in caves) {
-            if (cave.nbCubesParAxe.x >= 3 && cave.nbCubesParAxe.y >= 3 && cave.nbCubesParAxe.z >= 3)
-                cavesGrandes.Add(cave);
-        }
-        Cave chosenCave = cavesGrandes[UnityEngine.Random.Range(0, cavesGrandes.Count)];
-        chosenCave.AddNLumiereInside(1);
     }
 
     //protected List<Cube> GetCubesRecursivelyInHierarchy(Transform folder) {

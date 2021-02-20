@@ -40,11 +40,13 @@ public class FixNbLumieres: GenerateLumieresMapFunction {
                 cavesGrandes.Add(cave);
         }
         Cave chosenCave = cavesGrandes[Random.Range(0, cavesGrandes.Count)];
-        chosenCave.AddNLumiereInside(1);
+        if(!chosenCave.AddNLumiereInside(1)) {
+            CreateRandomLumiere();
+        }
     }
 
     protected void CreateRandomLumiere() {
-        Vector3 posLumiere = map.GetFreeRoundedLocation();
+        Vector3 posLumiere = map.GetFreeRoundedLocationWithoutLumiere();
         map.CreateLumiere(posLumiere, lumiereType);
     }
 

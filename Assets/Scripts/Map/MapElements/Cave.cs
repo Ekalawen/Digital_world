@@ -250,34 +250,20 @@ public class Cave : CubeEnsemble {
         cubeMatrix[(int)pointsActuel.x, (int)pointsActuel.y, (int)pointsActuel.z] = null;
 	}
 
-    public void AddNLumiereInside(int nbLumieresToAdd, int offsetFromCenter = 1) {
+    public bool AddNLumiereInside(int nbLumieresToAdd, int offsetFromCenter = 1) {
         offsetFromCenter = ComputeOffsetFromCenter(nbLumieresToAdd, offsetFromCenter);
-        List<Vector3> initialPossiblePos = ComputeAllPossiblePos(offsetFromCenter);
+        List<Vector3> possiblePos = ComputeAllPossiblePos(offsetFromCenter);
         for (int i = 0; i < nbLumieresToAdd; i++) {
-            List<Vector3> possiblePos = new List<Vector3>();
-            foreach (Vector3 pos in initialPossiblePos)
-                possiblePos.Add(pos);
-
-            Vector3 posLumiere = possiblePos[Random.Range(0, possiblePos.Count)];
-            bool useOnlyEmptySpace = true;
-            while ((useOnlyEmptySpace && cubeMatrix[(int)posLumiere.x, (int)posLumiere.y, (int)posLumiere.z] != null)
-              || map.IsLumiereAt(posLumiere)) {
-                possiblePos.Remove(posLumiere);
-                if(possiblePos.Count <= 0) {
-                    if(useOnlyEmptySpace) {
-                        useOnlyEmptySpace = false;
-                        possiblePos = initialPossiblePos;
-                    } else {
-                        Debug.LogWarning("Nous n'avons pas trouvé de place pour une Lumière dans AddNLumiereInside()");
-                        break;
-                    }
-                }
-                posLumiere = possiblePos[Random.Range(0, possiblePos.Count)];
+            if(possiblePos.Count == 0) {
+                Debug.LogWarning($"Nous n'avons pas trouvé de place pour {nbLumieresToAdd - i} Lumières dans AddNLumiereInside()");
+                return false;
             }
-            initialPossiblePos.Remove(posLumiere);
-            posLumiere += depart;
-            map.CreateLumiere(posLumiere, Lumiere.LumiereType.NORMAL);
+            Vector3 posLumiere = possiblePos[Random.Range(0, possiblePos.Count)];
+            possiblePos.Remove(posLumiere);
+            Vector3 worldPosLumiere = depart + posLumiere;
+            map.CreateLumiere(worldPosLumiere, Lumiere.LumiereType.NORMAL);
         }
+        return true;
     }
 
     protected List<Vector3> ComputeAllPossiblePos(int offsetFromCenter) {
@@ -285,7 +271,12 @@ public class Cave : CubeEnsemble {
         for(int i = offsetFromCenter; i < nbCubesParAxe.x - offsetFromCenter; i++) {
             for(int j = offsetFromCenter; j < nbCubesParAxe.y - offsetFromCenter; j++) {
                 for(int k = offsetFromCenter; k < nbCubesParAxe.z - offsetFromCenter; k++) {
-                    possibilities.Add(new Vector3(i, j, k));
+                    Vector3 pos = new Vector3(i, j, k);
+                    if (cubeMatrix[i, j, k] == null) {
+                        if (!map.GetAllLumieresPositions().Contains(depart + pos)) {
+                            possibilities.Add(pos);
+                        }
+                    }
                 }
             }
         }
