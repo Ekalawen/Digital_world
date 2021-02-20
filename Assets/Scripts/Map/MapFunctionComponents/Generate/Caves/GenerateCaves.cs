@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -54,6 +55,7 @@ public class GenerateCaves : GenerateCubesMapFunction {
             caves = GenerateAllCavesWithProportion();
         else if (generateMode == GenerateMode.COUNT)
             caves = GenerateAllCavesWithNbCaves();
+        AddLumieresInAllCaves(caves);
 
         return caves;
 	}
@@ -80,21 +82,24 @@ public class GenerateCaves : GenerateCubesMapFunction {
         return caves;
     }
 
+    protected void AddLumieresInAllCaves(List<Cave> caves) {
+        // Il faut une deuxième passe, sinon les premières lumières seront écrasés par les caves suivantes !
+        foreach(Cave cave in caves) {
+            cave.AddNLumiereInside(nbLumieresPerCaves, offsetLumieresFromCenter);
+        }
+    }
 
     protected virtual Cave GenerateCave() {
         // On définit la taille de la cave
         Vector3Int size = Vector3Int.zero;
-        size.x = Random.Range(tailleMinCave, tailleMaxCave + 1);
-        size.y = Random.Range(tailleMinCave, tailleMaxCave + 1);
-        size.z = Random.Range(tailleMinCave, tailleMaxCave + 1);
+        size.x = UnityEngine.Random.Range(tailleMinCave, tailleMaxCave + 1);
+        size.y = UnityEngine.Random.Range(tailleMinCave, tailleMaxCave + 1);
+        size.z = UnityEngine.Random.Range(tailleMinCave, tailleMaxCave + 1);
 
         // On définit sa position sur la carte
         Vector3 position = GetPositionCave(size, caveOffsetFromSides);
 
         Cave cave = new Cave(position, size, makeSpaceArround, bDigInside: true, preserveMapBordure);
-
-        // On y rajoute la lumière !
-        cave.AddNLumiereInside(nbLumieresPerCaves, offsetLumieresFromCenter);
 
         return cave;
     }
@@ -134,11 +139,11 @@ public class GenerateCaves : GenerateCubesMapFunction {
     private Vector3 GetPositionCaveWithoutCollisions(Vector3Int sizeCave, int caveOffsetFromSides) {
         Vector3 position = Vector3.zero;
         position.x = useCaveFixedOffset && useCaveFixedOffsetX ? caveFixedOffsetX :
-            Random.Range(caveOffsetFromSides, map.tailleMap.x - sizeCave.x + 2 - caveOffsetFromSides);
+            UnityEngine.Random.Range(caveOffsetFromSides, map.tailleMap.x - sizeCave.x + 2 - caveOffsetFromSides);
         position.y = useCaveFixedOffset && useCaveFixedOffsetY ? caveFixedOffsetY :
-            Random.Range(caveOffsetFromSides, map.tailleMap.y - sizeCave.y + 2 - caveOffsetFromSides);
+            UnityEngine.Random.Range(caveOffsetFromSides, map.tailleMap.y - sizeCave.y + 2 - caveOffsetFromSides);
         position.z = useCaveFixedOffset && useCaveFixedOffsetZ ? caveFixedOffsetZ :
-            Random.Range(caveOffsetFromSides, map.tailleMap.z - sizeCave.z + 2 - caveOffsetFromSides);
+            UnityEngine.Random.Range(caveOffsetFromSides, map.tailleMap.z - sizeCave.z + 2 - caveOffsetFromSides);
         return position;
     }
 }

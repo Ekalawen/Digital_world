@@ -217,7 +217,7 @@ public class Cave : CubeEnsemble {
 		while (pointsActuel != finChemin) {
 			// On creuse
 			map.DeleteCube(cubeMatrix[(int)pointsActuel.x, (int)pointsActuel.y, (int)pointsActuel.z]);
-            cubeMatrix[(int)pointsActuel.x, (int)pointsActuel.y, (int)pointsActuel.z] = null;
+            cubeMatrix[(int)pointsActuel.x, (int)pointsActuel.y, (int)pointsActuel.z] = null; // utile car cubeMatrix n'est pas forcément la map !
 
 			// On liste les bonnes directions à prendre
 			List<Vector3> directions = new List<Vector3>();
@@ -247,7 +247,7 @@ public class Cave : CubeEnsemble {
 			pointsActuel = directions[Random.Range(0, directions.Count)];
 		}
         map.DeleteCube(cubeMatrix[(int)pointsActuel.x, (int)pointsActuel.y, (int)pointsActuel.z]);
-        cubeMatrix[(int)pointsActuel.x, (int)pointsActuel.y, (int)pointsActuel.z] = null;
+        cubeMatrix[(int)pointsActuel.x, (int)pointsActuel.y, (int)pointsActuel.z] = null; // utile car cubeMatrix n'est pas forcément la map !
 	}
 
     public bool AddNLumiereInside(int nbLumieresToAdd, int offsetFromCenter = 1) {
@@ -272,8 +272,9 @@ public class Cave : CubeEnsemble {
             for(int j = offsetFromCenter; j < nbCubesParAxe.y - offsetFromCenter; j++) {
                 for(int k = offsetFromCenter; k < nbCubesParAxe.z - offsetFromCenter; k++) {
                     Vector3 pos = new Vector3(i, j, k);
-                    if (cubeMatrix[i, j, k] == null) {
-                        if (!map.GetAllLumieresPositions().Contains(depart + pos)) {
+                    Vector3 worldPos = depart + pos;
+                    if (cubeMatrix[i, j, k] == null && map.GetCubeAt(worldPos) == null) {
+                        if (!map.GetAllLumieresPositions().Contains(worldPos)) {
                             possibilities.Add(pos);
                         }
                     }

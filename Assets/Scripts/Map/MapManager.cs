@@ -385,6 +385,11 @@ public class MapManager : MonoBehaviour {
         if(!dontRoundPositions)
             pos = MathTools.Round(pos);
 
+        if(GetCubeAt(pos) != null) {
+            PosVisualisator.CreateCross(pos, Color.black);
+            Debug.Log($"Une lumière est crée dans un cube ! x)");
+        }
+
         Lumiere lumiere = GameObject.Instantiate(GetPrefab(type), pos, Quaternion.identity, lumieresFolder.transform).GetComponent<Lumiere>();
 
         RegisterAlreadyExistingLumiere(lumiere);

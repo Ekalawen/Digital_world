@@ -36,4 +36,11 @@ public class PosVisualisator : MonoBehaviour {
         GameObject go = Instantiate(visualisatorPrefab, pos, Quaternion.identity);
         go.transform.localScale = Vector3.one * 0.1f;
     }
+
+    public static void CreateCross(Vector3 pos, Color color, bool depthTest = false) {
+        float sizeCross = 1f / 4f;
+        Debug.DrawLine(pos + Vector3.up * sizeCross, pos - Vector3.up * sizeCross, color, 10000, depthTest);
+        Debug.DrawLine(pos + Vector3.forward * sizeCross, pos - Vector3.forward * sizeCross, color, 10000, depthTest);
+        Debug.DrawLine(pos + Vector3.right * sizeCross, pos - Vector3.right * sizeCross, color, 10000, depthTest);
+    }
 }
