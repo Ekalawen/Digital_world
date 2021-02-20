@@ -45,6 +45,7 @@ public class BouncyCube : Cube {
 
     protected Vector3 GetDirectionPoussee(Vector3 position) {
         Vector3 direction = (position - transform.position).normalized;
-        return MathTools.GetClosestToNormals(transform, direction);
+        Vector3 directionPoussee = MathTools.GetClosestToNormals(transform, direction);
+        return directionPoussee;
     }
 }

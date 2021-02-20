@@ -10,7 +10,7 @@ public class Block : MonoBehaviour {
     protected static float defaultAverageTime = 2.5f;
     protected static float timesExtremeBounds = 0.20f;
     protected static int minTimesCountForAveraging = 3;
-    protected static int maxTimesCountForAveraging = 10;
+    public static int maxTimesCountForAveraging = 10;
 
     public Transform startPoint;
     public Transform endPoint;

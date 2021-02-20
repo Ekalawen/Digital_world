@@ -21,6 +21,8 @@ public class InfiniteMap : MapManager {
     public float timeDifficultyOffset = 1.85f;
     [ConditionalHide("difficultyMode", DifficultyMode.PROGRESSIVE)]
     public float timeDifficultyProgression = 6f;
+    public bool forceNotCompletedBlocks = false;
+
 
     [Header("Start")]
     public List<GameObject> firstBlocks;
@@ -45,22 +47,20 @@ public class InfiniteMap : MapManager {
     public bool shouldResetAllBlocksTime = false;
     public float dureeDecompose = 5.0f;
 
-    Transform blocksFolder;
-
-    int indiceCurrentBlock = 0;
-    int nbBlocksRun;
-    int nbBlocksDestroyed;
-    int nbBlocksCreated = 0;
-    List<BlockWeight> blockWeights;
-    List<Block> blocks; // Les blocks vont des blocks en train de se faire détruire jusqu'à nbBlocksForwards blocks devant la position du joueur
-    Block lastlyDestroyedBlock = null;
-    Timer destructionBlockTimer;
-    Timer timerSinceLastBlock;
-    bool hasMadeNewBestScore = false;
-    bool startsBlockDestruction = false;
-    CameraShakeInstance cameraShakeInstance;
-    List<string> blocksNameToNotifyPlayerToPressShift = new List<string>();
-
+    protected Transform blocksFolder;
+    protected int indiceCurrentBlock = 0;
+    protected int nbBlocksRun;
+    protected int nbBlocksDestroyed;
+    protected int nbBlocksCreated = 0;
+    protected List<BlockWeight> blockWeights;
+    protected List<Block> blocks; // Les blocks vont des blocks en train de se faire détruire jusqu'à nbBlocksForwards blocks devant la position du joueur
+    protected Block lastlyDestroyedBlock = null;
+    protected Timer destructionBlockTimer;
+    protected Timer timerSinceLastBlock;
+    protected bool hasMadeNewBestScore = false;
+    protected bool startsBlockDestruction = false;
+    protected CameraShakeInstance cameraShakeInstance;
+    protected List<string> blocksNameToNotifyPlayerToPressShift = new List<string>();
 
     protected override void InitializeSpecific() {
         blocks = new List<Block>();
@@ -96,10 +96,15 @@ public class InfiniteMap : MapManager {
     }
 
     protected void CreateNextBlock() {
-        if (nbBlocksCreated < firstBlocks.Count)
+        if (nbBlocksCreated < firstBlocks.Count) {
             CreateBlock(firstBlocks[nbBlocksCreated]);
-        else
-            CreateBlock(GetRandomBlockPrefab());
+        } else {
+            if (!forceNotCompletedBlocks) {
+                CreateBlock(GetRandomBlockPrefab());
+            } else {
+                CreateBlock(GetRandomNotCompletedBlockPrefab());
+            }
+        }
     }
 
     protected void CreateBlock(GameObject blockPrefab) {
@@ -134,6 +139,21 @@ public class InfiniteMap : MapManager {
         float sum = 0;
         for(int i = 0; i < blockWeights.Count; i++) {
             sum += blockWeights[i].weight;
+            if (randomNumber <= sum)
+                return blockWeights[i].block;
+        }
+        return blockWeights.Last().block;
+    }
+
+    protected GameObject GetRandomNotCompletedBlockPrefab() {
+        float totalWeight = blockWeights.Sum(bw => Block.maxTimesCountForAveraging - bw.block.GetComponent<Block>().timesForFinishing.Count);
+        if(totalWeight <= 0) {
+            return GetRandomBlockPrefab();
+        }
+        float randomNumber = UnityEngine.Random.Range(0f, 1f) * totalWeight;
+        float sum = 0;
+        for(int i = 0; i < blockWeights.Count; i++) {
+            sum += Block.maxTimesCountForAveraging - blockWeights[i].block.GetComponent<Block>().timesForFinishing.Count;
             if (randomNumber <= sum)
                 return blockWeights[i].block;
         }

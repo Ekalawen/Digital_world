@@ -336,7 +336,9 @@ public class Player : Character {
                         move = ApplyJumpMouvement(move);
                     } else {
                         // Si on ne fait rien, alors on ne chute pas.
-                        move = gm.gravityManager.CounterGravity(move);
+                        if (!isGravityEffectRemoved) {
+                            move = gm.gravityManager.CounterGravity(move);
+                        }
                     }
 
                     // Si ça fait trop longtemps qu'on est sur le mur
@@ -428,17 +430,24 @@ public class Player : Character {
         ResetOrigineSaut();
     }
 
-    protected void ResetOrigineSaut() {
-        normaleOrigineSaut = Vector3.zero;
-        origineSaut = EtatPersonnage.AU_SOL;
-    }
-
     protected void ResetDoubleJump() {
         nbDoublesSautsCourrant = 0;
     }
 
     protected void ResetDureeMur() {
         dureeMurTimer.Reset();
+    }
+
+    protected void ResetOrigineSaut() {
+        normaleOrigineSaut = Vector3.zero;
+        origineSaut = EtatPersonnage.AU_SOL;
+    }
+
+    // Permet de s'accrocher à nouveau à un mur !
+    public void ResetGrip() {
+        //dureeMurRestante = 0;
+        ResetOrigineSaut();
+        ResetDureeMur();
     }
 
     void UpdateCapturedByEnnemiTest() {
@@ -626,7 +635,9 @@ public class Player : Character {
             float avancementRestant = (proportionAscension - lastAvancementSaut) / (avancementSaut - lastAvancementSaut);
             move += gm.gravityManager.Up() * vitesseSaut * avancementRestant;
         }
-        move += gm.gravityManager.Up() * gm.gravityManager.gravityIntensity; // Pour contrer la gravité !
+        if (!isGravityEffectRemoved) {
+            move = gm.gravityManager.CounterGravity(move);
+        }
         lastAvancementSaut = avancementSaut;
         return move;
     }
@@ -729,13 +740,6 @@ public class Player : Character {
     public override void ApplyPoussees() {
         base.ApplyPoussees();
         gm.postProcessManager.SetBlur(poussees.Count > 0);
-    }
-
-    // Permet de s'accrocher à nouveau à un mur !
-    public void ResetGrip() {
-        origineSaut = EtatPersonnage.AU_SOL;
-        ResetDureeMur();
-        dureeMurRestante = 0;
     }
 
     public bool DoubleCheckInteractWithCube(Cube cube) {
