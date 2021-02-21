@@ -580,7 +580,7 @@ public class Player : Character {
         // AU_MUR pour pouvoir s'accrocher à un mur depuis un autre mur ! :)
         return (etat == EtatPersonnage.EN_SAUT || etat == EtatPersonnage.EN_CHUTE || etat == EtatPersonnage.AU_MUR)
             && !Input.GetKey(KeyCode.LeftShift)
-            && cube.gameObject.GetComponent<BouncyCube>() == null; // On ne veut pas s'accrocher sur les bouncy cubes ! :)
+            && (cube == null || cube.gameObject.GetComponent<BouncyCube>() == null); // On ne veut pas s'accrocher sur les bouncy cubes ! :)
     }
 
     protected bool CanGripToWall(Vector3 wallNormal) {
