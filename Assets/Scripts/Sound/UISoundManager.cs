@@ -8,13 +8,13 @@ public class UISoundManager : MonoBehaviour {
     static UISoundManager _instance;
     public static UISoundManager Instance { get { return _instance ?? (_instance = new GameObject().AddComponent<UISoundManager>()); } }
 
-    public SoundBankUI sounds;
-
+    protected SoundBankUI sounds = null;
     protected Transform globalSoundsFolder;
     protected List<AudioSource> availableSources;
     protected List<AudioSource> usedSources;
     protected float musicVolume = 1.0f;
     protected float soundVolume = 1.0f;
+    protected AudioSource musicAudioSource;
 
     void Awake() {
         if (!_instance) { _instance = this; }
@@ -27,8 +27,14 @@ public class UISoundManager : MonoBehaviour {
         globalSoundsFolder.parent = transform;
         availableSources = new List<AudioSource>();
         usedSources = new List<AudioSource>();
+        GetAudioVolumes();
         DontDestroyOnLoad(this);
         StartCoroutine(CInitialize());
+    }
+
+    public void GetAudioVolumes() {
+        musicVolume = PlayerPrefs.GetFloat(MenuOptions.MUSIC_VOLUME_KEY);
+        soundVolume = PlayerPrefs.GetFloat(MenuOptions.SOUND_VOLUME_KEY);
     }
 
     protected IEnumerator CInitialize() {
@@ -129,5 +135,26 @@ public class UISoundManager : MonoBehaviour {
     }
     public void PlayClickedButtonClip() {
         PlayClipsOnSource(sounds.clickedButtonClips);
+    }
+
+    public void StartMusic() {
+        StartCoroutine(CStartMusic());
+    }
+    public IEnumerator CStartMusic() {
+        yield return new WaitUntil(() => sounds != null);
+        if (musicAudioSource == null) {
+            musicAudioSource = PlayClipsOnSource(sounds.menuMusicClips);
+            availableSources.Remove(musicAudioSource);
+            usedSources.Remove(musicAudioSource);
+        } else if (!musicAudioSource.isPlaying) {
+            musicAudioSource.Play();
+        } else {
+        }
+    }
+
+    public void StopMusic() {
+        if (musicAudioSource != null) {
+            musicAudioSource.Stop();
+        }
     }
 }

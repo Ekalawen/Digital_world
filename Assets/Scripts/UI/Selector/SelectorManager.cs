@@ -52,6 +52,7 @@ public class SelectorManager : MonoBehaviour {
         background.gameObject.SetActive(false);
         SetCurrentLevelBasedOnLastSavedLevel();
         PlaceCameraInFrontOfCurrentLevel();
+        StartMenuMusic();
         if (!LocalizationSettings.InitializationOperation.IsDone) {
             yield return LocalizationSettings.InitializationOperation;
         }
@@ -414,5 +415,9 @@ public class SelectorManager : MonoBehaviour {
             else
                 return strings.victoiresZero.GetLocalizedString().Result;
         }
+    }
+
+    protected void StartMenuMusic() {
+        UISoundManager.Instance.StartMusic();
     }
 }

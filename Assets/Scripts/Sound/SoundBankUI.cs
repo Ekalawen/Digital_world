@@ -6,4 +6,6 @@ using UnityEngine;
 public class SoundBankUI : ScriptableObject {
     public AudioClipParams hoverButtonClips;
     public AudioClipParams clickedButtonClips;
+
+    public AudioClipParams menuMusicClips;
 }

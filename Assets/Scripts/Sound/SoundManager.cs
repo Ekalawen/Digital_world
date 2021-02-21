@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,6 +16,7 @@ public class SoundManager : MonoBehaviour {
 
     public void Initialize() {
         GetAudioVolumes();
+        StopUIMusic();
         globalSoundsFolder = new GameObject("Sounds").transform;
         availableSources = new List<AudioSource>();
         usedSources = new List<AudioSource>();
@@ -206,7 +208,7 @@ public class SoundManager : MonoBehaviour {
         source.transform.SetParent((parent == null) ? globalSoundsFolder: parent);
 
         // On get le bon clip
-        AudioClip clip = audioClipParams.clips[Random.Range(0, audioClipParams.clips.Count)];
+        AudioClip clip = audioClipParams.clips[UnityEngine.Random.Range(0, audioClipParams.clips.Count)];
         source.clip = clip;
         source.GetComponent<AudioClipParamsHolder>().clipParams = audioClipParams;
 
@@ -242,5 +244,9 @@ public class SoundManager : MonoBehaviour {
     protected IEnumerator StopClipIn(AudioSource source, float duree) {
         yield return new WaitForSeconds(duree);
         source.Stop();
+    }
+
+    protected void StopUIMusic() {
+        UISoundManager.Instance.StopMusic();
     }
 }

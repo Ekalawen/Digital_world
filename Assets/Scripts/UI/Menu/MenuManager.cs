@@ -42,6 +42,7 @@ public class MenuManager : MonoBehaviour {
         menuBouncingBackground.Initialize();
         ResetPlayerPrefsIfFirstConnexion();
         SetRandomBackgroundIfNeeded();
+        StartMenuMusic();
     }
 
     protected void ResetPlayerPrefsIfFirstConnexion() {
@@ -182,5 +183,9 @@ public class MenuManager : MonoBehaviour {
 
     public static string BoolToString(bool input) {
         return input ? TRUE : FALSE;
+    }
+
+    protected void StartMenuMusic() {
+        UISoundManager.Instance.StartMusic();
     }
 }
