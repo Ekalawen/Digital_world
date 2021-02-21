@@ -1,0 +1,304 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8c014bd8a4abce46b3fcd8f48834ac4, type: 3}
+  m_Name: SoundBankIngame
+  m_EditorClassIdentifier: 
+  jumpClips:
+    relativeVolume: 1
+    spatialBlend: 1
+    bReverse: 0
+    bIsMusic: 0
+    bLoop: 0
+    clips:
+    - {fileID: 8300000, guid: c23e2a7648154c24fb7b11c6cfc1e68c, type: 3}
+  landClips:
+    relativeVolume: 1
+    spatialBlend: 1
+    bReverse: 0
+    bIsMusic: 0
+    bLoop: 0
+    clips:
+    - {fileID: 8300000, guid: 3bee37820df86944db86cab066533c31, type: 3}
+  gripClips:
+    relativeVolume: 1
+    spatialBlend: 1
+    bReverse: 0
+    bIsMusic: 0
+    bLoop: 0
+    clips:
+    - {fileID: 8300000, guid: 618282f941cd6af4bbd2406861fa39ba, type: 3}
+  createCubeClips:
+    relativeVolume: 2
+    spatialBlend: 0
+    bReverse: 0
+    bIsMusic: 0
+    bLoop: 0
+    clips:
+    - {fileID: 8300000, guid: 350e59598f3c515478b4b285e631be94, type: 3}
+  getLumiereClips:
+    relativeVolume: 1
+    spatialBlend: 1
+    bReverse: 0
+    bIsMusic: 0
+    bLoop: 0
+    clips:
+    - {fileID: 8300000, guid: ddf76c588ee6fe442b58d29705923419, type: 3}
+  getItemClips:
+    relativeVolume: 1.3
+    spatialBlend: 1
+    bReverse: 0
+    bIsMusic: 0
+    bLoop: 0
+    clips:
+    - {fileID: 8300000, guid: 37dd4569762a75f4da70f8dde0888a7a, type: 3}
+  failActionClips:
+    relativeVolume: 1
+    spatialBlend: 0
+    bReverse: 0
+    bIsMusic: 0
+    bLoop: 0
+    clips:
+    - {fileID: 8300000, guid: 450c568463d7bbc45b8fed9962257bbd, type: 3}
+  hitClips:
+    relativeVolume: 1
+    spatialBlend: 0
+    bReverse: 0
+    bIsMusic: 0
+    bLoop: 0
+    clips:
+    - {fileID: 8300000, guid: 92349b7511c677348bf4f2831c20af1e, type: 3}
+  hitTracerClips:
+    relativeVolume: 1
+    spatialBlend: 1
+    bReverse: 0
+    bIsMusic: 0
+    bLoop: 0
+    clips:
+    - {fileID: 8300000, guid: 18ef3ab6c66188941bb043b63e1dfe53, type: 3}
+  emissionTracerClips:
+    relativeVolume: 1
+    spatialBlend: 1
+    bReverse: 0
+    bIsMusic: 0
+    bLoop: 0
+    clips:
+    - {fileID: 8300000, guid: 5f1798274d467f449be5f9d71a2732d0, type: 3}
+  firstBossPresenceClips:
+    relativeVolume: 1
+    spatialBlend: 1
+    bReverse: 0
+    bIsMusic: 0
+    bLoop: 1
+    clips:
+    - {fileID: 8300000, guid: 290dc160ab782e641bf16c51de867adf, type: 3}
+  firstBossDecreasingBall:
+    relativeVolume: 2
+    spatialBlend: 0
+    bReverse: 1
+    bIsMusic: 0
+    bLoop: 0
+    clips:
+    - {fileID: 8300000, guid: 71e9c7eda9e6452438ffc05b2df47af7, type: 3}
+  firstBossIncreasingBall:
+    relativeVolume: 2
+    spatialBlend: 0
+    bReverse: 0
+    bIsMusic: 0
+    bLoop: 0
+    clips:
+    - {fileID: 8300000, guid: e77154d7c1eec1a439b6412cfb0c4be5, type: 3}
+  detectionClips:
+    relativeVolume: 1
+    spatialBlend: 0.5
+    bReverse: 0
+    bIsMusic: 0
+    bLoop: 0
+    clips:
+    - {fileID: 8300000, guid: f67b0997feb8cdc489efb60c680916d5, type: 3}
+  dissimuleClips:
+    relativeVolume: 1
+    spatialBlend: 0
+    bReverse: 1
+    bIsMusic: 0
+    bLoop: 0
+    clips:
+    - {fileID: 8300000, guid: 5a2f9c698cdbfc447bf4fd1b7e94a466, type: 3}
+  timeOutClips:
+    relativeVolume: 2
+    spatialBlend: 0
+    bReverse: 0
+    bIsMusic: 0
+    bLoop: 0
+    clips:
+    - {fileID: 8300000, guid: 8ae16e4eabb101b46a3018cf1164e331, type: 3}
+  receivedMessageClips:
+    relativeVolume: 1
+    spatialBlend: 0
+    bReverse: 0
+    bIsMusic: 0
+    bLoop: 0
+    clips:
+    - {fileID: 8300000, guid: d812ea32a180584429df6df12999a578, type: 3}
+  newBlockClips:
+    relativeVolume: 1
+    spatialBlend: 0
+    bReverse: 0
+    bIsMusic: 0
+    bLoop: 0
+    clips:
+    - {fileID: 8300000, guid: 5075129bdef51da46af88b8906ba88ec, type: 3}
+  eventStartClips:
+    relativeVolume: 1
+    spatialBlend: 0
+    bReverse: 0
+    bIsMusic: 0
+    bLoop: 0
+    clips:
+    - {fileID: 8300000, guid: d432ded2419dd464b929aefde31c5eae, type: 3}
+  eventEndClips:
+    relativeVolume: 1
+    spatialBlend: 0
+    bReverse: 1
+    bIsMusic: 0
+    bLoop: 0
+    clips:
+    - {fileID: 8300000, guid: d432ded2419dd464b929aefde31c5eae, type: 3}
+  jumpEventStartClips:
+    relativeVolume: 1
+    spatialBlend: 0
+    bReverse: 0
+    bIsMusic: 0
+    bLoop: 0
+    clips:
+    - {fileID: 8300000, guid: dc4edc3be44255b4a9fb5339bfcf5eaf, type: 3}
+  jumpSuccessClips:
+    relativeVolume: 1
+    spatialBlend: 0
+    bReverse: 0
+    bIsMusic: 0
+    bLoop: 0
+    clips:
+    - {fileID: 8300000, guid: 5d668993c8c7d9942b9ddef92a489762, type: 3}
+  jumpEventStunClips:
+    relativeVolume: 1
+    spatialBlend: 0
+    bReverse: 0
+    bIsMusic: 0
+    bLoop: 0
+    clips:
+    - {fileID: 8300000, guid: 92349b7511c677348bf4f2831c20af1e, type: 3}
+  jumpEventUnStunClips:
+    relativeVolume: 1
+    spatialBlend: 0
+    bReverse: 1
+    bIsMusic: 0
+    bLoop: 0
+    clips:
+    - {fileID: 8300000, guid: 92349b7511c677348bf4f2831c20af1e, type: 3}
+  intersectionEventClips:
+    relativeVolume: 2
+    spatialBlend: 1
+    bReverse: 0
+    bIsMusic: 0
+    bLoop: 0
+    clips:
+    - {fileID: 8300000, guid: 6ddf8bf610856b04c858ad74bc2c276c, type: 3}
+  activationPouvoirClips:
+    relativeVolume: 1
+    spatialBlend: 0
+    bReverse: 0
+    bIsMusic: 0
+    bLoop: 0
+    clips:
+    - {fileID: 8300000, guid: 5a6ac6af9bffcd247b94fac14ff31584, type: 3}
+  deniedPouvoirClips:
+    relativeVolume: 1
+    spatialBlend: 0
+    bReverse: 0
+    bIsMusic: 0
+    bLoop: 0
+    clips:
+    - {fileID: 8300000, guid: 0ed36b8a6f7ba2a49a3e41e6ce9a1f99, type: 3}
+  notFoundPouvoirClips:
+    relativeVolume: 1
+    spatialBlend: 0
+    bReverse: 0
+    bIsMusic: 0
+    bLoop: 0
+    clips:
+    - {fileID: 8300000, guid: 6f3720bdedb9e1e40b8229739f740f11, type: 3}
+  timeZoneButtonInClips:
+    relativeVolume: 1
+    spatialBlend: 0
+    bReverse: 0
+    bIsMusic: 0
+    bLoop: 0
+    clips:
+    - {fileID: 8300000, guid: d865c6cb89a490646806140b6e3444f6, type: 3}
+  timeZoneButtonOutClips:
+    relativeVolume: 1
+    spatialBlend: 0
+    bReverse: 1
+    bIsMusic: 0
+    bLoop: 0
+    clips:
+    - {fileID: 8300000, guid: d865c6cb89a490646806140b6e3444f6, type: 3}
+  bounceClips:
+    relativeVolume: 0.85
+    spatialBlend: 0
+    bReverse: 0
+    bIsMusic: 0
+    bLoop: 0
+    clips:
+    - {fileID: 8300000, guid: 667ee827fb5a6d942bd931e6632ee7b6, type: 3}
+  rewardBestScoreClips:
+    relativeVolume: 3
+    spatialBlend: 0
+    bReverse: 0
+    bIsMusic: 0
+    bLoop: 0
+    clips:
+    - {fileID: 8300000, guid: ca8d103de85cadd4bab5fff052f5c04a, type: 3}
+  victoryClips:
+    relativeVolume: 3
+    spatialBlend: 0
+    bReverse: 0
+    bIsMusic: 0
+    bLoop: 0
+    clips:
+    - {fileID: 8300000, guid: 7e1327138af21f542843707a656b82f1, type: 3}
+  defeatClips:
+    relativeVolume: 3
+    spatialBlend: 0
+    bReverse: 0
+    bIsMusic: 0
+    bLoop: 0
+    clips:
+    - {fileID: 8300000, guid: b1db7cad9a35c584d9d88bfd36cb088e, type: 3}
+  normalMusics:
+    relativeVolume: 1
+    spatialBlend: 0
+    bReverse: 0
+    bIsMusic: 1
+    bLoop: 1
+    clips:
+    - {fileID: 8300000, guid: 4253f625c0f6e86489d92524623f5ebf, type: 3}
+    - {fileID: 8300000, guid: 2ea13db5453d37646ad590f0da8a697f, type: 3}
+    - {fileID: 8300000, guid: 37befc9518a8c8b4bba5bcaafc520ad8, type: 3}
+  endGameMusics:
+    relativeVolume: 1
+    spatialBlend: 0
+    bReverse: 0
+    bIsMusic: 1
+    bLoop: 1
+    clips:
+    - {fileID: 8300000, guid: cfddd3b7502c53e44a87fe6f270e55fb, type: 3}
