@@ -169,7 +169,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
     }
 
     public MenuLevel.LevelType GetStartLevelType() {
-        return selectorPath.startLevel.menuLevel.levelType;
+        return selectorPath.startLevel.menuLevel.GetLevelType();
     }
 
     protected void OpenDonneesHackeesWithCurrentTreshold(int currentTreshold) {
@@ -237,7 +237,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
     }
 
     protected string GetTresholdTextForPallier(int tresholdText) {
-        return (selectorPath.startLevel.menuLevel.levelType == MenuLevel.LevelType.INFINITE) ?
+        return (selectorPath.startLevel.menuLevel.GetLevelType() == MenuLevel.LevelType.INFINITE) ?
             selectorManager.strings.blocs.GetLocalizedString(tresholdText).Result :
             (tresholdText == 0 ?
             selectorManager.strings.victoiresZero.GetLocalizedString().Result :
@@ -302,7 +302,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         int currentTreshold = GetCurrentTreshold();
         List<int> unlockedTresholds = selectorPath.GetTresholds().FindAll(i => i <= currentTreshold);
         MenuLevel menuLevel = selectorPath.startLevel.menuLevel;
-        if(menuLevel.levelType == MenuLevel.LevelType.REGULAR && menuLevel.GetNbWins() == 0) {
+        if(menuLevel.GetLevelType() == MenuLevel.LevelType.REGULAR && menuLevel.GetNbWins() == 0) {
             unlockedTresholds.Clear();
         }
         if(unlockedTresholds.Count >= selectorPath.nbTresholdsToSeeTraceHint) {

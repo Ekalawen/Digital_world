@@ -246,7 +246,7 @@ public class MenuLevel : MonoBehaviour {
     }
 
     protected void SetScores() {
-        if (levelType == LevelType.REGULAR) {
+        if (GetLevelType() == LevelType.REGULAR) {
             scoresRegular.SetActive(true);
             scoresInfinite.SetActive(false);
             SetRegularScores();
@@ -338,7 +338,7 @@ public class MenuLevel : MonoBehaviour {
     }
 
     public string GetBestScoreToString() {
-        if(levelType == LevelType.REGULAR)
+        if(GetLevelType() == LevelType.REGULAR)
             return (HasBestScore()) ? GetBestScore().ToString("N2") : "null";
         else
             return (HasBestScore()) ? ((int)GetBestScore()).ToString() : "null";
@@ -485,7 +485,7 @@ public class MenuLevel : MonoBehaviour {
     }
 
     public bool IsSucceeded() {
-        if (levelType == LevelType.REGULAR) {
+        if (GetLevelType() == LevelType.REGULAR) {
             return GetNbWins() > 0;
         } else {
             return GetBestScore() > 0;
@@ -521,5 +521,9 @@ public class MenuLevel : MonoBehaviour {
 
     protected void SetLevelName() {
         textLevelName.text = GetVisibleName();
+    }
+
+    public LevelType GetLevelType() {
+        return levelType;
     }
 }

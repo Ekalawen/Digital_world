@@ -92,7 +92,7 @@ public class SelectorLevel : MonoBehaviour {
                 return true;
             }
         }
-        if (menuLevel.levelType == MenuLevel.LevelType.REGULAR) {
+        if (menuLevel.GetLevelType() == MenuLevel.LevelType.REGULAR) {
             hasDisplay = DisplayNewPallierMessageRegular();
         } else {
             hasDisplay = DisplayNewPallierMessageInfinite();
@@ -101,14 +101,14 @@ public class SelectorLevel : MonoBehaviour {
     }
 
     protected bool DisplayEndBetaMessage() {
-        if(menuLevel.levelType == MenuLevel.LevelType.REGULAR && menuLevel.HasJustWin()) {
+        if(menuLevel.GetLevelType() == MenuLevel.LevelType.REGULAR && menuLevel.HasJustWin()) {
             selectorManager.RunPopup(
                 selectorManager.strings.endBetaTitre.GetLocalizedString().Result,
                 selectorManager.strings.endBetaTexte.LoadAssetAsync().Result.text,
                 theme: TexteExplicatif.Theme.POSITIF);
             menuLevel.SetNotJustWin();
             return true;
-        } else if (menuLevel.levelType == MenuLevel.LevelType.INFINITE && menuLevel.HasJustMakeNewBestScore()) {
+        } else if (menuLevel.GetLevelType() == MenuLevel.LevelType.INFINITE && menuLevel.HasJustMakeNewBestScore()) {
             selectorManager.RunPopup(
                 selectorManager.strings.endBetaTitre.GetLocalizedString().Result,
                 selectorManager.strings.endBetaTexte.LoadAssetAsync().Result.text,
@@ -186,7 +186,7 @@ public class SelectorLevel : MonoBehaviour {
         for(int i = 0; i < tresholdsUnlocked.Count; i++) {
             int treshold = tresholdsUnlocked[i];
             string nextLevel = nextLevels[i];
-            string unites = UIHelper.SurroundWithColor(selectorManager.GetUnitesString(treshold, menuLevel.levelType), UIHelper.GREEN);
+            string unites = UIHelper.SurroundWithColor(selectorManager.GetUnitesString(treshold, menuLevel.GetLevelType()), UIHelper.GREEN);
             string levelTitle = UIHelper.SurroundWithColor(nextLevel, UIHelper.BLUE);
             congrats += selectorManager.strings.palierDebloqueUnPalier.GetLocalizedString(treshold, unites, levelTitle).Result;
             congrats += '\n';
@@ -246,12 +246,12 @@ public class SelectorLevel : MonoBehaviour {
 
     public void SetScoresToMaxTreshold() {
         int maxTreshold = GetMaxTreshold();
-        if(menuLevel.levelType == MenuLevel.LevelType.REGULAR) {
+        if(menuLevel.GetLevelType() == MenuLevel.LevelType.REGULAR) {
             menuLevel.SetNbWins(1);
             menuLevel.SetDataCount(maxTreshold);
             Debug.Log($"{GetNameId()} a maintenant {maxTreshold} de Data Count !");
         }
-        if(menuLevel.levelType == MenuLevel.LevelType.INFINITE) {
+        if(menuLevel.GetLevelType() == MenuLevel.LevelType.INFINITE) {
             menuLevel.SetBestScore(maxTreshold);
             menuLevel.SetPrecedentBestScore(maxTreshold);
             Debug.Log($"{GetNameId()} a maintenant un Meilleur Score de {maxTreshold} !");
