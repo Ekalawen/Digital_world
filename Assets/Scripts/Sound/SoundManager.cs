@@ -4,43 +4,7 @@ using UnityEngine;
 
 public class SoundManager : MonoBehaviour {
 
-    public AudioClipParams jumpClips;
-    public AudioClipParams landClips;
-    public AudioClipParams gripClips;
-    public AudioClipParams createCubeClips;
-    public AudioClipParams getLumiereClips;
-    public AudioClipParams getItemClips;
-    public AudioClipParams failActionClips;
-    public AudioClipParams hitClips;
-    public AudioClipParams hitTracerClips;
-    public AudioClipParams emissionTracerClips;
-    public AudioClipParams firstBossPresenceClips;
-    public AudioClipParams firstBossDecreasingBall;
-    public AudioClipParams firstBossIncreasingBall;
-    public AudioClipParams detectionClips;
-    public AudioClipParams dissimuleClips;
-    public AudioClipParams timeOutClips;
-    public AudioClipParams receivedMessageClips;
-    public AudioClipParams newBlockClips;
-    public AudioClipParams eventStartClips;
-    public AudioClipParams eventEndClips;
-    public AudioClipParams jumpEventStartClips;
-    public AudioClipParams jumpSuccessClips;
-    public AudioClipParams jumpEventStunClips;
-    public AudioClipParams jumpEventUnStunClips;
-    public AudioClipParams intersectionEventClips;
-    public AudioClipParams activationPouvoirClips;
-    public AudioClipParams deniedPouvoirClips;
-    public AudioClipParams notFoundPouvoirClips;
-    public AudioClipParams timeZoneButtonInClips;
-    public AudioClipParams timeZoneButtonOutClips;
-    public AudioClipParams bounceClips;
-    public AudioClipParams rewardBestScoreClips;
-    public AudioClipParams victoryClips;
-    public AudioClipParams defeatClips;
-
-    public AudioClipParams normalMusics;
-    public AudioClipParams endGameMusics;
+    public SoundBankIngame sounds;
 
     protected Transform globalSoundsFolder;
     protected List<AudioSource> availableSources;
@@ -54,7 +18,7 @@ public class SoundManager : MonoBehaviour {
         globalSoundsFolder = new GameObject("Sounds").transform;
         availableSources = new List<AudioSource>();
         usedSources = new List<AudioSource>();
-        normalMusicSource = PlayClipsOnSource(normalMusics);
+        normalMusicSource = PlayClipsOnSource(sounds.normalMusics);
     }
 
     public void GetAudioVolumes() {
@@ -107,120 +71,119 @@ public class SoundManager : MonoBehaviour {
     }
 
     public void PlayJumpClip(Vector3 pos) {
-        PlayClipsOnSource(jumpClips, pos);
+        PlayClipsOnSource(sounds.jumpClips, pos);
     }
     public void PlayLandClip(Vector3 pos) {
-        PlayClipsOnSource(landClips, pos);
+        PlayClipsOnSource(sounds.landClips, pos);
     }
     public void PlayGripClip(Vector3 pos) {
-        PlayClipsOnSource(gripClips, pos);
+        PlayClipsOnSource(sounds.gripClips, pos);
     }
     public void PlayCreateCubeClip(Vector3 pos) {
-        PlayClipsOnSource(createCubeClips, pos);
+        PlayClipsOnSource(sounds.createCubeClips, pos);
     }
     public void PlayFailActionClip() {
-        PlayClipsOnSource(failActionClips);
+        PlayClipsOnSource(sounds.failActionClips);
     }
     public void PlayTimeOutClip() {
-        PlayClipsOnSource(timeOutClips);
+        PlayClipsOnSource(sounds.timeOutClips);
     }
     public void PlayReceivedMessageClip() {
-        PlayClipsOnSource(receivedMessageClips);
+        PlayClipsOnSource(sounds.receivedMessageClips);
     }
     public void PlayNewBlockClip() {
-        PlayClipsOnSource(newBlockClips);
+        PlayClipsOnSource(sounds.newBlockClips);
     }
     public void PlayEventStartClip() {
-        PlayClipsOnSource(eventStartClips);
+        PlayClipsOnSource(sounds.eventStartClips);
     }
     public void PlayEventEndClip() {
         // reverse !
-        PlayClipsOnSource(eventStartClips);
+        PlayClipsOnSource(sounds.eventStartClips);
     }
     public void PlayJumpEventStartClip(float duration) {
-        PlayClipsOnSource(jumpEventStartClips, duration: duration);
+        PlayClipsOnSource(sounds.jumpEventStartClips, duration: duration);
     }
     public void PlayJumpSuccessClip() {
-        PlayClipsOnSource(jumpSuccessClips);
+        PlayClipsOnSource(sounds.jumpSuccessClips);
     }
     public void PlayDetectionClip(Vector3 pos, Transform parent) {
         //source.spatialBlend = 0.5f;
-        PlayClipsOnSource(detectionClips, pos, parent);
+        PlayClipsOnSource(sounds.detectionClips, pos, parent);
     }
     public void PlayDissimuleClip() {
-        PlayClipsOnSource(dissimuleClips);
+        PlayClipsOnSource(sounds.dissimuleClips);
     }
     public AudioSource PlayEmissionTracerClip(Vector3 pos, Transform parent) {
         //source.spatialBlend = 1.0f;
-        AudioSource source = PlayClipsOnSource(emissionTracerClips, pos, parent);
+        AudioSource source = PlayClipsOnSource(sounds.emissionTracerClips, pos, parent);
         //StartCoroutine(StopClipIn(source, duree));
         return source;
     }
     public void PlayFirstBossPresenceClip(Vector3 pos, Transform parent) {
-        PlayClipsOnSource(firstBossPresenceClips, pos, parent);
+        PlayClipsOnSource(sounds.firstBossPresenceClips, pos, parent);
     }
     public void PlayHitClip(Vector3 pos) {
         // reverse !
-        PlayClipsOnSource(hitClips, pos);
+        PlayClipsOnSource(sounds.hitClips, pos);
     }
     public void PlayHitTracerClip(Vector3 pos, Transform parent) {
-        PlayClipsOnSource(hitTracerClips, pos, parent);
+        PlayClipsOnSource(sounds.hitTracerClips, pos, parent);
     }
     public void PlayDecreasingBallFirstBoss(Vector3 pos, float duration) {
-        PlayClipsOnSource(firstBossDecreasingBall, pos, null, duration);
+        PlayClipsOnSource(sounds.firstBossDecreasingBall, pos, null, duration);
     }
     public void PlayIncreasingBallFirstBoss(Vector3 pos, float duration) {
-        PlayClipsOnSource(firstBossIncreasingBall, pos, null, duration);
+        PlayClipsOnSource(sounds.firstBossIncreasingBall, pos, null, duration);
     }
     public void PlayGetLumiereClip(Vector3 pos) {
         //source.spatialBlend = 1.0f;
-        PlayClipsOnSource(getLumiereClips, pos);
+        PlayClipsOnSource(sounds.getLumiereClips, pos);
     }
     public void PlayGetItemClip(Vector3 pos) {
-        PlayClipsOnSource(getItemClips, pos);
+        PlayClipsOnSource(sounds.getItemClips, pos);
     }
     public void PlayEndGameMusic() {
         normalMusicSource.Stop();
-        PlayClipsOnSource(endGameMusics);
+        PlayClipsOnSource(sounds.endGameMusics);
     }
     public void PlayJumpEventStunClip() {
-        PlayClipsOnSource(jumpEventStunClips);
+        PlayClipsOnSource(sounds.jumpEventStunClips);
     }
     public void PlayJumpEventUnStunClip() {
-        PlayClipsOnSource(jumpEventUnStunClips);
+        PlayClipsOnSource(sounds.jumpEventUnStunClips);
     }
     public void PlayIntersectionEventClip(Vector3 position, float duration, Transform parent) {
-        PlayClipsOnSource(intersectionEventClips, pos: position,  duration: duration, parent: parent);
+        PlayClipsOnSource(sounds.intersectionEventClips, pos: position,  duration: duration, parent: parent);
     }
     public void PlayActivationPouvoirClip(AudioClipParams audioClip = null) {
-        PlayClipsOnSource((audioClip == null) ? activationPouvoirClips : audioClip);
+        PlayClipsOnSource((audioClip == null) ? sounds.activationPouvoirClips : audioClip);
     }
     public void PlayDeniedPouvoirClip() {
-        PlayClipsOnSource(deniedPouvoirClips);
+        PlayClipsOnSource(sounds.deniedPouvoirClips);
     }
     public void PlayNotFoundPouvoirClip() {
-        PlayClipsOnSource(notFoundPouvoirClips);
+        PlayClipsOnSource(sounds.notFoundPouvoirClips);
     }
     public void PlayTimeZoneButtonInClip(Vector3 pos) {
-        PlayClipsOnSource(timeZoneButtonInClips, pos);
+        PlayClipsOnSource(sounds.timeZoneButtonInClips, pos);
     }
     public void PlayTimeZoneButtonOutClip(Vector3 pos) {
-        PlayClipsOnSource(timeZoneButtonOutClips, pos);
+        PlayClipsOnSource(sounds.timeZoneButtonOutClips, pos);
     }
     public void PlayRewardBestScore() {
-        PlayClipsOnSource(rewardBestScoreClips);
+        PlayClipsOnSource(sounds.rewardBestScoreClips);
     }
     public void PlayVictoryClip() {
-        PlayClipsOnSource(victoryClips);
+        PlayClipsOnSource(sounds.victoryClips);
     }
     public void PlayDefeatClip() {
-        PlayClipsOnSource(defeatClips);
+        PlayClipsOnSource(sounds.defeatClips);
     }
     public void PlayBounceClip() {
-        PlayClipsOnSource(bounceClips);
+        PlayClipsOnSource(sounds.bounceClips);
     }
 
-    //protected void PlayClipsOnSource(List<AudioClip> clips, AudioSource source, bool bReverse = false) {
     protected AudioSource PlayClipsOnSource(
         AudioClipParams audioClipParams,
         Vector3 pos = new Vector3(),
