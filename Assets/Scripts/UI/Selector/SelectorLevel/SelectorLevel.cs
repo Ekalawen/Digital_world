@@ -101,12 +101,19 @@ public class SelectorLevel : MonoBehaviour {
     }
 
     protected bool DisplayEndBetaMessage() {
-        if(menuLevel.HasJustWin()) {
+        if(menuLevel.levelType == MenuLevel.LevelType.REGULAR && menuLevel.HasJustWin()) {
             selectorManager.RunPopup(
                 selectorManager.strings.endBetaTitre.GetLocalizedString().Result,
                 selectorManager.strings.endBetaTexte.LoadAssetAsync().Result.text,
                 theme: TexteExplicatif.Theme.POSITIF);
             menuLevel.SetNotJustWin();
+            return true;
+        } else if (menuLevel.levelType == MenuLevel.LevelType.INFINITE && menuLevel.HasJustMakeNewBestScore()) {
+            selectorManager.RunPopup(
+                selectorManager.strings.endBetaTitre.GetLocalizedString().Result,
+                selectorManager.strings.endBetaTexte.LoadAssetAsync().Result.text,
+                theme: TexteExplicatif.Theme.POSITIF);
+            menuLevel.SetNotJustMakeNewBestScore();
             return true;
         }
         return false;
