@@ -144,6 +144,9 @@ public class MenuOptions : MonoBehaviour {
         sliderMusic.GetComponent<SliderScript>().OnChange(newVal);
         if(isInGame) {
             gm.soundManager.ApplyAudioVolumes();
+        } else {
+            UISoundManager.Instance.GetAudioVolumes();
+            UISoundManager.Instance.UpdateMusicVolume();
         }
     }
 
@@ -157,6 +160,8 @@ public class MenuOptions : MonoBehaviour {
             if (newVal != oldVal) { // Pour éviter que ça fasse un son quand on ouvre le menu :)
                 gm.soundManager.PlayJumpClip(gm.player.transform.position);
             }
+        } else {
+            UISoundManager.Instance.GetAudioVolumes();
         }
     }
 

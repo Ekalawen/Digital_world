@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -97,7 +98,7 @@ public class UISoundManager : MonoBehaviour {
         source.transform.SetParent((parent == null) ? globalSoundsFolder: parent);
 
         // On get le bon clip
-        AudioClip clip = audioClipParams.clips[Random.Range(0, audioClipParams.clips.Count)];
+        AudioClip clip = audioClipParams.clips[UnityEngine.Random.Range(0, audioClipParams.clips.Count)];
         source.clip = clip;
         source.GetComponent<AudioClipParamsHolder>().clipParams = audioClipParams;
 
@@ -156,5 +157,10 @@ public class UISoundManager : MonoBehaviour {
         if (musicAudioSource != null) {
             musicAudioSource.Stop();
         }
+    }
+
+    public void UpdateMusicVolume() {
+        float musicSourceRelativeVolume = musicAudioSource.GetComponent<AudioClipParamsHolder>().clipParams.relativeVolume;
+        musicAudioSource.volume = musicSourceRelativeVolume * musicVolume * AudioClipParams.BASE_VOLUME;
     }
 }
