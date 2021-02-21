@@ -32,6 +32,7 @@ public class AllumeLumiere : MonoBehaviour {
         Lumiere chosenOne = GetChosenOne(position);
         LumiereSwitchable chosenOneSwitchable = (LumiereSwitchable)chosenOne;
         chosenOneSwitchable.SetState(LumiereSwitchable.LumiereSwitchableState.ON);
+        chosenOneSwitchable.TriggerLightExplosion();
 
         TraceRay(position, chosenOneSwitchable.transform.position);
     }

@@ -11,6 +11,7 @@ public class LumiereSwitchable : Lumiere {
     public GameObject lumiereOn;
     public GameObject lumiereOff;
     public LumiereSwitchableState startState = LumiereSwitchableState.ON;
+    public VisualEffect vfxLightExplosion;
 
     protected LumiereSwitchableState state;
     protected GameObject currentLumiere;
@@ -67,5 +68,9 @@ public class LumiereSwitchable : Lumiere {
         if(GetState() == LumiereSwitchableState.ON) {
             base.OnTriggerEnter(hit);
         }
+    }
+
+    public void TriggerLightExplosion() {
+        vfxLightExplosion.SendEvent("Explode");
     }
 }
