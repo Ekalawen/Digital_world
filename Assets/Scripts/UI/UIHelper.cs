@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 using System;
 using System.Collections.Generic;
+using UnityEngine.Localization;
 
 public class UIHelper {
 
@@ -83,5 +84,22 @@ public class UIHelper {
 
     public static string SurroundWithColorWithoutB(string text, string htmlColor) {
         return $"<color={htmlColor}>{text}</color>";
+    }
+
+    public static List<Tuple<string, string>> GetAllArchivesReplacements(ArchivesReplacementStrings strings) {
+        List<Tuple<string, string>> replacements = new List<Tuple<string, string>>();
+        foreach(LocalizedString ls in strings.blueReplacements) {
+            string s = ls.GetLocalizedString().Result;
+            replacements.Add(new Tuple<string, string>(s, UIHelper.SurroundWithColor(s, UIHelper.BLUE)));
+        }
+        foreach(LocalizedString ls in strings.cyanReplacements) {
+            string s = ls.GetLocalizedString().Result;
+            replacements.Add(new Tuple<string, string>(s, UIHelper.SurroundWithColor(s, UIHelper.CYAN)));
+        }
+        foreach(LocalizedString ls in strings.pureGreenReplacements) {
+            string s = ls.GetLocalizedString().Result;
+            replacements.Add(new Tuple<string, string>(s, UIHelper.SurroundWithColor(s, UIHelper.PURE_GREEN)));
+        }
+        return replacements;
     }
 }

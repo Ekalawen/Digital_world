@@ -88,7 +88,7 @@ public class MenuLevel : MonoBehaviour {
         SetScores();
 
         MenuManager.DISABLE_HOTKEYS = false;
-        InitTextesExplicatifs();
+        InitTexteExplicatifArchives();
 
         /// This is now done in SelectorLevel !
         //DisplayPopupUnlockLevel();
@@ -203,40 +203,9 @@ public class MenuLevel : MonoBehaviour {
     protected IEnumerator COpenArchives() {
         while (!texteArchivesLinkIsReady)
             yield return null;
-        texteArchivesLink.Run(GetNbWins());
+        // Replacements are done in the Initialisation ! :)
+        texteArchivesLink.Run();
     }
-
-    //public void OpenDonneesHackes() {
-    //    if (selectorManager != null && !selectorManager.HasSelectorLevelOpen())
-    //        return;
-    //    // Changer le texte des données hackés en fonction du nombre de fois où l'on a gagné ce niveau !
-    //    string key = textLevelName.text + NB_WINS_KEY;
-    //    int nbVictoires = PlayerPrefs.HasKey(key) ? PlayerPrefs.GetInt(key) : 0;
-    //    if (nbVictoires == 0) {
-    //        texteExplicatifDonneesHackes.Run(GetNbWins());
-    //    } else {
-    //        texteExplicatifDonneesHackesSuccess.Run(GetNbWins());
-    //        AddNextPallierMessageToAllFragments();
-    //    }
-    //}
-
-    //protected void AddNextPallierMessageToAllFragments() {
-    //    TresholdText tresholdText = texteExplicatifDonneesHackesSuccess.GetTresholdText();
-    //    List<TresholdFragment> fragments = tresholdText.GetAllFragmentsOrdered();
-    //    for (int i = 0; i < fragments.Count; i++) {
-    //        if (i < fragments.Count - 1) {
-    //            int nextTreshold = fragments[i + 1].treshold;
-    //            fragments[i].ApplyReplacementEvaluator(
-    //                new Tuple<string, MatchEvaluator>(@"$(?![\r\n])", // Match EOF
-    //                (Match match) => "Prochain pallier à " + nextTreshold + " victoires.\n\n\n"));
-    //        } else {
-    //            fragments[i].ApplyReplacementEvaluator(
-    //                new Tuple<string, MatchEvaluator>(@"$(?![\r\n])", // Match EOF
-    //                (Match match) => "Dernier pallier.\n\n\n"));
-    //        }
-    //    }
-    //    texteExplicatifDonneesHackesSuccess.mainText.text = texteExplicatifDonneesHackesSuccess.ComputeText(GetNbWins());
-    //}
 
     public void SaveNextInputField() {
         if (inputFieldNext.text == GetPassword() || inputFieldNext.text == SUPER_CHEATED_PASSWORD) {
@@ -429,7 +398,7 @@ public class MenuLevel : MonoBehaviour {
         return UIHelper.SurroundWithColor(match.Value, UIHelper.BLUE);
     }
 
-    protected void InitTextesExplicatifs()
+    protected void InitTexteExplicatifArchives()
     {
         StartCoroutine(CInitTextesExplicatifs());
     }
@@ -438,11 +407,9 @@ public class MenuLevel : MonoBehaviour {
         AsyncOperationHandle<TextAsset> handle = archivesTextAsset.LoadAssetAsync();
         yield return handle;
         texteArchivesLink.textAsset = handle.Result;
-        texteArchivesLink.AddReplacement("CRINM", UIHelper.SurroundWithColor("CRINM", UIHelper.BLUE));
-        texteArchivesLink.AddReplacement("H@ckers", UIHelper.SurroundWithColor("H@ckers", UIHelper.BLUE));
-        texteArchivesLink.AddReplacement("[Cilliannelle Crittefigiée]", UIHelper.SurroundWithColor("[Cilliannelle Crittefigiée]", UIHelper.PURE_GREEN));
-        texteArchivesLink.AddReplacement("[Morgensoul*]", UIHelper.SurroundWithColor("[Morgensoul*]", UIHelper.CYAN));
-        texteArchivesLink.AddReplacement("[V1P3R]", UIHelper.SurroundWithColor("[V1P3R]", UIHelper.CYAN));
+        foreach(Tuple<string, string> replacement in UIHelper.GetAllArchivesReplacements(selectorManager.archivesStrings)) {
+            texteArchivesLink.AddReplacement(replacement.Item1, replacement.Item2);
+        }
         texteArchivesLinkIsReady = true;
     }
 

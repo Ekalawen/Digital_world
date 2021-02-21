@@ -27,6 +27,7 @@ public class SelectorManager : MonoBehaviour {
     public SelectorPathUnlockScreen unlockScreen;
     public TexteExplicatif popup;
     public SelectorManagerStrings strings;
+    public ArchivesReplacementStrings archivesStrings;
     public SelectorLevelRunIntroduction introductionRunner;
 
     [Header("Parameters")]
