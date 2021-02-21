@@ -37,6 +37,7 @@ public class MenuOptions : MonoBehaviour {
     public Slider sliderSon;
     public Slider sliderMouse;
     public Toggle toggleGrip;
+    public Toggle conseilOnStartToggle;
 
     [Header("OtherLinks")]
     public GameObject resetButton;
@@ -56,6 +57,7 @@ public class MenuOptions : MonoBehaviour {
     public static string MOUSE_SPEED_KEY = "mouseSpeedKey";
     public static string LUMINOSITY_KEY = "luminosityKey";
     public static string GRIP_KEY = "gripKey";
+    public static string ADVICE_ON_START_KEY = "adviceOnStartKey";
     public static string LAST_LEVEL_KEY = "lastLevelKey";
 
     protected bool hasPanelOpen = false;
@@ -76,6 +78,7 @@ public class MenuOptions : MonoBehaviour {
         OnSoundVolumeChange(PlayerPrefs.GetFloat(SOUND_VOLUME_KEY));
         OnMouseSpeedChange(PlayerPrefs.GetFloat(MOUSE_SPEED_KEY));
         OnGripActivationPress(PlayerPrefs.GetString(GRIP_KEY) == MenuManager.TRUE);
+        OnConseilOnStartPress(PlayerPrefs.GetString(ADVICE_ON_START_KEY) == MenuManager.TRUE);
     }
 
     protected void CenterInGamePanels() {
@@ -171,6 +174,11 @@ public class MenuOptions : MonoBehaviour {
         toggleGrip.isOn = active;
     }
 
+    public void OnConseilOnStartPress(bool active) {
+        PlayerPrefs.SetString(ADVICE_ON_START_KEY, MenuManager.BoolToString(active));
+        conseilOnStartToggle.isOn = active;
+    }
+
     public void RememberLastLevel(int indiceLevel) {
         PlayerPrefs.SetInt(LAST_LEVEL_KEY, indiceLevel);
     }
@@ -181,6 +189,7 @@ public class MenuOptions : MonoBehaviour {
         OnSoundVolumeChange(1.0f);
         OnMouseSpeedChange(1.81f);
         OnGripActivationPress(true);
+        OnConseilOnStartPress(true);
         PlayerPrefs.SetString(MenuManager.FIRST_TIME_CONNEXION_KEY, "Done !");
         int index = LocalizationSettings.AvailableLocales.Locales.IndexOf(LocalizationSettings.SelectedLocale);
         PlayerPrefs.SetInt(MenuManager.LOCALE_INDEX_KEY, index);

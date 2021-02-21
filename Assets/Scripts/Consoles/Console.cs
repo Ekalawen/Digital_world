@@ -192,7 +192,10 @@ public class Console : MonoBehaviour {
     }
 
     protected void PremierGrandConseil() {
-        StartCoroutine(CPremierGrandConseil());
+        string key = MenuOptions.ADVICE_ON_START_KEY;
+        if (!PlayerPrefs.HasKey(key) || PlayerPrefs.GetString(key) == MenuManager.TRUE) {
+            StartCoroutine(CPremierGrandConseil());
+        }
     }
 
     protected IEnumerator CPremierGrandConseil() {
