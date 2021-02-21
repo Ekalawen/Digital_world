@@ -169,6 +169,7 @@ public class Console : MonoBehaviour {
         } else {
             VaAussiLoinQueTuPeux();
         }
+        PremierGrandConseil();
     }
 
     protected void VaAussiLoinQueTuPeux() {
@@ -188,6 +189,15 @@ public class Console : MonoBehaviour {
             AjouterMessage(GetDataCountDisplayMessage(), TypeText.ALLY_TEXT);
             AjouterMessage(GetEnnemisCountDisplayMessage(), TypeText.ALLY_TEXT);
         }
+    }
+
+    protected void PremierGrandConseil() {
+        StartCoroutine(CPremierGrandConseil());
+    }
+
+    protected IEnumerator CPremierGrandConseil() {
+        yield return new WaitForSeconds(3.1f);
+        Conseiller(withImportantText: true);
     }
 
     protected LocalizedString GetDataCountDisplayMessage() {
@@ -580,19 +590,23 @@ public class Console : MonoBehaviour {
 		AjouterMessage (phrase, TypeText.BASIC_TEXT);
 	}
 
-    protected void Conseiller()
-    {
+    protected void Conseiller(bool withImportantText = false) {
         if (conseils.Count == 0)
             return;
 
         LocalizedString conseil = conseils[UnityEngine.Random.Range(0, conseils.Count)];
-        StartCoroutine(CConseiller(conseil));
+        StartCoroutine(CConseiller(conseil, withImportantText));
     }
 
-    protected IEnumerator CConseiller(LocalizedString localizedString) {
+    protected IEnumerator CConseiller(LocalizedString localizedString, bool withImportantText) {
         AsyncOperationHandle<string> handle = localizedString.GetLocalizedString();
         yield return handle;
-        AjouterMessage(handle.Result, TypeText.BASIC_TEXT);
+        if (!withImportantText) {
+            AjouterMessage(handle.Result, TypeText.BASIC_TEXT);
+        } else {
+            float duration = Mathf.Max(3, 3 + (handle.Result.Length - 40) * 0.1f);
+            AjouterMessageImportant(handle.Result, TypeText.BASIC_TEXT, duration);
+        }
     }
 
     // Lorsqu'un ennemi repère le joueur
