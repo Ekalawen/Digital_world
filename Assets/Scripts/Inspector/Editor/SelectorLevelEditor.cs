@@ -10,12 +10,10 @@ public class SelectorLevelEditor : Editor
     {
         DrawDefaultInspector();
         SelectorLevel selectorLevel = target as SelectorLevel;
-        if (GUILayout.Button("Reset Scores"))
-        {
+        if (GUILayout.Button("Reset Scores")) {
             selectorLevel.ResetScores();
         }
-        if (GUILayout.Button("Scores to Max Treshold"))
-        {
+        if (GUILayout.Button("Scores to Max Treshold")) {
             selectorLevel.SetScoresToMaxTreshold();
         }
     }

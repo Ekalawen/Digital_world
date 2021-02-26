@@ -12,5 +12,16 @@ public class SelectorManagerEditor : Editor {
             PrefsManager.DeleteAll();
             Debug.Log("Toutes les clés ont été supprimées ! :)");
         }
+        if(GUILayout.Button("Reset all levels scores")) {
+            selectorManager.ResetAllLevelsScores();
+        }
+        if(GUILayout.Button("Set all scores to max tresholds")) {
+            selectorManager.SetAllScoresToMaxTresholds();
+        }
+        if (GUILayout.Button("Unlock all paths")) {
+            selectorManager.UnlockAllPaths();
+        } if (GUILayout.Button("Lock all paths")) {
+            selectorManager.LockAllPaths();
+        }
     }
 }

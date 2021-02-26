@@ -22,6 +22,7 @@ public class SelectorManager : MonoBehaviour {
     public MenuBackgroundBouncing background;
     public LoadingMenu loadingMenu;
     public SelectorPathUnlockScreen unlockScreen;
+
     public TexteExplicatif popup;
     public SelectorManagerStrings strings;
     public ArchivesReplacementStrings archivesStrings;
@@ -417,4 +418,33 @@ public class SelectorManager : MonoBehaviour {
     protected void StartMenuMusic() {
         UISoundManager.Instance.StartMusic();
     }
+
+    public void ResetAllLevelsScores() {
+        foreach(SelectorLevel level in levels) {
+            level.ResetScores();
+        }
+        Debug.Log($"Tous les scores ont été réinitialisés.");
+    }
+
+    public void SetAllScoresToMaxTresholds() {
+        foreach(SelectorLevel level in levels) {
+            level.SetScoresToMaxTreshold();
+        }
+        Debug.Log($"Tous les scores ont maximisés.");
+    }
+
+    public void UnlockAllPaths() {
+        foreach(SelectorPath path in paths) {
+            path.UnlockPath();
+        }
+        Debug.Log($"Tous les Paths ont été débloqués ! :)");
+    }
+
+    public void LockAllPaths() {
+        foreach(SelectorPath path in paths) {
+            path.LockPath();
+        }
+        Debug.Log($"Tous les Paths ont été lockés ! :)");
+    }
+
 }
