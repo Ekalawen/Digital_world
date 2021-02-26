@@ -10,7 +10,6 @@ public class PrefsManager {
 
     public static string LOCALE_INDEX_KEY = "localeIndexKey";
 
-    public static string FIRST_TIME_CONNEXION_KEY = "firstTimeConnexionKey";
     public static string HAVE_THINK_ABOUT_TUTORIAL_KEY = "haveThinkAboutTutorialKey";
     public static string FIRST_TIME_SELECTOR_OPENED_KEY = "firstTimeSelectorOpenedKey";
 

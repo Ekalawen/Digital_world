@@ -31,5 +31,6 @@ public class LocaleDropdown : MonoBehaviour {
     static void LocaleSelected(int index) {
         LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[index];
         PrefsManager.SetInt(PrefsManager.LOCALE_INDEX_KEY, index);
+        Debug.Log($"setLocaleIndexKey to {index}");
     }
 }

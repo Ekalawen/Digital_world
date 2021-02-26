@@ -34,15 +34,8 @@ public class MenuManager : MonoBehaviour {
         selectorManager = SelectorManager.Instance;
         SetSavedLocale();
         menuBouncingBackground.Initialize();
-        ResetPlayerPrefsIfFirstConnexion();
         SetRandomBackgroundIfNeeded();
         StartMenuMusic();
-    }
-
-    protected void ResetPlayerPrefsIfFirstConnexion() {
-        if (!PrefsManager.HasKey(PrefsManager.FIRST_TIME_CONNEXION_KEY)) {
-            menuOptions.ReinitialiserSauvegardes();
-        }
     }
 
     void Update() {
@@ -160,7 +153,6 @@ public class MenuManager : MonoBehaviour {
 
         if (PrefsManager.HasKey(PrefsManager.LOCALE_INDEX_KEY)) {
             int index = PrefsManager.GetInt(PrefsManager.LOCALE_INDEX_KEY, 0);
-            Debug.Log($"index = {index}");
             LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[index];
         }
     }

@@ -188,12 +188,11 @@ public class MenuOptions : MonoBehaviour {
 
     public void ReinitialiserSauvegardes() {
         PrefsManager.DeleteAll();
-        OnMusicVolumeChange(1.0f);
-        OnSoundVolumeChange(1.0f);
-        OnMouseSpeedChange(1.81f);
-        OnGripActivationPress(true);
-        OnConseilOnStartPress(true);
-        PrefsManager.SetBool(PrefsManager.FIRST_TIME_CONNEXION_KEY, true);
+        OnMusicVolumeChange(MenuOptions.defaultMusicVolume);
+        OnSoundVolumeChange(MenuOptions.defaultSoundVolume);
+        OnMouseSpeedChange(MenuOptions.defaultMouseSpeed);
+        OnGripActivationPress(MenuOptions.defaultGripActivation);
+        OnConseilOnStartPress(MenuOptions.defaultConseilOnStart);
         int index = LocalizationSettings.AvailableLocales.Locales.IndexOf(LocalizationSettings.SelectedLocale);
         PrefsManager.SetInt(PrefsManager.LOCALE_INDEX_KEY, index);
         PrefsManager.Save();

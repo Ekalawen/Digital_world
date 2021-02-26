@@ -160,7 +160,9 @@ public class UISoundManager : MonoBehaviour {
     }
 
     public void UpdateMusicVolume() {
-        float musicSourceRelativeVolume = musicAudioSource.GetComponent<AudioClipParamsHolder>().clipParams.relativeVolume;
-        musicAudioSource.volume = musicSourceRelativeVolume * musicVolume * AudioClipParams.BASE_VOLUME;
+        if (musicAudioSource != null) {
+            float musicSourceRelativeVolume = musicAudioSource.GetComponent<AudioClipParamsHolder>().clipParams.relativeVolume;
+            musicAudioSource.volume = musicSourceRelativeVolume * musicVolume * AudioClipParams.BASE_VOLUME;
+        }
     }
 }
