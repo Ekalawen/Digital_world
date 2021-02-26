@@ -302,6 +302,7 @@
     <Compile Include="Assets\Scripts\Pouvoirs\PouvoirRollback.cs" />
     <Compile Include="Assets\Scripts\Pouvoirs\PouvoirRollbackBlackAndWhite.cs" />
     <Compile Include="Assets\Scripts\Pouvoirs\PouvoirTripleSauts.cs" />
+    <Compile Include="Assets\Scripts\PrefsManager.cs" />
     <Compile Include="Assets\Scripts\Reward\Cameras\InfiniteRewardCamera.cs" />
     <Compile Include="Assets\Scripts\Reward\Cameras\RegularRewardCamera.cs" />
     <Compile Include="Assets\Scripts\Reward\Cameras\RewardCamera.cs" />
@@ -709,9 +710,6 @@
     <Reference Include="Unity.Analytics.StandardEvents">
       <HintPath>D:/programmation/unity/TheNetrunnerAwaken1ng/Library/PackageCache/com.unity.analytics@3.3.5/AnalyticsStandardEvents/Unity.Analytics.StandardEvents.dll</HintPath>
     </Reference>
-    <Reference Include="nunit.framework">
-      <HintPath>D:/programmation/unity/TheNetrunnerAwaken1ng/Library/PackageCache/com.unity.ext.nunit@1.0.5/net35/unity-custom/nunit.framework.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>D:/programmation/unity/TheNetrunnerAwaken1ng/Library/PackageCache/com.unity.nuget.newtonsoft-json@2.0.0/Runtime/Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -1081,6 +1079,9 @@
     <Reference Include="UnityEngine.Monetization">
       <HintPath>D:/programmation/unity/TheNetrunnerAwaken1ng/Library/ScriptAssemblies/UnityEngine.Monetization.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.Toolchain.Win-x86_64-Linux-x86_64">
+      <HintPath>D:/programmation/unity/TheNetrunnerAwaken1ng/Library/ScriptAssemblies/Unity.Toolchain.Win-x86_64-Linux-x86_64.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.ScriptableBuildPipeline.Editor">
       <HintPath>D:/programmation/unity/TheNetrunnerAwaken1ng/Library/ScriptAssemblies/Unity.ScriptableBuildPipeline.Editor.dll</HintPath>
     </Reference>
@@ -1099,6 +1100,9 @@
     <Reference Include="Unity.RenderPipelines.Core.Editor">
       <HintPath>D:/programmation/unity/TheNetrunnerAwaken1ng/Library/ScriptAssemblies/Unity.RenderPipelines.Core.Editor.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.VectorGraphics">
+      <HintPath>D:/programmation/unity/TheNetrunnerAwaken1ng/Library/ScriptAssemblies/Unity.VectorGraphics.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.RenderPipelines.Core.Runtime">
       <HintPath>D:/programmation/unity/TheNetrunnerAwaken1ng/Library/ScriptAssemblies/Unity.RenderPipelines.Core.Runtime.dll</HintPath>
     </Reference>
@@ -1110,6 +1114,9 @@
     </Reference>
     <Reference Include="UnityEngine.Purchasing">
       <HintPath>D:/programmation/unity/TheNetrunnerAwaken1ng/Library/ScriptAssemblies/UnityEngine.Purchasing.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.InternalAPIEditorBridge.003">
+      <HintPath>D:/programmation/unity/TheNetrunnerAwaken1ng/Library/ScriptAssemblies/Unity.InternalAPIEditorBridge.003.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.Purchasing">
       <HintPath>D:/programmation/unity/TheNetrunnerAwaken1ng/Library/ScriptAssemblies/UnityEditor.Purchasing.dll</HintPath>
@@ -1153,6 +1160,9 @@
     <Reference Include="Unity.Rider.Editor">
       <HintPath>D:/programmation/unity/TheNetrunnerAwaken1ng/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.VectorGraphics.Editor">
+      <HintPath>D:/programmation/unity/TheNetrunnerAwaken1ng/Library/ScriptAssemblies/Unity.VectorGraphics.Editor.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary">
       <HintPath>D:/programmation/unity/TheNetrunnerAwaken1ng/Library/ScriptAssemblies/Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary.dll</HintPath>
     </Reference>
@@ -1170,6 +1180,9 @@
     </Reference>
     <Reference Include="Unity.Localization">
       <HintPath>D:/programmation/unity/TheNetrunnerAwaken1ng/Library/ScriptAssemblies/Unity.Localization.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Sysroot.Linux_x86_64">
+      <HintPath>D:/programmation/unity/TheNetrunnerAwaken1ng/Library/ScriptAssemblies/Unity.Sysroot.Linux_x86_64.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.SpatialTracking">
       <HintPath>D:/programmation/unity/TheNetrunnerAwaken1ng/Library/ScriptAssemblies/UnityEditor.SpatialTracking.dll</HintPath>
@@ -1192,8 +1205,14 @@
     <Reference Include="Unity.ShaderGraph.Editor">
       <HintPath>D:/programmation/unity/TheNetrunnerAwaken1ng/Library/ScriptAssemblies/Unity.ShaderGraph.Editor.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.InternalAPIEngineBridge.003">
+      <HintPath>D:/programmation/unity/TheNetrunnerAwaken1ng/Library/ScriptAssemblies/Unity.InternalAPIEngineBridge.003.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.RenderPipelines.Core.ShaderLibrary">
       <HintPath>D:/programmation/unity/TheNetrunnerAwaken1ng/Library/ScriptAssemblies/Unity.RenderPipelines.Core.ShaderLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.SysrootPackage.Editor">
+      <HintPath>D:/programmation/unity/TheNetrunnerAwaken1ng/Library/ScriptAssemblies/Unity.SysrootPackage.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
       <HintPath>D:/programmation/unity/TheNetrunnerAwaken1ng/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
@@ -1215,27 +1234,6 @@
     </Reference>
     <Reference Include="com.unity.multiplayer-hlapi.Runtime">
       <HintPath>D:/programmation/unity/TheNetrunnerAwaken1ng/Library/ScriptAssemblies/com.unity.multiplayer-hlapi.Runtime.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.VectorGraphics">
-      <HintPath>D:/programmation/unity/TheNetrunnerAwaken1ng/Library/ScriptAssemblies/Unity.VectorGraphics.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.InternalAPIEditorBridge.003">
-      <HintPath>D:/programmation/unity/TheNetrunnerAwaken1ng/Library/ScriptAssemblies/Unity.InternalAPIEditorBridge.003.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.VectorGraphics.Editor">
-      <HintPath>D:/programmation/unity/TheNetrunnerAwaken1ng/Library/ScriptAssemblies/Unity.VectorGraphics.Editor.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.InternalAPIEngineBridge.003">
-      <HintPath>D:/programmation/unity/TheNetrunnerAwaken1ng/Library/ScriptAssemblies/Unity.InternalAPIEngineBridge.003.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Toolchain.Win-x86_64-Linux-x86_64">
-      <HintPath>D:/programmation/unity/TheNetrunnerAwaken1ng/Library/ScriptAssemblies/Unity.Toolchain.Win-x86_64-Linux-x86_64.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.Sysroot.Linux_x86_64">
-      <HintPath>D:/programmation/unity/TheNetrunnerAwaken1ng/Library/ScriptAssemblies/Unity.Sysroot.Linux_x86_64.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.SysrootPackage.Editor">
-      <HintPath>D:/programmation/unity/TheNetrunnerAwaken1ng/Library/ScriptAssemblies/Unity.SysrootPackage.Editor.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup></ItemGroup>

@@ -12,12 +12,6 @@ public class MenuManager : MonoBehaviour {
     public static MenuManager Instance { get { return _instance ?? (_instance = new GameObject().AddComponent<MenuManager>()); } }
 
     public static bool DISABLE_HOTKEYS = false;
-    public static string FIRST_TIME_CONNEXION_KEY = "firstTimeConnexionKey";
-    public static string HAVE_THINK_ABOUT_TUTORIAL_KEY = "haveThinkAboutTutorialKey";
-    public static string SHOULD_SET_RANDOM_BACKGROUND_KEY = "shouldSetRandomBackgroundKey";
-    public static string TRUE = "true";
-    public static string FALSE = "false";
-    public static string LOCALE_INDEX_KEY = "localeIndexKey";
 
     [Header("Links")]
     public MenuOptions menuOptions;
@@ -46,7 +40,7 @@ public class MenuManager : MonoBehaviour {
     }
 
     protected void ResetPlayerPrefsIfFirstConnexion() {
-        if (!PlayerPrefs.HasKey(FIRST_TIME_CONNEXION_KEY)) {
+        if (!PrefsManager.HasKey(PrefsManager.FIRST_TIME_CONNEXION_KEY)) {
             menuOptions.ReinitialiserSauvegardes();
         }
     }
@@ -75,7 +69,7 @@ public class MenuManager : MonoBehaviour {
     }
 
     protected bool HaveThinkAboutTutorial() {
-        return PlayerPrefs.HasKey(HAVE_THINK_ABOUT_TUTORIAL_KEY);
+        return PrefsManager.HasKey(PrefsManager.HAVE_THINK_ABOUT_TUTORIAL_KEY);
     }
 
     protected void AdvicePlayTutorial() {
@@ -99,16 +93,13 @@ public class MenuManager : MonoBehaviour {
             text: handleTexte.Result,
             theme: TexteExplicatif.Theme.NEUTRAL,
             cleanReplacements: false);
-        PlayerPrefs.SetString(HAVE_THINK_ABOUT_TUTORIAL_KEY, MenuManager.TRUE);
+        PrefsManager.SetBool(PrefsManager.HAVE_THINK_ABOUT_TUTORIAL_KEY, true);
     }
 
-    // Lorsqu'on appui sur le bouton tutoriel
     public void OnTutorialPress() {
 		Debug.Log("On a appuyé sur Tutoriel !");
-        PlayerPrefs.SetString(HAVE_THINK_ABOUT_TUTORIAL_KEY, MenuManager.TRUE);
-        //PlayerPrefs.SetString(MenuLevel.LEVEL_NAME_ID_KEY, "TutorialScene");
+        PrefsManager.SetBool(PrefsManager.HAVE_THINK_ABOUT_TUTORIAL_KEY, true);
 
-		//SceneManager.LoadScene("TutorialScene");
         AsyncOperation loading = SceneManager.LoadSceneAsync("TutorialScene");
         loading.allowSceneActivation = false;
 
@@ -117,24 +108,19 @@ public class MenuManager : MonoBehaviour {
         gameObject.SetActive(false);
     }
 
-    // Lorsqu'on appui sur le bouton options
     public void OnOptionPress() {
 		Debug.Log("On a appuyé sur Option !");
         menuOptions.Run();
 	}
 
-	// Lorsqu'on appui sur le bouton quitter
 	public void OnQuitterPress() {
 		Debug.Log("On a appuyé sur Quitter !");
 		QuitGame();
 	}
 
-	public void QuitGame()
-	{
-		// save any game data here
+	public void QuitGame() {
 		#if UNITY_EDITOR
 			// Application.Quit() does not work in the editor so
-			// UnityEditor.EditorApplication.isPlaying need to be set to false to end the game
 			UnityEditor.EditorApplication.isPlaying = false;
 		#else
 			Application.Quit();
@@ -153,12 +139,9 @@ public class MenuManager : MonoBehaviour {
     }
 
     protected void SetRandomBackgroundIfNeeded() {
-        if(PlayerPrefs.HasKey(SHOULD_SET_RANDOM_BACKGROUND_KEY)) {
-            string shouldSet = PlayerPrefs.GetString(SHOULD_SET_RANDOM_BACKGROUND_KEY);
-            if(shouldSet == TRUE) {
-                SetRandomBackground();
-                PlayerPrefs.SetString(SHOULD_SET_RANDOM_BACKGROUND_KEY, FALSE);
-            }
+        if(PrefsManager.GetBool(PrefsManager.SHOULD_SET_RANDOM_BACKGROUND_KEY, false)) {
+            SetRandomBackground();
+            PrefsManager.SetBool(PrefsManager.SHOULD_SET_RANDOM_BACKGROUND_KEY, false);
         }
     }
 
@@ -175,15 +158,11 @@ public class MenuManager : MonoBehaviour {
         // Wait for the localization system to initialize, loading Locales, preloading etc.
         yield return LocalizationSettings.InitializationOperation;
 
-        if (PlayerPrefs.HasKey(LOCALE_INDEX_KEY)) {
-            int index = PlayerPrefs.GetInt(LOCALE_INDEX_KEY);
+        if (PrefsManager.HasKey(PrefsManager.LOCALE_INDEX_KEY)) {
+            int index = PrefsManager.GetInt(PrefsManager.LOCALE_INDEX_KEY, 0);
             Debug.Log($"index = {index}");
             LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[index];
         }
-    }
-
-    public static string BoolToString(bool input) {
-        return input ? TRUE : FALSE;
     }
 
     protected void StartMenuMusic() {

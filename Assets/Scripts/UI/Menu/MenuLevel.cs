@@ -13,19 +13,6 @@ public class MenuLevel : MonoBehaviour {
 
     public enum LevelType { REGULAR, INFINITE };
 
-    //public static string LEVEL_NAME_ID_KEY = "levelNameIdKey";
-    public static string CURRENT_INPUT_FIELD_KEY = "currentInputField";
-    public static string NB_WINS_KEY = "nbVictoires";
-    public static string NB_DEATHS_KEY = "nbTries";
-    public static string SUM_OF_ALL_TRIES_SCORES_KEY = "sumOfAllTriesScores";
-    public static string BEST_SCORE_KEY = "bestScore";
-    public static string PRECEDENT_BEST_SCORE_KEY = "precedentBestScore";
-    public static string SINCE_LAST_BEST_SCORE_KEY = "sinceLastBestScore";
-    public static string TRACE_KEY = "trace";
-    public static string HAS_JUST_WIN_KEY = "hasJustWin";
-    public static string HAS_JUST_MAKE_BEST_SCORE_KEY = "hasJustMakeBestScore";
-    public static string HAS_ALREADY_DISCOVER_LEVEL_KEY = "hasAlreadyDiscoverLevel";
-    public static string IS_LEVEL_HIGHLIGHTED_KEY = "isLevelHighlighted";
     public static string SUPER_CHEATED_PASSWORD = "supercheatedpassword"; // "lecreateurdecejeuestmonuniquedieuetmaitre";
 
 
@@ -94,8 +81,8 @@ public class MenuLevel : MonoBehaviour {
         //DisplayPopupUnlockLevel();
         //DisplayPopupUnlockNewTreshold();
 
-        string key = GetNameId() + CURRENT_INPUT_FIELD_KEY;
-        inputFieldNext.text = PlayerPrefs.GetString(key);
+        string key = GetNameId() + PrefsManager.CURRENT_INPUT_FIELD_KEY;
+        inputFieldNext.text = PrefsManager.GetString(key, "");
         UIHelper.FitTextHorizontaly(textLevelName.text, textLevelName);
 
         MakeBouncePlayButton();
@@ -209,8 +196,8 @@ public class MenuLevel : MonoBehaviour {
 
     public void SaveNextInputField() {
         if (inputFieldNext.text == GetPassword() || inputFieldNext.text == SUPER_CHEATED_PASSWORD) {
-            string key = GetNameId() + CURRENT_INPUT_FIELD_KEY;
-            PlayerPrefs.SetString(key, inputFieldNext.text);
+            string key = GetNameId() + PrefsManager.CURRENT_INPUT_FIELD_KEY;
+            PrefsManager.SetString(key, inputFieldNext.text);
         }
     }
 
@@ -243,18 +230,18 @@ public class MenuLevel : MonoBehaviour {
     }
 
     public int GetNbWins() {
-        string key = GetNameId() + NB_WINS_KEY;
-        return PlayerPrefs.HasKey(key) ? PlayerPrefs.GetInt(key) : 0;
+        string key = GetNameId() + PrefsManager.NB_WINS_KEY;
+        return PrefsManager.GetInt(key, 0);
     }
 
     public void SetNbWins(int nbWins) {
-        string key = GetNameId() + NB_WINS_KEY;
-        PlayerPrefs.SetInt(key, nbWins);
+        string key = GetNameId() + PrefsManager.NB_WINS_KEY;
+        PrefsManager.SetInt(key, nbWins);
     }
 
     public int GetNbDeaths() {
-        string key = GetNameId() + NB_DEATHS_KEY;
-        return PlayerPrefs.HasKey(key) ? PlayerPrefs.GetInt(key) : 0;
+        string key = GetNameId() + PrefsManager.NB_DEATHS_KEY;
+        return PrefsManager.GetInt(key, 0);
     }
 
     public int GetNbTries() {
@@ -277,33 +264,33 @@ public class MenuLevel : MonoBehaviour {
     }
 
     public float GetSumOfAllTriesScores() {
-        string key = GetNameId() + SUM_OF_ALL_TRIES_SCORES_KEY;
-        return PlayerPrefs.HasKey(key) ? PlayerPrefs.GetFloat(key) : 0;
+        string key = GetNameId() + PrefsManager.SUM_OF_ALL_TRIES_SCORES_KEY;
+        return PrefsManager.GetFloat(key, 0);
     }
 
     public bool HasBestScore() {
-        string key = GetNameId() + BEST_SCORE_KEY;
-        return PlayerPrefs.HasKey(key);
+        string key = GetNameId() + PrefsManager.BEST_SCORE_KEY;
+        return PrefsManager.HasKey(key);
     }
 
     public float GetBestScore() {
-        string key = GetNameId() + BEST_SCORE_KEY;
-        return PlayerPrefs.HasKey(key) ? PlayerPrefs.GetFloat(key) : 0.0f;
+        string key = GetNameId() + PrefsManager.BEST_SCORE_KEY;
+        return PrefsManager.GetFloat(key, 0);
     }
 
     public void SetBestScore(float bestScore) {
-        string key = GetNameId() + BEST_SCORE_KEY;
-        PlayerPrefs.SetFloat(key, bestScore);
+        string key = GetNameId() + PrefsManager.BEST_SCORE_KEY;
+        PrefsManager.SetFloat(key, bestScore);
     }
 
     public float GetPrecedentBestScore() {
-        string key = GetNameId() + PRECEDENT_BEST_SCORE_KEY;
-        return PlayerPrefs.HasKey(key) ? PlayerPrefs.GetFloat(key) : 0.0f;
+        string key = GetNameId() + PrefsManager.PRECEDENT_BEST_SCORE_KEY;
+        return PrefsManager.GetFloat(key, 0);
     }
 
     public void SetPrecedentBestScore(float precedentScore) {
-        string key = GetNameId() + PRECEDENT_BEST_SCORE_KEY;
-        PlayerPrefs.SetFloat(key, precedentScore);
+        string key = GetNameId() + PrefsManager.PRECEDENT_BEST_SCORE_KEY;
+        PrefsManager.SetFloat(key, precedentScore);
     }
 
     public string GetBestScoreToString() {
@@ -314,35 +301,35 @@ public class MenuLevel : MonoBehaviour {
     }
 
     public int GetSinceLastBestScore() {
-        string key = GetNameId() + SINCE_LAST_BEST_SCORE_KEY;
-        return PlayerPrefs.HasKey(key) ? PlayerPrefs.GetInt(key) : 0;
+        string key = GetNameId() + PrefsManager.SINCE_LAST_BEST_SCORE_KEY;
+        return PrefsManager.GetInt(key, 0);
     }
 
     public int GetDataCount() {
-        string key = GetNameId() + Lumiere.DATA_COUNT_KEY;
-        return PlayerPrefs.HasKey(key) ? PlayerPrefs.GetInt(key) : 0;
+        string key = GetNameId() + PrefsManager.DATA_COUNT_KEY;
+        return PrefsManager.GetInt(key, 0);
     }
 
     public void SetDataCount(int value) {
-        string key = GetNameId() + Lumiere.DATA_COUNT_KEY;
-        PlayerPrefs.SetInt(key, value);
+        string key = GetNameId() + PrefsManager.DATA_COUNT_KEY;
+        PrefsManager.SetInt(key, value);
     }
 
     public int GetPrecedentDataCount() {
-        string key = GetNameId() + Lumiere.PRECEDENT_DATA_COUNT_KEY;
-        return PlayerPrefs.HasKey(key) ? PlayerPrefs.GetInt(key) : 0;
+        string key = GetNameId() + PrefsManager.PRECEDENT_DATA_COUNT_KEY;
+        return PrefsManager.GetInt(key, 0);
     }
 
     public bool HasJustIncreaseDataCount() {
-        string key = GetNameId() + Lumiere.HAS_JUST_INCREASED_DATA_COUNT_KEY;
-        return PlayerPrefs.HasKey(key) ? (PlayerPrefs.GetString(key) == MenuManager.TRUE) : false;
+        string key = GetNameId() + PrefsManager.HAS_JUST_INCREASED_DATA_COUNT_KEY;
+        return PrefsManager.GetBool(key, false);
     }
 
     public void SetNotJustIncreaseDataCount() {
-        string keyHasJustIncreased = GetNameId() + Lumiere.HAS_JUST_INCREASED_DATA_COUNT_KEY;
-        PlayerPrefs.SetString(keyHasJustIncreased, MenuManager.FALSE);
-        string keyPrecedentDataCount = GetNameId() + Lumiere.PRECEDENT_DATA_COUNT_KEY;
-        PlayerPrefs.SetInt(keyPrecedentDataCount, GetDataCount());
+        string keyHasJustIncreased = GetNameId() + PrefsManager.HAS_JUST_INCREASED_DATA_COUNT_KEY;
+        PrefsManager.SetString(keyHasJustIncreased, PrefsManager.FALSE);
+        string keyPrecedentDataCount = GetNameId() + PrefsManager.PRECEDENT_DATA_COUNT_KEY;
+        PrefsManager.SetInt(keyPrecedentDataCount, GetDataCount());
     }
 
 
@@ -364,18 +351,19 @@ public class MenuLevel : MonoBehaviour {
     }
 
     public string GetTrace() {
-        string key = GetNameId() + TRACE_KEY;
-        if (!PlayerPrefs.HasKey(key))
+        string key = GetNameId() + PrefsManager.TRACE_KEY;
+        if (!PrefsManager.HasKey(key)) {
             InitTrace();
-        return PlayerPrefs.GetString(key);
+        }
+        return PrefsManager.GetString(key, "0000");
     }
 
     protected void InitTrace() {
         string trace = Trace.GenerateTrace();
         print(trace);
 
-        string key = GetNameId() + TRACE_KEY;
-        PlayerPrefs.SetString(key, trace);
+        string key = GetNameId() + PrefsManager.TRACE_KEY;
+        PrefsManager.SetString(key, trace);
     }
 
     public string GetNameId() {
@@ -414,34 +402,34 @@ public class MenuLevel : MonoBehaviour {
     }
 
     public bool HasJustWin() {
-        string key = GetNameId() + HAS_JUST_WIN_KEY;
-        return PlayerPrefs.HasKey(key) && PlayerPrefs.GetString(key) == MenuManager.TRUE;
+        string key = GetNameId() + PrefsManager.HAS_JUST_WIN_KEY;
+        return PrefsManager.GetBool(key, false);
     }
 
     public void SetNotJustWin() {
-        string key = GetNameId() + HAS_JUST_WIN_KEY;
-        PlayerPrefs.DeleteKey(key);
+        string key = GetNameId() + PrefsManager.HAS_JUST_WIN_KEY;
+        PrefsManager.DeleteKey(key);
     }
 
     public bool HasJustMakeNewBestScore() {
-        string key = GetNameId() + HAS_JUST_MAKE_BEST_SCORE_KEY;
-        return PlayerPrefs.HasKey(key) && PlayerPrefs.GetString(key) == MenuManager.TRUE;
+        string key = GetNameId() + PrefsManager.HAS_JUST_MAKE_BEST_SCORE_KEY;
+        return PrefsManager.GetBool(key, false);
     }
 
     public void SetNotJustMakeNewBestScore() {
-        string key = GetNameId() + HAS_JUST_MAKE_BEST_SCORE_KEY;
-        PlayerPrefs.SetString(key, MenuManager.FALSE);
+        string key = GetNameId() + PrefsManager.HAS_JUST_MAKE_BEST_SCORE_KEY;
+        PrefsManager.SetBool(key, false);
         SetPrecedentBestScore(GetBestScore());
     }
 
     public bool HasAlreadyDiscoverLevel() {
-        string key = GetNameId() + HAS_ALREADY_DISCOVER_LEVEL_KEY;
-        return PlayerPrefs.HasKey(key) && PlayerPrefs.GetString(key) == "True";
+        string key = GetNameId() + PrefsManager.HAS_ALREADY_DISCOVER_LEVEL_KEY;
+        return PrefsManager.GetBool(key, false);
     }
 
     public void SetAlreadyDiscoverLevel() {
-        string key = GetNameId() + HAS_ALREADY_DISCOVER_LEVEL_KEY;
-        PlayerPrefs.SetString(key, "True");
+        string key = GetNameId() + PrefsManager.HAS_ALREADY_DISCOVER_LEVEL_KEY;
+        PrefsManager.SetBool(key, true);
     }
 
     public bool IsPlayStarted() {
@@ -460,14 +448,14 @@ public class MenuLevel : MonoBehaviour {
     }
 
     public void HighlightBackButton(bool state) {
-        string key = GetNameId() + IS_LEVEL_HIGHLIGHTED_KEY;
-        PlayerPrefs.SetString(key, state ? MenuManager.TRUE : MenuManager.FALSE);
+        string key = GetNameId() + PrefsManager.IS_LEVEL_HIGHLIGHTED_KEY;
+        PrefsManager.SetBool(key, state);
         backButton.GetComponent<ButtonHighlighter>().enabled = state;
     }
 
     public void HighlightBackButtonBasedOnSave() {
-        string key = GetNameId() + IS_LEVEL_HIGHLIGHTED_KEY;
-        bool state = PlayerPrefs.HasKey(key) && PlayerPrefs.GetString(key) == MenuManager.TRUE;
+        string key = GetNameId() + PrefsManager.IS_LEVEL_HIGHLIGHTED_KEY;
+        bool state = PrefsManager.GetBool(key, false);
         backButton.GetComponent<ButtonHighlighter>().enabled = state;
     }
 

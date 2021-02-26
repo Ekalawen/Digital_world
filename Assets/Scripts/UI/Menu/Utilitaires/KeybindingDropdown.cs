@@ -11,8 +11,6 @@ public class KeybindingDropdown : MonoBehaviour {
         QWERTY,
     };
 
-    public static string KEYBINDING_INDICE_KEY = "keybindingIndiceKey";
-
     public Dropdown dropdown;
 
     public void Start() {
@@ -26,11 +24,11 @@ public class KeybindingDropdown : MonoBehaviour {
     }
 
     static void LocaleSelected(int index) {
-        PlayerPrefs.SetInt(KEYBINDING_INDICE_KEY, index);
+        PrefsManager.SetInt(PrefsManager.KEYBINDING_INDICE_KEY, index);
     }
 
     public static int GetKeybindingIndice() {
-        return PlayerPrefs.HasKey(KEYBINDING_INDICE_KEY) ? PlayerPrefs.GetInt(KEYBINDING_INDICE_KEY) : 0;
+        return PrefsManager.GetInt(PrefsManager.KEYBINDING_INDICE_KEY, 0);
     }
 
     public static KeybindingType GetKeybinding() {

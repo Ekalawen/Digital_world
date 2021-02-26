@@ -5,9 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class MenuLevelSelector : MonoBehaviour {
 
-    public static string SAVE_LEVEL_NAME_KEY = "saveLevelNameKey";
-    public static string SAVE_LEVEL_NAME_MUST_BE_USED_KEY = "saveLevelNameMustBeUsedKey";
-
     public GameObject menuInitial;
     public List<GameObject> levels;
     public float dureeFading = 0.5f;
@@ -58,15 +55,14 @@ public class MenuLevelSelector : MonoBehaviour {
 
     public void SaveLevelName() {
         string levelName = menuInitial.GetComponent<MenuLevel>().GetNameId();
-        PlayerPrefs.SetString(SAVE_LEVEL_NAME_KEY, levelName);
-        PlayerPrefs.Save();
+        PrefsManager.SetString(PrefsManager.SAVE_LEVEL_NAME_KEY, levelName);
+        PrefsManager.Save();
     }
 
     public void CleanLevelIndice() {
-        PlayerPrefs.DeleteKey(SAVE_LEVEL_NAME_KEY);
-        //PlayerPrefs.SetString(SAVE_LEVEL_NAME_KEY, "Nope");
-        PlayerPrefs.SetString(SAVE_LEVEL_NAME_MUST_BE_USED_KEY, MenuManager.FALSE);
-        PlayerPrefs.Save();
+        PrefsManager.DeleteKey(PrefsManager.SAVE_LEVEL_NAME_KEY);
+        PrefsManager.SetBool(PrefsManager.SAVE_LEVEL_NAME_MUST_BE_USED_KEY, false);
+        PrefsManager.Save();
     }
 
     public void Play(string levelSceneName) {

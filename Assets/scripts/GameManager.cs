@@ -253,9 +253,9 @@ public class GameManager : MonoBehaviour {
 		Object.Destroy(player);
 		Object.Destroy(console);
 		Object.Destroy(eventManager);
-		Object.Destroy(this); 
+		Object.Destroy(this);
 
-        PlayerPrefs.SetString(SelectorManager.LAST_LEVEL_KEY, SceneManager.GetActiveScene().name);
+        PrefsManager.SetString(PrefsManager.LAST_LEVEL_KEY, SceneManager.GetActiveScene().name);
 
         Cursor.lockState = CursorLockMode.None;
 		Cursor.visible = true;

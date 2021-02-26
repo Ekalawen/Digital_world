@@ -11,9 +11,6 @@ using UnityEngine.SceneManagement;
 
 public class SelectorManager : MonoBehaviour {
 
-    public static string LAST_LEVEL_KEY = "lastLevelKey";
-    public static string FIRST_TIME_SELECTOR_OPENED_KEY = "firstTimeSelectorOpenedKey";
-
     static SelectorManager _instance;
     //public static SelectorManager Instance { get { return _instance ?? (_instance = new GameObject().AddComponent<SelectorManager>()); } }
     public static SelectorManager Instance { get { return _instance; } }
@@ -64,7 +61,7 @@ public class SelectorManager : MonoBehaviour {
     }
 
     protected void CleanLastSavedLevel() {
-        PlayerPrefs.DeleteKey(LAST_LEVEL_KEY);
+        PrefsManager.DeleteKey(PrefsManager.LAST_LEVEL_KEY);
     }
 
     protected void SetCurrentLevelBasedOnLastSavedLevel() {
@@ -188,13 +185,13 @@ public class SelectorManager : MonoBehaviour {
     }
 
     protected void SaveLastLevel() {
-        PlayerPrefs.SetString(LAST_LEVEL_KEY, GetCurrentLevel().menuLevel.levelSceneName);
+        PrefsManager.SetString(PrefsManager.LAST_LEVEL_KEY, GetCurrentLevel().menuLevel.levelSceneName);
         PlayerPrefs.Save();
     }
 
     protected SelectorLevel GetLastLevelSaved() {
-        if (PlayerPrefs.HasKey(LAST_LEVEL_KEY)) {
-            string levelSceneName = PlayerPrefs.GetString(LAST_LEVEL_KEY);
+        if (PrefsManager.HasKey(PrefsManager.LAST_LEVEL_KEY)) {
+            string levelSceneName = PrefsManager.GetString(PrefsManager.LAST_LEVEL_KEY, "");
             SelectorLevel level = levels.Find(l => l.menuLevel.levelSceneName == levelSceneName);
             if (level != null) {
                 return level;
@@ -299,7 +296,7 @@ public class SelectorManager : MonoBehaviour {
     public void Return() {
         if (HasSelectorLevelOpen())
             return;
-        PlayerPrefs.SetString(MenuManager.SHOULD_SET_RANDOM_BACKGROUND_KEY, MenuManager.TRUE);
+        PrefsManager.SetBool(PrefsManager.SHOULD_SET_RANDOM_BACKGROUND_KEY, true);
         SceneManager.LoadScene("MenuScene");
     }
 
@@ -386,10 +383,10 @@ public class SelectorManager : MonoBehaviour {
     }
 
     protected void DisplayIntroductionText() {
-        if (!PlayerPrefs.HasKey(FIRST_TIME_SELECTOR_OPENED_KEY)) {
+        if (!PrefsManager.GetBool(PrefsManager.FIRST_TIME_SELECTOR_OPENED_KEY, false)) {
             MenuLevel firstLevel = levels[0].menuLevel;
             introductionRunner.RunIntroduction();
-            PlayerPrefs.SetString(FIRST_TIME_SELECTOR_OPENED_KEY, MenuManager.TRUE);
+            PrefsManager.SetBool(PrefsManager.FIRST_TIME_SELECTOR_OPENED_KEY, true);
         }
     }
 

@@ -8,10 +8,6 @@ using UnityEngine.VFX;
 
 public class Lumiere : MonoBehaviour {
 
-    public static string DATA_COUNT_KEY = "dataCountKey";
-    public static string PRECEDENT_DATA_COUNT_KEY = "precedentDataCountKey";
-    public static string HAS_JUST_INCREASED_DATA_COUNT_KEY = "hasJustIncreaseDataCountKey";
-
     public enum LumiereType {
         NORMAL,
         FINAL,
@@ -74,17 +70,16 @@ public class Lumiere : MonoBehaviour {
     }
 
     public static int GetCurrentDataCount() {
-        string key = SceneManager.GetActiveScene().name + DATA_COUNT_KEY;
-        int dataCount = PlayerPrefs.HasKey(key) ? PlayerPrefs.GetInt(key) : 0;
-        return dataCount;
+        string key = SceneManager.GetActiveScene().name + PrefsManager.DATA_COUNT_KEY;
+        return PrefsManager.GetInt(key, 0);
     }
 
     public static int IncrementDataCount(int nbAdded) {
-        string key = SceneManager.GetActiveScene().name + DATA_COUNT_KEY;
+        string key = SceneManager.GetActiveScene().name + PrefsManager.DATA_COUNT_KEY;
         int dataCount = GetCurrentDataCount() + nbAdded;
-        PlayerPrefs.SetInt(key, dataCount);
-        string keyHasJustIncreased = SceneManager.GetActiveScene().name + HAS_JUST_INCREASED_DATA_COUNT_KEY;
-        PlayerPrefs.SetString(keyHasJustIncreased, MenuManager.TRUE);
+        PrefsManager.SetInt(key, dataCount);
+        string keyHasJustIncreased = SceneManager.GetActiveScene().name + PrefsManager.HAS_JUST_INCREASED_DATA_COUNT_KEY;
+        PrefsManager.SetBool(keyHasJustIncreased, true);
         return dataCount;
     }
 

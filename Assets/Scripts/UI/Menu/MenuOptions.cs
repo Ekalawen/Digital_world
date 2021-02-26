@@ -52,14 +52,6 @@ public class MenuOptions : MonoBehaviour {
     public LocalizedString graphismsTitle;
     public LocalizedString languageTitle;
 
-    public static string MUSIC_VOLUME_KEY = "musicVolumeKey";
-    public static string SOUND_VOLUME_KEY = "soundVolumeKey";
-    public static string MOUSE_SPEED_KEY = "mouseSpeedKey";
-    public static string LUMINOSITY_KEY = "luminosityKey";
-    public static string GRIP_KEY = "gripKey";
-    public static string ADVICE_ON_START_KEY = "adviceOnStartKey";
-    public static string LAST_LEVEL_KEY = "lastLevelKey";
-
     protected bool hasPanelOpen = false;
     protected GameManager gm;
 
@@ -74,11 +66,11 @@ public class MenuOptions : MonoBehaviour {
         HideSomeOptionsInGame();
         CenterInGamePanels();
 
-        OnMusicVolumeChange(PlayerPrefs.GetFloat(MUSIC_VOLUME_KEY));
-        OnSoundVolumeChange(PlayerPrefs.GetFloat(SOUND_VOLUME_KEY));
-        OnMouseSpeedChange(PlayerPrefs.GetFloat(MOUSE_SPEED_KEY));
-        OnGripActivationPress(PlayerPrefs.GetString(GRIP_KEY) == MenuManager.TRUE);
-        OnConseilOnStartPress(PlayerPrefs.GetString(ADVICE_ON_START_KEY) == MenuManager.TRUE);
+        OnMusicVolumeChange(PrefsManager.GetFloat(PrefsManager.MUSIC_VOLUME_KEY, 1.0f));
+        OnSoundVolumeChange(PrefsManager.GetFloat(PrefsManager.SOUND_VOLUME_KEY, 1.0f));
+        OnMouseSpeedChange(PrefsManager.GetFloat(PrefsManager.MOUSE_SPEED_KEY, 1.81f));
+        OnGripActivationPress(PrefsManager.GetBool(PrefsManager.GRIP_KEY, true));
+        OnConseilOnStartPress(PrefsManager.GetBool(PrefsManager.ADVICE_ON_START_KEY, true));
     }
 
     protected void CenterInGamePanels() {
@@ -139,7 +131,7 @@ public class MenuOptions : MonoBehaviour {
     }
 
     public void OnMusicVolumeChange(float newVal) {
-        PlayerPrefs.SetFloat(MUSIC_VOLUME_KEY, newVal);
+        PrefsManager.SetFloat(PrefsManager.MUSIC_VOLUME_KEY, newVal);
         sliderMusic.value = newVal;
         sliderMusic.GetComponent<SliderScript>().OnChange(newVal);
         if(isInGame) {
@@ -151,8 +143,8 @@ public class MenuOptions : MonoBehaviour {
     }
 
     public void OnSoundVolumeChange(float newVal) {
-        float oldVal = PlayerPrefs.GetFloat(SOUND_VOLUME_KEY);
-        PlayerPrefs.SetFloat(SOUND_VOLUME_KEY, newVal);
+        float oldVal = PrefsManager.GetFloat(PrefsManager.SOUND_VOLUME_KEY, 1.0f);
+        PrefsManager.SetFloat(PrefsManager.SOUND_VOLUME_KEY, newVal);
         sliderSon.value = newVal;
         sliderSon.GetComponent<SliderScript>().OnChange(newVal);
         if(isInGame) {
@@ -166,7 +158,7 @@ public class MenuOptions : MonoBehaviour {
     }
 
     public void OnMouseSpeedChange(float newVal) {
-        PlayerPrefs.SetFloat(MOUSE_SPEED_KEY, newVal);
+        PrefsManager.SetFloat(PrefsManager.MOUSE_SPEED_KEY, newVal);
         sliderMouse.value = newVal;
         sliderMouse.GetComponent<SliderScript>().OnChange(newVal);
         if(isInGame) {
@@ -175,30 +167,30 @@ public class MenuOptions : MonoBehaviour {
     }
 
     public void OnGripActivationPress(bool active) {
-        PlayerPrefs.SetString(GRIP_KEY, MenuManager.BoolToString(active));
+        PrefsManager.SetBool(PrefsManager.GRIP_KEY, active);
         toggleGrip.isOn = active;
     }
 
     public void OnConseilOnStartPress(bool active) {
-        PlayerPrefs.SetString(ADVICE_ON_START_KEY, MenuManager.BoolToString(active));
+        PrefsManager.SetBool(PrefsManager.ADVICE_ON_START_KEY, active);
         conseilOnStartToggle.isOn = active;
     }
 
     public void RememberLastLevel(int indiceLevel) {
-        PlayerPrefs.SetInt(LAST_LEVEL_KEY, indiceLevel);
+        PrefsManager.SetInt(PrefsManager.LAST_LEVEL_KEY, indiceLevel);
     }
 
     public void ReinitialiserSauvegardes() {
-        PlayerPrefs.DeleteAll();
+        PrefsManager.DeleteAll();
         OnMusicVolumeChange(1.0f);
         OnSoundVolumeChange(1.0f);
         OnMouseSpeedChange(1.81f);
         OnGripActivationPress(true);
         OnConseilOnStartPress(true);
-        PlayerPrefs.SetString(MenuManager.FIRST_TIME_CONNEXION_KEY, "Done !");
+        PrefsManager.SetBool(PrefsManager.FIRST_TIME_CONNEXION_KEY, true);
         int index = LocalizationSettings.AvailableLocales.Locales.IndexOf(LocalizationSettings.SelectedLocale);
-        PlayerPrefs.SetInt(MenuManager.LOCALE_INDEX_KEY, index);
-        PlayerPrefs.Save();
+        PrefsManager.SetInt(PrefsManager.LOCALE_INDEX_KEY, index);
+        PrefsManager.Save();
     }
 
     public void ChosePanel(PanelType panelType) {

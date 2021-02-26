@@ -127,7 +127,7 @@ public class Player : Character {
     }
 
     public void GetPlayerSensitivity() {
-        sensibilite = PlayerPrefs.GetFloat(MenuOptions.MOUSE_SPEED_KEY);
+        sensibilite = PrefsManager.GetFloat(PrefsManager.MOUSE_SPEED_KEY, 1.81f);
     }
 
     protected void InitPouvoirs() {

@@ -9,9 +9,6 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class SelectorPath : MonoBehaviour {
 
-    public static string IS_UNLOCKED_PATH_KEY = "IS_UNLOCKED_PATH_KEY";
-    public static string IS_HIGHLIGHTED_PATH_KEY = "IS_HIGHLIGHTED_PATH_KEY";
-
     [Header("Path")]
     public SelectorLevel startLevel;
     public SelectorLevel endLevel;
@@ -187,23 +184,24 @@ public class SelectorPath : MonoBehaviour {
     }
 
     public string GetTrace() {
-        string key = name + MenuLevel.TRACE_KEY;
-        if (!PlayerPrefs.HasKey(key))
+        string key = name + PrefsManager.TRACE_KEY;
+        if (!PrefsManager.HasKey(key)) {
             InitTrace();
-        return PlayerPrefs.GetString(key);
+        }
+        return PrefsManager.GetString(key, "0000");
     }
 
     protected void InitTrace() {
         string trace = Trace.GenerateTrace();
         print(trace);
 
-        string key = name + MenuLevel.TRACE_KEY;
-        PlayerPrefs.SetString(key, trace);
+        string key = name + PrefsManager.TRACE_KEY;
+        PrefsManager.SetString(key, trace);
     }
 
     public void UnlockPath() {
-        string key = name + IS_UNLOCKED_PATH_KEY;
-        PlayerPrefs.SetString(key, MenuManager.TRUE);
+        string key = name + PrefsManager.IS_UNLOCKED_PATH_KEY;
+        PrefsManager.SetBool(key, true);
     }
 
     public string GetVisibleName() {
@@ -215,13 +213,13 @@ public class SelectorPath : MonoBehaviour {
     }
 
     public bool IsUnlocked() {
-        string key = name + IS_UNLOCKED_PATH_KEY;
-        return PlayerPrefs.HasKey(key) && PlayerPrefs.GetString(key) == MenuManager.TRUE;
+        string key = name + PrefsManager.IS_UNLOCKED_PATH_KEY;
+        return PrefsManager.GetBool(key, false);
     }
 
     public void LockPath() {
-        string key = name + IS_UNLOCKED_PATH_KEY;
-        PlayerPrefs.DeleteKey(key);
+        string key = name + PrefsManager.IS_UNLOCKED_PATH_KEY;
+        PrefsManager.SetBool(key, false);
         Debug.Log($"{GetNameId()} locked !");
     }
 
@@ -230,8 +228,8 @@ public class SelectorPath : MonoBehaviour {
     }
 
     public void HighlightPath(bool state) {
-        string key = GetNameId() + IS_HIGHLIGHTED_PATH_KEY;
-        PlayerPrefs.SetString(key, state ? MenuManager.TRUE : MenuManager.FALSE);
+        string key = GetNameId() + PrefsManager.IS_HIGHLIGHTED_PATH_KEY;
+        PrefsManager.SetBool(key, state);
         HighlightCadena(state);
     }
 
@@ -240,8 +238,7 @@ public class SelectorPath : MonoBehaviour {
     }
 
     public bool GetHighlitedState() {
-        string key = GetNameId() + IS_HIGHLIGHTED_PATH_KEY;
-        bool state = PlayerPrefs.HasKey(key) && PlayerPrefs.GetString(key) == MenuManager.TRUE;
-        return state;
+        string key = GetNameId() + PrefsManager.IS_HIGHLIGHTED_PATH_KEY;
+        return PrefsManager.GetBool(key, false);
     }
 }

@@ -131,9 +131,8 @@ public class FastUISystem : MonoBehaviour {
         if (unlockScreenButton != null) {
             ButtonHighlighter pathHighlighter = unlockScreenButton.GetComponent<ButtonHighlighter>();
             if (fromType == FromType.LEVEL) {
-                string key = path.GetNameId() + SelectorPath.IS_HIGHLIGHTED_PATH_KEY;
-                bool state = PlayerPrefs.HasKey(key) && PlayerPrefs.GetString(key) == MenuManager.TRUE;
-                pathHighlighter.enabled = state;
+                string key = path.GetNameId() + PrefsManager.IS_HIGHLIGHTED_PATH_KEY;
+                pathHighlighter.enabled = PrefsManager.GetBool(key, false);
             } else {
                 pathHighlighter.enabled = false;
             }

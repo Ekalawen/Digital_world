@@ -427,40 +427,36 @@ public class EventManager : MonoBehaviour {
     }
 
     protected void RememberHasJustWin() {
-        string keyHasJustWin = GetKeyFor(MenuLevel.HAS_JUST_WIN_KEY);
-        PlayerPrefs.SetString(keyHasJustWin, MenuManager.TRUE);
+        string keyHasJustWin = GetKeyFor(PrefsManager.HAS_JUST_WIN_KEY);
+        PrefsManager.SetBool(keyHasJustWin, true);
     }
 
     protected void RecordBestScore() {
         if (IsNewBestScore()) {
-            string keyHasJustBestScore = GetKeyFor(MenuLevel.HAS_JUST_MAKE_BEST_SCORE_KEY);
-            PlayerPrefs.SetString(keyHasJustBestScore, MenuManager.TRUE);
-
-            // Attention ça pourrait casser d'autres features ! (je fais ça pour pouvoir retenir plusieurs paliers débloqués sur plusieurs Restart du niveau à la fois !)
-            //string keyPrecedentBestScore = GetKeyFor(MenuLevel.PRECEDENT_BEST_SCORE_KEY);
-            //PlayerPrefs.SetFloat(keyPrecedentBestScore, GetBestScore());
+            string keyHasJustBestScore = GetKeyFor(PrefsManager.HAS_JUST_MAKE_BEST_SCORE_KEY);
+            PrefsManager.SetBool(keyHasJustBestScore, true);
         }
 
-        string keyHighestScore = GetKeyFor(MenuLevel.BEST_SCORE_KEY);
+        string keyHighestScore = GetKeyFor(PrefsManager.BEST_SCORE_KEY);
         float score = GetScore();
         float newValueScore = PlayerPrefs.HasKey(keyHighestScore) ?  Mathf.Max(PlayerPrefs.GetFloat(keyHighestScore), score) : score;
         PlayerPrefs.SetFloat(keyHighestScore, newValueScore);
     }
 
     protected void IncrementWinsCount() {
-        string keyNbWins = GetKeyFor(MenuLevel.NB_WINS_KEY);
+        string keyNbWins = GetKeyFor(PrefsManager.NB_WINS_KEY);
         int newValue = PlayerPrefs.HasKey(keyNbWins) ? PlayerPrefs.GetInt(keyNbWins) + 1 : 1;
         PlayerPrefs.SetInt(keyNbWins, newValue);
     }
 
     protected void IncrementDeathCount() {
-        string keyNbDeaths = GetKeyFor(MenuLevel.NB_DEATHS_KEY);
+        string keyNbDeaths = GetKeyFor(PrefsManager.NB_DEATHS_KEY);
         int newValue = PlayerPrefs.HasKey(keyNbDeaths) ? PlayerPrefs.GetInt(keyNbDeaths) + 1 : 1;
         PlayerPrefs.SetInt(keyNbDeaths, newValue);
     }
 
     protected void RememberSincelastBestScore(bool hasWin) {
-        string keySinceLastBestScore = GetKeyFor(MenuLevel.SINCE_LAST_BEST_SCORE_KEY);
+        string keySinceLastBestScore = GetKeyFor(PrefsManager.SINCE_LAST_BEST_SCORE_KEY);
         if (hasWin && IsNewBestScore()) {
             PlayerPrefs.SetInt(keySinceLastBestScore, 0);
         } else {
@@ -470,7 +466,7 @@ public class EventManager : MonoBehaviour {
     }
 
     protected void IncrementSumOfAllTriesScores() {
-        string keySum = GetKeyFor(MenuLevel.SUM_OF_ALL_TRIES_SCORES_KEY);
+        string keySum = GetKeyFor(PrefsManager.SUM_OF_ALL_TRIES_SCORES_KEY);
         float oldSum = PlayerPrefs.HasKey(keySum) ? PlayerPrefs.GetFloat(keySum) : 0f;
         float newSum = oldSum + GetScore();
         PlayerPrefs.SetFloat(keySum, newSum);
@@ -485,13 +481,13 @@ public class EventManager : MonoBehaviour {
     }
 
     public float GetBestScore() {
-        string keyBestScore = GetKeyFor(MenuLevel.BEST_SCORE_KEY);
-        return PlayerPrefs.HasKey(keyBestScore) ? PlayerPrefs.GetFloat(keyBestScore) : 0;
+        string keyBestScore = GetKeyFor(PrefsManager.BEST_SCORE_KEY);
+        return PrefsManager.GetInt(keyBestScore, 0);
     }
 
     public float GetPrecedentBestScore() {
-        string key = GetKeyFor(MenuLevel.PRECEDENT_BEST_SCORE_KEY);
-        return PlayerPrefs.HasKey(key) ? PlayerPrefs.GetFloat(key) : 0;
+        string key = GetKeyFor(PrefsManager.PRECEDENT_BEST_SCORE_KEY);
+        return PrefsManager.GetFloat(key, 0);
     }
 
     public bool IsNewBestScore() {
@@ -500,8 +496,8 @@ public class EventManager : MonoBehaviour {
     }
 
     public bool IsNewBestScoreAfterBestScoreAssignation() {
-        string key = GetKeyFor(MenuLevel.HAS_JUST_MAKE_BEST_SCORE_KEY);
-        return PlayerPrefs.HasKey(key) && PlayerPrefs.GetString(key) == MenuManager.TRUE;
+        string key = GetKeyFor(PrefsManager.HAS_JUST_MAKE_BEST_SCORE_KEY);
+        return PrefsManager.GetBool(key, false);
     }
 
     protected string GetKeyFor(string keySuffix) {

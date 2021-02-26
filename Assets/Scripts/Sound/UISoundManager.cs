@@ -34,8 +34,8 @@ public class UISoundManager : MonoBehaviour {
     }
 
     public void GetAudioVolumes() {
-        musicVolume = PlayerPrefs.GetFloat(MenuOptions.MUSIC_VOLUME_KEY);
-        soundVolume = PlayerPrefs.GetFloat(MenuOptions.SOUND_VOLUME_KEY);
+        musicVolume = PrefsManager.GetFloat(PrefsManager.MUSIC_VOLUME_KEY, 1.0f);
+        soundVolume = PrefsManager.GetFloat(PrefsManager.SOUND_VOLUME_KEY, 1.0f);
     }
 
     protected IEnumerator CInitialize() {
