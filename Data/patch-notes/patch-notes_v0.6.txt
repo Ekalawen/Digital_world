@@ -1,0 +1,127 @@
+@everyone Salut à tous les runners !
+Synthèse de la Matrice 0.6 en cours de chargement ...
+Ajustement de la résolution.
+Neutralisation des interférences.
+Synthèse terminé.
+Projection de la synthèse.
+
+#Patch-notes Version 0.6 :
+
+Ce patch-notes s'est focalisé sur plusieurs points fondamentaux : la restructuration des options de jeu, leur accessibilité en jeu via le nouveau menu de pause (enfin !), l'amélioration du système de déplacement du joueur, et surtout le remaniement du système de paliers qui est maintenant plus intuitif, mieux expliqué avec une explication répartie sur plusieurs niveaux, et ce nouveau système ne demande plus de réussir un niveau qu'une seule fois pour atteindre le niveau suivant ! :)
+
+
+## Le nouveau Système de Paliers
+Pour débloquer le niveau suivant, le jeu vous demande de résoudre une énigme. L'énigme pouvant être compliqué, et comme nous n'avons pas tous les même facilités à comprendre tels ou tels choses, il est important que la difficulté de cette énigme soit modulable pour pouvoir s'adapter au rythme de chacun. D'où la création des Paliers qui ajoutent des indices de plus en plus pertinents pour nous aider à résoudre les énigmes.
+Ce Système de Paliers est particulièrement adapté aux Infinite Runners (les niveaux où ils faut aller tout droit en franchissant des obstacles) car il était possible de répartir les différents Paliers en fonction de notre avancement dans le niveau. Si on avait franchit par exemple 10 Block, on recevait le premier Palier, mais si on avait réussit à en franchir 40  on pouvait en recevoir 4 !
+
+Là où ce système était beaucoup moins adapté, c'était pour les niveaux Réguliers (les niveaux où vous êtes enfermés dans un cube et où vous devez attraper des Datas dans un temps imparti). Étant donné que la progression y est ici binaire : soit on gagne, soit on perd, il était beaucoup plus difficile d'échelloner des Paliers en fonction de la progression du joueur. Pour pallier à cela (:o), nous avons introduit un nouveau concept ... le Data Count ! Mais qu'est-ce que le Data Count me direz-vous ? Est-ce une sorte de compteur qui compte les Datas ? Mais tout à fait vous répondrai-je ! C'est exactement un compteur de Datas, à la spécificité prè que ce compteur n'est jamais remis à zéro ! Que vous gagnez où que vous perdez le niveau, chaque Data que vous avez pu attrapé est enregistré et sera ajouté à votre Data Count de votre prochain partie ! Ainsi votre Data Count ne peut faire que croître.
+Et là où ça tombe bien, c'est que le Data Count est maintenant la ressource nécessaire pour débloquer de nouveaux Paliers (plutôt que le nombre de victoires comme avant). Et pour être sur que vous ne fassiez pas qu'attraper les quelques premières Datas de chaque niveau en relancant la partie pour éviter les challenges intéressants, une victoire de chaque niveau est aussi nécessaire pour débloquer les Paliers. Voici un exemple :
+Le premier niveau Régulier, Hello World, possède 10 Datas et 1 Sortie, soit un total de 11 Datas, les seuils de ces Paliers seront donc par exemple :/
+- Palier 1 : Enigme débloqué à 1 victoire
+- Palier 2 : Premier indice débloqué à 1 victoire et 22 Datas
+- Palier 3 : Deuxième indice débloqué à 1 victoire et 44 Datas
+- Palier 4 : Solution débloqué à 1 victoire et 88 Datas
+
+### Avantages
+Un avantage de ce nouveau Système de Paliers est que si un joueur réussit un niveau très facilement du premier coup, alors il aura directement accès à l'énigme mais à aucun des indices et devra donc réfléchir pour en venir à boût, ce qui donne un challenge plus corsé aux joueurs qui excellent. 
+Et de la même façon, si un joueur a des difficultés à réussir un niveau, alors il le recommencera de nombreuses fois, et naturellement son Data Count grandira. Ce qui fait que lorsqu'il réussira (enfin !) le niveau pour la première fois, il débloquera en même temps l'énigme, les différents indices, et peut-être même la solution d'un seul coup ! Ce qui fait qu'il pourra passer directement au niveau suivant sans se sentir bloqué par une énigme qui ne le récompense pas vraiment pour avoir enfin réussit ce niveau dans lequel il s'est tant investit ! :) Bien entendu, si le joueur veut absolument résoudre l'énigme sans aides, il est toujours possible de ne pas lire les indices ;)
+
+### Inconvénients
+L'inconvénient principal de ce système consiste en la détermination des seuils des Paliers. Reprenons notre exemple du niveau Hello World. Le dernier Palier est fixé à 88 Datas. Mais imaginons que l'énigme soit très compliqué pour le Joueur et que celui-ci n'arrive pas du tout à voir ce que l'énigme lui demande, alors sa seule option sera de grinder les 88 Datas pour débloquer la solution. Mais dans le cas où le Joueur était très bon à la réalisation du niveau, cela lui semblera (très) fastidieux car il aura débloqué le niveau à 11 Datas et que on lui demandera d'en attraper artificiellement 77 de plus. Et on aurait donc envie de baisser ce nombre de 88 Datas à un nombre plus raisonnable.
+Cependant, imaginons le cas contraire, imaginons un joueur qui ne serait pas aussi bon dans la réalisation du niveau mais qui comprendrait très bien comment résoudre cette énigme. Une situation tout à fait plausible serait qu'il réussisse enfin le niveau après 90 Datas attrapés. Et là on lui donne l'énigme, mais avant même qu'il ait pû commencer à réfléchir dessus on lui donne directement la solution. Ce qui pourra sembler frustrant au joueur. Et donc on aurait envie d'augmenter ce nombre de 88 Datas pour s'assurer que la solution ne soit donné que plus tardivement.
+
+Nous avons pour le moment du mal à estimer l'importance de ces deux phénomènes (le joueur fort en niveau mais pas en énigme, et l'inverse, le joueur fort en énigme mais pas en niveau). Nous avons donc prit la décision arbitraire de doubler le seuil entre chaque Palier (22 puis 44 puis 88) pour donner le sentiment au joueur que chaque Palier est de plus en plus précieux et qu'il lui fraudra fournir davantage d'efforts pour débloquer les meilleurs Paliers. Cependant ce n'est peut-être pas le bon coefficiant, peut-être qu'il vaut mieux multiplier par 1.2, ou par 10 (MOUHAHAHA), ou peut-être même que la multiplication n'est pas judicieuse ici.
+La solution à ce problème, c'est VOUS ! :) Ce qui serait top, c'est que si vous vous retrouvez dans l'un des 2 cas mentionnés plus haut (niveau trop dur ou énigme trop dur), vous nous en fassiez part ! Juste dites nous à quel niveau vous avez bloqué, pour quelle raison, et le nombre de votre Data Count ! Ainsi, nous pourrons améliorer individuellement chacun de ces niveaux pour que les générations futures puissent profiter de la meilleure expérience possible ! On compte sur vous ! ;)
+
+Bon, c'était un gros morceaux. Bravo à ceux qui ont tenu jusqu'ici ! Ce n'est pas ce dont nous parlons habituellement dans un patch-notes, mais nous pensons qu'il est important que la communauté comprenne les raisons qui nous poussent à faire les choses ! Maintenant vous savez ;) Du coup on va pouvoir repartir sur un patch-note plus traditionnel ;)
+
+
+## Menu de Pause
+Il nous permet de :
+- Mettre la partie en pause et de la reprendre à tout moments (vraiment ? :o).
+- Recommencer la partie.
+- Retourner au menu.
+- Accéder aux options.
+
+
+## Raccourcis
+- On peut maintenant accéder au Menu de Pause en appuyant sur Echap !
+- On peut maintenant recommencer la partie en appuyant sur R.
+- On peut maintenant accéder aux Options en partie en appuyant sur O.
+
+
+## Options
+Restructuration des Options !
+- Les Options sont maintenant accessibles depuis le jeu grâce au Menu de Pause !
+- Les Options sont maintenant découpés en plusieurs sous-parties : Contrôles, Audio, Gameplay, Graphismes et Language.
+- Nouvelle option permettant de changer son type de clavier de AZERTY à QWERTY.
+- Nouvelle option permettant d'afficher ou non les Conseils en début de partie.
+- Les changements des Options en jeu, prennent effet immédiatement sur la partie en cours.
+
+
+## Gameplay
+
+### Mouvements
+- Résolution d'un bug où l'on pouvait ne pas s'accrocher à un mur si l'on se laissait chuter d'une plateforme sans sauter.
+- Résolution d'un bug où l'on pouvait s'accrocher aux arêtes des cubes, et donc finir par s'y accrocher par en-dessous ou par au-dessus ! :o 
+- La durée d'accrochage au mur est maintenant toujours réinitialisé lorsque l'on touche un autre mur alors que l'on était en train de glisser sur un mur.
+- Truc cool : après avoir chuté d'une plateforme sans sauter, pendant un très court moment on peut encore sauter alors que l'on est en l'air pour nous permettre de rattraper notre petit erreur de timing :)
+- Adaptation des Mouvements pour s'adapter à la nouvelle mécanique du nouveau niveau : Bounce Highway.
+
+### Nouveau Niveau : Bounce Highway !
+Il s'agit du dernier niveau du jeu.
+C'est un Infinite Runner avec une nouvelle mécanique que je vous laisse aller découvrir ;)
+Personnellement, c'est actuellement mon niveau préféré :)
+
+
+## Génération des niveaux
+- Résolution d'un bug où plusieurs Datas pouvaient se trouver au même endroit.
+- Amélioration des performances de la génération des Datas.
+
+
+## Système de Paliers
+- Un évenement sonore et textuel est maintenant déclenché en jeu lorsque l'on débloque un nouveau Palier.
+- Il est maintenant clairement explicité qu'il faut améliorer son score du niveau précédent pour débloquer de nouveaux Paliers.
+- Tous les seuils des Paliers sont maintenant visible dès le départ, même s'ils ne sont pas encore débloqués.
+
+
+## Mots de Passes
+- Le choix d'afficher ou non le mot de passe en clair en appuyant sur l'oeil est maintenant sauvegardé entre les différentes sessions.
+- Le Passe en morse avait une erreur qui a été corrigée.
+- Le Passe en LeetSpeak avait une erreur qui a été corrigée.
+- Le mot "éponyme" a été remplacé par "le titre" pour faciliter la compréhension d'une énigme.
+- Les Passes ne peuvent maintenant plus prendre de caractères accentués.
+- Un nouveau conseil a été ajouté si le joueur tente de rentrer un caractère accentué dans son Passe.
+- L'apprentissage du Passe, de la Trace, et des 2 en même temps a été échelonné sur les 7 premiers niveaux du jeu (au lieu d'être condensé dans un seul niveau).
+- Le Passe vers le niveau Equilibrium a été fortement simplifié pour assurer que le joueur débloque un niveau après avoir réussi le niveau Learn Jump.
+
+
+## Interface Utilisateur
+- Le curseur au centre de l'écran est mainteant vectoriel, donc de meilleur qualité.
+- Le curseur au centre de l'écran permet maintenant de voir combien de temps il nous reste à être accroché au mur en fonction de sa taille et de sa couleur.
+- Le Data Count est maintenant affiché à l'écran.
+- On peut maintenant voir à combien on est du prochain Palier dans les Infinite Runners.
+- Les mot-clés en rapport avec des mécaniques de jeu dans les textes des Archives() sont maintenant automatiquement mis en couleur.
+
+
+## Son
+- Ajout de sons lors des clics sur les boutons dans le Menu.
+- Ajout de sons lorsque la souris rentre sur les boutons dans le Menu.
+- Ajout d'une musique d'ambiance dans le Menu :)
+
+
+## Conseil
+- Un conseil aléatoire (mais pertinent !) est affiché au milieu de l'écran 3 secondes après le début de chaque partie.
+- Ces conseils aléatoires en début de partie peuvent être désactivés dans les Options.
+
+
+## Equilibrage
+- Le gros bloc central du niveau In-Sondable a été supprimé pour donner une meilleur ligne de vue aux Sondes.
+- Les Data Switchables (celles qui ne sont attrapables que une par une) émettent maintenant un halo de lumière pour pouvoir plus facilement les distinguer.
+- Le premier niveau Régulier, Hello World, est maintenant toujours de toutes les couleurs pour faciliter le repérage spatial des nouveaux joueurs.
+
+
+## Bugs
+- Résolution d'un bug où les niveaux nécessitant d'attraper des Datas une par une mettez notre temps à 0 si l'on prennait trop de temps à attraper le première Data. (du coup on mourrait d'un coup :o)
+- Résolution d'un bug où le visualisateur de mise en évidence des boutons de l'UI ne se déclanchait pas.
+
