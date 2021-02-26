@@ -18,6 +18,12 @@ public class MenuOptions : MonoBehaviour {
         LANGUAGE,
     };
 
+    public static float defaultMusicVolume = 1.0f;
+    public static float defaultSoundVolume = 1.0f;
+    public static float defaultMouseSpeed = 1.81f;
+    public static bool defaultGripActivation = true;
+    public static bool defaultConseilOnStart = true;
+
     public bool isInGame = false;
 
     [Header("Others menus")]
@@ -66,11 +72,11 @@ public class MenuOptions : MonoBehaviour {
         HideSomeOptionsInGame();
         CenterInGamePanels();
 
-        OnMusicVolumeChange(PrefsManager.GetFloat(PrefsManager.MUSIC_VOLUME_KEY, 1.0f));
-        OnSoundVolumeChange(PrefsManager.GetFloat(PrefsManager.SOUND_VOLUME_KEY, 1.0f));
-        OnMouseSpeedChange(PrefsManager.GetFloat(PrefsManager.MOUSE_SPEED_KEY, 1.81f));
-        OnGripActivationPress(PrefsManager.GetBool(PrefsManager.GRIP_KEY, true));
-        OnConseilOnStartPress(PrefsManager.GetBool(PrefsManager.ADVICE_ON_START_KEY, true));
+        OnMusicVolumeChange(PrefsManager.GetFloat(PrefsManager.MUSIC_VOLUME_KEY, defaultMusicVolume));
+        OnSoundVolumeChange(PrefsManager.GetFloat(PrefsManager.SOUND_VOLUME_KEY, defaultSoundVolume));
+        OnMouseSpeedChange(PrefsManager.GetFloat(PrefsManager.MOUSE_SPEED_KEY, defaultMouseSpeed));
+        OnGripActivationPress(PrefsManager.GetBool(PrefsManager.GRIP_KEY, defaultGripActivation));
+        OnConseilOnStartPress(PrefsManager.GetBool(PrefsManager.ADVICE_ON_START_KEY, defaultConseilOnStart));
     }
 
     protected void CenterInGamePanels() {
@@ -143,7 +149,7 @@ public class MenuOptions : MonoBehaviour {
     }
 
     public void OnSoundVolumeChange(float newVal) {
-        float oldVal = PrefsManager.GetFloat(PrefsManager.SOUND_VOLUME_KEY, 1.0f);
+        float oldVal = PrefsManager.GetFloat(PrefsManager.SOUND_VOLUME_KEY, defaultSoundVolume);
         PrefsManager.SetFloat(PrefsManager.SOUND_VOLUME_KEY, newVal);
         sliderSon.value = newVal;
         sliderSon.GetComponent<SliderScript>().OnChange(newVal);

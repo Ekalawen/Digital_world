@@ -63,7 +63,7 @@ public class PostProcessManager : MonoBehaviour {
     }
 
     public void UpdateGripEffect(Player.EtatPersonnage previousState) {
-        if (!PrefsManager.GetBool(PrefsManager.GRIP_KEY, true)) {
+        if (!PrefsManager.GetBool(PrefsManager.GRIP_KEY, MenuOptions.defaultGripActivation)) {
             return;
         }
 

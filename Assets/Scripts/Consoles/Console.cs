@@ -192,7 +192,7 @@ public class Console : MonoBehaviour {
     }
 
     protected void PremierGrandConseil() {
-        if(PrefsManager.GetBool(PrefsManager.ADVICE_ON_START_KEY, true)) {
+        if(PrefsManager.GetBool(PrefsManager.ADVICE_ON_START_KEY, MenuOptions.defaultConseilOnStart)) {
             StartCoroutine(CPremierGrandConseil());
         }
     }
