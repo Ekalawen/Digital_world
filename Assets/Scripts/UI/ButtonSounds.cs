@@ -10,7 +10,10 @@ public class ButtonSounds : MonoBehaviour {
     public void Start() {
         Button button = GetComponent<Button>();
 
-        button.onClick.AddListener(new UnityAction(UISoundManager.Instance.PlayClickedButtonClip));
+        Button.ButtonClickedEvent onClick = button.onClick;
+        UISoundManager uiSoundManager = UISoundManager.Instance;
+        UnityAction action = new UnityAction(uiSoundManager.PlayClickedButtonClip);
+        onClick.AddListener(action);
 
         EventTrigger trigger = GetComponent<EventTrigger>();
         EventTrigger.Entry entry = new EventTrigger.Entry();
