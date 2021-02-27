@@ -262,10 +262,12 @@ public class GameManager : MonoBehaviour {
         Time.timeScale = 1.0f;
 
         if(SceneManager.GetActiveScene().name == "TutorialScene") {
+            Destroy(historyManager.gameObject);
             SceneManager.LoadScene("MenuScene");
         } else if ((GetMapType() == MenuLevel.LevelType.REGULAR && eventManager.IsGameWin())) {
             SceneManager.LoadScene("RewardScene");
         } else {
+            Destroy(historyManager.gameObject);
             SceneManager.LoadScene("SelectorScene");
         }
 	}

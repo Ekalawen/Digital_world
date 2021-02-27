@@ -122,7 +122,9 @@ public class RewardManager : MonoBehaviour {
     }
 
     public void Exit() {
-        Destroy(hm.gameObject); // Need to destoy it because it is in DontDestroyOnLoad :)
+        if (hm != null) {
+            Destroy(hm.gameObject); // Need to destoy it because it is in DontDestroyOnLoad :)
+        }
         SceneManager.LoadScene("SelectorScene");
     }
 

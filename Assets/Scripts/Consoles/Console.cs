@@ -606,7 +606,7 @@ public class Console : MonoBehaviour {
         if (!withImportantText) {
             AjouterMessage(handle.Result, TypeText.BASIC_TEXT);
         } else {
-            float duration = Mathf.Max(3, 3 + (handle.Result.Length - 40) * 0.1f);
+            float duration = Mathf.Max(3, 3 + (handle.Result.Length - 40) * 0.05f);
             AjouterMessageImportant(handle.Result, TypeText.BASIC_TEXT, duration);
         }
     }
