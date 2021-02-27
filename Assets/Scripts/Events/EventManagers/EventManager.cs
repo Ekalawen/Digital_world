@@ -246,7 +246,7 @@ public class EventManager : MonoBehaviour {
 
         while (cubes.Count > 0) {
             // Pour récupérer les cubes crées pendant la destruction de la map !
-            cubes = map.GetAllCubes();
+            cubes = map.GetAllCubes().FindAll(c => !c.IsDecomposing());
             if (cubes.Count == 0) break;
 
             OrderCubesByDistancesToPlayerAndPos(centerPos, cubes, seuilProximité);
