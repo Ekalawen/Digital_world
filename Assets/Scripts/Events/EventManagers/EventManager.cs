@@ -25,6 +25,7 @@ public class EventManager : MonoBehaviour {
         HALF_DEATH_CUBES,
         CUBES_DESTRUCTIONS,
         EMPTY_END_EVENT,
+        CUBES_DESTRUCTIONS_PARTIAL, // Ne pas réordonner sinon ça va changer les prefabs !
     };
     public enum EjectionType {
         FIX_TRESHOLD,
@@ -47,8 +48,9 @@ public class EventManager : MonoBehaviour {
     public float endGameFrameRate = 0.2f;
     public AnimationCurve endEventCurveSpeed;
     public EndEventType endGameType = EndEventType.DEATH_CUBES;
-    [ConditionalHide("endGameType", EndEventType.CUBES_DESTRUCTIONS)]
-    public float dureeDecompose = 2.0f;
+    public float dureeDestructionCubesDestruction = 2.0f;
+    [ConditionalHide("endGameType", EndEventType.CUBES_DESTRUCTIONS_PARTIAL)]
+    public float proportionToKeep = 0.0f;
     public bool bNoEndgame = false;
 
     [Header("ScreenShake on Endgame")]
@@ -142,7 +144,7 @@ public class EventManager : MonoBehaviour {
         // On lance la création des blocks de la mort !
         if (endGameType == EndEventType.DEATH_CUBES || endGameType == EndEventType.HALF_DEATH_CUBES) {
             coroutineDeathCubesCreation = StartCoroutine(FillMapWithDeathCubes(finalLight.transform.position));
-        } else if (endGameType == EndEventType.CUBES_DESTRUCTIONS) {
+        } else if (endGameType == EndEventType.CUBES_DESTRUCTIONS || endGameType == EndEventType.CUBES_DESTRUCTIONS_PARTIAL) {
             coroutineCubesDestructions = StartCoroutine(DestroyAllCubesProgressively(finalLight.transform.position));
         }
     }
@@ -184,7 +186,7 @@ public class EventManager : MonoBehaviour {
 
     protected int GetNbCubesToDo(int nbPositionsLeft, int nbTotalCubesToDo, int nbCubesDone, Timer endGameTimer) {
         float avancement = endEventCurveSpeed.Evaluate(endGameTimer.GetAvancement());
-        int nbCubesToDo = (int)(avancement * nbTotalCubesToDo - nbCubesDone);
+        int nbCubesToDo = Mathf.CeilToInt(avancement * nbTotalCubesToDo - nbCubesDone);
         nbCubesToDo = Mathf.Min(nbCubesToDo, nbPositionsLeft);
         return nbCubesToDo;
     }
@@ -241,10 +243,15 @@ public class EventManager : MonoBehaviour {
         Timer endGameTimer = new Timer(endGameDuration);
         Timer timerSoundRate = new Timer(endGameFrameRate);
         int nbTotalCubesToDestroy = cubes.Count;
+        int nbCubesToReach = 0;
+        if(endGameType == EndEventType.CUBES_DESTRUCTIONS_PARTIAL) {
+            nbCubesToReach = (int)(cubes.Count * proportionToKeep);
+            nbTotalCubesToDestroy = (int)(cubes.Count * (1.0f - proportionToKeep));
+        }
         int nbCubesDestroyed = 0;
         float seuilProximité = 2.5f;
 
-        while (cubes.Count > 0) {
+        while (ShouldKeepDestroyingCubes(cubes.Count, nbCubesToReach, endGameTimer)) {
             // Pour récupérer les cubes crées pendant la destruction de la map !
             cubes = map.GetAllCubes().FindAll(c => !c.IsDecomposing());
             if (cubes.Count == 0) break;
@@ -258,13 +265,22 @@ public class EventManager : MonoBehaviour {
             PlaySoundRate(timerSoundRate, nbCubesToDestroy, barycentre);
             yield return null;
         }
+        Debug.Log($"{map.GetAllCubes().FindAll(c => !c.IsDecomposing()).Count}/{nbCubesToReach}");
+    }
+
+    protected bool ShouldKeepDestroyingCubes(int nbCubes, int nbCubesToReach, Timer endGameTimer) {
+        if(endGameType == EndEventType.CUBES_DESTRUCTIONS) {
+            return nbCubes > 0;
+        } else {
+            return nbCubes > nbCubesToReach && !endGameTimer.IsOver();
+        }
     }
 
     protected Vector3 DestroyFirstCubes(List<Cube> cubes, int nbCubesToDestroy) {
         Vector3 barycentre = Vector3.zero;
         for (int i = 0; i < nbCubesToDestroy; i++) {
             barycentre += cubes[i].transform.position;
-            cubes[i].Decompose(dureeDecompose);
+            cubes[i].Decompose(dureeDestructionCubesDestruction);
         }
 
         return barycentre;
