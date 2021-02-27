@@ -92,7 +92,7 @@ public class GameManager : MonoBehaviour {
         soundManager = Instantiate(soundManagerPrefab, managerFolder.transform).GetComponent<SoundManager>();
         postProcessManager = Instantiate(postProcessManagerPrefab, managerFolder.transform).GetComponent<PostProcessManager>();
         scanManager = Instantiate(scanManagerPrefab, managerFolder.transform).GetComponent<ScanManager>();
-        historyManager = Instantiate(historyManagerPrefab, managerFolder.transform).GetComponent<HistoryManager>();
+        historyManager = Instantiate(historyManagerPrefab/*, managerFolder.transform*/).GetComponent<HistoryManager>(); // On le met à la racine car DontDestroyOnLoad only works for root components !
         flockManager = Instantiate(flockManagerPrefab, managerFolder.transform).GetComponent<FlockManager>();
         cheatCodeManager = Instantiate(cheatCodeManagerPrefab, managerFolder.transform).GetComponent<CheatCodeManager>();
 

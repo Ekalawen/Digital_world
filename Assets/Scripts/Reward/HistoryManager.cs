@@ -54,7 +54,9 @@ public class HistoryManager : MonoBehaviour {
     protected MenuLevel.LevelType mapType;
 
     private void Awake() {
-        if (!_instance) { _instance = this; }
+        if (!_instance) {
+            _instance = this;
+        }
         DontDestroyOnLoad(this);
     }
 
