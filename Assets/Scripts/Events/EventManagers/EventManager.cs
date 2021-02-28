@@ -499,7 +499,7 @@ public class EventManager : MonoBehaviour {
 
     public float GetBestScore() {
         string keyBestScore = GetKeyFor(PrefsManager.BEST_SCORE_KEY);
-        return PrefsManager.GetInt(keyBestScore, 0);
+        return PrefsManager.GetFloat(keyBestScore, 0);
     }
 
     public float GetPrecedentBestScore() {
