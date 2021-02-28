@@ -12,6 +12,7 @@ public class PouvoirDash : IPouvoir {
         Poussee poussee = new Poussee(direction, duree, distance);
         player.AddPoussee(poussee);
         player.ResetGrip();
+        player.RemoveGravityEffectFor(duree);
         return true;
     }
 }

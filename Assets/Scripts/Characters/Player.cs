@@ -63,6 +63,8 @@ public class Player : Character {
     protected float lastAvancementSaut;
     protected Timer timerLastTimeAuSol;
     protected bool isGravityEffectRemoved = false;
+    protected Timer gravityEffectRemovedForTimer = null;
+    protected Coroutine gravityEffectRemovedForCoroutine = null;
 
     protected IPouvoir pouvoirA; // Le pouvoir de la touche A (souvent la détection)
     protected IPouvoir pouvoirE; // Le pouvoir de la touche E (souvent la localisation)
@@ -811,10 +813,21 @@ public class Player : Character {
     }
 
     public void RemoveGravityEffectFor(float duree) {
-        StartCoroutine(CRemoveGravityEffectFor(duree));
+        Timer timer = gravityEffectRemovedForTimer;
+        if(timer == null || timer.IsOver()) {
+            timer = new Timer(duree);
+            gravityEffectRemovedForCoroutine = StartCoroutine(CRemoveGravityEffectFor(duree));
+        } else {
+            if(timer.GetRemainingTime() < duree) {
+                StopCoroutine(gravityEffectRemovedForCoroutine);
+                timer = new Timer(duree);
+                gravityEffectRemovedForCoroutine = StartCoroutine(CRemoveGravityEffectFor(duree));
+            }
+        }
     }
-    public IEnumerator CRemoveGravityEffectFor(float duree) {
+    protected IEnumerator CRemoveGravityEffectFor(float duree) {
         RemoveGravityEffect();
+        gravityEffectRemovedForTimer = new Timer(duree);
         yield return new WaitForSeconds(duree);
         UnremoveGravityEffect();
     }
