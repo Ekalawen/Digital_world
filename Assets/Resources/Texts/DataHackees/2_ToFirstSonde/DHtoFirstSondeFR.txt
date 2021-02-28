@@ -1,38 +1,19 @@
 ###New Fragment###
-#FragmentTreshold= 0
+#FragmentTreshold= 1
 Vous avez réussi ! Félicitation !
 Pour accéder au niveau suivant, vous devez trouver le bon mot de passe.
 
-À partir de maintenant, et pour tous les niveaux suivants, chaque mot de passe sera constitué de deux parties.
-Le Passe et la Trace.
-Vous devrez être en possession des deux pour reconstituer le mot de passe.
+Lorsque vous récupererez des Datas dans le niveau précédent, vous augmenterez votre Data Count.
+Le Data Count vous permettra de débloquer de nouveaux paliers dans les Data Hackées() (ici) qui vous donneront davantage d'indices.
+Le Data Count cumule les Datas de chacune de vos parties, même si vous perdez, et ne fait donc que augmenter !
 
-###New Fragment###
-#FragmentTreshold= 1
-Le Passe est le résultat d'une énigme. Cette énigme vous est donné lorsque vous réussissez le niveau pour la première fois. L'énigme peut sembler difficile au début. Mais chaque pallier vous donnera des indices pour vous aider à résoudre cette énigme.
-Le Passe ne contient jamais d'espaces ni de lettres majuscules. Il peut contenir des caractères spéciaux. Mais il ne peut pas contenir d'accents.
+<color=#CYAN><b>Refaites le niveau précédent</b></color> pour augmenter votre Data Count et accéder au palier suivant !
 
 ###New Fragment###
 #FragmentTreshold= 2
-La Trace est constitué de 4 caractères.
-D'abord 2 caractères binaires (0 ou 1).
-Puis 2 caractères héxadécimaux (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, A, B, C, D, E, ou F).
-Elle vous est donné lorsque vous réussissez le niveau pour la première fois.
-
-Le mot de passe est la juxtaposition sans espace de la Trace puis du Passe.
-Par exemple : si Trace = <b><color=#DARK_CYAN>10B4</color></b> et Passe = <b><color=#ELECTRIC_BLUE>matrice</color></b> alors le mot de passe sera <b><color=#DARK_CYAN>10B4</color></b><b><color=#ELECTRIC_BLUE>matrice</color></b>.
+Le mot de passe est les 3 premiers chiffres du nombre Pi.
 
 ###New Fragment###
 #FragmentTreshold= 3
-Passe : Je suis le titre du niveau précédent.
-
-Trace : %Trace%
-
-###New Fragment###
-#FragmentTreshold= 4
-Passe : %Passe%
-
-###New Fragment###
-#FragmentTreshold= 10
-Astuce : Il est possible de hacker les Passes en ligne car ceux-ci sont fixes. Cependant la Trace est unique et spécifique à votre version du jeu. Vous serez donc la plupart du temps obligé de finir le niveau au moins une fois pour débloquer la Trace.
+Le mot de passe est %Passe%.
 
