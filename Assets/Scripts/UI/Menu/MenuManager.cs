@@ -154,6 +154,7 @@ public class MenuManager : MonoBehaviour {
         if (PrefsManager.HasKey(PrefsManager.LOCALE_INDEX_KEY)) {
             int index = PrefsManager.GetInt(PrefsManager.LOCALE_INDEX_KEY, 0);
             LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[index];
+            Debug.Log($"New locale = {LocalizationSettings.SelectedLocale}");
         }
     }
 

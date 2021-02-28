@@ -8,7 +8,7 @@ public class LocaleDropdown : MonoBehaviour {
 
     public Dropdown dropdown;
 
-    IEnumerator Start() {
+    public IEnumerator Start() {
         // Wait for the localization system to initialize, loading Locales, preloading etc.
         yield return LocalizationSettings.InitializationOperation;
 
@@ -31,6 +31,6 @@ public class LocaleDropdown : MonoBehaviour {
     static void LocaleSelected(int index) {
         LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[index];
         PrefsManager.SetInt(PrefsManager.LOCALE_INDEX_KEY, index);
-        Debug.Log($"setLocaleIndexKey to {index}");
+        Debug.Log($"Set LocaleIndexKey to {index}");
     }
 }
