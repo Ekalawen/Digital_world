@@ -93,14 +93,14 @@ public class Trace {
         return LocalizationSettings.StringDatabase.GetLocalizedStringAsync("PasswordAdvices", reference, arguments).Result;
     }
 
-    public static string GetPasswordAdvice(string password, string truePassword, AdviceType adviceType) {
+    public static string GetPasswordAdvice(string password, string truePassword, AdviceType adviceType, int levenshteinDistance) {
         switch (adviceType) {
             case AdviceType.COMPLETE:
-                return GetPasswordAdviceComplete(password, truePassword);
+                return GetPasswordAdviceComplete(password, truePassword, levenshteinDistance);
             case AdviceType.ONLY_TRACE:
                 return GetPasswordAdviceOnlyTrace(password, truePassword);
             case AdviceType.ONLY_PASSE:
-                return GetPasswordAdviceOnlyPasse(password, truePassword);
+                return GetPasswordAdviceOnlyPasse(password, truePassword, levenshteinDistance);
             case AdviceType.NO_ADVICE:
                 return "";
             default:
@@ -108,7 +108,7 @@ public class Trace {
         }
     }
 
-    public static string GetPasswordAdviceComplete(string password, string truePassword) {
+    public static string GetPasswordAdviceComplete(string password, string truePassword, int levenshteinDistance) {
         if (password.Length < 4)
             return GetStringForLocalizedStringReference("AuMoins4Caracteres");
         string trace = password.Substring(0, 4);
@@ -122,7 +122,7 @@ public class Trace {
         if(!IsWellFormatedPasse(passe)) {
             return GetPasseAdvice(passe);
         }
-        return GetWellFormatedPasswordAdvice(password, truePassword);
+        return GetWellFormatedPasswordAdvice(password, truePassword, levenshteinDistance);
     }
 
     public static string GetPasswordAdviceOnlyTrace(string password, string truePassword) {
@@ -135,12 +135,12 @@ public class Trace {
         return GetWellFormatedOnlyTraceAdvice(password, truePassword);
     }
 
-    public static string GetPasswordAdviceOnlyPasse(string password, string truePassword) {
+    public static string GetPasswordAdviceOnlyPasse(string password, string truePassword, int levenshteinDistance) {
         string passe = password;
         if(!IsWellFormatedPasse(passe)) {
             return GetPasseAdvice(passe);
         }
-        return GetWellFormatedOnlyPasseAdvice(password, truePassword);
+        return GetWellFormatedOnlyPasseAdvice(password, truePassword, levenshteinDistance);
     }
 
     public static bool HasSwapTraceAndPasse(string password, string truePassword) {
@@ -203,7 +203,7 @@ public class Trace {
         return GetHexadecimalPossibilities().Contains(c);
     }
 
-    public static string GetWellFormatedPasswordAdvice(string password, string truePassword) {
+    public static string GetWellFormatedPasswordAdvice(string password, string truePassword, int levenshteinDistance) {
         string trace = password.Substring(0, 4);
         string trueTrace = truePassword.Substring(0, 4);
         string passe = password.Substring(4, password.Length - 4);
@@ -214,7 +214,7 @@ public class Trace {
             return GetStringForLocalizedStringReference("MauvaiseTrace");
         }
         int[,] levenshteinMatrice = GetLevenshteinMatrice(passe, truePasse);
-        if (GetDistanceDeLevenshtein(passe, truePasse, levenshteinMatrice) <= 4) {
+        if (GetDistanceDeLevenshtein(passe, truePasse, levenshteinMatrice) <= levenshteinDistance) {
             LevenshteinDifferences differences = GetDifferencesDeLevenshtein(passe, truePasse, levenshteinMatrice);
             Debug.Log($"{differences.nbRemplacements} {differences.nbAjouts} {differences.nbSuppressions}");
             return GetStringForLocalizedStringReference("PasseLevenshtein", differences.nbAjouts, differences.nbSuppressions, differences.nbRemplacements);
@@ -232,12 +232,12 @@ public class Trace {
         return ""; // On ne devrait pas arriver ici pour les only Trace !
     }
 
-    public static string GetWellFormatedOnlyPasseAdvice(string password, string truePassword) {
+    public static string GetWellFormatedOnlyPasseAdvice(string password, string truePassword, int levenshteinDistance) {
         string passe = password;
         string truePasse = truePassword;
         bool goodPasse = passe == truePasse;
         int[,] levenshteinMatrice = GetLevenshteinMatrice(passe, truePasse);
-        if (GetDistanceDeLevenshtein(passe, truePasse, levenshteinMatrice) <= 4) {
+        if (GetDistanceDeLevenshtein(passe, truePasse, levenshteinMatrice) <= levenshteinDistance) {
             LevenshteinDifferences differences = GetDifferencesDeLevenshtein(passe, truePasse, levenshteinMatrice);
             Debug.Log($"{differences.nbRemplacements} {differences.nbAjouts} {differences.nbSuppressions}");
             return GetStringForLocalizedStringReference("PasseLevenshtein", differences.nbAjouts, differences.nbSuppressions, differences.nbRemplacements);

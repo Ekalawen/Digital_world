@@ -23,6 +23,7 @@ public class SelectorPath : MonoBehaviour {
     public LocalizedString passwordPasse;
     public bool dontUseTrace = false;
     public Trace.AdviceType adviceType = Trace.AdviceType.COMPLETE;
+    public int levenshteinDistance = 4;
 
     [Header("Trails")]
     public float timeBetweenTrails = 0.3f;

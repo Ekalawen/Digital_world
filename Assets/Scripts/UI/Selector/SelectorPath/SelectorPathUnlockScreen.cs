@@ -133,7 +133,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
     }
 
     protected string GetPasswordAdvice(string registeredPassword, string goodPassword) {
-        string advice = Trace.GetPasswordAdvice(registeredPassword, goodPassword, selectorPath.adviceType);
+        string advice = Trace.GetPasswordAdvice(registeredPassword, goodPassword, selectorPath.adviceType, selectorPath.levenshteinDistance);
         return advice;
     }
 
