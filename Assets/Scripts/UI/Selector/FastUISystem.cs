@@ -65,10 +65,10 @@ public class FastUISystem : MonoBehaviour {
             unlockScreenButtonClosed.gameObject.SetActive(false);
         }
 
-        bool levelFinished = level.IsSucceeded();
-        levelButton = levelFinished ? levelButtonOpenned : levelButtonClosed;
-        levelButtonOpenned.gameObject.SetActive(levelFinished);
-        levelButtonClosed.gameObject.SetActive(!levelFinished);
+        bool levelUnlocked = selectorManager.GetInPaths(level).All(p => p.IsUnlocked());
+        levelButton = levelUnlocked ? levelButtonOpenned : levelButtonClosed;
+        levelButtonOpenned.gameObject.SetActive(levelUnlocked);
+        levelButtonClosed.gameObject.SetActive(!levelUnlocked);
     }
 
     protected void SetNameInRect(string levelName) {
