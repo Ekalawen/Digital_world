@@ -115,6 +115,25 @@ public class ColorManager : MonoBehaviour {
         return themesPossibles[Random.Range(0, themesPossibles.Count)];
     }
 
+    public static Theme GetRandomNonMulticolorTheme() {
+        List<Theme> themesPossibles = new List<Theme>() {
+            Theme.ROUGE,
+            Theme.ORANGE,
+            Theme.JAUNE,
+            Theme.VERT_CLAIR,
+            Theme.VERT,
+            Theme.VERT_NEON,
+            Theme.CYAN,
+            Theme.BLEU_GLACE,
+            Theme.BLEU,
+            Theme.VIOLET,
+            Theme.ROSE,
+            Theme.BLANC,
+        };
+
+        return themesPossibles[Random.Range(0, themesPossibles.Count)];
+    }
+
     public static Theme GetRandomNonBrightTheme() {
         List<Theme> themesPossibles = new List<Theme>() {
             Theme.ROUGE,
@@ -129,6 +148,22 @@ public class ColorManager : MonoBehaviour {
             Theme.ROSE,
             Theme.MULTICOLOR_NON_BRIGHT,
             Theme.MULTICOLOR_NON_BRIGHT, // La deuxième fois pour compenser l'abscence du Multicolor tout court ;)
+        };
+
+        return themesPossibles[Random.Range(0, themesPossibles.Count)];
+    }
+    public static Theme GetRandomNonBrightNonMulticolorTheme() {
+        List<Theme> themesPossibles = new List<Theme>() {
+            Theme.ROUGE,
+            Theme.ORANGE,
+            Theme.VERT_CLAIR,
+            Theme.VERT,
+            Theme.VERT_NEON,
+            Theme.CYAN,
+            Theme.BLEU_GLACE,
+            Theme.BLEU,
+            Theme.VIOLET,
+            Theme.ROSE,
         };
 
         return themesPossibles[Random.Range(0, themesPossibles.Count)];

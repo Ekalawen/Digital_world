@@ -71,8 +71,9 @@ public class RewardObjectDisplayer : MonoBehaviour {
 
     public virtual void Update() {
         float avancement = durationTimer.GetAvancement();
-        if(!durationTimer.IsOver() && obj != null)
+        if (!durationTimer.IsOver() && obj != null) {
             obj.transform.position = curve.GetAvancement(avancement);
+        }
     }
 
     public Curve GetCurve() {

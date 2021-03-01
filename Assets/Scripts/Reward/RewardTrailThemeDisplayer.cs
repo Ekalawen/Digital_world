@@ -18,13 +18,17 @@ public class RewardTrailThemeDisplayer : RewardTrailDisplayer {
     }
 
     protected void ResetColor() {
-        ReplaceSpecificColorFromThemes(ColorManager.Theme.MULTICOLOR, ColorManager.GetRandomTheme());
-        ReplaceSpecificColorFromThemes(ColorManager.Theme.MULTICOLOR_NON_BRIGHT, ColorManager.GetRandomNonBrightTheme());
+        ReplaceSpecificColorFromThemes(ColorManager.Theme.MULTICOLOR, ColorManager.GetRandomNonMulticolorTheme());
+        ReplaceSpecificColorFromThemes(ColorManager.Theme.MULTICOLOR_NON_BRIGHT, ColorManager.GetRandomNonBrightNonMulticolorTheme());
         RemoveSpecificColorFromThemes(ColorManager.Theme.ROUGE);
         trail.startColor = ColorManager.GetColor(themes);
     }
 
     protected void ReplaceSpecificColorFromThemes(ColorManager.Theme source, ColorManager.Theme cible) {
+        if(source == cible) {
+            Debug.LogError($"La source ({source}) ne doit pas être égale à la cible ({cible}) dans ReplaceSpecificColorFromThemes ;)");
+            return;
+        }
         while (themes.Contains(source)) {
             themes.Remove(source);
             themes.Add(cible);
