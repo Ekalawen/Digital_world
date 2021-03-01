@@ -1158,4 +1158,8 @@ public class MapManager : MonoBehaviour {
         nbEdges += (pos.z == 1 || pos.z == tailleMap.z - 1) ? 1 : 0;
         return pos.y != 0 && pos.y != tailleMap.y && nbEdges == 2;
     }
+
+    public Cube[,,] GetRegularCubes() {
+        return cubesRegular;
+    }
 }

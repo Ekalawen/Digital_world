@@ -361,7 +361,7 @@ public class Cave : CubeEnsemble {
     protected void DisplayDebugCave() {
 #if UNITY_EDITOR
         List<ColorManager.Theme> theme = new List<ColorManager.Theme>() { ColorManager.GetRandomTheme() };
-        PosVisualisator.CreateCube(GetCenter(), GetHalfExtents(), ColorManager.GetColor(theme), depthTest: false);
+        //PosVisualisator.CreateCube(GetCenter(), GetHalfExtents(), ColorManager.GetColor(theme), depthTest: false);
 #endif
     }
 }
