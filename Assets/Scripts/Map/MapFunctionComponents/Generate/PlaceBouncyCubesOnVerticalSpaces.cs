@@ -14,6 +14,7 @@ public class PlaceBouncyCubesOnVerticalSpaces : GenerateCubesMapFunction {
         //foreach(var r in rectangles) {
         //    Debug.Log($"r = {r}");
         //}
+
         int height = 5;
         foreach(Cube cube in map.GetAllCubes()) {
             if(cube.transform.position.y != height) {
