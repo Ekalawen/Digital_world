@@ -13,6 +13,9 @@ public class CubeInt {
         this.extents = extents;
     }
 
+    public CubeInt(CubeInt original) : this(original.start, original.extents) {
+    }
+
     public CubeInt(RectInt rectHorizontal, int y, int hauteur) : 
         this(new Vector3Int(rectHorizontal.x, y, rectHorizontal.y), 
              new Vector3Int(rectHorizontal.width, hauteur, rectHorizontal.height)){
@@ -35,7 +38,9 @@ public class CubeInt {
     public int depth { get { return extents.z; } set { extents.z = value; } }
 
     public Vector3 center { get { return start + (Vector3)extents / 2.0f; } }
+    public Vector3 mapCenter { get { return start + (Vector3)extents / 2.0f - 0.5f * Vector3.one; } }
     public Vector3Int size { get { return extents; } set { extents = value; } }
+    public Vector3 halfExtents { get { return (Vector3)extents / 2.0f; } }
 
     public Vector3Int min { get { return start; } set { xMin = value.x; yMin = value.y; zMin = value.z; } }
     public Vector3Int max { get { return start + extents; } set { xMax = value.x; yMax = value.y; zMax = value.z; } }
@@ -48,7 +53,14 @@ public class CubeInt {
             && other.yMax <= this.yMax
             && other.zMax <= this.zMax;
     }
-
+    public bool ContainsTranche(CubeInt other) {
+        RectInt thisTranche = this.GetTranche();
+        RectInt otherTranche = other.GetTranche();
+        return thisTranche.xMin <= otherTranche.xMin
+            && thisTranche.yMin <= otherTranche.yMin
+            && otherTranche.xMax <= thisTranche.xMax
+            && otherTranche.yMax <= thisTranche.yMax;
+    }
     public bool Contains(Vector3 point) {
         return this.xMin <= point.x
             && this.yMin <= point.y
@@ -57,7 +69,6 @@ public class CubeInt {
             && point.y <= this.yMax
             && point.z <= this.zMax;
     }
-
     public bool ContainsStrict(Vector3 point) {
         return this.xMin < point.x
             && this.yMin < point.y
@@ -65,6 +76,26 @@ public class CubeInt {
             && point.x < this.xMax
             && point.y < this.yMax
             && point.z < this.zMax;
+    }
+    public bool Contains(Vector2 point) {
+        return this.xMin <= point.x
+            && this.zMin <= point.y
+            && point.x <= this.xMax
+            && point.y <= this.zMax;
+    }
+    public bool ContainsStrict(Vector2 point) {
+        return this.xMin < point.x
+            && this.zMin < point.y
+            && point.x < this.xMax
+            && point.y < this.zMax;
+    }
+    public bool ContainsStrictTranche(CubeInt other) {
+        RectInt thisTranche = this.GetTranche();
+        RectInt otherTranche = other.GetTranche();
+        return thisTranche.xMin < otherTranche.xMin
+            && thisTranche.yMin < otherTranche.yMin
+            && otherTranche.xMax < thisTranche.xMax
+            && otherTranche.yMax < thisTranche.yMax;
     }
 
     public List<Vector3Int> Corners() {
@@ -81,6 +112,14 @@ public class CubeInt {
         corners.Add(new Vector3Int(xMax, yMax, zMax));
         return corners;
     }
+    public List<Vector2Int> TrancheCorners() {
+        List<Vector2Int> corners = new List<Vector2Int>();
+        corners.Add(new Vector2Int(xMin, zMin));
+        corners.Add(new Vector2Int(xMin, zMax));
+        corners.Add(new Vector2Int(xMax, zMin));
+        corners.Add(new Vector2Int(xMax, zMax));
+        return corners;
+    }
 
     public bool OverlapsWithoutContains(CubeInt other) {
         List<Vector3Int> otherCorners = other.Corners();
@@ -89,5 +128,36 @@ public class CubeInt {
             && otherCorners.Any(corner => !this.Contains(corner))
             && thisCorners.Any(corner => other.ContainsStrict(corner))
             && thisCorners.Any(corner => !other.Contains(corner));
+    }
+    public bool OverlapsTrancheWithoutContains(CubeInt other) {
+        List<Vector2Int> otherCorners = other.TrancheCorners();
+        List<Vector2Int> thisCorners = this.TrancheCorners();
+        return otherCorners.Any(corner => this.ContainsStrict(corner))
+            && otherCorners.Any(corner => !this.Contains(corner))
+            && thisCorners.Any(corner => other.ContainsStrict(corner))
+            && thisCorners.Any(corner => !other.Contains(corner));
+    }
+
+    public RectInt GetTranche() {
+        return new RectInt(xMin, zMin, width, depth);
+    }
+
+    public RectInt GetMutualTranche(CubeInt other) {
+        int xMin = Mathf.Max(this.xMin, other.xMin);
+        int yMin = Mathf.Max(this.zMin, other.zMin);
+        int xMax = Mathf.Min(this.xMax, other.xMax);
+        int yMax = Mathf.Min(this.zMax, other.zMax);
+        int width = xMax - xMin;
+        int height = yMax - yMin;
+        return new RectInt(xMin, yMin, width, height);
+    }
+
+    public override bool Equals(object obj) {
+        CubeInt other = obj as CubeInt;
+        return other != null && this.start == other.start && this.extents == other.extents;
+    }
+
+    public override string ToString() {
+        return $"(start={start}, extents={extents})";
     }
 }

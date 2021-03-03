@@ -68,4 +68,8 @@ public class PosVisualisator : MonoBehaviour {
             Debug.DrawLine(start, end, color, 10000, depthTest: depthTest);
         }
     }
+
+    public static void CreateCube(CubeInt cube, Color color, bool depthTest = false) {
+        CreateCube(cube.mapCenter, cube.halfExtents, color, depthTest);
+    }
 }
