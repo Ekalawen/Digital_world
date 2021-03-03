@@ -78,6 +78,35 @@ public class GetMaxEmptySpacesLocations {
         return finalCubes;
     }
 
+    internal static List<CubeInt> CombineMergedSpaces(List<CubeInt> emptyCubes, object commonPercentageToMerge)
+    {
+        throw new NotImplementedException();
+    }
+
+    public static List<CubeInt> CombineMergedSpaces(List<CubeInt> spacesCubes, float commonPercentageToMerge) {
+        List<CubeInt> mergedSpaces = spacesCubes.Select(c => c).ToList();
+        mergedSpaces.OrderBy(c => c.area);
+        for (int k = 0; k < 10; k++) {
+            bool hasBeenModified = false;
+            for (int i = 0; i < mergedSpaces.Count; i++) {
+                for (int j = i + 1; j < mergedSpaces.Count; j++) {
+                    CubeInt bigCube = mergedSpaces[i];
+                    CubeInt smallCube = mergedSpaces[j];
+                    CubeInt mergedCube = bigCube.Union(smallCube);
+                    if((float)bigCube.area / mergedCube.area >= commonPercentageToMerge || (float)smallCube.area / mergedCube.area >= commonPercentageToMerge) {
+                        mergedSpaces[i] = mergedCube;
+                        mergedSpaces.RemoveAt(j);
+                        hasBeenModified = true;
+                    }
+                }
+            }
+            if(!hasBeenModified) {
+                break;
+            }
+        }
+        return mergedSpaces;
+    }
+
     protected static Cube[,] GetHorizontalMap(Cube[,,] cubesMap, int y) {
         int X = cubesMap.GetLength(0);
         int Z = cubesMap.GetLength(2);

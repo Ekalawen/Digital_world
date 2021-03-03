@@ -36,6 +36,8 @@ public class CubeInt {
     public int width { get { return extents.x; } set { extents.x = value; } }
     public int height { get { return extents.y; } set { extents.y = value; } }
     public int depth { get { return extents.z; } set { extents.z = value; } }
+    public int area { get { return extents.x * extents.y * extents.z; } }
+    public int areaTranche { get { return extents.x * extents.z; } }
 
     public Vector3 center { get { return start + (Vector3)extents / 2.0f; } }
     public Vector3 mapCenter { get { return start + (Vector3)extents / 2.0f - 0.5f * Vector3.one; } }
@@ -159,5 +161,18 @@ public class CubeInt {
 
     public override string ToString() {
         return $"(start={start}, extents={extents})";
+    }
+
+    public CubeInt Union(CubeInt other) {
+        int xMin = Mathf.Min(this.xMin, other.xMin);
+        int yMin = Mathf.Min(this.yMin, other.yMin);
+        int zMin = Mathf.Min(this.zMin, other.zMin);
+        int xMax = Mathf.Max(this.xMax, other.xMax);
+        int yMax = Mathf.Max(this.yMax, other.yMax);
+        int zMax = Mathf.Max(this.zMax, other.zMax);
+        int width = xMax - xMin;
+        int height = yMax - yMin;
+        int depth = zMax - zMin;
+        return new CubeInt(new Vector3Int(xMin, yMin, zMin), new Vector3Int(width, height, depth));
     }
 }
