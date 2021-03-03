@@ -26,7 +26,7 @@ public class GenerateCaves : GenerateCubesMapFunction {
     public bool preserveMapBordure = false;
     public int nbLumieresPerCaves = 1;
     public int offsetLumieresFromCenter = 1;
-    public int caveOffsetFromSides = 2;
+    public Vector2Int caveOffsetFromSidesXZandY = new Vector2Int(2, 2);
 
     [Header("Fixed offsets")]
     public bool useCaveFixedOffset = false;
@@ -97,33 +97,33 @@ public class GenerateCaves : GenerateCubesMapFunction {
         size.z = UnityEngine.Random.Range(tailleMinCave, tailleMaxCave + 1);
 
         // On définit sa position sur la carte
-        Vector3 position = GetPositionCave(size, caveOffsetFromSides);
+        Vector3 position = GetPositionCave(size, caveOffsetFromSidesXZandY);
 
         Cave cave = new Cave(position, size, makeSpaceArround, bDigInside: true, preserveMapBordure);
 
         return cave;
     }
 
-    protected virtual Vector3 GetPositionCave(Vector3Int sizeCave, int caveOffsetFromSides)
+    protected virtual Vector3 GetPositionCave(Vector3Int sizeCave, Vector2Int caveOffsetFromSidesXZandY)
     {
         Vector3 position;
         if(!dontCollideWithOthersCaves)
-            position = GetPositionCaveWithoutCollisions(sizeCave, caveOffsetFromSides);
+            position = GetPositionCaveWithoutCollisions(sizeCave, caveOffsetFromSidesXZandY);
         else
-            position = GetPositionCaveWithCollisions(sizeCave, caveOffsetFromSides);
+            position = GetPositionCaveWithCollisions(sizeCave, caveOffsetFromSidesXZandY);
         return position;
     }
 
-    protected Vector3 GetPositionCaveWithCollisions(Vector3Int sizeCave, int caveOffsetFromSides) {
+    protected Vector3 GetPositionCaveWithCollisions(Vector3Int sizeCave, Vector2Int caveOffsetFromSidesXZandY) {
         List<Cave> othersCaves = map.GetMapElementsOfType<Cave>();
         int nbTriesMax = 1000;
         for(int nbTries = 0; nbTries < nbTriesMax; nbTries++) {
-            Vector3 position = GetPositionCaveWithoutCollisions(sizeCave, caveOffsetFromSides);
+            Vector3 position = GetPositionCaveWithoutCollisions(sizeCave, caveOffsetFromSidesXZandY);
             if (CaveDontCollideWithOthersCaves(position, sizeCave, othersCaves))
                 return position;
         }
         Debug.LogWarning("On a pas réussi à trouver une position qui ne rentre en collision avec aucun autre caves dans GetPositionCaveWithCollisions() !");
-        return GetPositionCaveWithoutCollisions(sizeCave, caveOffsetFromSides);
+        return GetPositionCaveWithoutCollisions(sizeCave, caveOffsetFromSidesXZandY);
     }
 
     protected bool CaveDontCollideWithOthersCaves(Vector3 position, Vector3Int sizeCave, List<Cave> othersCaves) {
@@ -136,14 +136,14 @@ public class GenerateCaves : GenerateCubesMapFunction {
         return true;
     }
 
-    private Vector3 GetPositionCaveWithoutCollisions(Vector3Int sizeCave, int caveOffsetFromSides) {
+    private Vector3 GetPositionCaveWithoutCollisions(Vector3Int sizeCave, Vector2Int caveOffsetFromSidesXZandY) {
         Vector3 position = Vector3.zero;
         position.x = useCaveFixedOffset && useCaveFixedOffsetX ? caveFixedOffsetX :
-            UnityEngine.Random.Range(caveOffsetFromSides, map.tailleMap.x - sizeCave.x + 2 - caveOffsetFromSides);
+            UnityEngine.Random.Range(caveOffsetFromSidesXZandY.x, map.tailleMap.x - sizeCave.x + 2 - caveOffsetFromSidesXZandY.x);
         position.y = useCaveFixedOffset && useCaveFixedOffsetY ? caveFixedOffsetY :
-            UnityEngine.Random.Range(caveOffsetFromSides, map.tailleMap.y - sizeCave.y + 2 - caveOffsetFromSides);
+            UnityEngine.Random.Range(caveOffsetFromSidesXZandY.y, map.tailleMap.y - sizeCave.y + 2 - caveOffsetFromSidesXZandY.y);
         position.z = useCaveFixedOffset && useCaveFixedOffsetZ ? caveFixedOffsetZ :
-            UnityEngine.Random.Range(caveOffsetFromSides, map.tailleMap.z - sizeCave.z + 2 - caveOffsetFromSides);
+            UnityEngine.Random.Range(caveOffsetFromSidesXZandY.x, map.tailleMap.z - sizeCave.z + 2 - caveOffsetFromSidesXZandY.x);
         return position;
     }
 }

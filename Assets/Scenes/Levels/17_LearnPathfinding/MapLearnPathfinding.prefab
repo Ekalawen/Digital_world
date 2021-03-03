@@ -48,7 +48,7 @@ MonoBehaviour:
   preserveMapBordure: 1
   nbLumieresPerCaves: 0
   offsetLumieresFromCenter: 0
-  caveOffsetFromSides: 1
+  caveOffsetFromSidesXZandY: {x: 2, y: 2}
   useCaveFixedOffset: 0
   useCaveFixedOffsetX: 0
   caveFixedOffsetX: 0
@@ -346,6 +346,16 @@ PrefabInstance:
     - target: {fileID: 3425981728395409398, guid: 129f4eb78691940da993d749688543fd,
         type: 3}
       propertyPath: dontCollideWithOthersCaves
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3425981728395409398, guid: 129f4eb78691940da993d749688543fd,
+        type: 3}
+      propertyPath: caveOffsetFromSidesXZandY.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3425981728395409398, guid: 129f4eb78691940da993d749688543fd,
+        type: 3}
+      propertyPath: caveOffsetFromSidesXZandY.y
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []

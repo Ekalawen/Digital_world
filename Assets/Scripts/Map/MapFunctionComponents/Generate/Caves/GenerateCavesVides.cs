@@ -15,7 +15,7 @@ public class GenerateCavesVides : GenerateCaves {
         size.z = Random.Range(tailleMinCave, tailleMaxCave + 1);
 
         // On définit sa position sur la carte
-        Vector3 position = GetPositionCave(size, caveOffsetFromSides);
+        Vector3 position = GetPositionCave(size, caveOffsetFromSidesXZandY);
 
         Cave cave = new Cave(position, size, bMakeSpaceArround: makeSpaceArround, bDigInside: false, preserveMapBordure);
 
