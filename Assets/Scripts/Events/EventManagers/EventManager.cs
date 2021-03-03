@@ -27,6 +27,10 @@ public class EventManager : MonoBehaviour {
         EMPTY_END_EVENT,
         CUBES_DESTRUCTIONS_PARTIAL, // Ne pas réordonner sinon ça va changer les prefabs !
     };
+    public enum EndEventDeathCubesType {
+        FAR_FROM_PLAYER_AND_POS,
+        FROM_TOP_OR_BOTTOM,
+    }
     public enum EjectionType {
         FIX_TRESHOLD,
         LOWEST_CUBE_TRESHOLD,
@@ -48,6 +52,8 @@ public class EventManager : MonoBehaviour {
     public float endGameFrameRate = 0.2f;
     public AnimationCurve endEventCurveSpeed;
     public EndEventType endGameType = EndEventType.DEATH_CUBES;
+    [ConditionalHide("endGameType", EndEventType.DEATH_CUBES)]
+    public EndEventDeathCubesType endEventDeathCubesType = EndEventDeathCubesType.FAR_FROM_PLAYER_AND_POS;
     public float dureeDestructionCubesDestruction = 2.0f;
     [ConditionalHide("endGameType", EndEventType.CUBES_DESTRUCTIONS_PARTIAL)]
     public float proportionToKeep = 0.0f;
@@ -200,6 +206,21 @@ public class EventManager : MonoBehaviour {
         });
     }
 
+    protected void OrderPositionsFromTopOrBottom(Vector3 exitPos, List<Vector3> allEmptyPositions) {
+        Vector3 playerPos = gm.player.transform.position;
+        GravityManager.Direction direction;
+        if(gm.gravityManager.GetHigh(playerPos) <= gm.gravityManager.GetHigh(exitPos)) { // Player is under exit
+            direction = GravityManager.OppositeDir(gm.gravityManager.gravityDirection);
+        } else {
+            direction = gm.gravityManager.gravityDirection;
+        }
+        allEmptyPositions.Sort(delegate (Vector3 A, Vector3 B) {
+            float distToA = map.GetTrancheIndice(A, direction) + Vector3.SqrMagnitude(A - exitPos) / 1000f;
+            float distToB = map.GetTrancheIndice(B, direction) + Vector3.SqrMagnitude(B - exitPos) / 1000f;
+            return distToB.CompareTo(distToA);
+        });
+    }
+
     protected Cube CreateCubeForDeathCubesEvent(Vector3 pos) {
         Cube cube = null;
         if (endGameType == EndEventType.DEATH_CUBES) {
@@ -225,8 +246,14 @@ public class EventManager : MonoBehaviour {
         int nbDeathCubesCreated = 0;
         deathCubes = new List<Cube>();
 
+        if (endEventDeathCubesType == EndEventDeathCubesType.FROM_TOP_OR_BOTTOM) {
+            OrderPositionsFromTopOrBottom(centerPos, allEmptyPositions);
+        }
+
         while (allEmptyPositions.Count > 0) {
-            OrderPositionsFarFromPlayerAndPos(centerPos, allEmptyPositions);
+            if (endEventDeathCubesType == EndEventDeathCubesType.FAR_FROM_PLAYER_AND_POS) {
+                OrderPositionsFarFromPlayerAndPos(centerPos, allEmptyPositions);
+            }
 
             int nbDeathCubesToCreate = GetNbCubesToDo(allEmptyPositions.Count, nbTotalDeathCubesToCreate, nbDeathCubesCreated, endGameTimer);
             Vector3 barycentre = CreateFirstDeathCubes(allEmptyPositions, nbDeathCubesToCreate);

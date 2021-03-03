@@ -1172,4 +1172,24 @@ public class MapManager : MonoBehaviour {
             return tailleMap.z;
         }
     }
+
+    public bool IsInTranche(Vector3 pos, GravityManager.Direction fromDirection, int offset) {
+        return GetTrancheIndice(pos, fromDirection) == offset;
+    }
+
+    public float GetTrancheIndice(Vector3 pos, GravityManager.Direction fromDirection) {
+        Vector3 directionVecteur = GravityManager.DirToVec(fromDirection);
+        if(fromDirection == GravityManager.Direction.BAS || fromDirection == GravityManager.Direction.DROITE || fromDirection == GravityManager.Direction.AVANT) {
+            float trancheIndice = Vector3.Dot(pos, -directionVecteur);
+            return trancheIndice;
+        } else {
+            int tailleMap = GetTailleMapAlongDirection(fromDirection);
+            float trancheIndice = tailleMap - Vector3.Dot(pos, directionVecteur);
+            return trancheIndice;
+        }
+    }
+
+    public List<Vector3> GetAllEmptyPositionsInTranche(GravityManager.Direction fromDirection, int offset) {
+        return GetAllEmptyPositions().FindAll(p => IsInTranche(p, fromDirection, offset));
+    }
 }
