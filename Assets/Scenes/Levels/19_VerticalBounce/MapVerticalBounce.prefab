@@ -48,6 +48,22 @@ MonoBehaviour:
   proportionRandomFilling: 0.02
   sizeCubeRandomFilling: 1
   registerToColorSources: 0
+--- !u!114 &1452292445187624239
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6404323573375056085}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c06eda6246b11f645aa770dcaa175bdf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 1
+  shouldDrawRaycastToNewLumiere: 1
+  trailPrefab: {fileID: 2355022440795677279, guid: 3aeb445d2ee23b240ae4946f1f9c7864,
+    type: 3}
 --- !u!114 &2040106625565737831
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -61,6 +77,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cubeType: 0
+--- !u!114 &6856445700840279878
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6404323573375056085}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8950765dae1f12e46aa13c7edf5a81fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fromDirection: 1
+  offset: 1
 --- !u!1001 &6406004073022886087
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -70,7 +100,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1698300190402578, guid: 129f4eb78691940da993d749688543fd, type: 3}
       propertyPath: m_Name
-      value: MapJustReset
+      value: MapVerticalBounce
       objectReference: {fileID: 0}
     - target: {fileID: 4913549307214802, guid: 129f4eb78691940da993d749688543fd, type: 3}
       propertyPath: m_RootOrder
@@ -186,12 +216,12 @@ PrefabInstance:
         type: 3}
       propertyPath: lumierePrefab
       value: 
-      objectReference: {fileID: 6314060265175529593, guid: 06d9c7241134907418789a012772d2db,
+      objectReference: {fileID: 6314060265175529593, guid: 9a6a33eb2030ee248896ac9e0bcb4f84,
         type: 3}
     - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
         type: 3}
       propertyPath: nbLumieresInitial
-      value: 0
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
         type: 3}
@@ -276,7 +306,7 @@ PrefabInstance:
     - target: {fileID: 3425981728395409398, guid: 129f4eb78691940da993d749688543fd,
         type: 3}
       propertyPath: nbLumieresPerCaves
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3425981728395409398, guid: 129f4eb78691940da993d749688543fd,
         type: 3}

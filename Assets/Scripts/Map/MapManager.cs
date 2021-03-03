@@ -1162,4 +1162,14 @@ public class MapManager : MonoBehaviour {
     public Cube[,,] GetRegularCubes() {
         return cubesRegular;
     }
+
+    public int GetTailleMapAlongDirection(GravityManager.Direction direction) {
+        if(direction == GravityManager.Direction.DROITE || direction == GravityManager.Direction.GAUCHE) {
+            return tailleMap.x;
+        } else if (direction == GravityManager.Direction.BAS || direction == GravityManager.Direction.HAUT) {
+            return tailleMap.y;
+        } else {
+            return tailleMap.z;
+        }
+    }
 }
