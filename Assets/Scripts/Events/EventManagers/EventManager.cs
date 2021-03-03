@@ -73,7 +73,7 @@ public class EventManager : MonoBehaviour {
 
     [Header("ChangingScenesTimes")]
     public float quitSceneTime = 7.0f;
-    public float reloadSceneTime = 3.0f;
+    public float reloadSceneTime = 7.0f;
 
     protected GameManager gm;
     protected MapManager map;
