@@ -5,34 +5,30 @@ using UnityEngine;
 
 public class PouvoirPathfinder : IPouvoir {
 
-	public GameObject lumierePathPrefab; // Les lumières à placer quand le personnage fait une détection !
+	public GameObject lumiereOrbesPathPrefab;
+	public GameObject itemsOrbesPathPrefab;
     public bool detectLumieres = true;
     public bool detectItems = true;
     public float dureePath = 3.0f;
     public float vitessePath = 30.0f;
+    public Color lumierePathColor = Color.yellow;
+    public Color itemPathColor = Color.magenta;
 
     protected override bool UsePouvoir() {
-		if (Input.GetKeyDown (Player.GetPouvoirAKeyCode()))
-        {
-            List<Vector3> positions = GetAllInterestPoints();
+		if (Input.GetKeyDown (Player.GetPouvoirAKeyCode())) {
+            List<Vector3> lumieresPositions = GetAllLumieresPositions();
+            List<Vector3> itemsPositions = GetAllItemsPositions();
 
-            if (!player.CanUseLocalisation() || positions.Count == 0) {
+            if (!player.CanUseLocalisation() || lumieresPositions.Count + itemsPositions.Count == 0) {
                 gm.console.FailLocalisationUnauthorized();
                 gm.soundManager.PlayFailActionClip();
                 return false;
             }
 
-            try {
-                Vector3 nearestPosition = DrawPathToNearestPosition(positions);
+            bool haveFoundLumiere = detectLumieres && DrawPathToPositions(lumieresPositions, lumierePathColor, lumiereOrbesPathPrefab);
+            bool haveFoundItem = detectItems && DrawPathToPositions(itemsPositions, itemPathColor, itemsOrbesPathPrefab);
 
-                gm.console.RunDetection(nearestPosition);
-
-                if (detectItems)
-                    NotifyOnlyVisibleOnTriggerItems();
-            } catch (System.Exception e) {
-                Debug.LogWarning($"Pouvoir Detection fails :\n{e.StackTrace}");
-                gm.console.FailLocalisationObjectifInateignable();
-                gm.soundManager.PlayFailActionClip();
+            if (!haveFoundLumiere && !haveFoundItem) {
                 return false;
             }
         }
@@ -40,7 +36,25 @@ public class PouvoirPathfinder : IPouvoir {
         return true;
     }
 
-    private Vector3 DrawPathToNearestPosition(List<Vector3> positions) {
+    protected bool DrawPathToPositions(List<Vector3> positions, Color pathColor, GameObject orbePrefab) {
+        try {
+            Vector3 nearestPosition = DrawPathToNearestPosition(positions, pathColor, orbePrefab);
+
+            gm.console.RunDetection(nearestPosition);
+
+            if (detectItems)
+                NotifyOnlyVisibleOnTriggerItems();
+
+            return true;
+        } catch (System.Exception e) {
+            Debug.LogWarning($"Pouvoir Detection fails :\n{e.StackTrace}");
+            gm.console.FailLocalisationObjectifInateignable();
+            gm.soundManager.PlayFailActionClip();
+            return false;
+        }
+    }
+
+    private Vector3 DrawPathToNearestPosition(List<Vector3> positions, Color pathColor, GameObject orbePrefab) {
         //Vector3 nearestPosition = positions.OrderBy(p => Vector3.Distance(p, player.transform.position)).First();
         //List<Vector3> posToDodge = GetPosToDodge();
         //List<Vector3> shortestPath = GetPathForPosition(nearestPosition, posToDodge);
@@ -57,13 +71,13 @@ public class PouvoirPathfinder : IPouvoir {
         List<Vector3> shortestPath = notNullPaths.OrderBy(p => p.Count).First();
         Vector3 nearestPosition = positions[pathsToPositions.IndexOf(shortestPath)];
 
-        DrawPathToPosition(nearestPosition, shortestPath);
+        DrawPathToPosition(nearestPosition, shortestPath, pathColor, orbePrefab);
         return nearestPosition;
     }
 
-    protected void DrawPathToPosition(Vector3 position, List<Vector3> path) {
+    protected void DrawPathToPosition(Vector3 position, List<Vector3> path, Color pathColor, GameObject orbePrefab) {
         if (path != null)
-            StartCoroutine(DrawPath(path));
+            StartCoroutine(DrawPath(path, pathColor, orbePrefab));
         else
             Debug.Log("Objectif inaccessible en " + position + " !");
     }
@@ -81,24 +95,23 @@ public class PouvoirPathfinder : IPouvoir {
         return posToDodge;
     }
 
-    protected List<Vector3> GetAllInterestPoints() {
+    protected List<Vector3> GetAllLumieresPositions() {
         List<Vector3> positions = new List<Vector3>();
-        if (detectLumieres) {
-            List<LumiereSwitchable> lumieresSwitchablesOn = gm.map.GetLumieresSwitchables();
-            lumieresSwitchablesOn = lumieresSwitchablesOn.FindAll(ls => ls.GetState() == LumiereSwitchable.LumiereSwitchableState.ON);
-            if(lumieresSwitchablesOn.Count > 0) {
-                positions.AddRange(lumieresSwitchablesOn.Select(ls => ls.transform.position).ToList());
-            } else {
-                positions.AddRange(gm.map.GetAllLumieresPositions());
-            }
-        }
-        if (detectItems) {
-            positions.AddRange(gm.itemManager.GetItemsPositions());
+        List<LumiereSwitchable> lumieresSwitchablesOn = gm.map.GetLumieresSwitchables();
+        lumieresSwitchablesOn = lumieresSwitchablesOn.FindAll(ls => ls.GetState() == LumiereSwitchable.LumiereSwitchableState.ON);
+        if(lumieresSwitchablesOn.Count > 0) {
+            positions.AddRange(lumieresSwitchablesOn.Select(ls => ls.transform.position).ToList());
+        } else {
+            positions.AddRange(gm.map.GetAllLumieresPositions());
         }
         return positions;
     }
 
-    protected IEnumerator DrawPath(List<Vector3> path) {
+    protected List<Vector3> GetAllItemsPositions() {
+        return gm.itemManager.GetItemsPositions();
+    }
+
+    protected IEnumerator DrawPath(List<Vector3> path, Color pathColor, GameObject orbePrefab) {
         int nbSpheresByNodes = 4;
         for(int i = 0; i < path.Count - 1; i++) {
             Vector3 current = path[i];
@@ -106,12 +119,13 @@ public class PouvoirPathfinder : IPouvoir {
             for(int j = 0; j < nbSpheresByNodes; j++) {
                 Vector3 direction = next - current;
                 Vector3 pos = current + direction / nbSpheresByNodes * (j + 1);
-                GameObject go = Instantiate(lumierePathPrefab, pos, Quaternion.identity);
+                GameObject go = Instantiate(orbePrefab, pos, Quaternion.identity);
                 Color color = gm.colorManager.GetColorForPosition(go.transform.position);
                 color = Color.white - color;
                 Material material = go.GetComponent<MeshRenderer>().material;
                 material.color = color;
                 material.SetColor("_EmissionColor", color);
+                go.GetComponent<AutoColorBouncer>().colorToBounceTo = pathColor;
                 Destroy(go, dureePath);
                 yield return new WaitForSeconds(1.0f / vitessePath);
             }

@@ -7,6 +7,7 @@ public class AutoColorBouncer : MonoBehaviour {
 
     public float intervalTime = 0.6f;
     public float timeToBounceSize = 0.1f;
+    public float inBounceTime = 0.0f;
     public float timeToNormalSize = 0.2f;
     public Color colorToBounceTo = Color.red;
     public bool shouldAlsoModifyEmissionColor = false;
@@ -15,6 +16,7 @@ public class AutoColorBouncer : MonoBehaviour {
 
     void Start() {
         timer = new Timer(intervalTime);
+        timer.SetOver();
     }
 
     void Update() {
@@ -49,6 +51,7 @@ public class AutoColorBouncer : MonoBehaviour {
                 }
                 yield return null;
             }
+            yield return new WaitForSeconds(inBounceTime);
             Timer toNormalTimer = new Timer(timeToNormalSize);
             while (!toNormalTimer.IsOver()) {
                 float avancement = toNormalTimer.GetAvancement();

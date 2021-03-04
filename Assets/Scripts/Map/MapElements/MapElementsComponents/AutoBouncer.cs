@@ -7,6 +7,7 @@ public class AutoBouncer : MonoBehaviour {
 
     public float intervalTime = 0.6f;
     public float timeToBounceSize = 0.1f;
+    public float inBounceTime = 0.0f;
     public float timeToNormalSize = 0.2f;
     public float bounceSize = 1.5f;
 
@@ -33,6 +34,7 @@ public class AutoBouncer : MonoBehaviour {
             transform.localScale = startScale * (1 + (bounceSize - 1) * avancement);
             yield return null;
         }
+        yield return new WaitForSeconds(inBounceTime);
         Timer toNormalTimer = new Timer(timeToNormalSize);
         while(!toNormalTimer.IsOver()) {
             float avancement = toNormalTimer.GetAvancement();
