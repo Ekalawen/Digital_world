@@ -45,6 +45,10 @@ public class Timer {
         return GetTimeSinceLevelLoad() - debut;
     }
 
+    public void SetElapsedTime(float value) {
+        debut = GetTimeSinceLevelLoad() - value;
+    }
+
     public float GetDuree() {
         return duree;
     }

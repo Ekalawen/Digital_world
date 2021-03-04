@@ -9,6 +9,7 @@ public class AutoColorBouncer : MonoBehaviour {
     public float timeToBounceSize = 0.1f;
     public float inBounceTime = 0.0f;
     public float timeToNormalSize = 0.2f;
+    public float startingTime = 0.0f;
     public Color colorToBounceTo = Color.red;
     public bool shouldAlsoModifyEmissionColor = false;
 
@@ -16,7 +17,8 @@ public class AutoColorBouncer : MonoBehaviour {
 
     void Start() {
         timer = new Timer(intervalTime);
-        timer.SetOver();
+        timer.SetElapsedTime(startingTime);
+        StartCoroutine(CBounce());
     }
 
     void Update() {
@@ -27,51 +29,46 @@ public class AutoColorBouncer : MonoBehaviour {
     }
 
     protected IEnumerator CBounce() {
-        Timer toBounceTimer = new Timer(timeToBounceSize);
         Renderer renderer = GetComponent<Renderer>();
+        Material material = renderer.material;
+        Color startColor = material.color;
+        Color startEmissionColor = Color.black;
         if (renderer != null) {
-            Material material = renderer.material;
-            Color startColor = material.color;
-            Color startEmissionColor = Color.black;
-            if(shouldAlsoModifyEmissionColor)
-                startEmissionColor = material.GetColor("_EmissionColor");
-            while (!toBounceTimer.IsOver()) {
-                float avancement = toBounceTimer.GetAvancement();
-                Color currentColor = startColor;
-                currentColor.r = startColor.r * (1 - avancement) + colorToBounceTo.r * avancement;
-                currentColor.g = startColor.g * (1 - avancement) + colorToBounceTo.g * avancement;
-                currentColor.b = startColor.b * (1 - avancement) + colorToBounceTo.b * avancement;
-                material.color = currentColor;
-                if (shouldAlsoModifyEmissionColor) {
-                    Color currentEmissionColor = startEmissionColor;
-                    currentEmissionColor.r = startEmissionColor.r * (1 - avancement) + colorToBounceTo.r * avancement;
-                    currentEmissionColor.g = startEmissionColor.g * (1 - avancement) + colorToBounceTo.g * avancement;
-                    currentEmissionColor.b = startEmissionColor.b * (1 - avancement) + colorToBounceTo.b * avancement;
-                    material.SetColor("_EmissionColor", currentEmissionColor);
-                }
+            SetColor(material, startColor, startEmissionColor, 0.0f);
+            while (timer.GetElapsedTime() <= timeToBounceSize) {
+                float avancement = timer.GetElapsedTime() / timeToBounceSize;
+                SetColor(material, startColor, startEmissionColor, avancement);
                 yield return null;
             }
-            yield return new WaitForSeconds(inBounceTime);
-            Timer toNormalTimer = new Timer(timeToNormalSize);
-            while (!toNormalTimer.IsOver()) {
-                float avancement = toNormalTimer.GetAvancement();
-                Color currentColor = startColor;
-                currentColor.r = startColor.r * avancement + colorToBounceTo.r * (1 - avancement);
-                currentColor.g = startColor.g * avancement + colorToBounceTo.g * (1 - avancement);
-                currentColor.b = startColor.b * avancement + colorToBounceTo.b * (1 - avancement);
-                material.color = currentColor;
-                if (shouldAlsoModifyEmissionColor) {
-                    Color currentEmissionColor = startEmissionColor;
-                    currentEmissionColor.r = startEmissionColor.r * avancement + colorToBounceTo.r * (1 - avancement);
-                    currentEmissionColor.g = startEmissionColor.g * avancement + colorToBounceTo.g * (1 - avancement);
-                    currentEmissionColor.b = startEmissionColor.b * avancement + colorToBounceTo.b * (1 - avancement);
-                    material.SetColor("_EmissionColor", currentEmissionColor);
-                }
+            SetColor(material, startColor, startEmissionColor, 1.0f);
+            while (timer.GetElapsedTime() <= timeToBounceSize + inBounceTime) {
                 yield return null;
             }
-            material.color = startColor;
+            while (timer.GetElapsedTime() <= timeToBounceSize + inBounceTime + timeToNormalSize) {
+                float avancement = 1.0f - (timer.GetElapsedTime() - timeToBounceSize - inBounceTime) / timeToNormalSize;
+                SetColor(material, startColor, startEmissionColor, avancement);
+                yield return null;
+            }
+            SetColor(material, startColor, startEmissionColor, 0.0f);
         } else {
-            Debug.LogWarning("Un GameObject avec un AutColorBouncer doit avoir un Renderer ! :)");
+            Debug.LogWarning("Un GameObject avec un AutoColorBouncer doit avoir un Renderer ! :)");
+        }
+    }
+
+    protected void SetColor(Material material, Color startColor, Color startEmissionColor, float avancement) {
+        if(shouldAlsoModifyEmissionColor)
+            startEmissionColor = material.GetColor("_EmissionColor");
+        Color currentColor = startColor;
+        currentColor.r = startColor.r * (1 - avancement) + colorToBounceTo.r * avancement;
+        currentColor.g = startColor.g * (1 - avancement) + colorToBounceTo.g * avancement;
+        currentColor.b = startColor.b * (1 - avancement) + colorToBounceTo.b * avancement;
+        material.color = currentColor;
+        if (shouldAlsoModifyEmissionColor) {
+            Color currentEmissionColor = startEmissionColor;
+            currentEmissionColor.r = startEmissionColor.r * (1 - avancement) + colorToBounceTo.r * avancement;
+            currentEmissionColor.g = startEmissionColor.g * (1 - avancement) + colorToBounceTo.g * avancement;
+            currentEmissionColor.b = startEmissionColor.b * (1 - avancement) + colorToBounceTo.b * avancement;
+            material.SetColor("_EmissionColor", currentEmissionColor);
         }
     }
 }

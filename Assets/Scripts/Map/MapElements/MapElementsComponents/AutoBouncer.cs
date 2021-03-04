@@ -9,6 +9,7 @@ public class AutoBouncer : MonoBehaviour {
     public float timeToBounceSize = 0.1f;
     public float inBounceTime = 0.0f;
     public float timeToNormalSize = 0.2f;
+    public float startingTime = 0.0f;
     public float bounceSize = 1.5f;
 
     protected Timer timer;
@@ -16,7 +17,8 @@ public class AutoBouncer : MonoBehaviour {
 
     void Start() {
         timer = new Timer(intervalTime);
-        timer.SetOver();
+        timer.SetElapsedTime(startingTime);
+        StartCoroutine(CBounce());
     }
 
     void Update() {
@@ -29,19 +31,25 @@ public class AutoBouncer : MonoBehaviour {
     protected IEnumerator CBounce() {
         Timer toBounceTimer = new Timer(timeToBounceSize);
         startScale = transform.localScale;
-        while(!toBounceTimer.IsOver()) {
-            float avancement = toBounceTimer.GetAvancement();
-            transform.localScale = startScale * (1 + (bounceSize - 1) * avancement);
+        while (timer.GetElapsedTime() <= timeToBounceSize) {
+            float avancement = timer.GetElapsedTime() / timeToBounceSize;
+            SetScale(avancement);
             yield return null;
         }
-        yield return new WaitForSeconds(inBounceTime);
-        Timer toNormalTimer = new Timer(timeToNormalSize);
-        while(!toNormalTimer.IsOver()) {
-            float avancement = toNormalTimer.GetAvancement();
-            transform.localScale = startScale * (1 + (bounceSize - 1) * (1 - avancement));
+        SetScale(1.0f);
+        while (timer.GetElapsedTime() <= timeToBounceSize + inBounceTime) {
             yield return null;
         }
-        transform.localScale = startScale;
+        while (timer.GetElapsedTime() <= timeToBounceSize + inBounceTime + timeToNormalSize) {
+            float avancement = 1 - (timer.GetElapsedTime() - timeToBounceSize - inBounceTime) / timeToNormalSize;
+            SetScale(avancement);
+            yield return null;
+        }
+        SetScale(0.0f);
+    }
+
+    private void SetScale(float avancement) {
+        transform.localScale = startScale * (1 + (bounceSize - 1) * avancement);
     }
 
     protected void OnDisable() {
