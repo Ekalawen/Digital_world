@@ -25,7 +25,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cubeType: 5
-  minSpacesSize: {x: 2, y: 5, z: 2}
+  minSpacesSize: {x: 4, y: 6, z: 4}
   commonPercentageToMerge: 0.8
   nbCubesByAreaTranche: 28
   hauteurEntreCubes: 4
@@ -45,7 +45,7 @@ MonoBehaviour:
   cubeType: 0
   minDistanceRandomFilling: 2
   useAllEmptyPositionsInstead: 0
-  proportionRandomFilling: 0.02
+  proportionRandomFilling: 0.035
   sizeCubeRandomFilling: 1
   registerToColorSources: 0
 --- !u!114 &2040106625565737831
@@ -60,21 +60,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7abafb084c97250449d758ec753cc1fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cubeType: 0
---- !u!114 &6856445700840279878
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6404323573375056085}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8950765dae1f12e46aa13c7edf5a81fe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fromDirection: 1
-  offset: 1
+  cubeType: 4
 --- !u!1001 &6406004073022886087
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -84,7 +70,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1698300190402578, guid: 129f4eb78691940da993d749688543fd, type: 3}
       propertyPath: m_Name
-      value: MapVerticalBounce
+      value: MapAlwaysReset
       objectReference: {fileID: 0}
     - target: {fileID: 4913549307214802, guid: 129f4eb78691940da993d749688543fd, type: 3}
       propertyPath: m_RootOrder
@@ -184,28 +170,28 @@ PrefabInstance:
     - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
         type: 3}
       propertyPath: tailleMap.x
-      value: 8
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
         type: 3}
       propertyPath: tailleMap.y
-      value: 30
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
         type: 3}
       propertyPath: tailleMap.z
-      value: 8
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
         type: 3}
       propertyPath: lumierePrefab
       value: 
-      objectReference: {fileID: 6314060265175529593, guid: 9a6a33eb2030ee248896ac9e0bcb4f84,
+      objectReference: {fileID: 6314060265175529593, guid: 06d9c7241134907418789a012772d2db,
         type: 3}
     - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
         type: 3}
       propertyPath: nbLumieresInitial
-      value: 16
+      value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
         type: 3}
@@ -281,12 +267,12 @@ PrefabInstance:
     - target: {fileID: 3425981728395409398, guid: 129f4eb78691940da993d749688543fd,
         type: 3}
       propertyPath: tailleMinCave
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3425981728395409398, guid: 129f4eb78691940da993d749688543fd,
         type: 3}
       propertyPath: proportionCaves
-      value: 0.4
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 3425981728395409398, guid: 129f4eb78691940da993d749688543fd,
         type: 3}
