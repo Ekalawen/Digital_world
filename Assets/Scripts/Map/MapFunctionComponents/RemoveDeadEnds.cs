@@ -23,7 +23,7 @@ public class RemoveDeadEnds : MapFunctionComponent {
     protected List<Vector3> GetAllDeadEnds() {
         List<Vector3> res = new List<Vector3>();
         foreach(Vector3 pos in map.GetAllEmptyPositions()) {
-            if (map.IsInInsidedRegularMap(pos) && map.GetVoisinsLibres(pos).Count == 1) {
+            if (map.IsInInsidedRegularMap(pos) && map.GetVoisinsLibresInMap(pos).Count == 1) {
                 res.Add(pos);
             }
         }
@@ -31,7 +31,7 @@ public class RemoveDeadEnds : MapFunctionComponent {
     }
 
     protected void RemoveDeadEnd(Vector3 deadEnd) {
-        List<Vector3> voisins = map.GetVoisinsPleins(deadEnd);
+        List<Vector3> voisins = map.GetVoisinsPleinsInMap(deadEnd);
         List<Vector3> voisinsInInsidedMap = new List<Vector3>();
         foreach (Vector3 voisin in voisins) {
             if(map.IsInInsidedRegularMap(voisin))

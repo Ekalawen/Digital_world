@@ -83,7 +83,7 @@ public class PouvoirPathfinder : IPouvoir {
     }
 
     protected List<Vector3> GetPathForPosition(Vector3 position, List<Vector3> posToDodge) {
-        List<Vector3> path = gm.map.GetPath(player.transform.position, position, posToDodge, bIsRandom: true);
+        List<Vector3> path = gm.map.GetPath(player.transform.position, position, posToDodge, bIsRandom: true, useNotInMapVoisins: true);
         return path;
     }
 

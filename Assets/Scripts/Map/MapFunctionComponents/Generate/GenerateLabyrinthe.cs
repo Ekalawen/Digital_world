@@ -72,32 +72,32 @@ public class GenerateLabyrinthe : GenerateCubesMapFunction {
         // DROITE
         if (map.IsInInsidedRegularMap(new Vector3Int(i + 1, j, k))
             && map.GetCubeAt(i + 1, j, k) != null
-            && map.GetVoisinsLibres(map.GetCubeAt(i + 1, j, k).transform.position).Count == 1)
+            && map.GetVoisinsLibresInMap(map.GetCubeAt(i + 1, j, k).transform.position).Count == 1)
             res.Add(new Vector3Int(i + 1, j, k));
         // GAUCHE
         if (map.IsInInsidedRegularMap(new Vector3Int(i - 1, j, k)) 
             && map.GetCubeAt(i - 1, j, k) != null
-            && map.GetVoisinsLibres(map.GetCubeAt(i - 1, j, k).transform.position).Count == 1)
+            && map.GetVoisinsLibresInMap(map.GetCubeAt(i - 1, j, k).transform.position).Count == 1)
             res.Add(new Vector3Int(i - 1, j, k));
         // HAUT
         if (map.IsInInsidedRegularMap(new Vector3Int(i, j + 1, k)) 
             && map.GetCubeAt(i, j + 1, k) != null
-            && map.GetVoisinsLibres(map.GetCubeAt(i, j + 1, k).transform.position).Count == 1)
+            && map.GetVoisinsLibresInMap(map.GetCubeAt(i, j + 1, k).transform.position).Count == 1)
             res.Add(new Vector3Int(i, j + 1, k));
         // BAS
         if (map.IsInInsidedRegularMap(new Vector3Int(i, j - 1, k)) 
             && map.GetCubeAt(i, j - 1, k) != null
-            && map.GetVoisinsLibres(map.GetCubeAt(i, j - 1, k).transform.position).Count == 1)
+            && map.GetVoisinsLibresInMap(map.GetCubeAt(i, j - 1, k).transform.position).Count == 1)
             res.Add(new Vector3Int(i, j - 1, k));
         // DEVANT
         if (map.IsInInsidedRegularMap(new Vector3Int(i, j, k + 1)) 
             && map.GetCubeAt(i, j, k + 1) != null
-            && map.GetVoisinsLibres(map.GetCubeAt(i, j, k + 1).transform.position).Count == 1)
+            && map.GetVoisinsLibresInMap(map.GetCubeAt(i, j, k + 1).transform.position).Count == 1)
             res.Add(new Vector3Int(i, j, k + 1));
         // DERRIRE
         if (map.IsInInsidedRegularMap(new Vector3Int(i, j, k - 1)) 
             && map.GetCubeAt(i, j, k - 1) != null
-            && map.GetVoisinsLibres(map.GetCubeAt(i, j, k - 1).transform.position).Count == 1)
+            && map.GetVoisinsLibresInMap(map.GetCubeAt(i, j, k - 1).transform.position).Count == 1)
             res.Add(new Vector3Int(i, j, k - 1));
         return res;
     }

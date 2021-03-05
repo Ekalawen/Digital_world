@@ -627,7 +627,7 @@ public class MapManager : MonoBehaviour {
         open.Push(startPos);
         while(open.Count > 0) {
             Vector3 current = open.Pop();
-            List<Vector3> voisins = GetVoisinsLibres(current);
+            List<Vector3> voisins = GetVoisinsLibresInMap(current);
             foreach (Vector3 v in voisins) {
                 if(!open.Contains(v) && !closed.Contains(v))
                     open.Push(v);
@@ -638,11 +638,11 @@ public class MapManager : MonoBehaviour {
         return new List<Vector3>(closed);
     }
 
-    protected bool HasVoinsinsLibres(Vector3 pos) {
-        return GetVoisinsLibres(pos).Count > 0;
+    protected bool HasVoinsinsLibresMLap(Vector3 pos) {
+        return GetVoisinsLibresInMap(pos).Count > 0;
     }
 
-    public List<Vector3> GetVoisinsLibres(Vector3 pos) {
+    public List<Vector3> GetVoisinsLibresInMap(Vector3 pos) {
         List<Vector3> res = new List<Vector3>();
         int i = (int)pos.x, j = (int)pos.y, k = (int)pos.z;
         // DROITE
@@ -665,8 +665,31 @@ public class MapManager : MonoBehaviour {
             res.Add(new Vector3(i, j, k - 1));
         return res;
     }
+    public List<Vector3> GetVoisinsLibresAll(Vector3 pos) {
+        List<Vector3> res = new List<Vector3>();
+        int i = (int)pos.x, j = (int)pos.y, k = (int)pos.z;
+        // DROITE
+        if (!IsInRegularMap(new Vector3(i + 1, j, k)) || cubesRegular[i + 1, j, k] == null)
+            res.Add(new Vector3(i + 1, j, k));
+        // GAUCHE
+        if (!IsInRegularMap(new Vector3(i - 1, j, k)) || cubesRegular[i - 1, j, k] == null)
+            res.Add(new Vector3(i - 1, j, k));
+        // HAUT
+        if (!IsInRegularMap(new Vector3(i, j + 1, k)) || cubesRegular[i, j + 1, k] == null)
+            res.Add(new Vector3(i, j + 1, k));
+        // BAS
+        if (!IsInRegularMap(new Vector3(i, j - 1, k)) || cubesRegular[i, j - 1, k] == null)
+            res.Add(new Vector3(i, j - 1, k));
+        // DEVANT
+        if (!IsInRegularMap(new Vector3(i, j, k + 1)) || cubesRegular[i, j, k + 1] == null)
+            res.Add(new Vector3(i, j, k + 1));
+        // DERRIRE
+        if (!IsInRegularMap(new Vector3(i, j, k - 1)) || cubesRegular[i, j, k - 1] == null)
+            res.Add(new Vector3(i, j, k - 1));
+        return res;
+    }
 
-    public List<Vector3> GetVoisinsPleins(Vector3 pos) {
+    public List<Vector3> GetVoisinsPleinsInMap(Vector3 pos) {
         List<Vector3> res = new List<Vector3>();
         int i = (int)pos.x, j = (int)pos.y, k = (int)pos.z;
         // DROITE
@@ -709,7 +732,7 @@ public class MapManager : MonoBehaviour {
     }
 
     protected List<Vector3Int> GetVoisinsLibresInt(Vector3Int pos) {
-        List<Vector3> v3 = GetVoisinsLibres(pos);
+        List<Vector3> v3 = GetVoisinsLibresInMap(pos);
         List<Vector3Int> v3I = new List<Vector3Int>();
         foreach (Vector3 v in v3)
             v3I.Add(MathTools.RoundToInt(v));
@@ -763,13 +786,13 @@ public class MapManager : MonoBehaviour {
         return path;
     }
 
-    public List<Vector3> GetPath(Vector3 start, Vector3 end, List<Vector3> posToDodge, bool bIsRandom = false) {
+    public List<Vector3> GetPath(Vector3 start, Vector3 end, List<Vector3> posToDodge, bool bIsRandom = false, bool useNotInMapVoisins = false) {
         List<Vector3> path = new List<Vector3>();
 
         start = MathTools.Round(start);
         end = MathTools.Round(end);
 
-        if (!IsInRegularMap(end) || posToDodge.Contains(end) || cubesRegular[(int)end.x, (int)end.y, (int)end.z] != null)
+        if (posToDodge.Contains(end) || cubesRegular[(int)end.x, (int)end.y, (int)end.z] != null)
             return null;
 
         List<Node> closed = new List<Node>();
@@ -784,7 +807,7 @@ public class MapManager : MonoBehaviour {
                 return ComputePathBackward(start, path, ref current);
             }
 
-            List<Vector3> voisins = GetVoisinsLibreNotInPosToDodge(posToDodge, current, bIsRandom);
+            List<Vector3> voisins = GetVoisinsLibreNotInPosToDodge(posToDodge, current, bIsRandom, useNotInMapVoisins);
 
             for (int i = 0; i < voisins.Count; i++)
             {
@@ -837,16 +860,12 @@ public class MapManager : MonoBehaviour {
         }
     }
 
-    protected List<Vector3> GetVoisinsLibreNotInPosToDodge(List<Vector3> posToDodge, Node current, bool bIsRandom) {
-        List<Vector3> voisins = GetVoisinsLibres(current.pos);
-        for (int i = 0; i < voisins.Count; i++) {
-            if (posToDodge.Contains(voisins[i])) {
-                voisins.RemoveAt(i);
-                i--;
-            }
-        }
-        if (bIsRandom)
+    protected List<Vector3> GetVoisinsLibreNotInPosToDodge(List<Vector3> posToDodge, Node current, bool bIsRandom, bool useNotRegularVoisins) {
+        List<Vector3> voisins = (!useNotRegularVoisins) ? GetVoisinsLibresInMap(current.pos) : GetVoisinsLibresAll(current.pos);
+        voisins = voisins.FindAll(v => !posToDodge.Contains(v));
+        if (bIsRandom) {
             MathTools.Shuffle(voisins);
+        }
 
         return voisins;
     }
