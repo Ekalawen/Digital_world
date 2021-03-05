@@ -338,7 +338,7 @@ public class EventManager : MonoBehaviour {
         if (reason != DeathReason.FALL_OUT)
             gm.FreezeTime();
 
-        gm.historyManager.SetDureeGame(gm.timerManager.GetElapsedTime());
+        gm.historyManager.SetDureeGame(gm.timerManager.GetRealGameTimer().GetElapsedTime());
 
         gm.player.FreezePouvoirs();
 
@@ -432,7 +432,7 @@ public class EventManager : MonoBehaviour {
         gm.FreezeTime();
         gm.player.FreezePouvoirs();
 
-        gm.historyManager.SetDureeGame(gm.timerManager.GetElapsedTime());
+        gm.historyManager.SetDureeGame(gm.timerManager.GetRealGameTimer().GetElapsedTime());
 
         Debug.Log("WIIIIIIIIIIINNNNNNNNNNNN !!!!!!!!");
         gm.console.WinGame();

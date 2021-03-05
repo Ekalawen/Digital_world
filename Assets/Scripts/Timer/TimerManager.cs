@@ -24,13 +24,15 @@ public class TimerManager : MonoBehaviour {
 
     protected GameManager gm;
     protected Timer soundTimeOutTimer;
-    protected Timer gameTimer;
+    protected Timer gameTimer; // Celui-ci est réinitialisé quand on prend un TimeResetItem !
+    protected Timer realGameTimer; // On ne peut pas réinitialiser celui-ci !
     protected CameraShakeInstance cameraShakeInstance;
 
     public void Initialize() {
 		name = "TimerManager";
         gm = FindObjectOfType<GameManager>();
         gameTimer = new Timer(initialTime);
+        realGameTimer = new Timer();
         soundTimeOutTimer = new Timer(1.0f);
         cameraShakeInstance = CameraShaker.Instance.StartShake(0, 0, 0);
     }
@@ -209,6 +211,10 @@ public class TimerManager : MonoBehaviour {
         return gameTimer.GetElapsedTime();
     }
 
+    public float GetRealElapsedTime() {
+        return realGameTimer.GetElapsedTime();
+    }
+
     public bool HasGameStarted() {
         return gameTimer.GetElapsedTime() >= 0.1f;
     }
@@ -227,5 +233,9 @@ public class TimerManager : MonoBehaviour {
 
     public void StopScreenShake() {
         cameraShakeInstance.StartFadeOut(0);
+    }
+    
+    public Timer GetRealGameTimer() {
+        return realGameTimer;
     }
 }

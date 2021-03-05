@@ -21,7 +21,7 @@ public struct ObjectHistory {
     public ObjectHistory(MonoBehaviour obj) {
         this.obj = obj;
         positions = new List<TimedVector3>();
-        positions.Add(new TimedVector3(obj.transform.position, GameManager.Instance.timerManager.GetElapsedTime()));
+        positions.Add(new TimedVector3(obj.transform.position, GameManager.Instance.timerManager.GetRealElapsedTime()));
         prefab = null;
     }
 
@@ -92,7 +92,7 @@ public class HistoryManager : MonoBehaviour {
 
     protected void EchantillonnerPositionPlayer() {
         if(!gm.eventManager.IsGameWin() && echantillonnageTimer.IsOver()) {
-            TimedVector3 tpos = new TimedVector3(gm.player.transform.position, gm.timerManager.GetElapsedTime());
+            TimedVector3 tpos = new TimedVector3(gm.player.transform.position, gm.timerManager.GetRealElapsedTime());
             playerHistory.positions.Add(tpos);
         }
     }
@@ -102,7 +102,7 @@ public class HistoryManager : MonoBehaviour {
             for(int i = 0; i < ennemisHistory.Count; i++) {
                 ObjectHistory ch = ennemisHistory[i];
                 if (ch.obj != null) { // Il est maintenant possible que certains ennemis soient détruits ! ==> peut engendrer des bugs !
-                    TimedVector3 tpos = new TimedVector3(ch.obj.transform.position, gm.timerManager.GetElapsedTime());
+                    TimedVector3 tpos = new TimedVector3(ch.obj.transform.position, gm.timerManager.GetRealElapsedTime());
                     ch.positions.Add(tpos);
                 }
             }
@@ -116,7 +116,7 @@ public class HistoryManager : MonoBehaviour {
                 if (objectHistory.obj != null) {
                     Lumiere lumiere = (Lumiere)objectHistory.obj;
                     if(!lumiere.IsCaptured()) {
-                        TimedVector3 tpos = new TimedVector3(objectHistory.obj.transform.position, gm.timerManager.GetElapsedTime());
+                        TimedVector3 tpos = new TimedVector3(objectHistory.obj.transform.position, gm.timerManager.GetRealElapsedTime());
                         objectHistory.positions.Add(tpos);
                     }
                 }
@@ -129,7 +129,7 @@ public class HistoryManager : MonoBehaviour {
             for(int i = 0; i < itemsHistory.Count; i++) {
                 ObjectHistory ch = itemsHistory[i];
                 if (ch.obj != null) {
-                    TimedVector3 tpos = new TimedVector3(ch.obj.transform.position, gm.timerManager.GetElapsedTime());
+                    TimedVector3 tpos = new TimedVector3(ch.obj.transform.position, gm.timerManager.GetRealElapsedTime());
                     ch.positions.Add(tpos);
                 }
             }
