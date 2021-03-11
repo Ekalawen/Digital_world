@@ -97,7 +97,7 @@ public class TracerController : EnnemiController {
         if (doesPathAvoidCubes) {
             path = gm.map.GetPath(start, end, posToDodge, bIsRandom: true, useNotInMapVoisins: true);
         } else {
-            path = 
+            path = gm.map.GetStraitPath(start, end, isDeterministic: false);
         }
         if (goToPosJustBeforePlayer)
             path.RemoveAt(path.Count - 1);

@@ -215,41 +215,12 @@ public class Cave : CubeEnsemble {
 
 	// Le but de cette fonction est de creuser un tunel allant de debutChemin a finChemin !
 	public static void RelierChemin(Cube[,,] cubeMatrix, MapManager map, Vector3 debutChemin, Vector3 finChemin) {
-		Vector3 pointsActuel = debutChemin;
-		while (pointsActuel != finChemin) {
-			// On creuse
-			map.DeleteCube(cubeMatrix[(int)pointsActuel.x, (int)pointsActuel.y, (int)pointsActuel.z]);
-            cubeMatrix[(int)pointsActuel.x, (int)pointsActuel.y, (int)pointsActuel.z] = null; // utile car cubeMatrix n'est pas forcément la map !
-
-			// On liste les bonnes directions à prendre
-			List<Vector3> directions = new List<Vector3>();
-			if (pointsActuel.x != finChemin.x) {
-				if (pointsActuel.x < finChemin.x) {
-					directions.Add (new Vector3 (pointsActuel.x + 1, pointsActuel.y, pointsActuel.z));
-				} else {
-					directions.Add (new Vector3 (pointsActuel.x - 1, pointsActuel.y, pointsActuel.z));
-				}
-			}
-			if (pointsActuel.y != finChemin.y) {
-				if (pointsActuel.y < finChemin.y) {
-					directions.Add (new Vector3 (pointsActuel.x, pointsActuel.y + 1, pointsActuel.z));
-				} else {
-					directions.Add (new Vector3 (pointsActuel.x, pointsActuel.y - 1, pointsActuel.z));
-				}
-			}
-			if (pointsActuel.z != finChemin.z) {
-				if (pointsActuel.z < finChemin.z) {
-					directions.Add (new Vector3 (pointsActuel.x, pointsActuel.y, pointsActuel.z + 1));
-				} else {
-					directions.Add (new Vector3 (pointsActuel.x, pointsActuel.y, pointsActuel.z - 1));
-				}
-			}
-
-			// On se déplace dans une bonne direction aléatoirement
-			pointsActuel = directions[Random.Range(0, directions.Count)];
-		}
-        map.DeleteCube(cubeMatrix[(int)pointsActuel.x, (int)pointsActuel.y, (int)pointsActuel.z]);
-        cubeMatrix[(int)pointsActuel.x, (int)pointsActuel.y, (int)pointsActuel.z] = null; // utile car cubeMatrix n'est pas forcément la map !
+        List<Vector3> path = map.GetStraitPath(debutChemin, finChemin, isDeterministic: false);
+        path.Prepend(debutChemin);
+        foreach(Vector3 pointActuel in path) {
+            map.DeleteCube(cubeMatrix[(int)pointActuel.x, (int)pointActuel.y, (int)pointActuel.z]);
+            cubeMatrix[(int)pointActuel.x, (int)pointActuel.y, (int)pointActuel.z] = null; // utile car cubeMatrix n'est pas forcément la map !
+        }
 	}
 
     public bool AddNLumiereInside(int nbLumieresToAdd, int offsetFromCenter = 1) {

@@ -1211,4 +1211,43 @@ public class MapManager : MonoBehaviour {
     public List<Vector3> GetAllEmptyPositionsInTranche(GravityManager.Direction fromDirection, int offset) {
         return GetAllEmptyPositions().FindAll(p => IsInTranche(p, fromDirection, offset));
     }
+    public List<Vector3> GetStraitPath(Vector3 debutChemin, Vector3 finChemin, bool isDeterministic = false) {
+        List<Vector3> path = new List<Vector3>();
+		Vector3 pointActuel = debutChemin;
+		while (pointActuel != finChemin) {
+			// On liste les bonnes directions à prendre
+			List<Vector3> directions = new List<Vector3>();
+			if (pointActuel.x != finChemin.x) {
+				if (pointActuel.x < finChemin.x) {
+					directions.Add (new Vector3 (pointActuel.x + 1, pointActuel.y, pointActuel.z));
+				} else {
+					directions.Add (new Vector3 (pointActuel.x - 1, pointActuel.y, pointActuel.z));
+				}
+			}
+			if (pointActuel.y != finChemin.y) {
+				if (pointActuel.y < finChemin.y) {
+					directions.Add (new Vector3 (pointActuel.x, pointActuel.y + 1, pointActuel.z));
+				} else {
+					directions.Add (new Vector3 (pointActuel.x, pointActuel.y - 1, pointActuel.z));
+				}
+			}
+			if (pointActuel.z != finChemin.z) {
+				if (pointActuel.z < finChemin.z) {
+					directions.Add (new Vector3 (pointActuel.x, pointActuel.y, pointActuel.z + 1));
+				} else {
+					directions.Add (new Vector3 (pointActuel.x, pointActuel.y, pointActuel.z - 1));
+				}
+			}
+
+            // On se déplace dans une bonne direction aléatoirement
+            if (!isDeterministic) {
+                pointActuel = directions[UnityEngine.Random.Range(0, directions.Count)];
+            } else {
+                pointActuel = directions[0];
+            }
+            path.Add(pointActuel);
+		}
+        return path;
+    }
+
 }
