@@ -45,6 +45,10 @@ public abstract class Item : MonoBehaviour {
         Destroy();
     }
 
+    public bool IsCaptured() {
+        return isCaptured;
+    }
+
     public virtual void Destroy() {
         Destroy(this.gameObject);
     }

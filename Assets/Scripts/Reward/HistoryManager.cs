@@ -129,8 +129,11 @@ public class HistoryManager : MonoBehaviour {
             for(int i = 0; i < itemsHistory.Count; i++) {
                 ObjectHistory ch = itemsHistory[i];
                 if (ch.obj != null) {
-                    TimedVector3 tpos = new TimedVector3(ch.obj.transform.position, gm.timerManager.GetRealElapsedTime());
-                    ch.positions.Add(tpos);
+                    Item item = ch.obj.GetComponent<Item>();
+                    if (item == null || !item.IsCaptured()) {
+                        TimedVector3 tpos = new TimedVector3(ch.obj.transform.position, gm.timerManager.GetRealElapsedTime());
+                        ch.positions.Add(tpos);
+                    }
                 }
             }
         }
