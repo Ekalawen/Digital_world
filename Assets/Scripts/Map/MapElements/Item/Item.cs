@@ -15,13 +15,15 @@ public abstract class Item : MonoBehaviour {
 
     protected GameManager gm;
     protected GameObject itemPrefab;
+    protected bool isCaptured = false;
 
     protected virtual void Start() {
         gm = GameManager.Instance;
     }
 
 	protected virtual void OnTriggerEnter(Collider hit) {
-		if (hit.gameObject.name == "Joueur"){
+		if (!isCaptured && hit.gameObject.name == "Joueur"){
+            isCaptured = true;
             gm.soundManager.PlayGetItemClip(transform.position);
             OnTrigger(hit);
             ScreenShakeOnCapture();
@@ -40,6 +42,10 @@ public abstract class Item : MonoBehaviour {
         if (shouldRepop) {
             gm.itemManager.PopItem(itemPrefab);
         }
+        Destroy();
+    }
+
+    public virtual void Destroy() {
         Destroy(this.gameObject);
     }
 
