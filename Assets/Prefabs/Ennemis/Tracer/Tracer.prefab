@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 143453940002141234}
   - component: {fileID: 114768374186490010}
   - component: {fileID: 2567549418447726992}
+  - component: {fileID: 6524706361763154274}
   m_Layer: 0
   m_Name: Tracer
   m_TagString: Ennemi
@@ -155,18 +156,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f0429c5b0306b4459efc778ed3266a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vitesse: 15
+  vitesse: 20
   tempsInactifDebutJeu: 3
   distanceDeDetection: 999999
   canAlwaysSeePlayer: 0
-  dureeEmiting: 4
-  dureePauseEntreNodes: 0.1
+  dureePauseEntreNodes: 0.05
   goToPosJustBeforePlayer: 1
-  startEmitingEvents:
+  dureeEmitting: 4
+  startEmittingEvents:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 114768374186490010}
-        m_TargetAssemblyTypeName: 
+        m_TargetAssemblyTypeName: Tracer, Assembly-CSharp
         m_MethodName: StartEmiting
         m_Mode: 1
         m_Arguments:
@@ -177,11 +178,11 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  stopEmitingEvents:
+  stopEmittingEvents:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 114768374186490010}
-        m_TargetAssemblyTypeName: 
+        m_TargetAssemblyTypeName: Tracer, Assembly-CSharp
         m_MethodName: StopEmiting
         m_Mode: 1
         m_Arguments:
@@ -192,6 +193,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &6524706361763154274
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1092124540126664}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2898d42de4ac1a945bff1fc30311748f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1847121400403312
 GameObject:
   m_ObjectHideFlags: 0

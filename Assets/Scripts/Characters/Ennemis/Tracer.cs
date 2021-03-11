@@ -6,6 +6,7 @@ public class Tracer : Ennemi {
 
     public enum TracerState { WAITING, RUSHING, EMITING };
 
+    [Header("Emitting")]
     public float dureeEmiting = 4.0f;
     public float rangeEmiting = 5.0f;
     public float forceEmiting = 1.0f;

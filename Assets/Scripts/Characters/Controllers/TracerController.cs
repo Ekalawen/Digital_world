@@ -7,11 +7,15 @@ public class TracerController : EnnemiController {
 
     public enum TracerState { WAITING, RUSHING, EMITING };
 
-    public float dureeEmiting = 4.0f;
+    [Header("Mouvement")]
     public float dureePauseEntreNodes = 0.1f;
     public bool goToPosJustBeforePlayer = false;
-    public UnityEvent startEmitingEvents;
-    public UnityEvent stopEmitingEvents;
+    public bool doesPathAvoidCubes = false;
+
+    [Header("Emitting")]
+    public float dureeEmitting = 4.0f;
+    public UnityEvent startEmittingEvents;
+    public UnityEvent stopEmittingEvents;
 
     protected TracerState state;
     protected List<Vector3> path;
@@ -90,7 +94,11 @@ public class TracerController : EnnemiController {
         Vector3 start = MathTools.Round(transform.position);
         end = MathTools.Round(end);
         List<Vector3> posToDodge = gm.ennemiManager.GetAllRoundedEnnemisPositions();
-        path = gm.map.GetPath(start, end, posToDodge, bIsRandom: true);
+        if (doesPathAvoidCubes) {
+            path = gm.map.GetPath(start, end, posToDodge, bIsRandom: true, useNotInMapVoisins: true);
+        } else {
+            path = 
+        }
         if (goToPosJustBeforePlayer)
             path.RemoveAt(path.Count - 1);
         if(path == null) {
@@ -102,7 +110,7 @@ public class TracerController : EnnemiController {
         TracerState oldState = state;
         state = newState;
         if(newState == TracerState.EMITING && oldState != TracerState.EMITING) {
-            startEmitingEvents.Invoke();
+            startEmittingEvents.Invoke();
             stopEmitingCoroutine = StartCoroutine(CStopEmitingIn());
         }
         if (newState == TracerState.RUSHING && oldState != TracerState.RUSHING) {
@@ -112,13 +120,13 @@ public class TracerController : EnnemiController {
     }
 
     protected void StopEmiting() {
-        stopEmitingEvents.Invoke();
+        stopEmittingEvents.Invoke();
         if (stopEmitingCoroutine != null)
             StopCoroutine(stopEmitingCoroutine);
     }
 
     protected IEnumerator CStopEmitingIn() {
-        yield return new WaitForSeconds(dureeEmiting);
+        yield return new WaitForSeconds(dureeEmitting);
         StopEmiting();
         SetState(TracerState.WAITING);
     }
