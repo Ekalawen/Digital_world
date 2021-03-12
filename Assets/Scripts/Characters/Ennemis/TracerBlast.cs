@@ -15,6 +15,7 @@ public class TracerBlast : Ennemi {
     [Header("Load Animation")]
     public float blastLoadMaxRotation = 10f;
     public AnimationCurve blastLoadRotationCurve;
+    public float blastLoadSoundOffset = 0.7f;
 
     protected Coroutine blastCoroutine = null;
     protected Coroutine blastLoadRotationCoroutine = null;
@@ -46,6 +47,7 @@ public class TracerBlast : Ennemi {
     public void LoadBlast() {
         // Start loading animation
         blastLoadRotationCoroutine = StartCoroutine(CRotation());
+        gm.soundManager.PlayTracerBlastLoadClip(transform.position, blastLoadDuree + blastLoadSoundOffset);
     }
 
     protected IEnumerator CRotation() {

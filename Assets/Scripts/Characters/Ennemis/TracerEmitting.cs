@@ -111,7 +111,7 @@ public class TracerEmitting : Ennemi {
     }
 
     public override void PlayHitSound() {
-        gm.soundManager.PlayHitTracerClip(transform.position, transform);
+        gm.soundManager.PlayTracerHitClip(transform.position, transform);
     }
 
     public override void DisplayHitMessage() {

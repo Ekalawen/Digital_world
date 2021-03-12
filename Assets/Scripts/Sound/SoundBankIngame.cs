@@ -12,7 +12,8 @@ public class SoundBankIngame : ScriptableObject {
     public AudioClipParams getItemClips;
     public AudioClipParams failActionClips;
     public AudioClipParams hitClips;
-    public AudioClipParams hitTracerClips;
+    public AudioClipParams tracerHitClips;
+    public AudioClipParams tracerBlastLoadClips;
     public AudioClipParams emissionTracerClips;
     public AudioClipParams firstBossPresenceClips;
     public AudioClipParams firstBossDecreasingBall;
