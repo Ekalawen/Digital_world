@@ -27,12 +27,12 @@ public class TracerBlast : Ennemi {
     public override void UpdateSpecific() {
     }
 
-	void OnControllerColliderHit(ControllerColliderHit hit) {
-        Player player = hit.collider.gameObject.GetComponent<Player>();
-        if (player != null) {
-            HitPlayer();
-        }
-    }
+	//void OnControllerColliderHit(ControllerColliderHit hit) {
+ //       Player player = hit.collider.gameObject.GetComponent<Player>();
+ //       if (player != null) {
+ //           HitPlayer();
+ //       }
+ //   }
 
     public void StartBlast() {
         blastCoroutine = StartCoroutine(CStartBlast());
