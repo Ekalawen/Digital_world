@@ -9,7 +9,7 @@ public class TracerNoObstacleController : TracerController {
         end = MathTools.Round(end);
         path = gm.map.GetNoObstaclePath(start, end, bIsRandom: true);
         if(path == null) {
-            SetState(TracerState.EMITING);
+            SetState(TracerState.ATTACKING);
         }
     }
 

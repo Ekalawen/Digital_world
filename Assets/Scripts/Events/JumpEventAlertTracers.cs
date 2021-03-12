@@ -13,7 +13,7 @@ public class JumpEventAlertTracers : JumpEvent {
             if(tracer != null) {
                 TracerController tracerController = tracer.GetComponent<TracerController>();
                 if(tracerController != null)
-                    tracerController.DetectPlayer();
+                    tracerController.RushToPlayer();
             }
         }
 

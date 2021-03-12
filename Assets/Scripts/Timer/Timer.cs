@@ -11,10 +11,13 @@ public class Timer {
     protected float stopedTiming;
     protected float lastAvancement;
 
-    public Timer(float duree = 0) {
+    public Timer(float duree = 0, bool setOver = false) {
         this.duree = duree;
         this.debut = GetTimeSinceLevelLoad();
         this.lastAvancement = 0;
+        if(setOver) {
+            SetOver();
+        }
     }
 
     public bool IsOver() {

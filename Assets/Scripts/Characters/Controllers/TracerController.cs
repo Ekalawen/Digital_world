@@ -1,63 +1,69 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class TracerController : EnnemiController {
 
-    public enum TracerState { WAITING, RUSHING, EMITING };
+    public enum TracerState { WAITING, RUSHING, ATTACKING };
 
     [Header("Mouvement")]
     public float dureePauseEntreNodes = 0.1f;
     public bool goToPosJustBeforePlayer = false;
     public bool doesPathAvoidCubes = false;
 
-    [Header("Emitting")]
-    public float dureeEmitting = 4.0f;
-    public UnityEvent startEmittingEvents;
-    public UnityEvent stopEmittingEvents;
+    [Header("Attack")]
+    public float dureeAttack = 4.0f;
+    public UnityEvent startAttackEvents;
+    public UnityEvent stopAttackEvents;
 
     protected TracerState state;
     protected List<Vector3> path;
-    protected float lastTimePause;
+    protected Timer timerNodePause;
 
     protected bool bIsStuck = false;
     protected Vector3 lastPosition;
-    protected float debutStuck;
+    protected Timer timerStuck;
     protected float dureeMaxStuck = 0.1f;
-    protected Coroutine stopEmitingCoroutine = null;
+    protected Coroutine stopAttackCoroutine = null;
 
     public override void Start() {
         base.Start();
         SetState(TracerState.WAITING);
-        lastTimePause = Time.timeSinceLevelLoad;
+        timerNodePause = new Timer(dureePauseEntreNodes, setOver: true);
+        timerStuck = new Timer(dureeMaxStuck, setOver: true);
     }
 
     protected override void UpdateSpecific () {
-        GetEtat();
+        SetCurrentEtat();
 
         switch(state) {
             case TracerState.WAITING:
                 break;
             case TracerState.RUSHING:
+                if(path.Count == 0) { // Car on peut générer des chemins vides si on est très proche de la cible
+                    SetState(TracerState.ATTACKING);
+                    break;
+                }
                 if(Vector3.Distance(transform.position, path[0]) < 0.001f) {
                     path.RemoveAt(0);
-                    lastTimePause = Time.timeSinceLevelLoad;
+                    timerNodePause.Reset();
                 }
                 if(path.Count == 0) {
-                    SetState(TracerState.EMITING);
-                    return;
+                    SetState(TracerState.ATTACKING);
+                    break;
                 }
 
                 // On va au premier point du chemin !
-                if (Time.timeSinceLevelLoad - lastTimePause > dureePauseEntreNodes) {
+                if (timerNodePause.IsOver()) {
                     Vector3 move = MoveToTarget(path[0]);
 
                     // On essaye de se débloquer si on est bloqué !
                     TryUnStuck();
                 }
                 break;
-            case TracerState.EMITING:
+            case TracerState.ATTACKING:
                 break;
         }
         lastPosition = transform.position;
@@ -66,28 +72,27 @@ public class TracerController : EnnemiController {
     protected void TryUnStuck() {
         if(transform.position == lastPosition) {
             if (!bIsStuck) {
-                debutStuck = Time.timeSinceLevelLoad;
+                timerStuck.Reset();
                 bIsStuck = true;
             }
-            if(bIsStuck && Time.timeSinceLevelLoad - debutStuck > dureeMaxStuck) {
-                ComputePath(path[path.Count - 1]); // On va au même endroit que précédemment !
+            if(bIsStuck && timerStuck.IsOver()) {
+                ComputePath(path.Last()); // On va au même endroit que précédemment !
                 bIsStuck = false;
             }
         }
     }
 
-    void GetEtat() {
+    protected void SetCurrentEtat() {
         if(state == TracerState.WAITING) {
             if (IsPlayerVisible()) {
-                DetectPlayer();
+                RushToPlayer();
             }
         }
     }
 
-    public void DetectPlayer() {
-        StopEmiting();
+    public void RushToPlayer() {
+        StopAttacking();
         SetState(TracerState.RUSHING);
-        ComputePath(player.transform.position);
     }
 
     protected virtual void ComputePath(Vector3 end) {
@@ -99,36 +104,46 @@ public class TracerController : EnnemiController {
         } else {
             path = gm.map.GetStraitPath(start, end, isDeterministic: false);
         }
-        if (goToPosJustBeforePlayer)
-            path.RemoveAt(path.Count - 1);
-        if(path == null) {
-            SetState(TracerState.EMITING);
+
+        if (path == null) {
+            SetState(TracerState.ATTACKING);
+        } else {
+            if (goToPosJustBeforePlayer) {
+                path.RemoveAt(path.Count - 1);
+            }
         }
     }
 
     protected void SetState(TracerState newState) {
         TracerState oldState = state;
         state = newState;
-        if(newState == TracerState.EMITING && oldState != TracerState.EMITING) {
-            startEmittingEvents.Invoke();
-            stopEmitingCoroutine = StartCoroutine(CStopEmitingIn());
+        if(newState == TracerState.ATTACKING && oldState != TracerState.ATTACKING) {
+            startAttackEvents.Invoke();
+            stopAttackCoroutine = StartCoroutine(CStopAttackingIn(dureeAttack));
         }
         if (newState == TracerState.RUSHING && oldState != TracerState.RUSHING) {
-            StopEmiting();
+            StopAttacking();
+            ComputePath(player.transform.position);
             gm.soundManager.PlayDetectionClip(transform.position, transform);
         }
     }
 
-    protected void StopEmiting() {
-        stopEmittingEvents.Invoke();
-        if (stopEmitingCoroutine != null)
-            StopCoroutine(stopEmitingCoroutine);
+    protected void StopAttacking() {
+        Debug.Log($"StopAttackingEvent");
+        stopAttackEvents.Invoke();
+        if (stopAttackCoroutine != null) {
+            StopCoroutine(stopAttackCoroutine);
+        }
     }
 
-    protected IEnumerator CStopEmitingIn() {
-        yield return new WaitForSeconds(dureeEmitting);
-        StopEmiting();
-        SetState(TracerState.WAITING);
+    protected IEnumerator CStopAttackingIn(float duree) {
+        yield return new WaitForSeconds(duree);
+        StopAttacking();
+        if (!IsPlayerVisible()) {
+            SetState(TracerState.WAITING);
+        } else {
+            SetState(TracerState.RUSHING);
+        }
     }
 
     public override bool IsInactive() {
