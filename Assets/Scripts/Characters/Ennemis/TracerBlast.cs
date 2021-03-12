@@ -63,10 +63,8 @@ public class TracerBlast : Ennemi {
 
     public void Blast() {
         // Start blast animation
-        Debug.Log($"Blast !");
         EnnemiController ennemiController = GetComponent<EnnemiController>();
         if(ennemiController != null && ennemiController.IsPlayerVisible()) {
-            Debug.Log($"Blast TOUCHE !");
             HitPlayer();
         }
     }

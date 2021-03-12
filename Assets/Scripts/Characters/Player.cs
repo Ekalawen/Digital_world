@@ -831,6 +831,16 @@ public class Player : Character {
         yield return new WaitForSeconds(duree);
         UnremoveGravityEffect();
     }
+
+    public void Stun() {
+        bIsStun = true;
+        FreezePouvoirs(true);
+    }
+
+    public void UnStun() {
+        bIsStun = false;
+        FreezePouvoirs(false);
+    }
 }
 
 

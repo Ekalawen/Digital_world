@@ -129,7 +129,6 @@ public class TracerController : EnnemiController {
     }
 
     protected void StopAttacking() {
-        Debug.Log($"StopAttackingEvent");
         stopAttackEvents.Invoke();
         if (stopAttackCoroutine != null) {
             StopCoroutine(stopAttackCoroutine);

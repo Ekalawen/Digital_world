@@ -53,8 +53,7 @@ public class JumpEvent : RandomEvent {
 
     protected virtual void Stun() {
         gm.timerManager.RemoveTime(timeMalus, EventManager.DeathReason.FAILED_JUMP_EVENT);
-        gm.player.FreezePouvoirs(true);
-        gm.player.bIsStun = true;
+        gm.player.Stun();
 
         gm.soundManager.PlayJumpEventStunClip();
         if (shouldDisplayJumpRules) {
@@ -73,8 +72,7 @@ public class JumpEvent : RandomEvent {
 
     protected IEnumerator UnStun() {
         yield return new WaitForSeconds(dureeStun);
-        gm.player.FreezePouvoirs(false);
-        gm.player.bIsStun = false;
+        gm.player.UnStun();
         gm.soundManager.PlayJumpEventUnStunClip();
     }
 
