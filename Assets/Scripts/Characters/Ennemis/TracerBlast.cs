@@ -12,7 +12,12 @@ public class TracerBlast : Ennemi {
     public float blastPousseeDuree = 0.3f;
     public float blastPousseeDistance = 10f;
 
+    [Header("Load Animation")]
+    public float blastLoadMaxRotation = 10f;
+    public AnimationCurve blastLoadRotationCurve;
+
     protected Coroutine blastCoroutine = null;
+    protected Coroutine blastLoadRotationCoroutine = null;
 
     public override void Start() {
         base.Start();
@@ -22,26 +27,7 @@ public class TracerBlast : Ennemi {
     }
 
 	void OnControllerColliderHit(ControllerColliderHit hit) {
-        Cube cube = hit.collider.gameObject.GetComponent<Cube>();
         Player player = hit.collider.gameObject.GetComponent<Player>();
-        GameManager gm = GameManager.Instance;
-
-        if(cube != null) {
-            if (!cube.bIsRegular) {
-                cube.Explode();
-                //GameObject go = Instantiate(explosionParticlesPrefab, cube.transform.position, Quaternion.identity);
-                //ParticleSystem particle = go.GetComponent<ParticleSystem>();
-                //ParticleSystemRenderer psr = go.GetComponent<ParticleSystemRenderer>();
-                //Material mat = psr.material;
-                //Material newMaterial = new Material(mat);
-                //newMaterial.color = cube.GetColor();
-                //psr.material = newMaterial;
-                //float particuleTime = particle.main.duration;
-                //Destroy(go, particuleTime);
-                //gm.map.DeleteCube(cube);
-            }
-        }
-
         if (player != null) {
             HitPlayer();
         }
@@ -59,6 +45,24 @@ public class TracerBlast : Ennemi {
 
     public void LoadBlast() {
         // Start loading animation
+        blastLoadRotationCoroutine = StartCoroutine(CRotation());
+    }
+
+    protected IEnumerator CRotation() {
+        Timer timer = new Timer(blastLoadDuree);
+        AutoRotate autoRotate = GetComponent<AutoRotate>();
+        while (!timer.IsOver()) {
+            autoRotate.vitesse = blastLoadRotationCurve.Evaluate(timer.GetAvancement()) * blastLoadMaxRotation;
+            yield return null;
+        }
+
+        timer = new Timer(blastPousseeDuree);
+        Quaternion startingRotation = transform.rotation;
+        while (!timer.IsOver()) {
+            transform.rotation = Quaternion.Slerp(startingRotation, Quaternion.identity, timer.GetAvancement());
+            yield return null;
+        }
+        transform.rotation = Quaternion.identity;
     }
 
     public void Blast() {
@@ -83,6 +87,12 @@ public class TracerBlast : Ennemi {
         if (blastCoroutine != null) {
             StopCoroutine(blastCoroutine);
         }
+        if (blastLoadRotationCoroutine != null) {
+            StopCoroutine(blastLoadRotationCoroutine);
+        }
+        AutoRotate autoRotate = GetComponent<AutoRotate>();
+        autoRotate.vitesse = 0;
+        transform.rotation = Quaternion.identity;
     }
 
     public override void DisplayHitMessage() {
