@@ -789,13 +789,17 @@ public class Console : MonoBehaviour {
 
     // Quand on essaye de faire une localisation alors qu'il n'a pas le droit !
     public void FailLocalisationUnauthorized() {
-		AjouterMessage (strings.failLocalisationUnauthorized, Console.TypeText.ALLY_TEXT);
+		AjouterMessageImportant(strings.failLocalisationUnauthorized, Console.TypeText.ENNEMI_TEXT, 2.0f, true, strings.failLocalisationUnauthorized);
     }
 
     // Quand on essaye de faire une localisation et qu'on ne trouve pas de chemin !
     public void FailLocalisationObjectifInateignable() {
 		AjouterMessageImportant(strings.failLocalisationObjectifInateignable, Console.TypeText.ENNEMI_TEXT, 2.0f, true, strings.failLocalisationObjectifInateignable);
     }
+    public void FailLocalisationInEndEvent() {
+		AjouterMessageImportant(strings.failLocalisationInEndEvent, Console.TypeText.ENNEMI_TEXT, 2.0f, true, strings.failLocalisationInEndEvent);
+    }
+
 
 	// Quand le joueur attérit d'un grand saut
 	public virtual void GrandSaut(float hauteurSaut) {

@@ -1078,6 +1078,10 @@ public class MapManager : MonoBehaviour {
         return lumieres;
     }
 
+    public List<Lumiere> GetLumieresFinalesAndAlmostFinales() {
+        return lumieres.FindAll(l => l.type == Lumiere.LumiereType.FINAL || l.type == Lumiere.LumiereType.ALMOST_FINAL);
+    }
+
     public void RemoveLumiere(Lumiere lumiere) {
         lumieres.Remove(lumiere);
     }

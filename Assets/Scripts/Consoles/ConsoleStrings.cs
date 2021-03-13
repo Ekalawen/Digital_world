@@ -59,6 +59,7 @@ public class ConsoleStrings : ScriptableObject {
     public LocalizedString runDetection;
     public LocalizedString failLocalisationUnauthorized;
     public LocalizedString failLocalisationObjectifInateignable;
+    public LocalizedString failLocalisationInEndEvent;
 
     public LocalizedString wowQuelSaut;
     public LocalizedString bridgeBuilderInvalid;

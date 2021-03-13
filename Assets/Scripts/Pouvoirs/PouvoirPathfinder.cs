@@ -20,7 +20,11 @@ public class PouvoirPathfinder : IPouvoir {
             List<Vector3> itemsPositions = GetAllItemsPositions();
 
             if (!player.CanUseLocalisation() || lumieresPositions.Count + itemsPositions.Count == 0) {
-                gm.console.FailLocalisationUnauthorized();
+                if (gm.map.GetLumieresFinalesAndAlmostFinales().Count == 0) {
+                    gm.console.FailLocalisationUnauthorized();
+                } else {
+                    gm.console.FailLocalisationInEndEvent();
+                }
                 gm.soundManager.PlayFailActionClip();
                 return false;
             }
@@ -29,6 +33,8 @@ public class PouvoirPathfinder : IPouvoir {
             bool haveFoundItem = detectItems && DrawPathToPositions(itemsPositions, itemPathColor, itemsOrbesPathPrefab);
 
             if (!haveFoundLumiere && !haveFoundItem) {
+                gm.console.FailLocalisationObjectifInateignable();
+                gm.soundManager.PlayFailActionClip();
                 return false;
             }
         }
@@ -47,9 +53,7 @@ public class PouvoirPathfinder : IPouvoir {
 
             return true;
         } catch (System.Exception e) {
-            Debug.LogWarning($"Pouvoir Detection fails :\n{e.StackTrace}");
-            gm.console.FailLocalisationObjectifInateignable();
-            gm.soundManager.PlayFailActionClip();
+            //Debug.LogWarning($"Pouvoir Detection fails :\n{e.StackTrace}");
             return false;
         }
     }
