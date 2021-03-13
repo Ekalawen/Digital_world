@@ -14,6 +14,7 @@ public abstract class Ennemi : Character {
     [Header("Screen Shake")]
     public float screenShakeMagnitude = 5.0f;
     public float screenShakeRoughness = 15.0f;
+    public float screenShakeDecreaseTime = 1.0f;
 
 	protected GameManager gm;
 	protected Player player;
@@ -82,7 +83,7 @@ public abstract class Ennemi : Character {
 
     protected void ShakeScreen() {
         CameraShaker cs = CameraShaker.Instance;
-        cs.ShakeOnce(screenShakeMagnitude, screenShakeRoughness, 0.1f, timeBetweenTwoHits);
+        cs.ShakeOnce(screenShakeMagnitude, screenShakeRoughness, 0.1f, screenShakeDecreaseTime);
     }
 
     public virtual void DisplayHitMessage() {

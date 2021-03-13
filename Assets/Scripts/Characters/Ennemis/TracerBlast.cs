@@ -17,11 +17,16 @@ public class TracerBlast : Ennemi {
     public AnimationCurve blastLoadRotationCurve;
     public float blastLoadSoundOffset = 0.7f;
 
+    [Header("Contact Hit")]
+    private float timeBetweenTwoContactHits = 0.5f;
+
     protected Coroutine blastCoroutine = null;
     protected Coroutine blastLoadRotationCoroutine = null;
+    protected Timer timerContactHit;
 
     public override void Start() {
         base.Start();
+        timerContactHit = new Timer(timeBetweenTwoContactHits, setOver: true);
     }
 
     public override void UpdateSpecific() {
@@ -30,7 +35,10 @@ public class TracerBlast : Ennemi {
 
     protected void TestForPlayerCollision() {
         if(MathTools.OBBSphere(transform.position, transform.localScale / 2.0f, transform.rotation, player.transform.position, player.GetSizeRadius() + 0.05f)) {
-            HitPlayer();
+            if(timerContactHit.IsOver()) {
+                HitPlayer();
+                timerContactHit.Reset();
+            }
         }
     }
 
@@ -52,6 +60,7 @@ public class TracerBlast : Ennemi {
     }
 
     public void LoadBlast() {
+        // Start load animation
         blastLoadRotationCoroutine = StartCoroutine(CRotation());
         gm.soundManager.PlayTracerBlastLoadClip(transform.position, blastLoadDuree + blastLoadSoundOffset);
     }
