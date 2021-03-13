@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class TracerBlast : Ennemi {
 
@@ -16,6 +17,7 @@ public class TracerBlast : Ennemi {
     public float blastLoadMaxRotation = 10f;
     public AnimationCurve blastLoadRotationCurve;
     public float blastLoadSoundOffset = 0.7f;
+    public VisualEffect loadAndBlastVfx;
 
     [Header("Contact Hit")]
     private float timeBetweenTwoContactHits = 0.5f;
@@ -60,7 +62,8 @@ public class TracerBlast : Ennemi {
     }
 
     public void LoadBlast() {
-        // Start load animation
+        Debug.Log($"LoadBlast at {Time.time}");
+        loadAndBlastVfx.SendEvent("Blast");
         blastLoadRotationCoroutine = StartCoroutine(CRotation());
         gm.soundManager.PlayTracerBlastLoadClip(transform.position, blastLoadDuree + blastLoadSoundOffset);
     }
