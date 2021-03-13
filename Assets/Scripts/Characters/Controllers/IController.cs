@@ -9,12 +9,14 @@ public abstract class IController : MonoBehaviour {
 
     protected GameManager gm;
 	protected CharacterController controller;
+	protected new Rigidbody rigidbody;
 
     public virtual void Start() {
         gm = GameManager.Instance;
 		controller = this.GetComponent<CharacterController> ();
-        if (controller == null)
-            Debug.LogError("Il est nécessaire d'avoir un CharacterController avec un " + name + " !");
+        rigidbody = GetComponent<Rigidbody>();
+        if (controller == null && rigidbody == null)
+            Debug.LogError("Il est nécessaire d'avoir un CharacterController OU un rigidbody avec un " + name + " !");
     }
 
 	public virtual void Update () {
@@ -43,14 +45,28 @@ public abstract class IController : MonoBehaviour {
             finalMouvement = target - transform.position;
         }
 
-        controller.Move(finalMouvement);
+        Move(finalMouvement);
 
         return finalMouvement;
     }
 
     protected Vector3 MoveWithMove(Vector3 move) {
         move *= vitesse * Time.deltaTime;
-        controller.Move(move);
+        Move(move);
         return move;
+    }
+
+    protected Vector3 Move(Vector3 mouvement) {
+        if (controller != null) {
+            controller.Move(mouvement);
+        } else {
+            RaycastHit hit;
+            if (rigidbody.SweepTest(mouvement.normalized, out hit, mouvement.magnitude)) {
+                transform.Translate(mouvement.normalized * hit.distance);
+            } else {
+                transform.Translate(mouvement);
+            }
+        }
+        return mouvement;
     }
 }

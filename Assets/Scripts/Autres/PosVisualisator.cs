@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PosVisualisator : MonoBehaviour {
@@ -37,14 +38,14 @@ public class PosVisualisator : MonoBehaviour {
         go.transform.localScale = Vector3.one * 0.1f;
     }
 
-    public static void CreateCross(Vector3 pos, Color color, bool depthTest = false) {
+    public static void DrawCross(Vector3 pos, Color color, bool depthTest = false) {
         float sizeCross = 1f / 4f;
         Debug.DrawLine(pos + Vector3.up * sizeCross, pos - Vector3.up * sizeCross, color, 10000, depthTest);
         Debug.DrawLine(pos + Vector3.forward * sizeCross, pos - Vector3.forward * sizeCross, color, 10000, depthTest);
         Debug.DrawLine(pos + Vector3.right * sizeCross, pos - Vector3.right * sizeCross, color, 10000, depthTest);
     }
 
-    public static void CreateCube(Vector3 center, Vector3 halfExtents, Color color, bool depthTest = false) {
+    public static void DrawCube(Vector3 center, Vector3 halfExtents, Color color, bool depthTest = false) {
         List<Tuple<Vector3, Vector3>> coords = new List<Tuple<Vector3, Vector3>>() {
             // face du bas
             new Tuple<Vector3, Vector3>(new Vector3(-1, -1, -1), new Vector3(-1, -1, 1)),
@@ -69,7 +70,17 @@ public class PosVisualisator : MonoBehaviour {
         }
     }
 
-    public static void CreateCube(CubeInt cube, Color color, bool depthTest = false) {
-        CreateCube(cube.mapCenter, cube.halfExtents, color, depthTest);
+    public static void DrawCube(CubeInt cube, Color color, bool depthTest = false) {
+        DrawCube(cube.mapCenter, cube.halfExtents, color, depthTest);
+    }
+
+    public static void DrawPath(List<Vector3> path, Color color) {
+        if(path.Count > 0) {
+            DrawCross(path.First(), Color.green);
+            DrawCross(path.Last(), Color.red);
+            for(int i = 1; i < path.Count - 1; i++) {
+                DrawCross(path[i], color);
+            }
+        }
     }
 }

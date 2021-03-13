@@ -67,7 +67,7 @@ public class PlaceBouncyCubesOnVerticalSpaces : GenerateCubesMapFunction {
     protected void DisplayEmptySpaces(List<CubeInt> emptyCubes) {
         foreach (CubeInt cube in emptyCubes) {
             List<ColorManager.Theme> theme = new List<ColorManager.Theme>() { ColorManager.GetRandomTheme() };
-            PosVisualisator.CreateCube(cube, ColorManager.GetColor(theme));
+            PosVisualisator.DrawCube(cube, ColorManager.GetColor(theme));
             //Debug.Log($"Cube = {cube}");
         }
     }

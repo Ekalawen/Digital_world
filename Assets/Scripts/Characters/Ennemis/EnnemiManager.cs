@@ -43,6 +43,14 @@ public class EnnemiManager : MonoBehaviour {
         return res;
     }
 
+    public List<Vector3> GetAllRoundedPositionsOccupiedByEnnemis() {
+        List<Vector3> res = new List<Vector3>();
+        foreach(Ennemi ennemi in ennemis) {
+            res.AddRange(ennemi.GetAllOccupiedRoundedPositions());
+        }
+        return res;
+    }
+
     public bool IsPlayerFollowed() {
         foreach(Ennemi ennemi in ennemis) {
             if (!ennemi.IsInactive())

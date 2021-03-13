@@ -9,7 +9,7 @@ public class JumpEventAlertTracers : JumpEvent {
 
         // On alerte tous les tracers !
         foreach(Ennemi ennemi in gm.ennemiManager.ennemis) {
-            Tracer tracer = ennemi.GetComponent<Tracer>();
+            TracerBlast tracer = ennemi.GetComponent<TracerBlast>();
             if(tracer != null) {
                 TracerController tracerController = tracer.GetComponent<TracerController>();
                 if(tracerController != null)

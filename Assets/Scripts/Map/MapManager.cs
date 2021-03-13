@@ -386,7 +386,7 @@ public class MapManager : MonoBehaviour {
             pos = MathTools.Round(pos);
 
         if(GetCubeAt(pos) != null) {
-            PosVisualisator.CreateCross(pos, Color.black);
+            PosVisualisator.DrawCross(pos, Color.black);
             Debug.Log($"Une lumière est crée dans un cube ! x)");
         }
 
@@ -730,6 +730,29 @@ public class MapManager : MonoBehaviour {
         res.Add(new Vector3(i, j, k - 1));
         return res;
     }
+    public List<Vector3> GetVoisinsNoObstaclesInMap(Vector3 pos) {
+        List<Vector3> res = new List<Vector3>();
+        int i = (int)pos.x, j = (int)pos.y, k = (int)pos.z;
+        // DROITE
+        if(IsInRegularMap(new Vector3(i + 1, j, k)))
+            res.Add(new Vector3(i + 1, j, k));
+        // GAUCHE
+        if(IsInRegularMap(new Vector3(i - 1, j, k)))
+            res.Add(new Vector3(i - 1, j, k));
+        // HAUT
+        if(IsInRegularMap(new Vector3(i, j + 1, k)))
+            res.Add(new Vector3(i, j + 1, k));
+        // BAS
+        if(IsInRegularMap(new Vector3(i, j - 1, k)))
+            res.Add(new Vector3(i, j - 1, k));
+        // DEVANT
+        if(IsInRegularMap(new Vector3(i, j, k + 1)))
+            res.Add(new Vector3(i, j, k + 1));
+        // DERRIRE
+        if(IsInRegularMap(new Vector3(i, j, k - 1)))
+            res.Add(new Vector3(i, j, k - 1));
+        return res;
+    }
 
     protected List<Vector3Int> GetVoisinsLibresInt(Vector3Int pos) {
         List<Vector3> v3 = GetVoisinsLibresInMap(pos);
@@ -761,24 +784,30 @@ public class MapManager : MonoBehaviour {
         return false;
     }
 
-    public List<Vector3> GetNoObstaclePath(Vector3 start, Vector3 end, bool bIsRandom = false) {
+    public List<Vector3> GetNoObstaclePath(Vector3 start, Vector3 end, List<Vector3> posToDodge, bool bIsRandom = false) {
         start = MathTools.Round(start);
         end = MathTools.Round(end);
 
         List<Vector3> path = new List<Vector3>();
         Vector3 current = start;
         path.Add(current);
+        if(posToDodge == null) {
+            posToDodge = new List<Vector3>();
+        }
 
         while(current != end) {
             List<Vector3> voisins = GetVoisinsNoObstacles(current);
+            voisins = voisins.FindAll(v => !posToDodge.Contains(v));
             List<Vector3> nearestVoisins = new List<Vector3>();
             float currentDist = Vector3.Distance(current, end);
             foreach(Vector3 voisin in voisins) {
-                if (Vector3.Distance(voisin, end) < currentDist)
+                if (Vector3.Distance(voisin, end) < currentDist) {
                     nearestVoisins.Add(voisin);
+                }
             }
-            if (bIsRandom)
+            if (bIsRandom) {
                 MathTools.Shuffle(nearestVoisins);
+            }
             current = nearestVoisins[0];
             path.Add(current);
         }
@@ -786,20 +815,20 @@ public class MapManager : MonoBehaviour {
         return path;
     }
 
-    public List<Vector3> GetPath(Vector3 start, Vector3 end, List<Vector3> posToDodge, bool bIsRandom = false, bool useNotInMapVoisins = false) {
+    public List<Vector3> GetPath(Vector3 start, Vector3 end, List<Vector3> posToDodge, bool bIsRandom = false, bool useNotInMapVoisins = false, bool collideWithCubes = true) {
         List<Vector3> path = new List<Vector3>();
 
         start = MathTools.Round(start);
         end = MathTools.Round(end);
 
-        if (posToDodge.Contains(end) || cubesRegular[(int)end.x, (int)end.y, (int)end.z] != null)
+        if (posToDodge.Contains(end) || (collideWithCubes && GetCubeAt(end) != null))
             return null;
 
         List<Node> closed = new List<Node>();
         List<Node> opened = new List<Node>();
         opened.Add(new Node(start, 0, 0, null));
 
-        while(opened.Count > 0) {
+        while(opened.Count > 0 && opened.Count + closed.Count <= GetVolume()) {
             Node current = opened.Last();
             opened.Remove(current);
 
@@ -807,7 +836,7 @@ public class MapManager : MonoBehaviour {
                 return ComputePathBackward(start, path, ref current);
             }
 
-            List<Vector3> voisins = GetVoisinsLibreNotInPosToDodge(posToDodge, current, bIsRandom, useNotInMapVoisins);
+            List<Vector3> voisins = GetVoisinsLibreNotInPosToDodge(posToDodge, current, bIsRandom, useNotInMapVoisins, collideWithCubes);
 
             for (int i = 0; i < voisins.Count; i++)
             {
@@ -826,6 +855,45 @@ public class MapManager : MonoBehaviour {
 
         Debug.Log("Path failed !!!!");
         return null;
+    }
+
+    public List<Vector3> GetStraitPath(Vector3 debutChemin, Vector3 finChemin, bool isDeterministic = false) {
+        List<Vector3> path = new List<Vector3>();
+		Vector3 pointActuel = debutChemin;
+		while (pointActuel != finChemin) {
+			// On liste les bonnes directions à prendre
+			List<Vector3> directions = new List<Vector3>();
+			if (pointActuel.x != finChemin.x) {
+				if (pointActuel.x < finChemin.x) {
+					directions.Add (new Vector3 (pointActuel.x + 1, pointActuel.y, pointActuel.z));
+				} else {
+					directions.Add (new Vector3 (pointActuel.x - 1, pointActuel.y, pointActuel.z));
+				}
+			}
+			if (pointActuel.y != finChemin.y) {
+				if (pointActuel.y < finChemin.y) {
+					directions.Add (new Vector3 (pointActuel.x, pointActuel.y + 1, pointActuel.z));
+				} else {
+					directions.Add (new Vector3 (pointActuel.x, pointActuel.y - 1, pointActuel.z));
+				}
+			}
+			if (pointActuel.z != finChemin.z) {
+				if (pointActuel.z < finChemin.z) {
+					directions.Add (new Vector3 (pointActuel.x, pointActuel.y, pointActuel.z + 1));
+				} else {
+					directions.Add (new Vector3 (pointActuel.x, pointActuel.y, pointActuel.z - 1));
+				}
+			}
+
+            // On se déplace dans une bonne direction aléatoirement
+            if (!isDeterministic) {
+                pointActuel = directions[UnityEngine.Random.Range(0, directions.Count)];
+            } else {
+                pointActuel = directions[0];
+            }
+            path.Add(pointActuel);
+		}
+        return path;
     }
 
     private static bool IsNodeInCloseOrOpened(List<Node> closed, List<Node> opened, Vector3 voisin, Node node) {
@@ -860,8 +928,13 @@ public class MapManager : MonoBehaviour {
         }
     }
 
-    protected List<Vector3> GetVoisinsLibreNotInPosToDodge(List<Vector3> posToDodge, Node current, bool bIsRandom, bool useNotRegularVoisins) {
-        List<Vector3> voisins = (!useNotRegularVoisins) ? GetVoisinsLibresInMap(current.pos) : GetVoisinsLibresAll(current.pos);
+    protected List<Vector3> GetVoisinsLibreNotInPosToDodge(List<Vector3> posToDodge, Node current, bool bIsRandom, bool useNotRegularVoisins, bool collideWithCubes = true) {
+        List<Vector3> voisins = null;
+        if (collideWithCubes) {
+            voisins = (!useNotRegularVoisins) ? GetVoisinsLibresInMap(current.pos) : GetVoisinsLibresAll(current.pos);
+        } else {
+            voisins = (!useNotRegularVoisins) ? GetVoisinsNoObstaclesInMap(current.pos) : GetVoisinsNoObstacles(current.pos);
+        }
         voisins = voisins.FindAll(v => !posToDodge.Contains(v));
         if (bIsRandom) {
             MathTools.Shuffle(voisins);
@@ -1211,43 +1284,4 @@ public class MapManager : MonoBehaviour {
     public List<Vector3> GetAllEmptyPositionsInTranche(GravityManager.Direction fromDirection, int offset) {
         return GetAllEmptyPositions().FindAll(p => IsInTranche(p, fromDirection, offset));
     }
-    public List<Vector3> GetStraitPath(Vector3 debutChemin, Vector3 finChemin, bool isDeterministic = false) {
-        List<Vector3> path = new List<Vector3>();
-		Vector3 pointActuel = debutChemin;
-		while (pointActuel != finChemin) {
-			// On liste les bonnes directions à prendre
-			List<Vector3> directions = new List<Vector3>();
-			if (pointActuel.x != finChemin.x) {
-				if (pointActuel.x < finChemin.x) {
-					directions.Add (new Vector3 (pointActuel.x + 1, pointActuel.y, pointActuel.z));
-				} else {
-					directions.Add (new Vector3 (pointActuel.x - 1, pointActuel.y, pointActuel.z));
-				}
-			}
-			if (pointActuel.y != finChemin.y) {
-				if (pointActuel.y < finChemin.y) {
-					directions.Add (new Vector3 (pointActuel.x, pointActuel.y + 1, pointActuel.z));
-				} else {
-					directions.Add (new Vector3 (pointActuel.x, pointActuel.y - 1, pointActuel.z));
-				}
-			}
-			if (pointActuel.z != finChemin.z) {
-				if (pointActuel.z < finChemin.z) {
-					directions.Add (new Vector3 (pointActuel.x, pointActuel.y, pointActuel.z + 1));
-				} else {
-					directions.Add (new Vector3 (pointActuel.x, pointActuel.y, pointActuel.z - 1));
-				}
-			}
-
-            // On se déplace dans une bonne direction aléatoirement
-            if (!isDeterministic) {
-                pointActuel = directions[UnityEngine.Random.Range(0, directions.Count)];
-            } else {
-                pointActuel = directions[0];
-            }
-            path.Add(pointActuel);
-		}
-        return path;
-    }
-
 }

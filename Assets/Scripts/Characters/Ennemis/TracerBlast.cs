@@ -25,14 +25,21 @@ public class TracerBlast : Ennemi {
     }
 
     public override void UpdateSpecific() {
+        TestForPlayerCollision();
     }
 
-	//void OnControllerColliderHit(ControllerColliderHit hit) {
- //       Player player = hit.collider.gameObject.GetComponent<Player>();
- //       if (player != null) {
- //           HitPlayer();
- //       }
- //   }
+    protected void TestForPlayerCollision() {
+        if(MathTools.OBBSphere(transform.position, transform.localScale / 2.0f, transform.rotation, player.transform.position, player.GetSizeRadius() + 0.05f)) {
+            HitPlayer();
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision) {
+        Cube cube = collision.gameObject.GetComponent<Cube>();
+        if (cube != null) {
+            cube.Explode();
+        }
+    }
 
     public void StartBlast() {
         blastCoroutine = StartCoroutine(CStartBlast());
@@ -45,7 +52,6 @@ public class TracerBlast : Ennemi {
     }
 
     public void LoadBlast() {
-        // Start loading animation
         blastLoadRotationCoroutine = StartCoroutine(CRotation());
         gm.soundManager.PlayTracerBlastLoadClip(transform.position, blastLoadDuree + blastLoadSoundOffset);
     }

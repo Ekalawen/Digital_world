@@ -62,6 +62,22 @@ public abstract class Ennemi : Character {
         }
     }
 
+    public List<Vector3> GetAllOccupiedRoundedPositions() {
+        Vector3 pos = MathTools.Round(transform.position);
+        int nbOnX = Mathf.CeilToInt(transform.localScale.x) - 1;
+        int nbOnY = Mathf.CeilToInt(transform.localScale.y) - 1;
+        int nbOnZ = Mathf.CeilToInt(transform.localScale.z) - 1;
+        List<Vector3> occupiedPositions = new List<Vector3>();
+        for(int i = -nbOnX; i <= nbOnX; i++) {
+            for(int j = -nbOnY; j <= nbOnY; j++) {
+                for(int k = -nbOnZ; k <= nbOnZ; k++) {
+                    occupiedPositions.Add(pos + new Vector3(i, j, k));
+                }
+            }
+        }
+        return occupiedPositions;
+    }
+
     public abstract EventManager.DeathReason GetDeathReason();
 
     protected void ShakeScreen() {

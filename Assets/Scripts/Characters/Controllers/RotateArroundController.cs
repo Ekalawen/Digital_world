@@ -40,7 +40,7 @@ public class RotateArroundController : IController {
         localVirtualPoint = RotateAround(localVirtualPoint, Vector3.zero, axe, angle);
         Vector3 virtualPoint = localVirtualPoint + target.transform.position;
         Vector3 move = virtualPoint - transform.position;
-        controller.Move(move);
+        Move(move);
     }
 
     public override bool IsInactive() {

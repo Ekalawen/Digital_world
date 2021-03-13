@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -18,6 +19,7 @@ public class TracerController : EnnemiController {
     public UnityEvent startAttackEvents;
     public UnityEvent stopAttackEvents;
 
+    protected Ennemi ennemi;
     protected TracerState state;
     protected List<Vector3> path;
     protected Timer timerNodePause;
@@ -30,6 +32,7 @@ public class TracerController : EnnemiController {
 
     public override void Start() {
         base.Start();
+        ennemi = GetComponent<Ennemi>();
         SetState(TracerState.WAITING);
         timerNodePause = new Timer(dureePauseEntreNodes, setOver: true);
         timerStuck = new Timer(dureeMaxStuck, setOver: true);
@@ -66,7 +69,6 @@ public class TracerController : EnnemiController {
             case TracerState.ATTACKING:
                 break;
         }
-        lastPosition = transform.position;
 	}
 
     protected void TryUnStuck() {
@@ -79,7 +81,10 @@ public class TracerController : EnnemiController {
                 ComputePath(path.Last()); // On va au même endroit que précédemment !
                 bIsStuck = false;
             }
+        } else {
+            bIsStuck = false;
         }
+        lastPosition = transform.position;
     }
 
     protected void SetCurrentEtat() {
@@ -98,19 +103,23 @@ public class TracerController : EnnemiController {
     protected virtual void ComputePath(Vector3 end) {
         Vector3 start = MathTools.Round(transform.position);
         end = MathTools.Round(end);
-        List<Vector3> posToDodge = gm.ennemiManager.GetAllRoundedEnnemisPositions();
+        List<Vector3> posToDodge = gm.ennemiManager.GetAllRoundedPositionsOccupiedByEnnemis();
+        List<Vector3> myPositions = ennemi.GetAllOccupiedRoundedPositions();
+        posToDodge = posToDodge.FindAll(p => !myPositions.Contains(p));
+        posToDodge.Remove(end);
         if (doesPathAvoidCubes) {
             path = gm.map.GetPath(start, end, posToDodge, bIsRandom: true, useNotInMapVoisins: true);
         } else {
-            path = gm.map.GetStraitPath(start, end, isDeterministic: false);
+            path = gm.map.GetPath(start, end, posToDodge, bIsRandom: true, useNotInMapVoisins: true, collideWithCubes: false);
         }
 
         if (path == null) {
             SetState(TracerState.ATTACKING);
         } else {
-            if (goToPosJustBeforePlayer) {
+            if (goToPosJustBeforePlayer && path.Count > 0) {
                 path.RemoveAt(path.Count - 1);
             }
+            PosVisualisator.DrawPath(path, Color.blue);
         }
     }
 

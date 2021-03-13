@@ -7,7 +7,7 @@ public class TracerNoObstacleController : TracerController {
     protected override void ComputePath(Vector3 end) {
         Vector3 start = MathTools.Round(transform.position);
         end = MathTools.Round(end);
-        path = gm.map.GetNoObstaclePath(start, end, bIsRandom: true);
+        path = gm.map.GetNoObstaclePath(start, end, posToDodge: null, bIsRandom: true);
         if(path == null) {
             SetState(TracerState.ATTACKING);
         }
