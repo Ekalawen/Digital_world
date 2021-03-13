@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 33552460119874564}
   - component: {fileID: 135529940810113990}
   - component: {fileID: 114705481047177154}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Lumiere+10s
   m_TagString: Objectif
   m_Icon: {fileID: 0}
@@ -87,7 +87,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4112407253792594}
   - component: {fileID: 108025383389034582}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Point light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -167,6 +167,7 @@ Light:
   m_UseColorTemperature: 0
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
+  m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
 --- !u!1 &5248426257515953588
@@ -180,7 +181,7 @@ GameObject:
   - component: {fileID: 3501191294059104558}
   - component: {fileID: 8359929456749380389}
   - component: {fileID: 6168667164722130366}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: VFX_Lumiere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -214,6 +215,7 @@ VisualEffect:
   m_InitialEventNameOverriden: 0
   m_StartSeed: 0
   m_ResetSeedOnPlay: 1
+  m_ResourceVersion: 1
   m_PropertySheet:
     m_Float:
       m_Array:
@@ -387,10 +389,10 @@ VisualEffect:
       m_Array:
       - m_Value:
           serializedVersion: 2
-          key0: {r: 3.9999995, g: 3.5859725, b: 2.7015705, a: 0}
-          key1: {r: 4.7357492, g: 3.423793, b: 0.55846095, a: 1}
-          key2: {r: 1367.1202, g: 0, b: 0, a: 1}
-          key3: {r: 0.5943396, g: 0, b: 0.017823229, a: 0}
+          key0: {r: 21.112122, g: 16.601042, b: 8.9034, a: 0}
+          key1: {r: 30.609425, g: 14.993967, b: 0.27219662, a: 1}
+          key2: {r: 7920907, g: 0, b: 0, a: 1}
+          key3: {r: 0.31197995, g: 0, b: 0.0013795069, a: 0}
           key4: {r: 0, g: 0, b: 0, a: 0}
           key5: {r: 0, g: 0, b: 0, a: 0}
           key6: {r: 0, g: 0, b: 0, a: 0}
@@ -418,9 +420,9 @@ VisualEffect:
         m_Overridden: 1
       - m_Value:
           serializedVersion: 2
-          key0: {r: 3.9999995, g: 3.5859725, b: 2.7015705, a: 0}
-          key1: {r: 4.735749, g: 4.008699, b: 2.3868175, a: 1}
-          key2: {r: 1.827451, g: 1.827451, b: 1.827451, a: 1}
+          key0: {r: 21.112122, g: 16.601042, b: 8.9034, a: 0}
+          key1: {r: 30.609419, g: 21.213268, b: 6.779572, a: 1}
+          key2: {r: 3.767564, g: 3.767564, b: 3.767564, a: 1}
           key3: {r: 1, g: 1, b: 0, a: 0}
           key4: {r: 0, g: 0, b: 0, a: 0}
           key5: {r: 0, g: 0, b: 0, a: 0}
@@ -462,10 +464,12 @@ VFXRenderer:
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 0
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
