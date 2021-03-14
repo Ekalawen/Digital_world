@@ -6,6 +6,9 @@ using UnityEngine.VFX;
 
 public class TracerBlast : Ennemi {
 
+    public static string SHADER_MAIN_COLOR = "_MainColor";
+    public static string SHADER_COLOR_CHANGE_COLOR_SOURCE = "_ColorChangeColorSource";
+
     public enum TracerState { WAITING, RUSHING, EMITING };
 
     [Header("Blast")]
@@ -25,10 +28,16 @@ public class TracerBlast : Ennemi {
     protected Coroutine blastCoroutine = null;
     protected Coroutine blastLoadRotationCoroutine = null;
     protected Timer timerContactHit;
+    protected Material material;
+    protected Color shaderLoadColor;
+    protected Color shaderMainColor;
 
     public override void Start() {
         base.Start();
         timerContactHit = new Timer(timeBetweenTwoContactHits, setOver: true);
+        material = GetComponent<Renderer>().material;
+        shaderMainColor = material.GetColor(SHADER_MAIN_COLOR);
+        shaderLoadColor = material.GetColor(SHADER_COLOR_CHANGE_COLOR_SOURCE);
     }
 
     public override void UpdateSpecific() {
@@ -62,10 +71,17 @@ public class TracerBlast : Ennemi {
     }
 
     public void LoadBlast() {
-        Debug.Log($"LoadBlast at {Time.time}");
         loadAndBlastVfx.SendEvent("Blast");
+        StartShaderColorChange(shaderMainColor, shaderLoadColor, blastLoadDuree);
         blastLoadRotationCoroutine = StartCoroutine(CRotation());
         gm.soundManager.PlayTracerBlastLoadClip(transform.position, blastLoadDuree + blastLoadSoundOffset);
+    }
+
+    protected void StartShaderColorChange(Color sourceColor, Color targetColor, float duration) {
+        material.SetFloat("_ColorChangeStartingTime", Time.time);
+        material.SetFloat("_ColorChangeDuration", duration);
+        material.SetColor(SHADER_COLOR_CHANGE_COLOR_SOURCE, sourceColor);
+        material.SetColor(SHADER_MAIN_COLOR, targetColor);
     }
 
     protected IEnumerator CRotation() {
@@ -88,6 +104,7 @@ public class TracerBlast : Ennemi {
     public void Blast() {
         // Start blast animation
         EnnemiController ennemiController = GetComponent<EnnemiController>();
+        StartShaderColorChange(shaderLoadColor, shaderMainColor, blastPousseeDuree);
         if(ennemiController != null && ennemiController.IsPlayerVisible()) {
             HitPlayer();
         }
@@ -113,6 +130,7 @@ public class TracerBlast : Ennemi {
         AutoRotate autoRotate = GetComponent<AutoRotate>();
         autoRotate.vitesse = 0;
         transform.rotation = Quaternion.identity;
+        StartShaderColorChange(shaderMainColor, shaderMainColor, 0);
     }
 
     public override void DisplayHitMessage() {
