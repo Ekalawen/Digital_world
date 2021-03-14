@@ -23,6 +23,10 @@ public class TracerController : EnnemiController {
     public float waitingTimeOnDetect = 0.4f;
     public UnityEvent detectPlayerEvents;
 
+    [Header("Cancel Attack")]
+    public float dureeCancel = 2.0f;
+    public UnityEvent cancelAttackEvents;
+
     protected Ennemi ennemi;
     protected TracerState state;
     protected List<Vector3> path;
@@ -34,6 +38,7 @@ public class TracerController : EnnemiController {
     protected float dureeMaxStuck = 0.1f;
     protected Coroutine stopAttackCoroutine = null;
     protected Timer timerWaitingTimeOnDetect;
+    protected Timer timerAttackCancelled;
 
     public override void Start() {
         base.Start();
@@ -42,6 +47,7 @@ public class TracerController : EnnemiController {
         timerNodePause = new Timer(dureePauseEntreNodes, setOver: true);
         timerStuck = new Timer(dureeMaxStuck, setOver: true);
         timerWaitingTimeOnDetect = new Timer(waitingTimeOnDetect);
+        timerAttackCancelled = new Timer(dureeCancel, setOver: true);
     }
 
     protected override void UpdateSpecific () {
@@ -173,5 +179,22 @@ public class TracerController : EnnemiController {
 
     public override bool IsMoving() {
         return !IsInactive();
+    }
+
+    public bool TryCancelAttack() {
+        if (timerAttackCancelled.IsOver()) {
+            cancelAttackEvents.Invoke();
+            if (stopAttackCoroutine != null) {
+                StopCoroutine(stopAttackCoroutine);
+            }
+            timerAttackCancelled.Reset();
+            SetState(TracerState.WAITING);
+            return true;
+        }
+        return false;
+    }
+
+    public override bool IsPlayerVisible() {
+        return base.IsPlayerVisible() && timerAttackCancelled.IsOver();
     }
 }

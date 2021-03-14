@@ -8,6 +8,7 @@ public class TracerBlast : Ennemi {
 
     public static string SHADER_MAIN_COLOR = "_MainColor";
     public static string SHADER_COLOR_CHANGE_COLOR_SOURCE = "_ColorChangeColorSource";
+    public static string SHADER_COLOR_CANCELLED = "_ColorCancelled";
 
     public enum TracerState { WAITING, RUSHING, EMITING };
 
@@ -26,21 +27,31 @@ public class TracerBlast : Ennemi {
     public float detectionDureeRotation = 0.4f;
 
     [Header("Contact Hit")]
-    private float timeBetweenTwoContactHits = 0.5f;
+    public float timeBetweenTwoContactHits = 0.5f;
 
+    [Header("Cancel Blast")]
+    public float dureeCancelAnimation = 0.5f;
+
+    protected TracerController tracerController;
     protected Coroutine blastCoroutine = null;
     protected Coroutine blastLoadRotationCoroutine = null;
     protected Timer timerContactHit;
     protected Material material;
     protected Color shaderLoadColor;
     protected Color shaderMainColor;
+    protected Color shaderCancelledColor;
+    protected bool isCancelled = false;
+    protected AudioSource loadAndBlastSource = null;
+    protected Coroutine onDetectPlayerCoroutine = null;
 
     public override void Start() {
         base.Start();
+        tracerController = GetComponent<TracerController>();
         timerContactHit = new Timer(timeBetweenTwoContactHits, setOver: true);
         material = GetComponent<Renderer>().material;
         shaderMainColor = material.GetColor(SHADER_MAIN_COLOR);
         shaderLoadColor = material.GetColor(SHADER_COLOR_CHANGE_COLOR_SOURCE);
+        shaderCancelledColor = material.GetColor(SHADER_COLOR_CANCELLED);
     }
 
     public override void UpdateSpecific() {
@@ -49,11 +60,22 @@ public class TracerBlast : Ennemi {
 
     protected void TestForPlayerCollision() {
         if(MathTools.OBBSphere(transform.position, transform.localScale / 2.0f, transform.rotation, player.transform.position, player.GetSizeRadius() + 0.05f)) {
-            if(timerContactHit.IsOver()) {
-                HitPlayer();
-                timerContactHit.Reset();
+            if(!isCancelled) {
+                if(tracerController != null && IsPlayerComingFromTop()) {
+                    tracerController.TryCancelAttack();
+                } else if (timerContactHit.IsOver()) {
+                    HitPlayer();
+                    timerContactHit.Reset();
+                }
             }
         }
+    }
+
+    protected bool IsPlayerComingFromTop() {
+        float playerHeight = gm.gravityManager.GetHigh(player.transform.position);
+        float tracerHeight = gm.gravityManager.GetHigh(transform.position);
+        float tracerHalfSize = transform.localScale.x / 2;
+        return playerHeight > tracerHeight + tracerHalfSize;
     }
 
     private void OnCollisionEnter(Collision collision) {
@@ -64,7 +86,8 @@ public class TracerBlast : Ennemi {
     }
 
     public void OnDetectPlayer() {
-        StartCoroutine(COnDetectPlayer());
+        isCancelled = false;
+        onDetectPlayerCoroutine = StartCoroutine(COnDetectPlayer());
     }
 
     protected IEnumerator COnDetectPlayer() {
@@ -74,6 +97,17 @@ public class TracerBlast : Ennemi {
             transform.rotation = Quaternion.AngleAxis(angle, gm.gravityManager.Up());
             yield return null;
         }
+        transform.rotation = Quaternion.identity;
+    }
+
+    public void OnCancelBlast() {
+        isCancelled = true;
+        StopBlast();
+        if(onDetectPlayerCoroutine != null) {
+            StopCoroutine(onDetectPlayerCoroutine);
+        }
+        StartShaderColorChange(shaderCancelledColor, shaderMainColor, dureeCancelAnimation);
+        StartCoroutine(CGoToIdentityRotation(dureeCancelAnimation));
     }
 
     public void StartBlast() {
@@ -90,7 +124,7 @@ public class TracerBlast : Ennemi {
         loadAndBlastVfx.SendEvent("Blast");
         StartShaderColorChange(shaderMainColor, shaderLoadColor, blastLoadDuree);
         blastLoadRotationCoroutine = StartCoroutine(CRotation());
-        gm.soundManager.PlayTracerBlastLoadClip(transform.position, blastLoadDuree + blastLoadSoundOffset);
+        loadAndBlastSource = gm.soundManager.PlayTracerBlastLoadClip(transform.position, blastLoadDuree + blastLoadSoundOffset);
     }
 
     protected void StartShaderColorChange(Color sourceColor, Color targetColor, float duration) {
@@ -108,7 +142,11 @@ public class TracerBlast : Ennemi {
             yield return null;
         }
 
-        timer = new Timer(blastPousseeDuree);
+        yield return CGoToIdentityRotation(blastPousseeDuree);
+    }
+
+    protected IEnumerator CGoToIdentityRotation(float duree) {
+        Timer timer = new Timer(duree);
         Quaternion startingRotation = transform.rotation;
         while (!timer.IsOver()) {
             transform.rotation = Quaternion.Slerp(startingRotation, Quaternion.identity, timer.GetAvancement());
@@ -143,6 +181,11 @@ public class TracerBlast : Ennemi {
         if (blastLoadRotationCoroutine != null) {
             StopCoroutine(blastLoadRotationCoroutine);
         }
+        if(loadAndBlastSource != null && loadAndBlastSource.isPlaying) {
+            loadAndBlastSource.Stop();
+            loadAndBlastSource = null;
+        }
+        loadAndBlastVfx.SendEvent("StopBlast");
         AutoRotate autoRotate = GetComponent<AutoRotate>();
         autoRotate.vitesse = 0;
         transform.rotation = Quaternion.identity;

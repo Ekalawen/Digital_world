@@ -356,7 +356,8 @@ public class Player : Character {
                     // Pour ça on va lancer un rayon ! <3
                     Ray ray = new Ray(transform.position, -normaleMur);
                     RaycastHit[] hits = Physics.SphereCastAll(ray, GetSizeRadius(), distanceMurMax);
-                    if (hits.Length == 0 || !hits.Select(h => h.collider.tag).Contains("Cube")) {
+                    List<string> hitTags = hits.Select(h => h.collider.tag).ToList();
+                    if (hits.Length == 0 || (!hitTags.Contains("Cube") && !hitTags.Contains("Ennemi"))) { // Pour pouvoir s'accrocher sur les Tracers inactifs !
                         FallFromWall();
                     }
                     break;
@@ -547,8 +548,9 @@ public class Player : Character {
     {
         //// Si on a touché un cube spécial, on fait une action !
         Cube cube = hit.gameObject.GetComponent<Cube>();
-        if (cube != null && DoubleCheckInteractWithCube(cube))
+        if (cube != null && DoubleCheckInteractWithCube(cube)) {
             cube.InteractWithPlayer();
+        }
 
         // On regarde si le personnage s'accroche à un mur !
         // Pour ça il doit être dans les airs !
@@ -569,9 +571,9 @@ public class Player : Character {
 
     protected Vector3 GetWallNormalFromHit(ControllerColliderHit hit) {
         // Il est possible de supprimer cette fonctionnalité pour permettre au joueur d'être plus sticky sur les murs :) (et notemment les angles !)
-        Cube cube = hit.gameObject.GetComponent<Cube>();
-        if(cube != null && cube.transform.rotation == Quaternion.identity) {
-            Vector3 normalizedNormal = MathTools.GetClosestToNormals(cube.transform, hit.normal);
+        BoxCollider box = hit.gameObject.GetComponent<BoxCollider>();
+        if(box != null && box.transform.rotation == Quaternion.identity) {
+            Vector3 normalizedNormal = MathTools.GetClosestToNormals(box.transform, hit.normal);
             return normalizedNormal;
         } else {
             return hit.normal;

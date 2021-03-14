@@ -132,8 +132,8 @@ public class SoundManager : MonoBehaviour {
     public void PlayTracerHitClip(Vector3 pos, Transform parent) {
         PlayClipsOnSource(sounds.tracerHitClips, pos, parent);
     }
-    public void PlayTracerBlastLoadClip(Vector3 pos, float duration) {
-        PlayClipsOnSource(sounds.tracerBlastLoadClips, pos, null, duration);
+    public AudioSource PlayTracerBlastLoadClip(Vector3 pos, float duration) {
+        return PlayClipsOnSource(sounds.tracerBlastLoadClips, pos, null, duration);
     }
     public void PlayDecreasingBallFirstBoss(Vector3 pos, float duration) {
         PlayClipsOnSource(sounds.firstBossDecreasingBall, pos, null, duration);
