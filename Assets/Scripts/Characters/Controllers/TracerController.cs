@@ -19,6 +19,10 @@ public class TracerController : EnnemiController {
     public UnityEvent startAttackEvents;
     public UnityEvent stopAttackEvents;
 
+    [Header("Detection")]
+    public float waitingTimeOnDetect = 0.4f;
+    public UnityEvent detectPlayerEvents;
+
     protected Ennemi ennemi;
     protected TracerState state;
     protected List<Vector3> path;
@@ -29,6 +33,7 @@ public class TracerController : EnnemiController {
     protected Timer timerStuck;
     protected float dureeMaxStuck = 0.1f;
     protected Coroutine stopAttackCoroutine = null;
+    protected Timer timerWaitingTimeOnDetect;
 
     public override void Start() {
         base.Start();
@@ -36,6 +41,7 @@ public class TracerController : EnnemiController {
         SetState(TracerState.WAITING);
         timerNodePause = new Timer(dureePauseEntreNodes, setOver: true);
         timerStuck = new Timer(dureeMaxStuck, setOver: true);
+        timerWaitingTimeOnDetect = new Timer(waitingTimeOnDetect);
     }
 
     protected override void UpdateSpecific () {
@@ -45,6 +51,9 @@ public class TracerController : EnnemiController {
             case TracerState.WAITING:
                 break;
             case TracerState.RUSHING:
+                if(!timerWaitingTimeOnDetect.IsOver()) {
+                    break;
+                }
                 if(path.Count == 0) { // Car on peut générer des chemins vides si on est très proche de la cible
                     SetState(TracerState.ATTACKING);
                     break;
@@ -134,6 +143,10 @@ public class TracerController : EnnemiController {
             StopAttacking();
             ComputePath(player.transform.position);
             gm.soundManager.PlayDetectionClip(transform.position, transform);
+            if (oldState == TracerState.WAITING) {
+                detectPlayerEvents.Invoke();
+                timerWaitingTimeOnDetect.Reset();
+            }
         }
     }
 

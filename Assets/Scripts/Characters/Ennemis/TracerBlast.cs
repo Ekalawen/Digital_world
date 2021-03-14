@@ -22,6 +22,9 @@ public class TracerBlast : Ennemi {
     public float blastLoadSoundOffset = 0.7f;
     public VisualEffect loadAndBlastVfx;
 
+    [Header("Detection Animation")]
+    public float detectionDureeRotation = 0.4f;
+
     [Header("Contact Hit")]
     private float timeBetweenTwoContactHits = 0.5f;
 
@@ -57,6 +60,19 @@ public class TracerBlast : Ennemi {
         Cube cube = collision.gameObject.GetComponent<Cube>();
         if (cube != null) {
             cube.Explode();
+        }
+    }
+
+    public void OnDetectPlayer() {
+        StartCoroutine(COnDetectPlayer());
+    }
+
+    protected IEnumerator COnDetectPlayer() {
+        Timer timer = new Timer(detectionDureeRotation);
+        while(!timer.IsOver()) {
+            float angle = timer.GetAvancement() * 360;
+            transform.rotation = Quaternion.AngleAxis(angle, gm.gravityManager.Up());
+            yield return null;
         }
     }
 

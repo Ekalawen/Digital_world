@@ -167,6 +167,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   blastLoadSoundOffset: 0.7
   loadAndBlastVfx: {fileID: 1098864956444570536}
+  detectionDureeRotation: 0.4
 --- !u!114 &2567549418447726992
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -208,6 +209,21 @@ MonoBehaviour:
       - m_Target: {fileID: 114768374186490010}
         m_TargetAssemblyTypeName: TracerBlast, Assembly-CSharp
         m_MethodName: StopBlast
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  detectPlayerEvents:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 114768374186490010}
+        m_TargetAssemblyTypeName: TracerBlast, Assembly-CSharp
+        m_MethodName: OnDetectPlayer
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -323,6 +339,8 @@ VFXRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
+  - {fileID: 0}
+  - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}

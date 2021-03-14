@@ -62,9 +62,11 @@ public abstract class IController : MonoBehaviour {
         } else {
             RaycastHit hit;
             if (rigidbody.SweepTest(mouvement.normalized, out hit, mouvement.magnitude)) {
-                transform.Translate(mouvement.normalized * hit.distance);
+                transform.position += mouvement.normalized * hit.distance;
+                //transform.Translate(mouvement.normalized * hit.distance);
             } else {
-                transform.Translate(mouvement);
+                transform.position += mouvement;
+                //transform.Translate(mouvement);
             }
         }
         return mouvement;
