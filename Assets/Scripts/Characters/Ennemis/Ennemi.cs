@@ -57,7 +57,7 @@ public abstract class Ennemi : Character {
                 timerHitDamages.Reset();
                 gm.timerManager.RemoveTime(timeMalusToUse, GetDeathReason());
             }
-            DisplayHitMessage();
+            DisplayHitMessage(GetDeathReason());
             PlayHitSound();
             ShakeScreen();
         }
@@ -86,7 +86,7 @@ public abstract class Ennemi : Character {
         cs.ShakeOnce(screenShakeMagnitude, screenShakeRoughness, 0.1f, screenShakeDecreaseTime);
     }
 
-    public virtual void DisplayHitMessage() {
+    public virtual void DisplayHitMessage(EventManager.DeathReason deathReason) {
         // Et on affiche un message dans la console !
         if (!gm.eventManager.IsGameOver()) {
             gm.console.JoueurToucheSonde();

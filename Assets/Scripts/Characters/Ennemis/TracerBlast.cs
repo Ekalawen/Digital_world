@@ -201,9 +201,13 @@ public class TracerBlast : Ennemi {
         StartShaderColorChange(shaderMainColor, shaderMainColor, 0);
     }
 
-    public override void DisplayHitMessage() {
+    public override void DisplayHitMessage(EventManager.DeathReason deathReason) {
         if (!gm.eventManager.IsGameOver()) {
-            gm.console.JoueurToucheTracer();
+            if (deathReason == EventManager.DeathReason.TRACER_BLAST) {
+                gm.console.JoueurBlasteTracer();
+            } else {
+                gm.console.JoueurToucheTracer();
+            }
         }
     }
 

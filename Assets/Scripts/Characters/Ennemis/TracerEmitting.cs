@@ -114,7 +114,7 @@ public class TracerEmitting : Ennemi {
         gm.soundManager.PlayTracerHitClip(transform.position, transform);
     }
 
-    public override void DisplayHitMessage() {
+    public override void DisplayHitMessage(EventManager.DeathReason deathReason) {
         if (!gm.eventManager.IsGameOver()) {
             gm.console.JoueurToucheTracer();
         }

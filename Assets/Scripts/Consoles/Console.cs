@@ -630,16 +630,19 @@ public class Console : MonoBehaviour {
 		//AjouterMessage ("On a déconnecté " + nomDetecteur + ".", Console.TypeText.ALLY_TEXT);
 	}
 
-	// Lorsque le joueur est touché
 	public void JoueurToucheSonde() {
 		AjouterMessageImportant (strings.toucheParUneSondeImportant, Console.TypeText.ENNEMI_TEXT, 1, bAfficherInConsole: false, strings.toucheParUneSondeImportant);
         AjouterMessage(strings.toucheParUneSondeConsole, Console.TypeText.ENNEMI_TEXT);
 	}
 
-	// Lorsque le joueur est touché
 	public void JoueurToucheTracer() {
 		AjouterMessageImportant (strings.toucheParUneTracerImportant, Console.TypeText.ENNEMI_TEXT, 1, bAfficherInConsole: false, strings.toucheParUneTracerImportant);
         AjouterMessage(strings.toucheParUneTracerConsole, Console.TypeText.ENNEMI_TEXT);
+	}
+
+	public void JoueurBlasteTracer() {
+		AjouterMessageImportant (strings.blasteParUneTracerImportant, Console.TypeText.ENNEMI_TEXT, 1, bAfficherInConsole: false, strings.blasteParUneTracerImportant);
+        AjouterMessage(strings.blasteParUneTracerConsole, Console.TypeText.ENNEMI_TEXT);
 	}
 
 	// Lorsque le joueur réussi à s'échapper

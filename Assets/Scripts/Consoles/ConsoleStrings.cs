@@ -22,6 +22,8 @@ public class ConsoleStrings : ScriptableObject {
     public LocalizedString toucheParUneSondeConsole;
     public LocalizedString toucheParUneTracerImportant;
     public LocalizedString toucheParUneTracerConsole;
+    public LocalizedString blasteParUneTracerImportant;
+    public LocalizedString blasteParUneTracerConsole;
 
     public LocalizedString winGameImportant;
     public LocalizedString winGameConsole1;
