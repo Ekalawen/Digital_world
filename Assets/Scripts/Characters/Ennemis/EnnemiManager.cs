@@ -15,6 +15,7 @@ public class EnnemiManager : MonoBehaviour {
     [HideInInspector]
     public GameObject ennemisFolder;
 
+
     public void Initialize() {
         gm = GameManager.Instance;
         ennemisFolder = new GameObject("Ennemis");

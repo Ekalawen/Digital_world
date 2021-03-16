@@ -20,10 +20,11 @@ public class ConsoleStrings : ScriptableObject {
 
     public LocalizedString toucheParUneSondeImportant;
     public LocalizedString toucheParUneSondeConsole;
-    public LocalizedString toucheParUneTracerImportant;
-    public LocalizedString toucheParUneTracerConsole;
-    public LocalizedString blasteParUneTracerImportant;
-    public LocalizedString blasteParUneTracerConsole;
+    public LocalizedString toucheParUnTracerImportant;
+    public LocalizedString toucheParUnTracerConsole;
+    public LocalizedString blasteParUnTracerImportant;
+    public LocalizedString blasteParUnTracerConsole;
+    public LocalizedString blasteParUnTracerImportantLearning;
 
     public LocalizedString winGameImportant;
     public LocalizedString winGameConsole1;

@@ -6,6 +6,9 @@ using UnityEngine.VFX;
 
 public class TracerBlast : Ennemi {
 
+    public static bool SHOULD_DISPLAY_BLAST_LEARNING_MESSAGE = false;
+    public static bool BLAST_LEARNING_MESSAGE_HAS_BEEN_DISPLAYED = false;
+
     public static string SHADER_MAIN_COLOR = "_MainColor";
     public static string SHADER_COLOR_CHANGE_COLOR_SOURCE = "_ColorChangeColorSource";
     public static string SHADER_COLOR_CANCELLED = "_ColorCancelled";
@@ -33,6 +36,9 @@ public class TracerBlast : Ennemi {
     [Header("Cancel Blast")]
     public float dureeCancelAnimation = 0.5f;
 
+    [Header("Blast Message")]
+    public bool shouldDisplayBlastLearningMessage = false;
+
     protected TracerController tracerController;
     protected Coroutine blastCoroutine = null;
     protected Coroutine blastLoadRotationCoroutine = null;
@@ -54,6 +60,7 @@ public class TracerBlast : Ennemi {
         shaderMainColor = material.GetColor(SHADER_MAIN_COLOR);
         shaderLoadColor = material.GetColor(SHADER_COLOR_CHANGE_COLOR_SOURCE);
         shaderCancelledColor = material.GetColor(SHADER_COLOR_CANCELLED);
+        SHOULD_DISPLAY_BLAST_LEARNING_MESSAGE = shouldDisplayBlastLearningMessage;
     }
 
     public override void UpdateSpecific() {
@@ -204,7 +211,12 @@ public class TracerBlast : Ennemi {
     public override void DisplayHitMessage(EventManager.DeathReason deathReason) {
         if (!gm.eventManager.IsGameOver()) {
             if (deathReason == EventManager.DeathReason.TRACER_BLAST) {
-                gm.console.JoueurBlasteTracer();
+                if (SHOULD_DISPLAY_BLAST_LEARNING_MESSAGE && !BLAST_LEARNING_MESSAGE_HAS_BEEN_DISPLAYED) {
+                    gm.console.JoueurBlasteTracerLearning();
+                    BLAST_LEARNING_MESSAGE_HAS_BEEN_DISPLAYED = true;
+                } else {
+                    gm.console.JoueurBlasteTracer();
+                }
             } else {
                 gm.console.JoueurToucheTracer();
             }

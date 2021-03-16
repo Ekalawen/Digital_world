@@ -636,13 +636,18 @@ public class Console : MonoBehaviour {
 	}
 
 	public void JoueurToucheTracer() {
-		AjouterMessageImportant (strings.toucheParUneTracerImportant, Console.TypeText.ENNEMI_TEXT, 1, bAfficherInConsole: false, strings.toucheParUneTracerImportant);
-        AjouterMessage(strings.toucheParUneTracerConsole, Console.TypeText.ENNEMI_TEXT);
+		AjouterMessageImportant (strings.toucheParUnTracerImportant, Console.TypeText.ENNEMI_TEXT, 1, bAfficherInConsole: false, strings.toucheParUnTracerImportant);
+        AjouterMessage(strings.toucheParUnTracerConsole, Console.TypeText.ENNEMI_TEXT);
 	}
 
 	public void JoueurBlasteTracer() {
-		AjouterMessageImportant (strings.blasteParUneTracerImportant, Console.TypeText.ENNEMI_TEXT, 1, bAfficherInConsole: false, strings.blasteParUneTracerImportant);
-        AjouterMessage(strings.blasteParUneTracerConsole, Console.TypeText.ENNEMI_TEXT);
+		AjouterMessageImportant (strings.blasteParUnTracerImportant, Console.TypeText.ENNEMI_TEXT, 1, bAfficherInConsole: false, strings.blasteParUnTracerImportant);
+        AjouterMessage(strings.blasteParUnTracerConsole, Console.TypeText.ENNEMI_TEXT);
+	}
+
+	public void JoueurBlasteTracerLearning() {
+		AjouterMessageImportant (strings.blasteParUnTracerImportantLearning, Console.TypeText.ENNEMI_TEXT, 3, bAfficherInConsole: false, strings.blasteParUnTracerImportantLearning);
+        AjouterMessage(strings.blasteParUnTracerConsole, Console.TypeText.ENNEMI_TEXT);
 	}
 
 	// Lorsque le joueur réussi à s'échapper
