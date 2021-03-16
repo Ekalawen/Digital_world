@@ -120,7 +120,11 @@ public class Cube : MonoBehaviour {
         ParticleSystemRenderer psr = go.GetComponent<ParticleSystemRenderer>();
         Material mat = psr.material;
         Material newMaterial = new Material(mat);
-        newMaterial.color = GetColor();
+        if (type != CubeType.BOUNCY) {
+            newMaterial.color = GetColor();
+        } else {
+            newMaterial.color = material.GetColor("_BounceColor");
+        }
         psr.material = newMaterial;
         float particuleTime = particle.main.duration;
         Destroy(go, particuleTime);
