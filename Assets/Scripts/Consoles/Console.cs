@@ -715,6 +715,10 @@ public class Console : MonoBehaviour {
                 AjouterMessageImportant (strings.deathTracerHit2, Console.TypeText.ENNEMI_TEXT, timeDeathMessage);
                 AjouterMessageImportant (strings.deathTracerHit1, Console.TypeText.ENNEMI_TEXT, timeDeathMessage);
                 break;
+            case EventManager.DeathReason.TRACER_BLAST:
+                AjouterMessageImportant (strings.deathTracerBlast2, Console.TypeText.ENNEMI_TEXT, timeDeathMessage);
+                AjouterMessageImportant (strings.deathTracerBlast1, Console.TypeText.ENNEMI_TEXT, timeDeathMessage);
+                break;
             case EventManager.DeathReason.FLIRD_HIT:
                 AjouterMessageImportant (strings.deathFlirdHit2, Console.TypeText.ENNEMI_TEXT, timeDeathMessage);
                 AjouterMessageImportant (strings.deathFlirdHit1, Console.TypeText.ENNEMI_TEXT, timeDeathMessage);

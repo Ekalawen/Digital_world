@@ -19,6 +19,7 @@ public class EventManager : MonoBehaviour {
         SONDE_HIT,
         TRACER_HIT,
         FLIRD_HIT,
+        TRACER_BLAST,
     };
     public enum EndEventType {
         DEATH_CUBES,

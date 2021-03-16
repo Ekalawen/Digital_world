@@ -13,6 +13,7 @@ public class TracerBlast : Ennemi {
     public enum TracerState { WAITING, RUSHING, EMITING };
 
     [Header("Blast")]
+    public float blastTimeMalus = 10.0f;
     public float blastLoadDuree = 2.0f;
     public float blastPousseeDuree = 0.3f;
     public float blastPousseeDistance = 10f;
@@ -43,6 +44,7 @@ public class TracerBlast : Ennemi {
     protected bool isCancelled = false;
     protected AudioSource loadAndBlastSource = null;
     protected Coroutine onDetectPlayerCoroutine = null;
+    protected EventManager.DeathReason currentDeathReason = EventManager.DeathReason.TRACER_HIT;
 
     public override void Start() {
         base.Start();
@@ -64,11 +66,18 @@ public class TracerBlast : Ennemi {
                 if(tracerController != null && IsPlayerComingFromTop()) {
                     tracerController.TryCancelAttack();
                 } else if (timerContactHit.IsOver()) {
-                    HitPlayer();
+                    HitPlayerCustom(EventManager.DeathReason.TRACER_HIT, timeMalusOnHit);
                     timerContactHit.Reset();
                 }
             }
         }
+    }
+
+    protected void HitPlayerCustom(EventManager.DeathReason deathReason, float timeMalus) {
+        EventManager.DeathReason oldDeathReason = currentDeathReason;
+        currentDeathReason = deathReason;
+        HitPlayer(useCustomTimeMalus: true, customTimeMalus: timeMalus);
+        currentDeathReason = oldDeathReason;
     }
 
     protected bool IsPlayerComingFromTop() {
@@ -160,7 +169,7 @@ public class TracerBlast : Ennemi {
         EnnemiController ennemiController = GetComponent<EnnemiController>();
         StartShaderColorChange(shaderLoadColor, shaderMainColor, blastPousseeDuree);
         if(ennemiController != null && ennemiController.IsPlayerVisible() && !gm.eventManager.IsGameOver()) {
-            HitPlayer();
+            HitPlayerCustom(EventManager.DeathReason.TRACER_BLAST, blastTimeMalus);
         }
     }
     protected override void HitPlayerSpecific() {
@@ -199,6 +208,6 @@ public class TracerBlast : Ennemi {
     }
 
     public override EventManager.DeathReason GetDeathReason() {
-        return EventManager.DeathReason.TRACER_HIT;
+        return currentDeathReason;
     }
 }
