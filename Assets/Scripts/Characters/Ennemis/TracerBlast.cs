@@ -159,7 +159,7 @@ public class TracerBlast : Ennemi {
         // Start blast animation
         EnnemiController ennemiController = GetComponent<EnnemiController>();
         StartShaderColorChange(shaderLoadColor, shaderMainColor, blastPousseeDuree);
-        if(ennemiController != null && ennemiController.IsPlayerVisible()) {
+        if(ennemiController != null && ennemiController.IsPlayerVisible() && !gm.eventManager.IsGameOver()) {
             HitPlayer();
         }
     }
