@@ -182,8 +182,16 @@ public class TimerManager : MonoBehaviour {
         AddTime(10);
     }
 
+    public void Add100Time() {
+        AddTime(100);
+    }
+
     public void Minus10Time() {
         RemoveTime(10, EventManager.DeathReason.TIME_OUT);
+    }
+
+    public void Minus100Time() {
+        RemoveTime(100, EventManager.DeathReason.TIME_OUT);
     }
 
     public void RemoveTime(float timeToRemove, EventManager.DeathReason reason) {

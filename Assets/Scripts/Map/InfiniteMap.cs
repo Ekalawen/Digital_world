@@ -297,6 +297,10 @@ public class InfiniteMap : MapManager {
         AddBlockRun(10);
     }
 
+    public void Add100BlockRun() {
+        AddBlockRun(100);
+    }
+
     protected void StartBlocksDestruction() {
         if (!startsBlockDestruction) {
             startsBlockDestruction = true;

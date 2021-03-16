@@ -15,8 +15,11 @@ public class CheatCodeManager : MonoBehaviour {
     public List<KeyCode> winCode;
     public List<KeyCode> loseCode;
     public List<KeyCode> plus10Code;
+    public List<KeyCode> plus100Code;
     public List<KeyCode> minus10Code;
+    public List<KeyCode> minus100Code;
     public List<KeyCode> plus10DataCount;
+    public List<KeyCode> plus100DataCount;
 
     protected GameManager gm;
     protected List<CheatCode> cheatCodes;
@@ -35,6 +38,7 @@ public class CheatCodeManager : MonoBehaviour {
         loseCheatCode.action = gm.eventManager.LoseGameWithTimeOut;
         cheatCodes.Add(loseCheatCode);
 
+        // Plus 10
         if (gm.GetMapType() == MenuLevel.LevelType.INFINITE) {
             CheatCode plus10BlocksCheatCode = new CheatCode();
             plus10BlocksCheatCode.code = plus10Code;
@@ -48,6 +52,21 @@ public class CheatCodeManager : MonoBehaviour {
             cheatCodes.Add(plus10SecondesCheatCode);
         }
 
+        // Plus 100
+        if (gm.GetMapType() == MenuLevel.LevelType.INFINITE) {
+            CheatCode plus100BlocksCheatCode = new CheatCode();
+            plus100BlocksCheatCode.code = plus100Code;
+            InfiniteMap infiniteMap = (InfiniteMap)gm.map;
+            plus100BlocksCheatCode.action = infiniteMap.Add100BlockRun;
+            cheatCodes.Add(plus100BlocksCheatCode);
+        } else {
+            CheatCode plus100SecondesCheatCode = new CheatCode();
+            plus100SecondesCheatCode.code = plus100Code;
+            plus100SecondesCheatCode.action = gm.timerManager.Add100Time;
+            cheatCodes.Add(plus100SecondesCheatCode);
+        }
+
+        // Minus 10
         if (gm.GetMapType() == MenuLevel.LevelType.REGULAR) {
             CheatCode minus10SecondesCheatCode = new CheatCode();
             minus10SecondesCheatCode.code = minus10Code;
@@ -55,11 +74,28 @@ public class CheatCodeManager : MonoBehaviour {
             cheatCodes.Add(minus10SecondesCheatCode);
         }
 
+        // Minus 100
+        if (gm.GetMapType() == MenuLevel.LevelType.REGULAR) {
+            CheatCode minus100SecondesCheatCode = new CheatCode();
+            minus100SecondesCheatCode.code = minus100Code;
+            minus100SecondesCheatCode.action = gm.timerManager.Minus100Time;
+            cheatCodes.Add(minus100SecondesCheatCode);
+        }
+
+        // Plus 10 DataCount
         if (gm.GetMapType() == MenuLevel.LevelType.REGULAR) {
             CheatCode plus10DataCountCheatCode = new CheatCode();
             plus10DataCountCheatCode.code = plus10DataCount;
             plus10DataCountCheatCode.action = gm.eventManager.Add10DataCount;
             cheatCodes.Add(plus10DataCountCheatCode);
+        }
+
+        // Plus 100 DataCount
+        if (gm.GetMapType() == MenuLevel.LevelType.REGULAR) {
+            CheatCode plus100DataCountCheatCode = new CheatCode();
+            plus100DataCountCheatCode.code = plus100DataCount;
+            plus100DataCountCheatCode.action = gm.eventManager.Add100DataCount;
+            cheatCodes.Add(plus100DataCountCheatCode);
         }
     }
 

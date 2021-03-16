@@ -655,6 +655,12 @@ public class EventManager : MonoBehaviour {
         gm.console.AddToDataCountText(dataCount, nb);
     }
 
+    public void Add100DataCount() {
+        int nb = 100;
+        int dataCount = Lumiere.IncrementDataCount(nb);
+        gm.console.AddToDataCountText(dataCount, nb);
+    }
+
     protected void TestNewTresholdReached() {
         if(gm.GetMapType() == MenuLevel.LevelType.REGULAR) {
             int dataCount = Lumiere.GetCurrentDataCount();
