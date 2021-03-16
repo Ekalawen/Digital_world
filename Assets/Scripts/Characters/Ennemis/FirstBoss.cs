@@ -100,7 +100,7 @@ public class FirstBoss : Sonde {
 
     protected void UpdateRandomEvent(int phaseIndice) {
         gm.eventManager.RemoveEvent(randomEventToRemove);
-        RandomEvent randomEvent = gm.eventManager.AddEvent(generateRandomFillingEventPrefab);
+        RandomEvent randomEvent = gm.eventManager.AddRandomEvent(generateRandomFillingEventPrefab);
         randomEvent.esperanceApparition = esperanceApparitionRandomFillingByPhases[phaseIndice - 1];
         randomEventToRemove = randomEvent;
     }

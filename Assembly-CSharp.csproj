@@ -58,7 +58,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\Math\Graphe.cs" />
     <Compile Include="Assets\Scripts\Map\MapFunctionComponents\Generate\GenerateHorizontalPonts.cs" />
-    <Compile Include="Assets\Scripts\Events\TimedMessage.cs" />
+    <Compile Include="Assets\Scripts\Events\RandomEvents\TimedMessage.cs" />
     <Compile Include="Assets\Scripts\Map\InfiniteMap.cs" />
     <Compile Include="Assets\Scripts\Math\BezierCurves\Trail.cs" />
     <Compile Include="Assets\Scripts\Pouvoirs\PouvoirExplosion.cs" />
@@ -66,7 +66,7 @@
     <Compile Include="Assets\Scripts\UI\Selector\SelectorCameraController.cs" />
     <Compile Include="Assets\Scripts\Map\MapElements\Cave.cs" />
     <Compile Include="Assets\Scripts\Events\Helpers\HelperFirstSonde.cs" />
-    <Compile Include="Assets\Scripts\Events\BlackoutEvent.cs" />
+    <Compile Include="Assets\Scripts\Events\RandomEvents\BlackoutEvent.cs" />
     <Compile Include="Assets\Shaders\DoubleFaceScript.cs" />
     <Compile Include="Assets\Imported\TextMesh Pro\Examples &amp; Extras\Scripts\SkewTextExample.cs" />
     <Compile Include="Assets\Scripts\Characters\Controllers\RushPlayerController.cs" />
@@ -90,7 +90,7 @@
     <Compile Include="Assets\Scripts\Map\MapElements\Zone\IZone.cs" />
     <Compile Include="Assets\Scripts\Map\MapElements\MapElementsComponents\AutoLookAtPlayer.cs" />
     <Compile Include="Assets\Scripts\Characters\Controllers\Flock\Behavior\FlockBehaviorGoToPlayer.cs" />
-    <Compile Include="Assets\Scripts\Events\GravityEvent.cs" />
+    <Compile Include="Assets\Scripts\Events\RandomEvents\GravityEvent.cs" />
     <Compile Include="Assets\Scripts\Map\MapElements\CubeEnsemble.cs" />
     <Compile Include="Assets\Scripts\UI\Menu\Utilitaires\KeybindingDropdown.cs" />
     <Compile Include="Assets\Scripts\UI\TexteExplicatif.cs" />
@@ -138,12 +138,12 @@
     <Compile Include="Assets\Materials\lwrp\Particules\Old\48 Particle Effect Pack\Script\csParticleEffectPackLightControl.cs" />
     <Compile Include="Assets\Scripts\Map\MapFunctionComponents\AllumeLumiere.cs" />
     <Compile Include="Assets\Scripts\Map\BlackAndWhiteMap.cs" />
-    <Compile Include="Assets\Scripts\Events\JumpEventAlertTracers.cs" />
+    <Compile Include="Assets\Scripts\Events\RandomEvents\JumpEventAlertTracers.cs" />
     <Compile Include="Assets\Imported\TextMesh Pro\Examples &amp; Extras\Scripts\ChatController.cs" />
     <Compile Include="Assets\Scripts\UI\Menu\Loading\LoadingMenu.cs" />
     <Compile Include="Assets\Scripts\UI\Selector\FastUISystem.cs" />
     <Compile Include="Assets\Imported\TextMesh Pro\Examples &amp; Extras\Scripts\TextMeshProFloatingText.cs" />
-    <Compile Include="Assets\Scripts\Events\RandomEvent.cs" />
+    <Compile Include="Assets\Scripts\Events\RandomEvents\RandomEvent.cs" />
     <Compile Include="Assets\Scripts\Map\MapFunctionComponents\Generate\Lumieres\GenerateLumiereCycle.cs" />
     <Compile Include="Assets\Scripts\Map\MapFunctionComponents\Generate\GenerateCubesMapFunction.cs" />
     <Compile Include="Assets\Scripts\UI\Tooltip\TooltipActivatorRandom.cs" />
@@ -249,7 +249,7 @@
     <Compile Include="Assets\Scripts\Timer\CounterDisplayer.cs" />
     <Compile Include="Assets\Scripts\UI\Selector\SelectorLevel\SelectorLevelObject.cs" />
     <Compile Include="Assets\Scripts\Map\MapFunctionComponents\RemoveDeadEnds.cs" />
-    <Compile Include="Assets\Scripts\Events\IntersectionEvent.cs" />
+    <Compile Include="Assets\Scripts\Events\RandomEvents\IntersectionEvent.cs" />
     <Compile Include="Assets\Scripts\UI\Selector\ButtonHighlighter.cs" />
     <Compile Include="Assets\Imported\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark02.cs" />
     <Compile Include="Assets\Scripts\Map\MapFunctionComponents\FixNbLumieres.cs" />
@@ -291,7 +291,7 @@
     <Compile Include="Assets\Imported\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_FrameRateCounter.cs" />
     <Compile Include="Assets\Materials\lwrp\Particules\Old\48 Particle Effect Pack\Script\csDestroyEffect.cs" />
     <Compile Include="Assets\Scripts\Map\MapElements\Cube\IndestructibleCube.cs" />
-    <Compile Include="Assets\Scripts\Events\JumpEvent.cs" />
+    <Compile Include="Assets\Scripts\Events\RandomEvents\JumpEvent.cs" />
     <Compile Include="Assets\Scripts\Events\EventManagers\EventManagerWhileTrueConstantDestruction.cs" />
     <Compile Include="Assets\Scripts\Characters\Ennemis\TracerEmitting.cs" />
     <Compile Include="Assets\Scripts\Map\MapFunctionComponents\Generate\Lumieres\GenerateLumieresFarFromCubeType.cs" />
@@ -320,7 +320,7 @@
     <Compile Include="Assets\Scripts\Events\Helpers\HelperMessage.cs" />
     <Compile Include="Assets\Scripts\Pouvoirs\PouvoirTripleSauts.cs" />
     <Compile Include="Assets\Scripts\Map\MapManager.cs" />
-    <Compile Include="Assets\Scripts\Events\MapFunctionEvent.cs" />
+    <Compile Include="Assets\Scripts\Events\RandomEvents\MapFunctionEvent.cs" />
     <Compile Include="Assets\Scripts\Characters\Controllers\Flock\FlirdController.cs" />
     <Compile Include="Assets\Scripts\UI\Selector\SelectorPath\SelectorPathUnlockScreen.cs" />
     <Compile Include="Assets\Scripts\Sound\SoundBankUI.cs" />
@@ -362,7 +362,7 @@
     <Compile Include="Assets\Scripts\Reward\HistoryManager.cs" />
     <Compile Include="Assets\Scripts\Events\EventManagers\EventManagerBlackAndWhite.cs" />
     <Compile Include="Assets\Imported\EZ Camera Shake\Scripts\CameraShakePresets.cs" />
-    <Compile Include="Assets\Scripts\Events\TimedMessageStruct.cs" />
+    <Compile Include="Assets\Scripts\Events\RandomEvents\TimedMessageStruct.cs" />
     <Compile Include="Assets\Scripts\Math\MathTools.cs" />
     <Compile Include="Assets\Scripts\Pouvoirs\PouvoirDetection.cs" />
     <Compile Include="Assets\Scripts\Characters\Controllers\SondeController.cs" />
@@ -373,6 +373,9 @@
     <Compile Include="Assets\Scripts\Map\MapFunctionComponents\GetMaxEmptySpacesLocations.cs" />
     <Compile Include="Assets\Scripts\Map\MapFunctionComponents\GetCubesHelper.cs" />
     <Compile Include="Assets\Materials\lwrp\Particules\Old\48 Particle Effect Pack\ShurikenEffectEditor\csShurikenEffectChanger.cs" />
+    <Compile Include="Assets\Scripts\Events\SingleEvents\SingleEvent.cs" />
+    <Compile Include="Assets\Scripts\Events\SingleEvents\SingleEventAddRandomEvent.cs" />
+    <Compile Include="Assets\Scripts\Events\SingleEvents\SingleEventAddEnnemi.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\Resources\Texts\DataHackees\14-15_ToLearnIntersection\DHtoLearnIntersectionFromConstantDestructionFR.txt" />

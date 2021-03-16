@@ -69,7 +69,7 @@ public class EventManager : MonoBehaviour {
 
     [Header("AddedEvents")]
     public List<int> nbLumieresTriggers;
-    public List<GameObject> eventsToAddPrefabs;
+    public List<SingleEvent> nbLumieresSingleEvents;
 
     [Header("ChangingScenesTimes")]
     public float quitSceneTime = 7.0f;
@@ -96,7 +96,7 @@ public class EventManager : MonoBehaviour {
 
         randomEvents = new List<RandomEvent>();
         foreach (GameObject randomEventPrefab in randomEventsPrefabs) {
-            AddEvent(randomEventPrefab);
+            AddRandomEvent(randomEventPrefab);
         }
     }
 
@@ -108,7 +108,7 @@ public class EventManager : MonoBehaviour {
         TestCheatCode();
     }
 
-    public RandomEvent AddEvent(GameObject randomEventPrefab) {
+    public RandomEvent AddRandomEvent(GameObject randomEventPrefab) {
         RandomEvent randomEvent = Instantiate(randomEventPrefab, randomEventsFolder.transform).GetComponent<RandomEvent>();
         randomEvents.Add(randomEvent);
         return randomEvent;
@@ -134,7 +134,7 @@ public class EventManager : MonoBehaviour {
         } else if (type == Lumiere.LumiereType.FINAL) {
             WinGame();
         }
-        AddEventsBasedOnLumiereCount(nbLumieres);
+        TriggerSingleEventsBasedOnLumiereCount(nbLumieres);
         TestNewTresholdReached();
         gm.console.OnLumiereCaptured();
     }
@@ -618,13 +618,13 @@ public class EventManager : MonoBehaviour {
         }
     }
 
-    protected void AddEventsBasedOnLumiereCount(int nbLumieres) {
+    protected void TriggerSingleEventsBasedOnLumiereCount(int nbLumieres) {
         for(int i = 0; i < nbLumieresTriggers.Count; i++) {
-            int nbLumieresTrigger = nbLumieresTriggers[i];
-            if(nbLumieresTrigger == nbLumieres) {
-                RandomEvent newEvent = AddEvent(eventsToAddPrefabs[i]);
-                newEvent.Start();
-                newEvent.TriggerEvent();
+            if(nbLumieresTriggers[i] == nbLumieres) {
+                nbLumieresSingleEvents[i].Trigger();
+                //RandomEvent newEvent = AddEvent(eventsToAddPrefabs[i]);
+                //newEvent.Start();
+                //newEvent.TriggerEvent();
             }
         }
     }

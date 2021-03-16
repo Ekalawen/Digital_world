@@ -91,7 +91,7 @@ public class EnnemiManager : MonoBehaviour {
         return ennemi;
     }
 
-    protected virtual Ennemi PopEnnemi(GameObject ennemiPrefab) {
+    public virtual Ennemi PopEnnemi(GameObject ennemiPrefab) {
         Vector3 pos = ennemiPrefab.GetComponent<Ennemi>().PopPosition(gm.map);
         return GenerateEnnemiFromPrefab(ennemiPrefab, pos);
     }

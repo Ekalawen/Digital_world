@@ -6,7 +6,7 @@ using UnityEngine;
 public class EnnemiManagerBlackAndWhite : EnnemiManager {
     protected bool nextPopOnTop = true;
 
-    protected override Ennemi PopEnnemi(GameObject ennemiPrefab) {
+    public override Ennemi PopEnnemi(GameObject ennemiPrefab) {
         BlackAndWhiteMap map = (BlackAndWhiteMap)gm.map;
         Vector3 pos;
         while (true) {
