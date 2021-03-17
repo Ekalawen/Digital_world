@@ -36,7 +36,7 @@ public class SelectorPath : MonoBehaviour {
 
     protected SelectorManager selectorManager;
     protected Timer trailTimer;
-    protected List<GameObject> pathPoints;
+    protected List<Vector3> pathPoints;
     protected SelectorPathUnlockScreen unlockScreen;
 
     public void Initialize(SelectorPathUnlockScreen unlockScreen) {
@@ -54,11 +54,15 @@ public class SelectorPath : MonoBehaviour {
     }
 
     protected void LinkAllPoints() {
-        pathPoints = intermediatePoints;
+        pathPoints = intermediatePoints.Select(p => p.transform.position).ToList();
         if (startLevel != null)
-            pathPoints.Insert(0, startLevel.gameObject);
+            pathPoints.Insert(0, startLevel.gameObject.transform.position);
         if (endLevel != null)
-            pathPoints.Insert(pathPoints.Count, endLevel.gameObject);
+            pathPoints.Insert(pathPoints.Count, endLevel.gameObject.transform.position);
+
+        int nbPoints = pathPoints.Count;
+        pathPoints[0] += (pathPoints[1] - pathPoints[0]).normalized * 0.5f;
+        pathPoints[nbPoints - 1] += (pathPoints[nbPoints - 2] - pathPoints[nbPoints - 1]).normalized * 0.5f;
     }
 
     public void Update() {
@@ -84,8 +88,8 @@ public class SelectorPath : MonoBehaviour {
 
         if(trailTimer.IsOver()) {
             for(int i = 0; i < pathPoints.Count - 1; i++) {
-                Vector3 source = pathPoints[i].transform.position;
-                Vector3 target = pathPoints[i + 1].transform.position;
+                Vector3 source = pathPoints[i];
+                Vector3 target = pathPoints[i + 1];
                 ThrowTrail(source, target, GetGradientColor());
             }
             trailTimer.Reset();
@@ -120,11 +124,11 @@ public class SelectorPath : MonoBehaviour {
 
     protected Vector3 GetMiddlePoint() {
         if(pathPoints.Count % 2 == 0) {
-            Vector3 firstMiddle = pathPoints[pathPoints.Count / 2 - 1].transform.position;
-            Vector3 secondMiddle = pathPoints[pathPoints.Count / 2].transform.position;
+            Vector3 firstMiddle = pathPoints[pathPoints.Count / 2 - 1];
+            Vector3 secondMiddle = pathPoints[pathPoints.Count / 2];
             return (firstMiddle + secondMiddle) / 2;
         } else {
-            return pathPoints[(pathPoints.Count - 1) / 2].transform.position;
+            return pathPoints[(pathPoints.Count - 1) / 2];
         }
     }
 
