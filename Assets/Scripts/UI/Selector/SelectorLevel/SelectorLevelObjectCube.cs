@@ -13,13 +13,15 @@ public class SelectorLevelObjectCube : MonoBehaviour {
     public Material lockedMaterial;
     public TooltipActivator tooltipActivator;
     public LocalizedString cubeNiveauSmartString;
+    public float iconeSize = 0.8f;
 
     protected SelectorManager selectorManager;
     protected bool hasClickedDown = false;
 
-    public void Initialize(bool hightlighted) {
+    public void Initialize(bool hightlighted, GameObject selectorIconePrefab) {
         selectorManager = SelectorManager.Instance;
         SetMaterial(focus: false);
+        InitSelectorIcone(selectorIconePrefab);
         tooltipActivator.localizedMessage = cubeNiveauSmartString;
         tooltipActivator.localizedMessage.Arguments = new object[] { selectorLevel.GetVisibleName() };
         GetComponent<AutoBouncer>().enabled = hightlighted;
@@ -69,5 +71,12 @@ public class SelectorLevelObjectCube : MonoBehaviour {
             GetComponent<Renderer>().material = lockedMaterial;
         else
             GetComponent<Renderer>().material = focus ? focusedMaterial : normalMaterial;
+    }
+
+    protected void InitSelectorIcone(GameObject selectorIconePrefab) {
+        if (selectorIconePrefab != null) {
+            GameObject go = Instantiate(selectorIconePrefab, transform.position, transform.rotation, parent: transform);
+            go.transform.localScale = Vector3.one * iconeSize;
+        }
     }
 }

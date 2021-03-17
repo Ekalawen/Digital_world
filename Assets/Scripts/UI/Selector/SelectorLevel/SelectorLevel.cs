@@ -9,6 +9,7 @@ public class SelectorLevel : MonoBehaviour {
 
     public MenuLevel menuLevel;
     public SelectorLevelObject objectLevel;
+    public GameObject selectorIconePrefab;
 
     protected SelectorManager selectorManager;
 
@@ -22,7 +23,7 @@ public class SelectorLevel : MonoBehaviour {
     }
 
     public void InitializeObject() {
-        objectLevel.Initialize(IsHighlighted());
+        objectLevel.Initialize(IsHighlighted(), selectorIconePrefab);
     }
 
     public void OnMouseEnter() {
