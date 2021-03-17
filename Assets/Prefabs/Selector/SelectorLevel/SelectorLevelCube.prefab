@@ -54,14 +54,16 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fbefe32d8f186f24a9ee20ceaaa19c5b, type: 2}
+  - {fileID: 2100000, guid: 29555bb0aeac6ec4a9fc55e5f9ce988d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -82,6 +84,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!65 &6893895824624143785
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -124,7 +127,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selectorLevel: {fileID: 0}
   objectLevel: {fileID: 0}
-  normalMaterial: {fileID: 2100000, guid: fbefe32d8f186f24a9ee20ceaaa19c5b, type: 2}
-  focusedMaterial: {fileID: 2100000, guid: e927506325e75994a874d85354fcb4e7, type: 2}
-  lockedMaterial: {fileID: 2100000, guid: e22adc3b53b393e41820d93c753ade1b, type: 2}
+  normalMaterial: {fileID: 2100000, guid: 29555bb0aeac6ec4a9fc55e5f9ce988d, type: 2}
+  focusedMaterial: {fileID: 2100000, guid: 19e9be34d49e0484abe97f806f01888f, type: 2}
+  lockedMaterial: {fileID: 2100000, guid: 7709c6b0d513a8449bf45459fa734f53, type: 2}
   tooltipActivator: {fileID: 0}
+  cubeNiveauSmartString:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
