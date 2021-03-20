@@ -17,6 +17,7 @@ public class ResetTimeItem : Item {
 
     public override void OnTrigger(Collider hit) {
         gm.timerManager.SetTime(settedTime);
+        gm.console.ResetTimeItemMessage(settedTime);
     }
 
     public override void Destroy() {

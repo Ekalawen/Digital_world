@@ -1034,4 +1034,14 @@ public class Console : MonoBehaviour {
             dataCountDisplayer.gameObject.SetActive(false);
         }
     }
+
+    public void ResetTimeItemMessage(float resetTime) {
+        LocalizedString lsImportant = strings.timeResetImportant;
+        lsImportant.Arguments = new object[] { resetTime };
+        gm.console.AjouterMessageImportant(lsImportant, Console.TypeText.BASIC_TEXT, 2.0f, bAfficherInConsole: false);
+
+        LocalizedString lsConsole = strings.timeResetConsole;
+        lsConsole.Arguments = new object[] { resetTime };
+        gm.console.AjouterMessage(lsConsole, Console.TypeText.BASIC_TEXT);
+    }
 }

@@ -130,4 +130,7 @@ public class ConsoleStrings : ScriptableObject {
 
     public LocalizedString rewardNewRegularTreshold;
     public LocalizedString rewardNewInfinitereshold;
+
+    public LocalizedString timeResetImportant;
+    public LocalizedString timeResetConsole;
 }
