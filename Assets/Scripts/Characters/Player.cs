@@ -247,16 +247,15 @@ public class Player : Character {
 			} else {
                 if (etat != EtatPersonnage.EN_SAUT) {
                     etat = EtatPersonnage.EN_CHUTE;
+                    sautTimer.SetOver();
                 }
             }
 		}
 	}
 
     // On met à jour le mouvement du joueur
-    void UpdateMouvement()
-    {
-        if (GameManager.Instance.IsTimeFreezed())
-        {
+    void UpdateMouvement() {
+        if (GameManager.Instance.IsTimeFreezed()) {
             return;
         }
 
@@ -660,6 +659,7 @@ public class Player : Character {
         pointDebutSaut = transform.position;
         origineSaut = from;
         lastAvancementSaut = 0f;
+        timerLastTimeAuSol.SetOver(); // On ne veut pas pouvoir double sauter à cause de ça !
         if (from == EtatPersonnage.AU_SOL) {
         } else if (from == EtatPersonnage.AU_MUR) {
             normaleOrigineSaut = normaleMur;
