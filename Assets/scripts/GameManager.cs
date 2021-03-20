@@ -73,7 +73,9 @@ public class GameManager : MonoBehaviour {
     protected bool isPaused = false;
 
     void Awake() {
-        if (!_instance) { _instance = this; }
+        if (!_instance) {
+            _instance = this;
+        }
     }
 
     void Start () {
