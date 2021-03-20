@@ -5,8 +5,13 @@ using UnityEngine;
 
 public class EnnemiManager : MonoBehaviour {
 
+    [Header("Ennemis")]
     public List<GameObject> ennemisPrefabs; // On récupère les ennemis !
     public List<int> nbEnnemis;
+
+    [Header("Player Capture")]
+    public float playerCaptureTime = 5.0f;
+    public float playerCaptureDistance = 0.3f;
 
     [HideInInspector]
     public List<Ennemi> ennemis; // Elle connait toutes les sondes
@@ -14,16 +19,22 @@ public class EnnemiManager : MonoBehaviour {
     protected GameManager gm;
     [HideInInspector]
     public GameObject ennemisFolder;
+	protected Timer playerCaptureTimer; // Le temps depuis lequel le joueur est en contact avec un ennemi
 
 
     public void Initialize() {
         gm = GameManager.Instance;
         ennemisFolder = new GameObject("Ennemis");
+        playerCaptureTimer = new Timer(playerCaptureTime, setOver: true);
 
         // On récupère tous les ennemis qui pourraient déjà exister dans la map !
         GetAllAlreadyExistingEnnemis();
 
         GenerateEnnemies();
+    }
+
+    public void Update() {
+        TestPlayerCaptured();
     }
 
     void GenerateEnnemies() {
@@ -99,5 +110,26 @@ public class EnnemiManager : MonoBehaviour {
 
     public void RemoveEnnemi(Ennemi ennemi) {
         ennemis.Remove(ennemi);
+    }
+
+    protected void TestPlayerCaptured() {
+        bool isInEnnemiRange = false;
+        foreach(Ennemi ennemi in ennemis) {
+            if (ennemi.CanCapture()) {
+                float captureDistance = gm.player.GetSizeRadius() + ennemi.transform.localScale[0] + playerCaptureDistance;
+                if (Vector3.Distance(ennemi.transform.position, gm.player.transform.position) <= captureDistance) {
+                    isInEnnemiRange = true;
+                    break;
+                }
+            }
+        }
+
+        if (!isInEnnemiRange) {
+            playerCaptureTimer.Reset();
+        }
+
+        if(playerCaptureTimer.IsOver()) {
+            gm.eventManager.LoseGame(EventManager.DeathReason.CAPTURED);
+        }
     }
 }

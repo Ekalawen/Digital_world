@@ -585,16 +585,7 @@ public class EventManager : MonoBehaviour {
             return true;
         }
 
-        //if (IsPlayerCaptured()) {
-        //    LoseGame(EventManager.DeathReason.CAPTURED);
-        //    return true;
-        //}
-
         return false;
-    }
-
-    protected bool IsPlayerCaptured() {
-        return gm.player.ennemiCaptureTimer.IsOver();
     }
 
     public bool IsGameOver() {

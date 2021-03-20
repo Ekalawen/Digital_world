@@ -226,4 +226,8 @@ public class TracerBlast : Ennemi {
     public override EventManager.DeathReason GetDeathReason() {
         return currentDeathReason;
     }
+
+    public override bool CanCapture() {
+        return !isCancelled;
+    }
 }

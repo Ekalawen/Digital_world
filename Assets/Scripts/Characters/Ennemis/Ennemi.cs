@@ -118,6 +118,10 @@ public abstract class Ennemi : Character {
         Destroy(gameObject);
     }
 
+    public virtual bool CanCapture() {
+        return true;
+    }
+
     public virtual Vector3 PopPosition(MapManager map) {
         return map.GetFreeRoundedLocation();
     }
