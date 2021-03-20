@@ -161,9 +161,6 @@ public class Player : Character {
         gm.console.InitPouvoirsDisplays();
     }
 
-    void ChoseStartingPosition() {
-    }
-
     void Update () {
         // On met à jour la caméra
         UpdateCamera();
