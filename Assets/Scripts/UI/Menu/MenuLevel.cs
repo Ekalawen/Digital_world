@@ -386,8 +386,7 @@ public class MenuLevel : MonoBehaviour {
         return UIHelper.SurroundWithColor(match.Value, UIHelper.BLUE);
     }
 
-    protected void InitTexteExplicatifArchives()
-    {
+    protected void InitTexteExplicatifArchives() {
         StartCoroutine(CInitTextesExplicatifs());
     }
 
@@ -398,6 +397,7 @@ public class MenuLevel : MonoBehaviour {
         foreach(Tuple<string, string> replacement in UIHelper.GetAllArchivesReplacements(selectorManager.archivesStrings)) {
             texteArchivesLink.AddReplacement(replacement.Item1, replacement.Item2);
         }
+        texteArchivesLink.titleTextTarget.text = selectorManager.strings.archivesTitle.GetLocalizedString().Result;
         texteArchivesLinkIsReady = true;
     }
 

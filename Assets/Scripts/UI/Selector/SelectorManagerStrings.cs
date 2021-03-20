@@ -19,6 +19,7 @@ public class SelectorManagerStrings : ScriptableObject {
     public LocalizedString victoires;
     public LocalizedString victoiresZero;
 
+    public LocalizedString archivesTitle;
     public LocalizedString dataHackees;
     public LocalizedString dataHackeesJamaisHackeesTexte;
 
