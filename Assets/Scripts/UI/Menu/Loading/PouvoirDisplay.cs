@@ -38,7 +38,6 @@ public class PouvoirDisplay : MonoBehaviour {
     }
 
     public static string GetNullDescription(string levelName) {
-        //return LocalizationSettings.StringDatabase.GetLocalizedStringAsync("Pouvoirs", "PouvoirNullDescription", new object[] { levelName }).Result;
-        return "NOPE";
+        return LocalizationSettings.StringDatabase.GetLocalizedStringAsync("Pouvoirs", "PouvoirNullDescription", null, FallbackBehavior.UseProjectSettings, new object[] { levelName }).Result;
     }
 }

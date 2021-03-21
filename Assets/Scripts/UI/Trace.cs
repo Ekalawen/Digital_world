@@ -90,8 +90,7 @@ public class Trace {
     }
 
     protected static string GetStringForLocalizedStringReference(string reference, params object[] arguments) {
-        //return LocalizationSettings.StringDatabase.GetLocalizedStringAsync("PasswordAdvices", reference, arguments).Result;
-        return "NOPE";
+        return LocalizationSettings.StringDatabase.GetLocalizedStringAsync("PasswordAdvices", reference, null, FallbackBehavior.UseProjectSettings, arguments).Result;
     }
 
     public static string GetPasswordAdvice(string password, string truePassword, AdviceType adviceType, int levenshteinDistance) {
