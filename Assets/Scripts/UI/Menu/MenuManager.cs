@@ -149,9 +149,12 @@ public class MenuManager : MonoBehaviour {
 
     protected IEnumerator CSetSavedLocale() {
         // Wait for the localization system to initialize, loading Locales, preloading etc.
+        Debug.Log($"Initializing locale ...");
         yield return LocalizationSettings.InitializationOperation;
+        Debug.Log($"Initialization done !");
 
         if (PrefsManager.HasKey(PrefsManager.LOCALE_INDEX_KEY)) {
+            Debug.Log($"Setting new locale ...");
             int index = PrefsManager.GetInt(PrefsManager.LOCALE_INDEX_KEY, 0);
             LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[index];
             Debug.Log($"New locale = {LocalizationSettings.SelectedLocale}");
