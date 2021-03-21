@@ -56,7 +56,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &3199105571990781779
 RectTransform:
   m_ObjectHideFlags: 0
@@ -139,6 +139,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 5845733588114937991}
+        m_TargetAssemblyTypeName: 
         m_MethodName: set_text
         m_Mode: 0
         m_Arguments:
@@ -172,6 +173,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 5845733587123867787}
+        m_TargetAssemblyTypeName: 
         m_MethodName: set_text
         m_Mode: 0
         m_Arguments:
@@ -241,6 +243,36 @@ PrefabInstance:
         type: 3}
       propertyPath: localizedMessage.m_TableReference.m_TableCollectionName
       value: GUID:424a6a0bc88e9244f84baacf95644b09
+      objectReference: {fileID: 0}
+    - target: {fileID: 832494561301836607, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+        type: 3}
+      propertyPath: keyName.m_TableEntryReference.m_KeyId
+      value: 5164647030784
+      objectReference: {fileID: 0}
+    - target: {fileID: 832494561301836607, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+        type: 3}
+      propertyPath: keyName.m_TableReference.m_TableCollectionName
+      value: GUID:bdcfcf5557c4ec14ea653537ddc22373
+      objectReference: {fileID: 0}
+    - target: {fileID: 5153332787420769904, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+        type: 3}
+      propertyPath: m_textAlignment
+      value: 65535
+      objectReference: {fileID: 0}
+    - target: {fileID: 5153332787420769904, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+        type: 3}
+      propertyPath: m_TextStyleHashCode
+      value: -1183493901
+      objectReference: {fileID: 0}
+    - target: {fileID: 5153332787420769904, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+        type: 3}
+      propertyPath: m_VerticalAlignment
+      value: 512
+      objectReference: {fileID: 0}
+    - target: {fileID: 5153332787420769904, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+        type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7817840737000059275, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
         type: 3}
@@ -364,11 +396,26 @@ PrefabInstance:
     - target: {fileID: 9026821314669180265, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
         type: 3}
       propertyPath: m_text
-      value: '<b><color=#00ff00ff>Click Gauche</color>
+      value: '<b><color=#00ff00ff>%ToucheName%</color>
 
         <color=#ff0000ff>%PouvoirName%</color></b>
 
 '
+      objectReference: {fileID: 0}
+    - target: {fileID: 9026821314669180265, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+        type: 3}
+      propertyPath: m_textAlignment
+      value: 65535
+      objectReference: {fileID: 0}
+    - target: {fileID: 9026821314669180265, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+        type: 3}
+      propertyPath: m_TextStyleHashCode
+      value: -1183493901
+      objectReference: {fileID: 0}
+    - target: {fileID: 9026821314669180265, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+        type: 3}
+      propertyPath: m_VerticalAlignment
+      value: 512
       objectReference: {fileID: 0}
     - target: {fileID: 9026821314669180265, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
         type: 3}
@@ -379,6 +426,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_textInfo.wordCount
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 9026821314669180265, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+        type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 9026821314669180265, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
         type: 3}
@@ -608,6 +660,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5194553885589976909, guid: 162182fc2409c2e448c05f095f1864e2,
         type: 3}
+      propertyPath: m_textAlignment
+      value: 65535
+      objectReference: {fileID: 0}
+    - target: {fileID: 5194553885589976909, guid: 162182fc2409c2e448c05f095f1864e2,
+        type: 3}
       propertyPath: m_sharedMaterial
       value: 
       objectReference: {fileID: -403750935843946944, guid: da76f951fb759b74e938e0eed1e5ae3e,
@@ -619,6 +676,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5194553885589976909, guid: 162182fc2409c2e448c05f095f1864e2,
         type: 3}
+      propertyPath: m_TextStyleHashCode
+      value: -1183493901
+      objectReference: {fileID: 0}
+    - target: {fileID: 5194553885589976909, guid: 162182fc2409c2e448c05f095f1864e2,
+        type: 3}
+      propertyPath: m_VerticalAlignment
+      value: 512
+      objectReference: {fileID: 0}
+    - target: {fileID: 5194553885589976909, guid: 162182fc2409c2e448c05f095f1864e2,
+        type: 3}
       propertyPath: m_textInfo.lineCount
       value: 1
       objectReference: {fileID: 0}
@@ -626,6 +693,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_textInfo.wordCount
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5194553885589976909, guid: 162182fc2409c2e448c05f095f1864e2,
+        type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5194553885589976909, guid: 162182fc2409c2e448c05f095f1864e2,
         type: 3}
@@ -692,6 +764,36 @@ PrefabInstance:
         type: 3}
       propertyPath: localizedMessage.m_TableReference.m_TableCollectionName
       value: GUID:424a6a0bc88e9244f84baacf95644b09
+      objectReference: {fileID: 0}
+    - target: {fileID: 832494561301836607, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+        type: 3}
+      propertyPath: keyName.m_TableEntryReference.m_KeyId
+      value: 5143625179136
+      objectReference: {fileID: 0}
+    - target: {fileID: 832494561301836607, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+        type: 3}
+      propertyPath: keyName.m_TableReference.m_TableCollectionName
+      value: GUID:bdcfcf5557c4ec14ea653537ddc22373
+      objectReference: {fileID: 0}
+    - target: {fileID: 5153332787420769904, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+        type: 3}
+      propertyPath: m_textAlignment
+      value: 65535
+      objectReference: {fileID: 0}
+    - target: {fileID: 5153332787420769904, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+        type: 3}
+      propertyPath: m_TextStyleHashCode
+      value: -1183493901
+      objectReference: {fileID: 0}
+    - target: {fileID: 5153332787420769904, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+        type: 3}
+      propertyPath: m_VerticalAlignment
+      value: 512
+      objectReference: {fileID: 0}
+    - target: {fileID: 5153332787420769904, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+        type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7817840737000059275, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
         type: 3}
@@ -815,11 +917,26 @@ PrefabInstance:
     - target: {fileID: 9026821314669180265, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
         type: 3}
       propertyPath: m_text
-      value: '<b><color=#00ff00ff>E</color>
+      value: '<b><color=#00ff00ff>%ToucheName%</color>
 
         <color=#ff0000ff>%PouvoirName%</color></b>
 
 '
+      objectReference: {fileID: 0}
+    - target: {fileID: 9026821314669180265, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+        type: 3}
+      propertyPath: m_textAlignment
+      value: 65535
+      objectReference: {fileID: 0}
+    - target: {fileID: 9026821314669180265, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+        type: 3}
+      propertyPath: m_TextStyleHashCode
+      value: -1183493901
+      objectReference: {fileID: 0}
+    - target: {fileID: 9026821314669180265, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+        type: 3}
+      propertyPath: m_VerticalAlignment
+      value: 512
       objectReference: {fileID: 0}
     - target: {fileID: 9026821314669180265, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
         type: 3}
@@ -829,6 +946,11 @@ PrefabInstance:
     - target: {fileID: 9026821314669180265, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
         type: 3}
       propertyPath: m_textInfo.wordCount
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9026821314669180265, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+        type: 3}
+      propertyPath: m_HorizontalAlignment
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 9026821314669180265, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
@@ -1065,6 +1187,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5194553885589976909, guid: 162182fc2409c2e448c05f095f1864e2,
         type: 3}
+      propertyPath: m_textAlignment
+      value: 65535
+      objectReference: {fileID: 0}
+    - target: {fileID: 5194553885589976909, guid: 162182fc2409c2e448c05f095f1864e2,
+        type: 3}
       propertyPath: m_sharedMaterial
       value: 
       objectReference: {fileID: -403750935843946944, guid: 2cd58012a4e648549bfcdf4cfdeac686,
@@ -1076,6 +1203,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5194553885589976909, guid: 162182fc2409c2e448c05f095f1864e2,
         type: 3}
+      propertyPath: m_TextStyleHashCode
+      value: -1183493901
+      objectReference: {fileID: 0}
+    - target: {fileID: 5194553885589976909, guid: 162182fc2409c2e448c05f095f1864e2,
+        type: 3}
+      propertyPath: m_VerticalAlignment
+      value: 512
+      objectReference: {fileID: 0}
+    - target: {fileID: 5194553885589976909, guid: 162182fc2409c2e448c05f095f1864e2,
+        type: 3}
       propertyPath: m_textInfo.lineCount
       value: 1
       objectReference: {fileID: 0}
@@ -1083,6 +1220,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_textInfo.wordCount
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5194553885589976909, guid: 162182fc2409c2e448c05f095f1864e2,
+        type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5194553885589976909, guid: 162182fc2409c2e448c05f095f1864e2,
         type: 3}
@@ -1156,6 +1298,36 @@ PrefabInstance:
         type: 3}
       propertyPath: localizedMessage.m_TableReference.m_TableCollectionName
       value: GUID:424a6a0bc88e9244f84baacf95644b09
+      objectReference: {fileID: 0}
+    - target: {fileID: 832494561301836607, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+        type: 3}
+      propertyPath: keyName.m_TableEntryReference.m_KeyId
+      value: 5214416642048
+      objectReference: {fileID: 0}
+    - target: {fileID: 832494561301836607, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+        type: 3}
+      propertyPath: keyName.m_TableReference.m_TableCollectionName
+      value: GUID:bdcfcf5557c4ec14ea653537ddc22373
+      objectReference: {fileID: 0}
+    - target: {fileID: 5153332787420769904, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+        type: 3}
+      propertyPath: m_textAlignment
+      value: 65535
+      objectReference: {fileID: 0}
+    - target: {fileID: 5153332787420769904, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+        type: 3}
+      propertyPath: m_TextStyleHashCode
+      value: -1183493901
+      objectReference: {fileID: 0}
+    - target: {fileID: 5153332787420769904, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+        type: 3}
+      propertyPath: m_VerticalAlignment
+      value: 512
+      objectReference: {fileID: 0}
+    - target: {fileID: 5153332787420769904, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+        type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7817840737000059275, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
         type: 3}
@@ -1279,11 +1451,26 @@ PrefabInstance:
     - target: {fileID: 9026821314669180265, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
         type: 3}
       propertyPath: m_text
-      value: '<b><color=#00ff00ff>Click Droit</color>
+      value: '<b><color=#00ff00ff>%ToucheName%</color>
 
         <color=#ff0000ff>%PouvoirName%</color></b>
 
 '
+      objectReference: {fileID: 0}
+    - target: {fileID: 9026821314669180265, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+        type: 3}
+      propertyPath: m_textAlignment
+      value: 65535
+      objectReference: {fileID: 0}
+    - target: {fileID: 9026821314669180265, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+        type: 3}
+      propertyPath: m_TextStyleHashCode
+      value: -1183493901
+      objectReference: {fileID: 0}
+    - target: {fileID: 9026821314669180265, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+        type: 3}
+      propertyPath: m_VerticalAlignment
+      value: 512
       objectReference: {fileID: 0}
     - target: {fileID: 9026821314669180265, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
         type: 3}
@@ -1294,6 +1481,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_textInfo.wordCount
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 9026821314669180265, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+        type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 9026821314669180265, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
         type: 3}
@@ -1364,6 +1556,36 @@ PrefabInstance:
         type: 3}
       propertyPath: localizedMessage.m_TableReference.m_TableCollectionName
       value: GUID:424a6a0bc88e9244f84baacf95644b09
+      objectReference: {fileID: 0}
+    - target: {fileID: 832494561301836607, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+        type: 3}
+      propertyPath: keyName.m_TableEntryReference.m_KeyId
+      value: 5107239591936
+      objectReference: {fileID: 0}
+    - target: {fileID: 832494561301836607, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+        type: 3}
+      propertyPath: keyName.m_TableReference.m_TableCollectionName
+      value: GUID:bdcfcf5557c4ec14ea653537ddc22373
+      objectReference: {fileID: 0}
+    - target: {fileID: 5153332787420769904, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+        type: 3}
+      propertyPath: m_textAlignment
+      value: 65535
+      objectReference: {fileID: 0}
+    - target: {fileID: 5153332787420769904, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+        type: 3}
+      propertyPath: m_TextStyleHashCode
+      value: -1183493901
+      objectReference: {fileID: 0}
+    - target: {fileID: 5153332787420769904, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+        type: 3}
+      propertyPath: m_VerticalAlignment
+      value: 512
+      objectReference: {fileID: 0}
+    - target: {fileID: 5153332787420769904, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+        type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7817840737000059275, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
         type: 3}
@@ -1487,11 +1709,26 @@ PrefabInstance:
     - target: {fileID: 9026821314669180265, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
         type: 3}
       propertyPath: m_text
-      value: '<b><color=#00ff00ff>A</color>
+      value: '<b><color=#00ff00ff>%ToucheName%</color>
 
         <color=#ff0000ff>%PouvoirName%</color></b>
 
 '
+      objectReference: {fileID: 0}
+    - target: {fileID: 9026821314669180265, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+        type: 3}
+      propertyPath: m_textAlignment
+      value: 65535
+      objectReference: {fileID: 0}
+    - target: {fileID: 9026821314669180265, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+        type: 3}
+      propertyPath: m_TextStyleHashCode
+      value: -1183493901
+      objectReference: {fileID: 0}
+    - target: {fileID: 9026821314669180265, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+        type: 3}
+      propertyPath: m_VerticalAlignment
+      value: 512
       objectReference: {fileID: 0}
     - target: {fileID: 9026821314669180265, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
         type: 3}
@@ -1501,6 +1738,11 @@ PrefabInstance:
     - target: {fileID: 9026821314669180265, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
         type: 3}
       propertyPath: m_textInfo.wordCount
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9026821314669180265, guid: 8d06d2acc7beb93439a4a883fd9c61fa,
+        type: 3}
+      propertyPath: m_HorizontalAlignment
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 9026821314669180265, guid: 8d06d2acc7beb93439a4a883fd9c61fa,

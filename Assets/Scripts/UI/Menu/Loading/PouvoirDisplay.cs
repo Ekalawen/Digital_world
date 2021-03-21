@@ -10,13 +10,15 @@ public class PouvoirDisplay : MonoBehaviour {
 
     public TMPro.TMP_Text textName;
     public TMPro.TMP_Text textDescription;
+    public LocalizedString keyName;
     public Image image;
     public Image bordure;
     public Color bordureColorActive;
     public Color bordureColorSpecial;
 
-    public void Initialize(string name, string description, Sprite sprite) {
+    public void Initialize(string name, string keyName, string description, Sprite sprite) {
         textName.text = textName.text.Replace("%PouvoirName%", name);
+        textName.text = textName.text.Replace("%ToucheName%", keyName);
         textDescription.text = description;
         if(name != GetNullName()) {
             if(name != "PathFinder" && name != "Localisateur")

@@ -91,18 +91,18 @@ public class LoadingMenu : MonoBehaviour {
 
     protected void InitPouvoirs() {
         Player player = level.joueurPrefab.GetComponent<Player>();
-        InitPouvoir(player.pouvoirAPrefab, pouvoirA);
-        InitPouvoir(player.pouvoirEPrefab, pouvoirE);
-        InitPouvoir(player.pouvoirLeftBoutonPrefab, pouvoirLeftClick);
-        InitPouvoir(player.pouvoirRightBoutonPrefab, pouvoirRightClick);
+        InitPouvoir(player.pouvoirAPrefab, pouvoirA, pouvoirA.keyName.GetLocalizedString().Result);
+        InitPouvoir(player.pouvoirEPrefab, pouvoirE, pouvoirE.keyName.GetLocalizedString().Result);
+        InitPouvoir(player.pouvoirLeftBoutonPrefab, pouvoirLeftClick, pouvoirLeftClick.keyName.GetLocalizedString().Result);
+        InitPouvoir(player.pouvoirRightBoutonPrefab, pouvoirRightClick, pouvoirRightClick.keyName.GetLocalizedString().Result);
     }
 
-    protected void InitPouvoir(GameObject pouvoirPrefab, PouvoirDisplay display) {
+    protected void InitPouvoir(GameObject pouvoirPrefab, PouvoirDisplay display, string keyName) {
         IPouvoir pouvoir = pouvoirPrefab ? pouvoirPrefab.GetComponent<IPouvoir>() : null;
         string nom = pouvoir ? pouvoir.nom.GetLocalizedString().Result : PouvoirDisplay.GetNullName();
         string description = pouvoir ? pouvoir.description.GetLocalizedString().Result : PouvoirDisplay.GetNullDescription();
         Sprite sprite = pouvoir ? pouvoir.sprite : null;
-        display.Initialize(nom, description, sprite);
+        display.Initialize(nom, keyName, description, sprite);
     }
 
     protected void HidePouvoirs() {
