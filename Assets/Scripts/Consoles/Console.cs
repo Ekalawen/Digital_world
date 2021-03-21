@@ -319,12 +319,13 @@ public class Console : MonoBehaviour {
         object[] argumentsReplace) {
         AsyncOperationHandle<string> handle = localizedString.GetLocalizedString(argumentsString);
         yield return handle;
+        string handleResult = handle.Result;
         if (messageToReplace != null) {
             AsyncOperationHandle<string> handleToReplace = messageToReplace.GetLocalizedString(argumentsReplace);
             yield return handleToReplace;
-            AjouterMessageImportant(handle.Result, type, tempsAffichage, bAfficherInConsole, handleToReplace.Result);
+            AjouterMessageImportant(handleResult, type, tempsAffichage, bAfficherInConsole, handleToReplace.Result);
         } else {
-            AjouterMessageImportant(handle.Result, type, tempsAffichage, bAfficherInConsole);
+            AjouterMessageImportant(handleResult, type, tempsAffichage, bAfficherInConsole);
         }
     }
 
@@ -905,8 +906,9 @@ public class Console : MonoBehaviour {
     private IEnumerator CCapturePouvoirGiverTime(LocalizedString pouvoirName, PouvoirGiverItem.PouvoirBinding pouvoirBinding) {
         AsyncOperationHandle<string> handlePouvoirName = pouvoirName.GetLocalizedString();
         yield return handlePouvoirName;
+        string pouvoirNameString = handlePouvoirName.Result;
         LocalizedString pouvoirGiverActive = strings.pouvoirGiverActive;
-        pouvoirGiverActive.Arguments = new object[] { handlePouvoirName.Result };
+        pouvoirGiverActive.Arguments = new object[] { pouvoirNameString };
         AjouterMessageImportant(pouvoirGiverActive, TypeText.ALLY_TEXT, 2, bAfficherInConsole: false);
         LocalizedString strBinding = null;
         switch (pouvoirBinding) {
@@ -918,7 +920,7 @@ public class Console : MonoBehaviour {
         AsyncOperationHandle<string> handlePouvoirBinding = strBinding.GetLocalizedString();
         yield return handlePouvoirBinding;
         LocalizedString pouvoirGiverExplications = strings.pouvoirGiverExplications;
-        pouvoirGiverExplications.Arguments = new object[] { handlePouvoirName.Result, handlePouvoirBinding.Result };
+        pouvoirGiverExplications.Arguments = new object[] { pouvoirNameString, handlePouvoirBinding.Result };
         AjouterMessage(pouvoirGiverExplications, TypeText.ALLY_TEXT);
     }
 

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
+using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.SceneManagement;
 
 public class MenuManager : MonoBehaviour {
@@ -70,20 +71,23 @@ public class MenuManager : MonoBehaviour {
     }
 
     protected IEnumerator CAdvicePlayTutorial() {
-        var handleTutorial = tutoriel.GetLocalizedString();
+        AsyncOperationHandle<string> handleTutorial = tutoriel.GetLocalizedString();
         yield return handleTutorial;
+        string tutorialString = handleTutorial.Result;
 
-        var handleTitre = tutorielRecommandeTitre.GetLocalizedString();
+        AsyncOperationHandle<string> handleTitre = tutorielRecommandeTitre.GetLocalizedString();
         yield return handleTitre;
+        string titreString = handleTitre.Result;
 
-        string tutorielFormate = UIHelper.SurroundWithColor(handleTutorial.Result, UIHelper.BLUE);
-        var handleTexte = tutorielRecommandeTexte.GetLocalizedString(tutorielFormate);
+        string tutorielFormate = UIHelper.SurroundWithColor(tutorialString, UIHelper.BLUE);
+        AsyncOperationHandle<string> handleTexte = tutorielRecommandeTexte.GetLocalizedString(tutorielFormate);
         yield return handleTexte;
+        string texteString = handleTexte.Result;
 
         popup.AddReplacement("999999.999%", UIHelper.SurroundWithColor("999999.999%", UIHelper.GREEN));
         RunPopup(
-            title: handleTitre.Result,
-            text: handleTexte.Result,
+            title: titreString,
+            text: texteString,
             theme: TexteExplicatif.Theme.NEUTRAL,
             cleanReplacements: false);
         PrefsManager.SetBool(PrefsManager.HAVE_THINK_ABOUT_TUTORIAL_KEY, true);

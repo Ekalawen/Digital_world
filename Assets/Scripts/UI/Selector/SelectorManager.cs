@@ -351,10 +351,14 @@ public class SelectorManager : MonoBehaviour {
 
     public IEnumerator CRunPopup(LocalizedString title, LocalizedString text, TexteExplicatif.Theme theme, bool cleanReplacements = true) {
         AsyncOperationHandle<string> handleTitle = title.GetLocalizedString();
-        AsyncOperationHandle<string> handleText = text.GetLocalizedString();
         yield return handleTitle;
+        string titleString = handleTitle.Result; // Car les AsyncOperationHandle doivent être utilisé l'un après l'autre ! x)
+
+        AsyncOperationHandle<string> handleText = text.GetLocalizedString();
         yield return handleText;
-        RunPopup(handleTitle.Result, handleText.Result, theme, cleanReplacements);
+        string textString = handleText.Result;
+
+        RunPopup(titleString, textString, theme, cleanReplacements);
     }
 
     public void RunPopup(string title, string text, TexteExplicatif.Theme theme, bool cleanReplacements = true) {

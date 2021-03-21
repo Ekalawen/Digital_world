@@ -83,7 +83,7 @@ public class LoadingMenu : MonoBehaviour {
             yield return handle.Task;
             conseilText.text += handle.Result;
         } else { // Tutoriel !
-            var handle = tutorielInitialisationMatrice.GetLocalizedString();
+            AsyncOperationHandle<string> handle = tutorielInitialisationMatrice.GetLocalizedString();
             yield return handle;
             conseilText.text = handle.Result;
         }

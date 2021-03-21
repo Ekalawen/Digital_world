@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Localization;
+using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.UI;
 
 public class PouvoirDisplayInGame : MonoBehaviour {
@@ -37,15 +38,13 @@ public class PouvoirDisplayInGame : MonoBehaviour {
         this.pouvoir = pouvoir;
         string nom = PouvoirDisplay.GetNullName();
         if (pouvoir != null) {
-            var handleNom = pouvoir.nom.GetLocalizedString();
-            var handleDescrition = pouvoir.description.GetLocalizedString();
+            AsyncOperationHandle<string> handleNom = pouvoir.nom.GetLocalizedString();
             yield return handleNom;
-            yield return handleDescrition;
             nom = handleNom.Result;
         }
         Sprite sprite = pouvoir ? pouvoir.sprite : null;
 
-        var handleKeyText = keyLocalizedString.GetLocalizedString();
+        AsyncOperationHandle<string> handleKeyText = keyLocalizedString.GetLocalizedString();
         yield return handleKeyText;
         keyText.text = keyText.text.Replace("%PouvoirName%", handleKeyText.Result);
 
