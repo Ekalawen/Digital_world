@@ -16,16 +16,18 @@ MonoBehaviour:
     m_Code: en
   m_SharedData: {fileID: 11400000, guid: bdcfcf5557c4ec14ea653537ddc22373, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - id: 0
   m_TableData:
   - m_Id: 36930035712
-    m_Localized: 404 Not Found
+    m_Localized: Power locked
     m_Metadata:
       m_Items: []
   - m_Id: 100150779904
-    m_Localized: Not yet unlocked!
+    m_Localized: Power unlocked at level {0}
     m_Metadata:
-      m_Items: []
+      m_Items:
+      - id: 0
   - m_Id: 526162042880
     m_Localized: Dash015
     m_Metadata:
@@ -121,3 +123,7 @@ MonoBehaviour:
       m_Items: []
   references:
     version: 1
+    00000000:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 00a0735117000000

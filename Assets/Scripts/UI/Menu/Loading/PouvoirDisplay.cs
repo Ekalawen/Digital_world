@@ -11,6 +11,7 @@ public class PouvoirDisplay : MonoBehaviour {
     public TMPro.TMP_Text textName;
     public TMPro.TMP_Text textDescription;
     public LocalizedString keyName;
+    public LocalizedString levelToUnlockPouvoirName;
     public Image image;
     public Image bordure;
     public Color bordureColorActive;
@@ -35,7 +36,7 @@ public class PouvoirDisplay : MonoBehaviour {
         return LocalizationSettings.StringDatabase.GetLocalizedStringAsync("Pouvoirs", "PouvoirNullName").Result;
     }
 
-    public static string GetNullDescription() {
-        return LocalizationSettings.StringDatabase.GetLocalizedStringAsync("Pouvoirs", "PouvoirNullDescription").Result;
+    public static string GetNullDescription(string levelName) {
+        return LocalizationSettings.StringDatabase.GetLocalizedStringAsync("Pouvoirs", "PouvoirNullDescription", new object[] { levelName }).Result;
     }
 }

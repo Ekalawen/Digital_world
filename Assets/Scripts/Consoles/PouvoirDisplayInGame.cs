@@ -33,14 +33,12 @@ public class PouvoirDisplayInGame : MonoBehaviour {
         bordure.gameObject.SetActive(true);
         this.pouvoir = pouvoir;
         string nom = PouvoirDisplay.GetNullName();
-        string description = PouvoirDisplay.GetNullDescription();
         if (pouvoir != null) {
             var handleNom = pouvoir.nom.GetLocalizedString();
             var handleDescrition = pouvoir.description.GetLocalizedString();
             yield return handleNom;
             yield return handleDescrition;
             nom = handleNom.Result;
-            description = handleDescrition.Result;
         }
         Sprite sprite = pouvoir ? pouvoir.sprite : null;
 
