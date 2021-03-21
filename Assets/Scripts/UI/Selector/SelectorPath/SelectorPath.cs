@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Localization;
+using UnityEngine.Localization.Settings;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class SelectorPath : MonoBehaviour {
@@ -184,8 +185,12 @@ public class SelectorPath : MonoBehaviour {
 
     public string GetPasse() {
         AsyncOperationHandle<string> handle = passwordPasse.GetLocalizedString();
-        Debug.Log($"Passe = {handle.Result}");
-        return handle.Result; // Peut générer des bugs ! Dans l'idée il faudrait vérifier. Mais si c'est pas load, je sais pas comment attendre sans pourrir tout le code avec de l'async :/
+        string passe = handle.Result; // Peut générer des bugs ! Dans l'idée il faudrait vérifier. Mais si c'est pas load, je sais pas comment attendre sans pourrir tout le code avec de l'async :/
+        if(passe == "No translation found for 'Empty' in Passes") { // Pas le choix car ils supportent pas les LocalizedStrings vides et qu'on est pas foutu de connaître les tables/entrys associés à une LocalizedString !
+            passe = "";
+        }
+        Debug.Log($"Passe = {passe}");
+        return passe;
     }
 
     public string GetTrace() {
