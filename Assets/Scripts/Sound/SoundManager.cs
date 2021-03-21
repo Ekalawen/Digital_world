@@ -170,6 +170,9 @@ public class SoundManager : MonoBehaviour {
     public void PlayNotFoundPouvoirClip() {
         PlayClipsOnSource(sounds.notFoundPouvoirClips);
     }
+    public void PlayPouvoirAvailableClip() {
+        PlayClipsOnSource(sounds.pouvoirAvailableClips);
+    }
     public void PlayTimeZoneButtonInClip(Vector3 pos) {
         PlayClipsOnSource(sounds.timeZoneButtonInClips, pos);
     }

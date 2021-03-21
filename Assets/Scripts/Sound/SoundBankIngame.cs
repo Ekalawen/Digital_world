@@ -33,6 +33,7 @@ public class SoundBankIngame : ScriptableObject {
     public AudioClipParams activationPouvoirClips;
     public AudioClipParams deniedPouvoirClips;
     public AudioClipParams notFoundPouvoirClips;
+    public AudioClipParams pouvoirAvailableClips;
     public AudioClipParams timeZoneButtonInClips;
     public AudioClipParams timeZoneButtonOutClips;
     public AudioClipParams bounceClips;

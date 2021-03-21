@@ -20,9 +20,11 @@ public class PouvoirDisplayInGame : MonoBehaviour {
     public LocalizedString keyLocalizedString;
     public PouvoirDisplayFlash flash;
 
+    protected GameManager gm;
     protected IPouvoir pouvoir;
 
     public void Initialize(IPouvoir pouvoir) {
+        gm = GameManager.Instance;
         if (pouvoir == null) {
             bordure.gameObject.SetActive(false);
             return;
@@ -82,5 +84,6 @@ public class PouvoirDisplayInGame : MonoBehaviour {
 
     protected void FlashPouvoirAvailable() {
         flash.Flash();
+        gm.soundManager.PlayPouvoirAvailableClip();
     }
 }
