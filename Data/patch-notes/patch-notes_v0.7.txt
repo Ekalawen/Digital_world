@@ -1,0 +1,103 @@
+@everyone Et BIM ! Une version de plus ! La 0.7 est out aujourd'hui !
+Bonjour à tous, et bievenu dans ce patch-notes sur la version 0.7 de The Netrunner Awakening ! :)
+
+#Patch-notes Version 0.7 :
+
+Les précédents patch-notes s'étaient concentrés sur des points très importants du développement du jeu comme l'Interface Utilisateur, la Localisation ou encore le Système de Palier. C'est important et un jeu ne peut pas exister sans ces composantes-là.
+Du coup cette fois-ci, on s'est concentré sur quelque chose de bien plus fun ! De nouveaux niveaux ! 4 en tout (Whaouw !), avec chacun sa nouvelle mécanique beaucoup trop bien ! 
+Certains d'entre vous ont mentionné qu'ils préféraient découvrir ces niveaux en jeux plutôt que dans les patch-notes, du coup j'en parlerai à la fin après une spoiler alerte préventive :)
+Commençons !
+
+
+# Mouvement
+- Il n'est maintenant plus possible de "reprendre un saut" après avoir lâché espace et rappuyé très rapidement.
+
+# Pouvoirs
+- Un flash lumineux vous avertit lorsqu'un pouvoir est à nouveau utilisable.
+- Une faible notification sonore vous avertit lorsqu'un pouvoir est à nouveau utilisable.
+- Les touches d'utilisation des pouvoirs sont maintenant correctement spécifiées.
+
+# Level Design
+- Les escaliers du Tutoriel ont été changés pour éviter que les cubes se superposent.
+- La spirale finale du Tutoriel s'est vue rajouter 2 paliers pour vous éviter de tomber jusqu'en bas si vous loupez un saut.
+
+# Equilibrage
+- Le niveau FurtiveGrid commence avec 10 secondes supplémentaires.
+- Le niveau ConstantDestruction détruit bien maintenant tous les cubes et pas juste une partie d'entre eux.
+- Le niveau LearnPathfinding détruit maintenant volontairement juste une partie des cubes pour vous éviter de tomber trop facilement.
+- La durée de remplissage des Cubes de la Mort du niveau Analyze a été augmentée de 20 secondes à 50 secondes. Il ne doit pas s'agir d'un obstacle difficile pour ce niveau.
+
+# Système de Palier
+- L'injonction disant de refaire le niveau précédent pour débloquer les prochains paliers a été mise en couleur pour la mettre en évidence.
+- Le Palier des 100 blocs des niveaux Eveil et SecondRunner a été refait.
+
+# Mots de Passes
+- Les Astuces, lorsque l'on fait une erreur sur le Passe, affichent maintenant clairement lorsqu'il n'y a qu'une seule modification à faire.
+- Les Astuces pour accéder au niveau BounceHighway nous permettent maintenant clairement de comprendre que le mot de passe est vide.
+
+# Narration
+- Le nouveau niveau DashTraining s'est vu rajouter un texte d'Archives.
+- Les Archives du niveau LearnJump ont étés ajustés en conséquences.
+
+# Son
+- Le volume des sons de victoire et de défaite a été réduit par rapport aux autres sons.
+
+# UI
+- Chaque niveau a maintenant une icone 3D représentant la mécanique principale du niveau.
+- Le numéro de version est maintenant affiché dans les options. Histoire de ne pas être du tout redondant, là c'est la 0.7 :p
+- Dans le chargement d'un niveau, les 4 boîtes correspondant aux 4 pouvoirs sont maintenant très clair qu'il s'agit de pouvoirs que vous pourrez débloquer. Le niveau auquel ce pouvoir sera débloqué est également spécifié.
+- La durée de visibilité des conseils en début de partie a été réduite.
+- Les textes des Archives sont passés au format UTF-8 pour empêcher l'apparition de caractère d'erreurs tel que ☐.
+- Le tooltip du retour des options explicite que les changements seront automatiquement sauvegardés.
+- De nombreuses fautes d'orthographe ont été corrigés. Il en reste cependant encore beaucoup d'autres. N'hésitez pas à les mentionner si vous en repérez.
+- Le nom du niveau LearnJump est maintenant LearnJump. Et pas LeranJump ... x)
+- L'icône du niveau suivant est maintenant une flêche plutôt qu'un Cube.
+- Easter Egg Error (qui était bien une erreur !) n'est maintenant plus affiché dans le titre de certaines Popups.
+
+# Bugs
+- Le niveau HelloWorld! avait 10% de chance de crasher au démarrage dans l'initialisation aléatoire des couleurs. Il générait une sous-espèce particulièrement résistante de boucle infini. J'ai du relancer le niveau 300 (j'ai compté) pour fixer ce bug !
+
+# Nouveaux Niveaux ! /!\ Attention Spoiler Alerte jusqu'à la fin du patch-notes /!\
+- Il y a 4 nouveaux niveaux en tout, et chacun se concentre sur une nouvelle mécanique.
+
+## Niveau DashTraining
+- Vous avez pu remarquer que à partir du niveau LearnJump vous avez votre premier pouvoir de disponible, le Dash015, Hourrayy ! Malheureusement, pour des raisons d'espace de design, celui-ci a un cooldown de 15 secondes.
+- Une conséquence dramatique de ce choix, c'est que vous ne pouvez pas vous entraîner à utiliser ce pouvoir. Parce que 15 secondes c'est un temps d'attente bien trop long ! Résultat, vous ne l'utilisez pas assez, et le jeu n'est pas aussi fun que ce qu'il pourrait être !
+- La solution ? Un niveau spécialement conçu pour vous habituer à utiliser le Dash015 ! Dans ce niveau le cooldown du Dash15 (et pas Dash015) est de 1.5 secondes ! Autant vous dire que vous allez pouvoir spammer :)
+- Et puis après on retourne à 15 secondes pour les niveaux suivants, non mais faut pas rêver aussi ! :p
+- Le niveau DashTraining est un Infinite Runner où chacun des Blocs vous demande d'utiliser le Dash15 au bon moment pour pouvoir les franchir. Tout simplement :)
+- Le Dash015 a également été retravaillé pour supprimer la gravité lors de son utilisation, vous donnant ainsi une meilleure impression d'aller tout droit. Et vite ! :)
+
+## Niveau VerticalBounce
+- Le niveau précédent, BounceHighway avait pour rôle d'introduire le joueur à la mécanique des BounceCube, ceux qui vous font sauter automatiquement lorsque vous tombez dessus.
+- Celui-ci a pour rôle d'habituer le joueur a les utiliser en situation réelle, et pas uniquement sur des Blocs déjà prédéfinis à l'avance.
+- Pour cette raison, le niveau est bien plus haut que d'habitude et étroit. Cela pour forcer le joueur à se déplacer verticalement et donc à utiliser les BounceCubes ;)
+- La répartition des BouncesCubes a été un véritable challenge algorithmique ! Je pourrais en parler des heures, mais voici les contraintes principales que je voulais respecter : 
+	- Les BounceCubes doivent être positionnés uniquement à des endroits où ils sont nécessaires, donc dans les grands espaces vides verticaux.
+	- Les BouncesCubes ne doivent pas être trop nombreux au même endroit pour pouvoir les mettre en évidence.
+	- Les BouncesCubes ne doivent pas avoir d'autres Cubes au-dessus d'eux, sinon ils ne servent à rien et ne nous permettent pas de nous élever.
+	- Les BouncesCubes doivent pouvoir s'enchaîner naturellement les uns les autres pour pouvoir s'élever très rapidement !
+- Le remplissage des Cubes de la Mort de ce niveau commence soit par le bas, soit par le haut. Cela a été fait pour forcer le joueur à faire des allers-retours verticaux dans le niveau.
+- Ce niveau a nécessité de faire fonctionner le PathFinder en-dehors de la zone principale.
+
+## Niveau AlwaysReset
+- Ce niveau est le niveau d'introduction au TimeReset !
+- Le TimeReset est un item qui lorsque vous le capturez réinitialise le temps qu'il vous reste pour terminer le niveau. Si vous commencez le niveau avec 35 secondes, et que vous capturez un TimeReset 17.36 secondes plus tard, votre temps reviendra à 35 secondes (vous aurez gagné 17.36 secondes).
+- Les TimeReset réapparaissent à chaque fois que vous en capturez un pour vous fournir un temps théorique infini !
+- Pour forcer ces TimeReset à avoir de l'intérêt, les Data de ce niveau ne vous fournisse qu'une seule seconde de temps supplémentaire et vous commencez avec assez peu de temps, 35 secondes.
+- Il s'agit du premier niveau régulier ouvert ! (Vous pouvez tomber dès le début !)
+- Le PathFinder a été adapté pour effectuer une double localisation à chaque utilisation : vous localisez une Data et un TimeReset s'il y en a un !
+
+## Niveau FirstTracers
+- Ce niveau est le niveau d'introduction au deuxième ennemi du jeu : le Tracer. Ça ne vous fait pas peur ? Ne vous inquiétez pas, ça ne va pas durer ;)
+- Le Tracer est un programme de défense tout à fait sympathique. De forme cubique, mais bien plus gros qu'une Sonde, il fonce sur vous suivant le chemin orthogonale le plus court dès qu'il vous voit.
+- Il n'a pas de limite de détection. Si vous êtes en ligne de vue alors même que vous êtes plus petit qu'un pixel, il vous verra tout de même !
+- Une fois que le Tracer vous a vu, il va à la première position où il vous a vu, non pas comme la Sonde qui vous suit.
+- Une fois arrivé, il commence à charger un Blast. Après 4 secondes le Blast est relâché, et si vous êtes en ligne de vue vous serez propulsé et perdrez 10 secondes de temps. Donc cachez-vous quand vous le voyez charger son attaque !
+- Les Tracers sont un assemblage de circuit-imprimés et leur couleur change du rouge infernal au bleu électrique lorsqu'il charge leur Blast, s'il est presque complètement bleu, c'est que le Blast arrive dans quelques millisecondes !
+- Même si votre destin est sans aucun doute de fuir ces boules de nerfs sans coeurs (euh ces cubes pardon) en insultant la personne qui a eut cette idée d'ennemi débile, il vous reste un moyen de les affronter.
+- À tout moment vous pouvez interrompre un Tracer en leur sautant dessus. Ils seront alors inactifs pendant 6 secondes pendant lesquels vous pourrez rentrer en contact avec eux sans problèmes.
+- Le niveau commence avec 15 Datas et 1 Tracer. Pour vous laisser le temps de vous familiariser avec votre nouvel ami :)
+- Une fois que vous aurez capturé 5 Datas, un deuxième Tracer apparaîtra.
+- Une fois que vous aurez capturé 10 Datas, deux Tracers supplémentaires apparaîtront. Sérieusement, arrêtez de courir partout, et commencez à vous cacher et à prévoir stratégiquement vos prochaines actions. Je dis ça, je dis rien ;)
+- Bonne chance ? ;)
