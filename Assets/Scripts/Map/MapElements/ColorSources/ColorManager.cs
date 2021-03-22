@@ -66,6 +66,7 @@ public class ColorManager : MonoBehaviour {
             GenerateColorSources(map.tailleMap);
         else
             GenerateColorSourcesInCubes(map.GetAllCubes());
+        Debug.Log("Nombre color sources = " + GetAllColorSources().Count);
         CheckCubeSaturation();
 
         PrintColorStats();
@@ -266,8 +267,15 @@ public class ColorManager : MonoBehaviour {
         MathTools.Shuffle(cubes);
 
         foreach(Cube cube in cubes) {
-            while(cube.GetLuminance() > cubeLuminanceMax) {
+            float luminance = cube.GetLuminance();
+            while(luminance > cubeLuminanceMax) {
+                float savedLuminance = luminance;
                 RemoveClosestSource(cube.transform.position);
+                luminance = cube.GetLuminance();
+
+                if(savedLuminance == luminance) { // Car des fois supprimer une lumière ne change plus rien à la couleur !
+                    break;
+                }
             }
         }
     }

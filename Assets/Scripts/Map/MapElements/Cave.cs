@@ -216,7 +216,8 @@ public class Cave : CubeEnsemble {
 	// Le but de cette fonction est de creuser un tunel allant de debutChemin a finChemin !
 	public static void RelierChemin(Cube[,,] cubeMatrix, MapManager map, Vector3 debutChemin, Vector3 finChemin) {
         List<Vector3> path = map.GetStraitPath(debutChemin, finChemin, isDeterministic: false);
-        path.Prepend(debutChemin);
+        path.Insert(0, debutChemin);
+        PosVisualisator.DrawPath(path, Color.blue);
         foreach(Vector3 pointActuel in path) {
             map.DeleteCube(cubeMatrix[(int)pointActuel.x, (int)pointActuel.y, (int)pointActuel.z]);
             cubeMatrix[(int)pointActuel.x, (int)pointActuel.y, (int)pointActuel.z] = null; // utile car cubeMatrix n'est pas forcément la map !
