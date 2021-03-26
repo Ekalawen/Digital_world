@@ -451,4 +451,15 @@ public class SelectorManager : MonoBehaviour {
         Debug.Log($"Tous les Paths ont été lockés ! :)");
     }
 
+    public void NotifyControllerPlugIn() {
+        string controllerName = Input.GetJoystickNames()[0];
+        string texteString = strings.controllerPlugInTexte.GetLocalizedString(controllerName).Result;
+        RunPopup(strings.controllerPlugInTitle.GetLocalizedString().Result, texteString, TexteExplicatif.Theme.NEUTRAL);
+    }
+
+    public void NotifyControllerPlugOut() {
+        string keybindingName = InputManager.Instance.GetDefaultKeybindingType().ToString();
+        string texteString = strings.controllerPlugOutTexte.GetLocalizedString(keybindingName).Result;
+        RunPopup(strings.controllerPlugOutTitle.GetLocalizedString().Result, texteString, TexteExplicatif.Theme.NEUTRAL);
+    }
 }

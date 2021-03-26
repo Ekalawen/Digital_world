@@ -133,4 +133,7 @@ public class ConsoleStrings : ScriptableObject {
 
     public LocalizedString timeResetImportant;
     public LocalizedString timeResetConsole;
+
+    public LocalizedString controllerPlugIn;
+    public LocalizedString controllerPlugOut;
 }

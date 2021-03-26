@@ -20,6 +20,7 @@ public class InputManager : MonoBehaviour {
 
     protected AxisButton controllerLeftTrigger;
     protected AxisButton controllerRightTrigger;
+    protected bool wasAControllerPlugin;
 
     void Awake() {
         if (!_instance) { _instance = this; }
@@ -37,6 +38,7 @@ public class InputManager : MonoBehaviour {
     public void Update() {
         controllerLeftTrigger.Update();
         controllerRightTrigger.Update();
+        DetectPlugUnplugController();
     }
 
     protected int GetKeybindingTypeIndice() {
@@ -65,8 +67,14 @@ public class InputManager : MonoBehaviour {
         if (precedentKeybindingIndice != keybindingIndice) {
             PrefsManager.SetInt(PrefsManager.KEYBINDING_PRECEDENT_INDICE_KEY, (int)currentKeybindingType);
         }
+
         PrefsManager.SetInt(PrefsManager.KEYBINDING_INDICE_KEY, keybindingIndice);
         currentKeybindingType = (KeybindingType)keybindingIndice;
+
+        KeybindingDropdown keybindingDropdown = FindObjectOfType<KeybindingDropdown>();
+        if(keybindingDropdown != null) {
+            keybindingDropdown.dropdown.SetValueWithoutNotify(keybindingIndice);
+        }
     }
 
     public KeybindingType GetDefaultKeybindingType() {
@@ -214,5 +222,37 @@ public class InputManager : MonoBehaviour {
             return Input.GetKeyDown(KeyCode.Space);
         }
         return false;
+    }
+
+    protected void DetectPlugUnplugController() {
+        bool isAControllerPlugin = Input.GetJoystickNames()[0] != "";
+        if(isAControllerPlugin && !wasAControllerPlugin) {
+            NotifyControllerPlugIn();
+            SetKeybindingType(KeybindingType.CONTROLLER);
+        } else if (!isAControllerPlugin && wasAControllerPlugin) {
+            NotifyControllerPlugOut();
+            SetKeybindingType(GetDefaultKeybindingType());
+        }
+        wasAControllerPlugin = isAControllerPlugin;
+    }
+
+    public void NotifyControllerPlugIn() {
+        GameManager gm = FindObjectOfType<GameManager>();
+        SelectorManager sm = FindObjectOfType<SelectorManager>();
+        if(gm != null) {
+            gm.console.ControllerPlugIn();
+        } else if (sm != null) {
+            sm.NotifyControllerPlugIn();
+        }
+    }
+
+    public void NotifyControllerPlugOut() {
+        GameManager gm = FindObjectOfType<GameManager>();
+        SelectorManager sm = FindObjectOfType<SelectorManager>();
+        if (gm != null) {
+            gm.console.ControllerPlugOut();
+        } else if (sm != null) {
+            sm.NotifyControllerPlugOut();
+        }
     }
 }

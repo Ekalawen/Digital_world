@@ -22,5 +22,4 @@ public class KeybindingDropdown : MonoBehaviour {
     static void LocaleSelected(int index) {
         InputManager.Instance.SetKeybindingTypeByIndice(index);
     }
-
 }

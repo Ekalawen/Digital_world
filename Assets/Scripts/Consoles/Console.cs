@@ -1047,4 +1047,12 @@ public class Console : MonoBehaviour {
         lsConsole.Arguments = new object[] { resetTime };
         gm.console.AjouterMessage(lsConsole, Console.TypeText.BASIC_TEXT);
     }
+
+    public void ControllerPlugIn() {
+        gm.console.AjouterMessageImportant(strings.controllerPlugIn, Console.TypeText.BASIC_TEXT, 3.0f);
+    }
+
+    public void ControllerPlugOut() {
+        gm.console.AjouterMessageImportant(strings.controllerPlugOut, Console.TypeText.BASIC_TEXT, 3.0f);
+    }
 }
