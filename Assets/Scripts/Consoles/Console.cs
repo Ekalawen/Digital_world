@@ -346,12 +346,13 @@ public class Console : MonoBehaviour {
         LocalizedString messageToReplace) {
         AsyncOperationHandle<string> handle = localizedString.GetLocalizedString();
         yield return handle;
+        string stringResult = handle.Result;
         if (messageToReplace != null) {
             AsyncOperationHandle<string> handleToReplace = messageToReplace.GetLocalizedString();
             yield return handleToReplace;
-            AjouterMessageImportant(handle.Result, type, tempsAffichage, bAfficherInConsole, handleToReplace.Result);
+            AjouterMessageImportant(stringResult, type, tempsAffichage, bAfficherInConsole, handleToReplace.Result);
         } else {
-            AjouterMessageImportant(handle.Result, type, tempsAffichage, bAfficherInConsole);
+            AjouterMessageImportant(stringResult, type, tempsAffichage, bAfficherInConsole);
         }
     }
 
