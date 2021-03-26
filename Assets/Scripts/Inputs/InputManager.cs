@@ -82,21 +82,21 @@ public class InputManager : MonoBehaviour {
 
     public bool GetJump() {
         if (GetCurrentKeybindingType() != KeybindingType.CONTROLLER) {
-            return Input.GetButton("Jump");
+            return Input.GetKey(KeyCode.Space);
         }
         return controllerRightTrigger.Get();
     }
 
     public bool GetJumpDown() {
         if (GetCurrentKeybindingType() != KeybindingType.CONTROLLER) {
-            return Input.GetButtonDown("Jump");
+            return Input.GetKeyDown(KeyCode.Space);
         }
         return controllerRightTrigger.GetDown();
     }
 
     public bool GetJumpUp() {
         if (GetCurrentKeybindingType() != KeybindingType.CONTROLLER) {
-            return Input.GetButtonUp("Jump");
+            return Input.GetKeyUp(KeyCode.Space);
         }
         return controllerRightTrigger.GetUp();
     }
