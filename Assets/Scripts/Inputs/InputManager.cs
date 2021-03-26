@@ -225,7 +225,7 @@ public class InputManager : MonoBehaviour {
     }
 
     protected void DetectPlugUnplugController() {
-        bool isAControllerPlugin = Input.GetJoystickNames()[0] != "";
+        bool isAControllerPlugin = GetJoystickName() != "";
         if(isAControllerPlugin && !wasAControllerPlugin) {
             NotifyControllerPlugIn();
             SetKeybindingType(KeybindingType.CONTROLLER);
@@ -254,5 +254,10 @@ public class InputManager : MonoBehaviour {
         } else if (sm != null) {
             sm.NotifyControllerPlugOut();
         }
+    }
+
+    public string GetJoystickName() {
+        string[] joystickNames = Input.GetJoystickNames();
+        return joystickNames.Length > 0 ? joystickNames[0] : "";
     }
 }

@@ -452,7 +452,7 @@ public class SelectorManager : MonoBehaviour {
     }
 
     public void NotifyControllerPlugIn() {
-        string controllerName = Input.GetJoystickNames()[0];
+        string controllerName = InputManager.Instance.GetJoystickName();
         string texteString = strings.controllerPlugInTexte.GetLocalizedString(controllerName).Result;
         RunPopup(strings.controllerPlugInTitle.GetLocalizedString().Result, texteString, TexteExplicatif.Theme.NEUTRAL);
     }
