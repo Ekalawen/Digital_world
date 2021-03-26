@@ -16,6 +16,9 @@ public class InputManager : MonoBehaviour {
 
     public KeybindingType currentKeybindingType;
 
+    protected AxisButton controllerLeftTrigger;
+    protected AxisButton controllerRightTrigger;
+
     void Awake() {
         if (!_instance) { _instance = this; }
         Initialize();
@@ -25,6 +28,13 @@ public class InputManager : MonoBehaviour {
         name = "InputManager";
         DontDestroyOnLoad(this);
         currentKeybindingType = GetKeybindingType();
+        controllerRightTrigger = new AxisButton("Jump_CONTROLLER");
+        controllerLeftTrigger = new AxisButton("Shift_CONTROLLER");
+    }
+
+    public void Update() {
+        controllerLeftTrigger.Update();
+        controllerRightTrigger.Update();
     }
 
     protected int GetKeybindingTypeIndice() {
@@ -65,19 +75,31 @@ public class InputManager : MonoBehaviour {
     } 
 
     public bool GetJump() {
-        return Input.GetButton("Jump");
+        if (GetCurrentKeybindingType() != KeybindingType.CONTROLLER) {
+            return Input.GetButton("Jump");
+        }
+        return controllerRightTrigger.Get();
     }
 
     public bool GetJumpDown() {
-        return Input.GetButtonDown("Jump");
+        if (GetCurrentKeybindingType() != KeybindingType.CONTROLLER) {
+            return Input.GetButtonDown("Jump");
+        }
+        return controllerRightTrigger.GetDown();
     }
 
     public bool GetJumpUp() {
-        return Input.GetButtonUp("Jump");
+        if (GetCurrentKeybindingType() != KeybindingType.CONTROLLER) {
+            return Input.GetButtonUp("Jump");
+        }
+        return controllerRightTrigger.GetUp();
     }
 
     public bool GetShift() {
-        return Input.GetKey(KeyCode.LeftShift);
+        if (GetCurrentKeybindingType() != KeybindingType.CONTROLLER) {
+            return Input.GetKey(KeyCode.LeftShift);
+        }
+        return controllerLeftTrigger.Get();
     }
 
     public bool GetPouvoirADown() {
