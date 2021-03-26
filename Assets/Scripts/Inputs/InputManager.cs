@@ -113,10 +113,15 @@ public class InputManager : MonoBehaviour {
     }
 
     public KeyCode GetPouvoirAKeyCode() {
-        if (GetCurrentKeybindingType() == KeybindingType.AZERTY) {
-            return KeyCode.A;
-        } else {
-            return KeyCode.Q;
+        switch (GetCurrentKeybindingType()) {
+            case KeybindingType.AZERTY:
+                return KeyCode.A;
+            case KeybindingType.QWERTY:
+                return KeyCode.Q;
+            case KeybindingType.CONTROLLER:
+                return KeyCode.JoystickButton2;
+            default:
+                return KeyCode.None;
         }
     }
 
@@ -125,23 +130,32 @@ public class InputManager : MonoBehaviour {
     }
 
     public KeyCode GetPouvoirEKeyCode() {
-        return KeyCode.E;
+        if (GetCurrentKeybindingType() != KeybindingType.CONTROLLER) {
+            return KeyCode.E;
+        }
+        return KeyCode.JoystickButton3;
     }
 
     public bool GetPouvoirLeftClickDown() {
-        return Input.GetMouseButtonDown(0);
+        return Input.GetKeyDown(GetPouvoirLeftClickKeyCode());
     }
 
     public KeyCode GetPouvoirLeftClickKeyCode() {
-        return KeyCode.Mouse0;
+        if (GetCurrentKeybindingType() != KeybindingType.CONTROLLER) {
+            return KeyCode.Mouse0;
+        }
+        return KeyCode.JoystickButton0;
     }
 
     public bool GetPouvoirRightClickDown() {
-        return Input.GetMouseButtonDown(1);
+        return Input.GetKeyDown(GetPouvoirRightClickKeyCode());
     }
 
     public KeyCode GetPouvoirRightClickKeyCode() {
-        return KeyCode.Mouse1;
+        if (GetCurrentKeybindingType() != KeybindingType.CONTROLLER) {
+            return KeyCode.Mouse1;
+        }
+        return KeyCode.JoystickButton1;
     }
 
     public Vector3 GetHorizontalMouvement() {
@@ -171,9 +185,7 @@ public class InputManager : MonoBehaviour {
     }
 
     public bool GetPauseGame() {
-        if (GetCurrentKeybindingType() != KeybindingType.CONTROLLER) {
-            return Input.GetKeyDown(KeyCode.Escape);
-        }
+        // On peut toujours accéder aux options quel que soit le keybinding ! :)
         return Input.GetKeyDown(KeyCode.JoystickButton7) || Input.GetKeyDown(KeyCode.Escape);
     }
 
