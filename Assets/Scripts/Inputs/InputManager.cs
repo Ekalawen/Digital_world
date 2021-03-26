@@ -162,4 +162,32 @@ public class InputManager : MonoBehaviour {
                 return Vector3.zero;
         }
     }
+
+    public bool GetRestartGame() {
+        if (GetCurrentKeybindingType() != KeybindingType.CONTROLLER) {
+            return Input.GetKeyDown(KeyCode.R);
+        }
+        return Input.GetKeyDown(KeyCode.JoystickButton6);
+    }
+
+    public bool GetPauseGame() {
+        if (GetCurrentKeybindingType() != KeybindingType.CONTROLLER) {
+            return Input.GetKeyDown(KeyCode.Escape);
+        }
+        return Input.GetKeyDown(KeyCode.JoystickButton7) || Input.GetKeyDown(KeyCode.Escape);
+    }
+
+    public bool GetOptions() {
+        if (GetCurrentKeybindingType() != KeybindingType.CONTROLLER) {
+            return Input.GetKeyDown(KeyCode.O);
+        }
+        return false;
+    }
+
+    public bool GetPauseReturnToMenu() {
+        if (GetCurrentKeybindingType() != KeybindingType.CONTROLLER) {
+            return Input.GetKeyDown(KeyCode.Space);
+        }
+        return false;
+    }
 }

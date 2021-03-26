@@ -7,17 +7,19 @@ public class PauseMenu : MonoBehaviour {
     public MenuOptions menuOptions;
 
     protected GameManager gm;
+    protected InputManager inputManager;
 
     public void Start() {
         gm = GameManager.Instance;
+        inputManager = InputManager.Instance;
     }
 
     public void Update() {
         if(gm.IsPaused()) {
-            if(Input.GetKeyDown(KeyCode.Space)) {
+            if(inputManager.GetPauseReturnToMenu()) {
                 Quitter();
             }
-            if(Input.GetKeyDown(KeyCode.Escape)) {
+            if(inputManager.GetPauseGame()) {
                 menuOptions.ResetMenu();
                 menuOptions.gameObject.SetActive(false);
                 Reprendre();

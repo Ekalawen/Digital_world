@@ -71,6 +71,7 @@ public class GameManager : MonoBehaviour {
     [HideInInspector]
     protected bool timeFreezed = false;
     protected bool isPaused = false;
+    protected InputManager inputManager;
 
     void Awake() {
         if (!_instance) {
@@ -97,6 +98,7 @@ public class GameManager : MonoBehaviour {
         historyManager = Instantiate(historyManagerPrefab/*, managerFolder.transform*/).GetComponent<HistoryManager>(); // On le met à la racine car DontDestroyOnLoad only works for root components !
         flockManager = Instantiate(flockManagerPrefab, managerFolder.transform).GetComponent<FlockManager>();
         cheatCodeManager = Instantiate(cheatCodeManagerPrefab, managerFolder.transform).GetComponent<CheatCodeManager>();
+        inputManager = InputManager.Instance;
 
         Initialize();
 	}
@@ -137,7 +139,7 @@ public class GameManager : MonoBehaviour {
     }
 
     protected void CheckPauseToggling() {
-        if (Input.GetKeyDown(KeyCode.Escape)) {
+        if (inputManager.GetPauseGame()) {
             if (!isPaused) {
                 if (eventManager.IsGameOver()) {
                     SaveGameResultIfIR();
@@ -151,7 +153,7 @@ public class GameManager : MonoBehaviour {
     }
 
     protected void CheckOptionsToggling() {
-        if (Input.GetKeyDown(KeyCode.O)) {
+        if (inputManager.GetOptions()) {
             if (!isPaused && ! eventManager.IsGameOver()) {
                 Pause();
                 console.pauseMenu.GetComponentInChildren<PauseMenu>().Options();
@@ -207,19 +209,13 @@ public class GameManager : MonoBehaviour {
         Cursor.visible = false;
     }
 
-    //protected void CheckQuitGame() {
-    //    if (Input.GetKey(KeyCode.Escape)) {
-    //        QuitOrReloadGame();
-    //    }
-    //}
-
     public void QuitOrReloadGame() {
         SaveGameResultIfIR();
         eventManager.QuitOrReload();
     }
 
     protected void CheckRestartGame() {
-        if (Input.GetKey(KeyCode.R)) {
+        if (inputManager.GetRestartGame()) {
             RestartGame();
         }
     }
