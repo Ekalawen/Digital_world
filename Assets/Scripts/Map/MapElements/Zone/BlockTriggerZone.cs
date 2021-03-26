@@ -37,7 +37,7 @@ public class BlockTriggerZone : IZone {
         if (block.shouldPlayerPressShift) {
             hasPressedShift = false;
             while (true) {
-                if (Input.GetKey(KeyCode.LeftShift)) {
+                if (InputManager.Instance.GetShift()) {
                     hasPressedShift = true;
                     break;
                 }

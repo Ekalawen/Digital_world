@@ -15,28 +15,26 @@ public class PouvoirPathfinder : IPouvoir {
     public Color itemPathColor = Color.magenta;
 
     protected override bool UsePouvoir() {
-		if (Input.GetKeyDown (Player.GetPouvoirAKeyCode())) {
-            List<Vector3> lumieresPositions = GetAllLumieresPositions();
-            List<Vector3> itemsPositions = GetAllItemsPositions();
+        List<Vector3> lumieresPositions = GetAllLumieresPositions();
+        List<Vector3> itemsPositions = GetAllItemsPositions();
 
-            if (!player.CanUseLocalisation() || lumieresPositions.Count + itemsPositions.Count == 0) {
-                if (gm.map.GetLumieresFinalesAndAlmostFinales().Count == 0) {
-                    gm.console.FailLocalisationUnauthorized();
-                } else {
-                    gm.console.FailLocalisationInEndEvent();
-                }
-                gm.soundManager.PlayFailActionClip();
-                return false;
+        if (!player.CanUseLocalisation() || lumieresPositions.Count + itemsPositions.Count == 0) {
+            if (gm.map.GetLumieresFinalesAndAlmostFinales().Count == 0) {
+                gm.console.FailLocalisationUnauthorized();
+            } else {
+                gm.console.FailLocalisationInEndEvent();
             }
+            gm.soundManager.PlayFailActionClip();
+            return false;
+        }
 
-            bool haveFoundLumiere = detectLumieres && DrawPathToPositions(lumieresPositions, lumierePathColor, lumiereOrbesPathPrefab);
-            bool haveFoundItem = detectItems && DrawPathToPositions(itemsPositions, itemPathColor, itemsOrbesPathPrefab);
+        bool haveFoundLumiere = detectLumieres && DrawPathToPositions(lumieresPositions, lumierePathColor, lumiereOrbesPathPrefab);
+        bool haveFoundItem = detectItems && DrawPathToPositions(itemsPositions, itemPathColor, itemsOrbesPathPrefab);
 
-            if (!haveFoundLumiere && !haveFoundItem) {
-                gm.console.FailLocalisationObjectifInateignable();
-                gm.soundManager.PlayFailActionClip();
-                return false;
-            }
+        if (!haveFoundLumiere && !haveFoundItem) {
+            gm.console.FailLocalisationObjectifInateignable();
+            gm.soundManager.PlayFailActionClip();
+            return false;
         }
 
         return true;

@@ -76,6 +76,7 @@ public class Player : Character {
     protected UnityEvent onHitEvent;
 
     protected GameManager gm;
+    protected InputManager inputManager;
 
 
     public override void Start() {
@@ -88,7 +89,8 @@ public class Player : Character {
         personnage = gameObject;
         personnage.name = "Joueur";
         controller = personnage.GetComponent<CharacterController>();
-        gm = FindObjectOfType<GameManager>();
+        gm = GameManager.Instance;
+        inputManager = InputManager.Instance;
         GetPlayerSensitivity();
         bSetUpRotation = true;
         sautTimer = new Timer(GetDureeTotaleSaut());
@@ -180,9 +182,7 @@ public class Player : Character {
             return;
 
         // On mesure la rotation que l'on veut faire
-        xRot = -Input.GetAxis("Mouse Y") * sensibilite;
-        yRot = Input.GetAxis("Mouse X") * sensibilite;
-        Vector3 currentRotation = new Vector3(xRot, yRot, 0);
+        Vector2 currentRotation = inputManager.GetCameraMouvement() * sensibilite;
 
         // On précalcul les principaux vecteurs
         Vector3 up = gm.gravityManager.Up();
@@ -229,7 +229,7 @@ public class Player : Character {
         etatAvant = etat;
         isGrounded = IsGrounded();
 		if (etat != EtatPersonnage.AU_MUR) {
-            if(Input.GetButton("Jump") && !sautTimer.IsOver()) {
+            if(inputManager.GetJump() && !sautTimer.IsOver()) {
                 etat = EtatPersonnage.EN_SAUT;
             } else if (isGrounded) {
 				etat = EtatPersonnage.AU_SOL;
@@ -273,7 +273,7 @@ public class Player : Character {
         if (!bIsStun) {
             switch (etat) {
                 case EtatPersonnage.AU_SOL:
-                    if (Input.GetButton("Jump") && gm.gravityManager.HasGravity()) {
+                    if (inputManager.GetJump() && gm.gravityManager.HasGravity()) {
                         Jump(from: EtatPersonnage.AU_SOL);
                         move = ApplyJumpMouvement(move);
                     }
@@ -281,11 +281,11 @@ public class Player : Character {
                     break;
 
                 case EtatPersonnage.EN_SAUT:
-                    if (Input.GetButtonDown("Jump") && gm.gravityManager.HasGravity() && CanDoubleJump()) {
+                    if (inputManager.GetJumpDown() && gm.gravityManager.HasGravity() && CanDoubleJump()) {
                         AddDoubleJump();
                         Jump(from: origineSaut);
                     }
-                    if(sautTimer.IsOver() || Input.GetButtonUp("Jump")) {
+                    if(sautTimer.IsOver() || inputManager.GetJumpUp()) {
                         etat = EtatPersonnage.EN_CHUTE;
                     } else {
                         move = ApplyJumpMouvement(move);
@@ -293,7 +293,7 @@ public class Player : Character {
                     break;
 
                 case EtatPersonnage.EN_CHUTE:
-                    if (Input.GetButtonDown("Jump")) {
+                    if (inputManager.GetJumpDown()) {
                         if(!timerLastTimeAuSol.IsOver()) { // Permet de sauter quelques frames après être tombé d'une plateforme !
                             timerLastTimeAuSol.SetOver();
                             Jump(from: EtatPersonnage.AU_SOL);
@@ -308,7 +308,7 @@ public class Player : Character {
 
                 case EtatPersonnage.AU_MUR:
                     ResetDoubleJump();
-                    if (Input.GetKey(KeyCode.LeftShift)) {
+                    if (inputManager.GetShift()) {
                         // On peut se décrocher du mur en appuyant sur shift
                         etat = EtatPersonnage.EN_CHUTE;
                         pointDebutSaut = transform.position;
@@ -316,13 +316,13 @@ public class Player : Character {
                         normaleOrigineSaut = normaleMur;
                         dureeMurRestante = dureeMurTimer.GetRemainingTime();
 
-                    } else if (Input.GetButtonDown("Jump") && gm.gravityManager.HasGravity()) {
+                    } else if (inputManager.GetJumpDown() && gm.gravityManager.HasGravity()) {
                         // On peut encore sauter quand on est au mur ! 
                         // Mais il faut appuyer à nouveau !
                         Jump(from: EtatPersonnage.AU_MUR);
                         move = ApplyJumpMouvement(move);
 
-                    } else if (Input.GetButton("Jump")) {
+                    } else if (inputManager.GetJump()) {
                         // On a le droit de terminer son saut lorsqu'on touche un mur
                         move = ApplyJumpMouvement(move);
                     } else {
@@ -367,7 +367,7 @@ public class Player : Character {
 
     protected Vector3 UpdateHorizontalMouvement(Vector3 move) {
         if (!bIsStun) {
-            move = GetHorizontalMouvementInput();
+            move = inputManager.GetHorizontalMouvement();
             move = camera.transform.TransformDirection(move);
             float magnitude = move.magnitude;
 
@@ -379,11 +379,11 @@ public class Player : Character {
             }
             else
             {
-                if (Input.GetKey(KeyCode.LeftShift))
+                if (inputManager.GetShift())
                 {
                     move += gm.gravityManager.Down();
                 }
-                if (Input.GetKey(KeyCode.Space))
+                if (inputManager.GetJump()) // Was Input.GetKey(KeyCode.Space) before InputManager refactor !
                 {
                     move += gm.gravityManager.Up();
                 }
@@ -391,14 +391,6 @@ public class Player : Character {
         }
         move *= vitesseDeplacement;
         return move;
-    }
-
-    protected Vector3 GetHorizontalMouvementInput() {
-        if (KeybindingDropdown.GetKeybinding() == KeybindingDropdown.KeybindingType.AZERTY) {
-            return new Vector3(Input.GetAxis("HorizontalAZERTY"), 0, Input.GetAxis("VerticalAZERTY"));
-        } else {
-            return new Vector3(Input.GetAxis("HorizontalQWERTY"), 0, Input.GetAxis("VerticalQWERTY"));
-        }
     }
 
     protected Vector3 ApplyGravity(Vector3 move) {
@@ -562,7 +554,7 @@ public class Player : Character {
     protected bool CanGrip(Cube cube) {
         // AU_MUR pour pouvoir s'accrocher à un mur depuis un autre mur ! :)
         return (etat == EtatPersonnage.EN_SAUT || etat == EtatPersonnage.EN_CHUTE || etat == EtatPersonnage.AU_MUR)
-            && !Input.GetKey(KeyCode.LeftShift)
+            && !inputManager.GetShift()
             && (cube == null || cube.gameObject.GetComponent<BouncyCube>() == null); // On ne veut pas s'accrocher sur les bouncy cubes ! :)
     }
 
@@ -662,42 +654,34 @@ public class Player : Character {
         Jump(from);
     }
 
-    public static KeyCode GetPouvoirAKeyCode() {
-        if (KeybindingDropdown.GetKeybinding() == KeybindingDropdown.KeybindingType.AZERTY) {
-            return KeyCode.A;
-        } else {
-            return KeyCode.Q;
-        }
-    }
-
     protected void TryUsePouvoirs() {
         if (gm.eventManager.IsGameOver() || gm.IsPaused())
             return;
         // A
-        if(Input.GetKeyDown(GetPouvoirAKeyCode())) {
+        if(inputManager.GetPouvoirADown()) {
             if (pouvoirA != null)
-                pouvoirA.TryUsePouvoir(GetPouvoirAKeyCode());
+                pouvoirA.TryUsePouvoir(inputManager.GetPouvoirAKeyCode());
             else
                 gm.soundManager.PlayNotFoundPouvoirClip();
         }
         // E
-        if(Input.GetKeyDown(KeyCode.E)) {
+        if(inputManager.GetPouvoirEDown()) {
             if (pouvoirE != null)
-                pouvoirE.TryUsePouvoir(KeyCode.E);
+                pouvoirE.TryUsePouvoir(inputManager.GetPouvoirEKeyCode());
             else
                 gm.soundManager.PlayNotFoundPouvoirClip();
         }
         // Click Gauche
-        if(Input.GetMouseButtonDown(0)) {
+        if(inputManager.GetPouvoirLeftClickDown()) {
             if (pouvoirLeftBouton != null)
-                pouvoirLeftBouton.TryUsePouvoir(KeyCode.Mouse0);
+                pouvoirLeftBouton.TryUsePouvoir(inputManager.GetPouvoirLeftClickKeyCode());
             else
                 gm.soundManager.PlayNotFoundPouvoirClip();
         }
         // Click Droit
-        if(Input.GetMouseButtonDown(1)) {
+        if(inputManager.GetPouvoirRightClickDown()) {
             if (pouvoirRightBouton != null)
-                pouvoirRightBouton.TryUsePouvoir(KeyCode.Mouse1);
+                pouvoirRightBouton.TryUsePouvoir(inputManager.GetPouvoirRightClickKeyCode());
             else
                 gm.soundManager.PlayNotFoundPouvoirClip();
         }
