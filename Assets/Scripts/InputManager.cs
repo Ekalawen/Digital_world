@@ -123,7 +123,13 @@ public class InputManager : MonoBehaviour {
             case KeybindingType.QWERTY:
                 return new Vector3(Input.GetAxis("HorizontalQWERTY"), 0, Input.GetAxis("VerticalQWERTY"));
             case KeybindingType.CONTROLLER:
-                return Vector3.zero;
+                float xJoystick = Input.GetAxis("HorizontalCONTROLLER_JOYSTICK");
+                float xArrow = Input.GetAxis("HorizontalCONTROLLER_ARROW");
+                float yJoystick = Input.GetAxis("VerticalCONTROLLER_JOYSTICK");
+                float yArrow = Input.GetAxis("VerticalCONTROLLER_ARROW");
+                float x = Math.Abs(xJoystick) >= Mathf.Abs(xArrow) ? xJoystick : xArrow;
+                float y = Math.Abs(yJoystick) >= Mathf.Abs(yArrow) ? yJoystick : yArrow;
+                return new Vector3(x, 0, y);
             default:
                 return Vector3.zero;
         }
