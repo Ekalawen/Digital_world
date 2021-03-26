@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Localization;
+using UnityEngine.Localization.Settings;
 
 public class InputManager : MonoBehaviour {
 
@@ -59,8 +61,19 @@ public class InputManager : MonoBehaviour {
     }
 
     public void SetKeybindingTypeByIndice(int keybindingIndice) {
+        int precedentKeybindingIndice = PrefsManager.GetInt(PrefsManager.KEYBINDING_PRECEDENT_INDICE_KEY, (int)GetDefaultKeybindingType());
+        if (precedentKeybindingIndice != keybindingIndice) {
+            PrefsManager.SetInt(PrefsManager.KEYBINDING_PRECEDENT_INDICE_KEY, (int)currentKeybindingType);
+        }
         PrefsManager.SetInt(PrefsManager.KEYBINDING_INDICE_KEY, keybindingIndice);
         currentKeybindingType = (KeybindingType)keybindingIndice;
+    }
+
+    public KeybindingType GetDefaultKeybindingType() {
+        if (LocalizationSettings.SelectedLocale == LocalizationSettings.AvailableLocales.Locales[0]) { // 0 is French
+            return KeybindingType.AZERTY;
+        }
+        return KeybindingType.QWERTY;
     }
 
     public Vector2 GetMouseMouvement() {
