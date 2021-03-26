@@ -34,8 +34,8 @@ public class csMouseOrbit : MonoBehaviour
     {
         if (Target)
         {
-            x += Input.GetAxis("Mouse X") * xSpeed * 0.02f;
-            y += Input.GetAxis("Mouse Y") * ySpeed * 0.05f;
+            x += Input.GetAxis("Mouse_X") * xSpeed * 0.02f;
+            y += Input.GetAxis("Mouse_Y") * ySpeed * 0.05f;
 
             y = ClampAngle(y, yMinLimit, yMaxLimit);
 

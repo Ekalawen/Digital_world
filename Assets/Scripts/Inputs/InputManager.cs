@@ -64,9 +64,15 @@ public class InputManager : MonoBehaviour {
     }
 
     public Vector2 GetMouseMouvement() {
-        float xRot = Input.GetAxis("Mouse X");
-        float yRot = Input.GetAxis("Mouse Y");
-        return new Vector2(xRot, yRot);
+        if (GetCurrentKeybindingType() != KeybindingType.CONTROLLER) {
+            float xRot = Input.GetAxis("Mouse_X");
+            float yRot = Input.GetAxis("Mouse_Y");
+            return new Vector2(xRot, yRot);
+        } else {
+            float xRot = Input.GetAxis("Mouse_X_CONTROLLER");
+            float yRot = Input.GetAxis("Mouse_Y_CONTROLLER");
+            return new Vector2(xRot, yRot);
+        }
     } 
 
     public Vector2 GetCameraMouvement() {
