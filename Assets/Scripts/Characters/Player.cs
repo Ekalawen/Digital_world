@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.Events;
 using System.Linq;
+using UnityEngine.VFX;
 
 public class Player : Character {
 
@@ -31,6 +32,7 @@ public class Player : Character {
 
     [Header("Camera")]
 	public new Camera camera; // La camera du joueur !
+    public VisualEffect dashVfx;
 
 	[HideInInspector]
 	public GameObject personnage;

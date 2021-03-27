@@ -19,12 +19,9 @@ MonoBehaviour:
       x: -278
       y: -285
       width: 1118
-      height: 2383
+      height: 2419
     contents:
     - model: {fileID: 8926484042661614598}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661614600}
       id: 0
       isStickyNote: 0
     - model: {fileID: 8926484042661614627}
@@ -33,31 +30,7 @@ MonoBehaviour:
     - model: {fileID: 8926484042661614602}
       id: 0
       isStickyNote: 0
-    - model: {fileID: 8926484042661614613}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661614668}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661614637}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661614648}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661614673}
-      id: 0
-      isStickyNote: 0
     - model: {fileID: 8926484042661614629}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661614632}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661614633}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661614635}
       id: 0
       isStickyNote: 0
     - model: {fileID: 8926484042661614680}
@@ -101,40 +74,13 @@ MonoBehaviour:
     - model: {fileID: 8926484042661614716}
       id: 0
       isStickyNote: 0
-    - model: {fileID: 8926484042661614718}
-      id: 0
-      isStickyNote: 0
     - model: {fileID: 8926484042661614720}
       id: 0
       isStickyNote: 0
     - model: {fileID: 8926484042661614722}
       id: 0
       isStickyNote: 0
-    - model: {fileID: 8926484042661614733}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661614744}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661614746}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661614759}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661614762}
-      id: 0
-      isStickyNote: 0
     - model: {fileID: 8926484042661614764}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661614767}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661614768}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661614770}
       id: 0
       isStickyNote: 0
     - model: {fileID: 8926484042661614772}
@@ -174,7 +120,7 @@ MonoBehaviour:
     x: -278
     y: -810
     width: 2759
-    height: 2908
+    height: 2963
 --- !u!114 &114350483966674976
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -367,7 +313,7 @@ VisualEffectResource:
       receiveShadows: 0
       reflectionProbeUsage: 0
       lightProbeUsage: 0
-    m_CullingFlags: 3
+    m_CullingFlags: 0
     m_UpdateMode: 0
     m_PreWarmDeltaTime: 0.05
     m_PreWarmStepCount: 0
@@ -1356,6 +1302,7 @@ MonoBehaviour:
   cullMode: 0
   zWriteMode: 0
   zTestMode: 0
+  customRenderQueue: 
   colorMapping: 0
   uvMode: 0
   useSoftParticle: 0
@@ -2065,7 +2012,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_UIIgnoredErrors: []
-  m_Parent: {fileID: 0}
+  m_Parent: {fileID: 114350483966674976}
   m_Children: []
   m_UIPosition: {x: 0, y: 0}
   m_UICollapsed: 1
@@ -2624,7 +2571,7 @@ MonoBehaviour:
   - {fileID: 8926484042661614632}
   - {fileID: 8926484042661614633}
   - {fileID: 8926484042661614635}
-  m_UIPosition: {x: 391, y: 1530}
+  m_UIPosition: {x: 391, y: 1566}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots:
@@ -2644,13 +2591,14 @@ MonoBehaviour:
   excludeFromTAA: 0
   m_SubOutputs: []
   cullMode: 0
-  zWriteMode: 0
-  zTestMode: 0
+  zWriteMode: 1
+  zTestMode: 7
+  customRenderQueue: Transparent+1
   colorMapping: 0
   uvMode: 0
   useSoftParticle: 0
   sortPriority: 0
-  sort: 0
+  sort: 2
   indirectDraw: 0
   computeCulling: 0
   frustumCulling: 0
@@ -5712,7 +5660,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_UIIgnoredErrors: []
-  m_Parent: {fileID: 0}
+  m_Parent: {fileID: 114350483966674976}
   m_Children: []
   m_UIPosition: {x: 0, y: 0}
   m_UICollapsed: 1
@@ -6798,6 +6746,7 @@ MonoBehaviour:
   cullMode: 0
   zWriteMode: 0
   zTestMode: 0
+  customRenderQueue: Transparent+1
   colorMapping: 0
   uvMode: 0
   useSoftParticle: 0
@@ -7825,7 +7774,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_UIIgnoredErrors: []
-  m_Parent: {fileID: 0}
+  m_Parent: {fileID: 114350483966674976}
   m_Children: []
   m_UIPosition: {x: 0, y: 0}
   m_UICollapsed: 1
@@ -7877,7 +7826,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_UIIgnoredErrors: []
-  m_Parent: {fileID: 0}
+  m_Parent: {fileID: 114350483966674976}
   m_Children: []
   m_UIPosition: {x: 0, y: 0}
   m_UICollapsed: 1
@@ -8253,7 +8202,7 @@ MonoBehaviour:
   m_Parent: {fileID: 114350483966674976}
   m_Children: []
   m_UIPosition: {x: 0, y: 0}
-  m_UICollapsed: 0
+  m_UICollapsed: 1
   m_UISuperCollapsed: 0
   m_InputSlots: []
   m_OutputSlots:

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.VFX;
 //using UnityEngine.Rendering.PostProcessing;
 
 public enum DissolveEffectType {
@@ -46,10 +47,12 @@ public class PostProcessManager : MonoBehaviour {
     protected Coroutine hitCoroutine2 = null;
     protected GameManager gm;
     protected new Camera camera;
+    protected VisualEffect dashVfx;
 
     public void Initialize() {
         gm = GameManager.Instance;
         camera = gm.player.camera;
+        dashVfx = gm.player.dashVfx;
 
         ResetSkyboxParameters();
         hitVolume.weight = 0;
@@ -131,4 +134,8 @@ public class PostProcessManager : MonoBehaviour {
         //blur.active = state;
     }
 
+    public void StartDashVfx(float duree) {
+        dashVfx.SetFloat("Duration", duree);
+        dashVfx.SendEvent("Dash");
+    }
 }

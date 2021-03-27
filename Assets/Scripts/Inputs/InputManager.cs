@@ -33,6 +33,7 @@ public class InputManager : MonoBehaviour {
         currentKeybindingType = GetKeybindingType();
         controllerRightTrigger = new AxisButton("Jump_CONTROLLER");
         controllerLeftTrigger = new AxisButton("Shift_CONTROLLER");
+        wasAControllerPlugin = GetJoystickName() != "";
     }
 
     public void Update() {

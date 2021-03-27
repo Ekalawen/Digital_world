@@ -13,6 +13,7 @@ public class PouvoirDash : IPouvoir {
         player.AddPoussee(poussee);
         player.ResetGrip();
         player.RemoveGravityEffectFor(duree);
+        gm.postProcessManager.StartDashVfx(duree);
         return true;
     }
 }
