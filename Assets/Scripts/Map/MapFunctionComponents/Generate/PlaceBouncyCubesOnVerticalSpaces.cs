@@ -13,39 +13,45 @@ public class PlaceBouncyCubesOnVerticalSpaces : GenerateCubesMapFunction {
     [Header("PlacesBouncyCubes")]
     public int nbCubesByAreaTranche = 28;
     public int hauteurEntreCubes = 4;
+    public int hauteurFreeFromBounceCubesAbove = 6;
     public int offsetFromSides = 0;
+
+    protected List<Cube> bouncyCubesPlaced = new List<Cube>();
 
     public override void Activate() {
         List<CubeInt> emptyCubes = GetMaxEmptySpacesLocations.Get(map.GetRegularCubes(), minSpacesSize);
         List<CubeInt> mergedEmptyCubes = GetMaxEmptySpacesLocations.CombineMergedSpaces(emptyCubes, commonPercentageToMerge);
         DisplayEmptySpaces(mergedEmptyCubes);
-        int nbBouncyCubesPlaced = 0;
+
+        List<Cube> bouncyCubesPlaced = new List<Cube>();
         foreach(CubeInt mergedEmptyCube in mergedEmptyCubes) {
-            int nbBouncyCubesAdded = PlaceBouncyCubesIn(mergedEmptyCube);
-            nbBouncyCubesPlaced += nbBouncyCubesAdded;
+            bouncyCubesPlaced.AddRange(PlaceBouncyCubesIn(mergedEmptyCube));
         }
-        Debug.Log($"{nbBouncyCubesPlaced} BoucyCubes ajoutés !");
+
+        bouncyCubesPlaced = RemoveBouncyCubesAboveOthers(bouncyCubesPlaced);
+
+        Debug.Log($"{bouncyCubesPlaced.Count} BoucyCubes ajoutés !");
     }
 
-    public int PlaceBouncyCubesIn(CubeInt mergedEmptyCube) {
+    public List<Cube> PlaceBouncyCubesIn(CubeInt mergedEmptyCube) {
         Transform cubesFolder = new GameObject("PlaceBouncyCubesOnVerticalSpaces").transform;
         cubesFolder.SetParent(map.cubesFolder.transform);
         int nbHauteurs = mergedEmptyCube.height / hauteurEntreCubes;
         RectInt tranche = mergedEmptyCube.GetTranche();
         int nbCubesParTranches = mergedEmptyCube.areaTranche / nbCubesByAreaTranche + 1;
-        int nbCubesAdded = 0;
         List<Vector2Int> positionsTaken = new List<Vector2Int>();
+        List<Cube> cubesAdded = new List<Cube>();
         for(int i = 0; i < nbHauteurs; i++) {
             for (int j = 0; j < nbCubesParTranches; j++) {
                 Vector3Int pos = GenerateBoucyCubePosition(mergedEmptyCube, i, positionsTaken);
                 Cube newCube = map.AddCube(pos, cubeType, parent: cubesFolder);
                 if (newCube != null) {
                     positionsTaken.Add(new Vector2Int(pos.x, pos.z));
-                    nbCubesAdded += 1;
+                    cubesAdded.Add(newCube);
                 }
             }
         }
-        return nbCubesAdded;
+        return cubesAdded;
     }
 
     private Vector3Int GenerateBoucyCubePosition(CubeInt mergedEmptyCube, int indiceHauteur, List<Vector2Int> positionsTaken) {
@@ -68,7 +74,26 @@ public class PlaceBouncyCubesOnVerticalSpaces : GenerateCubesMapFunction {
         foreach (CubeInt cube in emptyCubes) {
             List<ColorManager.Theme> theme = new List<ColorManager.Theme>() { ColorManager.GetRandomTheme() };
             PosVisualisator.DrawCube(cube, ColorManager.GetColor(theme));
-            //Debug.Log($"Cube = {cube}");
         }
+    }
+
+    protected List<Cube> RemoveBouncyCubesAboveOthers(List<Cube> bouncyCubes) {
+        List<Cube> cubes = bouncyCubes.OrderBy(c => c.transform.position.y).ToList(); // Need to sort if they are 3 cubes on top of each other !
+        for(int i = 0; i < cubes.Count; i++) {
+            Cube cube1 = cubes[i];
+            Vector3 pos1 = cube1.transform.position;
+            for(int j = i + 1; j < cubes.Count; j++) {
+                Cube cube2 = cubes[j];
+                Vector3 pos2 = cube2.transform.position;
+                if(pos1.x == pos2.x && pos1.z == pos2.z
+                && pos2.y <= pos1.y + hauteurFreeFromBounceCubesAbove) {
+                    map.DeleteCube(cube2);
+                    cubes.RemoveAt(j);
+                    j--;
+                    Debug.Log($"Remove {pos2} à cause de {pos1}");
+                }
+            }
+        }
+        return cubes;
     }
 }
