@@ -167,6 +167,7 @@ public class GameManager : MonoBehaviour {
         ShowCursor();
         pointeur.SetActive(false);
         console.OpenPauseMenu();
+        soundManager.PauseSounds();
     }
 
     public void UnPause() {
@@ -176,6 +177,7 @@ public class GameManager : MonoBehaviour {
         pointeur.SetActive(true);
         Tooltip.Hide();
         console.ClosePauseMenu();
+        soundManager.UnPauseSounds();
     }
 
     public bool IsPaused() {
