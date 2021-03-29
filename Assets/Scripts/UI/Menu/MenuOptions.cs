@@ -18,8 +18,8 @@ public class MenuOptions : MonoBehaviour {
         LANGUAGE,
     };
 
-    public static float defaultMusicVolume = 1.0f;
-    public static float defaultSoundVolume = 1.0f;
+    public static float defaultMusicVolume = 0.5f;
+    public static float defaultSoundVolume = 0.5f;
     public static float defaultMouseSpeed = 1.81f;
     public static bool defaultGripActivation = true;
     public static bool defaultConseilOnStart = true;

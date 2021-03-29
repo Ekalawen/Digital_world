@@ -29,8 +29,6 @@ public class SoundManager : MonoBehaviour {
     }
 
     public void ApplyAudioVolumes() {
-        float oldSoundVolume = soundVolume;
-        float oldMusicVolume = musicVolume;
         GetAudioVolumes();
         foreach(AudioSource source in usedSources) {
             float sourceRelativeVolume = source.GetComponent<AudioClipParamsHolder>().clipParams.relativeVolume;
