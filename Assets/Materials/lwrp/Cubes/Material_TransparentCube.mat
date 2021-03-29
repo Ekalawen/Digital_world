@@ -24,8 +24,22 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
     m_Floats:
     - DissolveThickness: 0.015
+    - _Alpha: 0.65
     - _DecomposeNoiseScale: 100
     - _DecomposeOffsetBlack: 0.1
     - _DecomposeStartingTime: 999999
@@ -36,10 +50,11 @@ Material:
     - _Metallic: 0
     - _PlayerProximityCoef: 0.037
     - _Smoothness: 0.5
-    - _TransparenceLuminosite: 0.2
+    - _TransparenceLuminosite: 0.4
     m_Colors:
     - _Color: {r: 0, g: 0, b: 0, a: 1}
     - _DecomposeColor: {r: 0, g: 0, b: 0, a: 0}
     - _DecomposeTilling: {r: 10, g: 10, b: 0, a: 0}
     - _DissolveColor: {r: 0, g: 1, b: 1, a: 1}
     - _PlayerPosition: {r: 0, g: 0, b: 0, a: 0}
+  m_BuildTextureStacks: []

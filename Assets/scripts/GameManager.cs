@@ -249,11 +249,11 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void QuitterPartie() {
-		Object.Destroy(map);
-		Object.Destroy(player);
-		Object.Destroy(console);
-		Object.Destroy(eventManager);
-		Object.Destroy(this);
+		//Object.Destroy(map);
+		//Object.Destroy(player);
+		//Object.Destroy(console);
+		//Object.Destroy(eventManager);
+		//Object.Destroy(this);
 
         PrefsManager.SetString(PrefsManager.LAST_LEVEL_KEY, SceneManager.GetActiveScene().name);
 
