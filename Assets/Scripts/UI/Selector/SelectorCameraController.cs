@@ -44,7 +44,8 @@ public class SelectorCameraController : MonoBehaviour {
     public void Update() {
         MoveByDragging();
         ApplyElasticitySphere();
-        LookAtClosestInterestPoint();
+        //LookAtClosestInterestPoint();
+        LookAtCentralProjection();
     }
 
     protected void MoveByDragging() {
@@ -284,5 +285,10 @@ public class SelectorCameraController : MonoBehaviour {
 
     public void PlaceAt(Vector3 posToGoTo) {
         transform.position = posToGoTo;
+    }
+
+    protected void LookAtCentralProjection() {
+        Vector3 centralPoint = GetCentralProjection();
+        transform.LookAt(centralPoint, Vector3.up);
     }
 }
