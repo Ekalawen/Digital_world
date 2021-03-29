@@ -27,6 +27,7 @@ public class Console : MonoBehaviour {
     public List<LocalizedString> conseils; // Les conseils à dispenser au joueur !
     public List<TimedMessage> timedMessages;
     public ConsoleStrings strings;
+    public LocalizedString customInitMessage = null;
 
     [Header("OnLumiereCapturedMessages")]
     public List<int> nbLumieresTriggers;
@@ -51,7 +52,6 @@ public class Console : MonoBehaviour {
 
     [Header("Pouvoirs")]
     public PouvoirDisplayInGame pouvoirDisplayA;
-
     public PouvoirDisplayInGame pouvoirDisplayE;
     public PouvoirDisplayInGame pouvoirDisplayLeftClick;
     public PouvoirDisplayInGame pouvoirDisplayRightClick;
@@ -159,32 +159,49 @@ public class Console : MonoBehaviour {
     }
 
     public virtual void PremiersMessages() {
+        DisplayLevelName();
+
+        bool displayImportant = customInitMessage.IsEmpty;
+        if (gm.GetMapType() == MenuLevel.LevelType.REGULAR) {
+            DisplayDatasAndEnnemisCounts(displayImportant);
+        } else {
+            VaAussiLoinQueTuPeux(displayImportant);
+        }
+
+        if(!displayImportant) {
+            AjouterMessageImportant(customInitMessage, TypeText.ALLY_TEXT, 3);
+        }
+
+        PremierGrandConseil();
+    }
+
+    protected void DisplayLevelName() {
         string levelName = levelVisualName.GetLocalizedString().Result;
         LocalizedString niveauString = strings.initialisationNiveau;
         niveauString.Arguments = new object[] { levelName };
         AjouterMessage(niveauString, TypeText.BASIC_TEXT, bUsePrefix: false);
         AjouterMessage(strings.initialisationMatrice, TypeText.BASIC_TEXT, bUsePrefix: false);
-        if (gm.GetMapType() == MenuLevel.LevelType.REGULAR) {
-            DisplayDatasAndEnnemisCounts();
+    }
+
+    protected void VaAussiLoinQueTuPeux(bool displayImportant) {
+        if (displayImportant) {
+            AjouterMessageImportant(strings.vaAussiLoinQueTuPeux, TypeText.ALLY_TEXT, 3);
         } else {
-            VaAussiLoinQueTuPeux();
+            AjouterMessage(strings.vaAussiLoinQueTuPeux, TypeText.ALLY_TEXT);
         }
-        PremierGrandConseil();
     }
 
-    protected void VaAussiLoinQueTuPeux() {
-        AjouterMessageImportant(strings.vaAussiLoinQueTuPeux, TypeText.ALLY_TEXT, 3);
-    }
-
-    public void DisplayDatasAndEnnemisCounts() {
+    public void DisplayDatasAndEnnemisCounts(bool displayImportant) {
         if (gm.GetMapType() == MenuLevel.LevelType.REGULAR) {
-            int nbEnnemis = gm.ennemiManager.ennemis.Count;
-            if (nbEnnemis > 0) {
-                AjouterMessageImportant(GetEnnemisCountDisplayMessage(), TypeText.ALLY_TEXT, 3, bAfficherInConsole: false);
-            }
-            int nbLumieres = map.GetLumieres().Count;
-            if (nbLumieres > 0) {
-                AjouterMessageImportant(GetDataCountDisplayMessage(), TypeText.ALLY_TEXT, 3, bAfficherInConsole: false);
+            if (displayImportant) {
+                int nbEnnemis = gm.ennemiManager.ennemis.Count;
+                if (nbEnnemis > 0) {
+                    AjouterMessageImportant(GetEnnemisCountDisplayMessage(), TypeText.ALLY_TEXT, 3, bAfficherInConsole: false);
+                }
+                int nbLumieres = map.GetLumieres().Count;
+                if (nbLumieres > 0) {
+                    AjouterMessageImportant(GetDataCountDisplayMessage(), TypeText.ALLY_TEXT, 3, bAfficherInConsole: false);
+                }
             }
             AjouterMessage(GetDataCountDisplayMessage(), TypeText.ALLY_TEXT);
             AjouterMessage(GetEnnemisCountDisplayMessage(), TypeText.ALLY_TEXT);
