@@ -46,7 +46,7 @@ public class Lumiere : MonoBehaviour {
 
     protected virtual void Start () {
         gm = GameManager.Instance;
-        SetLumiereQuality(LumiereQuality.HIGH);
+        SetLumiereQuality(LumiereQuality.LOW);
 	}
 
     protected virtual void OnTriggerEnter(Collider hit) {
