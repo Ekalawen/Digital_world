@@ -289,90 +289,6 @@ MonoBehaviour:
   m_UISuperCollapsed: 0
   m_UIInfos: {fileID: 114340500867371532}
   m_ParameterInfo:
-  - name: parameter
-    path: parameter
-    tooltip: 
-    sheetType: m_Float
-    realType: Single
-    defaultValue:
-      m_Type:
-        m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-          PublicKeyToken=b77a5c561934e089
-      m_SerializableObject: 50
-    min: -Infinity
-    max: Infinity
-    enumValues: []
-    descendantCount: 0
-  - name: TrailsTurbulenceSpeed
-    path: TrailsTurbulenceSpeed
-    tooltip: 
-    sheetType: m_Float
-    realType: Single
-    defaultValue:
-      m_Type:
-        m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-          PublicKeyToken=b77a5c561934e089
-      m_SerializableObject: 50
-    min: -Infinity
-    max: Infinity
-    enumValues: []
-    descendantCount: 0
-  - name: TrailsEjectionSpeed
-    path: TrailsEjectionSpeed
-    tooltip: 
-    sheetType: m_Float
-    realType: Single
-    defaultValue:
-      m_Type:
-        m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-          PublicKeyToken=b77a5c561934e089
-      m_SerializableObject: 0
-    min: -Infinity
-    max: Infinity
-    enumValues: []
-    descendantCount: 0
-  - name: TrailsColors
-    path: TrailsColors
-    tooltip: 
-    sheetType: m_Vector4f
-    realType: Color
-    defaultValue:
-      m_Type:
-        m_SerializableType: UnityEngine.Color, UnityEngine.CoreModule, Version=0.0.0.0,
-          Culture=neutral, PublicKeyToken=null
-      m_SerializableObject: '{"r":10.68062686920166,"g":10.68062686920166,"b":0.7557046413421631,"a":1.0}'
-    min: -Infinity
-    max: Infinity
-    enumValues: []
-    descendantCount: 0
-  - name: TrailsLifetime
-    path: TrailsLifetime
-    tooltip: 
-    sheetType: m_Vector2f
-    realType: Vector2
-    defaultValue:
-      m_Type:
-        m_SerializableType: UnityEngine.Vector2, UnityEngine.CoreModule, Version=0.0.0.0,
-          Culture=neutral, PublicKeyToken=null
-      m_SerializableObject: '{"x":1.0,"y":3.0}'
-    min: -Infinity
-    max: Infinity
-    enumValues: []
-    descendantCount: 0
-  - name: TrailsSize
-    path: TrailsSize
-    tooltip: 
-    sheetType: m_Float
-    realType: Single
-    defaultValue:
-      m_Type:
-        m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-          PublicKeyToken=b77a5c561934e089
-      m_SerializableObject: 0.3
-    min: -Infinity
-    max: Infinity
-    enumValues: []
-    descendantCount: 0
   - name: BeamSize
     path: BeamSize
     tooltip: 
@@ -656,7 +572,7 @@ MonoBehaviour:
   m_ImportDependencies: []
   m_GraphVersion: 6
   m_ResourceVersion: 1
-  m_saved: 0
+  m_saved: 1
   m_SubgraphDependencies: []
   m_CategoryPath: 
 --- !u!2058629511 &8926484042661614527
@@ -8590,7 +8506,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615342}
   m_ExposedName: BeamSize
   m_Exposed: 1
-  m_Order: 8
+  m_Order: 0
   m_Category: 
   m_Min:
     m_Type:
@@ -8670,7 +8586,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615344}
   m_ExposedName: BeamColor
   m_Exposed: 1
-  m_Order: 9
+  m_Order: 1
   m_Category: 
   m_Min:
     m_Type:
@@ -10483,7 +10399,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615406}
   m_ExposedName: EnveloppeSpawnRate
   m_Exposed: 1
-  m_Order: 10
+  m_Order: 2
   m_Category: 
   m_Min:
     m_Type:
@@ -10661,7 +10577,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615415}
   m_ExposedName: EnveloppeColor
   m_Exposed: 1
-  m_Order: 14
+  m_Order: 6
   m_Category: 
   m_Min:
     m_Type:
@@ -12766,7 +12682,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615501}
   m_ExposedName: EnveloppeTurbulence
   m_Exposed: 1
-  m_Order: 15
+  m_Order: 7
   m_Category: 
   m_Min:
     m_Type:
@@ -13756,7 +13672,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615530}
   m_ExposedName: EnveloppeTurbulenceMouvementSpeed
   m_Exposed: 1
-  m_Order: 16
+  m_Order: 8
   m_Category: 
   m_Min:
     m_Type:
@@ -14177,7 +14093,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615544}
   m_ExposedName: EnveloppeTurbulenceFrequency
   m_Exposed: 1
-  m_Order: 17
+  m_Order: 9
   m_Category: 
   m_Min:
     m_Type:
@@ -14257,7 +14173,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615546}
   m_ExposedName: EnveloppeSphereAttractionSpeed
   m_Exposed: 1
-  m_Order: 18
+  m_Order: 10
   m_Category: 
   m_Min:
     m_Type:
@@ -15242,7 +15158,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615785}
   m_ExposedName: EnveloppeParticulesSize
   m_Exposed: 1
-  m_Order: 19
+  m_Order: 11
   m_Category: 
   m_Min:
     m_Type:
@@ -16005,7 +15921,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615817}
   m_ExposedName: EnveloppeSize
   m_Exposed: 1
-  m_Order: 11
+  m_Order: 3
   m_Category: 
   m_Min:
     m_Type:
@@ -16160,7 +16076,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615821}
   m_ExposedName: EnveloppeBounceCurve
   m_Exposed: 1
-  m_Order: 12
+  m_Order: 4
   m_Category: 
   m_Min:
     m_Type:
@@ -16838,7 +16754,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615841}
   m_ExposedName: EnveloppeBounceFrequence
   m_Exposed: 1
-  m_Order: 13
+  m_Order: 5
   m_Category: 
   m_Min:
     m_Type:
@@ -18011,7 +17927,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615904}
   m_ExposedName: TailSpawnSize
   m_Exposed: 1
-  m_Order: 21
+  m_Order: 13
   m_Category: 
   m_Min:
     m_Type:
@@ -18091,7 +18007,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615906}
   m_ExposedName: TailSpawnRate
   m_Exposed: 1
-  m_Order: 20
+  m_Order: 12
   m_Category: 
   m_Min:
     m_Type:
@@ -18540,7 +18456,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615921}
   m_ExposedName: TailSphereAttractionSpeed
   m_Exposed: 1
-  m_Order: 25
+  m_Order: 17
   m_Category: 
   m_Min:
     m_Type:
@@ -18623,7 +18539,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615923}
   m_ExposedName: TailColor
   m_Exposed: 1
-  m_Order: 22
+  m_Order: 14
   m_Category: 
   m_Min:
     m_Type:
@@ -19325,7 +19241,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615963}
   m_ExposedName: TailParticulesScale
   m_Exposed: 1
-  m_Order: 23
+  m_Order: 15
   m_Category: 
   m_Min:
     m_Type:
@@ -19581,7 +19497,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615970}
   m_ExposedName: TailSphereAttractionForce
   m_Exposed: 1
-  m_Order: 26
+  m_Order: 18
   m_Category: 
   m_Min:
     m_Type:
@@ -19664,7 +19580,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615972}
   m_ExposedName: TailSphereSize
   m_Exposed: 1
-  m_Order: 24
+  m_Order: 16
   m_Category: 
   m_Min:
     m_Type:
@@ -19744,7 +19660,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615974}
   m_ExposedName: TailParticulesLifetime
   m_Exposed: 1
-  m_Order: 27
+  m_Order: 19
   m_Category: 
   m_Min:
     m_Type:
