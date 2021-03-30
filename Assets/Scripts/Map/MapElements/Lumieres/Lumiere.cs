@@ -38,6 +38,7 @@ public class Lumiere : MonoBehaviour {
     [Header("Vue")]
     public VisualEffect lumiereHighVfx;
     public GameObject lumiereLow;
+    public VisualEffect lumiereTrails;
     public GameObject pointLight;
 
     protected GameManager gm;
@@ -100,11 +101,12 @@ public class Lumiere : MonoBehaviour {
     }
 
     private void AutoDestroy() {
-        Destroy(this.gameObject, GetDureeDestruction());
+        Destroy(this.gameObject, dureeDestructionHigh);
         DestroyAnimation();
     }
 
     private void DestroyAnimation() {
+        DestroyAnimationTrails();
         if (lumiereQuality == LumiereQuality.HIGH) {
             DestroyAnimationHigh();
         } else {
@@ -113,13 +115,16 @@ public class Lumiere : MonoBehaviour {
         Destroy(pointLight);
     }
 
+    protected void DestroyAnimationTrails() {
+        float trailsEjectionSpeed = lumiereTrails.GetFloat("TrailsSphereSpeed") * 2;
+        lumiereTrails.SetFloat("TrailsEjectionSpeed", -trailsEjectionSpeed);
+        lumiereTrails.SetFloat("TrailsSpawnRate", 0);
+    }
+
     protected void DestroyAnimationHigh() {
         float turbulenceAttractionSpeed = lumiereHighVfx.GetFloat("EnveloppeSphereAttractionSpeed");
         lumiereHighVfx.SetFloat("EnveloppeSphereAttractionSpeed", -turbulenceAttractionSpeed);
-        float trailsEjectionSpeed = lumiereHighVfx.GetFloat("TrailsSphereSpeed") * 2;
-        lumiereHighVfx.SetFloat("TrailsEjectionSpeed", -trailsEjectionSpeed);
         lumiereHighVfx.SetFloat("EnveloppeSpawnRate", 0);
-        lumiereHighVfx.SetFloat("TrailsSpawnRate", 0);
         lumiereHighVfx.SetVector4("BeamColor", Vector4.zero);
         lumiereHighVfx.SetFloat("TailSpawnRate", 0);
     }
@@ -129,7 +134,7 @@ public class Lumiere : MonoBehaviour {
     }
 
     protected IEnumerator CDestroyAnimationLow() {
-        Timer timer = new Timer(GetDureeDestruction());
+        Timer timer = new Timer(dureeDestructionLow);
         while(!timer.IsOver()) {
             lumiereLow.transform.localScale = Vector3.one * (1.0f - timer.GetAvancement());
             yield return null;
@@ -161,9 +166,5 @@ public class Lumiere : MonoBehaviour {
         lumiereQuality = quality;
         lumiereHighVfx.gameObject.SetActive(quality == LumiereQuality.HIGH);
         lumiereLow.SetActive(quality == LumiereQuality.LOW);
-    }
-
-    public float GetDureeDestruction() {
-        return lumiereQuality == LumiereQuality.HIGH ? dureeDestructionHigh : dureeDestructionLow;
     }
 }

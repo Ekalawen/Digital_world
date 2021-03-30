@@ -31,9 +31,9 @@ Transform:
   m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
   m_Children:
   - {fileID: 4112407253792594}
-  - {fileID: 504739275352003915}
   - {fileID: 7727291294073181121}
   - {fileID: 3501191294059104558}
+  - {fileID: 504739275352003915}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -80,6 +80,7 @@ MonoBehaviour:
   dureeDestructionLow: 0.08
   lumiereHighVfx: {fileID: 8359929456749380389}
   lumiereLow: {fileID: 6146230655318809766}
+  lumiereTrails: {fileID: 206367807486691759}
   pointLight: {fileID: 1916073784755680}
 --- !u!1 &1916073784755680
 GameObject:
@@ -204,7 +205,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4185530448076710}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!2083052967 &8359929456749380389
 VisualEffect:
@@ -530,7 +531,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4185530448076710}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!2083052967 &206367807486691759
 VisualEffect:
@@ -854,7 +855,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4185530448076710}
-  m_RootOrder: 1
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &5812458792843536166
 MeshFilter:
