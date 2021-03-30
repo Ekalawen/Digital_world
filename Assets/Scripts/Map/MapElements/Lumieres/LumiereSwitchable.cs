@@ -34,7 +34,7 @@ public class LumiereSwitchable : Lumiere {
     }
 
     protected void SetVfxAndLight() {
-        vfx = currentLumiere.GetComponentInChildren<VisualEffect>();
+        lumiereHighVfx = currentLumiere.GetComponentInChildren<VisualEffect>();
         pointLight = currentLumiere.GetComponentInChildren<Light>().gameObject;
     }
 

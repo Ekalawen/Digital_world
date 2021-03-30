@@ -15,6 +15,11 @@ public class Lumiere : MonoBehaviour {
         SPECIAL,
     };
 
+    public enum LumiereQuality {
+        HIGH,
+        LOW,
+    };
+
     [Header("Propriétés")]
     public LumiereType type;
     public float timeBonus = 10.0f;
@@ -27,18 +32,24 @@ public class Lumiere : MonoBehaviour {
     public float screenShakeRoughness = 10;
 
     [Header("Destruction")]
-    public float dureeDestruction = 1.0f;
-    public VisualEffect vfx;
+    public float dureeDestructionHigh = 3.0f;
+    public float dureeDestructionLow = 1.0f;
+
+    [Header("Vue")]
+    public VisualEffect lumiereHighVfx;
+    public GameObject lumiereLow;
     public GameObject pointLight;
 
     protected GameManager gm;
     protected bool isCaptured = false;
+    protected LumiereQuality lumiereQuality;
 
     protected virtual void Start () {
         gm = GameManager.Instance;
+        SetLumiereQuality(LumiereQuality.LOW);
 	}
 
-	protected virtual void OnTriggerEnter(Collider hit) {
+    protected virtual void OnTriggerEnter(Collider hit) {
         if (hit.gameObject.name == "Joueur"){
             Captured();
 		}
@@ -89,20 +100,41 @@ public class Lumiere : MonoBehaviour {
     }
 
     private void AutoDestroy() {
-        Destroy(this.gameObject, dureeDestruction);
+        Destroy(this.gameObject, GetDureeDestruction());
         DestroyAnimation();
     }
 
     private void DestroyAnimation() {
-        float turbulenceAttractionSpeed = vfx.GetFloat("EnveloppeSphereAttractionSpeed");
-        vfx.SetFloat("EnveloppeSphereAttractionSpeed", -turbulenceAttractionSpeed);
-        float trailsEjectionSpeed = vfx.GetFloat("TrailsSphereSpeed") * 2;
-        vfx.SetFloat("TrailsEjectionSpeed", -trailsEjectionSpeed);
-        vfx.SetFloat("EnveloppeSpawnRate", 0);
-        vfx.SetFloat("TrailsSpawnRate", 0);
-        vfx.SetVector4("BeamColor", Vector4.zero);
-        vfx.SetFloat("TailSpawnRate", 0);
+        if (lumiereQuality == LumiereQuality.HIGH) {
+            DestroyAnimationHigh();
+        } else {
+            DestroyAnimationLow();
+        }
         Destroy(pointLight);
+    }
+
+    protected void DestroyAnimationHigh() {
+        float turbulenceAttractionSpeed = lumiereHighVfx.GetFloat("EnveloppeSphereAttractionSpeed");
+        lumiereHighVfx.SetFloat("EnveloppeSphereAttractionSpeed", -turbulenceAttractionSpeed);
+        float trailsEjectionSpeed = lumiereHighVfx.GetFloat("TrailsSphereSpeed") * 2;
+        lumiereHighVfx.SetFloat("TrailsEjectionSpeed", -trailsEjectionSpeed);
+        lumiereHighVfx.SetFloat("EnveloppeSpawnRate", 0);
+        lumiereHighVfx.SetFloat("TrailsSpawnRate", 0);
+        lumiereHighVfx.SetVector4("BeamColor", Vector4.zero);
+        lumiereHighVfx.SetFloat("TailSpawnRate", 0);
+    }
+
+    protected void DestroyAnimationLow() {
+        StartCoroutine(CDestroyAnimationLow());
+    }
+
+    protected IEnumerator CDestroyAnimationLow() {
+        Timer timer = new Timer(GetDureeDestruction());
+        while(!timer.IsOver()) {
+            lumiereLow.transform.localScale = Vector3.one * (1.0f - timer.GetAvancement());
+            yield return null;
+        }
+        lumiereLow.transform.localScale = Vector3.zero;
     }
 
     protected virtual void NotifyEventManagerLumiereCapture() {
@@ -123,5 +155,15 @@ public class Lumiere : MonoBehaviour {
 
     public bool IsCaptured() {
         return isCaptured;
+    }
+
+    public void SetLumiereQuality(LumiereQuality quality) {
+        lumiereQuality = quality;
+        lumiereHighVfx.gameObject.SetActive(quality == LumiereQuality.HIGH);
+        lumiereLow.SetActive(quality == LumiereQuality.LOW);
+    }
+
+    public float GetDureeDestruction() {
+        return lumiereQuality == LumiereQuality.HIGH ? dureeDestructionHigh : dureeDestructionLow;
     }
 }
