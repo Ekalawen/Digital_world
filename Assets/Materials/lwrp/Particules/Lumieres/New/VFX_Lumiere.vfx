@@ -13,66 +13,13 @@ MonoBehaviour:
   m_Name: VFXUI
   m_EditorClassIdentifier: 
   groupInfos:
-  - title: External Ring
-    position:
-      serializedVersion: 2
-      x: -1024
-      y: -1222
-      width: 1440
-      height: 2002
-    contents:
-    - model: {fileID: 8926484042661614597}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661614842}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661614600}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661614844}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661614848}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661614623}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661614861}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661614863}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661614900}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661614865}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661614936}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661614941}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661614947}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661614930}
-      id: 0
-      isStickyNote: 0
-    - model: {fileID: 8926484042661614960}
-      id: 0
-      isStickyNote: 0
   - title: Trails
     position:
       serializedVersion: 2
-      x: 433
-      y: -1214
+      x: 2691
+      y: -1572
       width: 2167
-      height: 2114
+      height: 2115
     contents:
     - model: {fileID: 8926484042661615061}
       id: 0
@@ -125,10 +72,10 @@ MonoBehaviour:
   - title: Beam
     position:
       serializedVersion: 2
-      x: 2894
-      y: -1082
+      x: 1399
+      y: -1445
       width: 702
-      height: 1409
+      height: 1506
     contents:
     - model: {fileID: 8926484042661615277}
       id: 0
@@ -151,10 +98,10 @@ MonoBehaviour:
   - title: Enveloppe
     position:
       serializedVersion: 2
-      x: 3754
-      y: -1306
+      x: -707
+      y: -1640
       width: 1964
-      height: 2123
+      height: 2146
     contents:
     - model: {fileID: 8926484042661615356}
       id: 0
@@ -246,13 +193,13 @@ MonoBehaviour:
     - model: {fileID: 8926484042661615840}
       id: 0
       isStickyNote: 0
-  - title: Following Tail
+  - title: Following Tail (Furtive)
     position:
       serializedVersion: 2
-      x: 5977
-      y: -1253
+      x: 5964
+      y: -1548
       width: 1794
-      height: 2217
+      height: 2238
     contents:
     - model: {fileID: 8926484042661615842}
       id: 0
@@ -318,10 +265,10 @@ MonoBehaviour:
   categories: []
   uiBounds:
     serializedVersion: 2
-    x: -1024
-    y: -1306
-    width: 8795
-    height: 2271
+    x: -707
+    y: -1640
+    width: 8465
+    height: 2330
 --- !u!114 &114350483966674976
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -337,21 +284,6 @@ MonoBehaviour:
   m_UIIgnoredErrors: []
   m_Parent: {fileID: 0}
   m_Children:
-  - {fileID: 8926484042661614597}
-  - {fileID: 8926484042661614600}
-  - {fileID: 8926484042661614623}
-  - {fileID: 8926484042661614865}
-  - {fileID: 8926484042661614842}
-  - {fileID: 8926484042661614844}
-  - {fileID: 8926484042661614848}
-  - {fileID: 8926484042661614861}
-  - {fileID: 8926484042661614863}
-  - {fileID: 8926484042661614900}
-  - {fileID: 8926484042661614930}
-  - {fileID: 8926484042661614936}
-  - {fileID: 8926484042661614941}
-  - {fileID: 8926484042661614947}
-  - {fileID: 8926484042661614960}
   - {fileID: 8926484042661615061}
   - {fileID: 8926484042661615064}
   - {fileID: 8926484042661615091}
@@ -429,104 +361,6 @@ MonoBehaviour:
   m_UISuperCollapsed: 0
   m_UIInfos: {fileID: 114340500867371532}
   m_ParameterInfo:
-  - name: Size
-    path: Size
-    tooltip: 
-    sheetType: m_Float
-    realType: Single
-    defaultValue:
-      m_Type:
-        m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-          PublicKeyToken=b77a5c561934e089
-      m_SerializableObject: 2
-    min: -Infinity
-    max: Infinity
-    enumValues: []
-    descendantCount: 0
-  - name: ParticulesSpawnRate
-    path: ParticulesSpawnRate
-    tooltip: 
-    sheetType: m_Int
-    realType: Int32
-    defaultValue:
-      m_Type:
-        m_SerializableType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
-          PublicKeyToken=b77a5c561934e089
-      m_SerializableObject: 0
-    min: -Infinity
-    max: Infinity
-    enumValues: []
-    descendantCount: 0
-  - name: Color
-    path: Color
-    tooltip: 
-    sheetType: m_Gradient
-    realType: Gradient
-    defaultValue:
-      m_Type:
-        m_SerializableType: UnityEngine.Gradient, UnityEngine.CoreModule, Version=0.0.0.0,
-          Culture=neutral, PublicKeyToken=null
-      m_SerializableObject: '{"colorKeys":[{"color":{"r":21.11212158203125,"g":16.601041793823243,"b":8.903400421142579,"a":1.0},"time":0.06176852062344551},{"color":{"r":30.609424591064454,"g":14.993967056274414,"b":0.27219662070274355,"a":1.0},"time":0.29117265343666079},{"color":{"r":3.767564058303833,"g":0.10224174708127976,"b":0.03189602866768837,"a":1.0},"time":0.6235294342041016},{"color":{"r":0.3119799494743347,"g":0.0,"b":0.0013795068953186274,"a":1.0},"time":1.0}],"alphaKeys":[{"alpha":0.0,"time":0.0},{"alpha":1.0,"time":0.06764324754476547},{"alpha":1.0,"time":0.7676509022712708},{"alpha":0.0,"time":0.9882352948188782}],"gradientMode":0}'
-    min: -Infinity
-    max: Infinity
-    enumValues: []
-    descendantCount: 0
-  - name: Lifetime
-    path: Lifetime
-    tooltip: 
-    sheetType: m_Vector2f
-    realType: Vector2
-    defaultValue:
-      m_Type:
-        m_SerializableType: UnityEngine.Vector2, UnityEngine.CoreModule, Version=0.0.0.0,
-          Culture=neutral, PublicKeyToken=null
-      m_SerializableObject: '{"x":1.0,"y":1.0}'
-    min: -Infinity
-    max: Infinity
-    enumValues: []
-    descendantCount: 0
-  - name: ParticulesScale
-    path: ParticulesScale
-    tooltip: 
-    sheetType: m_Vector2f
-    realType: Vector2
-    defaultValue:
-      m_Type:
-        m_SerializableType: UnityEngine.Vector2, UnityEngine.CoreModule, Version=0.0.0.0,
-          Culture=neutral, PublicKeyToken=null
-      m_SerializableObject: '{"x":0.30000001192092898,"y":3.630000114440918}'
-    min: -Infinity
-    max: Infinity
-    enumValues: []
-    descendantCount: 0
-  - name: AttractionSize
-    path: AttractionSize
-    tooltip: 
-    sheetType: m_Float
-    realType: Single
-    defaultValue:
-      m_Type:
-        m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-          PublicKeyToken=b77a5c561934e089
-      m_SerializableObject: 0.2
-    min: -Infinity
-    max: Infinity
-    enumValues: []
-    descendantCount: 0
-  - name: AttractionSpeed
-    path: AttractionSpeed
-    tooltip: 
-    sheetType: m_Float
-    realType: Single
-    defaultValue:
-      m_Type:
-        m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
-          PublicKeyToken=b77a5c561934e089
-      m_SerializableObject: 1
-    min: -Infinity
-    max: Infinity
-    enumValues: []
-    descendantCount: 0
   - name: TrailsSpawnRate
     path: TrailsSpawnRate
     tooltip: 
@@ -3853,7 +3687,7 @@ MonoBehaviour:
   m_Children:
   - {fileID: 8926484042661615062}
   - {fileID: 8926484042661615201}
-  m_UIPosition: {x: 877, y: -1122}
+  m_UIPosition: {x: 3135, y: -1479}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots: []
@@ -3946,7 +3780,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615163}
   - {fileID: 8926484042661615174}
   - {fileID: 8926484042661615088}
-  m_UIPosition: {x: 878, y: -682}
+  m_UIPosition: {x: 3136, y: -1039}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots:
@@ -4412,7 +4246,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615211}
   - {fileID: 8926484042661615189}
   - {fileID: 8926484042661615769}
-  m_UIPosition: {x: 879, y: -44}
+  m_UIPosition: {x: 3137, y: -401}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots: []
@@ -4539,7 +4373,7 @@ MonoBehaviour:
   m_UIIgnoredErrors: []
   m_Parent: {fileID: 114350483966674976}
   m_Children: []
-  m_UIPosition: {x: 2151, y: -1156}
+  m_UIPosition: {x: 4409, y: -1513}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots:
@@ -4606,7 +4440,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615129}
   - {fileID: 8926484042661615130}
   - {fileID: 8926484042661615258}
-  m_UIPosition: {x: 2142, y: -880}
+  m_UIPosition: {x: 4400, y: -1237}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots:
@@ -5024,7 +4858,7 @@ MonoBehaviour:
   m_Parent: {fileID: 114350483966674976}
   m_Children:
   - {fileID: 8926484042661615135}
-  m_UIPosition: {x: 2142, y: -511}
+  m_UIPosition: {x: 4400, y: -868}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots: []
@@ -5738,7 +5572,7 @@ MonoBehaviour:
   - {fileID: 8926484042661616015}
   - {fileID: 8926484042661615158}
   - {fileID: 8926484042661615263}
-  m_UIPosition: {x: 2142, y: -90}
+  m_UIPosition: {x: 4400, y: -447}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots:
@@ -5895,7 +5729,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615162}
   m_ExposedName: TrailsSpawnRate
   m_Exposed: 1
-  m_Order: 7
+  m_Order: 0
   m_Category: 
   m_Min:
     m_Type:
@@ -5914,7 +5748,7 @@ MonoBehaviour:
     linkedSlots:
     - outputSlot: {fileID: 8926484042661615162}
       inputSlot: {fileID: 8926484042661615063}
-    position: {x: 665, y: -1026}
+    position: {x: 2923, y: -1383}
     expandedSlots: []
     expanded: 0
 --- !u!114 &8926484042661615162
@@ -6139,7 +5973,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615169}
   m_ExposedName: TrailsColors
   m_Exposed: 1
-  m_Order: 12
+  m_Order: 5
   m_Category: 
   m_Min:
     m_Type:
@@ -6158,7 +5992,7 @@ MonoBehaviour:
     linkedSlots:
     - outputSlot: {fileID: 8926484042661615169}
       inputSlot: {fileID: 8926484042661615164}
-    position: {x: 669, y: -504}
+    position: {x: 2927, y: -861}
     expandedSlots: []
     expanded: 0
 --- !u!114 &8926484042661615169
@@ -6654,7 +6488,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615186}
   m_ExposedName: TrailsLifetime
   m_Exposed: 1
-  m_Order: 13
+  m_Order: 6
   m_Category: 
   m_Min:
     m_Type:
@@ -6675,7 +6509,7 @@ MonoBehaviour:
       inputSlot: {fileID: 8926484042661615089}
     - outputSlot: {fileID: 8926484042661615188}
       inputSlot: {fileID: 8926484042661615090}
-    position: {x: 636, y: -266}
+    position: {x: 2894, y: -623}
     expandedSlots:
     - {fileID: 8926484042661615186}
     expanded: 1
@@ -8035,7 +7869,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615276}
   m_ExposedName: TrailsSize
   m_Exposed: 1
-  m_Order: 14
+  m_Order: 7
   m_Category: 
   m_Min:
     m_Type:
@@ -8054,7 +7888,7 @@ MonoBehaviour:
     linkedSlots:
     - outputSlot: {fileID: 8926484042661615276}
       inputSlot: {fileID: 8926484042661615264}
-    position: {x: 1904, y: 286}
+    position: {x: 4162, y: -71}
     expandedSlots: []
     expanded: 0
 --- !u!114 &8926484042661615276
@@ -8108,7 +7942,7 @@ MonoBehaviour:
   m_Parent: {fileID: 114350483966674976}
   m_Children:
   - {fileID: 8926484042661615294}
-  m_UIPosition: {x: 3144, y: -1023}
+  m_UIPosition: {x: 1649, y: -1386}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots: []
@@ -8142,7 +7976,7 @@ MonoBehaviour:
   m_Parent: {fileID: 114350483966674976}
   m_Children:
   - {fileID: 8926484042661615297}
-  m_UIPosition: {x: 3144, y: -727}
+  m_UIPosition: {x: 1649, y: -1090}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots:
@@ -8507,7 +8341,7 @@ MonoBehaviour:
   m_UIIgnoredErrors: []
   m_Parent: {fileID: 114350483966674976}
   m_Children: []
-  m_UIPosition: {x: 3145, y: -410}
+  m_UIPosition: {x: 1650, y: -773}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots: []
@@ -8546,7 +8380,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615349}
   - {fileID: 8926484042661615354}
   - {fileID: 8926484042661615528}
-  m_UIPosition: {x: 3147, y: -226}
+  m_UIPosition: {x: 1652, y: -589}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots:
@@ -8856,7 +8690,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615342}
   m_ExposedName: BeamSize
   m_Exposed: 1
-  m_Order: 15
+  m_Order: 8
   m_Category: 
   m_Min:
     m_Type:
@@ -8875,7 +8709,7 @@ MonoBehaviour:
     linkedSlots:
     - outputSlot: {fileID: 8926484042661615342}
       inputSlot: {fileID: 8926484042661615300}
-    position: {x: 2933, y: -11}
+    position: {x: 1438, y: -374}
     expandedSlots: []
     expanded: 0
 --- !u!114 &8926484042661615342
@@ -8936,7 +8770,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615344}
   m_ExposedName: BeamColor
   m_Exposed: 1
-  m_Order: 16
+  m_Order: 9
   m_Category: 
   m_Min:
     m_Type:
@@ -8955,7 +8789,7 @@ MonoBehaviour:
     linkedSlots:
     - outputSlot: {fileID: 8926484042661615344}
       inputSlot: {fileID: 8926484042661615350}
-    position: {x: 2919, y: 66}
+    position: {x: 1424, y: -297}
     expandedSlots: []
     expanded: 0
 --- !u!114 &8926484042661615344
@@ -9372,7 +9206,7 @@ MonoBehaviour:
   m_Parent: {fileID: 114350483966674976}
   m_Children:
   - {fileID: 8926484042661615357}
-  m_UIPosition: {x: 5263, y: -1249}
+  m_UIPosition: {x: 802, y: -1581}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots: []
@@ -9465,7 +9299,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615370}
   - {fileID: 8926484042661615381}
   - {fileID: 8926484042661615394}
-  m_UIPosition: {x: 5263, y: -1001}
+  m_UIPosition: {x: 802, y: -1333}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots:
@@ -10296,7 +10130,7 @@ MonoBehaviour:
   m_Children:
   - {fileID: 8926484042661615425}
   - {fileID: 8926484042661615445}
-  m_UIPosition: {x: 5269, y: -363}
+  m_UIPosition: {x: 808, y: -695}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots: []
@@ -10334,7 +10168,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615389}
   - {fileID: 8926484042661615409}
   - {fileID: 8926484042661615420}
-  m_UIPosition: {x: 5261, y: 297}
+  m_UIPosition: {x: 800, y: -35}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots:
@@ -10749,7 +10583,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615406}
   m_ExposedName: EnveloppeSpawnRate
   m_Exposed: 1
-  m_Order: 17
+  m_Order: 10
   m_Category: 
   m_Min:
     m_Type:
@@ -10768,7 +10602,7 @@ MonoBehaviour:
     linkedSlots:
     - outputSlot: {fileID: 8926484042661615406}
       inputSlot: {fileID: 8926484042661615358}
-    position: {x: 5007, y: -1158}
+    position: {x: 546, y: -1490}
     expandedSlots: []
     expanded: 0
 --- !u!114 &8926484042661615406
@@ -10927,7 +10761,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615415}
   m_ExposedName: EnveloppeColor
   m_Exposed: 1
-  m_Order: 21
+  m_Order: 14
   m_Category: 
   m_Min:
     m_Type:
@@ -10946,7 +10780,7 @@ MonoBehaviour:
     linkedSlots:
     - outputSlot: {fileID: 8926484042661615415}
       inputSlot: {fileID: 8926484042661615421}
-    position: {x: 5015, y: 704}
+    position: {x: 554, y: 372}
     expandedSlots: []
     expanded: 0
 --- !u!114 &8926484042661615415
@@ -12346,7 +12180,7 @@ MonoBehaviour:
   m_UIIgnoredErrors: []
   m_Parent: {fileID: 114350483966674976}
   m_Children: []
-  m_UIPosition: {x: 3779, y: -146}
+  m_UIPosition: {x: -682, y: -478}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots: []
@@ -12507,7 +12341,7 @@ MonoBehaviour:
   m_UIIgnoredErrors: []
   m_Parent: {fileID: 114350483966674976}
   m_Children: []
-  m_UIPosition: {x: 4028, y: -48}
+  m_UIPosition: {x: -433, y: -380}
   m_UICollapsed: 1
   m_UISuperCollapsed: 0
   m_InputSlots:
@@ -12848,7 +12682,7 @@ MonoBehaviour:
   m_UIIgnoredErrors: []
   m_Parent: {fileID: 114350483966674976}
   m_Children: []
-  m_UIPosition: {x: 4743, y: -108}
+  m_UIPosition: {x: 282, y: -440}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots:
@@ -13032,7 +12866,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615501}
   m_ExposedName: EnveloppeTurbulence
   m_Exposed: 1
-  m_Order: 22
+  m_Order: 15
   m_Category: 
   m_Min:
     m_Type:
@@ -13053,7 +12887,7 @@ MonoBehaviour:
       inputSlot: {fileID: 8926484042661615490}
     - outputSlot: {fileID: 8926484042661615501}
       inputSlot: {fileID: 8926484042661615503}
-    position: {x: 4253, y: 187}
+    position: {x: -208, y: -145}
     expandedSlots: []
     expanded: 0
 --- !u!114 &8926484042661615501
@@ -13107,7 +12941,7 @@ MonoBehaviour:
   m_UIIgnoredErrors: []
   m_Parent: {fileID: 114350483966674976}
   m_Children: []
-  m_UIPosition: {x: 4486, y: 182}
+  m_UIPosition: {x: 25, y: -150}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots:
@@ -13243,7 +13077,7 @@ MonoBehaviour:
   m_UIIgnoredErrors: []
   m_Parent: {fileID: 114350483966674976}
   m_Children: []
-  m_UIPosition: {x: 4301, y: -149}
+  m_UIPosition: {x: -160, y: -481}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots:
@@ -14022,7 +13856,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615530}
   m_ExposedName: EnveloppeTurbulenceMouvementSpeed
   m_Exposed: 1
-  m_Order: 23
+  m_Order: 16
   m_Category: 
   m_Min:
     m_Type:
@@ -14041,7 +13875,7 @@ MonoBehaviour:
     linkedSlots:
     - outputSlot: {fileID: 8926484042661615530}
       inputSlot: {fileID: 8926484042661615532}
-    position: {x: 4463, y: -311}
+    position: {x: 2, y: -643}
     expandedSlots: []
     expanded: 0
 --- !u!114 &8926484042661615530
@@ -14094,7 +13928,7 @@ MonoBehaviour:
   m_UIIgnoredErrors: []
   m_Parent: {fileID: 114350483966674976}
   m_Children: []
-  m_UIPosition: {x: 4830, y: -338}
+  m_UIPosition: {x: 369, y: -670}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots:
@@ -14443,7 +14277,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615544}
   m_ExposedName: EnveloppeTurbulenceFrequency
   m_Exposed: 1
-  m_Order: 24
+  m_Order: 17
   m_Category: 
   m_Min:
     m_Type:
@@ -14462,7 +14296,7 @@ MonoBehaviour:
     linkedSlots:
     - outputSlot: {fileID: 8926484042661615544}
       inputSlot: {fileID: 8926484042661615441}
-    position: {x: 4948, y: -160}
+    position: {x: 487, y: -492}
     expandedSlots: []
     expanded: 0
 --- !u!114 &8926484042661615544
@@ -14523,7 +14357,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615546}
   m_ExposedName: EnveloppeSphereAttractionSpeed
   m_Exposed: 1
-  m_Order: 25
+  m_Order: 18
   m_Category: 
   m_Min:
     m_Type:
@@ -14542,7 +14376,7 @@ MonoBehaviour:
     linkedSlots:
     - outputSlot: {fileID: 8926484042661615546}
       inputSlot: {fileID: 8926484042661615452}
-    position: {x: 4939, y: 180}
+    position: {x: 478, y: -152}
     expandedSlots: []
     expanded: 0
 --- !u!114 &8926484042661615546
@@ -14603,7 +14437,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615742}
   m_ExposedName: TrailsSphereSizes
   m_Exposed: 1
-  m_Order: 8
+  m_Order: 1
   m_Category: 
   m_Min:
     m_Type:
@@ -14626,7 +14460,7 @@ MonoBehaviour:
       inputSlot: {fileID: 8926484042661615181}
     - outputSlot: {fileID: 8926484042661615744}
       inputSlot: {fileID: 8926484042661615221}
-    position: {x: 616, y: 91}
+    position: {x: 2874, y: -266}
     expandedSlots:
     - {fileID: 8926484042661615742}
     expanded: 1
@@ -14758,7 +14592,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615756}
   m_ExposedName: TrailsSphereSpeed
   m_Exposed: 1
-  m_Order: 9
+  m_Order: 2
   m_Category: 
   m_Min:
     m_Type:
@@ -14779,7 +14613,7 @@ MonoBehaviour:
       inputSlot: {fileID: 8926484042661615196}
     - outputSlot: {fileID: 8926484042661615756}
       inputSlot: {fileID: 8926484042661615197}
-    position: {x: 458, y: 530}
+    position: {x: 2716, y: 173}
     expandedSlots: []
     expanded: 1
 --- !u!114 &8926484042661615756
@@ -14841,7 +14675,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615758}
   m_ExposedName: TrailsTurbulenceSpeed
   m_Exposed: 1
-  m_Order: 10
+  m_Order: 3
   m_Category: 
   m_Min:
     m_Type:
@@ -14860,7 +14694,7 @@ MonoBehaviour:
     linkedSlots:
     - outputSlot: {fileID: 8926484042661615758}
       inputSlot: {fileID: 8926484042661615226}
-    position: {x: 610, y: 310}
+    position: {x: 2868, y: -47}
     expandedSlots: []
     expanded: 0
 --- !u!114 &8926484042661615758
@@ -14921,7 +14755,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615760}
   m_ExposedName: TrailsEjectionSpeed
   m_Exposed: 1
-  m_Order: 11
+  m_Order: 4
   m_Category: 
   m_Min:
     m_Type:
@@ -14942,7 +14776,7 @@ MonoBehaviour:
       inputSlot: {fileID: 8926484042661615777}
     - outputSlot: {fileID: 8926484042661615760}
       inputSlot: {fileID: 8926484042661615781}
-    position: {x: 470, y: 726}
+    position: {x: 2728, y: 369}
     expandedSlots: []
     expanded: 0
 --- !u!114 &8926484042661615760
@@ -15364,7 +15198,7 @@ MonoBehaviour:
   m_UIIgnoredErrors: []
   m_Parent: {fileID: 114350483966674976}
   m_Children: []
-  m_UIPosition: {x: 693, y: 644}
+  m_UIPosition: {x: 2951, y: 287}
   m_UICollapsed: 1
   m_UISuperCollapsed: 0
   m_InputSlots:
@@ -15508,7 +15342,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615785}
   m_ExposedName: EnveloppeParticulesSize
   m_Exposed: 1
-  m_Order: 26
+  m_Order: 19
   m_Category: 
   m_Min:
     m_Type:
@@ -15529,7 +15363,7 @@ MonoBehaviour:
       inputSlot: {fileID: 8926484042661615410}
     - outputSlot: {fileID: 8926484042661615787}
       inputSlot: {fileID: 8926484042661615411}
-    position: {x: 4977, y: 544}
+    position: {x: 516, y: 212}
     expandedSlots:
     - {fileID: 8926484042661615785}
     expanded: 1
@@ -15652,7 +15486,7 @@ MonoBehaviour:
   m_UIIgnoredErrors: []
   m_Parent: {fileID: 114350483966674976}
   m_Children: []
-  m_UIPosition: {x: 4677, y: -845}
+  m_UIPosition: {x: 216, y: -1177}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots:
@@ -15789,7 +15623,7 @@ MonoBehaviour:
   m_UIIgnoredErrors: []
   m_Parent: {fileID: 114350483966674976}
   m_Children: []
-  m_UIPosition: {x: 4057, y: -492}
+  m_UIPosition: {x: -404, y: -824}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots:
@@ -15925,7 +15759,7 @@ MonoBehaviour:
   m_UIIgnoredErrors: []
   m_Parent: {fileID: 114350483966674976}
   m_Children: []
-  m_UIPosition: {x: 4288, y: -487}
+  m_UIPosition: {x: -173, y: -819}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots:
@@ -16020,7 +15854,7 @@ MonoBehaviour:
   m_UIIgnoredErrors: []
   m_Parent: {fileID: 114350483966674976}
   m_Children: []
-  m_UIPosition: {x: 4483, y: -528}
+  m_UIPosition: {x: 22, y: -860}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots:
@@ -16271,7 +16105,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615817}
   m_ExposedName: EnveloppeSize
   m_Exposed: 1
-  m_Order: 18
+  m_Order: 11
   m_Category: 
   m_Min:
     m_Type:
@@ -16294,7 +16128,7 @@ MonoBehaviour:
       inputSlot: {fileID: 8926484042661615837}
     - outputSlot: {fileID: 8926484042661615818}
       inputSlot: {fileID: 8926484042661615838}
-    position: {x: 4102, y: -1058}
+    position: {x: -359, y: -1390}
     expandedSlots:
     - {fileID: 8926484042661615817}
     expanded: 1
@@ -16426,7 +16260,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615821}
   m_ExposedName: EnveloppeBounceCurve
   m_Exposed: 1
-  m_Order: 19
+  m_Order: 12
   m_Category: 
   m_Min:
     m_Type:
@@ -16445,7 +16279,7 @@ MonoBehaviour:
     linkedSlots:
     - outputSlot: {fileID: 8926484042661615821}
       inputSlot: {fileID: 8926484042661615823}
-    position: {x: 4110, y: -804}
+    position: {x: -351, y: -1136}
     expandedSlots: []
     expanded: 0
 --- !u!114 &8926484042661615821
@@ -16498,7 +16332,7 @@ MonoBehaviour:
   m_UIIgnoredErrors: []
   m_Parent: {fileID: 114350483966674976}
   m_Children: []
-  m_UIPosition: {x: 4368, y: -796}
+  m_UIPosition: {x: -93, y: -1128}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots:
@@ -16626,7 +16460,7 @@ MonoBehaviour:
   m_UIIgnoredErrors: []
   m_Parent: {fileID: 114350483966674976}
   m_Children: []
-  m_UIPosition: {x: 4120, y: -747}
+  m_UIPosition: {x: -341, y: -1079}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots:
@@ -16821,7 +16655,7 @@ MonoBehaviour:
   m_UIIgnoredErrors: []
   m_Parent: {fileID: 114350483966674976}
   m_Children: []
-  m_UIPosition: {x: 4922, y: -893}
+  m_UIPosition: {x: 461, y: -1225}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots:
@@ -16959,7 +16793,7 @@ MonoBehaviour:
   m_UIIgnoredErrors: []
   m_Parent: {fileID: 114350483966674976}
   m_Children: []
-  m_UIPosition: {x: 4381, y: -920}
+  m_UIPosition: {x: -80, y: -1252}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots:
@@ -17104,7 +16938,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615841}
   m_ExposedName: EnveloppeBounceFrequence
   m_Exposed: 1
-  m_Order: 20
+  m_Order: 13
   m_Category: 
   m_Min:
     m_Type:
@@ -17123,7 +16957,7 @@ MonoBehaviour:
     linkedSlots:
     - outputSlot: {fileID: 8926484042661615841}
       inputSlot: {fileID: 8926484042661615827}
-    position: {x: 3849, y: -714}
+    position: {x: -612, y: -1046}
     expandedSlots: []
     expanded: 0
 --- !u!114 &8926484042661615841
@@ -17177,7 +17011,7 @@ MonoBehaviour:
   m_Parent: {fileID: 114350483966674976}
   m_Children:
   - {fileID: 8926484042661615843}
-  m_UIPosition: {x: 7322, y: -1196}
+  m_UIPosition: {x: 7309, y: -1489}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots: []
@@ -17269,7 +17103,7 @@ MonoBehaviour:
   m_Children:
   - {fileID: 8926484042661615856}
   - {fileID: 8926484042661615865}
-  m_UIPosition: {x: 7322, y: -971}
+  m_UIPosition: {x: 7309, y: -1264}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots:
@@ -18032,7 +17866,7 @@ MonoBehaviour:
   m_Parent: {fileID: 114350483966674976}
   m_Children:
   - {fileID: 8926484042661615907}
-  m_UIPosition: {x: 7315, y: -270}
+  m_UIPosition: {x: 7302, y: -563}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots: []
@@ -18070,7 +17904,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615893}
   - {fileID: 8926484042661615894}
   - {fileID: 8926484042661615901}
-  m_UIPosition: {x: 7318, y: 356}
+  m_UIPosition: {x: 7305, y: 63}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots:
@@ -18277,7 +18111,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615904}
   m_ExposedName: TailSpawnSize
   m_Exposed: 1
-  m_Order: 28
+  m_Order: 21
   m_Category: 
   m_Min:
     m_Type:
@@ -18296,7 +18130,7 @@ MonoBehaviour:
     linkedSlots:
     - outputSlot: {fileID: 8926484042661615904}
       inputSlot: {fileID: 8926484042661615863}
-    position: {x: 7011, y: -700}
+    position: {x: 6998, y: -993}
     expandedSlots: []
     expanded: 0
 --- !u!114 &8926484042661615904
@@ -18357,7 +18191,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615906}
   m_ExposedName: TailSpawnRate
   m_Exposed: 1
-  m_Order: 27
+  m_Order: 20
   m_Category: 
   m_Min:
     m_Type:
@@ -18376,7 +18210,7 @@ MonoBehaviour:
     linkedSlots:
     - outputSlot: {fileID: 8926484042661615906}
       inputSlot: {fileID: 8926484042661615844}
-    position: {x: 7126, y: -1100}
+    position: {x: 7113, y: -1393}
     expandedSlots: []
     expanded: 0
 --- !u!114 &8926484042661615906
@@ -18806,7 +18640,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615921}
   m_ExposedName: TailSphereAttractionSpeed
   m_Exposed: 1
-  m_Order: 32
+  m_Order: 25
   m_Category: 
   m_Min:
     m_Type:
@@ -18827,7 +18661,7 @@ MonoBehaviour:
       inputSlot: {fileID: 8926484042661616005}
     - outputSlot: {fileID: 8926484042661615921}
       inputSlot: {fileID: 8926484042661615914}
-    position: {x: 6333, y: -259}
+    position: {x: 6320, y: -552}
     expandedSlots: []
     expanded: 0
 --- !u!114 &8926484042661615921
@@ -18889,7 +18723,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615923}
   m_ExposedName: TailColor
   m_Exposed: 1
-  m_Order: 29
+  m_Order: 22
   m_Category: 
   m_Min:
     m_Type:
@@ -18908,7 +18742,7 @@ MonoBehaviour:
     linkedSlots:
     - outputSlot: {fileID: 8926484042661615923}
       inputSlot: {fileID: 8926484042661615902}
-    position: {x: 7150, y: 865}
+    position: {x: 7137, y: 572}
     expandedSlots: []
     expanded: 0
 --- !u!114 &8926484042661615923
@@ -18961,7 +18795,7 @@ MonoBehaviour:
   m_UIIgnoredErrors: []
   m_Parent: {fileID: 114350483966674976}
   m_Children: []
-  m_UIPosition: {x: 6074, y: 776}
+  m_UIPosition: {x: 6061, y: 483}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots: []
@@ -19122,7 +18956,7 @@ MonoBehaviour:
   m_UIIgnoredErrors: []
   m_Parent: {fileID: 114350483966674976}
   m_Children: []
-  m_UIPosition: {x: 6327, y: 809}
+  m_UIPosition: {x: 6314, y: 516}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots:
@@ -19319,7 +19153,7 @@ MonoBehaviour:
   m_UIIgnoredErrors: []
   m_Parent: {fileID: 114350483966674976}
   m_Children: []
-  m_UIPosition: {x: 6596, y: 789}
+  m_UIPosition: {x: 6583, y: 496}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots:
@@ -19446,7 +19280,7 @@ MonoBehaviour:
   m_UIIgnoredErrors: []
   m_Parent: {fileID: 114350483966674976}
   m_Children: []
-  m_UIPosition: {x: 6875, y: 729}
+  m_UIPosition: {x: 6862, y: 436}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots:
@@ -19591,7 +19425,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615963}
   m_ExposedName: TailParticulesScale
   m_Exposed: 1
-  m_Order: 30
+  m_Order: 23
   m_Category: 
   m_Min:
     m_Type:
@@ -19612,7 +19446,7 @@ MonoBehaviour:
       inputSlot: {fileID: 8926484042661615967}
     - outputSlot: {fileID: 8926484042661615965}
       inputSlot: {fileID: 8926484042661615959}
-    position: {x: 6661, y: 588}
+    position: {x: 6648, y: 295}
     expandedSlots:
     - {fileID: 8926484042661615963}
     expanded: 1
@@ -19847,7 +19681,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615970}
   m_ExposedName: TailSphereAttractionForce
   m_Exposed: 1
-  m_Order: 33
+  m_Order: 26
   m_Category: 
   m_Min:
     m_Type:
@@ -19868,7 +19702,7 @@ MonoBehaviour:
       inputSlot: {fileID: 8926484042661616010}
     - outputSlot: {fileID: 8926484042661615970}
       inputSlot: {fileID: 8926484042661615915}
-    position: {x: 6358, y: 48}
+    position: {x: 6345, y: -245}
     expandedSlots: []
     expanded: 0
 --- !u!114 &8926484042661615970
@@ -19930,7 +19764,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615972}
   m_ExposedName: TailSphereSize
   m_Exposed: 1
-  m_Order: 31
+  m_Order: 24
   m_Category: 
   m_Min:
     m_Type:
@@ -19949,7 +19783,7 @@ MonoBehaviour:
     linkedSlots:
     - outputSlot: {fileID: 8926484042661615972}
       inputSlot: {fileID: 8926484042661615913}
-    position: {x: 6938, y: -273}
+    position: {x: 6925, y: -566}
     expandedSlots: []
     expanded: 0
 --- !u!114 &8926484042661615972
@@ -20010,7 +19844,7 @@ MonoBehaviour:
   - {fileID: 8926484042661615974}
   m_ExposedName: TailParticulesLifetime
   m_Exposed: 1
-  m_Order: 34
+  m_Order: 27
   m_Category: 
   m_Min:
     m_Type:
@@ -20031,7 +19865,7 @@ MonoBehaviour:
       inputSlot: {fileID: 8926484042661615866}
     - outputSlot: {fileID: 8926484042661615976}
       inputSlot: {fileID: 8926484042661615867}
-    position: {x: 7020, y: -648}
+    position: {x: 7007, y: -941}
     expandedSlots:
     - {fileID: 8926484042661615974}
     expanded: 1
@@ -20154,7 +19988,7 @@ MonoBehaviour:
   m_UIIgnoredErrors: []
   m_Parent: {fileID: 114350483966674976}
   m_Children: []
-  m_UIPosition: {x: 6002, y: -128}
+  m_UIPosition: {x: 5989, y: -421}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots: []
@@ -20315,7 +20149,7 @@ MonoBehaviour:
   m_UIIgnoredErrors: []
   m_Parent: {fileID: 114350483966674976}
   m_Children: []
-  m_UIPosition: {x: 6329, y: -149}
+  m_UIPosition: {x: 6316, y: -442}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots:
@@ -20650,7 +20484,7 @@ MonoBehaviour:
   m_UIIgnoredErrors: []
   m_Parent: {fileID: 114350483966674976}
   m_Children: []
-  m_UIPosition: {x: 6659, y: -224}
+  m_UIPosition: {x: 6646, y: -517}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots:
@@ -20786,7 +20620,7 @@ MonoBehaviour:
   m_UIIgnoredErrors: []
   m_Parent: {fileID: 114350483966674976}
   m_Children: []
-  m_UIPosition: {x: 6663, y: -60}
+  m_UIPosition: {x: 6650, y: -353}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots:
@@ -21071,7 +20905,7 @@ MonoBehaviour:
   m_UIIgnoredErrors: []
   m_Parent: {fileID: 114350483966674976}
   m_Children: []
-  m_UIPosition: {x: 3900, y: 43}
+  m_UIPosition: {x: -561, y: -289}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots: []
@@ -21128,7 +20962,7 @@ MonoBehaviour:
   m_UIIgnoredErrors: []
   m_Parent: {fileID: 114350483966674976}
   m_Children: []
-  m_UIPosition: {x: 3903, y: -468}
+  m_UIPosition: {x: -558, y: -800}
   m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots: []
