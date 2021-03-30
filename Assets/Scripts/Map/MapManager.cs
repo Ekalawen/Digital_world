@@ -32,7 +32,8 @@ public class MapManager : MonoBehaviour {
 
     [Header("Lumières Prefabs")]
 	public GameObject lumierePrefab; // On récupère les lumières !
-	public GameObject lumiereSpecialePrefab; // On récupère les lumières !
+
+    public GameObject lumiereSpecialePrefab; // On récupère les lumières !
 	public GameObject lumiereFinalePrefab; // On récupère les lumières finales !
 	public GameObject lumiereAlmostFinalePrefab; // On récupère les lumières presque finales !
 
@@ -1287,5 +1288,11 @@ public class MapManager : MonoBehaviour {
 
     public List<Vector3> GetAllEmptyPositionsInTranche(GravityManager.Direction fromDirection, int offset) {
         return GetAllEmptyPositions().FindAll(p => IsInTranche(p, fromDirection, offset));
+    }
+
+    public void SetDataQuality(Lumiere.LumiereQuality quality) {
+        foreach(Lumiere lumiere in lumieres) {
+            lumiere.SetLumiereQuality(quality);
+        }
     }
 }

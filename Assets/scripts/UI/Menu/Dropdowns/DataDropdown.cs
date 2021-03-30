@@ -28,6 +28,11 @@ public class DataDropdown : MonoBehaviour {
     }
 
     public void DataQualitySelected(int qualityIndex) {
+        PrefsManager.SetInt(PrefsManager.DATA_QUALITY_KEY, qualityIndex);
+        GameManager gm = FindObjectOfType<GameManager>();
+        if(gm != null) {
+            gm.map.SetDataQuality((Lumiere.LumiereQuality)qualityIndex);
+        }
     }
 
     public void OnLocaleChange(Locale l) {
