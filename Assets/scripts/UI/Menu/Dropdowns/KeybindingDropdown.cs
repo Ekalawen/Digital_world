@@ -18,10 +18,10 @@ public class KeybindingDropdown : MonoBehaviour {
         dropdown.options = options;
 
         dropdown.value = InputManager.Instance.GetCurrentKeybindingTypeIndice();
-        dropdown.onValueChanged.AddListener(LocaleSelected);
+        dropdown.onValueChanged.AddListener(KeybindingSelected);
     }
 
-    static void LocaleSelected(int index) {
+    static void KeybindingSelected(int index) {
         InputManager.Instance.SetKeybindingTypeByIndice(index);
     }
 }

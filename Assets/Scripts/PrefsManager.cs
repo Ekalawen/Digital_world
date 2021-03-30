@@ -49,6 +49,7 @@ public class PrefsManager {
     public static string ADVICE_ON_START_KEY = "adviceOnStartKey";
     public static string KEYBINDING_INDICE_KEY = "keybindingIndiceKey";
     public static string KEYBINDING_PRECEDENT_INDICE_KEY = "keybindingPrecedentIndiceKey";
+    public static string DATA_QUALITY_KEY = "dataQualityKey";
 
 
     public static int GetInt(string key, int defaultValue) {
