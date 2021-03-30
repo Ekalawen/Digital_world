@@ -162,7 +162,7 @@ public class Lumiere : MonoBehaviour {
         return isCaptured;
     }
 
-    public void SetLumiereQuality(LumiereQuality quality) {
+    public virtual void SetLumiereQuality(LumiereQuality quality) {
         lumiereQuality = quality;
         lumiereHighVfx.gameObject.SetActive(quality == LumiereQuality.HIGH);
         lumiereLow.SetActive(quality == LumiereQuality.LOW);

@@ -8,34 +8,38 @@ public class LumiereSwitchable : Lumiere {
 
     public enum LumiereSwitchableState { ON, OFF };
 
-    public GameObject lumiereOn;
-    public GameObject lumiereOff;
+    [Header("Switchable")]
+    public LumiereSwitchableChild lumiereOnChild;
+    public LumiereSwitchableChild lumiereOffChild;
     public LumiereSwitchableState startState = LumiereSwitchableState.ON;
     public VisualEffect vfxLightExplosion;
 
     protected LumiereSwitchableState state;
-    protected GameObject currentLumiere;
+    protected LumiereSwitchableChild currentChild;
     protected bool capturedInSwitchingToOn = false;
 
     protected override void Start () {
-        base.Start();
+        gm = GameManager.Instance;
         SetState(startState);
+        base.Start();
 	}
 
     public void SetState(LumiereSwitchableState newState, bool shouldCheckCollisionWithPlayer = true) {
         state = newState;
-        currentLumiere = (newState == LumiereSwitchableState.ON) ? lumiereOn : lumiereOff;
-        lumiereOn.SetActive(state == LumiereSwitchableState.ON);
-        lumiereOff.SetActive(state == LumiereSwitchableState.OFF);
-        SetVfxAndLight();
+        currentChild = (newState == LumiereSwitchableState.ON) ? lumiereOnChild : lumiereOffChild;
+        lumiereOnChild.gameObject.SetActive(state == LumiereSwitchableState.ON);
+        lumiereOffChild.gameObject.SetActive(state == LumiereSwitchableState.OFF);
+        SetVue();
         if (shouldCheckCollisionWithPlayer) {
             CheckNotCollideWithPlayer();
         }
     }
 
-    protected void SetVfxAndLight() {
-        lumiereHighVfx = currentLumiere.GetComponentInChildren<VisualEffect>();
-        pointLight = currentLumiere.GetComponentInChildren<Light>().gameObject;
+    protected void SetVue() {
+        lumiereHighVfx = currentChild.lumiereHighVfx;
+        lumiereLow = currentChild.lumiereLow;
+        lumiereTrails = currentChild.lumiereTrails;
+        pointLight = currentChild.pointLight;
     }
 
     protected void CheckNotCollideWithPlayer() {
@@ -43,7 +47,7 @@ public class LumiereSwitchable : Lumiere {
             Player player = gm.player;
             if (player != null) {
                 float playerDistance = Vector3.Distance(player.transform.position, transform.position);
-                float minDistanceOverlap = player.transform.localScale[0] + lumiereOn.transform.localScale[0];
+                float minDistanceOverlap = player.transform.localScale[0] + lumiereOnChild.transform.localScale[0];
                 if (playerDistance <= minDistanceOverlap) {
                     capturedInSwitchingToOn = true;
                     Captured();
@@ -72,5 +76,11 @@ public class LumiereSwitchable : Lumiere {
 
     public void TriggerLightExplosion() {
         vfxLightExplosion.SendEvent("Explode");
+    }
+
+    public override void SetLumiereQuality(LumiereQuality quality) {
+        base.SetLumiereQuality(quality);
+        lumiereOnChild.SetLumiereQuality(quality);
+        lumiereOffChild.SetLumiereQuality(quality);
     }
 }
