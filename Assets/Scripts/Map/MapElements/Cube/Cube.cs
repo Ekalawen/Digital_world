@@ -138,6 +138,14 @@ public class Cube : MonoBehaviour {
     }
 
     public void Decompose(float duree) {
+        if(linkyCube != null) {
+            linkyCube.LinkyDecompose(duree);
+        } else {
+            RealDecompose(duree);
+        }
+    }
+
+    public void RealDecompose(float duree) {
         gm = GameManager.Instance; // Sinon peut y avoir un bug si on essaie de le détruire dans la même frame que lorsqu'il est crée ! (Le Start a pas le temps de s'éxécuter :'()
         StartDecomposeEffect(duree);
         DestroyIn(duree);
@@ -219,10 +227,20 @@ public class Cube : MonoBehaviour {
         LinkyCubeComponent linkyCubeComponent = gameObject.AddComponent<LinkyCubeComponent>();
         linkyCube = linkyCubeComponent;
         linkyCube.Initialize(this);
+        GetMaterial().SetFloat("_IsLinky", 1f);
     }
 
     public void UnSetLinky() {
+        GetMaterial().SetFloat("_IsLinky", 0f);
         Destroy(linkyCube);
+    }
+
+    public void SetLinkyValue(bool value) {
+        if(value) {
+            SetLinky();
+        } else {
+            UnSetLinky();
+        }
     }
 
     public bool IsRegular() {

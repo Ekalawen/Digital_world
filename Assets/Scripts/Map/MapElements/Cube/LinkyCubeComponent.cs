@@ -57,4 +57,10 @@ public class LinkyCubeComponent : MonoBehaviour {
 
         return linkedCubes.ToList();
     }
+
+    public void LinkyDecompose(float duree) {
+        foreach(Cube linkedCube in GetLinkedCubes()) {
+            linkedCube.RealDecompose(duree);
+        }
+    }
 }
