@@ -9,11 +9,15 @@ public class LinkyCubeComponent : MonoBehaviour {
     protected Cube cube;
     protected List<Cube> linkyVoisins;
     protected MapManager map;
+    protected Vector3 anchor = Vector3.zero;
+    protected float timeFixedOffset;
+    protected Color linkyColor;
 
     public void Initialize(Cube cube) {
         map = GameManager.Instance.map;
         this.cube = cube;
         RegisterVoisins();
+        ChooseAnchor();
     }
 
     protected void RegisterVoisins() {
@@ -61,6 +65,43 @@ public class LinkyCubeComponent : MonoBehaviour {
     public void LinkyDecompose(float duree) {
         foreach(Cube linkedCube in GetLinkedCubes()) {
             linkedCube.RealDecompose(duree);
+        }
+    }
+
+    protected void ChooseAnchor() {
+        if(linkyVoisins.Count == 0) {
+            InitParams();
+        } else {
+            LinkyCubeComponent mainVoisin = linkyVoisins[0].GetLinkyCubeComponent();
+            foreach(Cube linkedCube in GetLinkedCubes()) {
+                linkedCube.GetLinkyCubeComponent().CopyParamsFrom(mainVoisin);
+            }
+        }
+    }
+
+    protected void CopyParamsFrom(LinkyCubeComponent linkyCubeComponent) {
+        this.anchor = linkyCubeComponent.anchor;
+        this.timeFixedOffset = linkyCubeComponent.timeFixedOffset;
+        this.linkyColor = linkyCubeComponent.linkyColor;
+        WriteParamsToShader();
+    }
+
+    protected void InitParams() {
+        anchor = cube.transform.position;
+        timeFixedOffset = UnityEngine.Random.Range(0.0f, 1000.0f);
+        //linkyColor = UnityEngine.Random.ColorHSV(0, 1, 1, 1, 1, 1, 1, 1); // Pas terrible pour le moment
+        WriteParamsToShader();
+    }
+
+    protected void WriteParamsToShader() {
+        cube.GetMaterial().SetVector("_LinkyCubeAnchor", anchor);
+        cube.GetMaterial().SetFloat("_LinkyCubeTimeFixedOffset", timeFixedOffset);
+        //cube.GetMaterial().SetColor("_LinkyCubeColor2", linkyColor); // Pas terrible pour le moment
+    }
+
+    public void LinkyExplode() {
+        foreach(Cube linkedCube in GetLinkedCubes()) {
+            linkedCube.RealExplode();
         }
     }
 }

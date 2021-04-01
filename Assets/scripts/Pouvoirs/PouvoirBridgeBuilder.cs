@@ -94,7 +94,7 @@ public class PouvoirBridgeBuilder : IPouvoir {
             List<Cube> cubes = gm.map.GetCubesInSphere(position, rayonDestruction);
             foreach (Cube c in cubes) {
                 if (c.IsRegular() && (c.IsDestructible() || canDestroyIndestructibleCubes)) {
-                    gm.map.DeleteCube(c);
+                    c.Explode();
                 }
             }
         }
