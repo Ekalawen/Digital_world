@@ -106,11 +106,12 @@ public class Cube : MonoBehaviour {
     }
 
     public virtual void AddColor(Color addedColor) {
-        GetMaterial().color += addedColor;
+        SetColor(GetColor() + addedColor);
     }
 
     public virtual void SetColor(Color newColor) {
         GetMaterial().color = newColor;
+        GetMaterial().SetColor("_LinkyCubeColor1", newColor); // Attention ! Dans le shader on a "color * 2" à cause d'un bug, ce pourquoi ici c'est plus sombre que la vrai couleur ! ;)
     }
 
     public float GetLuminance() {
