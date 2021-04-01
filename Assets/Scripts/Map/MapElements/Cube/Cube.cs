@@ -11,11 +11,13 @@ public class Cube : MonoBehaviour {
     public GameObject explosionParticlesPrefab;
     public bool bIsDestructible = true;
     public bool shouldRegisterToColorSources = false;
+    public bool startAsLinky = false;
 
-    [HideInInspector] public bool bIsRegular = true;
+    protected bool bIsRegular = true;
     protected GameManager gm;
     protected Material material;
     protected float dissolveTimeToUse = -1;
+    protected LinkyCubeComponent linkyCube = null;
 
     public virtual void Start() {
         gm = GameManager.Instance;
@@ -23,6 +25,9 @@ public class Cube : MonoBehaviour {
             RegisterCubeToColorSources();
         }
         SetDissolveOnStart();
+        if(startAsLinky) {
+            SetLinky();
+        }
     }
 
     public void SetDissolveTime(float dissolveTime) {
@@ -200,5 +205,31 @@ public class Cube : MonoBehaviour {
             material = GetComponent<MeshRenderer>().material;
         }
         return material;
+    }
+
+    public bool IsLinky() {
+        return linkyCube != null;
+    }
+
+    public LinkyCubeComponent GetLinkyCubeComponent() {
+        return linkyCube;
+    }
+
+    public void SetLinky() {
+        LinkyCubeComponent linkyCubeComponent = gameObject.AddComponent<LinkyCubeComponent>();
+        linkyCube = linkyCubeComponent;
+        linkyCube.Initialize(this);
+    }
+
+    public void UnSetLinky() {
+        Destroy(linkyCube);
+    }
+
+    public bool IsRegular() {
+        return bIsRegular;
+    }
+
+    public void SetRegularValue(bool value) {
+        bIsRegular = value;
     }
 }

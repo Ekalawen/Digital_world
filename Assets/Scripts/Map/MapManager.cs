@@ -130,7 +130,7 @@ public class MapManager : MonoBehaviour {
         } else {
             if (cubeAtPos == null) {
                 cubesNonRegular.Add(cube);
-                cube.bIsRegular = false;
+                cube.SetRegularValue(false);
                 return cube;
             } else {
                 return cubeAtPos;
@@ -710,6 +710,30 @@ public class MapManager : MonoBehaviour {
             res.Add(new Vector3(i, j, k + 1));
         // DERRIRE
         if (IsInRegularMap(new Vector3(i, j, k - 1)) && cubesRegular[i, j, k - 1] != null)
+            res.Add(new Vector3(i, j, k - 1));
+        return res;
+    }
+
+    public List<Vector3> GetVoisinsPleins(Vector3 pos) {
+        List<Vector3> res = new List<Vector3>();
+        int i = (int)pos.x, j = (int)pos.y, k = (int)pos.z;
+        // DROITE
+        if (cubesRegular[i + 1, j, k] != null)
+            res.Add(new Vector3(i + 1, j, k));
+        // GAUCHE
+        if (cubesRegular[i - 1, j, k] != null)
+            res.Add(new Vector3(i - 1, j, k));
+        // HAUT
+        if (cubesRegular[i, j + 1, k] != null)
+            res.Add(new Vector3(i, j + 1, k));
+        // BAS
+        if (cubesRegular[i, j - 1, k] != null)
+            res.Add(new Vector3(i, j - 1, k));
+        // DEVANT
+        if (cubesRegular[i, j, k + 1] != null)
+            res.Add(new Vector3(i, j, k + 1));
+        // DERRIRE
+        if (cubesRegular[i, j, k - 1] != null)
             res.Add(new Vector3(i, j, k - 1));
         return res;
     }

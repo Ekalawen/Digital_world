@@ -35,7 +35,7 @@ public class TracerEmitting : Ennemi {
         GameManager gm = GameManager.Instance;
 
         if(cube != null) {
-            if (!cube.bIsRegular) {
+            if (!cube.IsRegular()) {
                 cube.Explode();
                 //GameObject go = Instantiate(explosionParticlesPrefab, cube.transform.position, Quaternion.identity);
                 //ParticleSystem particle = go.GetComponent<ParticleSystem>();
