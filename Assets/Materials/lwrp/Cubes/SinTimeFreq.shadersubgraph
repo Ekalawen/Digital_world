@@ -5,6 +5,9 @@
     "m_Properties": [
         {
             "m_Id": "3017d50dbea13985996c663d024380e0"
+        },
+        {
+            "m_Id": "c5dc467cad684d249f7c60f9b32c14a2"
         }
     ],
     "m_Keywords": [],
@@ -23,6 +26,9 @@
         },
         {
             "m_Id": "a8a90b5d60d74c7c8099877aef3ab5e2"
+        },
+        {
+            "m_Id": "ea14668cf24e48299381f035be270050"
         }
     ],
     "m_GroupDatas": [],
@@ -68,6 +74,20 @@
                     "m_Id": "ed0c074daf39af88917bc6683570b757"
                 },
                 "m_SlotId": 0
+            }
+        },
+        {
+            "m_OutputSlot": {
+                "m_Node": {
+                    "m_Id": "ea14668cf24e48299381f035be270050"
+                },
+                "m_SlotId": 0
+            },
+            "m_InputSlot": {
+                "m_Node": {
+                    "m_Id": "ae9431f944dc4b4dace0f7ef3b952e88"
+                },
+                "m_SlotId": -749144295
             }
         },
         {
@@ -226,6 +246,21 @@
 
 {
     "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
+    "m_ObjectId": "86c37d8413354543a00e72facda5caa6",
+    "m_Id": -749144295,
+    "m_DisplayName": "TimeOffset",
+    "m_SlotType": 0,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "Vector1_18135ab40a7747c592423d82f73620ec",
+    "m_StageCapability": 3,
+    "m_Value": 0.0,
+    "m_DefaultValue": 0.0,
+    "m_Labels": []
+}
+
+{
+    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.DynamicVectorMaterialSlot",
     "m_ObjectId": "a3432023cf324f87b7430f78e3134862",
     "m_Id": 2,
@@ -324,6 +359,9 @@
             "m_Id": "32cb246d0e9e4ba489a0c57bb424b3d1"
         },
         {
+            "m_Id": "86c37d8413354543a00e72facda5caa6"
+        },
+        {
             "m_Id": "a80efc078de049229f91b75f9e74e122"
         }
     ],
@@ -336,10 +374,12 @@
     },
     "m_SerializedSubGraph": "{\n    \"subGraph\": {\n        \"fileID\": -5475051401550479605,\n        \"guid\": \"f54e8caf57dc21548a7e6dabeead3a5b\",\n        \"type\": 3\n    }\n}",
     "m_PropertyGuids": [
-        "2b5e0e88-d793-4f7f-994c-a1ce566e1ff6"
+        "2b5e0e88-d793-4f7f-994c-a1ce566e1ff6",
+        "605ab8c8-2b02-4f5a-8f6b-98354c452c8b"
     ],
     "m_PropertyIds": [
-        1573732609
+        1573732609,
+        -749144295
     ]
 }
 
@@ -349,6 +389,44 @@
     "m_ObjectId": "bd5dae38ab714b6c8ead54c2f6bb36fc",
     "m_Id": 0,
     "m_DisplayName": "Out",
+    "m_SlotType": 1,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "Out",
+    "m_StageCapability": 3,
+    "m_Value": 0.0,
+    "m_DefaultValue": 0.0,
+    "m_Labels": []
+}
+
+{
+    "m_SGVersion": 1,
+    "m_Type": "UnityEditor.ShaderGraph.Internal.Vector1ShaderProperty",
+    "m_ObjectId": "c5dc467cad684d249f7c60f9b32c14a2",
+    "m_Guid": {
+        "m_GuidSerialized": "7fa56a95-f36e-45b1-825c-1d36fb27b1d0"
+    },
+    "m_Name": "TimeOffset",
+    "m_DefaultReferenceName": "Vector1_c5dc467cad684d249f7c60f9b32c14a2",
+    "m_OverrideReferenceName": "",
+    "m_GeneratePropertyBlock": true,
+    "m_Precision": 0,
+    "overrideHLSLDeclaration": false,
+    "hlslDeclarationOverride": 0,
+    "m_Hidden": false,
+    "m_Value": 0.0,
+    "m_FloatType": 0,
+    "m_RangeValues": {
+        "x": 0.0,
+        "y": 1.0
+    }
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
+    "m_ObjectId": "c85303a245a74b798b4fb3e00cda2e1a",
+    "m_Id": 0,
+    "m_DisplayName": "TimeOffset",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -373,6 +451,41 @@
     "m_Labels": [
         "X"
     ]
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.PropertyNode",
+    "m_ObjectId": "ea14668cf24e48299381f035be270050",
+    "m_Group": {
+        "m_Id": ""
+    },
+    "m_Name": "Property",
+    "m_DrawState": {
+        "m_Expanded": true,
+        "m_Position": {
+            "serializedVersion": "2",
+            "x": -266.0,
+            "y": -331.0,
+            "width": 134.0,
+            "height": 34.0
+        }
+    },
+    "m_Slots": [
+        {
+            "m_Id": "c85303a245a74b798b4fb3e00cda2e1a"
+        }
+    ],
+    "synonyms": [],
+    "m_Precision": 0,
+    "m_PreviewExpanded": true,
+    "m_PreviewMode": 0,
+    "m_CustomColors": {
+        "m_SerializableColors": []
+    },
+    "m_Property": {
+        "m_Id": "c5dc467cad684d249f7c60f9b32c14a2"
+    }
 }
 
 {
