@@ -716,24 +716,24 @@ public class MapManager : MonoBehaviour {
 
     public List<Vector3> GetVoisinsPleins(Vector3 pos) {
         List<Vector3> res = new List<Vector3>();
-        int i = (int)pos.x, j = (int)pos.y, k = (int)pos.z;
+        float i = pos.x, j = pos.y, k = pos.z;
         // DROITE
-        if (cubesRegular[i + 1, j, k] != null)
+        if (GetCubeAt(new Vector3(i + 1, j, k)) != null)
             res.Add(new Vector3(i + 1, j, k));
         // GAUCHE
-        if (cubesRegular[i - 1, j, k] != null)
+        if (GetCubeAt(new Vector3(i - 1, j, k)) != null)
             res.Add(new Vector3(i - 1, j, k));
         // HAUT
-        if (cubesRegular[i, j + 1, k] != null)
+        if (GetCubeAt(new Vector3(i, j + 1, k)) != null)
             res.Add(new Vector3(i, j + 1, k));
         // BAS
-        if (cubesRegular[i, j - 1, k] != null)
+        if (GetCubeAt(new Vector3(i, j - 1, k)) != null)
             res.Add(new Vector3(i, j - 1, k));
         // DEVANT
-        if (cubesRegular[i, j, k + 1] != null)
+        if (GetCubeAt(new Vector3(i, j, k + 1)) != null)
             res.Add(new Vector3(i, j, k + 1));
         // DERRIRE
-        if (cubesRegular[i, j, k - 1] != null)
+        if (GetCubeAt(new Vector3(i, j, k - 1)) != null)
             res.Add(new Vector3(i, j, k - 1));
         return res;
     }

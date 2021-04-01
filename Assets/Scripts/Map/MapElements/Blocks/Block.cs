@@ -34,6 +34,7 @@ public class Block : MonoBehaviour {
         if(gm.timerManager.HasGameStarted()) {
             RegisterCubesToColorSources();
         }
+        StartSwappingCubes();
     }
 
     public void RegisterCubesToColorSources() {
@@ -63,6 +64,20 @@ public class Block : MonoBehaviour {
             RandomCubes randomCubes = child.gameObject.GetComponent<RandomCubes>();
             if (randomCubes != null)
                 cubes.AddRange(randomCubes.GetChosenCubesAndDestroyOthers());
+            SwappyCubesHolder swappyCubesHolder = child.gameObject.GetComponent<SwappyCubesHolder>();
+            if (swappyCubesHolder != null) {
+                swappyCubesHolder.Initialize();
+                cubes.AddRange(swappyCubesHolder.GetCubes());
+            }
+        }
+    }
+
+    protected void StartSwappingCubes() {
+        foreach (Transform child in cubeFolder) {
+            SwappyCubesHolder swappyCubesHolder = child.gameObject.GetComponent<SwappyCubesHolder>();
+            if (swappyCubesHolder != null) {
+                swappyCubesHolder.StartSwapping();
+            }
         }
     }
 

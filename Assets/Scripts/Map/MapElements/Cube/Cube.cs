@@ -119,7 +119,7 @@ public class Cube : MonoBehaviour {
     }
 
     public void Explode() {
-        if(linkyCube != null) {
+        if(IsLinky()) {
             linkyCube.LinkyExplode();
         } else {
             RealExplode();
@@ -147,7 +147,7 @@ public class Cube : MonoBehaviour {
     }
 
     public void Decompose(float duree) {
-        if(linkyCube != null) {
+        if(IsLinky()) {
             linkyCube.LinkyDecompose(duree);
         } else {
             RealDecompose(duree);
@@ -258,5 +258,41 @@ public class Cube : MonoBehaviour {
 
     public void SetRegularValue(bool value) {
         bIsRegular = value;
+    }
+
+    public void Disable() {
+        if(IsLinky()) {
+            linkyCube.LinkyDisable();
+        } else {
+            RealDisable();
+        }
+    }
+
+    public void RealDisable() {
+        Collider collider = GetComponent<Collider>();
+        collider.enabled = false;
+        GetMaterial().SetFloat("_IsDisabled", 1.0f);
+    }
+
+    public void Enable() {
+        if(IsLinky()) {
+            linkyCube.LinkyEnable();
+        } else {
+            RealEnable();
+        }
+    }
+
+    public void RealEnable() {
+        Collider collider = GetComponent<Collider>();
+        collider.enabled = true;
+        GetMaterial().SetFloat("_IsDisabled", 0.0f);
+    }
+
+    public void SetEnableValue(bool value) {
+        if(value) {
+            Enable();
+        } else {
+            Disable();
+        }
     }
 }

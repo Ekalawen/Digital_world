@@ -39,8 +39,10 @@ public class LinkyCubeComponent : MonoBehaviour {
     }
 
     public void OnDestroy() {
-        foreach(Cube voisin in linkyVoisins) {
-            voisin.GetLinkyCubeComponent().RemoveLinkyVoisin(cube);
+        if (linkyVoisins != null) {
+            foreach (Cube voisin in linkyVoisins) {
+                voisin.GetLinkyCubeComponent().RemoveLinkyVoisin(cube);
+            }
         }
     }
 
@@ -89,19 +91,29 @@ public class LinkyCubeComponent : MonoBehaviour {
     protected void InitParams() {
         anchor = cube.transform.position;
         timeFixedOffset = UnityEngine.Random.Range(0.0f, 1000.0f);
-        //linkyColor = UnityEngine.Random.ColorHSV(0, 1, 1, 1, 1, 1, 1, 1); // Pas terrible pour le moment
         WriteParamsToShader();
     }
 
     protected void WriteParamsToShader() {
         cube.GetMaterial().SetVector("_LinkyCubeAnchor", anchor);
         cube.GetMaterial().SetFloat("_LinkyCubeTimeFixedOffset", timeFixedOffset);
-        //cube.GetMaterial().SetColor("_LinkyCubeColor2", linkyColor); // Pas terrible pour le moment
     }
 
     public void LinkyExplode() {
         foreach(Cube linkedCube in GetLinkedCubes()) {
             linkedCube.RealExplode();
+        }
+    }
+
+    public void LinkyDisable() {
+        foreach(Cube linkedCube in GetLinkedCubes()) {
+            linkedCube.RealDisable();
+        }
+    }
+
+    public void LinkyEnable() {
+        foreach(Cube linkedCube in GetLinkedCubes()) {
+            linkedCube.RealEnable();
         }
     }
 }
