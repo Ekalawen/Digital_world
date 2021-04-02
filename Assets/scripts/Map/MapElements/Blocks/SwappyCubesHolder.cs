@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class SwappyCubesHolder : MonoBehaviour {
 
+    public static float SYNCHRONIZE_PERIODE = 0.15f;
+
     public float frequenceSwap = 1.5f;
     public float offsetSwap = 0.0f;
     public bool startVisible = true;
@@ -44,9 +46,11 @@ public class SwappyCubesHolder : MonoBehaviour {
         bool isVisible = startVisible;
         SetCubesVisibleState(isVisible);
 
-        yield return new WaitForSeconds(offsetSwap);
+        //yield return new WaitForSeconds(offsetSwap + GetSynchronizeTime());
+        //yield return new WaitForSeconds(offsetSwap);
 
         Timer timer = new Timer(frequenceSwap);
+        timer.SetElapsedTime(offsetSwap);
         while(!gm.eventManager.IsGameOver()) {
             if(timer.IsOver()) {
                 isVisible = !isVisible;
@@ -55,6 +59,11 @@ public class SwappyCubesHolder : MonoBehaviour {
             }
             yield return null;
         }
+    }
+
+    protected float GetSynchronizeTime() {
+        float synchronizeTime = Timer.TimeToSynchronize(SYNCHRONIZE_PERIODE);
+        return synchronizeTime;
     }
 
     protected void SetCubesVisibleState(bool visibleState) {

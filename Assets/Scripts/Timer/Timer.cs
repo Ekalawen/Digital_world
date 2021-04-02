@@ -89,4 +89,11 @@ public class Timer {
     public void AdvanceTimerBy(float fixedDeltaTime) {
         debut -= fixedDeltaTime;
     }
+
+    public static float TimeToSynchronize(float periode) {
+        float modulo = Time.timeSinceLevelLoad % periode;
+        float synchronizeTime = periode - modulo;
+        Debug.Log($"time = {Time.timeSinceLevelLoad} periode = {periode} modulo = {modulo} synch = {synchronizeTime}");
+        return synchronizeTime;
+    }
 }
