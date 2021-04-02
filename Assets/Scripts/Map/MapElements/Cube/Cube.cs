@@ -56,6 +56,11 @@ public class Cube : MonoBehaviour {
         }
     }
 
+    internal void SetEnableValueIn(bool visibleState, object previsualisationDuration, Vector3 impactPoint)
+    {
+        throw new NotImplementedException();
+    }
+
     public virtual void StartDissolveEffect(float dissolveTime, float playerProximityCoef = 0.0f) {
         GetMaterial().SetFloat("_DissolveTime", dissolveTime);
         GetMaterial().SetFloat("_PlayerProximityCoef", playerProximityCoef);
@@ -308,6 +313,34 @@ public class Cube : MonoBehaviour {
         } else {
             Disable();
         }
+    }
+
+    public void RealSetEnableValue(bool value) {
+        if(value) {
+            RealEnable();
+        } else {
+            RealDisable();
+        }
+    }
+
+    public void SetEnableValueIn(bool value, float duration, Vector3 impactPoint) {
+        if (IsLinky()) {
+            linkyCube.LinkySetEnableValueIn(value, duration, impactPoint);
+        } else {
+            StartCoroutine(CSetEnableValueIn(value, duration, impactPoint));
+        }
+    }
+
+    public IEnumerator CSetEnableValueIn(bool value, float duration, Vector3 impactPoint) {
+        if (!value) {
+            float impactRadius = IsLinky() ? Vector3.Distance(impactPoint, linkyCube.GetFarestCornerFromPoint(impactPoint)) : Mathf.Sqrt(3) / 2;
+            StartImpact(impactPoint, impactRadius, duration);
+        }
+        yield return new WaitForSeconds(duration);
+        if (!value) {
+            StopImpact();
+        }
+        RealSetEnableValue(value);
     }
 
     public void StartImpact(Vector3 impactPoint, float impactRadius, float impactDuration) {
