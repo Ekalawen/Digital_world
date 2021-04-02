@@ -36,6 +36,21 @@ public class SwappyCubesHolder : MonoBehaviour {
     protected void SetCubesVisibleState(bool visibleState) {
         cubes = cubes.FindAll(c => c != null);
         if(cubes.Count > 0) {
+            //if(!visibleState) {
+            //    foreach(Cube cube in cubes) {
+            //        Vector3 impactPoint = cube.GetLinkyCubeComponent().GetAnchor();
+            //        float impactRadius = Vector3.Distance(impactPoint, cube.GetLinkyCubeComponent().GetFarestCornerFromAnchor());
+            //        float impactDuration = 1.5f;
+            //        //Vector3 impactPoint = cube.transform.position;
+            //        //float impactRadius = Mathf.Sqrt(3);
+            //        //float impactDuration = 0.5f;
+            //        cube.StartImpact(impactPoint, impactRadius, impactDuration);
+            //    }
+            //} else {
+            //    foreach(Cube cube in cubes) {
+            //        cube.StopImpact();
+            //    }
+            //}
             cubes[0].SetEnableValue(visibleState);
         } else {
             Destroy(this);

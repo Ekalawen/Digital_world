@@ -224,6 +224,20 @@ public class Cube : MonoBehaviour {
         return material;
     }
 
+    public List<Vector3> GetCornerPositions() {
+        Vector3 pos = transform.position;
+        List<Vector3> corners = new List<Vector3>();
+        corners.Add(pos + new Vector3(-0.5f, -0.5f, -0.5f));
+        corners.Add(pos + new Vector3(-0.5f, -0.5f, +0.5f));
+        corners.Add(pos + new Vector3(+0.5f, -0.5f, -0.5f));
+        corners.Add(pos + new Vector3(+0.5f, -0.5f, +0.5f));
+        corners.Add(pos + new Vector3(-0.5f, +0.5f, -0.5f));
+        corners.Add(pos + new Vector3(-0.5f, +0.5f, +0.5f));
+        corners.Add(pos + new Vector3(+0.5f, +0.5f, -0.5f));
+        corners.Add(pos + new Vector3(+0.5f, +0.5f, +0.5f));
+        return corners;
+    }
+
     public bool IsLinky() {
         return linkyCube != null;
     }
@@ -294,5 +308,17 @@ public class Cube : MonoBehaviour {
         } else {
             Disable();
         }
+    }
+
+    public void StartImpact(Vector3 impactPoint, float impactRadius, float impactDuration) {
+        GetMaterial().SetFloat("_IsImpacting", 1.0f);
+        GetMaterial().SetVector("_ImpactPoint", impactPoint);
+        GetMaterial().SetFloat("_ImpactTime", Time.time);
+        float impactSpeed = impactRadius / impactDuration;
+        GetMaterial().SetFloat("_ImpactPropagationSpeed", impactSpeed);
+    }
+
+    public void StopImpact() {
+        GetMaterial().SetFloat("_IsImpacting", 0.0f);
     }
 }

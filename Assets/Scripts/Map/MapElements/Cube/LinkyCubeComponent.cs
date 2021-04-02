@@ -116,4 +116,16 @@ public class LinkyCubeComponent : MonoBehaviour {
             linkedCube.RealEnable();
         }
     }
+
+    public Vector3 GetAnchor() {
+        return anchor;
+    }
+
+    public Cube GetFarestCubeFromAnchor() {
+        return GetLinkedCubes().OrderBy(cube => Vector3.Distance(anchor, cube.transform.position)).Last();
+    }
+
+    public Vector3 GetFarestCornerFromAnchor() {
+        return GetFarestCubeFromAnchor().GetCornerPositions().OrderBy(pos => Vector3.Distance(anchor, pos)).Last();
+    }
 }
