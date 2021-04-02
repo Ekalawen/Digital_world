@@ -9,6 +9,7 @@ public class SwappyCubesHolderManager : MonoBehaviour {
     public float frequenceInterval = 1.5f;
     public int nbIntervals = 2;
     public Vector2Int startIntervalRange = Vector2Int.zero;
+    public bool setLinky = true;
 
     protected GameManager gm;
     protected List<SwappyCubesHolder> holders;
@@ -27,8 +28,10 @@ public class SwappyCubesHolderManager : MonoBehaviour {
     }
 
     protected void SetCubesLinky() {
-        foreach(SwappyCubesHolder holder in holders) {
-            holder.SetCubesLinky();
+        if (setLinky) {
+            foreach (SwappyCubesHolder holder in holders) {
+                holder.SetCubesLinky();
+            }
         }
     }
 
