@@ -64,19 +64,19 @@ public class Block : MonoBehaviour {
             RandomCubes randomCubes = child.gameObject.GetComponent<RandomCubes>();
             if (randomCubes != null)
                 cubes.AddRange(randomCubes.GetChosenCubesAndDestroyOthers());
-            SwappyCubesHolder swappyCubesHolder = child.gameObject.GetComponent<SwappyCubesHolder>();
-            if (swappyCubesHolder != null) {
-                swappyCubesHolder.Initialize();
-                cubes.AddRange(swappyCubesHolder.GetCubes());
+            SwappyCubesHolderManager swappyCubesHolderManager = child.gameObject.GetComponent<SwappyCubesHolderManager>();
+            if (swappyCubesHolderManager != null) {
+                swappyCubesHolderManager.Initialize();
+                cubes.AddRange(swappyCubesHolderManager.GetCubes());
             }
         }
     }
 
     protected void StartSwappingCubes() {
         foreach (Transform child in cubeFolder) {
-            SwappyCubesHolder swappyCubesHolder = child.gameObject.GetComponent<SwappyCubesHolder>();
-            if (swappyCubesHolder != null) {
-                swappyCubesHolder.StartSwapping();
+            SwappyCubesHolderManager swappyCubesHolderManager = child.gameObject.GetComponent<SwappyCubesHolderManager>();
+            if (swappyCubesHolderManager != null) {
+                swappyCubesHolderManager.StartSwapping();
             }
         }
     }
