@@ -18,6 +18,7 @@ public class Cube : MonoBehaviour {
     protected Material material;
     protected float dissolveTimeToUse = -1;
     protected LinkyCubeComponent linkyCube = null;
+    protected Coroutine enableDisableCoroutine = null;
 
     public virtual void Start() {
         gm = GameManager.Instance;
@@ -329,20 +330,23 @@ public class Cube : MonoBehaviour {
         if (IsLinky()) {
             linkyCube.LinkySetEnableValueIn(value, duration, impactPoint);
         } else {
-            StartCoroutine(CSetEnableValueIn(value, duration, impactPoint));
+            RealSetEnableValueIn(value, duration, impactPoint);
         }
     }
 
-    public IEnumerator CSetEnableValueIn(bool value, float duration, Vector3 impactPoint) {
-        if (!value) {
-            float impactRadius = IsLinky() ? Vector3.Distance(impactPoint, linkyCube.GetFarestCornerFromPoint(impactPoint)) : Mathf.Sqrt(3) / 2;
-            StartImpact(impactPoint, impactRadius, duration);
+    public void RealSetEnableValueIn(bool value, float duration, Vector3 impactPoint) {
+        if(enableDisableCoroutine != null) {
+            StopCoroutine(enableDisableCoroutine);
         }
+        enableDisableCoroutine = StartCoroutine(CSetEnableValueIn(value, duration, impactPoint));
+    }
+
+    protected IEnumerator CSetEnableValueIn(bool value, float duration, Vector3 impactPoint) {
+        float impactRadius = IsLinky() ? Vector3.Distance(impactPoint, linkyCube.GetFarestCornerFromPoint(impactPoint)) : Mathf.Sqrt(3) / 2;
+        StartImpact(impactPoint, impactRadius, duration);
         yield return new WaitForSeconds(duration);
         if (this != null) {
-            if (!value) {
-                StopImpact();
-            }
+            StopImpact();
             RealSetEnableValue(value);
         }
     }

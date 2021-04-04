@@ -8,7 +8,7 @@ public class SwappyCubesHolderManager : MonoBehaviour {
 
     public float frequenceInterval = 1.5f;
     public int nbIntervals = 2;
-    public Vector2Int startIntervalRange = Vector2Int.zero;
+    public Vector2Int startIntervalRange = new Vector2Int(0, 1);
     public bool setLinky = true;
 
     protected GameManager gm;

@@ -128,7 +128,7 @@ public class LinkyCubeComponent : MonoBehaviour {
 
     public void LinkySetEnableValueIn(bool value, float duration, Vector3 impactPoint) {
         foreach(Cube linkedCube in GetLinkedCubes()) {
-            StartCoroutine(linkedCube.CSetEnableValueIn(value, duration, impactPoint));
+            linkedCube.RealSetEnableValueIn(value, duration, impactPoint);
         }
     }
 

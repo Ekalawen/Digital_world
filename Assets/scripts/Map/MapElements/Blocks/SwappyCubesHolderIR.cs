@@ -32,10 +32,8 @@ public class SwappyCubesHolderIR : SwappyCubesHolder {
         cubes = cubes.FindAll(c => c != null);
         if(cubes.Count > 0) {
             foreach(Cube cube in cubes) {
-                StartCoroutine(cube.CSetEnableValueIn(visibleState, previsualisationDuration, impactPoint)); // Not linky
+                cube.RealSetEnableValueIn(visibleState, previsualisationDuration, impactPoint);
             }
-        //} else {
-        //    Destroy(this);
         }
     }
 }
