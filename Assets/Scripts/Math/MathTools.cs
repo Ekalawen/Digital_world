@@ -29,6 +29,10 @@ public static class MathTools
         return res;
     }
 
+    public static Vector3Int FloorToInt(Vector3 pos) {
+        return new Vector3Int((int)pos.x, (int)pos.y, (int)pos.z);
+    }
+
     public static void Shuffle<T>(List<T> ts)
     {
         var count = ts.Count;

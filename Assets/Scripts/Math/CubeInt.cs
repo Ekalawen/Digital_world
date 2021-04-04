@@ -123,6 +123,15 @@ public class CubeInt {
         return corners;
     }
 
+    public bool OverlapsBox(Vector3 boxCenter, Vector3 boxHalfExtents) {
+        return !(boxCenter.x + boxHalfExtents.x < xMin
+            || boxCenter.x - boxHalfExtents.x > xMax
+            || boxCenter.y + boxHalfExtents.y < yMin
+            || boxCenter.y - boxHalfExtents.y > yMax
+            || boxCenter.z + boxHalfExtents.z < zMin
+            || boxCenter.z - boxHalfExtents.z > zMax);
+    }
+
     public bool OverlapsWithoutContains(CubeInt other) {
         List<Vector3Int> otherCorners = other.Corners();
         List<Vector3Int> thisCorners = this.Corners();

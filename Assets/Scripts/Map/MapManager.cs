@@ -19,7 +19,7 @@ public class Node {
 
 public class MapManager : MonoBehaviour {
 
-	// public enum TypeMap {CUBE_MAP, PLAINE_MAP, LABYRINTHE_MAP, GROUND_MAP, EMPTY_MAP, TUTORIAL_MAP}; // Plus vraiment utile ! :D
+    // public enum TypeMap {CUBE_MAP, PLAINE_MAP, LABYRINTHE_MAP, GROUND_MAP, EMPTY_MAP, TUTORIAL_MAP}; // Plus vraiment utile ! :D
 
     [Header("Cube Prefabs")]
 	public GameObject cubePrefab; // On récupère ce qu'est un cube !
@@ -48,7 +48,8 @@ public class MapManager : MonoBehaviour {
 
 
     protected Cube[,,] cubesRegular; // Toutes les positions entières dans [0, tailleMap]
-    protected List<Cube> cubesNonRegular; // Toutes les autres positions (non-entières)
+    //protected List<Cube> cubesNonRegular; // Toutes les autres positions (non-entières ou en-dehors de la map)
+    protected Octree nonRegularOctree; // Toutes les autres positions (non-entières ou en-dehors de la map)
     [HideInInspector] public List<MapElement> mapElements;
     [HideInInspector]
     protected List<Lumiere> lumieres;
@@ -82,7 +83,7 @@ public class MapManager : MonoBehaviour {
             for (int j = 0; j <= tailleMap.y; j++)
                 for (int k = 0; k <= tailleMap.z; k++)
                     cubesRegular[i, j, k] = null;
-        cubesNonRegular = new List<Cube>();
+        nonRegularOctree = new Octree();
 
         // Récupérer tous les cubes et toutes les lumières qui pourraient déjà exister avant la création de la map !
         GetAllAlreadyExistingCubesAndLumieres();
@@ -129,7 +130,7 @@ public class MapManager : MonoBehaviour {
             }
         } else {
             if (cubeAtPos == null) {
-                cubesNonRegular.Add(cube);
+                nonRegularOctree.Add(cube);
                 cube.SetRegularValue(false);
                 return cube;
             } else {
@@ -198,15 +199,10 @@ public class MapManager : MonoBehaviour {
             DestroyImmediateCube(cubesRegular[(int)pos.x, (int)pos.y, (int)pos.z], bJustInactive);
             cubesRegular[(int)pos.x, (int)pos.y, (int)pos.z] = null;
         } else {
-            Cube cubeToDestroy = null;
-            foreach(Cube cube in cubesNonRegular) {
-                if(cube.transform.position == pos) {
-                    cubeToDestroy = cube;
-                    break;
-                }
+            Cube cubeToDestroy = nonRegularOctree.PopAt(pos);
+            if(cubeToDestroy != null) {
+                DestroyImmediateCube(cubeToDestroy, bJustInactive);
             }
-            cubesNonRegular.Remove(cubeToDestroy);
-            DestroyImmediateCube(cubeToDestroy, bJustInactive);
         }
     }
 
@@ -235,15 +231,10 @@ public class MapManager : MonoBehaviour {
                 }
             }
         }
-        List<Cube> cubesToDestroy = new List<Cube>();
-        foreach (Cube cube in cubesNonRegular) {
-            if (Vector3.Distance(cube.transform.position, center) <= radius) {
-                cubesToDestroy.Add(cube);
-                break;
-            }
-        }
+
+        List<Cube> cubesToDestroy = nonRegularOctree.GetInSphere(center, radius);
         foreach(Cube cubeToDestroy in cubesToDestroy) {
-            cubesNonRegular.Remove(cubeToDestroy);
+            nonRegularOctree.Remove(cubeToDestroy);
             DestroyImmediateCube(cubeToDestroy);
         }
     }
@@ -267,18 +258,10 @@ public class MapManager : MonoBehaviour {
                 }
             }
         }
-        List<Cube> cubesToDestroy = new List<Cube>();
-        foreach (Cube cube in cubesNonRegular) {
-            Vector3 pos = cube.transform.position;
-            if (Mathf.Abs(center.x - pos.x) <= halfExtents.x
-             && Mathf.Abs(center.y - pos.y) <= halfExtents.y
-             && Mathf.Abs(center.z - pos.z) <= halfExtents.z) {
-                cubesToDestroy.Add(cube);
-            }
-        }
-        foreach (Cube cubeToDestroy in cubesToDestroy)
-        {
-            cubesNonRegular.Remove(cubeToDestroy);
+
+        List<Cube> cubesToDestroy = nonRegularOctree.GetInBox(center, halfExtents);
+        foreach(Cube cubeToDestroy in cubesToDestroy) {
+            nonRegularOctree.Remove(cubeToDestroy);
             DestroyImmediateCube(cubeToDestroy);
         }
     }
@@ -287,13 +270,8 @@ public class MapManager : MonoBehaviour {
         if (IsInRegularMap(pos) && MathTools.IsRounded(pos)) {
             return cubesRegular[(int)pos.x, (int)pos.y, (int)pos.z];
         } else {
-            foreach (Cube cube in cubesNonRegular) {
-                if (cube.transform.position == pos) {
-                    return cube;
-                }
-            }
+            return nonRegularOctree.GetAt(pos);
         }
-        return null;
     }
 
     public Cube GetCubeAt(float x, float y, float z) {
@@ -302,11 +280,7 @@ public class MapManager : MonoBehaviour {
 
     public List<Cube> GetCubesInSphere(Vector3 center, float radius) {
         List<Cube> cubes = GetRegularCubesInSphere(center, radius);
-        foreach (Cube cube in cubesNonRegular) {
-            if (Vector3.Distance(cube.transform.position, center) <= radius) {
-                cubes.Add(cube);
-            }
-        }
+        cubes.AddRange(nonRegularOctree.GetInSphere(center, radius));
         return cubes;
     }
 
@@ -351,15 +325,7 @@ public class MapManager : MonoBehaviour {
                 }
             }
         }
-        foreach (Cube cube in cubesNonRegular) {
-            Vector3 pos = cube.transform.position;
-            if (Mathf.Abs(center.x - pos.x) <= halfExtents.x
-             && Mathf.Abs(center.y - pos.y) <= halfExtents.y
-             && Mathf.Abs(center.z - pos.z) <= halfExtents.z)
-            {
-                cubes.Add(cube);
-            }
-        }
+        cubes.AddRange(nonRegularOctree.GetInBox(center, halfExtents));
         return cubes;
     }
 
@@ -371,12 +337,7 @@ public class MapManager : MonoBehaviour {
             cubeRegular = cubesRegular[(int)roundedLocation.x, (int)roundedLocation.y, (int)roundedLocation.z];
         if (cubeRegular != null)
             cubes.Add(cubeRegular);
-        foreach (Cube cube in cubesNonRegular) {
-            Vector3 pos = cube.transform.position;
-            if(Vector3.Distance(pos, roundedLocation) <= 0.5 + Mathf.Sqrt(2.0f) / 2.0f) {
-                cubes.Add(cube);
-            }
-        }
+        cubes.AddRange(nonRegularOctree.GetInSphere(roundedLocation, 0.5f + Mathf.Sqrt(2.0f) / 2.0f)); // Sphere de rayon une demi diagonale de carré ... ^^' Ca devrait juste être une box collision mais je préfère ne pas changer ça maintenant :)
         return cubes;
     }
 
@@ -438,8 +399,7 @@ public class MapManager : MonoBehaviour {
                 for (int k = 0; k <= tailleMap.z; k++)
                     if (cubesRegular[i, j, k] != null)
                         allCubes.Add(cubesRegular[i, j, k]);
-        foreach (Cube cube in cubesNonRegular)
-            allCubes.Add(cube);
+        allCubes.AddRange(nonRegularOctree.GetAll());
         return allCubes;
     }
 
@@ -459,10 +419,7 @@ public class MapManager : MonoBehaviour {
                 for (int k = 0; k <= tailleMap.z; k++)
                     if (cubesRegular[i, j, k] != null && cubesRegular[i, j, k].type == type)
                         allCubes.Add(cubesRegular[i, j, k]);
-        foreach (Cube cube in cubesNonRegular) {
-            if (cube.type == type)
-                allCubes.Add(cube);
-        }
+        allCubes.AddRange(nonRegularOctree.GetAll().FindAll(c => c.type == type));
         return allCubes;
     }
 
@@ -473,7 +430,7 @@ public class MapManager : MonoBehaviour {
                 for (int k = 0; k <= tailleMap.z; k++) {
                     if (cubesRegular[i, j, k] != null) {
                         nbCubesRegular++;
-                        if(cubesNonRegular.Contains(cubesRegular[i, j, k])) {
+                        if(nonRegularOctree.Contains(cubesRegular[i, j, k])) {
                             Debug.Log("PROBLEME !");
                         }
                     }
@@ -481,12 +438,9 @@ public class MapManager : MonoBehaviour {
             }
         }
         Debug.Log("Nombre cubes regular = " + nbCubesRegular);
-        int nbCubesNonRegularNonNull = 0;
-        foreach (Cube cube in cubesNonRegular)
-            if (cube != null)
-                nbCubesNonRegularNonNull++;
-        Debug.Log("Nombre cubes non-regular = " + cubesNonRegular.Count);
-        Debug.Log("Nombre cubes non-regular NULL = " + (cubesNonRegular.Count - nbCubesNonRegularNonNull));
+        int nbCubesNonRegularNonNull = nonRegularOctree.GetAll().FindAll(c => c != null).Count;
+        Debug.Log("Nombre cubes non-regular = " + nonRegularOctree.Count);
+        Debug.Log("Nombre cubes non-regular NULL = " + (nonRegularOctree.Count - nbCubesNonRegularNonNull));
         LocaliseCubeOnLumieres();
         PrintIfSeveralLumieresOnSamePos();
     }
@@ -992,17 +946,11 @@ public class MapManager : MonoBehaviour {
     }
 
     public List<Cube> GetAllNonRegularCubes() {
-        List<Cube> res = new List<Cube>();
-        foreach (Cube cube in cubesNonRegular)
-            res.Add(cube);
-        return res;
+        return nonRegularOctree.GetAll();
     }
 
     public List<Vector3> GetAllNonRegularCubePos() {
-        List<Vector3> res = new List<Vector3>();
-        foreach (Cube cube in cubesNonRegular)
-            res.Add(cube.transform.position);
-        return res;
+        return GetAllNonRegularCubes().Select(c => c.transform.position).ToList();
     }
 
     protected void CreateRandomLumiere() {
@@ -1010,22 +958,8 @@ public class MapManager : MonoBehaviour {
         CreateLumiere(posLumiere, Lumiere.LumiereType.NORMAL);
     }
 
-    //protected List<Cube> GetCubesRecursivelyInHierarchy(Transform folder) {
-    //    List<Cube> newCubes = new List<Cube>();
-    //    foreach(Transform t in folder) {
-    //        Cube cube = t.GetComponent<Cube>();
-    //        if(cube == null) {
-    //            newCubes.AddRange(GetCubesRecursivelyInHierarchy(t));
-    //        } else {
-    //            newCubes.Add(cube);
-    //        }
-    //    }
-    //    return newCubes;
-    //}
-
     protected void GetAllAlreadyExistingCubesAndLumieres() {
         Cube[] newCubes = FindObjectsOfType<Cube>();
-        //List<Cube> newCubes = GetCubesRecursivelyInHierarchy(alreadyExistingCubesFolder);
         foreach(Cube cube in newCubes) {
             if(!cube.transform.IsChildOf(cubesFolder.transform)) {
                 Transform maxParent = cube.transform.parent;
