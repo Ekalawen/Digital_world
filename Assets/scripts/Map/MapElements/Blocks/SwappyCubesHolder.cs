@@ -14,7 +14,7 @@ public class SwappyCubesHolder : MonoBehaviour {
     protected List<Cube> cubes;
 
 
-    public void Initialize() {
+    public virtual void Initialize() {
         gm = GameManager.Instance;
         cubes = GatherCubes();
     }
@@ -35,7 +35,7 @@ public class SwappyCubesHolder : MonoBehaviour {
         return cubes;
     }
 
-    protected void SetCubesVisibleState(bool visibleState) {
+    protected virtual void SetCubesVisibleState(bool visibleState) {
         cubes = cubes.FindAll(c => c != null);
         if(cubes.Count > 0) {
             Cube mainCube = cubes[0];
