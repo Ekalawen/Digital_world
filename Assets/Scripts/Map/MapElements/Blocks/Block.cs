@@ -95,24 +95,14 @@ public class Block : MonoBehaviour {
             Cube cube = cubes[i];
             float coef = (float)i / cubes.Count;
             float timeBeforeDecompose = coef * speedDestruction;
-            //cube.ExplodeIn(timeBeforeExplosion);
             cube.DecomposeIn(dureeDecompose, timeBeforeDecompose);
         }
         StartCoroutine(DestroyWhenAllCubesAreDestroyed());
     }
 
     private IEnumerator DestroyWhenAllCubesAreDestroyed() {
-        while(true) {
+        while(!cubes.All(c => c == null)) {
             yield return null;
-            bool allNull = true;
-            foreach(Cube cube in cubes) {
-                if (cube != null) {
-                    allNull = false;
-                    break;
-                }
-            }
-            if (allNull)
-                break;
         }
         yield return new WaitForSeconds(1.0f); // Sécurité car on a besoin de cet objet pendant un peu plus longtemps !
         Destroy(gameObject);

@@ -12,10 +12,12 @@ public class SwappyCubesHolder : MonoBehaviour {
 
     protected GameManager gm;
     protected List<Cube> cubes;
+    protected SwappyCubesHolderManager manager;
 
 
-    public virtual void Initialize() {
+    public virtual void Initialize(SwappyCubesHolderManager manager) {
         gm = GameManager.Instance;
+        this.manager = manager;
         cubes = GatherCubes();
     }
 

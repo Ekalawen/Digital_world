@@ -18,7 +18,7 @@ public class SwappyCubesHolderManager : MonoBehaviour {
         gm = GameManager.Instance;
         holders = GatherHolders();
         foreach(SwappyCubesHolder holder in holders) {
-            holder.Initialize();
+            holder.Initialize(this);
         }
     }
 

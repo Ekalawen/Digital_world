@@ -160,6 +160,8 @@ public class Cube : MonoBehaviour {
     }
 
     public void RealDecompose(float duree) {
+        if (IsDecomposing())
+            return;
         gm = GameManager.Instance; // Sinon peut y avoir un bug si on essaie de le détruire dans la même frame que lorsqu'il est crée ! (Le Start a pas le temps de s'éxécuter :'()
         StartDecomposeEffect(duree);
         DestroyIn(duree);
@@ -337,10 +339,12 @@ public class Cube : MonoBehaviour {
             StartImpact(impactPoint, impactRadius, duration);
         }
         yield return new WaitForSeconds(duration);
-        if (!value) {
-            StopImpact();
+        if (this != null) {
+            if (!value) {
+                StopImpact();
+            }
+            RealSetEnableValue(value);
         }
-        RealSetEnableValue(value);
     }
 
     public void StartImpact(Vector3 impactPoint, float impactRadius, float impactDuration) {

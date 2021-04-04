@@ -10,15 +10,14 @@ public class SwappyCubesHolderIR : SwappyCubesHolder {
 
     protected Vector3 impactPoint;
 
-    public override void Initialize()
-    {
-        base.Initialize();
+    public override void Initialize(SwappyCubesHolderManager manager) {
+        base.Initialize(manager);
         impactPoint = ComputeImpactPoint();
     }
 
     protected Vector3 ComputeImpactPoint() {
         Cube mainCube = cubes[0];
-        if (mainCube.IsLinky()) {
+        if (manager.setLinky) {
             Vector3 point = Vector3.zero;
             foreach (Cube cube in cubes) {
                 point += cube.transform.position;
@@ -33,10 +32,10 @@ public class SwappyCubesHolderIR : SwappyCubesHolder {
         cubes = cubes.FindAll(c => c != null);
         if(cubes.Count > 0) {
             foreach(Cube cube in cubes) {
-                cube.StartCoroutine(cube.CSetEnableValueIn(visibleState, previsualisationDuration, impactPoint)); // Not linky
+                StartCoroutine(cube.CSetEnableValueIn(visibleState, previsualisationDuration, impactPoint)); // Not linky
             }
-        } else {
-            Destroy(this);
+        //} else {
+        //    Destroy(this);
         }
     }
 }
