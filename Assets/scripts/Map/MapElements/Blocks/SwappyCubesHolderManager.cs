@@ -13,9 +13,11 @@ public class SwappyCubesHolderManager : MonoBehaviour {
 
     protected GameManager gm;
     protected List<SwappyCubesHolder> holders;
+    protected Texture2D linkyTexture;
 
     public void Initialize() {
         gm = GameManager.Instance;
+        linkyTexture = Resources.Load<Texture2D>("linky_cube_circle");
         holders = GatherHolders();
         foreach(SwappyCubesHolder holder in holders) {
             holder.Initialize(this);
@@ -29,7 +31,7 @@ public class SwappyCubesHolderManager : MonoBehaviour {
     protected void SetCubesLinky(int initialInterval) {
         if (setLinky) {
             foreach (SwappyCubesHolder holder in holders) {
-                holder.SetCubesLinky(initialInterval);
+                holder.SetCubesLinky(initialInterval, linkyTexture);
             }
         }
     }

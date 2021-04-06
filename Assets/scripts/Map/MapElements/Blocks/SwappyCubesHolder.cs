@@ -21,9 +21,9 @@ public class SwappyCubesHolder : MonoBehaviour {
         cubes = GatherCubes();
     }
 
-    public void SetCubesLinky(int initialInterval) {
+    public void SetCubesLinky(int initialInterval, Texture2D linkyTexture) {
         foreach(Cube cube in cubes) {
-            cube.SetLinky();
+            cube.SetLinky(linkyTexture);
         }
         SetInitialVisibleState(initialInterval);
     }

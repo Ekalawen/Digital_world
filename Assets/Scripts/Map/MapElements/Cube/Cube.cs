@@ -254,11 +254,14 @@ public class Cube : MonoBehaviour {
         return linkyCube;
     }
 
-    public void SetLinky() {
+    public void SetLinky(Texture2D linkyTexture = null) {
         LinkyCubeComponent linkyCubeComponent = gameObject.AddComponent<LinkyCubeComponent>();
         linkyCube = linkyCubeComponent;
         linkyCube.Initialize(this);
         GetMaterial().SetFloat("_IsLinky", 1f);
+        if(linkyTexture != null) {
+            GetMaterial().SetTexture("_LinkyCubeTexture", linkyTexture);
+        }
     }
 
     public void UnSetLinky() {
