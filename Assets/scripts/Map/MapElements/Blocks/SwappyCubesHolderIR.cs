@@ -28,11 +28,11 @@ public class SwappyCubesHolderIR : SwappyCubesHolder {
         }
     }
 
-    protected override void SetCubesVisibleState(bool visibleState) {
+    protected override void SetCubesVisibleState(bool visibleState, float prevDuration) {
         cubes = cubes.FindAll(c => c != null);
         if(cubes.Count > 0) {
             foreach(Cube cube in cubes) {
-                cube.RealSetEnableValueIn(visibleState, previsualisationDuration, impactPoint);
+                cube.RealSetEnableValueIn(visibleState, prevDuration, impactPoint);
             }
         }
     }

@@ -21,10 +21,11 @@ public class SwappyCubesHolder : MonoBehaviour {
         cubes = GatherCubes();
     }
 
-    public void SetCubesLinky() {
+    public void SetCubesLinky(int initialInterval) {
         foreach(Cube cube in cubes) {
             cube.SetLinky();
         }
+        SetInitialVisibleState(initialInterval);
     }
 
     protected List<Cube> GatherCubes() {
@@ -37,12 +38,12 @@ public class SwappyCubesHolder : MonoBehaviour {
         return cubes;
     }
 
-    protected virtual void SetCubesVisibleState(bool visibleState) {
+    protected virtual void SetCubesVisibleState(bool visibleState, float prevDuration) {
         cubes = cubes.FindAll(c => c != null);
         if(cubes.Count > 0) {
             Cube mainCube = cubes[0];
             Vector3 impactPoint = mainCube.IsLinky() ? mainCube.GetLinkyCubeComponent().GetBarycentre() : mainCube.transform.position;
-            mainCube.SetEnableValueIn(visibleState, previsualisationDuration, impactPoint);
+            mainCube.SetEnableValueIn(visibleState, prevDuration, impactPoint);
         } else {
             Destroy(this);
         }
@@ -54,9 +55,22 @@ public class SwappyCubesHolder : MonoBehaviour {
 
     public void NotifyNewInterval(int currentInterval) {
         if(intervalToDisable.Contains(currentInterval)) {
-            SetCubesVisibleState(false);
+            SetCubesVisibleState(false, previsualisationDuration);
         } else if (intervalToEnable.Contains(currentInterval)) {
-            SetCubesVisibleState(true);
+            SetCubesVisibleState(true, previsualisationDuration);
         }
+    }
+
+    public void SetInitialVisibleState(int initialInterval) {
+        bool isVisible = GetIsVisibleStateFor(initialInterval);
+        SetCubesVisibleState(isVisible, 0.0f);
+    }
+
+    public bool GetIsVisibleStateFor(int initialInterval) {
+        int nbIntervals = manager.nbIntervals;
+        List<Tuple<bool, int>> intervals = new List<Tuple<bool, int>>();
+        intervals.AddRange(intervalToDisable.Select(i => new Tuple<bool, int>(false, (i + nbIntervals - (initialInterval + 1)) % nbIntervals)));
+        intervals.AddRange(intervalToEnable.Select(i => new Tuple<bool, int>(true, (i + nbIntervals - (initialInterval + 1)) % nbIntervals)));
+        return intervals.OrderByDescending(i => i.Item2).First().Item1;
     }
 }

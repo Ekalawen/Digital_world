@@ -23,14 +23,13 @@ public class SwappyCubesHolderManager : MonoBehaviour {
     }
 
     public void StartSwapping() {
-        SetCubesLinky();
         StartCoroutine(CStartSwapping());
     }
 
-    protected void SetCubesLinky() {
+    protected void SetCubesLinky(int initialInterval) {
         if (setLinky) {
             foreach (SwappyCubesHolder holder in holders) {
-                holder.SetCubesLinky();
+                holder.SetCubesLinky(initialInterval);
             }
         }
     }
@@ -48,9 +47,9 @@ public class SwappyCubesHolderManager : MonoBehaviour {
     protected IEnumerator CStartSwapping() {
         Timer timer = new Timer(frequenceInterval);
         int currentInterval = UnityEngine.Random.Range(startIntervalRange[0], startIntervalRange[1] + 1);
-        NotifyHolderNewInterval(currentInterval);
+        SetCubesLinky(currentInterval);
 
-        while(!gm.eventManager.IsGameOver()) {
+        while (!gm.eventManager.IsGameOver()) {
             if(timer.IsOver()) {
                 currentInterval = (currentInterval + 1) % nbIntervals;
                 NotifyHolderNewInterval(currentInterval);
