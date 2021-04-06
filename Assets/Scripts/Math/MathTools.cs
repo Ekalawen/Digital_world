@@ -30,7 +30,7 @@ public static class MathTools
     }
 
     public static Vector3Int FloorToInt(Vector3 pos) {
-        return new Vector3Int((int)pos.x, (int)pos.y, (int)pos.z);
+        return new Vector3Int(Mathf.FloorToInt(pos.x), Mathf.FloorToInt(pos.y), Mathf.FloorToInt(pos.z));
     }
 
     public static void Shuffle<T>(List<T> ts)
