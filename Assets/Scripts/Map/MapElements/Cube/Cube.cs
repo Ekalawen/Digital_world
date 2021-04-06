@@ -308,6 +308,9 @@ public class Cube : MonoBehaviour {
         Collider collider = GetComponent<Collider>();
         collider.enabled = true;
         GetMaterial().SetFloat("_IsDisabled", 0.0f);
+        if(gm.player.DoubleCheckInteractWithCube(this)) {
+            InteractWithPlayer();
+        }
     }
 
     public void SetEnableValue(bool value) {
