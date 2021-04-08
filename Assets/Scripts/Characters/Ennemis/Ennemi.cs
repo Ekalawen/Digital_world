@@ -47,7 +47,6 @@ public abstract class Ennemi : Character {
 
     protected virtual void HitPlayer(bool useCustomTimeMalus = false, float customTimeMalus = 0.0f) {
         HitContinuousPlayerSpecific();
-        float timeMalusToUse = useCustomTimeMalus ? customTimeMalus : timeMalusOnHit;
         if(timerHit.IsOver()) {
             timerHit.Reset();
 
@@ -55,6 +54,7 @@ public abstract class Ennemi : Character {
             player.OnHit();
             if (timerHitDamages.IsOver()) {
                 timerHitDamages.Reset();
+                float timeMalusToUse = useCustomTimeMalus ? customTimeMalus : timeMalusOnHit;
                 gm.timerManager.RemoveTime(timeMalusToUse, GetDeathReason());
             }
             DisplayHitMessage(GetDeathReason());

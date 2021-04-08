@@ -46,22 +46,21 @@ public class Sonde : Ennemi {
 	}
 
     protected override void HitPlayerSpecific() {
-        // Si c'est le cas, on l'envoie ballader !
-        if (pousseeCurrent != null && !pousseeCurrent.IsOver()) {
-            pousseeCurrent.Stop();
-        }
-        Vector3 directionPoussee = player.transform.position - transform.position;
-        directionPoussee.Normalize();
-        pousseeCurrent = new Poussee(directionPoussee, tempsPoussee, distancePoussee);
         ActivateSpikes(spikesTimeOnHit);
-        player.AddPoussee(pousseeCurrent);
-        player.ResetGrip(); // Pour que le joueur puisse à nouveau s'accrocher aux murs !
 
         // Effet de vignette rouge
         gm.postProcessManager.UpdateHitEffect();
     }
 
     protected override void HitContinuousPlayerSpecific() {
+        // Si c'est le cas, on l'envoie ballader !
+        if (pousseeCurrent != null && !pousseeCurrent.IsOver()) {
+            pousseeCurrent.Stop();
+        }
+        Vector3 directionPoussee = (player.transform.position - transform.position).normalized;
+        pousseeCurrent = new Poussee(directionPoussee, tempsPoussee, distancePoussee);
+        player.AddPoussee(pousseeCurrent);
+        player.ResetGrip(); // Pour que le joueur puisse à nouveau s'accrocher aux murs !
     }
 
     public override EventManager.DeathReason GetDeathReason() {
