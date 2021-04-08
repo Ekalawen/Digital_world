@@ -21,6 +21,7 @@ public class CheatCodeManager : MonoBehaviour {
     public List<KeyCode> plus10DataCount;
     public List<KeyCode> plus100DataCount;
     public List<KeyCode> gravityZeroCode;
+    public List<KeyCode> cooldownsZeroCode;
 
     protected GameManager gm;
     protected List<CheatCode> cheatCodes;
@@ -104,6 +105,12 @@ public class CheatCodeManager : MonoBehaviour {
         gravityZeroCheatCode.code = gravityZeroCode;
         gravityZeroCheatCode.action = gm.gravityManager.SetGravityZeroSwap;
         cheatCodes.Add(gravityZeroCheatCode);
+
+        // Cooldowns Zero
+        CheatCode cooldownsZeroCheatCode = new CheatCode();
+        cooldownsZeroCheatCode.code = cooldownsZeroCode;
+        cooldownsZeroCheatCode.action = gm.player.SetPouvoirsCooldownZeroSwap;
+        cheatCodes.Add(cooldownsZeroCheatCode);
     }
 
     public void Update() {

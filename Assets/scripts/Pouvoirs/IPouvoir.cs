@@ -85,4 +85,14 @@ public abstract class IPouvoir : MonoBehaviour {
             return 0.0f;
         return cooldownTimer.GetRemainingTime();
     }
+
+    public void SetCooldown(float cooldownValue) {
+        cooldown = cooldownValue;
+        cooldownTimer.SetDuree(cooldownValue);
+    }
+
+    public void SetTimerMalus(float timerMalusValue) {
+        timerMalus = timerMalusValue;
+        timerMalusTimeProportional = false;
+    }
 }

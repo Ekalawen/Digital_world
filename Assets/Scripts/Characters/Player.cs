@@ -161,6 +161,21 @@ public class Player : Character {
         gm.console.InitPouvoirsDisplays();
     }
 
+    public void SetPouvoirsCooldownZeroSwap() {
+        List<IPouvoir> pouvoirs = new List<IPouvoir>() { pouvoirA, pouvoirE, pouvoirLeftBouton, pouvoirRightBouton };
+        if (pouvoirs.FindAll(p => p != null).Select(p => p.cooldown).Contains(0.0f)) {
+            InitPouvoirs();
+            gm.console.InitPouvoirsDisplays();
+        } else {
+            foreach (IPouvoir pouvoir in pouvoirs) {
+                if (pouvoir != null) {
+                    pouvoir.SetCooldown(0.0f);
+                    pouvoir.SetTimerMalus(0.0f);
+                }
+            }
+        }
+    }
+
     void Update () {
         // On met à jour la caméra
         UpdateCamera();
