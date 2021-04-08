@@ -16,8 +16,10 @@ public class CheatCodeManager : MonoBehaviour {
     public List<KeyCode> loseCode;
     public List<KeyCode> plus10Code;
     public List<KeyCode> plus100Code;
+    public List<KeyCode> plus1000Code;
     public List<KeyCode> minus10Code;
     public List<KeyCode> minus100Code;
+    public List<KeyCode> minus1000Code;
     public List<KeyCode> plus10DataCount;
     public List<KeyCode> plus100DataCount;
     public List<KeyCode> gravityZeroCode;
@@ -68,6 +70,14 @@ public class CheatCodeManager : MonoBehaviour {
             cheatCodes.Add(plus100SecondesCheatCode);
         }
 
+        // Plus 1000
+        if (gm.GetMapType() == MenuLevel.LevelType.REGULAR) {
+            CheatCode plus1000SecondesCheatCode = new CheatCode();
+            plus1000SecondesCheatCode.code = plus1000Code;
+            plus1000SecondesCheatCode.action = gm.timerManager.Add1000Time;
+            cheatCodes.Add(plus1000SecondesCheatCode);
+        }
+
         // Minus 10
         if (gm.GetMapType() == MenuLevel.LevelType.REGULAR) {
             CheatCode minus10SecondesCheatCode = new CheatCode();
@@ -82,6 +92,14 @@ public class CheatCodeManager : MonoBehaviour {
             minus100SecondesCheatCode.code = minus100Code;
             minus100SecondesCheatCode.action = gm.timerManager.Minus100Time;
             cheatCodes.Add(minus100SecondesCheatCode);
+        }
+
+        // Minus 1000
+        if (gm.GetMapType() == MenuLevel.LevelType.REGULAR) {
+            CheatCode minus1000SecondesCheatCode = new CheatCode();
+            minus1000SecondesCheatCode.code = minus1000Code;
+            minus1000SecondesCheatCode.action = gm.timerManager.Minus1000Time;
+            cheatCodes.Add(minus1000SecondesCheatCode);
         }
 
         // Plus 10 DataCount
