@@ -9,6 +9,7 @@ public class Sonde : Ennemi {
 	public float distancePoussee; // La distance sur laquelle on va pousser le personnage !
 	public float tempsPoussee; // Le temps pendant lequel le personnage est poussé !
     public float spikesTimeOnHit = 0.3f;
+    public float pousseeStraightTreshold = 2.0f;
 
     [Header("Shader")]
     public float wavesSizeWaiting = 0.0f;
@@ -57,9 +58,7 @@ public class Sonde : Ennemi {
         if (pousseeCurrent != null && !pousseeCurrent.IsOver()) {
             pousseeCurrent.Stop();
         }
-        Vector3 directionPoussee = (player.transform.position - transform.position).normalized;
-        pousseeCurrent = new Poussee(directionPoussee, tempsPoussee, distancePoussee);
-        //pousseeCurrent = new PousseeFromTransform(transform, tempsPoussee, distancePoussee);
+        pousseeCurrent = new PousseeFromTransformWithTreshold(transform, tempsPoussee, distancePoussee, pousseeStraightTreshold);
         player.AddPoussee(pousseeCurrent);
         player.ResetGrip(); // Pour que le joueur puisse à nouveau s'accrocher aux murs !
     }
