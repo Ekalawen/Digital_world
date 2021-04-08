@@ -20,6 +20,7 @@ public class CheatCodeManager : MonoBehaviour {
     public List<KeyCode> minus100Code;
     public List<KeyCode> plus10DataCount;
     public List<KeyCode> plus100DataCount;
+    public List<KeyCode> gravityZeroCode;
 
     protected GameManager gm;
     protected List<CheatCode> cheatCodes;
@@ -97,6 +98,12 @@ public class CheatCodeManager : MonoBehaviour {
             plus100DataCountCheatCode.action = gm.eventManager.Add100DataCount;
             cheatCodes.Add(plus100DataCountCheatCode);
         }
+
+        // Gravity Zero
+        CheatCode gravityZeroCheatCode = new CheatCode();
+        gravityZeroCheatCode.code = gravityZeroCode;
+        gravityZeroCheatCode.action = gm.gravityManager.SetGravityZeroSwap;
+        cheatCodes.Add(gravityZeroCheatCode);
     }
 
     public void Update() {

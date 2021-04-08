@@ -72,6 +72,15 @@ public class GravityManager : MonoBehaviour {
         StartCoroutine(RotateCamera(axe, angle));
     }
 
+    public void SetGravityZeroSwap() {
+        if (gravityIntensity != 0.0f) {
+            SetGravity(gravityDirection, 0.0f);
+            gm.console.CapturePouvoirGiverVoler();
+        } else {
+            SetGravity(gravityDirection, initialGravityIntensity);
+        }
+    }
+
     protected void ScreenShakeOnGravityChange() {
         float timeShake = dureeGravityTransition;
         float timeFadeIn = timeShake * screenShakeFadeInPercentage;
