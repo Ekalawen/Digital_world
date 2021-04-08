@@ -59,6 +59,7 @@ public class Sonde : Ennemi {
         }
         Vector3 directionPoussee = (player.transform.position - transform.position).normalized;
         pousseeCurrent = new Poussee(directionPoussee, tempsPoussee, distancePoussee);
+        //pousseeCurrent = new PousseeFromTransform(transform, tempsPoussee, distancePoussee);
         player.AddPoussee(pousseeCurrent);
         player.ResetGrip(); // Pour que le joueur puisse à nouveau s'accrocher aux murs !
     }
