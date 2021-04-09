@@ -23,6 +23,7 @@ public class MenuOptions : MonoBehaviour {
     public static float defaultMouseSpeed = 1.81f;
     public static bool defaultGripActivation = true;
     public static bool defaultConseilOnStart = true;
+    public static bool defaultFpsCounter = false;
 
     public bool isInGame = false;
 
@@ -44,6 +45,7 @@ public class MenuOptions : MonoBehaviour {
     public Slider sliderMouse;
     public Toggle toggleGrip;
     public Toggle conseilOnStartToggle;
+    public Toggle fpsCounterToggle;
 
     [Header("OtherLinks")]
     public GameObject resetButton;
@@ -79,6 +81,7 @@ public class MenuOptions : MonoBehaviour {
         OnMouseSpeedChange(PrefsManager.GetFloat(PrefsManager.MOUSE_SPEED_KEY, defaultMouseSpeed));
         OnGripActivationPress(PrefsManager.GetBool(PrefsManager.GRIP_KEY, defaultGripActivation));
         OnConseilOnStartPress(PrefsManager.GetBool(PrefsManager.ADVICE_ON_START_KEY, defaultConseilOnStart));
+        OnFpsCounterPress(PrefsManager.GetBool(PrefsManager.FPS_COUNTER_KEY, defaultFpsCounter));
     }
 
     protected void CenterInGamePanels() {
@@ -184,6 +187,14 @@ public class MenuOptions : MonoBehaviour {
         conseilOnStartToggle.isOn = active;
     }
 
+    public void OnFpsCounterPress(bool active) {
+        PrefsManager.SetBool(PrefsManager.FPS_COUNTER_KEY, active);
+        fpsCounterToggle.isOn = active;
+        if(isInGame) {
+            gm.console.InitFrameRateCounter();
+        }
+    }
+
     public void RememberLastLevel(int indiceLevel) {
         PrefsManager.SetInt(PrefsManager.LAST_LEVEL_KEY, indiceLevel);
     }
@@ -195,6 +206,7 @@ public class MenuOptions : MonoBehaviour {
         OnMouseSpeedChange(MenuOptions.defaultMouseSpeed);
         OnGripActivationPress(MenuOptions.defaultGripActivation);
         OnConseilOnStartPress(MenuOptions.defaultConseilOnStart);
+        OnFpsCounterPress(MenuOptions.defaultFpsCounter);
         int index = LocalizationSettings.AvailableLocales.Locales.IndexOf(LocalizationSettings.SelectedLocale);
         PrefsManager.SetInt(PrefsManager.LOCALE_INDEX_KEY, index);
         PrefsManager.Save();

@@ -47,6 +47,7 @@ public class PrefsManager {
     public static string LUMINOSITY_KEY = "luminosityKey";
     public static string GRIP_KEY = "gripKey";
     public static string ADVICE_ON_START_KEY = "adviceOnStartKey";
+    public static string FPS_COUNTER_KEY = "fpsCounterKey";
     public static string KEYBINDING_INDICE_KEY = "keybindingIndiceKey";
     public static string KEYBINDING_PRECEDENT_INDICE_KEY = "keybindingPrecedentIndiceKey";
     public static string DATA_QUALITY_KEY = "dataQualityKey";

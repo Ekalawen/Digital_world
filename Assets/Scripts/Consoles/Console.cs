@@ -90,8 +90,10 @@ public class Console : MonoBehaviour {
     protected bool isLocalizationLoaded = false;
     protected List<float> deltaTimeList;
     protected Timer frameRateTimer;
+    protected bool showFrameRate;
 
-    public virtual void Initialize() {
+    public virtual void Initialize()
+    {
         // Initialisation des variables
         name = "Console";
         gm = GameManager.Instance;
@@ -103,9 +105,7 @@ public class Console : MonoBehaviour {
         player = gm.player;
         importantText.text = "";
         eventManager = gm.eventManager;
-        deltaTimeList = new List<float>();
-        frameRateTimer = new Timer(0.1f, setOver: true);
-        arrowKeysTimer = new Timer(2);
+        InitFrameRateCounter();
         arrowKeysTimer.SetOver();
         HideDataCountDisplayerIfIR();
 
@@ -1080,7 +1080,17 @@ public class Console : MonoBehaviour {
         gm.console.AjouterMessageImportant(strings.controllerPlugOut, Console.TypeText.BASIC_TEXT, 3.0f);
     }
 
+    public void InitFrameRateCounter() {
+        deltaTimeList = new List<float>();
+        frameRateTimer = new Timer(0.1f, setOver: true);
+        arrowKeysTimer = new Timer(2);
+        showFrameRate = PrefsManager.GetBool(PrefsManager.FPS_COUNTER_KEY, MenuOptions.defaultFpsCounter);
+        frameRateText.gameObject.SetActive(showFrameRate);
+    }
+
     protected void UpdateFrameRate() {
+        if (!showFrameRate)
+            return;
         if (frameRateTimer.IsOver()) {
             frameRateTimer.Reset();
             float deltaTime = Time.deltaTime;
