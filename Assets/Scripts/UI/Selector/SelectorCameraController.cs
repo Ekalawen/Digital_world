@@ -84,9 +84,10 @@ public class SelectorCameraController : MonoBehaviour {
     }
 
     protected Vector3 ComputeSpeedOnAxis() {
-        float speedX = Input.GetAxis("HorizontalFullGravity") * speedKeyboard.x;
-        float speedY = Input.GetAxis("Depth") * speedKeyboard.y;
-        float speedZ = Input.GetAxis("Vertical") * speedKeyboard.z;
+        Vector3 speed = InputManager.Instance.GetCameraSelectorMouvement();
+        float speedX = speed.x * speedKeyboard.x;
+        float speedY = speed.y * speedKeyboard.y;
+        float speedZ = speed.z * speedKeyboard.z;
         if (Input.GetMouseButton(0)) {
             float mouseSpeedX = -Input.GetAxis("Mouse_X") * (1 - mouseSmoothing) + oldMouseSpeedX * mouseSmoothing;
             float mouseSpeedY = -Input.GetAxis("Mouse_Y") * (1 - mouseSmoothing) + oldMouseSpeedY * mouseSmoothing;

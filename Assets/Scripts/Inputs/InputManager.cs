@@ -97,6 +97,20 @@ public class InputManager : MonoBehaviour {
         }
     } 
 
+    public Vector3 GetCameraSelectorMouvement() {
+        float x;
+        float y = Input.GetAxis("CameraSelector_Y");
+        float z;
+        if (GetCurrentKeybindingType() == KeybindingType.QWERTY) {
+            x = Input.GetAxis("CameraSelector_X_QWERTY");
+            z = Input.GetAxis("CameraSelector_Z_QWERTY");
+        } else {
+            x = Input.GetAxis("CameraSelector_X_AZERTY");
+            z = Input.GetAxis("CameraSelector_Z_AZERTY");
+        }
+        return new Vector3(x, y, z);
+    }
+
     public Vector2 GetCameraMouvement() {
         Vector2 mouseMouvement = GetMouseMouvement();
         return new Vector2(- mouseMouvement.y, mouseMouvement.x);
