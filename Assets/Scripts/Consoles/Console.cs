@@ -7,6 +7,7 @@ using System.Linq;
 using UnityEngine.Localization;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.Localization.Settings;
+using TMPro;
 
 public struct TimerMessage {
     public TimedMessage message;
@@ -62,6 +63,7 @@ public class Console : MonoBehaviour {
     public GameObject escapeButton; // Le truc qui clignote pour nous dire d'appuyer sur Escape à la fin du jeu !
     public GameObject pauseMenu;
     public CounterDisplayer dataCountDisplayer;
+    public TMP_Text frameRateText;
 
 
     [HideInInspector]
@@ -86,9 +88,10 @@ public class Console : MonoBehaviour {
     protected string ennemiPrefix;
     protected string allyPrefix;
     protected bool isLocalizationLoaded = false;
+    protected List<float> deltaTimeList;
+    protected Timer frameRateTimer;
 
-    public virtual void Initialize()
-    {
+    public virtual void Initialize() {
         // Initialisation des variables
         name = "Console";
         gm = GameManager.Instance;
@@ -100,6 +103,8 @@ public class Console : MonoBehaviour {
         player = gm.player;
         importantText.text = "";
         eventManager = gm.eventManager;
+        deltaTimeList = new List<float>();
+        frameRateTimer = new Timer(0.1f, setOver: true);
         arrowKeysTimer = new Timer(2);
         arrowKeysTimer.SetOver();
         HideDataCountDisplayerIfIR();
@@ -149,6 +154,8 @@ public class Console : MonoBehaviour {
 
         // On lance les messages timed
         RunTimedMessages();
+
+        UpdateFrameRate();
 	}
 
     protected void InitTimersMessages() {
@@ -1071,5 +1078,20 @@ public class Console : MonoBehaviour {
 
     public void ControllerPlugOut() {
         gm.console.AjouterMessageImportant(strings.controllerPlugOut, Console.TypeText.BASIC_TEXT, 3.0f);
+    }
+
+    protected void UpdateFrameRate() {
+        if (frameRateTimer.IsOver()) {
+            frameRateTimer.Reset();
+            float deltaTime = Time.deltaTime;
+            deltaTimeList.Add(deltaTime);
+            if (deltaTimeList.Count > 10) {
+                deltaTimeList.RemoveAt(0);
+            }
+            float meanDeltaTime = deltaTimeList.Average();
+            int fps = Mathf.RoundToInt(1.0f / meanDeltaTime);
+            int ms = Mathf.RoundToInt(meanDeltaTime * 1000.0f);
+            frameRateText.text = $"FPS : {fps} ({ms}ms)";
+        }
     }
 }
