@@ -14,6 +14,7 @@ public class TutorialTooltip : MonoBehaviour {
     public LocalizedString textString;
     public float dureeAnimation = 0.5f;
     public TMP_Text textField;
+    public RectTransform background;
 
     protected TutorialTooltipManager tutorialTooltipManager;
 
@@ -32,6 +33,8 @@ public class TutorialTooltip : MonoBehaviour {
         AsyncOperationHandle<string> handle = textString.GetLocalizedString();
         yield return handle;
         textField.text = handle.Result;
+        float buttonOkHeight = 15.0f;
+        background.sizeDelta = new Vector2(background.sizeDelta.x, textField.preferredHeight + buttonOkHeight);
     }
 
     public void OnOkPress() {
