@@ -3,11 +3,31 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Localization;
+using UnityEngine.Localization.Settings;
+using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.UI;
 
 public class TutorialTooltip : MonoBehaviour {
 
+    public LocalizedString textString;
     public float dureeDestroy = 0.5f;
+    public TMP_Text textField;
+
+    public void Start() {
+        SetText();
+        LocalizationSettings.SelectedLocaleChanged += SetText;
+    }
+
+    public void SetText(Locale l = null) {
+        StartCoroutine(CSetText());
+    }
+
+    protected IEnumerator CSetText() {
+        AsyncOperationHandle<string> handle = textString.GetLocalizedString();
+        yield return handle;
+        textField.text = handle.Result;
+    }
 
     public void OnOkPress() {
         DestroyTooltip();

@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 5498718703232544755}
   - component: {fileID: 7454286472189507691}
   - component: {fileID: 8817816182102872790}
-  - component: {fileID: 8881713302787793262}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -136,26 +135,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &8881713302787793262
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 99905880478969101}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bbd415a19dcac79448965bbe22a15aea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  localizedMessage:
-    m_TableReference:
-      m_TableCollectionName: GUID:935b749e225003c4d89dc5a758038440
-    m_TableEntryReference:
-      m_KeyId: 27725920398974976
-      m_Key: 
-    m_FallbackState: 0
-  timeBeforeShowing: 0.4
 --- !u!1 &4759424427037381246
 GameObject:
   m_ObjectHideFlags: 0
@@ -205,7 +184,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5119da088f9518b4baddd8764944474c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  textString:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
   dureeDestroy: 0.5
+  textField: {fileID: 0}
 --- !u!1 &4963342751425313737
 GameObject:
   m_ObjectHideFlags: 0
@@ -217,6 +204,7 @@ GameObject:
   - component: {fileID: 1666518090206097133}
   - component: {fileID: 6124717787086769733}
   - component: {fileID: 156191473807763903}
+  - component: {fileID: 5416977879418218413}
   m_Layer: 5
   m_Name: Fleche
   m_TagString: Untagged
@@ -281,6 +269,45 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &5416977879418218413
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4963342751425313737}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58e6e9329b8fa9846ae34e16d1d890ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  direction: {x: -1, y: 0}
+  magnitude: 10
+  frequence: 0.3
+  curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &7655831896391300887
 GameObject:
   m_ObjectHideFlags: 0
