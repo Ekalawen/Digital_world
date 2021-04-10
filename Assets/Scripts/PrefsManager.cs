@@ -52,6 +52,15 @@ public class PrefsManager {
     public static string KEYBINDING_PRECEDENT_INDICE_KEY = "keybindingPrecedentIndiceKey";
     public static string DATA_QUALITY_KEY = "dataQualityKey";
 
+    public static string HAS_DISPLAY_TUTORIAL_TOOLTIP_PREFIX = "hasDisplayTutorialTooltipPrefix"; // <==
+    public static string HAS_DISPLAY_TUTORIAL_TOOLTIP_SELECTOR_MOUVEMENT = "hasDisplayTutorialTooltipSelectorMouvement";
+    public static string HAS_DISPLAY_TUTORIAL_TOOLTIP_SELECTOR_LEVEL = "hasDisplayTutorialTooltipSelectorLevel";
+    public static string HAS_DISPLAY_TUTORIAL_TOOLTIP_SELECTOR_CADENAS = "hasDisplayTutorialTooltipSelectorCadenas";
+    public static string HAS_DISPLAY_TUTORIAL_TOOLTIP_TO_DH = "hasDisplayTutorialTooltipToDH";
+    public static string HAS_DISPLAY_TUTORIAL_TOOLTIP_OPEN_DH = "hasDisplayTutorialTooltipOpenDH";
+    public static string HAS_DISPLAY_TUTORIAL_TOOLTIP_HACKER = "hasDisplayTutorialTooltipHacker";
+    public static string HAS_DISPLAY_TUTORIAL_TOOLTIP_TO_NEXT_LEVEL = "hasDisplayTutorialTooltipSelectorToNextLevel";
+
 
     public static int GetInt(string key, int defaultValue) {
         return PlayerPrefs.HasKey(key) ? PlayerPrefs.GetInt(key) : defaultValue;

@@ -10,11 +10,15 @@ using UnityEngine.UI;
 
 public class TutorialTooltip : MonoBehaviour {
 
+    public string keySuffix;
     public LocalizedString textString;
     public float dureeDestroy = 0.5f;
     public TMP_Text textField;
 
-    public void Start() {
+    protected TutorialTooltipManager tutorialTooltipManager;
+
+    public void Initialize(TutorialTooltipManager tutorialTooltipManager) {
+        this.tutorialTooltipManager = tutorialTooltipManager;
         SetText();
         LocalizationSettings.SelectedLocaleChanged += SetText;
     }
@@ -30,14 +34,14 @@ public class TutorialTooltip : MonoBehaviour {
     }
 
     public void OnOkPress() {
-        DestroyTooltip();
+        DestroyTooltipAndNotify();
     }
 
-    protected void DestroyTooltip() {
-        StartCoroutine(CDestroyTooltip());
+    protected void DestroyTooltipAndNotify() {
+        StartCoroutine(CDestroyTooltipAndNotify());
     }
 
-    protected IEnumerator CDestroyTooltip() {
+    protected IEnumerator CDestroyTooltipAndNotify() {
         Timer timer = new Timer(dureeDestroy);
         RectTransform rect = GetComponent<RectTransform>();
         Vector2 initialScale = rect.localScale;
@@ -46,6 +50,8 @@ public class TutorialTooltip : MonoBehaviour {
             rect.localScale = initialScale * (1 - avancement);
             yield return null;
         }
+        tutorialTooltipManager.NotifyTutorialTooltipPressed(keySuffix);
         Destroy(gameObject);
     }
+
 }

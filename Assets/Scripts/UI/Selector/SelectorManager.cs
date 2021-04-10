@@ -27,6 +27,7 @@ public class SelectorManager : MonoBehaviour {
     public SelectorManagerStrings strings;
     public ArchivesReplacementStrings archivesStrings;
     public SelectorLevelRunIntroduction introductionRunner;
+    public TutorialTooltipManager tutorialTooltipManager;
 
     [Header("Parameters")]
     public float dureeFading = 0.5f;
@@ -59,6 +60,7 @@ public class SelectorManager : MonoBehaviour {
         DisplayCurrentLevel();
         CleanLastSavedLevel();
         DisplayIntroductionText();
+        tutorialTooltipManager.Initialize(this);
     }
 
     protected void CleanLastSavedLevel() {
