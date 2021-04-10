@@ -150,9 +150,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   localizedMessage:
     m_TableReference:
-      m_TableCollectionName: 
+      m_TableCollectionName: GUID:935b749e225003c4d89dc5a758038440
     m_TableEntryReference:
-      m_KeyId: 0
+      m_KeyId: 27725920398974976
       m_Key: 
     m_FallbackState: 0
   timeBeforeShowing: 0.4
@@ -165,6 +165,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8142841419219643042}
+  - component: {fileID: 3623495944127615161}
   m_Layer: 5
   m_Name: TutorialTooltip
   m_TagString: Untagged
@@ -192,6 +193,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 150, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &3623495944127615161
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4759424427037381246}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5119da088f9518b4baddd8764944474c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dureeDestroy: 0.5
 --- !u!1 &4963342751425313737
 GameObject:
   m_ObjectHideFlags: 0
@@ -457,26 +471,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1541658088367571390, guid: df108c3e51959b046aaa9a02ab191c65,
-        type: 3}
-      propertyPath: m_Color.a
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1541658088367571390, guid: df108c3e51959b046aaa9a02ab191c65,
-        type: 3}
-      propertyPath: m_Color.b
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1541658088367571390, guid: df108c3e51959b046aaa9a02ab191c65,
-        type: 3}
-      propertyPath: m_Color.g
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1541658088367571390, guid: df108c3e51959b046aaa9a02ab191c65,
-        type: 3}
-      propertyPath: m_Color.r
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5102976413086570045, guid: df108c3e51959b046aaa9a02ab191c65,
         type: 3}
       propertyPath: localizedMessage.m_TableEntryReference.m_KeyId
@@ -492,12 +486,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Button
       objectReference: {fileID: 0}
-    - target: {fileID: 6408735524314510494, guid: df108c3e51959b046aaa9a02ab191c65,
-        type: 3}
-      propertyPath: m_TargetGraphic
-      value: 
-      objectReference: {fileID: 587676122816367781, guid: c4df6176fbaa05e4492723bc3a3cc4de,
-        type: 3}
     - target: {fileID: 6408735524314510494, guid: df108c3e51959b046aaa9a02ab191c65,
         type: 3}
       propertyPath: m_Colors.m_NormalColor.b
@@ -585,13 +573,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6408735524314510494, guid: df108c3e51959b046aaa9a02ab191c65,
         type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 3623495944127615161}
+    - target: {fileID: 6408735524314510494, guid: df108c3e51959b046aaa9a02ab191c65,
+        type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6408735524314510494, guid: df108c3e51959b046aaa9a02ab191c65,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OnPlayPress
+      value: OnOkPress
+      objectReference: {fileID: 0}
+    - target: {fileID: 6408735524314510494, guid: df108c3e51959b046aaa9a02ab191c65,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: TutorialTooltip, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 6408735524314510494, guid: df108c3e51959b046aaa9a02ab191c65,
         type: 3}
