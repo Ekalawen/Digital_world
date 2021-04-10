@@ -12,7 +12,7 @@ public class TutorialTooltip : MonoBehaviour {
 
     public string keySuffix;
     public LocalizedString textString;
-    public float dureeDestroy = 0.5f;
+    public float dureeAnimation = 0.5f;
     public TMP_Text textField;
 
     protected TutorialTooltipManager tutorialTooltipManager;
@@ -21,6 +21,7 @@ public class TutorialTooltip : MonoBehaviour {
         this.tutorialTooltipManager = tutorialTooltipManager;
         SetText();
         LocalizationSettings.SelectedLocaleChanged += SetText;
+        StartAnimation();
     }
 
     public void SetText(Locale l = null) {
@@ -42,7 +43,7 @@ public class TutorialTooltip : MonoBehaviour {
     }
 
     protected IEnumerator CDestroyTooltipAndNotify() {
-        Timer timer = new Timer(dureeDestroy);
+        Timer timer = new Timer(dureeAnimation);
         RectTransform rect = GetComponent<RectTransform>();
         Vector2 initialScale = rect.localScale;
         while(!timer.IsOver()) {
@@ -54,4 +55,19 @@ public class TutorialTooltip : MonoBehaviour {
         Destroy(gameObject);
     }
 
+    protected void StartAnimation() {
+        StartCoroutine(CStartAnimation());
+    }
+
+    protected IEnumerator CStartAnimation() {
+        Timer timer = new Timer(dureeAnimation);
+        RectTransform rect = GetComponent<RectTransform>();
+        Vector2 initialScale = rect.localScale;
+        while (!timer.IsOver()) {
+            float avancement = timer.GetAvancement();
+            rect.localScale = initialScale * avancement;
+            yield return null;
+        }
+        rect.localScale = initialScale;
+    }
 }
