@@ -33,9 +33,12 @@ public class TutorialTooltipManager : MonoBehaviour {
     public RectTransform tutorialTooltipToNextLevelTransform;
 
     protected SelectorManager selectorManager;
+    protected List<GameObject> prefabsAlreadyInstantiated;
 
     public void Initialize(SelectorManager selectorManager) {
         this.selectorManager = selectorManager;
+        prefabsAlreadyInstantiated = new List<GameObject>();
+        selectorManager.onDisplayLevel.AddListener(DisplayLevelTutorialTooltips);
         DisplaySelectorTutorialTooltips();
     }
 
@@ -49,15 +52,32 @@ public class TutorialTooltipManager : MonoBehaviour {
         }
     }
 
-    protected void InstantiateTutorialTooltip(GameObject gameObject, Transform transform) {
+    protected void DisplayLevelTutorialTooltips(SelectorLevel level) {
+        if (selectorManager.GetLevelIndice(level) == 0) {
+            if (level.IsSucceeded()/* && !PrefsManager.GetBool(GetKey(tutorialTooltipToDH), false)*/) {
+                InstantiateTutorialTooltip(tutorialTooltipToDH, tutorialTooltipToDHTransform, parent: level.menuLevel.transform);
+            }
+        }
+    }
+
+    protected void InstantiateTutorialTooltip(GameObject tutorialTooltipPrefab, Transform transform, Transform parent = null) {
+        if (prefabsAlreadyInstantiated.Contains(tutorialTooltipPrefab))
+            return;
+        prefabsAlreadyInstantiated.Add(tutorialTooltipPrefab);
         Vector3 pos = transform.transform.position;
-        TutorialTooltip tutorialTooltip = Instantiate(gameObject, pos, Quaternion.identity, transform).GetComponent<TutorialTooltip>();
+        TutorialTooltip tutorialTooltip = Instantiate(tutorialTooltipPrefab, pos, Quaternion.identity, transform).GetComponent<TutorialTooltip>();
+        if (parent != null) {
+            transform.parent = parent;
+        }
         tutorialTooltip.Initialize(this);
     }
 
     public void NotifyTutorialTooltipPressed(string keySuffix) {
         PrefsManager.SetBool(GetKey(keySuffix), true);
-        DisplaySelectorTutorialTooltips();
+        if (keySuffix == GetKeySuffix(tutorialTooltipSelectorMouvement)
+         || keySuffix == GetKeySuffix(tutorialTooltipSelectorLevel)) {
+            DisplaySelectorTutorialTooltips();
+        }
     }
 
     public string GetKey(string keySuffix) {

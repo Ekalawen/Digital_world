@@ -3,11 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
 using UnityEngine.Localization.Tables;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class SelectorManager : MonoBehaviour {
 
@@ -38,6 +40,8 @@ public class SelectorManager : MonoBehaviour {
     protected bool hasLevelOpen = false;
     protected bool hasUnlockScreenOpen = false;
     protected Dictionary<GameObject, Coroutine> fadingObjects;
+    [HideInInspector]
+    public UnityEvent<SelectorLevel> onDisplayLevel;
 
     void Awake() {
         if (!_instance) { _instance = this; }
@@ -45,6 +49,7 @@ public class SelectorManager : MonoBehaviour {
 
     public IEnumerator Start() {
         fadingObjects = new Dictionary<GameObject, Coroutine>();
+        onDisplayLevel = new UnityEvent<SelectorLevel>();
         GatherPaths();
         GatherLevels();
         background.Initialize();
@@ -245,6 +250,7 @@ public class SelectorManager : MonoBehaviour {
         selectorLevel.DisplayInitialPopup();
         selectorLevel.menuLevel.Initialize(); // menuLevel.Initialize() doit être après DisplayInitialPopup() pour que l'on sache si il faut highliter les fastUI ou pas :)
         background.gameObject.SetActive(true);
+        onDisplayLevel.Invoke(selectorLevel);
         if (instantDisplay) {
             currentSelectorLevel.menuLevel.gameObject.SetActive(true);
             currentSelectorLevel.menuLevel.gameObject.GetComponent<CanvasGroup>().alpha = 1.0f;
@@ -303,8 +309,8 @@ public class SelectorManager : MonoBehaviour {
         SceneManager.LoadScene("MenuScene");
     }
 
-    public int GetLevelIndice() {
-        return 0;
+    public int GetLevelIndice(SelectorLevel level) {
+        return levels.FindIndex(l => l == level);
     }
 
     public void PlaceCameraInFrontOfCurrentLevel() {

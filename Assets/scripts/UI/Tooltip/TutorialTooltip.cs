@@ -25,6 +25,10 @@ public class TutorialTooltip : MonoBehaviour {
         StartAnimation();
     }
 
+    private void OnDestroy() {
+        LocalizationSettings.SelectedLocaleChanged -= SetText;
+    }
+
     public void SetText(Locale l = null) {
         StartCoroutine(CSetText());
     }
