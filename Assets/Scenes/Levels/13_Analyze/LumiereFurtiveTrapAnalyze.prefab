@@ -18,8 +18,11 @@ MonoBehaviour:
     type: 3}
   screenShakeMagnitude: 10
   screenShakeRoughness: 10
-  dureeDestruction: 4
-  vfx: {fileID: 8685729988737892873}
+  dureeDestructionHigh: 3
+  dureeDestructionLow: 1
+  lumiereHighVfx: {fileID: 8685729988737892873}
+  lumiereLow: {fileID: 6468940224399793546}
+  lumiereTrails: {fileID: 1031514009467291779}
   pointLight: {fileID: 903895602821907660}
   ennemiToGeneratePrefab: {fileID: 1252573298759596, guid: d49852f29496f46858edc6834aef370d,
     type: 3}
@@ -122,6 +125,11 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[4]
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 8728592846254930252, guid: 58f3cda65e595644b8565a4405711109,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 8821695202811914478, guid: 58f3cda65e595644b8565a4405711109, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 58f3cda65e595644b8565a4405711109, type: 3}
@@ -137,9 +145,21 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 729421182613281702}
   m_PrefabAsset: {fileID: 0}
+--- !u!2083052967 &1031514009467291779 stripped
+VisualEffect:
+  m_CorrespondingSourceObject: {fileID: 310678236171096869, guid: 58f3cda65e595644b8565a4405711109,
+    type: 3}
+  m_PrefabInstance: {fileID: 729421182613281702}
+  m_PrefabAsset: {fileID: 0}
 --- !u!2083052967 &8685729988737892873 stripped
 VisualEffect:
   m_CorrespondingSourceObject: {fileID: 8256934114840631727, guid: 58f3cda65e595644b8565a4405711109,
+    type: 3}
+  m_PrefabInstance: {fileID: 729421182613281702}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &6468940224399793546 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6041902634449405484, guid: 58f3cda65e595644b8565a4405711109,
     type: 3}
   m_PrefabInstance: {fileID: 729421182613281702}
   m_PrefabAsset: {fileID: 0}
