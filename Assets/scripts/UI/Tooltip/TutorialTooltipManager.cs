@@ -34,17 +34,16 @@ public class TutorialTooltipManager : MonoBehaviour {
 
     protected SelectorManager selectorManager;
     protected List<GameObject> prefabsAlreadyInstantiated;
-    protected List<TutorialTooltip> tutorialTooltipsToDestroyOnNextLevel;
+    protected List<TutorialTooltip> tutorialTooltipsPath;
 
     public void Initialize(SelectorManager selectorManager) {
         this.selectorManager = selectorManager;
         prefabsAlreadyInstantiated = new List<GameObject>();
-        tutorialTooltipsToDestroyOnNextLevel = new List<TutorialTooltip>();
+        tutorialTooltipsPath = new List<TutorialTooltip>();
         selectorManager.onDisplayLevel.AddListener(DisplayLevelTutorialTooltips);
         selectorManager.onDisplayPath.AddListener(DisplayPathTutorialTooltips);
         selectorManager.onOpenDHPath.AddListener(DisplayPathOnOpenDHTutorialTooltips);
         selectorManager.onUnlockPath.AddListener(DisplayPathOnUnlockTutorialTooltips);
-        selectorManager.onNextLevelFrompath.AddListener(DestroyPathTooltipsOnNextLevel);
         DisplaySelectorTutorialTooltips();
     }
 
@@ -67,13 +66,17 @@ public class TutorialTooltipManager : MonoBehaviour {
     }
 
     protected void DisplayPathTutorialTooltips(SelectorPath path) {
-        if (selectorManager.GetPathIndice(path) == 0) {
+        int pathIndice = selectorManager.GetPathIndice(path);
+        if (pathIndice == 0) {
             if (!PrefsManager.GetBool(GetKey(tutorialTooltipOpenDH), false)) {
                 TutorialTooltip tutorialTooltip = InstantiateTutorialTooltip(tutorialTooltipOpenDH, tutorialTooltipOpenDHTransform, parent: selectorManager.unlockScreen.transform);
                 if(tutorialTooltip != null) {
-                    tutorialTooltipsToDestroyOnNextLevel.Add(tutorialTooltip);
+                    tutorialTooltipsPath.Add(tutorialTooltip);
                 }
             }
+        }
+        foreach(TutorialTooltip tutorialTooltip in tutorialTooltipsPath) {
+            tutorialTooltip.gameObject.SetActive(pathIndice == 0);
         }
     }
 
@@ -82,7 +85,7 @@ public class TutorialTooltipManager : MonoBehaviour {
             if (!PrefsManager.GetBool(GetKey(tutorialTooltipHacker), false)) {
                 TutorialTooltip tutorialTooltip = InstantiateTutorialTooltip(tutorialTooltipHacker, tutorialTooltipHackerTransform, parent: selectorManager.unlockScreen.transform);
                 if(tutorialTooltip != null) {
-                    tutorialTooltipsToDestroyOnNextLevel.Add(tutorialTooltip);
+                    tutorialTooltipsPath.Add(tutorialTooltip);
                 }
             }
         }
@@ -93,16 +96,10 @@ public class TutorialTooltipManager : MonoBehaviour {
             if (path.IsUnlocked() && !PrefsManager.GetBool(GetKey(tutorialTooltipToNextLevel), false)) {
                 TutorialTooltip tutorialTooltip = InstantiateTutorialTooltip(tutorialTooltipToNextLevel, tutorialTooltipToNextLevelTransform, parent: selectorManager.unlockScreen.transform);
                 if(tutorialTooltip != null) {
-                    tutorialTooltipsToDestroyOnNextLevel.Add(tutorialTooltip);
+                    tutorialTooltipsPath.Add(tutorialTooltip);
                 }
             }
         }
-    }
-
-    protected void DestroyPathTooltipsOnNextLevel(SelectorPath path) {
-        //foreach(TutorialTooltip tutorialTooltip in tutorialTooltipsToDestroyOnNextLevel) {
-        //    Destroy(tutorialTooltip.gameObject);
-        //}
     }
 
     protected TutorialTooltip InstantiateTutorialTooltip(GameObject tutorialTooltipPrefab, Transform transform, Transform parent = null) {
