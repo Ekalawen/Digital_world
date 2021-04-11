@@ -19,7 +19,7 @@ public class AutoRectOffset : MonoBehaviour {
         bool forward = true;
         direction = direction.normalized;
         RectTransform rect = GetComponent<RectTransform>();
-        Vector2 initialPosition = rect.position;
+        Vector2 initialPosition = rect.localPosition;
         while(true) {
             if(timer.IsOver()) {
                 timer.Reset();
@@ -28,7 +28,7 @@ public class AutoRectOffset : MonoBehaviour {
             float avancement = timer.GetAvancement();
             avancement = curve.Evaluate(forward ? avancement : (1 - avancement));
             Vector2 position = initialPosition + direction * magnitude * avancement;
-            rect.position = position;
+            rect.localPosition = position;
             yield return null;
         }
     }
