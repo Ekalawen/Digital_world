@@ -45,7 +45,7 @@ public class TutorialTooltip : MonoBehaviour {
         DestroyTooltipAndNotify();
     }
 
-    protected void DestroyTooltipAndNotify() {
+    public void DestroyTooltipAndNotify() {
         StartCoroutine(CDestroyTooltipAndNotify());
     }
 

@@ -40,8 +40,17 @@ public class SelectorManager : MonoBehaviour {
     protected bool hasLevelOpen = false;
     protected bool hasUnlockScreenOpen = false;
     protected Dictionary<GameObject, Coroutine> fadingObjects;
+
     [HideInInspector]
     public UnityEvent<SelectorLevel> onDisplayLevel;
+    [HideInInspector]
+    public UnityEvent<SelectorPath> onDisplayPath;
+    [HideInInspector]
+    public UnityEvent<SelectorPath> onUnlockPath;
+    [HideInInspector]
+    public UnityEvent<SelectorPath> onOpenDHPath;
+    [HideInInspector]
+    public UnityEvent<SelectorPath> onNextLevelFrompath;
 
     void Awake() {
         if (!_instance) { _instance = this; }
@@ -50,6 +59,10 @@ public class SelectorManager : MonoBehaviour {
     public IEnumerator Start() {
         fadingObjects = new Dictionary<GameObject, Coroutine>();
         onDisplayLevel = new UnityEvent<SelectorLevel>();
+        onDisplayPath = new UnityEvent<SelectorPath>();
+        onUnlockPath = new UnityEvent<SelectorPath>();
+        onOpenDHPath = new UnityEvent<SelectorPath>();
+        onNextLevelFrompath = new UnityEvent<SelectorPath>();
         GatherPaths();
         GatherLevels();
         background.Initialize();
@@ -62,10 +75,10 @@ public class SelectorManager : MonoBehaviour {
         }
         InitializePaths();
         InitializeLevels();
+        tutorialTooltipManager.Initialize(this);
         DisplayCurrentLevel();
         CleanLastSavedLevel();
         DisplayIntroductionText();
-        tutorialTooltipManager.Initialize(this);
     }
 
     protected void CleanLastSavedLevel() {
@@ -273,8 +286,11 @@ public class SelectorManager : MonoBehaviour {
         return hasUnlockScreenOpen;
     }
 
-    public void SetSelectorPathUnlockScreenOpenness(bool value) {
+    public void SetSelectorPathUnlockScreenOpenness(bool value, SelectorPath path) {
         hasUnlockScreenOpen = value;
+        if(value) {
+            onDisplayPath.Invoke(path);
+        }
     }
 
     public void BackToSelector() {
@@ -311,6 +327,10 @@ public class SelectorManager : MonoBehaviour {
 
     public int GetLevelIndice(SelectorLevel level) {
         return levels.FindIndex(l => l == level);
+    }
+
+    public int GetPathIndice(SelectorPath path) {
+        return paths.FindIndex(p => p == path);
     }
 
     public void PlaceCameraInFrontOfCurrentLevel() {

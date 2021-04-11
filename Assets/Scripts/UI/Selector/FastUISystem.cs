@@ -37,6 +37,7 @@ public class FastUISystem : MonoBehaviour {
     protected SelectorPath path;
     protected SelectorLevel level;
     protected FromType fromType;
+    protected DirectionType directionType;
     protected Button unlockScreenButton;
     protected Button levelButton;
     
@@ -46,6 +47,7 @@ public class FastUISystem : MonoBehaviour {
         this.path = path;
         this.level = GetLevel(path, directionType);
         this.fromType = fromType;
+        this.directionType = directionType;
         string levelName = level.GetVisibleName();
         ChoseGoodButtons(path);
         SetNameInRect(levelName);
@@ -108,6 +110,9 @@ public class FastUISystem : MonoBehaviour {
             if (selectorManager.IsLevelAccessible(level)) {
                 path.CloseUnlockScreenForFastUI();
                 selectorManager.PlaceCameraInFrontOfInterestTransform(level.objectLevel.transform);
+                if (directionType == DirectionType.FORWARD) {
+                    selectorManager.onNextLevelFrompath.Invoke(path);
+                }
             }
             selectorManager.TryDisplayLevel(level, instantDisplay: true);
         }

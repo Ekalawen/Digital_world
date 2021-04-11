@@ -105,6 +105,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
 
     protected void SubmitGoodLocked() {
         selectorPath.UnlockPath();
+        selectorManager.onUnlockPath.Invoke(selectorPath); // Not in UnlockPath because we don't want to trigger this with cheats !
         SetBackgroundAccordingToLockState();
         SetCadenasAccordingToLockState();
         selectorPath.endLevel.objectLevel.cube.SetMaterial(focus: false);
@@ -159,6 +160,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         OpenDonneesHackeesWithCurrentTreshold(currentTreshold);
         selectorPath.HighlightPath(false);
         HighlightDataHackees(false);
+        selectorManager.onOpenDHPath.Invoke(selectorPath);
     }
 
     protected int GetCurrentTreshold() {

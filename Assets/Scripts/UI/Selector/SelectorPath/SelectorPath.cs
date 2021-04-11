@@ -149,7 +149,7 @@ public class SelectorPath : MonoBehaviour {
             unlockScreen.gameObject.SetActive(true);
             unlockScreen.gameObject.GetComponent<CanvasGroup>().alpha = 1.0f;
         }
-        selectorManager.SetSelectorPathUnlockScreenOpenness(true);
+        selectorManager.SetSelectorPathUnlockScreenOpenness(true, this);
     }
 
     public void CloseUnlockScreen(bool instantDisplay = false) {
@@ -173,7 +173,7 @@ public class SelectorPath : MonoBehaviour {
 
     protected IEnumerator CDisableScreenOpennessNextFrame() {
         yield return null;
-        selectorManager.SetSelectorPathUnlockScreenOpenness(false);
+        selectorManager.SetSelectorPathUnlockScreenOpenness(false, this);
     }
 
     public string GetPassword() {

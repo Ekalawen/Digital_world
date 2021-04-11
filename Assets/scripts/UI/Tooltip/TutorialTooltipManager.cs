@@ -34,11 +34,17 @@ public class TutorialTooltipManager : MonoBehaviour {
 
     protected SelectorManager selectorManager;
     protected List<GameObject> prefabsAlreadyInstantiated;
+    protected List<TutorialTooltip> tutorialTooltipsToDestroyOnNextLevel;
 
     public void Initialize(SelectorManager selectorManager) {
         this.selectorManager = selectorManager;
         prefabsAlreadyInstantiated = new List<GameObject>();
+        tutorialTooltipsToDestroyOnNextLevel = new List<TutorialTooltip>();
         selectorManager.onDisplayLevel.AddListener(DisplayLevelTutorialTooltips);
+        selectorManager.onDisplayPath.AddListener(DisplayPathTutorialTooltips);
+        selectorManager.onOpenDHPath.AddListener(DisplayPathOnOpenDHTutorialTooltips);
+        selectorManager.onUnlockPath.AddListener(DisplayPathOnUnlockTutorialTooltips);
+        selectorManager.onNextLevelFrompath.AddListener(DestroyPathTooltipsOnNextLevel);
         DisplaySelectorTutorialTooltips();
     }
 
@@ -54,15 +60,54 @@ public class TutorialTooltipManager : MonoBehaviour {
 
     protected void DisplayLevelTutorialTooltips(SelectorLevel level) {
         if (selectorManager.GetLevelIndice(level) == 0) {
-            if (level.IsSucceeded()/* && !PrefsManager.GetBool(GetKey(tutorialTooltipToDH), false)*/) {
+            if (level.IsSucceeded() && !PrefsManager.GetBool(GetKey(tutorialTooltipToDH), false)) {
                 InstantiateTutorialTooltip(tutorialTooltipToDH, tutorialTooltipToDHTransform, parent: level.menuLevel.transform);
             }
         }
     }
 
-    protected void InstantiateTutorialTooltip(GameObject tutorialTooltipPrefab, Transform transform, Transform parent = null) {
+    protected void DisplayPathTutorialTooltips(SelectorPath path) {
+        if (selectorManager.GetPathIndice(path) == 0) {
+            if (!PrefsManager.GetBool(GetKey(tutorialTooltipOpenDH), false)) {
+                TutorialTooltip tutorialTooltip = InstantiateTutorialTooltip(tutorialTooltipOpenDH, tutorialTooltipOpenDHTransform, parent: selectorManager.unlockScreen.transform);
+                if(tutorialTooltip != null) {
+                    tutorialTooltipsToDestroyOnNextLevel.Add(tutorialTooltip);
+                }
+            }
+        }
+    }
+
+    protected void DisplayPathOnOpenDHTutorialTooltips(SelectorPath path) {
+        if (selectorManager.GetPathIndice(path) == 0) {
+            if (!PrefsManager.GetBool(GetKey(tutorialTooltipHacker), false)) {
+                TutorialTooltip tutorialTooltip = InstantiateTutorialTooltip(tutorialTooltipHacker, tutorialTooltipHackerTransform, parent: selectorManager.unlockScreen.transform);
+                if(tutorialTooltip != null) {
+                    tutorialTooltipsToDestroyOnNextLevel.Add(tutorialTooltip);
+                }
+            }
+        }
+    }
+
+    protected void DisplayPathOnUnlockTutorialTooltips(SelectorPath path) {
+        if (selectorManager.GetPathIndice(path) == 0) {
+            if (path.IsUnlocked() && !PrefsManager.GetBool(GetKey(tutorialTooltipToNextLevel), false)) {
+                TutorialTooltip tutorialTooltip = InstantiateTutorialTooltip(tutorialTooltipToNextLevel, tutorialTooltipToNextLevelTransform, parent: selectorManager.unlockScreen.transform);
+                if(tutorialTooltip != null) {
+                    tutorialTooltipsToDestroyOnNextLevel.Add(tutorialTooltip);
+                }
+            }
+        }
+    }
+
+    protected void DestroyPathTooltipsOnNextLevel(SelectorPath path) {
+        //foreach(TutorialTooltip tutorialTooltip in tutorialTooltipsToDestroyOnNextLevel) {
+        //    Destroy(tutorialTooltip.gameObject);
+        //}
+    }
+
+    protected TutorialTooltip InstantiateTutorialTooltip(GameObject tutorialTooltipPrefab, Transform transform, Transform parent = null) {
         if (prefabsAlreadyInstantiated.Contains(tutorialTooltipPrefab))
-            return;
+            return null;
         prefabsAlreadyInstantiated.Add(tutorialTooltipPrefab);
         Vector3 pos = transform.transform.position;
         TutorialTooltip tutorialTooltip = Instantiate(tutorialTooltipPrefab, pos, Quaternion.identity, transform).GetComponent<TutorialTooltip>();
@@ -70,6 +115,7 @@ public class TutorialTooltipManager : MonoBehaviour {
             transform.parent = parent;
         }
         tutorialTooltip.Initialize(this);
+        return tutorialTooltip;
     }
 
     public void NotifyTutorialTooltipPressed(string keySuffix) {
@@ -77,6 +123,9 @@ public class TutorialTooltipManager : MonoBehaviour {
         if (keySuffix == GetKeySuffix(tutorialTooltipSelectorMouvement)
          || keySuffix == GetKeySuffix(tutorialTooltipSelectorLevel)) {
             DisplaySelectorTutorialTooltips();
+        }
+        if(keySuffix == GetKeySuffix(tutorialTooltipOpenDH)) {
+            DisplayPathOnOpenDHTutorialTooltips(selectorManager.GetPaths()[0]);
         }
     }
 
