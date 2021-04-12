@@ -1,0 +1,124 @@
+Hey @everyone !
+Et si je vous disais que la version 0.8 sortait aujourd'hui ? Interessé(e) ? Alors c'est en dessous que ça se passe !
+
+#Patch-notes Version 0.8 :
+
+
+Que ce soit la gestion du contrôleur Xbox360, l'implémentation des Datas de basse qualité pour de meilleures performances, l'affichage optionnel d'un compteur de FPS en jeu, un nouveau niveau de type Infinite Runner avec une toute nouvelle mécanique et l'ajout des Tutorial Tooltips pour guider le joueur dans sa découverte du jeu, on ne peut pas dire que cette itération de développement soit en reste ! :)
+Voyons tout ceci plus en détails ! :)
+
+
+# Gameplay
+## Gestion du contrôleur Xbox360
+On peut maintenant jouer à The Netrunner Awaken1ng avec une manette d'Xbox ! Pour cela c'est très simple, il suffit de brancher la manette sur votre ordinateur pendant que le jeu tourne.
+Vous serez notifié et les contrôles seront ajustés automatiquement.
+Pour changer à nouveau de contrôles, vous pouvez soit débrancher la manette, soit aller dans les options, dans Contrôles, et choisir AZERTY, QWERTY ou Manette Xbox360 ! :)
+Les contrôles sont plutôt intuitifs, mais au cas où :
+- Joystick gauche pour se déplacer
+- Joystick droit pour orienter la caméra
+- Trigger droit (RT) pour sauter
+- Trigger gauche (LT) pour descendre d'un mur #SHIFT
+- A pour Dash
+- X pour le Pathfinder
+- Select pour recommencer le niveau
+- Start pour mettre en pause
+Et voilà ! :)
+
+## Ennemi
+- La poussée de la Sonde a été ajustée pour qu'elle nous pousse vraiment, même si on est collé à elle dans un coin.
+- Les textes d'informations "Dissimulé !" et "Détecté !" lorsque l'on est repéré par les ennemis sont désormais à nouveau visibles.
+
+## Génération de Map
+- Ajout d'une sécurité pour absolument empêcher 2 BouncyCubes d'être trop proches l'un au-dessus de l'autre. Parce que c'est marrant 30 secondes d'être pris pour une balle de flipper, mais pas quand ça nous empêche de sauter partout ! :D
+
+## Recommencer un niveau
+- Après une longue réflexion pour savoir si recommencer le niveau (souvent en appuyant sur R) devait être compté comme une défaite au joueur, il a été décidé que cela ne compterait pas comme une défaite.
+En effet, un joueur qui lancerait une partie mais qui pour une raison ou une autre déciderait de la relancer car il n'était pas tout à fait prêt se verrait compter une défaite, ce qui semble injuste. La contrepartie de ce choix est que certains joueurs appuient sur R juste avant de perdre un niveau pour le recommencer plus vite, ces défaites ne seront alors plus prisent en compte. N'hésitez pas à utiliser cette technique ! :p
+
+## Cheat Codes
+De nouveaux Cheat Codes ont été ajoutés au jeu, saurez-vous les trouver ? ;)
+- L'un permet de ne plus être affecté par la gravité et de voler dans les airs.
+- L'autre permet de ne plus avoir de cooldowns sur les pouvoirs. Et il n'y a rien de mieux que de pouvoir dasher à l'infini ! :p
+
+## Nouveau Niveau /!\ Spoilers /!\
+Lors du processus du design de nouveaux niveaux et de nouvelles mécaniques, une problématique revenait constamment :
+Le joueur étant environ de la taille d'un Cube, comment peut-il impacter son environnement à grande échelle de telle sorte que cet impact puisse à son tour influencer la façon dont le joueur doivent s'adapter au niveau ?
+Pour vous donner un exemple, dans le niveau Inside The Transistor, les Cubes sont des Cubes brisables, si le joueur rentre en contact avec eux, ils se détruisent en 2 secondes.
+L'idée étant que le joueur détruira lui-même son environnement ce qui rendra naturellement le niveau de plus en plus difficile à parcourir.
+Oui mais le joueur dans l'espace 3D n'est qu'un point, une toute petite boule, donc avant qu'il ne détruise un grand nombre de Cubes Brisables et que le niveau deviennent difficile à parcourir, ça va prendre du temps !
+C'est d'ailleurs la raison pour laquelle il y a 10 Datas Finales dans ce niveau ;)
+
+Pour pallier à ce problème, nous avons besoin que l'interaction du joueur avec un seul Cube puisse avoir des répercussions majeures sur le reste du niveau, nous avons besoin que les Cubes soient connectés !
+Et c'est comme cela qu'est né le concept des LinkyCubes ! Les LinkyCubes sont des cubes qui sont reliés aux autres LinkyCubes adjacents à eux.
+Si l'un d'eux devait subir la moindre altération, tous les autres LinkyCubes lui étant connectés subiront les mêmes altérations !
+Pour repérer rapidement quels sont les LinkyCubes et à quels autres LinkyCubes ils sont connectés, une nouvelle texture avec des "poignées" sur les bords des Cubes a été développé, ce qui permet de voir instantanément quels cubes sont liés ou pas :)
+Pour revenir sur les Cubes Brisables de tout à l'heure, si un gros groupe de Cubes Brisables étaient Linky, et que le joueur devait ne toucher que l'un d'entre eux, alors ils se détruiraient tous en même temps, impactant ainsi de manière globale tout le niveau !
+Problème résolu ! :)
+
+Il existera plusieurs types de LinkyCubes. Chacun ayant son propre type d'activation.
+Les LinkyCubes classiques, avec des poignées en forme de carré, doivent être activés par l'environnement extérieur.
+Les SwappyCubes sont des LinkyCubes qui s'activent eux-même périodiquement ! Ils deviennent ainsi tangibles et intangibles périodiquement, vous laissant soit passer à travers eux, soit les utiliser pour sauter dessus, et toujours en groupe !
+C'est le type de Cube qui a été utilisé pour le nouveau niveau intitulé pour le moment : SwapHighway !
+Dans ce niveau, les Blocks sont constitués majoritairement de SwappyCubes qui vous forcent (en étant là ou pas) à choisir à chaque fois une façon différente de traverser le Block. Souvent soit à droite soit à gauche :)
+Pour tous ces Blocks, il était important que quel que soit le timing auquel le joueur abordait le Block, il y ait toujours une façon directe de le traverser.
+Pour les SwappyCubes, il était aussi important de pouvoir visualiser à l'avance quand ceux-ci allaient changer d'état. Pour cela un cercle d'impact a été ajouté. Le cercle commence tout petit, et lorsqu'il recouvre tous les SwappyCubes, ils changent alors d'état. Vous pouvez ainsi facilement anticiper.
+
+
+# Optimisations
+Dans le but de pouvoir supporter les LinkyCubes et les SwappyCubes, une nouvelle structure de données à dû être mise en place pour limiter le coût en performances.
+Cette structure de données est un Octree. Elle consiste à découper l'espace en gros blocks virtuels et à y stocker chacun des Cubes dans son espace virtuel correspondant.
+Ce qui nous permet par la suite de les retrouver dans l'espace virtuel auquel ils appartiennent. Plutôt que de chercher dans toute la scène.
+Si vous êtes curieux : https://fr.wikipedia.org/wiki/Octree ;)
+
+
+# Visual Effects
+- Ajout d'un effet de Warp carrément cool lors de l'utilisation du Dash015 ! :)
+- Les Cubes Transparents sont maintenant plus bleutés et plus visibles dans FurtiveGrid !
+
+
+# Son
+- Le volume de la musique des menus commence par défaut à 0.5 au lieu de 1.0.
+
+
+# Equilibrage
+- Le volume du son d'un pouvoir à nouveau disponible a été augmenté de 0.25 à 0.6.
+- Certains Blocks du niveau BounceHighway forçaient à faire ralentir le joueur dans sa course, ils ont été adaptés pour ne plus avoir à ralentir.
+- Ajout d'un nouveau Block demandant d'enchaîner 3 BouncyCubes à la suite au niveau BounceHighway :)
+- La gravité n'est plus supprimée lors d'un Dash015 si l'on va vers le bas, ce qui rend le Dash015 plus efficace pour descendre mais tout aussi efficace pour monter.
+- Le Block de la "fenêtre dans un mur" du niveau SecondRunner a été simplifié.
+
+# Interface Utilisateur
+- Lorsque le jeu est mis en pause, les sons sont également mis en pause.
+- La caméra du Sélecteur de niveau a changé. Son axe vertical est maintenant figé, ce qui donne une impression plus nette.
+- Les raccourcis Z et S pour faire avancer la caméra du Sélecteur de niveau fonctionnent à nouveau.
+- Ajout d'une instruction expliquant comment utiliser les BouncyCubes au début du niveau BounceHighway :)
+- Dans le menu de Pause, le bouton Return() pour revenir au menu a été remplacé par un bouton Menu() pour plus de clarté.
+- Ajout d'une astuce dans les Data Hackées() vers le niveau DiscoverOfSondes nous indiquant que si notre Passe est presque bon, on aura des informations sur l'ajout, la suppression et le remplacement de caractères à effectuer pour arriver au bon Passe.
+- Dans l'écran de chargement, il a été clarifié que les Pouvoirs sont des Pouvoirs (déjà x)), qu'ils ne sont pas encore débloqués, et à quel niveau ils seront débloqués !
+- Réduction de la police de caractère des Pouvoirs dans l'écran de chargement pour éviter un chevauchement.
+
+## Tutorial Tooltips
+Les Tutorial Tooltips sont des Tooltips (des info-bulles) qui restent à l'écran pour nous donner des conseils sur comment utiliser l'interface.
+Les Tutorial Tooltips sont accompagnés d'une petite flèche vous montrant exactement l'élément de l'interface auquel le Tutorial Tooltip fait référence.
+- Un Tutorial Tooltip pour expliquer comment se déplacer dans le Selecteur de niveau.
+- Un Tutorial Tooltip pour expliquer comment accéder à un niveau dans le Selecteur de niveau.
+- Un Tutorial Tooltip pour expliquer comment accéder aux Datas Hackées() dans le Selecteur de niveau.
+- Un Tutorial Tooltip pour expliquer comment accéder aux Datas Hackées() depuis le menu d'un niveau.
+- Un Tutorial Tooltip pour expliquer comment ouvrir les Datas Hackées() depuis les Data Hackées(). (Non c'est pas ambiguë, m'enfin !)
+- Un Tutorial Tooltip pour expliquer comment hacker les Datas Hackées() avec le mot de passe.
+- Un Tutorial Tooltip pour expliquer comment accéder au niveau suivant une fois les Data Hackées() hackées.
+- Un Tutorial Tooltip pour expliquer qu'il faut refaire le niveau précédent pour déverrouiller plus de Paliers.
+
+## Nouvelles Options
+On a 2 nouvelles options pour cette version !
+
+### Compteur d'Images Par Secondes (FPS)
+Vous pouvez visualiser un compteur de FPS en bas à gauche de l'écran, juste au-dessus du Terminal.
+Pour cela rendez-vous dans les options dans Gameplay/FPS et cochez la case :)
+C'est une fonctionnalité très pratique pour vérifier que vous avez des performances suffisantes.
+Le minimum de FPS semble être 30, en dessous le jeu sera réellement pénible à jouer. Au-dessus de 60 tout devrait se passer parfaitement ! :)
+
+### Datas basse qualité
+Il est maintenant possible d'avoir des Datas de basse qualité à la place des Datas gourmandes en GPU actuelles.
+Elles sont certes un peu moins jolis, mais bien plus performantes et tout aussi (voir plus) lisibles ! :)
+Elles permettent donc d'améliorer les performances du jeu si vous descendez un peu trop bas en FPS (en dessous de 30 par exemple).
