@@ -89,6 +89,7 @@ namespace UnityEngine.Rendering.Universal
 
             if (momentRecorder != null && IsMainCamera(ref renderingData)) {
                 momentRecorder.OnCustomRenderImage(renderTextureSource);
+                RenderTexture.active = null;
                 renderTextureSource.Release();
             }
         }

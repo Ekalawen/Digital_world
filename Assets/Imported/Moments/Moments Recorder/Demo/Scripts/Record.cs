@@ -64,10 +64,9 @@ public class Record : MonoBehaviour
 		//m_Recorder.FlushMemory();
 	}
 
-	void Update()
-	{
-		if (Input.GetKeyDown(KeyCode.Space))
-		{
+#if UNITY_EDITOR
+	void Update() {
+		if (Input.GetKeyDown(KeyCode.G)) {
 			// Compress & save the buffered frames to a gif file. We should check the State
 			// of the Recorder before saving, but for the sake of this example we won't, so
 			// you'll see a warning in the console if you try saving while the Recorder is
@@ -76,6 +75,7 @@ public class Record : MonoBehaviour
 			m_Progress = 0f;
 		}
 	}
+#endif
 
 	void OnGUI()
 	{
@@ -84,11 +84,12 @@ public class Record : MonoBehaviour
 			GUILayout.BeginVertical();
 
 				GUILayout.Space(10f);
-				GUILayout.Label("Press [SPACE] to export the buffered frames to a gif file.");
-				GUILayout.Label("Recorder State : " + m_Recorder.State.ToString());
+                //GUILayout.Label("Press [G] to export the buffered frames to a gif file.");
 
-				if (m_IsSaving)
-					GUILayout.Label("Progress Report : " + m_Progress.ToString("F2") + "%");
+                if (m_Recorder.State == RecorderState.PreProcessing ||m_IsSaving) {
+                    GUILayout.Label("Recorder State : " + m_Recorder.State.ToString());
+                    GUILayout.Label("Progress Report : " + m_Progress.ToString("F2") + "%");
+                }
 
 				if (!string.IsNullOrEmpty(m_LastFile))
 					GUILayout.Label("Last File Saved : " + m_LastFile);
