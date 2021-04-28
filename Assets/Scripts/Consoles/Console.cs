@@ -52,6 +52,7 @@ public class Console : MonoBehaviour {
 	public int tailleTexte; // La taille du texte affiché
 
     [Header("Pouvoirs")]
+    public GameObject pouvoirsCanvas;
     public PouvoirDisplayInGame pouvoirDisplayA;
     public PouvoirDisplayInGame pouvoirDisplayE;
     public PouvoirDisplayInGame pouvoirDisplayLeftClick;
@@ -91,6 +92,7 @@ public class Console : MonoBehaviour {
     protected List<float> deltaTimeList;
     protected Timer frameRateTimer;
     protected bool showFrameRate;
+    protected bool isConsoleVisible = true;
 
     public virtual void Initialize()
     {
@@ -1018,7 +1020,7 @@ public class Console : MonoBehaviour {
     }
 
     public void DisplayEscapeButton() {
-        escapeButton.SetActive(true);
+        escapeButton.SetActive(IsConsoleVisible());
     }
 
     public void NotifyPlayerToPressShift() {
@@ -1033,7 +1035,7 @@ public class Console : MonoBehaviour {
     }
 
     public void OpenPauseMenu() {
-        pauseMenu.SetActive(true);
+        pauseMenu.SetActive(IsConsoleVisible());
     }
 
     public void ClosePauseMenu() {
@@ -1103,5 +1105,30 @@ public class Console : MonoBehaviour {
             int ms = Mathf.RoundToInt(meanDeltaTime * 1000.0f);
             frameRateText.text = $"FPS : {fps} ({ms}ms)";
         }
+    }
+
+    public bool IsConsoleVisible() {
+        return isConsoleVisible;
+    }
+
+    public void SetConsoleVisibility(bool isVisible)
+    {
+        isConsoleVisible = isVisible;
+        textContainer.SetActive(isVisible);
+        importantText.gameObject.SetActive(isVisible);
+        dataCountDisplayer.gameObject.SetActive(isVisible);
+        frameRateText.gameObject.SetActive(isVisible);
+        pouvoirsCanvas.SetActive(isVisible);
+        escapeButton.SetActive(isVisible && gm.eventManager.IsGameOver());
+        pauseMenu.SetActive(isVisible && gm.IsPaused());
+        if (gm.GetMapType() == MenuLevel.LevelType.REGULAR) {
+            gm.timerManager.timerDisplayer.gameObject.SetActive(isVisible);
+        } else {
+            gm.GetInfiniteMap().nbBlocksDisplayer.gameObject.SetActive(isVisible);
+        }
+    }
+
+    public void SwapConsoleVisibility() {
+        SetConsoleVisibility(!IsConsoleVisible());
     }
 }

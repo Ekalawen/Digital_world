@@ -24,6 +24,7 @@ public class CheatCodeManager : MonoBehaviour {
     public List<KeyCode> plus100DataCount;
     public List<KeyCode> gravityZeroCode;
     public List<KeyCode> cooldownsZeroCode;
+    public List<KeyCode> hideConsoleCode;
 
     protected GameManager gm;
     protected List<CheatCode> cheatCodes;
@@ -129,6 +130,12 @@ public class CheatCodeManager : MonoBehaviour {
         cooldownsZeroCheatCode.code = cooldownsZeroCode;
         cooldownsZeroCheatCode.action = gm.player.SetPouvoirsCooldownZeroSwap;
         cheatCodes.Add(cooldownsZeroCheatCode);
+
+        // Hide Console
+        CheatCode hideConsoleCheatCode = new CheatCode();
+        hideConsoleCheatCode.code = hideConsoleCode;
+        hideConsoleCheatCode.action = gm.console.SwapConsoleVisibility;
+        cheatCodes.Add(hideConsoleCheatCode);
     }
 
     public void Update() {
