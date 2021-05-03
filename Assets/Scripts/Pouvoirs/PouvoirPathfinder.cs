@@ -11,7 +11,9 @@ public class PouvoirPathfinder : IPouvoir {
     public bool detectItems = true;
     public float dureePath = 3.0f;
     public float vitessePath = 30.0f;
+    [ColorUsage(true, true)]
     public Color lumierePathColor = Color.yellow;
+    [ColorUsage(true, true)]
     public Color itemPathColor = Color.magenta;
 
     protected override bool UsePouvoir() {

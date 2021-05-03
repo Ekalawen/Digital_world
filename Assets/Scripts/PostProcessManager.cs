@@ -29,6 +29,7 @@ public class PostProcessManager : MonoBehaviour {
 
     [Header("Skybox")]
     public Color skyboxRectangleColor;
+    public float skyboxRectangleColorIntensity;
     public float skyboxProportionRectangles = 0.4f;
     public float skyboxProportionRectanglesCriticalBound = 0.18f;
     public float skyboxScrollSpeedPower = 3.0f;
@@ -59,10 +60,15 @@ public class PostProcessManager : MonoBehaviour {
     }
 
     protected void ResetSkyboxParameters() {
-        RenderSettings.skybox.SetColor("_RectangleColor", skyboxRectangleColor);
+        RenderSettings.skybox.SetColor("_RectangleColor", GetSkyboxHDRColor(skyboxRectangleColor));
         RenderSettings.skybox.SetFloat("_ProportionRectangles", skyboxProportionRectangles);
         RenderSettings.skybox.SetFloat("_ScrollSpeedPower", skyboxScrollSpeedPower);
         RenderSettings.skybox.SetFloat("_VariationsAmplitude", skyboxVariationsAmplitude);
+    }
+
+    public Color GetSkyboxHDRColor(Color color) {
+        return color;
+        //return color * Mathf.Pow(2, skyboxRectangleColorIntensity);
     }
 
     public void UpdateGripEffect(Player.EtatPersonnage previousState) {

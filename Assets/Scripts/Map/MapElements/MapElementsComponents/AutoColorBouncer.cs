@@ -10,6 +10,7 @@ public class AutoColorBouncer : MonoBehaviour {
     public float inBounceTime = 0.0f;
     public float timeToNormalSize = 0.2f;
     public float startingTime = 0.0f;
+    [ColorUsage(true, true)]
     public Color colorToBounceTo = Color.red;
     public bool shouldAlsoModifyEmissionColor = false;
 

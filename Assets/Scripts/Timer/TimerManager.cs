@@ -102,6 +102,7 @@ public class TimerManager : MonoBehaviour {
     protected void UpdateSkyboxColorBasedOnRemainingTime() {
         if (gm.GetMapType() == MenuLevel.LevelType.REGULAR) {
             Color color = GetColorBasedOnRemainingTime(gm.console.basicColor, gm.console.ennemiColor);
+            color = gm.postProcessManager.GetSkyboxHDRColor(color);
             RenderSettings.skybox.SetColor("_RectangleColor", color);
             float avancement = MathCurves.LinearReversed(5, 20, GetRemainingTime());
             float proportion = MathCurves.Linear(gm.postProcessManager.skyboxProportionRectanglesCriticalBound, gm.postProcessManager.skyboxProportionRectangles, avancement);
