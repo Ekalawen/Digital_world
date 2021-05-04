@@ -6,8 +6,7 @@ using UnityEngine;
 public static class MathTools
 {
 
-    public static bool IsRounded(Vector3 pos)
-    {
+    public static bool IsRounded(Vector3 pos) {
         return Mathf.Round(pos.x) == pos.x && Mathf.Round(pos.y) == pos.y && Mathf.Round(pos.z) == pos.z;
     }
 
@@ -20,8 +19,13 @@ public static class MathTools
         return res;
     }
 
-    public static Vector3Int RoundToInt(Vector3 pos)
-    {
+    public static float CubeDistance(Vector3 v1, Vector3 v2) {
+        Vector3Int start = RoundToInt(v1);
+        Vector3Int end = RoundToInt(v2);
+        return Mathf.Abs(start.x - end.x) + Mathf.Abs(start.y - end.y) + Mathf.Abs(start.z - end.z);
+    }
+
+    public static Vector3Int RoundToInt(Vector3 pos) {
         Vector3Int res = new Vector3Int();
         res.x = (int)Mathf.Round(pos.x);
         res.y = (int)Mathf.Round(pos.y);

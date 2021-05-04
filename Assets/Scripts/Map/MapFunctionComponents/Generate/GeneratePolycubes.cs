@@ -81,7 +81,7 @@ public class GeneratePolycubes : GenerateCubesMapFunction {
         }
 
         Vector3 chosenPosition = MathTools.GetOne(emptyPositions);
-        while(!Polycube.IsGoodStartingPosition(chosenPosition, map) && emptyPositions.Count > 1) {
+        while(!Polycube.IsGoodStartingPosition(chosenPosition, makeSpaceArroundAtEndDistance, map) && emptyPositions.Count > 1) {
             emptyPositions.Remove(chosenPosition);
             chosenPosition = MathTools.GetOne(emptyPositions);
         }

@@ -337,6 +337,12 @@ public class MapManager : MonoBehaviour {
         return cubes;
     }
 
+    public List<Cube> GetCubesAtLessThanCubeDistance(Vector3 center, int cubeDistance) {
+        List<Cube> cubesInRange = GetCubesInBox(center, Vector3.one * cubeDistance);
+        cubesInRange = cubesInRange.FindAll(c => MathTools.CubeDistance(c.transform.position, center) <= cubeDistance);
+        return cubesInRange;
+    }
+
     public List<Cube> GetCubesInLocation(Vector3 roundedLocation) {
         List<Cube> cubes = new List<Cube>();
         roundedLocation = MathTools.Round(roundedLocation);
