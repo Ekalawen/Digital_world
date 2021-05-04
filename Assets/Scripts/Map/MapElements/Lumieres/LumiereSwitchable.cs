@@ -44,6 +44,9 @@ public class LumiereSwitchable : Lumiere {
 
     protected void CheckNotCollideWithPlayer() {
         if (state == LumiereSwitchableState.ON) {
+            if (gm == null) {
+                gm = GameManager.Instance;
+            }
             Player player = gm.player;
             if (player != null) {
                 float playerDistance = Vector3.Distance(player.transform.position, transform.position);

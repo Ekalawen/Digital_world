@@ -49,14 +49,35 @@ VisualEffect:
   m_ResourceVersion: 1
   m_PropertySheet:
     m_Float:
-      m_Array: []
+      m_Array:
+      - m_Value: 6
+        m_Name: Lenght
+        m_Overridden: 1
+      - m_Value: 1.5
+        m_Name: Lifetime
+        m_Overridden: 1
+      - m_Value: 0.5
+        m_Name: TimeAtMaxLength
+        m_Overridden: 1
+      - m_Value: 0.15
+        m_Name: Thickness
+        m_Overridden: 1
+      - m_Value: 0.4
+        m_Name: DistorsionAmount
+        m_Overridden: 1
+      - m_Value: 20
+        m_Name: NoiseScale
+        m_Overridden: 1
     m_Vector2f:
-      m_Array: []
+      m_Array:
+      - m_Value: {x: 1.4, y: 0.875}
+        m_Name: NoiseSpeed
+        m_Overridden: 1
     m_Vector3f:
       m_Array: []
     m_Vector4f:
       m_Array:
-      - m_Value: {x: 4.167909, y: 8.158461, z: 16.937674, w: 1}
+      - m_Value: {x: 1.0419773, y: 2.0396152, z: 4.2344184, w: 1}
         m_Name: LightningColor
         m_Overridden: 1
     m_Uint:
@@ -93,9 +114,6 @@ VFXRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -138,6 +156,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8165824457085437665}
+  - component: {fileID: 7797637688863338381}
   m_Layer: 0
   m_Name: Lighning
   m_TagString: Untagged
@@ -160,3 +179,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7797637688863338381
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3096335609913929892}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a23d1e81f3eca941b5683e7dd6d6299, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vitesse: 5
+  durationAfterArriving: 1
+  vfx: {fileID: 7565811269512263925}

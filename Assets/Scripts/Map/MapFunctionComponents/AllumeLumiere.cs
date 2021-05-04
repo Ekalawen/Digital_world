@@ -9,9 +9,9 @@ public class AllumeLumiere : MonoBehaviour {
     public enum AllumageType { PROCHE, ELOIGNE }
 
     public AllumageType type = AllumageType.PROCHE;
-    public bool shouldDrawRaycastToNewLumiere = true;
-    [ConditionalHide("shouldDrawRaycastToNewLumiere")]
-    public GameObject trailPrefab;
+    public bool shouldThrowLightningToNewLumiere = true;
+    [ConditionalHide("shouldThrowLightningToNewLumiere")]
+    public GameObject lightningPrefab;
 
     protected GameManager gm;
     protected MapManager map;
@@ -34,13 +34,13 @@ public class AllumeLumiere : MonoBehaviour {
         chosenOneSwitchable.SetState(LumiereSwitchable.LumiereSwitchableState.ON);
         chosenOneSwitchable.TriggerLightExplosion();
 
-        TraceRay(position, chosenOneSwitchable.transform.position);
+        ThrowLightning(position, chosenOneSwitchable.transform.position);
     }
 
-    protected void TraceRay(Vector3 from, Vector3 to) {
-        if (shouldDrawRaycastToNewLumiere) {
-            Trail trail = Instantiate(trailPrefab, from, Quaternion.identity).GetComponent<Trail>();
-            trail.SetTarget(to);
+    protected void ThrowLightning(Vector3 from, Vector3 to) {
+        if (shouldThrowLightningToNewLumiere) {
+            Lightning lightning = Instantiate(lightningPrefab, from, Quaternion.identity).GetComponent<Lightning>();
+            lightning.Initialize(from, to);
         }
     }
 
