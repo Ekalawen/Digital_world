@@ -21,7 +21,7 @@ public class LinkyCubeComponent : MonoBehaviour {
     }
 
     protected void RegisterVoisins() {
-        linkyVoisins = map.GetVoisinsPleins(cube.transform.position).Select(pos => map.GetCubeAt(pos)).ToList();
+        linkyVoisins = map.GetVoisinsPleinsAll(cube.transform.position).Select(pos => map.GetCubeAt(pos)).ToList();
         linkyVoisins = linkyVoisins.FindAll(c => c.IsLinky());
         foreach(Cube voisin in linkyVoisins) {
             voisin.GetLinkyCubeComponent().AddLinkyVoisin(cube);

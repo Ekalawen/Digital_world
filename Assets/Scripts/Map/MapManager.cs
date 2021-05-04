@@ -278,6 +278,14 @@ public class MapManager : MonoBehaviour {
         return GetCubeAt(new Vector3(x, y, z));
     }
 
+    public bool IsCubeAt(Vector3 pos) {
+        return GetCubeAt(pos) != null;
+    }
+
+    public bool IsCubeAt(float x, float y, float z) {
+        return GetCubeAt(new Vector3(x, y, z));
+    }
+
     public List<Cube> GetCubesInSphere(Vector3 center, float radius) {
         List<Cube> cubes = GetRegularCubesInSphere(center, radius);
         cubes.AddRange(nonRegularOctree.GetInSphere(center, radius));
@@ -668,7 +676,7 @@ public class MapManager : MonoBehaviour {
         return res;
     }
 
-    public List<Vector3> GetVoisinsPleins(Vector3 pos) {
+    public List<Vector3> GetVoisinsPleinsAll(Vector3 pos) {
         List<Vector3> res = new List<Vector3>();
         float i = pos.x, j = pos.y, k = pos.z;
         // DROITE

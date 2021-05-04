@@ -50,6 +50,10 @@ public static class MathTools
         return Random.Range(range.x, range.y + 1);
     }
 
+    public static T GetOne<T>(List<T> vector) {
+        return vector[UnityEngine.Random.Range(0, vector.Count)];
+    }
+
     public static bool AreListEqual<T>(List<T> l1, List<T> l2) {
         if (l1.Count != l2.Count)
             return false;

@@ -12,7 +12,8 @@ public abstract class CubeEnsemble : MapElement {
         MUR,
         PONT,
         SPIKES,
-        SURFACE_INTERPOLANTE
+        SURFACE_INTERPOLANTE,
+        POLYCUBE,
     };
 
     protected List<Cube> cubes;
