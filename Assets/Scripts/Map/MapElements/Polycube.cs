@@ -70,6 +70,7 @@ public class Polycube : CubeEnsemble {
     }
 
     protected void MakeSpaceArroundAtEnd(int makeSpaceArroundAtEndDistance) {
+        // Rien pour le moment
     }
 
     protected void AssertGoodStartingPosition() {
