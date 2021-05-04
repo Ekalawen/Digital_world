@@ -22,7 +22,6 @@ public class PouvoirDash : IPouvoir {
     protected void RemoveGravityEffect(Vector3 direction) {
         float angle = Mathf.Abs(Vector3.Angle(direction, gm.gravityManager.Down()));
         if (90 - angle <= removeGravityTresholdAngle) {
-            Debug.Log($"angle = {angle}");
             player.RemoveGravityEffectFor(duree);
         }
     }

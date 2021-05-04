@@ -9,12 +9,12 @@ public class Polycube : CubeEnsemble {
     public Vector3 depart;
     public int nbInitCubes = 5;
 
-    public Polycube(Vector3 depart, int nbInitCubes, int makeSpaceArroundAtEndDistance, bool preserveMapBordure = false) : base() {
+    public Polycube(Vector3 depart, int nbInitCubes, int makeSpaceArroundAtEndDistance, bool stayInMap) : base() {
         this.depart = depart;
         this.nbInitCubes = nbInitCubes;
 
         AssertGoodStartingPosition();
-        GeneratePolycube(preserveMapBordure);
+        GeneratePolycube(stayInMap);
         MakeSpaceArroundAtEnd(makeSpaceArroundAtEndDistance);
     }
 
@@ -26,15 +26,15 @@ public class Polycube : CubeEnsemble {
         cubeEnsembleType = CubeEnsembleType.POLYCUBE;
     }
 
-    protected void GeneratePolycube(bool preserveMapBordure) {
+    protected void GeneratePolycube(bool stayInMap) {
         int nbCubesToCreate = nbInitCubes;
         CreateCube(depart);
         nbCubesToCreate--;
 
         for(int i = 0; i < nbCubesToCreate; i++) {
             List<Vector3> voisinsLibres = GetPossiblesVoisins();
-            if (preserveMapBordure) {
-                voisinsLibres = voisinsLibres.FindAll(v => map.IsInInsidedRegularMap(v));
+            if (stayInMap) {
+                voisinsLibres = voisinsLibres.FindAll(v => map.IsInRegularMap(v));
             }
             if(voisinsLibres.Count == 0) {
                 nbInitCubes -= nbCubesToCreate - i;

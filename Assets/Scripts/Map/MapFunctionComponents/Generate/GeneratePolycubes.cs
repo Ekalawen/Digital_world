@@ -9,17 +9,29 @@ public class GeneratePolycubes : GenerateCubesMapFunction {
 
     public class NoPolycubeStartingPositionException : Exception {};
 
+    public enum GenerationMode {
+        COUNT,
+        UNTIL_FULL_SPACE,
+    }
+
+    public GenerationMode generationMode;
+    [ConditionalHide("generationMode", GenerationMode.COUNT)]
     public int nbPolycubes = 1;
     public Vector2Int nbInitCubesRange = new Vector2Int(5, 10);
     public int makeSpaceArroundAtEndDistance = 0;
-    public bool preserveMapBordure = true;
+    public bool stayInMap = true;
 
     public override void Activate() {
         GenerateAllPolycubes();
     }
 
     protected List<Polycube> GenerateAllPolycubes() {
-        List<Polycube> polycubes = GenerateNPolycubes(nbPolycubes);
+        List<Polycube> polycubes = null;
+        if(generationMode == GenerationMode.COUNT) {
+            polycubes = GenerateNPolycubes(nbPolycubes);
+        } else if (generationMode == GenerationMode.UNTIL_FULL_SPACE) {
+            polycubes = GeneratePolycubesUntilFullSpace();
+        }
         return polycubes;
     }
 
@@ -35,11 +47,24 @@ public class GeneratePolycubes : GenerateCubesMapFunction {
         return polycubes;
     }
 
+    protected List<Polycube> GeneratePolycubesUntilFullSpace() {
+        List<Polycube> polycubes = new List<Polycube>();
+        int kmax = 1000; // 200 pour du 13^3
+        for(int k = 0; k < kmax; k++) { // On ne fait pas de boucle while !!!
+            Polycube polycube = GeneratePolycube();
+            if(polycube == null) { // On ne peut plus en générer !
+                break;
+            }
+            polycubes.Add(polycube);
+        }
+        return polycubes;
+    }
+
     protected Polycube GeneratePolycube() {
         try {
             Vector3 depart = GetPolycubeStartingPosition();
             int nbInitCubes = MathTools.RandBetween(nbInitCubesRange);
-            Polycube polycube = new Polycube(depart, nbInitCubes, makeSpaceArroundAtEndDistance, preserveMapBordure);
+            Polycube polycube = new Polycube(depart, nbInitCubes, makeSpaceArroundAtEndDistance, stayInMap);
             return polycube;
         } catch(NoPolycubeStartingPositionException) {
             return null;
@@ -48,13 +73,19 @@ public class GeneratePolycubes : GenerateCubesMapFunction {
 
     protected Vector3 GetPolycubeStartingPosition() {
         List<Vector3> emptyPositions = map.GetAllEmptyPositions();
+        if(stayInMap) {
+            emptyPositions = emptyPositions.FindAll(v => map.IsInRegularMap(v));
+        }
+        if(emptyPositions.Count == 0) {
+            throw new NoPolycubeStartingPositionException();
+        }
 
         Vector3 chosenPosition = MathTools.GetOne(emptyPositions);
-        while(!Polycube.IsGoodStartingPosition(chosenPosition, map) && emptyPositions.Count > 0) {
+        while(!Polycube.IsGoodStartingPosition(chosenPosition, map) && emptyPositions.Count > 1) {
             emptyPositions.Remove(chosenPosition);
             chosenPosition = MathTools.GetOne(emptyPositions);
         }
-        if(emptyPositions.Count == 0) {
+        if(emptyPositions.Count <= 1) {
             throw new NoPolycubeStartingPositionException();
         }
 
