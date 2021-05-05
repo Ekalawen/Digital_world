@@ -15,12 +15,12 @@ public class SwappyCubesHolderManager : MonoBehaviour {
     protected List<SwappyCubesHolder> holders;
     protected Texture2D linkyTexture;
 
-    public void Initialize() {
+    public void Initialize(bool gatherCubesInChildren) {
         gm = GameManager.Instance;
         linkyTexture = Resources.Load<Texture2D>("linky_cube_circle");
         holders = GatherHolders();
         foreach(SwappyCubesHolder holder in holders) {
-            holder.Initialize(this);
+            holder.Initialize(this, gatherCubesInChildren);
         }
     }
 

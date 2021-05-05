@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class SwappyCubesHolder : MonoBehaviour {
 
-    public float previsualisationDuration = 0.5f;
+    public float previsualisationDuration = 1f;
     public List<int> intervalToDisable;
     public List<int> intervalToEnable;
 
@@ -15,10 +15,12 @@ public class SwappyCubesHolder : MonoBehaviour {
     protected SwappyCubesHolderManager manager;
 
 
-    public virtual void Initialize(SwappyCubesHolderManager manager) {
+    public virtual void Initialize(SwappyCubesHolderManager manager, bool gatherCubesInChildren) {
         gm = GameManager.Instance;
         this.manager = manager;
-        cubes = GatherCubes();
+        if (gatherCubesInChildren) {
+            cubes = GatherCubes();
+        }
     }
 
     public void SetCubesLinky(int initialInterval, Texture2D linkyTexture) {
@@ -59,6 +61,10 @@ public class SwappyCubesHolder : MonoBehaviour {
         } else if (intervalToEnable.Contains(currentInterval)) {
             SetCubesVisibleState(true, previsualisationDuration);
         }
+    }
+
+    public void SetCubes(List<Cube> cubesEnsemble) {
+        cubes = cubesEnsemble;
     }
 
     public void SetInitialVisibleState(int initialInterval) {

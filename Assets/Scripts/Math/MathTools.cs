@@ -50,8 +50,12 @@ public static class MathTools
         }
     }
 
+    public static int RandBetween(int startInclusive, int endInclusive) {
+        return Random.Range(startInclusive, endInclusive + 1);
+    }
+
     public static int RandBetween(Vector2Int range) {
-        return Random.Range(range.x, range.y + 1);
+        return RandBetween(range.x, range.y);
     }
 
     public static T GetOne<T>(List<T> vector) {
@@ -202,5 +206,13 @@ public static class MathTools
 
     public static Vector3 VecMul(Vector3 vector1, Vector3 vector2) {
         return new Vector3(vector1.x * vector2.x, vector1.y * vector2.y, vector1.z * vector2.z);
+    }
+
+    public static bool IsAdjacent(Cube c1, Cube c2) {
+        return IsAdjacent(c1.transform.position, c2.transform.position);
+    }
+
+    public static bool IsAdjacent(Vector3 v1, Vector3 v2) {
+        return IsRounded(v1) && IsRounded(v2) && CubeDistance(v1, v2) == 1;
     }
 }

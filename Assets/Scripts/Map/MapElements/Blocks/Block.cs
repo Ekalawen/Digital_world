@@ -66,7 +66,7 @@ public class Block : MonoBehaviour {
                 cubes.AddRange(randomCubes.GetChosenCubesAndDestroyOthers());
             SwappyCubesHolderManager swappyCubesHolderManager = child.gameObject.GetComponent<SwappyCubesHolderManager>();
             if (swappyCubesHolderManager != null) {
-                swappyCubesHolderManager.Initialize();
+                swappyCubesHolderManager.Initialize(gatherCubesInChildren: true);
                 cubes.AddRange(swappyCubesHolderManager.GetCubes());
             }
         }

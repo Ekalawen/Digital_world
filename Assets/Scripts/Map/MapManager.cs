@@ -282,6 +282,11 @@ public class MapManager : MonoBehaviour {
         return GetCubeAt(pos) != null;
     }
 
+    public bool IsEnabledCubeAt(Vector3 pos) {
+        Cube cube = GetCubeAt(pos);
+        return cube != null && cube.IsEnabled();
+    }
+
     public bool IsCubeAt(float x, float y, float z) {
         return GetCubeAt(new Vector3(x, y, z));
     }
@@ -1267,4 +1272,5 @@ public class MapManager : MonoBehaviour {
             lumiere.SetLumiereQuality(quality);
         }
     }
+
 }

@@ -299,6 +299,10 @@ public class Cube : MonoBehaviour {
         GetMaterial().SetFloat("_IsDisabled", 1.0f);
     }
 
+    public bool IsEnabled() {
+        return GetComponent<Collider>().enabled;
+    }
+
     public void Enable() {
         if(IsLinky()) {
             linkyCube.LinkyEnable();

@@ -8,8 +8,8 @@ public class SwappyCubesHolderIRRandom : SwappyCubesHolderIR {
     public int nbDisableIndices = 1;
     public int nbEnableIndices = 1;
 
-    public override void Initialize(SwappyCubesHolderManager manager) {
-        base.Initialize(manager);
+    public override void Initialize(SwappyCubesHolderManager manager, bool gatherCubesInChildren) {
+        base.Initialize(manager, gatherCubesInChildren);
         InitIntervals();
     }
 

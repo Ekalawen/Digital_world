@@ -10,8 +10,8 @@ public class SwappyCubesHolderIR : SwappyCubesHolder {
 
     protected Vector3 impactPoint;
 
-    public override void Initialize(SwappyCubesHolderManager manager) {
-        base.Initialize(manager);
+    public override void Initialize(SwappyCubesHolderManager manager, bool gatherCubesInChildren) {
+        base.Initialize(manager, gatherCubesInChildren);
         impactPoint = ComputeImpactPoint();
     }
 

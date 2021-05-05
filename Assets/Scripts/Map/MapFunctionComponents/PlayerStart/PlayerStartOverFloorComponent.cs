@@ -19,7 +19,7 @@ public class PlayerStartOverFloorComponent : PlayerStartComponent {
     public bool IsOverFloor(Vector3 pos) {
         pos = MathTools.Round(pos);
         for(int i = 1; i <= pos.y; i++) {
-            if(map.IsCubeAt(pos + i * Vector3.down)) {
+            if(map.IsEnabledCubeAt(pos + i * Vector3.down)) {
                 return true;
             }
         }
