@@ -28,10 +28,11 @@ public class EventManager : MonoBehaviour {
         EMPTY_END_EVENT,
         CUBES_DESTRUCTIONS_PARTIAL, // Ne pas réordonner sinon ça va changer les prefabs !
     };
-    public enum EndEventDeathCubesType {
+    public enum EndEventCubesSelectionMethod {
         FAR_FROM_PLAYER_AND_POS,
         FROM_TOP_OR_BOTTOM,
         FAR_FROM_POS,
+        RANDOM_NOT_CLOSE_TO_PLAYER_AND_POS,
     }
     public enum EjectionType {
         FIX_TRESHOLD,
@@ -54,8 +55,9 @@ public class EventManager : MonoBehaviour {
     public float endGameFrameRate = 0.2f;
     public AnimationCurve endEventCurveSpeed;
     public EndEventType endGameType = EndEventType.DEATH_CUBES;
-    [ConditionalHide("endGameType", EndEventType.DEATH_CUBES)]
-    public EndEventDeathCubesType endEventDeathCubesType = EndEventDeathCubesType.FAR_FROM_PLAYER_AND_POS;
+    public EndEventCubesSelectionMethod endEventCubesSelectionMethod = EndEventCubesSelectionMethod.FAR_FROM_PLAYER_AND_POS;
+    [ConditionalHide("endEventCubesSelectionMethod", EndEventCubesSelectionMethod.RANDOM_NOT_CLOSE_TO_PLAYER_AND_POS)]
+    public float endEventSeuilProximite = 2.5f;
     public float dureeDestructionCubesDestruction = 2.0f;
     [ConditionalHide("endGameType", EndEventType.CUBES_DESTRUCTIONS_PARTIAL)]
     public float proportionToKeep = 0.0f;
@@ -208,6 +210,15 @@ public class EventManager : MonoBehaviour {
         });
     }
 
+    protected void OrderCubesFarFromPlayerAndPos(Vector3 centerPos, List<Cube> cubes) {
+        Vector3 playerPos = gm.player.transform.position;
+        cubes.Sort(delegate (Cube A, Cube B) {
+            float distToA = Mathf.Min(Vector3.Distance(A.transform.position, centerPos), Vector3.Distance(A.transform.position, playerPos));
+            float distToB = Mathf.Min(Vector3.Distance(B.transform.position, centerPos), Vector3.Distance(B.transform.position, playerPos));
+            return distToB.CompareTo(distToA);
+        });
+    }
+
     protected void OrderPositionsFarFromPos(Vector3 centerPos, List<Vector3> allEmptyPositions) {
         allEmptyPositions.Sort(delegate (Vector3 A, Vector3 B) {
             float distToA = Vector3.Distance(A, centerPos);
@@ -256,14 +267,14 @@ public class EventManager : MonoBehaviour {
         int nbDeathCubesCreated = 0;
         deathCubes = new List<Cube>();
 
-        if (endEventDeathCubesType == EndEventDeathCubesType.FROM_TOP_OR_BOTTOM) {
+        if (endEventCubesSelectionMethod == EndEventCubesSelectionMethod.FROM_TOP_OR_BOTTOM) {
             OrderPositionsFromTopOrBottom(centerPos, allEmptyPositions);
         }
 
         while (allEmptyPositions.Count > 0) {
-            if (endEventDeathCubesType == EndEventDeathCubesType.FAR_FROM_PLAYER_AND_POS) {
+            if (endEventCubesSelectionMethod == EndEventCubesSelectionMethod.FAR_FROM_PLAYER_AND_POS) {
                 OrderPositionsFarFromPlayerAndPos(centerPos, allEmptyPositions);
-            } else if (endEventDeathCubesType == EndEventDeathCubesType.FAR_FROM_POS) {
+            } else if (endEventCubesSelectionMethod == EndEventCubesSelectionMethod.FAR_FROM_POS) {
                 OrderPositionsFarFromPos(centerPos, allEmptyPositions);
             }
 
@@ -288,14 +299,13 @@ public class EventManager : MonoBehaviour {
             nbTotalCubesToDestroy = (int)(cubes.Count * (1.0f - proportionToKeep));
         }
         int nbCubesDestroyed = 0;
-        float seuilProximité = 2.5f;
 
         while (ShouldKeepDestroyingCubes(cubes.Count, nbCubesToReach, endGameTimer)) {
             // Pour récupérer les cubes crées pendant la destruction de la map !
             cubes = map.GetAllCubes().FindAll(c => !c.IsDecomposing());
             if (cubes.Count == 0) break;
 
-            OrderCubesByDistancesToPlayerAndPos(centerPos, cubes, seuilProximité);
+            OrderCubesAccordingToMethod(centerPos, cubes);
 
             int nbCubesToDestroy = GetNbCubesToDo(cubes.Count, nbTotalCubesToDestroy, nbCubesDestroyed, endGameTimer);
             Vector3 barycentre = DestroyFirstCubes(cubes, nbCubesToDestroy);
@@ -305,6 +315,23 @@ public class EventManager : MonoBehaviour {
             yield return null;
         }
         Debug.Log($"{map.GetAllCubes().FindAll(c => !c.IsDecomposing()).Count}/{nbCubesToReach}");
+    }
+
+    protected void OrderCubesAccordingToMethod(Vector3 pos, List<Cube> cubes) {
+        switch (endEventCubesSelectionMethod) {
+            case EndEventCubesSelectionMethod.FAR_FROM_PLAYER_AND_POS:
+                OrderCubesFarFromPlayerAndPos(pos, cubes);
+                break;
+            case EndEventCubesSelectionMethod.FROM_TOP_OR_BOTTOM:
+                throw new NotImplementedException();
+                break;
+            case EndEventCubesSelectionMethod.FAR_FROM_POS:
+                throw new NotImplementedException();
+                break;
+            case EndEventCubesSelectionMethod.RANDOM_NOT_CLOSE_TO_PLAYER_AND_POS:
+                OrderCubesByDistancesToPlayerAndPos(pos, cubes);
+                break;
+        }
     }
 
     protected bool ShouldKeepDestroyingCubes(int nbCubes, int nbCubesToReach, Timer endGameTimer) {
@@ -325,7 +352,7 @@ public class EventManager : MonoBehaviour {
         return barycentre;
     }
 
-    protected void OrderCubesByDistancesToPlayerAndPos(Vector3 centerPos, List<Cube> cubes, float seuilProximité) {
+    protected void OrderCubesByDistancesToPlayerAndPos(Vector3 centerPos, List<Cube> cubes) {
         // On détruit les cubes aléatoirement
         MathTools.Shuffle(cubes);
         // Sauf ceux qui sont proches de nous et du joueur, on les détruit en dernier !
@@ -334,8 +361,8 @@ public class EventManager : MonoBehaviour {
         {
             Vector3 A = cubeA.transform.position;
             Vector3 B = cubeB.transform.position;
-            bool AinSeuil = Vector3.Distance(A, centerPos) <= seuilProximité || Vector3.Distance(A, playerPos) <= seuilProximité;
-            bool BinSeuil = Vector3.Distance(B, centerPos) <= seuilProximité || Vector3.Distance(B, playerPos) <= seuilProximité;
+            bool AinSeuil = Vector3.Distance(A, centerPos) <= endEventSeuilProximite || Vector3.Distance(A, playerPos) <= endEventSeuilProximite;
+            bool BinSeuil = Vector3.Distance(B, centerPos) <= endEventSeuilProximite || Vector3.Distance(B, playerPos) <= endEventSeuilProximite;
             return AinSeuil.CompareTo(BinSeuil);
         });
     }
