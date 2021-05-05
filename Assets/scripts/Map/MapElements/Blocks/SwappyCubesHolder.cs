@@ -23,11 +23,13 @@ public class SwappyCubesHolder : MonoBehaviour {
         }
     }
 
-    public void SetCubesLinky(int initialInterval, Texture2D linkyTexture) {
+    public void SetCubesLinky(int initialInterval, Texture2D linkyTexture, bool useEnableState = false) {
         foreach(Cube cube in cubes) {
             cube.SetLinky(linkyTexture);
         }
-        SetInitialVisibleState(initialInterval);
+        if (!useEnableState) {
+            SetInitialVisibleState(initialInterval);
+        }
     }
 
     protected List<Cube> GatherCubes() {

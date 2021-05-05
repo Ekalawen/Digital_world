@@ -345,6 +345,9 @@ public class Cube : MonoBehaviour {
     }
 
     public void RealSetEnableValueIn(bool value, float duration, Vector3 impactPoint) {
+        if(value == IsEnabled()) {
+            return;
+        }
         if(enableDisableCoroutine != null) {
             StopCoroutine(enableDisableCoroutine);
         }

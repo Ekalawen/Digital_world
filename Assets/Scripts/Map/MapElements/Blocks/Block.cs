@@ -76,6 +76,7 @@ public class Block : MonoBehaviour {
         foreach (Transform child in cubeFolder) {
             SwappyCubesHolderManager swappyCubesHolderManager = child.gameObject.GetComponent<SwappyCubesHolderManager>();
             if (swappyCubesHolderManager != null) {
+                swappyCubesHolderManager.SetCubesLinky(swappyCubesHolderManager.GetCurrentInterval(), useEnableState: false);
                 swappyCubesHolderManager.StartSwapping();
             }
         }

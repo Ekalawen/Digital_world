@@ -14,6 +14,7 @@ public class SwappyCubesHolderManager : MonoBehaviour {
     protected GameManager gm;
     protected List<SwappyCubesHolder> holders;
     protected Texture2D linkyTexture;
+    protected int currentInterval;
 
     public void Initialize(bool gatherCubesInChildren) {
         gm = GameManager.Instance;
@@ -22,16 +23,17 @@ public class SwappyCubesHolderManager : MonoBehaviour {
         foreach(SwappyCubesHolder holder in holders) {
             holder.Initialize(this, gatherCubesInChildren);
         }
+        currentInterval = UnityEngine.Random.Range(startIntervalRange[0], startIntervalRange[1] + 1);
     }
 
     public void StartSwapping() {
         StartCoroutine(CStartSwapping());
     }
 
-    protected void SetCubesLinky(int initialInterval) {
+    public void SetCubesLinky(int initialInterval, bool useEnableState = false) {
         if (setLinky) {
             foreach (SwappyCubesHolder holder in holders) {
-                holder.SetCubesLinky(initialInterval, linkyTexture);
+                holder.SetCubesLinky(initialInterval, linkyTexture, useEnableState);
             }
         }
     }
@@ -47,9 +49,7 @@ public class SwappyCubesHolderManager : MonoBehaviour {
     }
 
     protected IEnumerator CStartSwapping() {
-        Timer timer = new Timer(frequenceInterval);
-        int currentInterval = UnityEngine.Random.Range(startIntervalRange[0], startIntervalRange[1] + 1);
-        SetCubesLinky(currentInterval);
+        Timer timer = new Timer(frequenceInterval, setOver: true);
 
         while (!gm.eventManager.IsGameOver()) {
             if(timer.IsOver()) {
@@ -69,5 +69,9 @@ public class SwappyCubesHolderManager : MonoBehaviour {
 
     public List<Cube> GetCubes() {
         return holders.SelectMany(holder => holder.GetCubes()).ToList();
+    }
+
+    public int GetCurrentInterval() {
+        return currentInterval;
     }
 }
