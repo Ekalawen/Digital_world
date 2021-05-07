@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -51,7 +52,7 @@ public static class MathTools
     }
 
     public static int RandBetween(int startInclusive, int endInclusive) {
-        return Random.Range(startInclusive, endInclusive + 1);
+        return UnityEngine.Random.Range(startInclusive, endInclusive + 1);
     }
 
     public static int RandBetween(Vector2Int range) {
@@ -84,7 +85,7 @@ public static class MathTools
     }
 
     public static float RandomSign() {
-        return Random.value < 0.5f ? 1.0f : -1.0f;
+        return UnityEngine.Random.value < 0.5f ? 1.0f : -1.0f;
     }
 
     public static bool AABBSphere(Vector3 aabbCenter, Vector3 aabbHalfExtents, Vector3 sphereCenter, float sphereRayon) {
@@ -214,5 +215,40 @@ public static class MathTools
 
     public static bool IsAdjacent(Vector3 v1, Vector3 v2) {
         return IsRounded(v1) && IsRounded(v2) && CubeDistance(v1, v2) == 1;
+    }
+
+    public static List<Vector3> GetBoxCorners() {
+        return new List<Vector3>() {
+            new Vector3(-1.0f, -1.0f, -1.0f),
+            new Vector3(-1.0f, -1.0f, +1.0f),
+            new Vector3(+1.0f, -1.0f, -1.0f),
+            new Vector3(+1.0f, -1.0f, +1.0f),
+
+            new Vector3(-1.0f, +1.0f, -1.0f),
+            new Vector3(-1.0f, +1.0f, +1.0f),
+            new Vector3(+1.0f, +1.0f, -1.0f),
+            new Vector3(+1.0f, +1.0f, +1.0f),
+        };
+    }
+
+    public static List<Tuple<Vector3, Vector3>> GetBoxEdges() {
+        List<Tuple<Vector3, Vector3>> edges = new List<Tuple<Vector3, Vector3>>() {
+            // face du bas
+            new Tuple<Vector3, Vector3>(new Vector3(-1, -1, -1), new Vector3(-1, -1, 1)),
+            new Tuple<Vector3, Vector3>(new Vector3(-1, -1, -1), new Vector3(1, -1, -1)),
+            new Tuple<Vector3, Vector3>(new Vector3(1, -1, 1), new Vector3(-1, -1, 1)),
+            new Tuple<Vector3, Vector3>(new Vector3(1, -1, 1), new Vector3(1, -1, -1)),
+            // face du haut
+            new Tuple<Vector3, Vector3>(new Vector3(-1, 1, -1), new Vector3(-1, 1, 1)),
+            new Tuple<Vector3, Vector3>(new Vector3(-1, 1, -1), new Vector3(1, 1, -1)),
+            new Tuple<Vector3, Vector3>(new Vector3(1, 1, 1), new Vector3(-1, 1, 1)),
+            new Tuple<Vector3, Vector3>(new Vector3(1, 1, 1), new Vector3(1, 1, -1)),
+            // arêtes verticales
+            new Tuple<Vector3, Vector3>(new Vector3(-1, -1, -1), new Vector3(-1, 1, -1)),
+            new Tuple<Vector3, Vector3>(new Vector3(-1, -1, 1), new Vector3(-1, 1, 1)),
+            new Tuple<Vector3, Vector3>(new Vector3(1, -1, -1), new Vector3(1, 1, -1)),
+            new Tuple<Vector3, Vector3>(new Vector3(1, -1, 1), new Vector3(1, 1, 1)),
+        };
+        return edges;
     }
 }

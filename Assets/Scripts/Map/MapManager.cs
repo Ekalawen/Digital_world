@@ -43,6 +43,7 @@ public class MapManager : MonoBehaviour {
     public DissolveEffectType dissolveEffectType = DissolveEffectType.REGULAR_MAP;
     public Vector3Int tailleMap; // La taille de la map, en largeur, hauteur et profondeur
 	public int nbLumieresInitial; // Le nombre de lumières lors de la création de la map
+
     //public Transform alreadyExistingCubesFolder; // Le dossier contenant les cubes déjà existant !
     //public Transform alreadyExistingLumiereFolder; // Le dossier contenant les data déjà existant !
 
@@ -528,6 +529,10 @@ public class MapManager : MonoBehaviour {
     }
 
     public virtual Vector3 GetCenter() {
+        return new Vector3(tailleMap.x, tailleMap.y, tailleMap.z) / 2.0f;
+    }
+
+    public Vector3 GetHalfExtents() {
         return new Vector3(tailleMap.x, tailleMap.y, tailleMap.z) / 2.0f;
     }
 
@@ -1272,5 +1277,4 @@ public class MapManager : MonoBehaviour {
             lumiere.SetLumiereQuality(quality);
         }
     }
-
 }

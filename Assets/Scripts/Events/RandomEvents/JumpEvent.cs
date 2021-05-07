@@ -25,6 +25,10 @@ public class JumpEvent : RandomEvent {
     public float dureeFadeOutFlash = 0.1f;
     public float intensityFlash = 2.0f;
 
+    [Header("LightningBox")]
+    public GameObject lightningBoxPrefab;
+    public float dureeFadeOutLightning = 0.5f;
+
     protected List<Coroutine> coroutines = new List<Coroutine>();
 
     protected override void StartEvent() {
@@ -40,6 +44,7 @@ public class JumpEvent : RandomEvent {
     }
 
     protected IEnumerator JumpEffect() {
+        InstantiateLightningBox();
         yield return new WaitForSeconds(delaisAvantJump - dureeFadeInFlash);
         gm.colorManager.MakeLightIntensityBounce(intensityFlash, dureeFadeInFlash, dureeFadeOutFlash);
         yield return new WaitForSeconds(dureeFadeInFlash);
@@ -49,6 +54,11 @@ public class JumpEvent : RandomEvent {
         } else {
             gm.soundManager.PlayJumpSuccessClip();
         }
+    }
+
+    protected void InstantiateLightningBox() {
+        LightningBox lightningBox = Instantiate(lightningBoxPrefab, parent: transform).GetComponent<LightningBox>();
+        lightningBox.Initialize(gm.map.GetCenter(), gm.map.GetHalfExtents(), delaisAvantJump, dureeFadeOutLightning);
     }
 
     protected virtual void Stun() {

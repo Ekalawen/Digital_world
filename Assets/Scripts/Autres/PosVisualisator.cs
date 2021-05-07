@@ -46,26 +46,10 @@ public class PosVisualisator : MonoBehaviour {
     }
 
     public static void DrawCube(Vector3 center, Vector3 halfExtents, Color color, bool depthTest = false) {
-        List<Tuple<Vector3, Vector3>> coords = new List<Tuple<Vector3, Vector3>>() {
-            // face du bas
-            new Tuple<Vector3, Vector3>(new Vector3(-1, -1, -1), new Vector3(-1, -1, 1)),
-            new Tuple<Vector3, Vector3>(new Vector3(-1, -1, -1), new Vector3(1, -1, -1)),
-            new Tuple<Vector3, Vector3>(new Vector3(1, -1, 1), new Vector3(-1, -1, 1)),
-            new Tuple<Vector3, Vector3>(new Vector3(1, -1, 1), new Vector3(1, -1, -1)),
-            // face du haut
-            new Tuple<Vector3, Vector3>(new Vector3(-1, 1, -1), new Vector3(-1, 1, 1)),
-            new Tuple<Vector3, Vector3>(new Vector3(-1, 1, -1), new Vector3(1, 1, -1)),
-            new Tuple<Vector3, Vector3>(new Vector3(1, 1, 1), new Vector3(-1, 1, 1)),
-            new Tuple<Vector3, Vector3>(new Vector3(1, 1, 1), new Vector3(1, 1, -1)),
-            // arêtes verticales
-            new Tuple<Vector3, Vector3>(new Vector3(-1, -1, -1), new Vector3(-1, 1, -1)),
-            new Tuple<Vector3, Vector3>(new Vector3(-1, -1, 1), new Vector3(-1, 1, 1)),
-            new Tuple<Vector3, Vector3>(new Vector3(1, -1, -1), new Vector3(1, 1, -1)),
-            new Tuple<Vector3, Vector3>(new Vector3(1, -1, 1), new Vector3(1, 1, 1)),
-        };
-        for(int i = 0; i < coords.Count; i++) {
-            Vector3 start = center + MathTools.VecMul(coords[i].Item1, halfExtents);
-            Vector3 end = center + MathTools.VecMul(coords[i].Item2, halfExtents);
+        List<Tuple<Vector3, Vector3>> edges = MathTools.GetBoxEdges();
+        for(int i = 0; i < edges.Count; i++) {
+            Vector3 start = center + MathTools.VecMul(edges[i].Item1, halfExtents);
+            Vector3 end = center + MathTools.VecMul(edges[i].Item2, halfExtents);
             Debug.DrawLine(start, end, color, 10000, depthTest: depthTest);
         }
     }
