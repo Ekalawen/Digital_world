@@ -9,6 +9,8 @@ public class Cave : CubeEnsemble {
     public Vector3Int nbCubesParAxe;
     public Cube[,,] cubeMatrix;
 
+    protected List<Cube> openings;
+
     public Cave(Vector3 depart, Vector3Int nbCubesParAxe, bool bMakeSpaceArround = false, bool bDigInside = true, bool bPreserveMapBordures = false) : base()
     {
         this.depart = depart;
@@ -173,6 +175,7 @@ public class Cave : CubeEnsemble {
             for (int j = 0; j < nbCubesParAxe.y; j++)
                 for (int k = 0; k < nbCubesParAxe.z; k++)
                     cubeMatrix[i, j, k] = null;
+        openings = new List<Cube>();
     }
 
     protected void GeneratePaths() {
@@ -335,5 +338,56 @@ public class Cave : CubeEnsemble {
         List<ColorManager.Theme> theme = new List<ColorManager.Theme>() { ColorManager.GetRandomTheme() };
         //PosVisualisator.CreateCube(GetCenter(), GetHalfExtents(), ColorManager.GetColor(theme), depthTest: false);
 #endif
+    }
+
+    public bool IsLocalEdge(Vector3Int localPos) {
+        return localPos.x == 0
+            || localPos.x == nbCubesParAxe.x - 1
+            || localPos.y == 0
+            || localPos.y == nbCubesParAxe.y - 1
+            || localPos.z == 0
+            || localPos.z == nbCubesParAxe.z - 1;
+    }
+
+    public bool ContainsLocalPosition(Vector3 localPos) {
+        return localPos.x >= 0
+            && localPos.x < nbCubesParAxe.x
+            && localPos.y >= 0
+            && localPos.y < nbCubesParAxe.y
+            && localPos.z >= 0
+            && localPos.z < nbCubesParAxe.z;
+    }
+
+    public void FullfillOpenings() {
+        for (int i = 0; i < nbCubesParAxe.x; i++) {
+            for (int j = 0; j < nbCubesParAxe.y; j++) {
+                for (int k = 0; k < nbCubesParAxe.z; k++) {
+                    Vector3Int localPos = new Vector3Int(i, j, k);
+                    Vector3 globalPos = depart + localPos;
+                    if(cubeMatrix[i, j, k] == null && IsLocalEdge(localPos) && !map.IsLumiereAt(globalPos)) {
+                        Cube cube = CreateCube(globalPos);
+                        if (cube != null) {
+                            cubeMatrix[i, j, k] = cube;
+                            openings.Add(cube);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public List<Cube> GetOpenings() {
+        return openings;
+    }
+
+    public override void OnDeleteCube(Cube cube) {
+        base.OnDeleteCube(cube);
+        Vector3 localPos = cube.transform.position - depart;
+        if (ContainsLocalPosition(localPos)) {
+            cubeMatrix[(int)localPos.x, (int)localPos.y, (int)localPos.z] = null;
+            if (openings.Contains(cube)) {
+                openings.Remove(cube);
+            }
+        }
     }
 }

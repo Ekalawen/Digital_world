@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [Serializable]
@@ -13,6 +14,7 @@ public class GetCubesHelper : MonoBehaviour {
         REGULAR,
         NOT_REGULAR,
         IN_CUBE_ENSEMBLES,
+        CAVES_OPENINGS,
     };
 
     public HowToGetCubes howToGetCubes = HowToGetCubes.ALL;
@@ -29,7 +31,10 @@ public class GetCubesHelper : MonoBehaviour {
     [ConditionalHide("howToGetCubes", HowToGetCubes.IN_CUBE_ENSEMBLES)]
     public CubeEnsemble.CubeEnsembleType cubeEnsembleType;
 
+    protected MapManager map;
+
     public List<Cube> Get() {
+        map = GameManager.Instance.map;
         switch(howToGetCubes) {
             case HowToGetCubes.ALL:
                 return GetAllCubes();
@@ -45,47 +50,48 @@ public class GetCubesHelper : MonoBehaviour {
                 return GetCubesNotRegular();
             case HowToGetCubes.IN_CUBE_ENSEMBLES:
                 return GetCubesInCubeEnsembles();
+            case HowToGetCubes.CAVES_OPENINGS:
+                return GetCubesInCavesOpenings();
             default:
                 return null;
         }
     }
 
     protected List<Cube> GetAllCubes() {
-        MapManager map = GameManager.Instance.map;
         return map.GetAllCubes();
     }
 
     protected List<Cube> GetCubesNotRegular() {
-        MapManager map = GameManager.Instance.map;
         return map.GetAllNonRegularCubes();
     }
 
     protected List<Cube> GetCubesRegular() {
-        MapManager map = GameManager.Instance.map;
         return map.GetAllRegularCubes();
     }
 
     protected List<Cube> GetCubesInBoxArea() {
-        MapManager map = GameManager.Instance.map;
         return map.GetCubesInBox(areaBoxCenter, areaBoxHalfExtents);
     }
 
     protected List<Cube> GetCubesInSphereArea() {
-        MapManager map = GameManager.Instance.map;
         return map.GetCubesInSphere(areaSphereCenter, areaSphereRadius);
     }
 
     protected List<Cube> GetCubesOfType() {
-        MapManager map = GameManager.Instance.map;
         return map.GetAllCubesOfType(cubeType);
     }
 
     protected List<Cube> GetCubesInCubeEnsembles() {
-        MapManager map = GameManager.Instance.map;
         List<CubeEnsemble> cubeEnsembles = map.GetCubeEnsemblesOfType(cubeEnsembleType);
         List<Cube> cubes = new List<Cube>();
         foreach (CubeEnsemble cubeEnsemble in cubeEnsembles)
             cubes.AddRange(cubeEnsemble.GetCubes());
         return cubes;
+    }
+
+    protected List<Cube> GetCubesInCavesOpenings() {
+        List<CubeEnsemble> cubeEnsembles = map.GetCubeEnsemblesOfType(CubeEnsemble.CubeEnsembleType.CAVE);
+        List<Cave> caves = cubeEnsembles.Select(c => (Cave)c).ToList();
+        return caves.SelectMany(c => c.GetOpenings()).ToList();
     }
 }

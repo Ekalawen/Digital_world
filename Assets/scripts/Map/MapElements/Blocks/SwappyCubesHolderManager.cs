@@ -18,6 +18,7 @@ public class SwappyCubesHolderManager : MonoBehaviour {
 
     public void Initialize(bool gatherCubesInChildren) {
         gm = GameManager.Instance;
+        gm.map.RegisterSwappyCubesHolderManager(this);
         linkyTexture = Resources.Load<Texture2D>("linky_cube_circle");
         holders = GatherHolders();
         foreach(SwappyCubesHolder holder in holders) {

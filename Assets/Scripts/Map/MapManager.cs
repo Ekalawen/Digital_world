@@ -60,10 +60,11 @@ public class MapManager : MonoBehaviour {
     [HideInInspector]
     public GameManager gm;
     protected PlayerStartComponent playerStartComponent = null;
+    protected List<SwappyCubesHolderManager> swappyCubesHolderManagers;
 
-	//////////////////////////////////////////////////////////////////////////////////////
-	// METHODES
-	//////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////
+    // METHODES
+    //////////////////////////////////////////////////////////////////////////////////////
 
     public void Initialize() {
 		// Initialisation
@@ -85,6 +86,7 @@ public class MapManager : MonoBehaviour {
                 for (int k = 0; k <= tailleMap.z; k++)
                     cubesRegular[i, j, k] = null;
         nonRegularOctree = new Octree();
+        swappyCubesHolderManagers = new List<SwappyCubesHolderManager>();
 
         // Récupérer tous les cubes et toutes les lumières qui pourraient déjà exister avant la création de la map !
         GetAllAlreadyExistingCubesAndLumieres();
@@ -1276,5 +1278,15 @@ public class MapManager : MonoBehaviour {
         foreach(Lumiere lumiere in lumieres) {
             lumiere.SetLumiereQuality(quality);
         }
+    }
+
+    public List<Cube> GetSwappyCubes() {
+        List<SwappyCubesHolderManager> swappyCubesHolderManagers = FindObjectsOfType<SwappyCubesHolderManager>().ToList();
+        List<Cube> swappyCubes = swappyCubesHolderManagers.SelectMany(s => s.GetCubes()).ToList();
+        return swappyCubes;
+    }
+
+    public void RegisterSwappyCubesHolderManager(SwappyCubesHolderManager swappyCubesHolderManager) {
+        swappyCubesHolderManagers.Add(swappyCubesHolderManager);
     }
 }
