@@ -37,19 +37,27 @@ public class SondeController : EnnemiController {
     // On récupère l'état dans lequel doit être notre sonde
     protected virtual void GetEtat() {
         if(IsPlayerVisible()) {
-            EtatSonde previousEtat = etat;
-            etat = EtatSonde.TRACKING;
-            // Si la sonde vient juste de le repérer, on l'annonce
-            if (etat != previousEtat && lastPositionSeen == transform.position) {
-                DetectPlayer();
-            }
+            SetTracking();
         } else {
-            EtatSonde previousEtat = etat;
-            etat = EtatSonde.WAITING;
-            // Si la sonde vient juste de perdre sa trace, on l'annonce
-            if (etat != previousEtat) {
-                LostPlayerSight();
-            }
+            SetWaiting();
+        }
+    }
+
+    protected virtual void SetWaiting() {
+        EtatSonde previousEtat = etat;
+        etat = EtatSonde.WAITING;
+        // Si la sonde vient juste de perdre sa trace, on l'annonce
+        if (etat != previousEtat) {
+            LostPlayerSight();
+        }
+    }
+
+    protected virtual void SetTracking() {
+        EtatSonde previousEtat = etat;
+        etat = EtatSonde.TRACKING;
+        // Si la sonde vient juste de le repérer, on l'annonce
+        if (etat != previousEtat && lastPositionSeen == transform.position) {
+            DetectPlayer();
         }
     }
 

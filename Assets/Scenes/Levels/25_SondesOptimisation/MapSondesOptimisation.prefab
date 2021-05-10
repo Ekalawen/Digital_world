@@ -27,9 +27,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cubeType: 0
   generationMode: 1
-  nbPolycubes: 5
+  nbPolycubes: 0
   nbInitCubesRange: {x: 5, y: 10}
-  makeSpaceArroundAtEndDistance: 2
+  makeSpaceArroundAtEndDistance: 3
   stayInMap: 0
 --- !u!114 &-1197502705410691619
 MonoBehaviour:
@@ -62,6 +62,51 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 054d591319f6d6546ac95c4463c0ee70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2648989429576907354
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3491683289375989780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 131c84a63811d0743a222b5cb6d90db6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cubeType: 0
+  generateMode: 0
+  proportionCaves: 0.4
+  nbCaves: 0
+  tailleMinCave: 4
+  tailleMaxCave: 4
+  makeSpaceArround: 0
+  dontCollideWithOthersCaves: 0
+  distanceWithOthersCaves: 0
+  preserveMapBordure: 1
+  nbLumieresPerCaves: 1
+  offsetLumieresFromCenter: 1
+  caveOffsetFromSidesXZandY: {x: 1, y: 1}
+  useCaveFixedOffset: 0
+  useCaveFixedOffsetX: 0
+  caveFixedOffsetX: 0
+  useCaveFixedOffsetY: 0
+  caveFixedOffsetY: 0
+  useCaveFixedOffsetZ: 0
+  caveFixedOffsetZ: 0
+--- !u!114 &6419547942300289100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3491683289375989780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7abafb084c97250449d758ec753cc1fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cubeType: 0
 --- !u!114 &6533042795328261037
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -93,51 +138,6 @@ MonoBehaviour:
   setLinky: 1
   previsualisationDuration: 1
   timeBeforeStartSwapping: 3
---- !u!114 &6419547942300289100
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3491683289375989780}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7abafb084c97250449d758ec753cc1fb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cubeType: 0
---- !u!114 &2648989429576907354
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3491683289375989780}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 131c84a63811d0743a222b5cb6d90db6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cubeType: 0
-  generateMode: 0
-  proportionCaves: 0.3
-  nbCaves: 0
-  tailleMinCave: 3
-  tailleMaxCave: 4
-  makeSpaceArround: 1
-  dontCollideWithOthersCaves: 0
-  distanceWithOthersCaves: 0
-  preserveMapBordure: 0
-  nbLumieresPerCaves: 1
-  offsetLumieresFromCenter: 1
-  caveOffsetFromSidesXZandY: {x: 1, y: 1}
-  useCaveFixedOffset: 0
-  useCaveFixedOffsetX: 0
-  caveFixedOffsetX: 0
-  useCaveFixedOffsetY: 0
-  caveFixedOffsetY: 0
-  useCaveFixedOffsetZ: 0
-  caveFixedOffsetZ: 0
 --- !u!1001 &1852852803430356768
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -148,33 +148,27 @@ PrefabInstance:
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: tailleMap.x
-      value: 12
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: tailleMap.y
-      value: 12
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: tailleMap.z
-      value: 12
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
-      propertyPath: lumierePrefab
-      value: 
-      objectReference: {fileID: 6314060265175529593, guid: 06d9c7241134907418789a012772d2db,
-        type: 3}
-    - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
-        type: 3}
       propertyPath: nbLumieresInitial
-      value: 12
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: mapFunctionComponents.Array.size
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
@@ -195,17 +189,17 @@ PrefabInstance:
         type: 3}
       propertyPath: mapFunctionComponents.Array.data[3]
       value: 
-      objectReference: {fileID: 6625582438925591797}
+      objectReference: {fileID: 4167669547922767134}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: mapFunctionComponents.Array.data[4]
       value: 
-      objectReference: {fileID: 4167669547922767134}
+      objectReference: {fileID: 2043507741530955010}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: mapFunctionComponents.Array.data[5]
       value: 
-      objectReference: {fileID: 2043507741530955010}
+      objectReference: {fileID: 6533042795328261037}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: mapFunctionComponents.Array.data[6]
