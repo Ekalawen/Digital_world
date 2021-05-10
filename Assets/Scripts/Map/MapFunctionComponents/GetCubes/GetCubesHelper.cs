@@ -30,12 +30,27 @@ public class GetCubesHelper : MonoBehaviour {
     public float areaSphereRadius = 0f;
     [ConditionalHide("howToGetCubes", HowToGetCubes.IN_CUBE_ENSEMBLES)]
     public CubeEnsemble.CubeEnsembleType cubeEnsembleType;
+    public List<GetCubesHelperModifier> modifiers;
 
     protected MapManager map;
 
-    public List<Cube> Get() {
+    public List<Cube> Get()
+    {
         map = GameManager.Instance.map;
-        switch(howToGetCubes) {
+        List<Cube> cubes = BasicGet();
+        cubes = ApplyModifier(cubes);
+        return cubes;
+    }
+
+    protected List<Cube> ApplyModifier(List<Cube> cubes) {
+        foreach (GetCubesHelperModifier modifier in modifiers) {
+            cubes = modifier.Modify(cubes);
+        }
+        return cubes;
+    }
+
+    protected List<Cube> BasicGet() {
+        switch (howToGetCubes) {
             case HowToGetCubes.ALL:
                 return GetAllCubes();
             case HowToGetCubes.OF_TYPE:
