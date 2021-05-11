@@ -13,7 +13,18 @@ public class PlayerStartComponent : MonoBehaviour {
     }
 
 
-    public virtual Vector3 GetPlayerStartPosition() {
+    public Vector3 GetPlayerStartPosition() {
+        int kmax = 1000;
+        for (int k = 0; k < kmax; k++) {
+            Vector3 playerStartPosition = GetRawPlayerStartPosition();
+            if(!gm.ennemiManager.IsInCaptureRange(playerStartPosition)) {
+                return playerStartPosition;
+            }
+        }
+        return GetRawPlayerStartPosition();
+    }
+
+    public virtual Vector3 GetRawPlayerStartPosition() {
         return map.GetFreeRoundedLocation();
     }
 

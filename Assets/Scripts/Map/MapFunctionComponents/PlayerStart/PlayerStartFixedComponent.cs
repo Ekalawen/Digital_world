@@ -6,7 +6,7 @@ public class PlayerStartFixedComponent : PlayerStartComponent {
 
     public Transform start;
 
-    public override Vector3 GetPlayerStartPosition() {
+    public override Vector3 GetRawPlayerStartPosition() {
         return start.position;
     }
 

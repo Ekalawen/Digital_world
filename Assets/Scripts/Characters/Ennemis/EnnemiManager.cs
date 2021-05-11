@@ -25,7 +25,7 @@ public class EnnemiManager : MonoBehaviour {
     public void Initialize() {
         gm = GameManager.Instance;
         ennemisFolder = new GameObject("Ennemis");
-        playerCaptureTimer = new Timer(playerCaptureTime, setOver: true);
+        playerCaptureTimer = new Timer(playerCaptureTime);
 
         // On récupère tous les ennemis qui pourraient déjà exister dans la map !
         GetAllAlreadyExistingEnnemis();
@@ -113,23 +113,28 @@ public class EnnemiManager : MonoBehaviour {
     }
 
     protected void TestPlayerCaptured() {
-        bool isInEnnemiRange = false;
-        foreach(Ennemi ennemi in ennemis) {
-            if (ennemi.CanCapture()) {
-                float captureDistance = gm.player.GetSizeRadius() + ennemi.transform.localScale[0] + playerCaptureDistance;
-                if (Vector3.Distance(ennemi.transform.position, gm.player.transform.position) <= captureDistance) {
-                    isInEnnemiRange = true;
-                    break;
-                }
-            }
-        }
-
-        if (!isInEnnemiRange) {
+        if (!IsPlayerInCaptureRange()) {
             playerCaptureTimer.Reset();
         }
 
-        if(playerCaptureTimer.IsOver()) {
+        if (playerCaptureTimer.IsOver()) {
             gm.eventManager.LoseGame(EventManager.DeathReason.CAPTURED);
         }
+    }
+
+    public bool IsPlayerInCaptureRange() {
+        return IsInCaptureRange(gm.player.transform.position);
+    }
+
+    public bool IsInCaptureRange(Vector3 position) {
+        foreach (Ennemi ennemi in ennemis) {
+            if (ennemi.CanCapture()) {
+                float captureDistance = gm.player.GetSizeRadius() + ennemi.transform.localScale[0] + playerCaptureDistance;
+                if (Vector3.Distance(ennemi.transform.position, position) <= captureDistance) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

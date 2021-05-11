@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerStartOverFloorComponent : PlayerStartComponent {
 
-    public override Vector3 GetPlayerStartPosition() {
+    public override Vector3 GetRawPlayerStartPosition() {
         int kmax = 1000;
         for(int k = 0; k < kmax; k++) {
             Vector3 pos = map.GetFreeRoundedLocation();
