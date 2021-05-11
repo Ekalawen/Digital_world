@@ -8,16 +8,14 @@ public class SwappyCubesHolderManagerIcone : MonoBehaviour {
 
     public float frequence = 1.5f;
     public float previsualisationDuration = 1.0f;
-    public GameObject cube1;
-    public GameObject cube2;
+    public List<GameObject> cubes1;
+    public List<GameObject> cubes2;
 
     protected bool currentState = false;
     protected Material mat1;
     protected Material mat2;
 
     public void Start() {
-        mat1 = cube1.GetComponent<Renderer>().material;
-        mat2 = cube2.GetComponent<Renderer>().material;
         StartCoroutine(CStartSwapping());
     }
 
@@ -37,15 +35,25 @@ public class SwappyCubesHolderManagerIcone : MonoBehaviour {
 
     protected void SetCubesState(bool currentState) {
         if(!currentState) {
-            StartCoroutine(CSetEnableValueIn(mat1, true, previsualisationDuration, cube1.transform.position));
-            StartCoroutine(CSetEnableValueIn(mat2, false, previsualisationDuration, cube2.transform.position));
+            foreach (GameObject cube in cubes1) {
+                StartCoroutine(CSetEnableValueIn(true, previsualisationDuration, cube));
+            }
+            foreach (GameObject cube in cubes2) {
+                StartCoroutine(CSetEnableValueIn(false, previsualisationDuration, cube));
+            }
         } else {
-            StartCoroutine(CSetEnableValueIn(mat1, false, previsualisationDuration, cube1.transform.position));
-            StartCoroutine(CSetEnableValueIn(mat2, true, previsualisationDuration, cube2.transform.position));
+            foreach (GameObject cube in cubes1) {
+                StartCoroutine(CSetEnableValueIn(false, previsualisationDuration, cube));
+            }
+            foreach (GameObject cube in cubes2) {
+                StartCoroutine(CSetEnableValueIn(true, previsualisationDuration, cube));
+            }
         }
     }
 
-    protected IEnumerator CSetEnableValueIn(Material mat, bool value, float duration, Vector3 impactPoint) {
+    protected IEnumerator CSetEnableValueIn(bool value, float duration, GameObject go) {
+        Vector3 impactPoint = go.transform.position;
+        Material mat = go.GetComponent<Renderer>().material;
         float impactRadius = Mathf.Sqrt(3) / 2;
         StartImpact(mat, impactPoint, impactRadius, duration);
         yield return new WaitForSeconds(duration);
