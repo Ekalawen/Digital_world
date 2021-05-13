@@ -315,6 +315,20 @@ public class Cave : CubeEnsemble {
         }
     }
 
+    public List<Vector3> GetAllFreeLocations(int offsetFromSides = 0) {
+        List<Vector3> freeLocations = new List<Vector3>();
+        for (int i = offsetFromSides; i < nbCubesParAxe.x - offsetFromSides; i++) {
+            for (int j = offsetFromSides; j < nbCubesParAxe.y - offsetFromSides; j++) {
+                for (int k = offsetFromSides; k < nbCubesParAxe.z - offsetFromSides; k++) {
+                    if(cubeMatrix[i, j, k] == null) {
+                        freeLocations.Add(depart + new Vector3(i, j, k));
+                    }
+                }
+            }
+        }
+        return freeLocations;
+    }
+
     public Vector3 GetFreeLocation(int offsetFromSides = 0) {
         return depart + GetFreeIndiceLocation(offsetFromSides);
     }
