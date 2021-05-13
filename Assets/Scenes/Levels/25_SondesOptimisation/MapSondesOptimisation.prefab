@@ -13,6 +13,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cubeType: 0
+--- !u!114 &-2165646376126055636
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3491683289375989780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08bbe9bdce1025e47870cd00e7960375, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lumiereType: 0
+  nbLumieres: 7
 --- !u!114 &-1510880022000879270
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -85,7 +99,7 @@ MonoBehaviour:
   dontCollideWithOthersCaves: 0
   distanceWithOthersCaves: 0
   preserveMapBordure: 1
-  nbLumieresPerCaves: 1
+  nbLumieresPerCaves: 0
   offsetLumieresFromCenter: 1
   caveOffsetFromSidesXZandY: {x: 1, y: 1}
   useCaveFixedOffset: 0
@@ -95,6 +109,20 @@ MonoBehaviour:
   caveFixedOffsetY: 0
   useCaveFixedOffsetZ: 0
   caveFixedOffsetZ: 0
+--- !u!114 &3602891317146011817
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3491683289375989780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a5a03bb4d2ee3b4e8383ac4e477b82e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  getCubesHelper: {fileID: 6280934070029499072}
+  linkyValue: 1
 --- !u!114 &6280934070029499072
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -190,20 +218,6 @@ MonoBehaviour:
   cubeType: 4
   getCubesHelper: {fileID: 6280934070029499072}
   setLinky: 1
---- !u!114 &3602891317146011817
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3491683289375989780}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a5a03bb4d2ee3b4e8383ac4e477b82e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  getCubesHelper: {fileID: 6280934070029499072}
-  linkyValue: 1
 --- !u!1001 &1852852803430356768
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -234,7 +248,7 @@ PrefabInstance:
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: mapFunctionComponents.Array.size
-      value: 8
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
@@ -265,15 +279,20 @@ PrefabInstance:
         type: 3}
       propertyPath: mapFunctionComponents.Array.data[5]
       value: 
-      objectReference: {fileID: 4167669547922767134}
+      objectReference: {fileID: -2165646376126055636}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: mapFunctionComponents.Array.data[6]
       value: 
-      objectReference: {fileID: 2043507741530955010}
+      objectReference: {fileID: 4167669547922767134}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: mapFunctionComponents.Array.data[7]
+      value: 
+      objectReference: {fileID: 2043507741530955010}
+    - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
+        type: 3}
+      propertyPath: mapFunctionComponents.Array.data[8]
       value: 
       objectReference: {fileID: 6533042795328261037}
     - target: {fileID: 3009060673421440820, guid: 800ea353fd52f8f458146bc8a84ea83e,
