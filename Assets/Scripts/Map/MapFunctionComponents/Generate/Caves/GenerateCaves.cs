@@ -6,8 +6,6 @@ using UnityEngine;
 
 public class GenerateCaves : GenerateCubesMapFunction {
 
-    public enum GenerateMode { PROPORTION, COUNT };
-
     [Header("Generating Mode")]
     public GenerateMode generateMode = GenerateMode.PROPORTION;
     [ConditionalHide("generateMode", GenerateMode.PROPORTION)]
