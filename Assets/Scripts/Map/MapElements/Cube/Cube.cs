@@ -21,16 +21,21 @@ public class Cube : MonoBehaviour {
     protected Coroutine enableDisableCoroutine = null;
     protected Material materialTransparent;
 
+    // Done before player initialization
     public virtual void Initialize() {
         gm = GameManager.Instance;
         InitializeMaterials();
         if (shouldRegisterToColorSources) {
             RegisterCubeToColorSources();
         }
-        SetDissolveOnStart();
         if (startAsLinky) {
             SetLinky();
         }
+    }
+
+    // Done after player initialization
+    public void Start() {
+        SetDissolveOnStart();
     }
 
     protected void InitializeMaterials() {
@@ -77,7 +82,11 @@ public class Cube : MonoBehaviour {
         Vector3 playerPosition = gm.player.transform.position;
         GetMaterial().SetVector("_PlayerPosition", playerPosition);
         GetMaterial().SetFloat("_DecomposeStartingTime", 999999f); // Reinitialise Décompose Effect
-        StartCoroutine(CSetOpaqueMaterialIn(3.0f));
+        SetOpaqueAfterDissolve(dissolveTime, playerProximityCoef);
+    }
+
+    protected void SetOpaqueAfterDissolve(float dissolveTime, float playerProximityCoef) {
+        StartCoroutine(CSetOpaqueMaterialIn(20.0f));
     }
 
     protected IEnumerator CSetOpaqueMaterialIn(float duree) {
