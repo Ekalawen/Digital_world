@@ -11,22 +11,34 @@ public class Cube : MonoBehaviour {
     public bool bIsDestructible = true;
     public bool shouldRegisterToColorSources = false;
     public bool startAsLinky = false;
+    public Material materialOpaque;
 
     protected bool bIsRegular = true;
     protected GameManager gm;
-    protected Material material;
+    protected Material currentMaterial;
     protected float dissolveTimeToUse = -1;
     protected LinkyCubeComponent linkyCube = null;
     protected Coroutine enableDisableCoroutine = null;
+    protected Material materialTransparent;
 
-    public virtual void Start() {
+    public virtual void Initialize() {
         gm = GameManager.Instance;
+        InitializeMaterials();
         if (shouldRegisterToColorSources) {
             RegisterCubeToColorSources();
         }
         SetDissolveOnStart();
-        if(startAsLinky) {
+        if (startAsLinky) {
             SetLinky();
+        }
+    }
+
+    protected void InitializeMaterials() {
+        materialTransparent = GetComponent<MeshRenderer>().material;
+        if (materialOpaque != null) {
+            materialOpaque = new Material(materialOpaque);
+        } else {
+            Debug.LogWarning($"Le Cube {name} n'a pas de materialOpaque renseigné ! ;)");
         }
     }
 
@@ -56,49 +68,61 @@ public class Cube : MonoBehaviour {
         }
     }
 
-    internal void SetEnableValueIn(bool visibleState, object previsualisationDuration, Vector3 impactPoint)
-    {
-        throw new NotImplementedException();
-    }
-
     public virtual void StartDissolveEffect(float dissolveTime, float playerProximityCoef = 0.0f) {
+        SetTransparentMaterial();
         GetMaterial().SetFloat("_DissolveTime", dissolveTime);
         GetMaterial().SetFloat("_PlayerProximityCoef", playerProximityCoef);
         GetMaterial().SetFloat("_DissolveStartingTime", Time.time);
         Vector3 playerPosition = gm.player.transform.position;
         GetMaterial().SetVector("_PlayerPosition", playerPosition);
-        ReinitializeDecomposeEffect();
+        GetMaterial().SetFloat("_DecomposeStartingTime", 999999f); // Reinitialise Décompose Effect
+        StartCoroutine(CSetOpaqueMaterialIn(1.0f));
+    }
+
+    protected IEnumerator CSetOpaqueMaterialIn(float duree) {
+        yield return new WaitForSeconds(duree);
+        SetOpaqueMaterial();
     }
 
     protected void StopDissolveEffect() {
+        SetOpaqueMaterial();
         float dissolveTime = GetMaterial().GetFloat("_DissolveTime");
         GetMaterial().SetFloat("_DissolveStartingTime", Time.time - dissolveTime);
     }
 
     protected void StartDecomposeEffect(float duree) {
+        SetTransparentMaterial();
         GetMaterial().SetFloat("_DecomposeTime", duree);
         GetMaterial().SetFloat("_DecomposeStartingTime", Time.time);
     }
 
     public void FinishDecomposeEffect() {
+        SetOpaqueMaterial();
         float decomposeTime = GetMaterial().GetFloat("_DecomposeTime");
         GetMaterial().SetFloat("_DecomposeStartingTime", Time.time + decomposeTime);
     }
 
-    public void ReinitializeDecomposeEffect() {
-        GetMaterial().SetFloat("_DecomposeStartingTime", 999999f);
-    }
-
     public void SetMaterial(Material newMaterial) {
         GetComponent<MeshRenderer>().material = newMaterial;
-        material = GetComponent<MeshRenderer>().material;
+        currentMaterial = GetComponent<MeshRenderer>().material;
+    }
+
+    protected void SetOpaqueMaterial() {
+        if (materialOpaque != null) {
+            SetMaterial(materialOpaque);
+        }
+    }
+
+    protected void SetTransparentMaterial() {
+        SetMaterial(materialTransparent);
     }
 
     protected virtual void RegisterCubeToColorSources() {
         ColorManager colorManager = gm.colorManager;
         foreach(ColorSource colorSource in colorManager.sources) {
-            if(Vector3.Distance(transform.position, colorSource.transform.position) <= colorSource.range)
+            if (Vector3.Distance(transform.position, colorSource.transform.position) <= colorSource.range) {
                 colorSource.AddCube(this);
+            }
         }
     }
 
@@ -116,7 +140,7 @@ public class Cube : MonoBehaviour {
 
     public virtual void SetColor(Color newColor) {
         GetMaterial().color = newColor;
-        GetMaterial().SetColor("_LinkyCubeColor1", newColor); // Attention ! Dans le shader on a "color * 2" à cause d'un bug, ce pourquoi ici c'est plus sombre que la vrai couleur ! ;)
+        BothMaterialsSetColor("_LinkyCubeColor1", newColor); // Attention ! Dans le shader on a "color * 2" à cause d'un bug, ce pourquoi ici c'est plus sombre que la vrai couleur ! ;)
     }
 
     public float GetLuminance() {
@@ -142,7 +166,7 @@ public class Cube : MonoBehaviour {
         if (type != CubeType.BOUNCY) {
             newMaterial.color = GetColor();
         } else {
-            newMaterial.color = material.GetColor("_BounceColor");
+            newMaterial.color = GetMaterial().GetColor("_BounceColor");
         }
         psr.material = newMaterial;
         float particuleTime = particle.main.duration;
@@ -223,16 +247,49 @@ public class Cube : MonoBehaviour {
     }
 
     public void SetOpacity(float alpha) {
+        if(alpha == 1) {
+            SetOpaqueMaterial();
+        } else {
+            SetTransparentMaterial();
+        }
         Color currentColor = GetColor();
         currentColor.a = alpha;
         SetColor(currentColor);
     }
 
     public Material GetMaterial() {
-        if(material == null) {
-            material = GetComponent<MeshRenderer>().material;
+        if(currentMaterial == null) {
+            currentMaterial = GetComponent<MeshRenderer>().material;
         }
-        return material;
+        return currentMaterial;
+    }
+
+    public void BothMaterialsSetFloat(string key, float value) {
+        if (materialOpaque != null) {
+            materialOpaque.SetFloat(key, value);
+        }
+        materialTransparent.SetFloat(key, value);
+    }
+
+    public void BothMaterialsSetVector(string key, Vector3 vector) {
+        if (materialOpaque != null) {
+            materialOpaque.SetVector(key, vector);
+        }
+        materialTransparent.SetVector(key, vector);
+    }
+
+    public void BothMaterialsSetTexture(string key, Texture texture) {
+        if (materialOpaque != null) {
+            materialOpaque.SetTexture(key, texture);
+        }
+        materialTransparent.SetTexture(key, texture);
+    }
+
+    public void BothMaterialsSetColor(string key, Color color) {
+        if (materialOpaque != null) {
+            materialOpaque.SetColor(key, color);
+        }
+        materialTransparent.SetColor(key, color);
     }
 
     public List<Vector3> GetCornerPositions() {
@@ -261,14 +318,14 @@ public class Cube : MonoBehaviour {
         LinkyCubeComponent linkyCubeComponent = gameObject.AddComponent<LinkyCubeComponent>();
         linkyCube = linkyCubeComponent;
         linkyCube.Initialize(this);
-        GetMaterial().SetFloat("_IsLinky", 1f);
+        BothMaterialsSetFloat("_IsLinky", 1f);
         if(linkyTexture != null) {
-            GetMaterial().SetTexture("_LinkyCubeTexture", linkyTexture);
+            BothMaterialsSetTexture("_LinkyCubeTexture", linkyTexture);
         }
     }
 
     public void UnSetLinky() {
-        GetMaterial().SetFloat("_IsLinky", 0f);
+        BothMaterialsSetFloat("_IsLinky", 0f);
         Destroy(linkyCube);
     }
 
@@ -297,9 +354,10 @@ public class Cube : MonoBehaviour {
     }
 
     public void RealDisable() {
+        SetTransparentMaterial();
         Collider collider = GetComponent<Collider>();
         collider.enabled = false;
-        GetMaterial().SetFloat("_IsDisabled", 1.0f);
+        BothMaterialsSetFloat("_IsDisabled", 1.0f);
     }
 
     public bool IsEnabled() {
@@ -315,9 +373,10 @@ public class Cube : MonoBehaviour {
     }
 
     public void RealEnable() {
+        SetOpaqueMaterial();
         Collider collider = GetComponent<Collider>();
         collider.enabled = true;
-        GetMaterial().SetFloat("_IsDisabled", 0.0f);
+        BothMaterialsSetFloat("_IsDisabled", 0.0f);
         if(gm.player.DoubleCheckInteractWithCube(this)) {
             InteractWithPlayer();
         }
@@ -368,14 +427,15 @@ public class Cube : MonoBehaviour {
     }
 
     public void StartImpact(Vector3 impactPoint, float impactRadius, float impactDuration) {
-        GetMaterial().SetFloat("_IsImpacting", 1.0f);
-        GetMaterial().SetVector("_ImpactPoint", impactPoint);
-        GetMaterial().SetFloat("_ImpactTime", Time.time);
+        BothMaterialsSetFloat("_IsImpacting", 1.0f);
+        BothMaterialsSetVector("_ImpactPoint", impactPoint);
+        BothMaterialsSetFloat("_ImpactTime", Time.time);
         float impactSpeed = impactRadius / impactDuration;
-        GetMaterial().SetFloat("_ImpactPropagationSpeed", impactSpeed);
+        BothMaterialsSetFloat("_ImpactPropagationSpeed", impactSpeed);
     }
 
     public void StopImpact() {
-        GetMaterial().SetFloat("_IsImpacting", 0.0f);
+        BothMaterialsSetFloat("_IsImpacting", 0.0f);
     }
+
 }

@@ -10,8 +10,8 @@ public class BrisableCube : NonBlackCube {
 
     protected Coroutine coroutine = null;
 
-    public override void Start() {
-        base.Start();
+    public override void Initialize() {
+        base.Initialize();
         SetOpacity(1);
     }
 

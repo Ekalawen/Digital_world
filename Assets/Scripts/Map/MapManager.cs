@@ -127,6 +127,7 @@ public class MapManager : MonoBehaviour {
          && MathTools.IsRounded(pos)) {
             if (cubeAtPos == null) {
                 cubesRegular[(int)pos.x, (int)pos.y, (int)pos.z] = cube;
+                cube.Initialize();
                 return cube;
             } else {
                 return cubeAtPos;
@@ -135,6 +136,7 @@ public class MapManager : MonoBehaviour {
             if (cubeAtPos == null) {
                 nonRegularOctree.Add(cube);
                 cube.SetRegularValue(false);
+                cube.Initialize();
                 return cube;
             } else {
                 return cubeAtPos;
@@ -994,7 +996,6 @@ public class MapManager : MonoBehaviour {
                 maxParent.SetParent(cubesFolder.transform);
             }
             AddCube(cube);
-            cube.Start();
         }
 
         Lumiere[] newLumieres = FindObjectsOfType<Lumiere>();

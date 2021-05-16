@@ -104,8 +104,8 @@ public class LinkyCubeComponent : MonoBehaviour {
     }
 
     protected void WriteParamsToShader() {
-        cube.GetMaterial().SetVector("_LinkyCubeAnchor", anchor);
-        cube.GetMaterial().SetFloat("_LinkyCubeTimeFixedOffset", timeFixedOffset);
+        cube.BothMaterialsSetVector("_LinkyCubeAnchor", anchor);
+        cube.BothMaterialsSetFloat("_LinkyCubeTimeFixedOffset", timeFixedOffset);
     }
 
     public void LinkyExplode() {

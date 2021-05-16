@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class DeathCube : NonBlackCube {
 
-    public override void Start() {
-        base.Start();
+    public override void Initialize() {
+        base.Initialize();
         CheckPlayerCollisionOnStart();
     }
 
@@ -19,7 +19,7 @@ public class DeathCube : NonBlackCube {
 
     public override void InteractWithPlayer() {
         float time = Time.time;
-        float decomposeStartingTime = GetMaterial().GetFloat("_DecomposeStartingTime");
+        float decomposeStartingTime = materialTransparent.GetFloat("_DecomposeStartingTime");
         if (time < decomposeStartingTime) {
             Debug.Log("Looooooooooooooooose ! :'(");
             KillPlayer();

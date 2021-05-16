@@ -736,6 +736,9 @@ public class Player : Character {
     }
 
     public bool DoubleCheckInteractWithCube(Cube cube) {
+        if (controller == null) {
+            return false;
+        }
         if (cube.transform.rotation == Quaternion.identity) {
             return MathTools.AABBSphere(cube.transform.position,
                 Vector3.one * cube.transform.localScale.x / 2,
