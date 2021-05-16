@@ -108,6 +108,10 @@ public class Cube : MonoBehaviour {
         currentMaterial = GetComponent<MeshRenderer>().material;
     }
 
+    public void SetTexture(Texture newTexture) {
+        BothMaterialsSetTexture("_ColorTexture", newTexture);
+    }
+
     protected void SetOpaqueMaterial() {
         if (materialOpaque != null) {
             SetMaterial(materialOpaque);

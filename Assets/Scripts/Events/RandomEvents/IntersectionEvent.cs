@@ -7,7 +7,7 @@ public class IntersectionEvent : RandomEvent {
 
     [Header("Previsualisation")]
     public float timeBeforeIntersection = 1.5f;
-    public Material previsualisationMaterial;
+    public Texture previsualisationTexture;
 
     [Header("Effect")]
     public float timeIntersection = 1.0f;
@@ -51,12 +51,12 @@ public class IntersectionEvent : RandomEvent {
     protected IEnumerator CCreateLine(Vector3 center, Vector3 extremite) {
         Cube extremiteCube = gm.map.GetCubeAt(extremite);
         if (extremiteCube != null && IsNotAlreadySetupForAnOtherIntersectionEvent(extremiteCube)) {
-            Material oldMaterial = PrevisualisationOfLine(extremiteCube);
+            Texture oldTexture = PrevisualisationOfLine(extremiteCube);
             yield return new WaitForSeconds(timeBeforeIntersection);
             Coroutine coroutineCreate = StartCoroutine(CCreateBridge(center, extremite));
             coroutines.Add(coroutineCreate);
             yield return new WaitForSeconds(timeIntersection);
-            UndoPrevisualisationOfIntersections(extremiteCube, oldMaterial);
+            UndoPrevisualisationOfIntersections(extremiteCube, oldTexture);
             yield return new WaitForSeconds(timeBeforeSwapCubeTypeAgain);
             Coroutine coroutineSwap = StartCoroutine(SwapCubeTypesForExtremite(center, extremite));
             coroutines.Add(coroutineSwap);
@@ -67,12 +67,12 @@ public class IntersectionEvent : RandomEvent {
         return !cubesAlreadyUsedInEvents.Contains(extremiteCube);
     }
 
-    protected Material PrevisualisationOfLine(Cube extremiteCube) {
-        Material material = extremiteCube.GetComponent<Renderer>().material;
-        extremiteCube.SetMaterial(previsualisationMaterial);
+    protected Texture PrevisualisationOfLine(Cube extremiteCube) {
+        Texture texture = extremiteCube.GetMaterial().GetTexture("_ColorTexture");
+        extremiteCube.SetTexture(previsualisationTexture);
         extremiteCube.SetColor(gm.colorManager.GetNotBlackColorForPosition(extremiteCube.transform.position));
         cubesAlreadyUsedInEvents.Add(extremiteCube);
-        return material;
+        return texture;
     }
 
     protected IEnumerator CCreateBridge(Vector3 center, Vector3 extremite) {
@@ -102,9 +102,9 @@ public class IntersectionEvent : RandomEvent {
         Destroy(soundHolder);
     }
 
-    protected void UndoPrevisualisationOfIntersections(Cube extremite, Material oldMaterial) {
+    protected void UndoPrevisualisationOfIntersections(Cube extremite, Texture oldTexture) {
         if (extremite != null) {
-            extremite.GetComponent<Renderer>().material = oldMaterial;
+            extremite.SetTexture(oldTexture);
             cubesAlreadyUsedInEvents.Remove(extremite);
         }
     }
