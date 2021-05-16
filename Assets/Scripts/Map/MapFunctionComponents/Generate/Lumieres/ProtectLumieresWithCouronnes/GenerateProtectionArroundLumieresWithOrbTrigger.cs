@@ -22,28 +22,10 @@ public class GenerateProtectionArroundLumieresWithOrbTrigger : GenerateProtectio
             Vector3 lumierePosition = lumiere.transform.position;
             orbTrigger = Instantiate(orbTriggerPrefab, lumierePosition, Quaternion.identity, map.zonesFolder.transform).GetComponentInChildren<OrbTrigger>();
             orbTrigger.Initialize(rayon, durationToActivate);
-            orbTrigger.AddEvent(new UnityAction(DestroyTheCouronne));
-            orbTrigger.AddEvent(new UnityAction(DestroyButton));
+            CouronneDestroyer couronneDestroyer = orbTrigger.gameObject.AddComponent<CouronneDestroyer>();
+            couronneDestroyer.Initialize(couronne, orbTrigger, dureeDestruction);
+            orbTrigger.AddEvent(new UnityAction(couronneDestroyer.DestroyTheCouronne));
+            orbTrigger.AddEvent(new UnityAction(couronneDestroyer.DestroyButton));
         }
-    }
-
-    public void DestroyTheCouronne() {
-        List<Cube> cubes = couronne.GetCubes().Select(c => c).ToList();
-        if (cubes.Count == 0) {
-            return;
-        }
-        cubes = cubes.OrderBy(cube => Vector3.Distance(cube.transform.position, gm.player.transform.position)).ToList();
-        float distanceMin = Vector3.Distance(cubes.First().transform.position, gm.player.transform.position);
-        float distanceMax = Vector3.Distance(cubes.Last().transform.position, gm.player.transform.position);
-        for(int i = 0; i < cubes.Count; i++) {
-            Cube cube = cubes[i];
-            float distance = Vector3.Distance(cube.transform.position, gm.player.transform.position);
-            float dureeBeforeExplosion = MathCurves.LinearReversed(distanceMin, distanceMax, distance) * dureeDestruction;
-            cube.ExplodeIn(dureeBeforeExplosion);
-        }
-    }
-
-    public void DestroyButton() {
-        Destroy(orbTrigger.gameObject);
     }
 }
