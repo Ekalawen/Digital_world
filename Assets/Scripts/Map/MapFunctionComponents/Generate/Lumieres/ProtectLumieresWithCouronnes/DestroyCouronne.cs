@@ -7,11 +7,11 @@ public class DestroyCouronne : MonoBehaviour {
 
     public float dureeDestruction = 1.0f;
     public MapContainer couronne;
-    public TimeZoneButton button;
+    public OrbTrigger button;
 
     protected GameManager gm;
 
-    public void Initialize(MapContainer couronne, TimeZoneButton button, float dureeDestruction) {
+    public void Initialize(MapContainer couronne, OrbTrigger button, float dureeDestruction) {
         this.couronne = couronne;
         this.button = button;
         this.dureeDestruction = dureeDestruction;

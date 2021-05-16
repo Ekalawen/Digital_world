@@ -10,7 +10,11 @@ public abstract class IZone : MonoBehaviour {
         gm = GameManager.Instance;
     }
 
-    public void Resize(Vector3 center, Vector3 halfExtents) {
+    protected virtual void Initialize() {
+        Start();
+    }
+
+    public virtual void Resize(Vector3 center, Vector3 halfExtents) {
         transform.localScale = halfExtents * 2;
         transform.position = center;
     }

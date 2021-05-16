@@ -1,9 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class GenerateCouronnesArroundLumieres : GenerateCubesMapFunction {
+public class GenerateProtectionArroundLumieres : GenerateCubesMapFunction {
 
     public GenerateMode generateMode = GenerateMode.COUNT;
     [ConditionalHide("generateMode", GenerateMode.COUNT)]
@@ -12,6 +13,7 @@ public class GenerateCouronnesArroundLumieres : GenerateCubesMapFunction {
     public float proportionToProtect = 1.0f;
     public bool destroyAlreadyExistingCubes = true;
     public bool destroyAlreadyExistingCubesInMapBordures = false;
+
     //public float dureeDestruction = 1.0f;
     //public GameObject activationZonePrefab;
 
@@ -28,7 +30,10 @@ public class GenerateCouronnesArroundLumieres : GenerateCubesMapFunction {
     protected void ProtectLumiere(Lumiere lumiere) {
         DestroyAlreadyExistingCubes(lumiere.transform.position);
         MapContainer couronne = CreateCouronne(lumiere.transform.position);
-        //PopActivationZoneArround(couronne);
+        ProtectSpecific(lumiere, couronne);
+    }
+
+    protected virtual void ProtectSpecific(Lumiere lumiere, MapContainer couronne) {
     }
 
     protected void DestroyAlreadyExistingCubes(Vector3 center) {

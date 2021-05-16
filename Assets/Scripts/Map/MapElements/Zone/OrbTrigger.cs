@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Localization;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
-public class TimeZoneButton : IZone {
+public class OrbTrigger : IZone {
 
     public float rayon = 1.5f;
     public float durationToActivate = 3.0f;
-    public bool shouldPopCubeInCenter = true;
+    public bool shouldPopCubeInCenter = false;
     public bool autoDestroyOnActivate = false;
     public UnityEvent events; // C'est déjà une liste !
 
-    protected Coroutine coroutine = null;
+    protected Coroutine coroutineOnEnter = null;
     protected string currentMessage = "";
     protected string precedantMessage = "";
 
@@ -22,11 +23,23 @@ public class TimeZoneButton : IZone {
         PopCubeInCenter();
     }
 
+    public void Initialize(float rayon, float durationToActivate) {
+        Initialize();
+        this.rayon = rayon;
+        this.durationToActivate = durationToActivate;
+    }
+
+    public override void Resize(Vector3 center, Vector3 halfExtents) {
+        base.Resize(center, halfExtents);
+        GetComponent<Renderer>().material.SetFloat("_ObjectScale", halfExtents.x * 2);
+    }
+
     protected override void OnEnter(Collider other) {
         if (other.gameObject.tag == "Player") {
-            if (coroutine != null)
-                StopCoroutine(coroutine);
-            coroutine = StartCoroutine(COnEnter(other));
+            if (coroutineOnEnter != null) {
+                StopCoroutine(coroutineOnEnter);
+            }
+            coroutineOnEnter = StartCoroutine(COnEnter(other));
         }
     }
 
@@ -35,8 +48,9 @@ public class TimeZoneButton : IZone {
 
         Timer timer = new Timer(durationToActivate);
         while(!timer.IsOver()) {
-            if (gm.eventManager.IsGameOver())
+            if (gm.eventManager.IsGameOver()) {
                 break;
+            }
             currentMessage = TimerManager.TimerToString(timer.GetRemainingTime());
             gm.console.AjouterMessageImportant(currentMessage,
                 Console.TypeText.ALLY_TEXT,
@@ -47,39 +61,31 @@ public class TimeZoneButton : IZone {
             yield return null;
         }
 
-        if (!gm.eventManager.IsGameOver()) {
-            var hackedHandle = gm.console.strings.lumiereProtectionHacked.GetLocalizedString();
-            yield return hackedHandle;
-            gm.console.AjouterMessageImportant(hackedHandle.Result,
-                Console.TypeText.BASIC_TEXT,
-                1.0f,
-                bAfficherInConsole: true,
-                precedantMessage);
-            precedantMessage = currentMessage;
+        AsyncOperationHandle<string> hackedHandle = gm.console.strings.lumiereProtectionHacked.GetLocalizedString();
+        yield return hackedHandle;
+        gm.console.AjouterMessageImportant(hackedHandle.Result,
+            Console.TypeText.BASIC_TEXT,
+            1.0f,
+            bAfficherInConsole: true,
+            precedantMessage);
+        precedantMessage = currentMessage;
 
-            CallAllEvents();
-        }
+        CallAllEvents();
     }
 
     public void CallAllEvents() {
         events.Invoke();
-        if (autoDestroyOnActivate)
-            Destroy(transform.parent.gameObject); // Attention ça c'est du au fait qu'on a un composant inutile pour les TimeZoneButtons !
+        if (autoDestroyOnActivate) {
+            Destroy(transform.parent.gameObject); // Attention ça c'est du au fait qu'on a un composant parent inutile pour les OrbTriggers !
+        }
     }
 
     protected override void OnExit(Collider other) {
         if (other.gameObject.tag == "Player") {
-            if (coroutine != null)
-                StopCoroutine(coroutine);
+            if (coroutineOnEnter != null) {
+                StopCoroutine(coroutineOnEnter);
+            }
 
-            //currentMessage = "Déconnecté !";
-            //gm.console.AjouterMessageImportant(currentMessage,
-            //    Console.TypeText.ENNEMI_TEXT,
-            //    1.0f,
-            //    bAfficherInConsole: true,
-            //    precedantMessage);
-            //precedantMessage = currentMessage;
-            
             gm.soundManager.PlayTimeZoneButtonOutClip(transform.position);
         }
     }
@@ -88,8 +94,6 @@ public class TimeZoneButton : IZone {
         if (!shouldPopCubeInCenter)
             return;
         Cube cube = gm.map.AddCube(transform.position, Cube.CubeType.NORMAL);
-        //Material material = GetComponent<MeshRenderer>().material;
-        //cube.GetComponent<MeshRenderer>().material = material;
     }
 
     public void AddEvent(UnityAction call) {
