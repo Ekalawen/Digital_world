@@ -89,8 +89,8 @@ public class IntersectionEvent : RandomEvent {
             if (gm.map.CubeFarEnoughtFromLumieres(currentPosition)) {
                 Cube cube = gm.map.AddCube(currentPosition, cubeTypeWhileEffect);
                 if (cube != null) {
-                    cube.ShouldRegisterToColorSources();
-                    cube.SetDissolveTime(cubeWhileEffectDissolveTime);
+                    cube.RegisterCubeToColorSources();
+                    cube.StartDissolveEffect(cubeWhileEffectDissolveTime, gm.postProcessManager.dissolveInGamePlayerProximityCoef);
                 }
             }
             soundHolder.transform.position = currentPosition;
@@ -123,7 +123,7 @@ public class IntersectionEvent : RandomEvent {
             Cube cube = gm.map.GetCubeAt(currentPosition);
             if (cube != null) {
                 cube = gm.map.SwapCubeType(cube, cubeTypeAfterEffect);
-                cube.SetDissolveTime(cubeWhileEffectDissolveTime);
+                cube.StartDissolveEffect(cubeWhileEffectDissolveTime, gm.postProcessManager.dissolveInGamePlayerProximityCoef);
             }
             soundHolder.transform.position = currentPosition;
             currentPosition += direction;

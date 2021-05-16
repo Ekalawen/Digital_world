@@ -33,7 +33,7 @@ public class EventManagerWhileTrueConstantDestruction : EventManagerWhileTrue {
                 }
                 Cube newCube = map.AddCube(pos, Cube.CubeType.NORMAL);
                 if (newCube != null) {
-                    newCube.ShouldRegisterToColorSources();
+                    newCube.RegisterCubeToColorSources();
                     nbCubesCreated++;
                     if (nbCubesCreated >= nbCubesToCreateByFrame) {
                         nbCubesCreated = 0;

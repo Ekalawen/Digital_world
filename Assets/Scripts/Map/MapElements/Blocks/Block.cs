@@ -39,7 +39,7 @@ public class Block : MonoBehaviour {
 
     public void RegisterCubesToColorSources() {
         foreach (Cube cube in cubes)
-            cube.ShouldRegisterToColorSources();
+            cube.RegisterCubeToColorSources();
         gm.colorManager.EnsureNoCubeIsBlack(cubes);
     }
 

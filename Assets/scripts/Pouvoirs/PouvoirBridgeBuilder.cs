@@ -84,7 +84,8 @@ public class PouvoirBridgeBuilder : IPouvoir {
         if (gm.map.CubeFarEnoughtFromLumieres(position)) {
             Cube cube = gm.map.AddCube(position, Cube.CubeType.NORMAL, orientation);
             cube.SetDissolveTime(cubesDissolveTime);
-            cube.ShouldRegisterToColorSources();
+            //cube.ShouldRegisterToColorSources();
+            cube.RegisterCubeToColorSources();
         }
 
         gm.soundManager.PlayCreateCubeClip(position);

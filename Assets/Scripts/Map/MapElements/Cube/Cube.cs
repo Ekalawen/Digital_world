@@ -117,17 +117,13 @@ public class Cube : MonoBehaviour {
         SetMaterial(materialTransparent);
     }
 
-    protected virtual void RegisterCubeToColorSources() {
+    public virtual void RegisterCubeToColorSources() {
         ColorManager colorManager = gm.colorManager;
         foreach(ColorSource colorSource in colorManager.sources) {
             if (Vector3.Distance(transform.position, colorSource.transform.position) <= colorSource.range) {
                 colorSource.AddCube(this);
             }
         }
-    }
-
-    public void ShouldRegisterToColorSources() {
-        shouldRegisterToColorSources = true;
     }
 
     public Color GetColor() {

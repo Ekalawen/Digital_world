@@ -252,7 +252,7 @@ public class EventManager : MonoBehaviour {
                 cube = map.AddCube(pos, Cube.CubeType.DEATH);
             else {
                 cube = map.AddCube(pos, Cube.CubeType.NORMAL);
-                cube.ShouldRegisterToColorSources();
+                cube.RegisterCubeToColorSources();
             }
         }
         return cube;
