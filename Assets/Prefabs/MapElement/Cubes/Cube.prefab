@@ -66,10 +66,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
@@ -94,6 +96,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!114 &114048159739252504
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -107,8 +110,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 0
-  explosionParticlesPrefab: {fileID: 6341332013306389385, guid: 72dd1f0aa0885c2468542ec488134b80,
-    type: 3}
   bIsDestructible: 1
   shouldRegisterToColorSources: 0
-  bIsRegular: 1
+  startAsLinky: 0
+  materialOpaque: {fileID: 2100000, guid: b9e54b343f3b1d74a87588b453cf45c5, type: 2}

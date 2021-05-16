@@ -36,7 +36,8 @@ public class Cube : MonoBehaviour {
     protected void InitializeMaterials() {
         materialTransparent = GetComponent<MeshRenderer>().material;
         if (materialOpaque != null) {
-            materialOpaque = new Material(materialOpaque);
+            GetComponent<MeshRenderer>().material = materialOpaque;
+            materialOpaque = GetComponent<MeshRenderer>().material;
         } else {
             Debug.LogWarning($"Le Cube {name} n'a pas de materialOpaque renseigné ! ;)");
         }
@@ -76,7 +77,7 @@ public class Cube : MonoBehaviour {
         Vector3 playerPosition = gm.player.transform.position;
         GetMaterial().SetVector("_PlayerPosition", playerPosition);
         GetMaterial().SetFloat("_DecomposeStartingTime", 999999f); // Reinitialise Décompose Effect
-        StartCoroutine(CSetOpaqueMaterialIn(1.0f));
+        StartCoroutine(CSetOpaqueMaterialIn(3.0f));
     }
 
     protected IEnumerator CSetOpaqueMaterialIn(float duree) {
@@ -86,7 +87,7 @@ public class Cube : MonoBehaviour {
 
     protected void StopDissolveEffect() {
         SetOpaqueMaterial();
-        float dissolveTime = GetMaterial().GetFloat("_DissolveTime");
+        float dissolveTime = materialTransparent.GetFloat("_DissolveTime");
         GetMaterial().SetFloat("_DissolveStartingTime", Time.time - dissolveTime);
     }
 
@@ -98,7 +99,7 @@ public class Cube : MonoBehaviour {
 
     public void FinishDecomposeEffect() {
         SetOpaqueMaterial();
-        float decomposeTime = GetMaterial().GetFloat("_DecomposeTime");
+        float decomposeTime = materialTransparent.GetFloat("_DecomposeTime");
         GetMaterial().SetFloat("_DecomposeStartingTime", Time.time + decomposeTime);
     }
 
@@ -135,7 +136,7 @@ public class Cube : MonoBehaviour {
     }
 
     public virtual void SetColor(Color newColor) {
-        GetMaterial().color = newColor;
+        BothMaterialsSetColor("_Color", newColor);
         BothMaterialsSetColor("_LinkyCubeColor1", newColor); // Attention ! Dans le shader on a "color * 2" à cause d'un bug, ce pourquoi ici c'est plus sombre que la vrai couleur ! ;)
     }
 
@@ -188,7 +189,7 @@ public class Cube : MonoBehaviour {
     }
 
     public bool IsDecomposing() {
-        float decomposeStartingTime = GetMaterial().GetFloat("_DecomposeStartingTime");
+        float decomposeStartingTime = materialTransparent.GetFloat("_DecomposeStartingTime");
         return Time.time >= decomposeStartingTime;
     }
 
