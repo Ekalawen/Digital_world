@@ -43,6 +43,9 @@ public class PostProcessManager : MonoBehaviour {
     public float dissolveInGameTime = 1.0f;
     public float dissolveInGamePlayerProximityCoef = 0.0f;
 
+    [Header("CubeExplosion")]
+    public GameObject explosionParticlesPrefab;
+
     protected Coroutine gripCoroutine = null;
     protected Coroutine hitCoroutine1 = null;
     protected Coroutine hitCoroutine2 = null;

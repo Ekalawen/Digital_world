@@ -8,7 +8,6 @@ public class Cube : MonoBehaviour {
     public enum CubeType { NORMAL, DEATH, INDESTRUCTIBLE, SPECIAL, BRISABLE, BOUNCY, TRANSPARENT };
 
     public CubeType type;
-    public GameObject explosionParticlesPrefab;
     public bool bIsDestructible = true;
     public bool shouldRegisterToColorSources = false;
     public bool startAsLinky = false;
@@ -134,7 +133,7 @@ public class Cube : MonoBehaviour {
 
     public void RealExplode() {
         gm = GameManager.Instance; // Sinon peut y avoir un bug si on essaie de le détruire dans la même frame que lorsqu'il est crée ! (Le Start a pas le temps de s'éxécuter :'()
-        GameObject go = Instantiate(explosionParticlesPrefab, transform.position, Quaternion.identity);
+        GameObject go = Instantiate(GetExplosionParticlesPrefab(), transform.position, Quaternion.identity);
         go.transform.up = gm.gravityManager.Up();
         ParticleSystem particle = go.GetComponent<ParticleSystem>();
         ParticleSystemRenderer psr = go.GetComponent<ParticleSystemRenderer>();
@@ -191,8 +190,12 @@ public class Cube : MonoBehaviour {
         Destroy();
     }
 
+    public GameObject GetExplosionParticlesPrefab() {
+        return gm.postProcessManager.explosionParticlesPrefab;
+    }
+
     public float GetExplosionParticuleTimeDuration() {
-        return explosionParticlesPrefab.GetComponent<ParticleSystem>().main.duration;
+        return GetExplosionParticlesPrefab().GetComponent<ParticleSystem>().main.duration;
     }
 
     public void ExplodeIn(float seconds) {
