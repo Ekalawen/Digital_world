@@ -86,7 +86,21 @@ public class Cube : MonoBehaviour {
     }
 
     protected void SetOpaqueAfterDissolve(float dissolveTime, float playerProximityCoef) {
-        StartCoroutine(CSetOpaqueMaterialIn(20.0f));
+        float dissolveThickness = 0; // materialTransparent.GetFloat("_DissolveThickness"); // No need en fait, et puis ça évite d'avoir le problème du start ...
+        float dissolveStartingTime = Time.timeSinceLevelLoad;
+        float distanceCubePlayer = Vector3.Distance(gm.player.transform.position, transform.position);
+        // On cherche time tq finalTime = 1
+        //float finalTime = distanceCubePlayer * playerProximityCoef + Mathf.Max(time - dissolveStartingTime, 0) / dissolveTime - dissolveThickness;
+        //1 = distanceCubePlayer * playerProximityCoef + Mathf.Max(time - dissolveStartingTime, 0) / dissolveTime - dissolveThickness;
+        //1 = distanceCubePlayer * playerProximityCoef + (time - dissolveStartingTime) / dissolveTime - dissolveThickness;
+        //1 - distanceCubePlayer * playerProximityCoef = (time - dissolveStartingTime) / dissolveTime - dissolveThickness;
+        //1 - distanceCubePlayer * playerProximityCoef + dissolveThickness = (time - dissolveStartingTime) / dissolveTime;
+        //(1 - distanceCubePlayer * playerProximityCoef + dissolveThickness) * dissolveTime = time - dissolveStartingTime;
+        //time = (1 - distanceCubePlayer * playerProximityCoef + dissolveThickness) * dissolveTime + dissolveStartingTime;
+        float timeToWait = (1 - distanceCubePlayer * playerProximityCoef + dissolveThickness) * dissolveTime + dissolveStartingTime;
+        Debug.Log($"TimeToWait = {timeToWait}");
+        StartCoroutine(CSetOpaqueMaterialIn(timeToWait));
+        //StartCoroutine(CSetOpaqueMaterialIn(20.0f));
     }
 
     protected IEnumerator CSetOpaqueMaterialIn(float duree) {
