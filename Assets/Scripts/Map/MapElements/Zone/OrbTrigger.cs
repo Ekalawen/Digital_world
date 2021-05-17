@@ -7,15 +7,21 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class OrbTrigger : IZone {
 
-    public float rayon = 1.5f;
+    public float rayon = 4.5f;
+    public float additionnalRayonOnEnter = 0.5f;
     public float durationToActivate = 3.0f;
     public bool shouldPopCubeInCenter = false;
     public bool autoDestroyOnActivate = false;
+    public float dureeConstruction = 1.0f;
+    public float dureeDestruction = 1.0f;
+    public float dureeAdjustRayon = 0.3f;
     public UnityEvent events; // C'est déjà une liste !
 
     protected Coroutine coroutineOnEnter = null;
     protected string currentMessage = "";
     protected string precedantMessage = "";
+    protected Coroutine coroutineResizing = null;
+    protected bool isDestroying = false;
 
     protected override void Start() {
         base.Start();
@@ -25,6 +31,8 @@ public class OrbTrigger : IZone {
 
     public void Initialize(float rayon, float durationToActivate) {
         Initialize();
+        Resize(transform.position, Vector3.zero);
+        ResizeOverTime(rayon, dureeConstruction);
         this.rayon = rayon;
         this.durationToActivate = durationToActivate;
     }
@@ -34,12 +42,33 @@ public class OrbTrigger : IZone {
         GetComponent<Renderer>().material.SetFloat("_ObjectScale", halfExtents.x * 2);
     }
 
+    public void ResizeOverTime(float rayon, float time) {
+        if(isDestroying) {
+            return;
+        }
+        if(coroutineResizing != null) {
+            StopCoroutine(coroutineResizing);
+        }
+        coroutineResizing = StartCoroutine(CResizeOverTime(rayon, time));
+    }
+
+    protected IEnumerator CResizeOverTime(float rayon, float duree) {
+        float initialRayon = transform.localScale.x / 2;
+        Timer timer = new Timer(duree);
+        while(!timer.IsOver()) {
+            Resize(transform.position, Vector3.one * MathCurves.Linear(initialRayon, rayon, timer.GetAvancement()));
+            yield return null;
+        }
+        Resize(transform.position, Vector3.one * rayon);
+    }
+
     protected override void OnEnter(Collider other) {
         if (other.gameObject.tag == "Player") {
             if (coroutineOnEnter != null) {
                 StopCoroutine(coroutineOnEnter);
             }
             coroutineOnEnter = StartCoroutine(COnEnter(other));
+            ResizeOverTime(rayon + additionnalRayonOnEnter, dureeAdjustRayon);
         }
     }
 
@@ -87,6 +116,7 @@ public class OrbTrigger : IZone {
             }
 
             gm.soundManager.PlayTimeZoneButtonOutClip(transform.position);
+            ResizeOverTime(rayon, dureeAdjustRayon);
         }
     }
 
@@ -98,5 +128,9 @@ public class OrbTrigger : IZone {
 
     public void AddEvent(UnityAction call) {
         events.AddListener(call);
+    }
+
+    public void SetIsDestroying() {
+        isDestroying = true;
     }
 }

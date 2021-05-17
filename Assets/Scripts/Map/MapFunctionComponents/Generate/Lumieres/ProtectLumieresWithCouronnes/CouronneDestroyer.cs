@@ -35,6 +35,8 @@ public class CouronneDestroyer : MonoBehaviour {
     }
 
     public void DestroyButton() {
-        Destroy(orbTrigger.gameObject);
+        orbTrigger.ResizeOverTime(0, orbTrigger.dureeDestruction);
+        orbTrigger.SetIsDestroying();
+        Destroy(orbTrigger.gameObject, orbTrigger.dureeDestruction);
     }
 }
