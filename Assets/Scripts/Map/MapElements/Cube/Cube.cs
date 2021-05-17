@@ -100,7 +100,6 @@ public class Cube : MonoBehaviour {
         float timeToWait = (1 - distanceCubePlayer * playerProximityCoef + dissolveThickness) * dissolveTime + dissolveStartingTime;
         Debug.Log($"TimeToWait = {timeToWait}");
         StartCoroutine(CSetOpaqueMaterialIn(timeToWait));
-        //StartCoroutine(CSetOpaqueMaterialIn(20.0f));
     }
 
     protected IEnumerator CSetOpaqueMaterialIn(float duree) {
