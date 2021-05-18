@@ -68,6 +68,9 @@ VisualEffect:
       - m_Value: 20
         m_Name: NoiseScale
         m_Overridden: 1
+      - m_Value: 0.5
+        m_Name: TimeAtmaxWidth
+        m_Overridden: 1
     m_Vector2f:
       m_Array:
       - m_Value: {x: 1.4, y: 0.875}
@@ -191,6 +194,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a23d1e81f3eca941b5683e7dd6d6299, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lightningMode: 0
   vitesse: 5
   durationAfterArriving: 1
+  refreshRate: 1
   vfx: {fileID: 7565811269512263925}

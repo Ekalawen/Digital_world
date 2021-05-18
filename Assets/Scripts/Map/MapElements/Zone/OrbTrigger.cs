@@ -7,21 +7,33 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class OrbTrigger : IZone {
 
+    [Header("Gameplay")]
     public float rayon = 4.5f;
     public float additionnalRayonOnEnter = 0.5f;
     public float durationToActivate = 3.0f;
-    public bool shouldPopCubeInCenter = false;
-    public bool autoDestroyOnActivate = false;
+
+    [Header("Resizing durations")]
     public float dureeConstruction = 1.0f;
     public float dureeDestruction = 1.0f;
     public float dureeAdjustRayon = 0.3f;
+
+    [Header("Events")]
     public UnityEvent events; // C'est déjà une liste !
+
+    [Header("Lightning Link")]
+    public GameObject lightningLinkPrefab;
+    public float dureeDestructionLightningLink = 0.3f;
+
+    [Header("OtherParams")]
+    public bool shouldPopCubeInCenter = false;
+    public bool autoDestroyOnActivate = false;
 
     protected Coroutine coroutineOnEnter = null;
     protected string currentMessage = "";
     protected string precedantMessage = "";
     protected Coroutine coroutineResizing = null;
     protected bool isDestroying = false;
+    protected Lightning lightning;
 
     protected override void Start() {
         base.Start();
@@ -69,6 +81,7 @@ public class OrbTrigger : IZone {
             }
             coroutineOnEnter = StartCoroutine(COnEnter(other));
             ResizeOverTime(rayon + additionnalRayonOnEnter, dureeAdjustRayon);
+            InstantiateLightningLink();
         }
     }
 
@@ -87,6 +100,7 @@ public class OrbTrigger : IZone {
                 bAfficherInConsole: false,
                 precedantMessage);
             precedantMessage = currentMessage;
+            UpdateLightningLink();
             yield return null;
         }
 
@@ -100,6 +114,23 @@ public class OrbTrigger : IZone {
         precedantMessage = currentMessage;
 
         CallAllEvents();
+    }
+
+    protected Vector3 InFrontOfPlayerPosition() {
+        Vector3 playerPos = gm.player.transform.position;
+        return playerPos + (gm.player.camera.transform.forward + gm.gravityManager.Down() + (transform.position - playerPos).normalized) * 0.3f;
+    }
+
+    protected void UpdateLightningLink() {
+        if(lightning != null) {
+            lightning.SetPosition(InFrontOfPlayerPosition(), transform.position);
+        }
+    }
+
+    protected void InstantiateLightningLink() {
+        Vector3 inFrontOfPlayerPosition = InFrontOfPlayerPosition();
+        lightning = Instantiate(lightningLinkPrefab, inFrontOfPlayerPosition, Quaternion.identity, parent: transform).GetComponent<Lightning>();
+        lightning.Initialize(inFrontOfPlayerPosition, transform.position, Lightning.PivotType.EXTREMITY);
     }
 
     public void CallAllEvents() {
@@ -117,6 +148,15 @@ public class OrbTrigger : IZone {
 
             gm.soundManager.PlayTimeZoneButtonOutClip(transform.position);
             ResizeOverTime(rayon, dureeAdjustRayon);
+            DestroyLightning();
+        }
+    }
+
+    protected void DestroyLightning() {
+        if (lightning != null) {
+            lightning.StopRefreshing();
+            Destroy(lightning.gameObject, lightning.refreshRate);
+            lightning = null;
         }
     }
 
