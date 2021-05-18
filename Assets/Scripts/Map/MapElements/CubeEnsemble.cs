@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public abstract class CubeEnsemble : MapElement {
 
@@ -20,6 +21,7 @@ public abstract class CubeEnsemble : MapElement {
     protected List<Cube> cubes;
     protected GameObject cubesEnsembleFolder;
     protected CubeEnsembleType cubeEnsembleType;
+    public UnityEvent<Cube> onDeleteCube = new UnityEvent<Cube>();
 
     protected CubeEnsemble() : base() {
         cubes = new List<Cube>();
@@ -41,7 +43,10 @@ public abstract class CubeEnsemble : MapElement {
     public List<Cube> GetCubes() { return cubes; }
 
     public override void OnDeleteCube(Cube cube) {
-        cubes.Remove(cube);
+        if (cube != null && cubes.Contains(cube)) {
+            onDeleteCube.Invoke(cube);
+            cubes.Remove(cube);
+        }
     }
 
     public void RegisterToColorSources() {

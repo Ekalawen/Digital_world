@@ -9,11 +9,13 @@ public class GenerateProtectionArroundLumieresWithOrbTrigger : GenerateProtectio
     public float rayon = 3.5f;
     public float durationToActivate = 7.0f;
     public float dureeDestruction = 1.0f;
+    public float dureeDecompose = 0.4f;
     public GameObject orbTriggerPrefab;
 
     protected Lumiere lumiere;
     protected MapContainer couronne;
     protected OrbTrigger orbTrigger;
+    protected CouronneDestroyer couronneDestroyer;
 
     protected override void ProtectSpecific(Lumiere lumiere, MapContainer couronne) {
         this.lumiere = lumiere;
@@ -23,11 +25,10 @@ public class GenerateProtectionArroundLumieresWithOrbTrigger : GenerateProtectio
             lumiere.SetInaccessible();
             orbTrigger = Instantiate(orbTriggerPrefab, lumierePosition, Quaternion.identity, map.zonesFolder.transform).GetComponentInChildren<OrbTrigger>();
             orbTrigger.Initialize(rayon, durationToActivate);
-            CouronneDestroyer couronneDestroyer = orbTrigger.gameObject.AddComponent<CouronneDestroyer>();
-            couronneDestroyer.Initialize(couronne, orbTrigger, dureeDestruction);
-            orbTrigger.AddEvent(new UnityAction(couronneDestroyer.DestroyTheCouronne));
-            orbTrigger.AddEvent(new UnityAction(couronneDestroyer.DestroyButton));
-            orbTrigger.AddEvent(new UnityAction(lumiere.SetAccessible));
+            couronneDestroyer = orbTrigger.gameObject.AddComponent<CouronneDestroyer>();
+            couronneDestroyer.Initialize(couronne, orbTrigger, lumiere, dureeDestruction, dureeDecompose);
+            orbTrigger.AddEvent(new UnityAction(couronneDestroyer.DestroyProtection));
+            couronne.onDeleteCube.AddListener(new UnityAction<Cube>(couronneDestroyer.OnDeleteCouronneCube));
         }
     }
 }

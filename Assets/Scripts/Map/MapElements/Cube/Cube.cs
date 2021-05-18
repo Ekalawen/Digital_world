@@ -98,7 +98,6 @@ public class Cube : MonoBehaviour {
         //(1 - distanceCubePlayer * playerProximityCoef + dissolveThickness) * dissolveTime = time - dissolveStartingTime;
         //time = (1 - distanceCubePlayer * playerProximityCoef + dissolveThickness) * dissolveTime + dissolveStartingTime;
         float timeToWait = (1 - distanceCubePlayer * playerProximityCoef + dissolveThickness) * dissolveTime + dissolveStartingTime;
-        Debug.Log($"TimeToWait = {timeToWait}");
         StartCoroutine(CSetOpaqueMaterialIn(timeToWait));
     }
 
@@ -228,6 +227,15 @@ public class Cube : MonoBehaviour {
         Decompose(dureeDecompose);
     }
 
+    public void RealDecomposeIn(float dureeDecompose, float timeBeforeDecompose) {
+        StartCoroutine(CRealDecomposeIn(dureeDecompose, timeBeforeDecompose));
+    }
+
+    protected IEnumerator CRealDecomposeIn(float dureeDecompose, float timeBeforeDecompose) {
+        yield return new WaitForSeconds(timeBeforeDecompose);
+        RealDecompose(dureeDecompose);
+    }
+
     protected void DestroyIn(float duree) {
         StartCoroutine(CDestroyIn(duree));
     }
@@ -253,9 +261,24 @@ public class Cube : MonoBehaviour {
             Destroy();
         }
     }
+
     public IEnumerator CExplodeIn(float seconds) {
         yield return new WaitForSeconds(seconds);
         Explode();
+    }
+
+    public void RealExplodeIn(float seconds) {
+        if(gameObject.activeSelf) {
+            StartCoroutine(CRealExplodeIn(seconds));
+        } else {
+            gameObject.SetActive(true);
+            Destroy();
+        }
+    }
+
+    public IEnumerator CRealExplodeIn(float seconds) {
+        yield return new WaitForSeconds(seconds);
+        RealExplode();
     }
 
     public void Destroy() {

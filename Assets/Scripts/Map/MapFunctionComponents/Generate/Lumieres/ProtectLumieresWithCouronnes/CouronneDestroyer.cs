@@ -5,16 +5,20 @@ using UnityEngine;
 
 public class CouronneDestroyer : MonoBehaviour {
 
-    public float dureeDestruction = 1.0f;
-    public MapContainer couronne;
-    public OrbTrigger orbTrigger;
-
+    protected float dureeDestruction = 1.0f;
+    protected float dureeDecompose = 0.4f;
+    protected MapContainer couronne;
+    protected OrbTrigger orbTrigger;
+    protected Lumiere lumiere;
     protected GameManager gm;
+    protected bool isDestroyed = false;
 
-    public void Initialize(MapContainer couronne, OrbTrigger orbTrigger, float dureeDestruction) {
+    public void Initialize(MapContainer couronne, OrbTrigger orbTrigger, Lumiere lumiere, float dureeDestruction, float dureeDecompose) {
         this.couronne = couronne;
         this.orbTrigger = orbTrigger;
+        this.lumiere = lumiere;
         this.dureeDestruction = dureeDestruction;
+        this.dureeDecompose = dureeDecompose;
         gm = GameManager.Instance;
     }
 
@@ -23,20 +27,49 @@ public class CouronneDestroyer : MonoBehaviour {
         if (cubes.Count == 0) {
             return;
         }
-        cubes = cubes.OrderBy(cube => Vector3.Distance(cube.transform.position, gm.player.transform.position)).ToList();
-        float distanceMin = Vector3.Distance(cubes.First().transform.position, gm.player.transform.position);
-        float distanceMax = Vector3.Distance(cubes.Last().transform.position, gm.player.transform.position);
-        for(int i = 0; i < cubes.Count; i++) {
-            Cube cube = cubes[i];
-            float distance = Vector3.Distance(cube.transform.position, gm.player.transform.position);
-            float dureeBeforeExplosion = MathCurves.LinearReversed(distanceMin, distanceMax, distance) * dureeDestruction;
-            cube.ExplodeIn(dureeBeforeExplosion);
+        if (!cubes[0].IsLinky()) {
+            DecomposeProgressively(cubes);
+        } else {
+            List<Cube> linkedCubes = new List<Cube>();
+            foreach(Cube cube in cubes) {
+                if (!linkedCubes.Contains(cube)) {
+                    linkedCubes.AddRange(cube.GetLinkyCubeComponent().GetLinkedCubes());
+                }
+            }
+            DecomposeProgressively(linkedCubes);
         }
     }
 
-    public void DestroyButton() {
+    public void DecomposeProgressively(List<Cube> cubes) {
+        cubes = cubes.OrderBy(cube => Vector3.Distance(cube.transform.position, gm.player.transform.position)).ToList();
+        float distanceMin = Vector3.Distance(cubes.First().transform.position, gm.player.transform.position);
+        float distanceMax = Vector3.Distance(cubes.Last().transform.position, gm.player.transform.position);
+        for (int i = 0; i < cubes.Count; i++) {
+            Cube cube = cubes[i];
+            float distance = Vector3.Distance(cube.transform.position, gm.player.transform.position);
+            float dureeBeforeDecompose = MathCurves.LinearReversed(distanceMin, distanceMax, distance) * dureeDestruction;
+            cube.RealDecomposeIn(dureeDecompose, dureeBeforeDecompose);
+        }
+    }
+
+    public void DestroyOrbTrigger() {
         orbTrigger.ResizeOverTime(0, orbTrigger.dureeDestruction);
         orbTrigger.SetIsDestroying();
         Destroy(orbTrigger.gameObject, orbTrigger.dureeDestruction);
+    }
+
+    public void DestroyProtection() {
+        if (!isDestroyed) {
+            isDestroyed = true;
+            DestroyTheCouronne();
+            DestroyOrbTrigger();
+            lumiere.SetAccessible();
+        }
+    }
+
+    public void OnDeleteCouronneCube(Cube cube) {
+        if (gm.timerManager.HasGameStarted()) {
+            DestroyProtection();
+        }
     }
 }

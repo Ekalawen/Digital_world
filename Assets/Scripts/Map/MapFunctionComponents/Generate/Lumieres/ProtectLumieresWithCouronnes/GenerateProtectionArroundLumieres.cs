@@ -13,9 +13,7 @@ public class GenerateProtectionArroundLumieres : GenerateCubesMapFunction {
     public float proportionToProtect = 1.0f;
     public bool destroyAlreadyExistingCubes = true;
     public bool destroyAlreadyExistingCubesInMapBordures = false;
-
-    //public float dureeDestruction = 1.0f;
-    //public GameObject activationZonePrefab;
+    public bool setLinky = true;
 
     public override void Activate() {
         int nbLumieres = map.GetLumieres().Count;
@@ -30,6 +28,11 @@ public class GenerateProtectionArroundLumieres : GenerateCubesMapFunction {
     protected void ProtectLumiere(Lumiere lumiere) {
         DestroyAlreadyExistingCubes(lumiere.transform.position);
         MapContainer couronne = CreateCouronne(lumiere.transform.position);
+        if(setLinky) {
+            foreach(Cube cube in couronne.GetCubes()) {
+                cube.SetLinky();
+            }
+        }
         ProtectSpecific(lumiere, couronne);
     }
 
@@ -51,16 +54,4 @@ public class GenerateProtectionArroundLumieres : GenerateCubesMapFunction {
         MapContainer couronne = MapContainer.CreateFromCenter(position, Vector3.one);
         return couronne;
     }
-
-    /// Utile pour créer les OrbTriggers !
-    //protected void PopActivationZoneArround(MapContainer couronne) {
-    //    if (activationZonePrefab != null) {
-    //        Vector3 position = couronne.GetCenter();
-    //        TimeZoneButton button = Instantiate(activationZonePrefab, position, Quaternion.identity, map.zonesFolder.transform).GetComponentInChildren<TimeZoneButton>();
-    //        DestroyCouronne destroyCouronne = button.gameObject.AddComponent<DestroyCouronne>();
-    //        destroyCouronne.Initialize(couronne, button, dureeDestruction);
-    //        button.AddEvent(new UnityAction(destroyCouronne.DestroyTheCouronne));
-    //        button.AddEvent(new UnityAction(destroyCouronne.DestroyButton));
-    //    }
-    //}
 }
