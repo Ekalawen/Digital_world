@@ -142,7 +142,7 @@ public class GameManager : MonoBehaviour {
         if (inputManager.GetPauseGame()) {
             if (!isPaused) {
                 if (eventManager.IsGameOver()) {
-                    SaveGameResultIfIR();
+                    SaveGameResultIfQuitBeforeEnding();
                     eventManager.QuitOrReload();
                 } else {
                     Pause();
@@ -212,7 +212,7 @@ public class GameManager : MonoBehaviour {
     }
 
     public void QuitOrReloadGame() {
-        SaveGameResultIfIR();
+        SaveGameResultIfQuitBeforeEnding();
         eventManager.QuitOrReload();
     }
 
@@ -223,14 +223,17 @@ public class GameManager : MonoBehaviour {
     }
 
     public void RestartGame() {
-        SaveGameResultIfIR();
+        SaveGameResultIfQuitBeforeEnding();
         eventManager.ReloadScene();
     }
 
-    protected void SaveGameResultIfIR() {
+    protected void SaveGameResultIfQuitBeforeEnding() {
         if (GetMapType() == MenuLevel.LevelType.INFINITE
         && !eventManager.IsGameOver()
         && eventManager.IsNewBestScore()) {
+            eventManager.RememberGameResult(success: false);
+        } else if (timerManager.GetRealElapsedTime() > 10
+                && !eventManager.IsGameOver()) {
             eventManager.RememberGameResult(success: false);
         }
     }
