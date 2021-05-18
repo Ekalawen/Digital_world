@@ -63,6 +63,9 @@ public class EventManager : MonoBehaviour {
     public float proportionToKeep = 0.0f;
     public bool bNoEndgame = false;
 
+    [Header("Map Function On Create Final Light")]
+    public List<MapFunctionComponent> mapFunctionsOnCreateFinalLight;
+
     [Header("ScreenShake on Endgame")]
     public float screenShakeMagnitude = 2;
     public float screenShakeRoughness = 15;
@@ -159,9 +162,13 @@ public class EventManager : MonoBehaviour {
         }
     }
 
-    protected virtual Lumiere CreateFinalLight() {
+    protected virtual Lumiere CreateFinalLight(Lumiere.LumiereType lumiereType = Lumiere.LumiereType.FINAL) {
         Vector3 posLumiere = GetFinalLightPos();
-        Lumiere finalLight = map.CreateLumiere(posLumiere, Lumiere.LumiereType.FINAL); // Attention à la position qui est arrondi ici !
+        Lumiere finalLight = map.CreateLumiere(posLumiere, lumiereType); // Attention à la position qui est arrondi ici !
+        foreach (MapFunctionComponent function in mapFunctionsOnCreateFinalLight) {
+            function.Initialize();
+            function.Activate();
+        }
         return finalLight;
     }
 

@@ -33,6 +33,11 @@ public class GenerateProtectionArroundLumieres : GenerateCubesMapFunction {
                 cube.SetLinky();
             }
         }
+        if(gm.timerManager.HasGameStarted()) {
+            foreach(Cube cube in couronne.GetCubes()) {
+                cube.RegisterCubeToColorSources();
+            }
+        }
         ProtectSpecific(lumiere, couronne);
     }
 

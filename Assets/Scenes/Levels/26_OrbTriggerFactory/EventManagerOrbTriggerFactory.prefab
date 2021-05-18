@@ -56,6 +56,8 @@ MonoBehaviour:
   dureeDestructionCubesDestruction: 2
   proportionToKeep: 0
   bNoEndgame: 0
+  mapFunctionsOnCreateFinalLight:
+  - {fileID: 6079262480820521551}
   screenShakeMagnitude: 4
   screenShakeRoughness: 15
   dureeScreenShake: 3
@@ -91,6 +93,31 @@ MonoBehaviour:
       m_KeyId: 41165602382127104
       m_Key: 
     m_FallbackState: 0
+--- !u!114 &6079262480820521551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2005818113718561989}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1de41fcffe8e6340b6880591b3196c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cubeType: 0
+  generateMode: 1
+  nbToProtect: 1
+  proportionToProtect: 1
+  destroyAlreadyExistingCubes: 1
+  destroyAlreadyExistingCubesInMapBordures: 1
+  setLinky: 1
+  rayon: 3
+  durationToActivate: 3
+  dureeDestruction: 0.5
+  dureeDecompose: 0.2
+  orbTriggerPrefab: {fileID: 4693122538343202465, guid: 2272d91c2d3e8c54f8fc4753b72efed8,
+    type: 3}
 --- !u!1001 &2004253452606249415
 PrefabInstance:
   m_ObjectHideFlags: 0

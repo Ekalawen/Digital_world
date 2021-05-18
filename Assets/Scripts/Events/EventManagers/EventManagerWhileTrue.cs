@@ -70,13 +70,11 @@ public class EventManagerWhileTrue : EventManager {
         deathCubes.Clear();
     }
 
-    protected override Lumiere CreateFinalLight() {
+    protected override Lumiere CreateFinalLight(Lumiere.LumiereType lumiereType = Lumiere.LumiereType.FINAL) {
         if (nbLumieresFinalesAttrappees == nbLumieresFinales - 1) {
-            return base.CreateFinalLight();
+            return base.CreateFinalLight(Lumiere.LumiereType.FINAL);
         } else {
-            Vector3 posLumiere = GetFinalLightPos();
-            Lumiere finalLight = map.CreateLumiere(posLumiere, Lumiere.LumiereType.ALMOST_FINAL);
-            return finalLight;
+            return base.CreateFinalLight(Lumiere.LumiereType.ALMOST_FINAL);
         }
     }
 }
