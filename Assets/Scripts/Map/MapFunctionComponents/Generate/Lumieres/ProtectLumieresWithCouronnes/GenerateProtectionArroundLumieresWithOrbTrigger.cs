@@ -20,12 +20,14 @@ public class GenerateProtectionArroundLumieresWithOrbTrigger : GenerateProtectio
         this.couronne = couronne;
         if (orbTriggerPrefab != null) {
             Vector3 lumierePosition = lumiere.transform.position;
+            lumiere.SetInaccessible();
             orbTrigger = Instantiate(orbTriggerPrefab, lumierePosition, Quaternion.identity, map.zonesFolder.transform).GetComponentInChildren<OrbTrigger>();
             orbTrigger.Initialize(rayon, durationToActivate);
             CouronneDestroyer couronneDestroyer = orbTrigger.gameObject.AddComponent<CouronneDestroyer>();
             couronneDestroyer.Initialize(couronne, orbTrigger, dureeDestruction);
             orbTrigger.AddEvent(new UnityAction(couronneDestroyer.DestroyTheCouronne));
             orbTrigger.AddEvent(new UnityAction(couronneDestroyer.DestroyButton));
+            orbTrigger.AddEvent(new UnityAction(lumiere.SetAccessible));
         }
     }
 }

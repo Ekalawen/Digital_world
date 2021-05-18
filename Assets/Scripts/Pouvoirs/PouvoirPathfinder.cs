@@ -101,13 +101,27 @@ public class PouvoirPathfinder : IPouvoir {
 
     protected List<Vector3> GetAllLumieresPositions() {
         List<Vector3> positions = new List<Vector3>();
-        List<LumiereSwitchable> lumieresSwitchablesOn = gm.map.GetLumieresSwitchables();
-        lumieresSwitchablesOn = lumieresSwitchablesOn.FindAll(ls => ls.GetState() == LumiereSwitchable.LumiereSwitchableState.ON);
+
+        List<LumiereSwitchable> lumieresSwitchablesOn = gm.map.GetLumieresSwitchables().FindAll(ls => ls.GetState() == LumiereSwitchable.LumiereSwitchableState.ON);
+        List<LumiereSwitchable> lumieresSwitchablesOnInaccessibles = lumieresSwitchablesOn.FindAll(ls => !ls.IsAccessible());
+        lumieresSwitchablesOn = lumieresSwitchablesOn.FindAll(ls => ls.IsAccessible());
+        List<Vector3> lumieresAccessiblesPositions = gm.map.GetLumieres().FindAll(l => l.IsAccessible()).Select(l => l.transform.position).ToList();
+        List<Vector3> lumieresInaccessiblesPositions = gm.map.GetLumieres().FindAll(l => !l.IsAccessible()).Select(l => l.transform.position).ToList();
+
         if(lumieresSwitchablesOn.Count > 0) {
             positions.AddRange(lumieresSwitchablesOn.Select(ls => ls.transform.position).ToList());
         } else {
-            positions.AddRange(gm.map.GetAllLumieresPositions());
+            positions.AddRange(lumieresAccessiblesPositions);
         }
+
+        if(positions.Count == 0) {
+            if(lumieresSwitchablesOnInaccessibles.Count > 0) {
+                positions.AddRange(lumieresSwitchablesOnInaccessibles.Select(ls => ls.transform.position).ToList());
+            } else {
+                positions.AddRange(lumieresInaccessiblesPositions);
+            }
+        }
+
         return positions;
     }
 

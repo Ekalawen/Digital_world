@@ -44,6 +44,7 @@ public class Lumiere : MonoBehaviour {
     protected GameManager gm;
     protected bool isCaptured = false;
     protected LumiereQuality lumiereQuality;
+    protected bool isAccessible = true;
 
     protected virtual void Start () {
         gm = GameManager.Instance;
@@ -166,5 +167,17 @@ public class Lumiere : MonoBehaviour {
         lumiereQuality = quality;
         lumiereHighVfx.gameObject.SetActive(quality == LumiereQuality.HIGH);
         lumiereLow.SetActive(quality == LumiereQuality.LOW);
+    }
+
+    public void SetInaccessible() {
+        isAccessible = false;
+    }
+
+    public void SetAccessible() {
+        isAccessible = true;
+    }
+
+    public bool IsAccessible() {
+        return isAccessible;
     }
 }
