@@ -1,0 +1,188 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-4462316258387555844
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2005818113718561989}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 692be00eff5da574d903e46f5b0fbfc0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ejectionType: 0
+  ejectionTreshold: -10
+  ejectionCubesArroundRadius: 20
+  endGameDuration: 25
+  endGameFrameRate: 0.1
+  endEventCurveSpeed:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0.9896059
+      outSlope: 0.9896059
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.37417218
+    - serializedVersion: 3
+      time: 0.53524506
+      value: 0.7760182
+      inSlope: 1.2079004
+      outSlope: 1.2079004
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0.009837926
+      outSlope: 0.009837926
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 1
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  endGameType: 0
+  endEventCubesSelectionMethod: 0
+  endEventSeuilProximite: 2.5
+  dureeDestructionCubesDestruction: 2
+  proportionToKeep: 0
+  bNoEndgame: 0
+  screenShakeMagnitude: 4
+  screenShakeRoughness: 15
+  dureeScreenShake: 3
+  randomEventsPrefabs: []
+  nbLumieresTriggers: 
+  nbLumieresSingleEvents: []
+  quitSceneTime: 7
+  reloadSceneTime: 7
+  nbLumieresFinales: 5
+  decomposeTime: 1
+  messagesAChaqueLumiere:
+  - m_TableReference:
+      m_TableCollectionName: GUID:ca68cd80ed439e849817e90afd077d38
+    m_TableEntryReference:
+      m_KeyId: 41165443942293504
+      m_Key: 
+    m_FallbackState: 0
+  - m_TableReference:
+      m_TableCollectionName: GUID:ca68cd80ed439e849817e90afd077d38
+    m_TableEntryReference:
+      m_KeyId: 41165534505705472
+      m_Key: 
+    m_FallbackState: 0
+  - m_TableReference:
+      m_TableCollectionName: GUID:ca68cd80ed439e849817e90afd077d38
+    m_TableEntryReference:
+      m_KeyId: 41165566566965248
+      m_Key: 
+    m_FallbackState: 0
+  - m_TableReference:
+      m_TableCollectionName: GUID:ca68cd80ed439e849817e90afd077d38
+    m_TableEntryReference:
+      m_KeyId: 41165602382127104
+      m_Key: 
+    m_FallbackState: 0
+--- !u!1001 &2004253452606249415
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1848378137720066, guid: 4ad9af6763aeb45c8962c1fadb06c2eb, type: 3}
+      propertyPath: m_Name
+      value: EventManagerOrbTriggerFactory
+      objectReference: {fileID: 0}
+    - target: {fileID: 4331339866297836, guid: 4ad9af6763aeb45c8962c1fadb06c2eb, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4331339866297836, guid: 4ad9af6763aeb45c8962c1fadb06c2eb, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4331339866297836, guid: 4ad9af6763aeb45c8962c1fadb06c2eb, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4331339866297836, guid: 4ad9af6763aeb45c8962c1fadb06c2eb, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4331339866297836, guid: 4ad9af6763aeb45c8962c1fadb06c2eb, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4331339866297836, guid: 4ad9af6763aeb45c8962c1fadb06c2eb, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4331339866297836, guid: 4ad9af6763aeb45c8962c1fadb06c2eb, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4331339866297836, guid: 4ad9af6763aeb45c8962c1fadb06c2eb, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4331339866297836, guid: 4ad9af6763aeb45c8962c1fadb06c2eb, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4331339866297836, guid: 4ad9af6763aeb45c8962c1fadb06c2eb, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4331339866297836, guid: 4ad9af6763aeb45c8962c1fadb06c2eb, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114622475871070300, guid: 4ad9af6763aeb45c8962c1fadb06c2eb,
+        type: 3}
+      propertyPath: endEventSeuilProximite
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114622475871070300, guid: 4ad9af6763aeb45c8962c1fadb06c2eb,
+        type: 3}
+      propertyPath: nbCubesToDestroyByPeriod
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114622475871070300, guid: 4ad9af6763aeb45c8962c1fadb06c2eb,
+        type: 3}
+      propertyPath: endEventCubesDestructionType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114622475871070300, guid: 4ad9af6763aeb45c8962c1fadb06c2eb,
+        type: 3}
+      propertyPath: dureePeriodeCubesDestructions
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114622475871070300, guid: 4ad9af6763aeb45c8962c1fadb06c2eb,
+        type: 3}
+      propertyPath: randomEventsPrefabs.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114622475871070300, guid: 4ad9af6763aeb45c8962c1fadb06c2eb,
+        type: 3}
+      propertyPath: randomEventsPrefabs.Array.data[0]
+      value: 
+      objectReference: {fileID: 8884282260166016207, guid: b8ce784876ccd0845987b1b479516a56,
+        type: 3}
+    m_RemovedComponents:
+    - {fileID: 114622475871070300, guid: 4ad9af6763aeb45c8962c1fadb06c2eb, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: 4ad9af6763aeb45c8962c1fadb06c2eb, type: 3}
+--- !u!1 &2005818113718561989 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1848378137720066, guid: 4ad9af6763aeb45c8962c1fadb06c2eb,
+    type: 3}
+  m_PrefabInstance: {fileID: 2004253452606249415}
+  m_PrefabAsset: {fileID: 0}
