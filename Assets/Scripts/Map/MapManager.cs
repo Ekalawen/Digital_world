@@ -586,9 +586,22 @@ public class MapManager : MonoBehaviour {
                 },
                 (result) => result.Item1);
             // Les relier ! :)
-            Cave.RelierChemin(cubesRegular, this, pos, closestPosition);
+            RelierChemin(pos, closestPosition, dontDestroyEnd: true);
         }
     }
+
+	// Le but de cette fonction est de creuser un tunel allant de debutChemin a finChemin !
+	public void RelierChemin(Vector3 debutChemin, Vector3 finChemin, bool dontDestroyEnd = false) {
+        List<Vector3> path = GetStraitPath(debutChemin, finChemin, isDeterministic: false);
+        path.Insert(0, debutChemin);
+        if(dontDestroyEnd) {
+            path.Remove(path.Last());
+        }
+        PosVisualisator.DrawPath(path, Color.blue);
+        foreach(Vector3 pointActuel in path) {
+            DeleteCube(GetCubeAt(pointActuel));
+        }
+	}
 
     public void LinkUnreachableLumiereToRest() {
         List<Vector3> reachableArea = GetReachableArea();
