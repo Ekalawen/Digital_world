@@ -15,7 +15,7 @@ public class BrisableCube : NonBlackCube {
     }
 
     public override void InteractWithPlayer() {
-        if (!IsDecomposing()) {
+        if (!IsDecomposing() || GetDureeDecomposeRemaining() > dureeBeforeDestruction) {
             Decompose(dureeBeforeDestruction);
         }
     }

@@ -87,6 +87,7 @@ public class Block : MonoBehaviour {
     }
 
     public void Destroy(float speedDestruction, float dureeDecompose) {
+        cubes = cubes.FindAll(c => c != null).ToList();
         cubes.Sort(delegate (Cube A, Cube B) {
             float distAToStart = Vector3.Distance(A.transform.position, endPoint.position);
             float distBToStart = Vector3.Distance(B.transform.position, endPoint.position);

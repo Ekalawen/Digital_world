@@ -119,6 +119,22 @@ public class Cube : MonoBehaviour {
         GetMaterial().SetFloat("_DecomposeStartingTime", Time.time);
     }
 
+    private void ChainAnotherDecomposeEffect(float newDuree) {
+        float oldDuree = materialTransparent.GetFloat("_DecomposeTime");
+        float oldStartingTime = materialTransparent.GetFloat("_DecomposeStartingTime");
+
+        float time = Time.time - oldStartingTime;
+        float oldPente = 1 / oldDuree;
+        float decomposeAvancement = time * oldPente;
+        float newPente = (1 - decomposeAvancement) / newDuree;
+        float newOffset = 1 - newPente * (time + newDuree);
+        float newStartingTime = oldStartingTime - newOffset / newPente;
+        float newDureeSinceNewStartingTime = Time.time - newStartingTime + newDuree;
+
+        materialTransparent.SetFloat("_DecomposeTime", newDureeSinceNewStartingTime);
+        materialTransparent.SetFloat("_DecomposeStartingTime", newStartingTime);
+    }
+
     public void FinishDecomposeEffect() {
         SetOpaqueMaterial();
         float decomposeTime = materialTransparent.GetFloat("_DecomposeTime");
@@ -210,10 +226,17 @@ public class Cube : MonoBehaviour {
     }
 
     public void RealDecompose(float duree) {
-        if (IsDecomposing())
+        bool isDecomposing = IsDecomposing();
+        float dureeDecomposeRemaining = GetDureeDecomposeRemaining();
+        if (isDecomposing && dureeDecomposeRemaining <= duree) {
             return;
+        }
         gm = GameManager.Instance; // Sinon peut y avoir un bug si on essaie de le détruire dans la même frame que lorsqu'il est crée ! (Le Start a pas le temps de s'éxécuter :'()
-        StartDecomposeEffect(duree);
+        if (isDecomposing) {
+            ChainAnotherDecomposeEffect(duree);
+        } else {
+            StartDecomposeEffect(duree);
+        }
         DestroyIn(duree);
     }
 
@@ -221,6 +244,13 @@ public class Cube : MonoBehaviour {
         float decomposeStartingTime = materialTransparent.GetFloat("_DecomposeStartingTime");
         return Time.time >= decomposeStartingTime;
     }
+
+    public float GetDureeDecomposeRemaining() {
+        float dureeAlreadyDecomposed = Time.time - materialTransparent.GetFloat("_DecomposeStartingTime");
+        float decomposeTime = materialTransparent.GetFloat("_DecomposeTime");
+        return decomposeTime - dureeAlreadyDecomposed;
+    }
+
 
     public void DecomposeIn(float dureeDecompose, float timeBeforeDecompose) {
         StartCoroutine(CDecomposeIn(dureeDecompose, timeBeforeDecompose));
