@@ -20,6 +20,7 @@ public class Cube : MonoBehaviour {
     protected LinkyCubeComponent linkyCube = null;
     protected Coroutine enableDisableCoroutine = null;
     protected Material materialTransparent;
+    protected Coroutine changeMaterialCoroutine = null;
 
     // Done before player initialization
     public virtual void Initialize() {
@@ -98,7 +99,7 @@ public class Cube : MonoBehaviour {
         //(1 - distanceCubePlayer * playerProximityCoef + dissolveThickness) * dissolveTime = time - dissolveStartingTime;
         //time = (1 - distanceCubePlayer * playerProximityCoef + dissolveThickness) * dissolveTime + dissolveStartingTime;
         float timeToWait = (1 - distanceCubePlayer * playerProximityCoef + dissolveThickness) * dissolveTime + dissolveStartingTime;
-        StartCoroutine(CSetOpaqueMaterialIn(timeToWait));
+        changeMaterialCoroutine = StartCoroutine(CSetOpaqueMaterialIn(timeToWait));
     }
 
     protected IEnumerator CSetOpaqueMaterialIn(float duree) {
@@ -125,6 +126,9 @@ public class Cube : MonoBehaviour {
     }
 
     public void SetMaterial(Material newMaterial) {
+        if(changeMaterialCoroutine != null) {
+            StopCoroutine(changeMaterialCoroutine);
+        }
         GetComponent<MeshRenderer>().material = newMaterial;
         currentMaterial = GetComponent<MeshRenderer>().material;
     }
