@@ -284,8 +284,14 @@ public class ColorManager : MonoBehaviour {
         MathTools.Shuffle(cubes);
 
         foreach(Cube cube in cubes) {
-            if(cube.GetLuminance() < 0.01f) {
-                GenerateColorSourceAt(cube.transform.position);
+            if (!cube.GetComponent<NonBlackCube>()) {
+                if (cube.GetLuminance() < 0.01f) {
+                    GenerateColorSourceAt(cube.transform.position);
+                }
+            } else {
+                if (cube.GetColor() == ColorSource.LimiteColorSaturation(Color.black, NonBlackCube.minColorSaturationAndValue)) {
+                    GenerateColorSourceAt(cube.transform.position);
+                }
             }
         }
     }
