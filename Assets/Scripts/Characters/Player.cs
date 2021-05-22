@@ -467,6 +467,10 @@ public class Player : Character {
             ||  hit.collider.gameObject.GetComponent<BouncyCube>() != null) { // Pour empêcher de pouvoir sauter sur eux avant qu'ils nous tuent !
                 continue;
             }
+            BrisableCube brisableCube = hit.collider.gameObject.GetComponent<BrisableCube>();
+            if (brisableCube != null) {
+                brisableCube.InteractWithPlayer(); // Pour être sur qu'on ne saute pas sur un BrisableCube sans le trigger :3
+            }
             Vector3 n = hit.normal;
             float angle = Vector3.Angle(n, up);
             if (Mathf.Abs(angle) <= slideLimit) {
