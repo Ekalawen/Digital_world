@@ -463,8 +463,7 @@ public class Player : Character {
              || hit.collider.gameObject.tag == "Trigger") {
                 continue;
             }
-            if (hit.collider.gameObject.GetComponent<DeathCube>() != null
-            ||  hit.collider.gameObject.GetComponent<BouncyCube>() != null) { // Pour empêcher de pouvoir sauter sur eux avant qu'ils nous tuent !
+            if (hit.collider.gameObject.GetComponent<BouncyCube>() != null) { // Pour empêcher de pouvoir sauter sur eux avant qu'ils nous bouncent !
                 continue;
             }
             Cube cube = hit.collider.gameObject.GetComponent<Cube>();
