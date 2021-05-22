@@ -467,9 +467,9 @@ public class Player : Character {
             ||  hit.collider.gameObject.GetComponent<BouncyCube>() != null) { // Pour empêcher de pouvoir sauter sur eux avant qu'ils nous tuent !
                 continue;
             }
-            BrisableCube brisableCube = hit.collider.gameObject.GetComponent<BrisableCube>();
-            if (brisableCube != null) {
-                brisableCube.InteractWithPlayer(); // Pour être sur qu'on ne saute pas sur un BrisableCube sans le trigger :3
+            Cube cube = hit.collider.gameObject.GetComponent<Cube>();
+            if (cube != null) {
+                cube.InteractWithPlayer(); // Pour être sur qu'on ne saute pas sur un Cube sans le trigger ! :3
             }
             Vector3 n = hit.normal;
             float angle = Vector3.Angle(n, up);
@@ -600,6 +600,10 @@ public class Player : Character {
             dureeMurRestante = 0;
         } else {
             dureeMurTimer.SetRemainingTime(dureeMurRestante);
+        }
+        Cube cube = hit.gameObject.GetComponent<Cube>();
+        if(cube != null) {
+            cube.InteractWithPlayer();
         }
 
         // Pour pouvoir s'accrocher à un autre mur depuis ce mur-ci !
