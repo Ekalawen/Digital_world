@@ -1,17 +1,17 @@
 2_FirstInfiniteRunner
-Chaque Block est généré aléatoirement !
 Plus vous irez loin, plus vous débloquerez d'indices !
-Trouvez la meilleure façon de franchir chaque obstacle !
 Une fois que vous aurez franchi le 10ième Block, les Cubes commenceront à se détruire derrière vous !
 Regardez là où vous voulez aller plutôt que l'obstacle que vous êtes en train de franchir.
+Trouvez la meilleure façon de franchir chaque obstacle !
+Chaque Block est généré aléatoirement !
 
 3_FirstLevel
-Les niveaux sont générés procéduralement.
 Chaque fois que vous atteindrez un nouveau palier, vous débloquerez un indice supplémentaire !
-Vous pouvez grimper dans les coins en sautant des 2 cotes !
 Lorsque vous êtes accroché au mur, le curseur grossit et devient bleu.
 Vous pouvez repérer une Data aux reflets de sa lumière.
 Restez appuyé sur ESPACE pour sauter plus haut.
+Vous pouvez grimper dans les coins en sautant des 2 cotes !
+Les niveaux sont générés procéduralement.
 
 4_FirstSonde
 Une Sonde va droit sur vous si elle vous voit.
@@ -22,33 +22,34 @@ HELPER : Que ce passe-t-il si vous touchez la Sonde ?
 HELPER : Sautez sur la Sonde pour atteindre la Data !
 
 5_SecondRunner
-Chaque Block possède son propre poids qui le rend plus ou moins fréquent.
-Lorsque vous êtes accroché au mur, les bords de votre écran s'assombrissent.
 Les Cubes se détruisent de plus en plus vite.
+Lorsque vous êtes accroché au mur, les bords de votre écran s'assombrissent.
 N'hésitez pas à rester longtemps accroché aux murs !
+Chaque Block possède son propre poids qui le rend plus ou moins fréquent.
 
 6_DiscoverOfSondes
+Si vous vous faites toucher par une Sonde, vous pourrez à nouveau vous accrocher à un mur.
+Les Sondes ont une portée de détection maximum.
+Si tu restes trop au même endroit, les Sondes vont s'y accumuler et ce sera pire !
 Pour grimper dans un coin, vous n'avez pas besoin de vous en éloigner à chaque saut. Restez-y collé.
 Les niveaux sont optimisés pour limiter le nombre de culs-de-sacs et donc de se faire encercler par des Sondes !
-Les Sondes ont une portée de détection maximum.
-Si vous vous faites toucher par une Sonde, vous pourrez à nouveau vous accrocher à un mur.
-Si tu restes trop au même endroit, les Sondes vont s'y accumuler et ce sera pire !
 
 7_LearnEndEvent
-Vous pouvez repérer la Sortie à ses reflets lumineux plus intenses.
+Lorsque vous attraperez la dernière Data, vous déclencherez la Destruction de la Matrice !
+La Destruction de la Matrice remplira progressivement le niveau de Cube de la Mort jusqu'à vous tuer ou que vous vous échappiez !
 Les Cubes de la Mort remplissent l'espace en commencant loin de vous et de la Sortie.
 La Sortie apparaît toujours à l'opposé de votre position !
+Vous pouvez repérer la Sortie à ses reflets lumineux plus intenses.
 La Sortie bleu sera toujours la dernière Sortie.
-Vous pouvez vous déplacer dans une direction en regardant dans une autre !
 END-EVENT : Ils veulent nous enfermer !
 END-EVENT : La Sortie apparaît à l'opposé de toi !
 END-EVENT : La boucle va finir par céder !
 END-EVENT : La Sortie bleu est la dernière !
 
 8_TheFall
-Appui sur SHIFT pour te décrocher des murs au bon moment et mieux calculer ton atterissage.
 Appui sur SHIFT pour descendre des murs sans t'y accrocher.
 Tu peux rester appuyer sur SHIFT pour ne jamais t'accrocher aux murs.
+Appui sur SHIFT puis relache rapidement pour te raccrocher au même mur un peu plus bas.
 Dans le doute, saute, ça te laissera toujours plus de temps pour choisir ou aller ensuite !
 
 9_DashTraining
@@ -58,20 +59,20 @@ Dash15 permet également de dasher vers le haut ou le bas !
 Ceci est un niveau d'entraînement, par la suite vous utiliserez Dash015 qui aura un cooldown de 15 secondes.
 
 10_LearnJump
-Vous pouvez grimper dans les coins de dos !
-Si vous ratez un Jump(), vous serez immobilisé et perdrez du temps !
 Il faut être dans les airs sans être accroché à un mur avant la fin du timer lorsque vous voyez un Jump() !
+Si vous ratez un Jump(), vous serez immobilisé et perdrez du temps !
 Vous pouvez esquiver un Jump() en appuyant sur SHIFT au bon moment si vous êtes accroché à un mur !
 Dash015 a un long cooldown d'utilisation, utilisez-le au bon moment !
+Vous pouvez grimper dans les coins de dos !
 
 11_ParkourTraining
-La prochaine Data accessible sera la plus proche de la Data d'avant !
+Les Datas transparentes ne peuvent pas être capturés. Pour le moment.
+La prochaine Data accessible sera la plus proche de la Data d'avant et sera pointé par un éclair jaune.
+Essayez d'anticiper quelle sera la prochaine Data à l'avance pour gagner du temps !
+La prochaine Data peut se trouver juste au-dessus ou en-dessous de vous !
 Courir le long des murs est souvent une bonne idée pour gagner de la hauteur.
 Sautez contre les parois du niveau pour vous élever rapidement.
-Les Datas transparentes ne peuvent pas être capturés. Pour le moment.
 Monter par les coins c'est bien, mais ce n'est souvent pas le plus rapide.
-La prochaine Data peut se trouver juste au-dessus ou en-dessous de vous !
-Essayez d'anticiper quelle sera la prochaine Data à l'avance pour gagner du temps !
 
 12_FullSpikes
 Les Cubes Brisables se détruisent en 2 secondes si vous les touchez.
@@ -92,20 +93,20 @@ END-EVENT : On y est presque ! ...
 
 13_Analyze
 Elle fuit votre regard !
+Plus vous la fixez, plus elle ira vite.
 Coincez-là sur les bords avant de vous en rapprocher !
 Vous pouvez la faire venir à vous, en ne bougeant presque pas !
-Plus vous la fixez, plus elle ira vite.
 Vous pouvez regarder dans une direction et vous déplacer dans une autre !
 HELPER : Elle fuit votre regard !
 HELPER : Coincez-là sur les bords juste avec le regard !
 
 14_ConstantDestruction
-Les Cubes sont détruits rapidement au début et lentement à la fin.
-Prenez de la hauteur, vous tomberez moins facilement.
+Certaines Destructions de la Matrice détruisent progressivement tous les Cubes du niveau.
 Les Sorties apparaissent toujours à l'opposé de votre position !
 Les Cubes proches de vous et de la Sortie sont détruits en derniers.
+Les Cubes sont détruits rapidement au début et lentement à la fin.
 Prenez le temps de savoir où se trouve la Sortie avancer de foncer nulle part.
-Sautez en permanence pour éviter de tomber par inadvertance.
+Prenez de la hauteur, vous tomberez moins facilement.
 END-EVENT : Ils s'auto-détruisent !
 END-EVENT : La communication s'affaiblit !
 END-EVENT : Il faut maintenir la connexion !
@@ -117,55 +118,53 @@ END-EVENT : 2 .!!
 END-EVENT : 1 !!!
 
 15_RadarWave
-Attirez les Sondes à un autre endroit si elles s'accumullent !
 Vous pouvez voir où se trouvent les Datas à travers les murs.
 Prenez du recul pour mieux visualiser le niveau.
-Essayer de prévoir à l'avance la prochaine Data qui sera capturable.
+Essayez de prévoir à l'avance la prochaine Data qui sera capturable.
 Essayez de toujours prendre de la hauteur.
 Vous pouvez anticiper le mouvement des Sondes si vous les voyez de loin.
+Attirez les Sondes à un autre endroit si elles s'accumullent !
 
 16_LearnIntersection
 Les Intersections() vous visent depuis les 6 directions !
 Les Intersections() mettent 1.5 secondes avant de se déclencher !
 Les Intersections() se referment toujours en 1 seconde. Donc si elle part de loin, elle arrivera vite !
 Déplacez-vous au maximum en diagonales pour éviter les Intersection() facilement !
-Vous pouvez savoir où vise une Intersection() aux symboles de prévisualisation.
+Vous pouvez savoir où vise une Intersection() grâce aux symboles de prévisualisation.
 
 17_FurtiveGrid
 Si vous ne la voyez pas, elle ne vous fuit pas.
-Vous ne l'effrayez pas si vous la regardez à travers le verre.
-Prevoyez votre trajectoire à l'avance, regardez ailleurs, puis allez-y !
-Approcher par en haut est une technique efficace.
 Elle ne détecte pas votre regard à travers le verre.
+Prevoyez votre trajectoire à l'avance, regardez ailleurs, puis allez-y !
+S'approcher par en haut est une technique efficace.
 
 18_LearnPathfinding
-Les niveaux sont optimisés pour que chaque chemin ait toujours un début et une fin : vous pouvez rentrer par n'importe où, vous avez la certitude de pouvoir ressortir de l'autre côté !
-Utiliser un PathFinder() ne vous coÃ»te qu'une seconde.
+Votre nouveau pouvoir, PathFinder(), vous montre le chemin à la Data la plus proche.
 PathFinder() a 10 secondes de cooldown, utilisez-le au bon moment.
-PathFinder() vous montre le chemin à la Data la plus proche.
-Le PathFinder() peut partir dans votre dos, regardez bien autour de vous !
-Le PathFinder() ne vous permet pas de localiser la Sortie.
-La prochaine Data accessible sera la plus éloignée de la Data d'avant !
+PathFinder() ne vous permet pas de localiser la Sortie.
+PathFinder() peut partir dans votre dos, regardez bien autour de vous !
+La prochaine Data accessible sera la plus éloignée de la Data d'avant et sera pointé par un éclair bleu.
+Les niveaux sont optimisés pour que chaque chemin ait toujours un début et une fin : vous pouvez rentrer par n'importe où, vous avez la certitude de pouvoir ressortir de l'autre côté !
 
 19_BounceHighway
+Pour sauter sur un Bouncer, maintenez ESPACE avant l'impact avec le Bouncer.
 Un Bouncer vous pousse de 3 cubes dans la direction d'où vous venez.
 Lorsque vous prenez un Bouncer, vous pourrez à nouveau vous accrochez à n'importe quel mur.
 Lorsqu'un Bouncer vous pousse vers le haut, vous avez le choix entre vous laisser pousser ou sauter en même temps pour aller plus haut.
-Pour sauter sur un Bouncer, maintenez ESPACE avant l'impact avec le Bouncer.
 
 20_VerticalBounce
-Ici les Sorties alternent entre le haut et le bas.
 L'espace au-dessus d'un Bouncer est presque toujours dégagé.
 Les Bouncers sont alignés verticalement à un cube près pour que vous puissiez les enchainer !
 Regardez vers le bas lorsque vous enchainez les Bouncers pour mieux les voirs.
+Ici les Sorties alternent entre le haut et le bas.
 END-EVENT : Ça vient d'en haut ou d'en bas !
 END-EVENT : La direction a changé !
 
 21_AlwaysReset
 Attraper un Reset Temporel remonte votre temps à son maximum !
-Le Pathfinder vous permet de localiser à la fois une Data en jaune et un Reset Temporel en violet !
 Chaque fois que vous attraperez un Reset Temporel, un autre apparaîtra ailleurs !
-Utilisez votre Pathfinder pour localiser un Reset Temporel lorsque manquez de temps !
+Utilisez votre Pathfinder() pour localiser un Reset Temporel lorsque manquez de temps !
+Le Pathfinder() vous permet de localiser à la fois une Data en jaune et un Reset Temporel en violet !
 Si une Sonde vous éjecte hors de la Matrice, utilisez votre Dash015 pour revenir !
 
 22_FirstTracers
@@ -183,7 +182,7 @@ Un cercle de prévisualisation vous permet d'anticiper quand des SwappyCubes cha
 Les poignées rondes sur les bords des LinkyCubes vous indique que ce sont des SwappyCubes.
 
 24_FullSwapPolycubes
-Les Cubes activés et les Cubes désactivés échangent leurs états toutes les 4 secondes.
+Ici, les Cubes activés et les Cubes désactivés échangent leurs états toutes les 4 secondes.
 Localisez des Cubes désactivés juste avant un changement d'état, ils seront ensuite activés.
 Sautez juste avant un changement d'état pour avoir plus de temps et savoir où atterrir.
 Les Datas en hauteur sont moins risqués que les Datas à basse altitude.
@@ -197,10 +196,10 @@ Si vous touchez un LinkyCube Brisable, vous briserez tous les LinkyCubes qui lui
 
 25_OrbTriggerFactory
 Restez 7 secondes dans un Firewall() sans en sortir pour libérer la Data !
-Vous pouvez attirer les Sondes au loin pour hacker un Firewall() plus facilement.
 Pour rester proche des Firewalls(), dansez autour, calez-vous dans les coins, glissez le long des murs ...
-Les Cubes au centre des Firewalls() sont des LinkyCubes, donc ils se déclenchent les uns les autres.
 Les Firewalls() s'aggrandissent un peu lorsque vous rentrez dedans, et diminuent quand vous en sortez.
+Les Cubes au centre des Firewalls() sont des LinkyCubes, donc ils se déclenchent les uns les autres.
+Vous pouvez attirer les Sondes au loin pour hacker un Firewall() plus facilement.
 END-EVENT : Firewall : Endommagé
 END-EVENT : Firewall : Ébréché
 END-EVENT : F1r3wall : Fissuré
@@ -209,8 +208,8 @@ END-EVENT : F1r3w477 : ©r4©ké
 26_EquilibriumReset
 Gardez un œil sur le timer pour savoir quand aller chercher le Reset Temporel !
 Si vous attrapez les Datas suffisamment vite, vous n'avez presque pas besoin du Reset Temporel !
-Utilisez les Bouncers pour remonter rapidement.
 Essayez de visualiser des chaînes de Datas pour toutes les attraper à la suite !
+Utilisez les Bouncers pour remonter rapidement.
 
 27_BrisableRoad
 Les Cubes Brisables Instables se détruisent 100% plus vite que les Cubes Brisables.
