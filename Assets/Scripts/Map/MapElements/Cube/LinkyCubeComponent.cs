@@ -84,14 +84,15 @@ public class LinkyCubeComponent : MonoBehaviour {
             InitParams();
         } else {
             LinkyCubeComponent mainVoisin = linkyVoisins[0].GetLinkyCubeComponent();
+            Vector3 barycentre = mainVoisin.GetBarycentre();
             foreach(Cube linkedCube in GetLinkedCubes()) {
-                linkedCube.GetLinkyCubeComponent().CopyParamsFrom(mainVoisin);
+                linkedCube.GetLinkyCubeComponent().CopyParamsFrom(mainVoisin, barycentre);
             }
         }
     }
 
-    protected void CopyParamsFrom(LinkyCubeComponent linkyCubeComponent) {
-        this.anchor = linkyCubeComponent.anchor;
+    protected void CopyParamsFrom(LinkyCubeComponent linkyCubeComponent, Vector3 barycentre) {
+        this.anchor = barycentre;
         this.timeFixedOffset = linkyCubeComponent.timeFixedOffset;
         this.linkyColor = linkyCubeComponent.linkyColor;
         WriteParamsToShader(anchor, timeFixedOffset);
