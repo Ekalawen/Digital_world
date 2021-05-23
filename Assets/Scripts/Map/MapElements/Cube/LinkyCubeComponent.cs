@@ -94,18 +94,18 @@ public class LinkyCubeComponent : MonoBehaviour {
         this.anchor = linkyCubeComponent.anchor;
         this.timeFixedOffset = linkyCubeComponent.timeFixedOffset;
         this.linkyColor = linkyCubeComponent.linkyColor;
-        WriteParamsToShader();
+        WriteParamsToShader(anchor, timeFixedOffset);
     }
 
     protected void InitParams() {
         anchor = cube.transform.position;
         timeFixedOffset = UnityEngine.Random.Range(0.0f, 1000.0f);
-        WriteParamsToShader();
+        WriteParamsToShader(anchor, timeFixedOffset);
     }
 
-    protected void WriteParamsToShader() {
-        cube.BothMaterialsSetVector("_LinkyCubeAnchor", anchor);
-        cube.BothMaterialsSetFloat("_LinkyCubeTimeFixedOffset", timeFixedOffset);
+    protected void WriteParamsToShader(Vector3 newAnchor, float newTimeFixedOffset) {
+        cube.BothMaterialsSetVector("_LinkyCubeAnchor", newAnchor);
+        cube.BothMaterialsSetFloat("_LinkyCubeTimeFixedOffset", newTimeFixedOffset);
     }
 
     public void LinkyExplode() {
