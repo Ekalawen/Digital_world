@@ -481,4 +481,25 @@ public class MenuLevel : MonoBehaviour {
     public LevelType GetLevelType() {
         return levelType;
     }
+
+    public void OpenDoc() {
+        if (selectorManager != null && !selectorManager.HasSelectorLevelOpen())
+            return;
+        StartCoroutine(COpenDoc());
+    }
+
+    protected IEnumerator COpenDoc() {
+        AsyncOperationHandle<string> handleTitle = selectorManager.strings.docTitle.GetLocalizedString();
+        yield return handleTitle;
+        string titleString = handleTitle.Result;
+        string docText = "";
+        int i = 1;
+        foreach(LocalizedString localizedString in consolePrefab.GetComponent<Console>().conseils) {
+            AsyncOperationHandle<string> conseilHandle = localizedString.GetLocalizedString();
+            yield return conseilHandle;
+            docText += $"{UIHelper.SurroundWithColor(i.ToString(), UIHelper.GREEN)}) {conseilHandle.Result}\n";
+            i++;
+        }
+        selectorManager.RunPopup(titleString, docText, TexteExplicatif.Theme.NEUTRAL);
+    }
 }
