@@ -2449,10 +2449,10 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector2MaterialSlot",
     "m_ObjectId": "2a8b95e0486c4764a0734b5b2db01721",
     "m_Id": 1,
-    "m_DisplayName": "Out_Vector2",
+    "m_DisplayName": "UV",
     "m_SlotType": 1,
     "m_Hidden": false,
-    "m_ShaderOutputName": "OutVector2",
+    "m_ShaderOutputName": "UV",
     "m_StageCapability": 3,
     "m_Value": {
         "x": 0.0,
@@ -3439,6 +3439,9 @@
             "m_Id": "a4741b4771be43649ff1030d477a69d5"
         },
         {
+            "m_Id": "59953142d57a4cd58a069a68c00aa5cc"
+        },
+        {
             "m_Id": "ffa4ad1c07d043778202358f60d05a18"
         }
     ],
@@ -3451,10 +3454,12 @@
     },
     "m_SerializedSubGraph": "{\n    \"subGraph\": {\n        \"fileID\": -5475051401550479605,\n        \"guid\": \"f54e8caf57dc21548a7e6dabeead3a5b\",\n        \"type\": 3\n    }\n}",
     "m_PropertyGuids": [
-        "2b5e0e88-d793-4f7f-994c-a1ce566e1ff6"
+        "2b5e0e88-d793-4f7f-994c-a1ce566e1ff6",
+        "605ab8c8-2b02-4f5a-8f6b-98354c452c8b"
     ],
     "m_PropertyIds": [
-        1573732609
+        1573732609,
+        -749144295
     ]
 }
 
@@ -3866,6 +3871,21 @@
         "e32": 0.0,
         "e33": 1.0
     }
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
+    "m_ObjectId": "59953142d57a4cd58a069a68c00aa5cc",
+    "m_Id": -749144295,
+    "m_DisplayName": "TimeOffset",
+    "m_SlotType": 0,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "Vector1_18135ab40a7747c592423d82f73620ec",
+    "m_StageCapability": 3,
+    "m_Value": 0.0,
+    "m_DefaultValue": 0.0,
+    "m_Labels": []
 }
 
 {
