@@ -74,12 +74,12 @@ La prochaine Data peut se trouver juste au-dessus ou en-dessous de vous !
 Essayez d'anticiper quelle sera la prochaine Data à l'avance pour gagner du temps !
 
 12_FullSpikes
-Essayez de toucher le moins de cubes possible pour les conserver pour après.
-Accrochez-vous au bord du Cube avant de sauter dessus s'il est trop haut.
+Les Cubes Brisables se détruisent en 2 secondes si vous les touchez.
+Vous pouvez encore sauter sur les Cubes en train de se détruire.
+Essayez de toucher le moins de Cubes Brisables possible pour les conserver pour après.
 Les lignes sont toujours espacés verticalement de 2 Cubes, donc vous pouvez toujours sauter de l'une à l'autre.
-Les Cubes mettent 2 secondes à se détruire, vous pouvez encore les utiliser pendant ce temps là !
-Restez appuyé jusqu'au boÃ»t sur ESPACE pour faire de grands sauts !
-Prenez le temps de regardez là où vous aller sauter avant de sauter.
+Accrochez-vous au bord d'un Cube avant de sauter dessus s'il est trop haut.
+Restez appuyé jusqu'au bout sur ESPACE pour faire de grands sauts !
 END-EVENT : Ok c'est pas fini !
 END-EVENT : Ils relocalisent leurs Datas !
 END-EVENT : Continue, je vérrouille la cible !
@@ -158,6 +158,8 @@ Ici les Sorties alternent entre le haut et le bas.
 L'espace au-dessus d'un Bouncer est presque toujours dégagé.
 Les Bouncers sont alignés verticalement à un cube près pour que vous puissiez les enchainer !
 Regardez vers le bas lorsque vous enchainez les Bouncers pour mieux les voirs.
+END-EVENT : Ça vient d'en haut ou d'en bas !
+END-EVENT : La direction a changé !
 
 21_AlwaysReset
 Attraper un Reset Temporel remonte votre temps à son maximum !
@@ -199,10 +201,23 @@ Vous pouvez attirer les Sondes au loin pour hacker un Firewall() plus facilement
 Pour rester proche des Firewalls(), dansez autour, calez-vous dans les coins, glissez le long des murs ...
 Les Cubes au centre des Firewalls() sont des LinkyCubes, donc ils se déclenchent les uns les autres.
 Les Firewalls() s'aggrandissent un peu lorsque vous rentrez dedans, et diminuent quand vous en sortez.
+END-EVENT : Firewall : Endommagé
+END-EVENT : Firewall : Ébréché
+END-EVENT : F1r3wall : Fissuré
+END-EVENT : F1r3w477 : ©r4©ké
 
 26_EquilibriumReset
 Gardez un œil sur le timer pour savoir quand aller chercher le Reset Temporel !
 Si vous attrapez les Datas suffisamment vite, vous n'avez presque pas besoin du Reset Temporel !
 Utilisez les Bouncers pour remonter rapidement.
 Essayez de visualiser des chaînes de Datas pour toutes les attraper à la suite !
+
+27_BrisableRoad
+Les LinkyCubes sont des cubes connectés les uns aux autres. Ce qui arrive à l'un arrive à tous ceux connectés.
+Si vous touchez un LinkyCube Brisable, vous briserez tous les LinkyCubes qui lui sont liés.
+
+Les LinkyCubes sont des cubes connectés les uns aux autres. Ce qui arrive à l'un arrive à tous ceux connectés.
+Les SwappyCubes sont des LinkyCubes qui s'activent et se désactivent cycliquement en rythme.
+Un cercle de prévisualisation vous permet d'anticiper quand des SwappyCubes changent d'état.
+Les poignées rondes sur les bords des LinkyCubes vous indique que ce sont des SwappyCubes.
 
