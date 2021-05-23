@@ -394,7 +394,7 @@ public class MenuLevel : MonoBehaviour {
         AsyncOperationHandle<TextAsset> handle = archivesTextAsset.LoadAssetAsync();
         yield return handle;
         texteArchivesLink.textAsset = handle.Result;
-        foreach(Tuple<string, string> replacement in UIHelper.GetAllArchivesReplacements(selectorManager.archivesStrings)) {
+        foreach(Tuple<string, string> replacement in UIHelper.GetReplacementList(selectorManager.archivesStrings)) {
             texteArchivesLink.AddReplacement(replacement.Item1, replacement.Item2);
         }
         texteArchivesLink.titleTextTarget.text = selectorManager.strings.archivesTitle.GetLocalizedString().Result;

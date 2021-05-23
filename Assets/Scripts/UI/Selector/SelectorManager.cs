@@ -27,7 +27,7 @@ public class SelectorManager : MonoBehaviour {
 
     public TexteExplicatif popup;
     public SelectorManagerStrings strings;
-    public ArchivesReplacementStrings archivesStrings;
+    public ReplacementStrings archivesStrings;
     public SelectorLevelRunIntroduction introductionRunner;
     public TutorialTooltipManager tutorialTooltipManager;
 

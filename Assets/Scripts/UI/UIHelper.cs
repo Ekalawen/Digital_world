@@ -7,6 +7,23 @@ using UnityEngine.Localization;
 
 public class UIHelper {
 
+    public enum UIColor {
+        RED,
+        GREEN,
+        BLUE,
+        WHITE,
+        BLACK,
+        CYAN,
+        DARK_CYAN,
+        ELECTRIC_BLUE,
+        ORANGE,
+        YELLOW,
+        MAGENTA,
+        PURE_RED,
+        PURE_GREEN,
+        PURE_BLUE,
+    }
+
     public static string RED = "#ff0000ff";
     public static string GREEN = "#00ff00ff";
     public static string BLUE = "#0000ffff";
@@ -17,6 +34,7 @@ public class UIHelper {
     public static string ELECTRIC_BLUE = "#88ffffff";
     public static string ORANGE = "#ff8800ff";
     public static string YELLOW = "#ffff00ff";
+    public static string MAGENTA = "#ff00ffff";
     public static string PURE_RED = "#ff0000ff";
     public static string PURE_GREEN = "#00ff00ff";
     public static string PURE_BLUE = "#0000ffff";
@@ -86,20 +104,32 @@ public class UIHelper {
         return $"<color={htmlColor}>{text}</color>";
     }
 
-    public static List<Tuple<string, string>> GetAllArchivesReplacements(ArchivesReplacementStrings strings) {
+    public static List<Tuple<string, string>> GetReplacementList(ReplacementStrings stringsReplacements) {
         List<Tuple<string, string>> replacements = new List<Tuple<string, string>>();
-        foreach(LocalizedString ls in strings.blueReplacements) {
-            string s = ls.GetLocalizedString().Result;
-            replacements.Add(new Tuple<string, string>(s, UIHelper.SurroundWithColor(s, UIHelper.BLUE)));
-        }
-        foreach(LocalizedString ls in strings.cyanReplacements) {
-            string s = ls.GetLocalizedString().Result;
-            replacements.Add(new Tuple<string, string>(s, UIHelper.SurroundWithColor(s, UIHelper.CYAN)));
-        }
-        foreach(LocalizedString ls in strings.pureGreenReplacements) {
-            string s = ls.GetLocalizedString().Result;
-            replacements.Add(new Tuple<string, string>(s, UIHelper.SurroundWithColor(s, UIHelper.PURE_GREEN)));
+        foreach(ReplacementString stringReplacement in stringsReplacements.replacements) {
+            string s = stringReplacement.localizedString.GetLocalizedString().Result;
+            replacements.Add(new Tuple<string, string>(s, UIHelper.SurroundWithColor(s, UIColor2String(stringReplacement.color))));
         }
         return replacements;
+    }
+
+    public static string UIColor2String(UIColor uiColor) {
+        switch (uiColor) {
+            case UIColor.RED: return RED;
+            case UIColor.GREEN: return GREEN;
+            case UIColor.BLUE: return BLUE;
+            case UIColor.WHITE: return WHITE;
+            case UIColor.BLACK: return BLACK;
+            case UIColor.CYAN: return CYAN;
+            case UIColor.DARK_CYAN: return DARK_CYAN;
+            case UIColor.ELECTRIC_BLUE: return ELECTRIC_BLUE;
+            case UIColor.ORANGE: return ORANGE;
+            case UIColor.YELLOW: return YELLOW;
+            case UIColor.MAGENTA: return MAGENTA;
+            case UIColor.PURE_RED: return PURE_RED;
+            case UIColor.PURE_GREEN: return PURE_GREEN;
+            case UIColor.PURE_BLUE: return PURE_BLUE;
+            default: return MAGENTA;
+        }
     }
 }
