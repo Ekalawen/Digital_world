@@ -19,6 +19,7 @@ public class UIHelper {
         ORANGE,
         YELLOW,
         MAGENTA,
+        VIOLET,
         PURE_RED,
         PURE_GREEN,
         PURE_BLUE,
@@ -35,6 +36,7 @@ public class UIHelper {
     public static string ORANGE = "#ff8800ff";
     public static string YELLOW = "#ffff00ff";
     public static string MAGENTA = "#ff00ffff";
+    public static string VIOLET = "#7f00ffff";
     public static string PURE_RED = "#ff0000ff";
     public static string PURE_GREEN = "#00ff00ff";
     public static string PURE_BLUE = "#0000ffff";
@@ -138,6 +140,7 @@ public class UIHelper {
             case UIColor.ORANGE: return ORANGE;
             case UIColor.YELLOW: return YELLOW;
             case UIColor.MAGENTA: return MAGENTA;
+            case UIColor.VIOLET: return VIOLET;
             case UIColor.PURE_RED: return PURE_RED;
             case UIColor.PURE_GREEN: return PURE_GREEN;
             case UIColor.PURE_BLUE: return PURE_BLUE;

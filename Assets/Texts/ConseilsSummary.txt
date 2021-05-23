@@ -1,9 +1,9 @@
 2_FirstInfiniteRunner
 Plus vous irez loin, plus vous débloquerez d'indices !
-Une fois que vous aurez franchi le 10ième Block, les Cubes commenceront à se détruire derrière vous !
+Une fois que vous aurez franchi le 10ième Bloc, les Cubes commenceront à se détruire derrière vous !
 Regardez là où vous voulez aller plutôt que l'obstacle que vous êtes en train de franchir.
 Trouvez la meilleure façon de franchir chaque obstacle !
-Chaque Block est généré aléatoirement !
+Chaque Bloc est généré aléatoirement !
 
 3_FirstLevel
 Chaque fois que vous atteindrez un nouveau palier, vous débloquerez un indice supplémentaire !
@@ -14,7 +14,9 @@ Vous pouvez grimper dans les coins en sautant des 2 cotes !
 Les niveaux sont générés procéduralement.
 
 4_FirstSonde
+Lire la Doc() avant de commencer un niveau est souvent une sage décision.
 Une Sonde va droit sur vous si elle vous voit.
+Une Sonde qui vous touche vous pousse de 10 Cubes et vous fait perdre 5 secondes.
 Sauter sur une Sonde peut vous faire aller plus haut.
 Si une Sonde vous perd de vue, elle ira à la dernière position où elle vous a vu.
 Une Sonde qui ne vous a pas détecté reste sur place.
@@ -25,7 +27,7 @@ HELPER : Sautez sur la Sonde pour atteindre la Data !
 Les Cubes se détruisent de plus en plus vite.
 Lorsque vous êtes accroché au mur, les bords de votre écran s'assombrissent.
 N'hésitez pas à rester longtemps accroché aux murs !
-Chaque Block possède son propre poids qui le rend plus ou moins fréquent.
+Chaque Bloc possède son propre poids qui le rend plus ou moins fréquent.
 
 6_DiscoverOfSondes
 Si vous vous faites toucher par une Sonde, vous pourrez à nouveau vous accrocher à un mur.
@@ -35,6 +37,7 @@ Pour grimper dans un coin, vous n'avez pas besoin de vous en éloigner à chaque
 Les niveaux sont optimisés pour limiter le nombre de culs-de-sacs et donc de se faire encercler par des Sondes !
 
 7_LearnEndEvent
+La Doc() vous permet de comprendre le fonctionnement de chaque nouvelle mécanique.
 Lorsque vous attraperez la dernière Data, vous déclencherez la Destruction de la Matrice !
 La Destruction de la Matrice remplira progressivement le niveau de Cube de la Mort jusqu'à vous tuer ou que vous vous échappiez !
 Les Cubes de la Mort remplissent l'espace en commencant loin de vous et de la Sortie.
@@ -59,6 +62,7 @@ Dash15 permet également de dasher vers le haut ou le bas !
 Ceci est un niveau d'entraînement, par la suite vous utiliserez Dash015 qui aura un cooldown de 15 secondes.
 
 10_LearnJump
+La Doc() vous expliquera les finesses de gameplay qui pourraient vous avoir échappés.
 Il faut être dans les airs sans être accroché à un mur avant la fin du timer lorsque vous voyez un Jump() !
 Si vous ratez un Jump(), vous serez immobilisé et perdrez du temps !
 Vous pouvez esquiver un Jump() en appuyant sur SHIFT au bon moment si vous êtes accroché à un mur !
@@ -176,7 +180,7 @@ Il vaut parfois mieux attendre caché que vos cooldown remontent et que les Trac
 
 23_SwapHighway
 Les Cubes transparents sont désactivés et ne fonctionnent plus. Vous pouvez passer à travers.
-Les LinkyCubes sont des cubes connectés les uns aux autres. Ce qui arrive à l'un arrive à tous ceux connectés.
+Les LinkyCubes sont des Cubes connectés les uns aux autres. Ce qui arrive à l'un arrive à tous ceux connectés.
 Les SwappyCubes sont des LinkyCubes qui s'activent et se désactivent cycliquement en rythme.
 Un cercle de prévisualisation vous permet d'anticiper quand des SwappyCubes changent d'état.
 Les poignées rondes sur les bords des LinkyCubes vous indique que ce sont des SwappyCubes.
