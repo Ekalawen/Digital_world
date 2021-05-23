@@ -113,6 +113,18 @@ public class UIHelper {
         return replacements;
     }
 
+    public static string ApplyReplacementList(string originalText, ReplacementStrings replacementStrings) {
+        List<Tuple<string, string>> replacements = GetReplacementList(replacementStrings);
+        foreach(Tuple<string, string> replacement in replacements) {
+            originalText = ApplyReplacement(originalText, replacement);
+        }
+        return originalText;
+    }
+
+    public static string ApplyReplacement(string origialText, Tuple<string, string> replacement) {
+        return origialText.Replace(replacement.Item1, replacement.Item2);
+    }
+
     public static string UIColor2String(UIColor uiColor) {
         switch (uiColor) {
             case UIColor.RED: return RED;

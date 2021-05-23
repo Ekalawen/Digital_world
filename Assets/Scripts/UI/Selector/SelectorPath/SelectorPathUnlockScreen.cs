@@ -235,7 +235,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         }
         int maxTreshold = texteExplicatif.GetMaxTreshold();
         texteExplicatif.mainText.text = texteExplicatif.ComputeText(maxTreshold);
-        texteExplicatif.ApplyColorReplacements();
+        texteExplicatif.mainText.text = TexteExplicatif.ApplyColorReplacements(texteExplicatif.mainText.text);
     }
 
     protected string GetTresholdTextForPallier(int tresholdText) {

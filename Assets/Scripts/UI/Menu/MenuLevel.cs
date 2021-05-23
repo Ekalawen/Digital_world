@@ -394,7 +394,7 @@ public class MenuLevel : MonoBehaviour {
         AsyncOperationHandle<TextAsset> handle = archivesTextAsset.LoadAssetAsync();
         yield return handle;
         texteArchivesLink.textAsset = handle.Result;
-        foreach(Tuple<string, string> replacement in UIHelper.GetReplacementList(selectorManager.archivesStrings)) {
+        foreach(Tuple<string, string> replacement in UIHelper.GetReplacementList(selectorManager.archivesReplacementStrings)) {
             texteArchivesLink.AddReplacement(replacement.Item1, replacement.Item2);
         }
         texteArchivesLink.titleTextTarget.text = selectorManager.strings.archivesTitle.GetLocalizedString().Result;
@@ -500,6 +500,7 @@ public class MenuLevel : MonoBehaviour {
             docText += $"{UIHelper.SurroundWithColor(i.ToString(), UIHelper.GREEN)}) {conseilHandle.Result}\n";
             i++;
         }
+        docText = UIHelper.ApplyReplacementList(docText, selectorManager.docReplacementStrings);
         selectorManager.RunPopup(titleString, docText, TexteExplicatif.Theme.NEUTRAL);
     }
 }

@@ -83,7 +83,7 @@ public class TexteExplicatif : MonoBehaviour {
         } else {
             SetText(UseReplacementList(mainText.text));
         }
-        ApplyColorReplacements();
+        mainText.text = ApplyColorReplacements(mainText.text);
 
         //PutMainTextOnBottom();
 
@@ -217,12 +217,11 @@ public class TexteExplicatif : MonoBehaviour {
         doneButton.GetComponent<Image>().color = saturated;
     }
 
-    public void ApplyColorReplacements() {
-        string t = mainText.text;
+    public static string ApplyColorReplacements(string originalText) {
         foreach(Tuple<string, string> color in UIHelper.GetColorMapping()) {
-            t = t.Replace(color.Item1, color.Item2);
+            originalText = originalText.Replace(color.Item1, color.Item2);
         }
-        mainText.text = t;
+        return originalText;
     }
 
     public TresholdText GetTresholdText() {
