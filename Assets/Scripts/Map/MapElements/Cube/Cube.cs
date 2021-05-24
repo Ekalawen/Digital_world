@@ -26,7 +26,7 @@ public class Cube : MonoBehaviour {
     public virtual void Initialize() {
         gm = GameManager.Instance;
         InitializeMaterials();
-        if (shouldRegisterToColorSources) {
+        if (shouldRegisterToColorSources || gm.timerManager.HasGameStarted()) {
             RegisterCubeToColorSources();
         }
         if (startAsLinky) {
