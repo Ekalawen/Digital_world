@@ -6,7 +6,7 @@ using UnityEngine;
 public class SingleEventDelay : SingleEvent {
 
     public float delay = 1.0f;
-    public GameObject singleEventPrefab;
+    public SingleEvent singleEvent;
 
     public override void Trigger() {
         StartCoroutine(CTrigger());
@@ -14,6 +14,6 @@ public class SingleEventDelay : SingleEvent {
 
     protected IEnumerator CTrigger() {
         yield return new WaitForSeconds(delay);
-        gm.eventManager.StartSingleEvent(singleEventPrefab);
+        singleEvent.Trigger();
     }
 }
