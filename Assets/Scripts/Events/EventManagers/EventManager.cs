@@ -71,8 +71,8 @@ public class EventManager : MonoBehaviour {
     public float screenShakeRoughness = 15;
     public float dureeScreenShake = 3;
 
-    [Header("StarEvents")]
-    public List<GameObject> randomEventsPrefabs;
+    [Header("StarEvents (Random/Single)")]
+    public List<GameObject> eventsPrefabs;
 
     [Header("AddedEvents")]
     public List<int> nbLumieresTriggers;
@@ -91,19 +91,30 @@ public class EventManager : MonoBehaviour {
     protected bool gameIsWin = false;
     protected bool gameIsLost = false;
     protected List<RandomEvent> randomEvents;
-    protected GameObject randomEventsFolder;
+    protected Transform randomEventsFolder;
+    protected Transform singleEventsFolder;
     protected bool shouldAutomaticallyQuitScene = true;
     protected Coroutine automaticallyQuitSceneCoroutine = null;
 
-    public virtual void Initialize() {
+    public virtual void Initialize()
+    {
         name = "EventManager";
         gm = FindObjectOfType<GameManager>();
         map = GameObject.Find("MapManager").GetComponent<MapManager>();
-        randomEventsFolder = new GameObject("Events");
+        randomEventsFolder = new GameObject("RandomEvents").transform;
+        singleEventsFolder = new GameObject("SingleEvents").transform;
 
+        AddRandomEventsAndStartSingleEvents();
+    }
+
+    private void AddRandomEventsAndStartSingleEvents() {
         randomEvents = new List<RandomEvent>();
-        foreach (GameObject randomEventPrefab in randomEventsPrefabs) {
-            AddRandomEvent(randomEventPrefab);
+        foreach (GameObject eventPrefab in eventsPrefabs) {
+            if (eventPrefab.GetComponent<RandomEvent>() != null) {
+                AddRandomEvent(eventPrefab);
+            } else if (eventPrefab.GetComponent<SingleEvent>() != null) {
+                StartSingleEvent(eventPrefab);
+            }
         }
     }
 
@@ -116,9 +127,15 @@ public class EventManager : MonoBehaviour {
     }
 
     public RandomEvent AddRandomEvent(GameObject randomEventPrefab) {
-        RandomEvent randomEvent = Instantiate(randomEventPrefab, randomEventsFolder.transform).GetComponent<RandomEvent>();
+        RandomEvent randomEvent = Instantiate(randomEventPrefab, randomEventsFolder).GetComponent<RandomEvent>();
         randomEvents.Add(randomEvent);
         return randomEvent;
+    }
+
+    public SingleEvent StartSingleEvent(GameObject eventPrefab) {
+        SingleEvent singleEvent = Instantiate(eventPrefab, singleEventsFolder).GetComponent<SingleEvent>();
+        singleEvent.Trigger();
+        return singleEvent;
     }
 
     public void RemoveEvent(RandomEvent randomEvent) {
