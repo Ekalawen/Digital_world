@@ -156,7 +156,7 @@ public class MapManager : MonoBehaviour {
     }
 
     public Cube AddCube(Vector3 pos, Cube.CubeType cubeType, Quaternion quaternion = new Quaternion(), Transform parent = null) {
-        if (GetCubeAt(pos) != null) // Si il y a déjà un cube à cette position, on ne fait rien !
+        if (IsCubeAt(pos) || IsLumiereAt(pos)) // Si il y a déjà un cube ou une lumière à cette position, on ne fait rien !
             return null;
         Transform newParent = parent ?? cubesFolder.transform;
         Cube cube = Instantiate(GetPrefab(cubeType), pos, quaternion, newParent).GetComponent<Cube>();

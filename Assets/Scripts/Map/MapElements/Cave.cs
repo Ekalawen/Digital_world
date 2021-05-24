@@ -11,13 +11,13 @@ public class Cave : CubeEnsemble {
 
     protected List<Cube> openings;
 
-    public Cave(Vector3 depart, Vector3Int nbCubesParAxe, bool bMakeSpaceArround = false, bool bDigInside = true, bool bPreserveMapBordures = false) : base()
+    public Cave(Vector3 depart, Vector3Int nbCubesParAxe, bool bMakeSpaceArround = false, bool bDigInside = true, bool bPreserveMapBordures = false, bool cleanSpaceBeforeSpawning = true) : base()
     {
         this.depart = depart;
         this.nbCubesParAxe = nbCubesParAxe;
 
         InitializeCubeMatrix();
-        CleanSpaceBeforeSpawning(bMakeSpaceArround, bPreserveMapBordures);
+        CleanSpaceBeforeSpawning(bMakeSpaceArround, bPreserveMapBordures, cleanSpaceBeforeSpawning);
         GenererCubePlein();
         if (bDigInside)
             GeneratePaths();
@@ -121,7 +121,9 @@ public class Cave : CubeEnsemble {
         return nbBordures >= 2;
     }
 
-    protected void CleanSpaceBeforeSpawning(bool bMakeSpaceArround = false, bool preserveMapBordure = false) {
+    protected void CleanSpaceBeforeSpawning(bool bMakeSpaceArround = false, bool preserveMapBordure = false, bool cleanSpaceBeforeSpawning = true) {
+        if (!cleanSpaceBeforeSpawning)
+            return;
         // On veut détruire tous les cubes et lumières qui se trouvent dans notre cave !
         Vector3 center = GetCenter();
         Vector3 halfSize = new Vector3(Mathf.Abs(center.x - depart.x), Mathf.Abs(center.y - depart.y), Mathf.Abs(center.z - depart.z));

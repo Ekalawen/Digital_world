@@ -26,7 +26,7 @@ public class GenerateRandomFilling : GenerateCubesMapFunction {
         List<Vector3> selectedPos = GaussianGenerator.SelectSomeProportionOfNaiveMethod<Vector3>(farAwayPos, proportionRandomFilling);
         foreach(Vector3 pos in selectedPos) {
             Vector3 finalPos = pos - Vector3.one * (int)Mathf.Floor(sizeCubeRandomFilling / 2.0f);
-            FullBlock fb = new FullBlock(finalPos, Vector3Int.one * sizeCubeRandomFilling);
+            FullBlock fb = new FullBlock(finalPos, Vector3Int.one * sizeCubeRandomFilling, cleanSpaceBeforeSpawning: false);
             if (registerToColorSources)
                 fb.RegisterToColorSources();
             fullBlocks.Add(fb);
