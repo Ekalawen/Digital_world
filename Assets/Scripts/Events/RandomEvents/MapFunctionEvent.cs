@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class MapFunctionEvent : RandomEvent {
 
-    public MapFunctionComponent mapFunction;
+    public List<MapFunctionComponent> mapFunctions;
     [SerializeField]
     public TimedMessage startEventMessage;
     [SerializeField]
@@ -17,8 +17,10 @@ public class MapFunctionEvent : RandomEvent {
     }
 
     protected override void StartEvent() {
-        mapFunction.Initialize();
-        mapFunction.Activate();
+        foreach (MapFunctionComponent mapFunction in mapFunctions) {
+            mapFunction.Initialize();
+            mapFunction.Activate();
+        }
     }
 
     protected override void EndEvent() {
