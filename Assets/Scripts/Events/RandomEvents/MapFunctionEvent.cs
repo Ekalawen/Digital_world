@@ -7,9 +7,9 @@ public class MapFunctionEvent : RandomEvent {
 
     public List<MapFunctionComponent> mapFunctions;
     [SerializeField]
-    public TimedMessage startEventMessage;
+    public TimedLocalizedMessage startEventMessage;
     [SerializeField]
-    public TimedMessage startEventMessageImportant;
+    public TimedLocalizedMessage startEventMessageImportant;
 
     protected override void StartEventConsoleMessage() {
         gm.console.AjouterMessage(startEventMessage);

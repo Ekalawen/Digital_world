@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PouvoirMessageDisplayer : IPouvoir {
 
-    public TimedMessageStruct message;
+    public TimedLocalizedMessage message;
     public bool afficherInConsole = true;
 
     protected override bool UsePouvoir() {

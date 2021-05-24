@@ -6,7 +6,7 @@ using UnityEngine;
 [Serializable]
 public class HelperMessage {
 
-    public TimedMessageStruct timedMessage;
+    public TimedLocalizedMessage timedMessage;
     public bool useSound = true;
 
     protected bool hasBeenDisplayed = false;
@@ -15,7 +15,7 @@ public class HelperMessage {
         if (!hasBeenDisplayed) {
             hasBeenDisplayed = true;
             GameManager gm = GameManager.Instance;
-            gm.console.AjouterMessageImportant(timedMessage.message, timedMessage.type, timedMessage.duree);
+            gm.console.AjouterMessageImportant(timedMessage.localizedString, timedMessage.type, timedMessage.duree);
             if (useSound) {
                 gm.soundManager.PlayReceivedMessageClip();
             }

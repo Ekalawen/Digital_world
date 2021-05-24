@@ -11,8 +11,6 @@ GameObject:
   - component: {fileID: 6232363528123795471}
   - component: {fileID: 6232363528123795470}
   - component: {fileID: 6232363528123795457}
-  - component: {fileID: 6232363528123795468}
-  - component: {fileID: 6232363528123795456}
   m_Layer: 0
   m_Name: MatrixRegenerationEvent
   m_TagString: Untagged
@@ -53,8 +51,28 @@ MonoBehaviour:
   bPlayEndSound: 0
   mapFunctions:
   - {fileID: 6232363528123795457}
-  startEventMessage: {fileID: 6232363528123795468}
-  startEventMessageImportant: {fileID: 6232363528123795456}
+  startEventMessage:
+    localizedString:
+      m_TableReference:
+        m_TableCollectionName: GUID:0589e7d3c8829a243a3f17f1b80e6301
+      m_TableEntryReference:
+        m_KeyId: 43010558063255552
+        m_Key: 
+      m_FallbackState: 0
+    type: 0
+    timing: 2
+    duree: 0
+  startEventMessageImportant:
+    localizedString:
+      m_TableReference:
+        m_TableCollectionName: GUID:0589e7d3c8829a243a3f17f1b80e6301
+      m_TableEntryReference:
+        m_KeyId: 43010423136690176
+        m_Key: 
+      m_FallbackState: 0
+    type: 0
+    timing: 2
+    duree: 0
 --- !u!114 &6232363528123795457
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -68,41 +86,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cubeType: 0
-  minDistanceRandomFilling: 1
-  useAllEmptyPositionsInstead: 0
-  proportionRandomFilling: 0.02
-  sizeCubeRandomFilling: 1
+  minDistanceRandomFilling: 0
+  useAllEmptyPositionsInstead: 1
+  proportionRandomFilling: 0.01
+  sizeCubeRandomFilling: 2
   registerToColorSources: 0
---- !u!114 &6232363528123795468
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6232363528123795459}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30282ae83aad5d346a20e8c6659030cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  message: "La Matrice commence d\xE9j\xE0 \xE0 se reconstruire, elle se r\xE9g\xE9n\xE8re
-    !"
-  type: 0
-  timing: 0
-  duree: 2
---- !u!114 &6232363528123795456
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6232363528123795459}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30282ae83aad5d346a20e8c6659030cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  message: "R\xE9g\xE9n\xE9ration de la Matrice"
-  type: 0
-  timing: 0
-  duree: 2

@@ -32,7 +32,7 @@ public class Console : MonoBehaviour {
 
     [Header("OnLumiereCapturedMessages")]
     public List<int> nbLumieresTriggers;
-    public List<TimedMessageStruct> nbLumieresTriggeredMessages;
+    public List<TimedLocalizedMessage> nbLumieresTriggeredMessages;
 
     [Header("Special Messages")]
     public bool useAltitudeCritique = true; // Si on doit utiliser altitude critique ou pas dans cette partie !
@@ -137,7 +137,7 @@ public class Console : MonoBehaviour {
         for(int i = 0; i < nbLumieresTriggers.Count; i++) {
             int nbLumieresTrigger = nbLumieresTriggers[i];
             if(nbLumieresTrigger == nbLumieres) {
-                TimedMessageStruct timedMessage = nbLumieresTriggeredMessages[i];
+                TimedLocalizedMessage timedMessage = nbLumieresTriggeredMessages[i];
                 AjouterMessageImportant(timedMessage);
             }
         }
@@ -313,11 +313,11 @@ public class Console : MonoBehaviour {
     }
 
     public void AjouterMessageImportant(
-        TimedMessageStruct timedMessage,
+        TimedLocalizedMessage timedMessage,
         bool bAfficherInConsole = true,
         LocalizedString messageToReplace = null) {
         AjouterMessageImportant(
-            timedMessage.message,
+            timedMessage.localizedString,
             timedMessage.type,
             timedMessage.duree,
             bAfficherInConsole,
@@ -480,6 +480,15 @@ public class Console : MonoBehaviour {
         AjouterMessage(
             timedMessage.message,
             timedMessage.type,
+            bUsePrefix);
+    }
+
+    public void AjouterMessage(
+        TimedLocalizedMessage timedLocalizedMessage,
+        bool bUsePrefix = true) {
+        AjouterMessage(
+            timedLocalizedMessage.localizedString,
+            timedLocalizedMessage.type,
             bUsePrefix);
     }
 
