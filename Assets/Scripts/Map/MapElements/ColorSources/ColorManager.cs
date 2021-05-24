@@ -259,19 +259,23 @@ public class ColorManager : MonoBehaviour {
 
     public void CheckCubeSaturation() {
         List<Cube> cubes = map.GetAllCubes();
-        CheckCubeSaturationInCubes(cubes);
+        List<Vector3> positions = cubes.Select(c => c.transform.position).ToList();
+        List<Vector3> emptyPositions = map.GetAllEmptyPositions();
+        positions.AddRange(emptyPositions);
+        CheckCubeSaturationInCubes(positions);
         EnsureNoCubeIsBlack(cubes);
+        EnsureNoPositionIsBlack(emptyPositions);
     }
 
-    public void CheckCubeSaturationInCubes(List<Cube> cubes) {
-        MathTools.Shuffle(cubes);
+    public void CheckCubeSaturationInCubes(List<Vector3> positions) {
+        MathTools.Shuffle(positions);
 
-        foreach(Cube cube in cubes) {
-            float luminance = cube.GetLuminance();
+        foreach(Vector3 position in positions) {
+            float luminance = GetLuminance(GetColorForPosition(position));
             while(luminance > cubeLuminanceMax) {
                 float savedLuminance = luminance;
-                RemoveClosestSource(cube.transform.position);
-                luminance = cube.GetLuminance();
+                RemoveClosestSource(position);
+                luminance = GetLuminance(GetColorForPosition(position));
 
                 if(savedLuminance == luminance) { // Car des fois supprimer une lumière ne change plus rien à la couleur !
                     break;
@@ -292,6 +296,17 @@ public class ColorManager : MonoBehaviour {
                 if (cube.GetColor() == ColorSource.LimiteColorSaturation(Color.black, NonBlackCube.minColorSaturationAndValue)) {
                     GenerateColorSourceAt(cube.transform.position);
                 }
+            }
+        }
+    }
+
+    protected void EnsureNoPositionIsBlack(List<Vector3> positions) {
+        MathTools.Shuffle(positions);
+
+        foreach(Vector3 position in positions) {
+            float luminance = GetLuminance(GetColorForPosition(position));
+            if (luminance < 0.01f) {
+                GenerateColorSourceAt(position);
             }
         }
     }
