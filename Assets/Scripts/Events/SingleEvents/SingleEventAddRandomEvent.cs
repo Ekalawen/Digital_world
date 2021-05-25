@@ -8,7 +8,7 @@ public class SingleEventAddRandomEvent : SingleEvent {
     public GameObject randomEventPrefab;
     public bool triggerRandomEventOnAdd = true;
 
-    public override void Trigger() {
+    public override void TriggerSpecific() {
         RandomEvent newEvent = eventManager.AddRandomEvent(randomEventPrefab);
         newEvent.Start();
         if (triggerRandomEventOnAdd) {

@@ -134,6 +134,7 @@ public class EventManager : MonoBehaviour {
 
     public SingleEvent StartSingleEvent(GameObject eventPrefab) {
         SingleEvent singleEvent = Instantiate(eventPrefab, singleEventsFolder).GetComponent<SingleEvent>();
+        singleEvent.Initialize();
         singleEvent.Trigger();
         return singleEvent;
     }
@@ -675,10 +676,8 @@ public class EventManager : MonoBehaviour {
     protected void TriggerSingleEventsBasedOnLumiereCount(int nbLumieres) {
         for(int i = 0; i < nbLumieresTriggers.Count; i++) {
             if(nbLumieresTriggers[i] == nbLumieres) {
+                nbLumieresSingleEvents[i].Initialize();
                 nbLumieresSingleEvents[i].Trigger();
-                //RandomEvent newEvent = AddEvent(eventsToAddPrefabs[i]);
-                //newEvent.Start();
-                //newEvent.TriggerEvent();
             }
         }
     }

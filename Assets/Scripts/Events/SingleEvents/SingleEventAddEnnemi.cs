@@ -15,12 +15,12 @@ public class SingleEventAddEnnemi : SingleEvent {
 
     protected GameObject ennemiPrefab;
 
-    public override void Start() {
-        base.Start();
+    public override void Initialize() {
+        base.Initialize();
         ennemiPrefab = gm.ennemiManager.ennemisPrefabs[ennemiIndice];
     }
 
-    public override void Trigger() {
+    public override void TriggerSpecific() {
         for(int i = 0; i < nbEnnemisToAdd; i++) {
             if(useRandomStartPosition) {
                 gm.ennemiManager.PopEnnemi(ennemiPrefab);
