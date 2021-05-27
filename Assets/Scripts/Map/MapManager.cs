@@ -638,50 +638,68 @@ public class MapManager : MonoBehaviour {
         return GetVoisinsLibresInMap(pos).Count > 0;
     }
 
-    public List<Vector3> GetVoisinsLibresInMap(Vector3 pos) {
+    public List<Vector3> GetVoisinsLibresInMap(Vector3 pos, bool ignoreSwappyCubes = false) {
         List<Vector3> res = new List<Vector3>();
         int i = (int)pos.x, j = (int)pos.y, k = (int)pos.z;
         // DROITE
-        if (IsInRegularMap(new Vector3(i + 1, j, k)) && cubesRegular[i + 1, j, k] == null)
-            res.Add(new Vector3(i + 1, j, k));
+        Vector3 adjacentPos = new Vector3(i + 1, j, k);
+        if (IsInRegularMap(adjacentPos) && IsNullOrSwappy(adjacentPos, ignoreSwappyCubes))
+            res.Add(adjacentPos);
         // GAUCHE
-        if (IsInRegularMap(new Vector3(i - 1, j, k)) && cubesRegular[i - 1, j, k] == null)
-            res.Add(new Vector3(i - 1, j, k));
+        adjacentPos = new Vector3(i - 1, j, k);
+        if (IsInRegularMap(adjacentPos) && IsNullOrSwappy(adjacentPos, ignoreSwappyCubes))
+            res.Add(adjacentPos);
         // HAUT
-        if (IsInRegularMap(new Vector3(i, j + 1, k)) && cubesRegular[i, j + 1, k] == null)
-            res.Add(new Vector3(i, j + 1, k));
+        adjacentPos = new Vector3(i, j + 1, k);
+        if (IsInRegularMap(adjacentPos) && IsNullOrSwappy(adjacentPos, ignoreSwappyCubes))
+            res.Add(adjacentPos);
         // BAS
-        if (IsInRegularMap(new Vector3(i, j - 1, k)) && cubesRegular[i, j - 1, k] == null)
-            res.Add(new Vector3(i, j - 1, k));
+        adjacentPos = new Vector3(i, j - 1, k);
+        if (IsInRegularMap(adjacentPos) && IsNullOrSwappy(adjacentPos, ignoreSwappyCubes))
+            res.Add(adjacentPos);
         // DEVANT
-        if (IsInRegularMap(new Vector3(i, j, k + 1)) && cubesRegular[i, j, k + 1] == null)
-            res.Add(new Vector3(i, j, k + 1));
+        adjacentPos = new Vector3(i, j, k + 1);
+        if (IsInRegularMap(adjacentPos) && IsNullOrSwappy(adjacentPos, ignoreSwappyCubes))
+            res.Add(adjacentPos);
         // DERRIRE
-        if (IsInRegularMap(new Vector3(i, j, k - 1)) && cubesRegular[i, j, k - 1] == null)
-            res.Add(new Vector3(i, j, k - 1));
+        adjacentPos = new Vector3(i, j, k - 1);
+        if (IsInRegularMap(adjacentPos) && IsNullOrSwappy(adjacentPos, ignoreSwappyCubes))
+            res.Add(adjacentPos);
         return res;
     }
-    public List<Vector3> GetVoisinsLibresAll(Vector3 pos) {
+
+    public bool IsNullOrSwappy(Vector3 pos, bool ignoreSwappyCubes) {
+        Cube cube = GetCubeAt(pos);
+        return cube == null || (ignoreSwappyCubes && cube.IsSwappy());
+    }
+
+    public List<Vector3> GetVoisinsLibresAll(Vector3 pos, bool ignoreSwappyCubes = false) {
         List<Vector3> res = new List<Vector3>();
         int i = (int)pos.x, j = (int)pos.y, k = (int)pos.z;
         // DROITE
-        if (!IsInRegularMap(new Vector3(i + 1, j, k)) || cubesRegular[i + 1, j, k] == null)
-            res.Add(new Vector3(i + 1, j, k));
+        Vector3 adjacentPos = new Vector3(i + 1, j, k);
+        if (!IsInRegularMap(adjacentPos) || IsNullOrSwappy(adjacentPos, ignoreSwappyCubes))
+            res.Add(adjacentPos);
         // GAUCHE
-        if (!IsInRegularMap(new Vector3(i - 1, j, k)) || cubesRegular[i - 1, j, k] == null)
-            res.Add(new Vector3(i - 1, j, k));
+        adjacentPos = new Vector3(i - 1, j, k);
+        if (!IsInRegularMap(adjacentPos) || IsNullOrSwappy(adjacentPos, ignoreSwappyCubes))
+            res.Add(adjacentPos);
         // HAUT
-        if (!IsInRegularMap(new Vector3(i, j + 1, k)) || cubesRegular[i, j + 1, k] == null)
-            res.Add(new Vector3(i, j + 1, k));
+        adjacentPos = new Vector3(i, j + 1, k);
+        if (!IsInRegularMap(adjacentPos) || IsNullOrSwappy(adjacentPos, ignoreSwappyCubes))
+            res.Add(adjacentPos);
         // BAS
-        if (!IsInRegularMap(new Vector3(i, j - 1, k)) || cubesRegular[i, j - 1, k] == null)
-            res.Add(new Vector3(i, j - 1, k));
+        adjacentPos = new Vector3(i, j - 1, k);
+        if (!IsInRegularMap(adjacentPos) || IsNullOrSwappy(adjacentPos, ignoreSwappyCubes))
+            res.Add(adjacentPos);
         // DEVANT
-        if (!IsInRegularMap(new Vector3(i, j, k + 1)) || cubesRegular[i, j, k + 1] == null)
-            res.Add(new Vector3(i, j, k + 1));
+        adjacentPos = new Vector3(i, j, k + 1);
+        if (!IsInRegularMap(adjacentPos) || IsNullOrSwappy(adjacentPos, ignoreSwappyCubes))
+            res.Add(adjacentPos);
         // DERRIRE
-        if (!IsInRegularMap(new Vector3(i, j, k - 1)) || cubesRegular[i, j, k - 1] == null)
-            res.Add(new Vector3(i, j, k - 1));
+        adjacentPos = new Vector3(i, j, k - 1);
+        if (!IsInRegularMap(adjacentPos) || IsNullOrSwappy(adjacentPos, ignoreSwappyCubes))
+            res.Add(adjacentPos);
         return res;
     }
 
@@ -835,7 +853,11 @@ public class MapManager : MonoBehaviour {
         return path;
     }
 
-    public List<Vector3> GetPath(Vector3 start, Vector3 end, List<Vector3> posToDodge, bool bIsRandom = false, bool useNotInMapVoisins = false, bool collideWithCubes = true) {
+    public List<Vector3> GetPath(Vector3 start, Vector3 end, List<Vector3> posToDodge,
+        bool bIsRandom = false,
+        bool useNotInMapVoisins = false,
+        bool collideWithCubes = true,
+        bool ignoreSwappyCubes = false) {
         List<Vector3> path = new List<Vector3>();
 
         start = MathTools.Round(start);
@@ -856,7 +878,7 @@ public class MapManager : MonoBehaviour {
                 return ComputePathBackward(start, path, ref current);
             }
 
-            List<Vector3> voisins = GetVoisinsLibreNotInPosToDodge(posToDodge, current, bIsRandom, useNotInMapVoisins, collideWithCubes);
+            List<Vector3> voisins = GetVoisinsLibreNotInPosToDodge(posToDodge, current, bIsRandom, useNotInMapVoisins, collideWithCubes, ignoreSwappyCubes);
 
             for (int i = 0; i < voisins.Count; i++)
             {
@@ -948,10 +970,14 @@ public class MapManager : MonoBehaviour {
         }
     }
 
-    protected List<Vector3> GetVoisinsLibreNotInPosToDodge(List<Vector3> posToDodge, Node current, bool bIsRandom, bool useNotRegularVoisins, bool collideWithCubes = true) {
+    protected List<Vector3> GetVoisinsLibreNotInPosToDodge(List<Vector3> posToDodge, Node current,
+        bool bIsRandom,
+        bool useNotRegularVoisins,
+        bool collideWithCubes = true,
+        bool ignoreSwappyCubes = false) {
         List<Vector3> voisins = null;
         if (collideWithCubes) {
-            voisins = (!useNotRegularVoisins) ? GetVoisinsLibresInMap(current.pos) : GetVoisinsLibresAll(current.pos);
+            voisins = (!useNotRegularVoisins) ? GetVoisinsLibresInMap(current.pos, ignoreSwappyCubes) : GetVoisinsLibresAll(current.pos, ignoreSwappyCubes);
         } else {
             voisins = (!useNotRegularVoisins) ? GetVoisinsNoObstaclesInMap(current.pos) : GetVoisinsNoObstacles(current.pos);
         }

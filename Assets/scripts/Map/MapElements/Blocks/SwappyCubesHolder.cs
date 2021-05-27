@@ -26,6 +26,7 @@ public class SwappyCubesHolder : MonoBehaviour {
     public void SetCubesLinky(int initialInterval, Texture2D linkyTexture, bool useEnableState = false) {
         foreach(Cube cube in cubes) {
             cube.SetLinky(linkyTexture);
+            cube.SetSwappy();
         }
         if (!useEnableState) {
             SetInitialVisibleState(initialInterval);
@@ -36,8 +37,10 @@ public class SwappyCubesHolder : MonoBehaviour {
         List<Cube> cubes = new List<Cube>();
         foreach (Transform child in transform) {
             Cube cube = child.gameObject.GetComponent<Cube>();
-            if (cube != null)
+            if (cube != null) {
+                cube.SetSwappy();
                 cubes.Add(cube);
+            }
         }
         return cubes;
     }

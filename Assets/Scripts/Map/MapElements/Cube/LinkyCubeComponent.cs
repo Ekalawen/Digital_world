@@ -12,6 +12,7 @@ public class LinkyCubeComponent : MonoBehaviour {
     protected Vector3 anchor = Vector3.zero;
     protected float timeFixedOffset;
     protected Color linkyColor;
+    protected bool isSwappy = false;
 
     public void Initialize(Cube cube) {
         map = GameManager.Instance.map;
@@ -144,5 +145,13 @@ public class LinkyCubeComponent : MonoBehaviour {
 
     public Vector3 GetFarestCornerFromPoint(Vector3 point) {
         return GetFarestCubeFromPoint(point).GetCornerPositions().OrderBy(pos => Vector3.Distance(point, pos)).Last();
+    }
+
+    public void SetSwappy() {
+        isSwappy = true;
+    }
+
+    public bool IsSwappy() {
+        return isSwappy;
     }
 }

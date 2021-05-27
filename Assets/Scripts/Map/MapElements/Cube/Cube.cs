@@ -390,6 +390,18 @@ public class Cube : MonoBehaviour {
         return linkyCube != null;
     }
 
+    public bool IsSwappy() {
+        return linkyCube != null && linkyCube.IsSwappy();
+    }
+
+    public void SetSwappy() {
+        if (linkyCube != null) {
+            linkyCube.SetSwappy();
+        } else {
+            Debug.LogError("Tentative de SetSwappy un cube non linky ! Grrr :p");
+        }
+    }
+
     public LinkyCubeComponent GetLinkyCubeComponent() {
         return linkyCube;
     }
