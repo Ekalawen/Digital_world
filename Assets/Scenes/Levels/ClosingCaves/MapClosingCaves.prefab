@@ -1,5 +1,37 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-6038789565098237907
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3491683289375989780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 151e2e28aa2652d45a2762e3d9a974c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cubeType: 0
+  minDistanceRandomFilling: 1
+  useAllEmptyPositionsInstead: 0
+  proportionRandomFilling: 0.04
+  sizeCubeRandomFilling: 1
+  registerToColorSources: 0
+--- !u!114 &-2390444316453387942
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3491683289375989780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08bbe9bdce1025e47870cd00e7960375, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lumiereType: 0
+  nbLumieres: 10
 --- !u!114 &-1855003057774774702
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14,7 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cubeType: 0
   generateMode: 0
-  proportionCaves: 0.3
+  proportionCaves: 0.5
   nbCaves: 2
   tailleMinCave: 5
   tailleMaxCave: 7
@@ -24,7 +56,7 @@ MonoBehaviour:
   preserveMapBordure: 1
   nbLumieresPerCaves: 1
   offsetLumieresFromCenter: 1
-  caveOffsetFromSidesXZandY: {x: 2, y: 2}
+  caveOffsetFromSidesXZandY: {x: 1, y: 1}
   useCaveFixedOffset: 0
   useCaveFixedOffsetX: 0
   caveFixedOffsetX: 0
@@ -32,26 +64,8 @@ MonoBehaviour:
   caveFixedOffsetY: 0
   useCaveFixedOffsetZ: 0
   caveFixedOffsetZ: 0
-  nbOuverturesOnSides: 1
+  nbOuverturesOnSides: 2
   allowOuverturesInCorners: 0
---- !u!114 &-1510880022000879270
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3491683289375989780}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c25a6d5dc97fb65459fedb9a6a2f4d58, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cubeType: 0
-  generationMode: 1
-  nbPolycubes: 5
-  nbInitCubesRange: {x: 5, y: 10}
-  makeSpaceArroundAtEndDistance: 2
-  stayInMap: 0
 --- !u!114 &-829837347702763406
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -73,7 +87,7 @@ MonoBehaviour:
   cubeEnsembleType: 0
   nbCubesVoisins: 4
   modifiers: []
---- !u!114 &1715291383750800896
+--- !u!114 &1824832952171696071
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -82,9 +96,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 3491683289375989780}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 054d591319f6d6546ac95c4463c0ee70, type: 3}
+  m_Script: {fileID: 11500000, guid: 7abafb084c97250449d758ec753cc1fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cubeType: 0
 --- !u!114 &3777847977715302793
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -125,6 +140,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce701536c965fb847a885590e740ebf0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6568247199092714391
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3491683289375989780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20a041f023dc27041990a9c4d17d9c11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cubeType: 5
+  minSpacesSize: {x: 3, y: 5, z: 3}
+  commonPercentageToMerge: 0.8
+  nbCubesByAreaTranche: 28
+  hauteurEntreCubes: 4
+  hauteurFreeFromBounceCubesAbove: 6
+  offsetFromSides: 0
 --- !u!114 &6625582438925591797
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -143,7 +177,21 @@ MonoBehaviour:
   startIntervalRange: {x: 0, y: 1}
   setLinky: 1
   previsualisationDuration: 1
-  timeBeforeStartSwapping: 3
+  timeBeforeStartSwapping: 0
+--- !u!114 &8233683522951820886
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3491683289375989780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b94cc0f1fd5af3a4da6edb00e21cf6a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lumiereType: 0
+  nbLumieres: 6
 --- !u!1001 &1852852803430356768
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -154,33 +202,33 @@ PrefabInstance:
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: tailleMap.x
-      value: 16
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: tailleMap.y
-      value: 16
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: tailleMap.z
-      value: 16
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: nbLumieresInitial
-      value: 12
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: mapFunctionComponents.Array.size
-      value: 7
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: mapFunctionComponents.Array.data[0]
       value: 
-      objectReference: {fileID: 6143485247214545936}
+      objectReference: {fileID: 1824832952171696071}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: mapFunctionComponents.Array.data[1]
@@ -190,32 +238,42 @@ PrefabInstance:
         type: 3}
       propertyPath: mapFunctionComponents.Array.data[2]
       value: 
-      objectReference: {fileID: 4167669547922767134}
+      objectReference: {fileID: -6038789565098237907}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: mapFunctionComponents.Array.data[3]
       value: 
-      objectReference: {fileID: 2043507741530955010}
+      objectReference: {fileID: 6568247199092714391}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: mapFunctionComponents.Array.data[4]
       value: 
-      objectReference: {fileID: 6533042795328261037}
+      objectReference: {fileID: 4167669547922767134}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: mapFunctionComponents.Array.data[5]
       value: 
-      objectReference: {fileID: 3777847977715302793}
+      objectReference: {fileID: 2043507741530955010}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: mapFunctionComponents.Array.data[6]
       value: 
-      objectReference: {fileID: 6625582438925591797}
+      objectReference: {fileID: 6533042795328261037}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: mapFunctionComponents.Array.data[7]
       value: 
-      objectReference: {fileID: 6533042795328261037}
+      objectReference: {fileID: 3777847977715302793}
+    - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
+        type: 3}
+      propertyPath: mapFunctionComponents.Array.data[8]
+      value: 
+      objectReference: {fileID: 6625582438925591797}
+    - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
+        type: 3}
+      propertyPath: mapFunctionComponents.Array.data[9]
+      value: 
+      objectReference: {fileID: 6625582438925591797}
     - target: {fileID: 3009060673421440820, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: m_Name
@@ -284,18 +342,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1852852803430356768}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &6143485247214545936 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5545246735722281776, guid: 800ea353fd52f8f458146bc8a84ea83e,
-    type: 3}
-  m_PrefabInstance: {fileID: 1852852803430356768}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3491683289375989780}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e16be9d76b3301458de84003b78a55e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &4167669547922767134 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2332915810247092798, guid: 800ea353fd52f8f458146bc8a84ea83e,

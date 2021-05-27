@@ -11,7 +11,7 @@ public class Cube : MonoBehaviour {
     public bool bIsDestructible = true;
     public bool shouldRegisterToColorSources = false;
     public bool startAsLinky = false;
-    public Material materialOpaque;
+    public Material opaqueMaterial;
 
     protected bool bIsRegular = true;
     protected GameManager gm;
@@ -19,7 +19,7 @@ public class Cube : MonoBehaviour {
     protected float dissolveTimeToUse = -1;
     protected LinkyCubeComponent linkyCube = null;
     protected Coroutine enableDisableCoroutine = null;
-    protected Material materialTransparent;
+    protected Material transparentMaterial;
     protected Coroutine changeMaterialCoroutine = null;
 
     // Done before player initialization
@@ -40,10 +40,10 @@ public class Cube : MonoBehaviour {
     }
 
     protected void InitializeMaterials() {
-        materialTransparent = GetComponent<MeshRenderer>().material;
-        if (materialOpaque != null) {
-            GetComponent<MeshRenderer>().material = materialOpaque;
-            materialOpaque = GetComponent<MeshRenderer>().material;
+        transparentMaterial = GetComponent<MeshRenderer>().material;
+        if (opaqueMaterial != null) {
+            GetComponent<MeshRenderer>().material = opaqueMaterial;
+            opaqueMaterial = GetComponent<MeshRenderer>().material;
         } else {
             Debug.LogWarning($"Le Cube {name} n'a pas de materialOpaque renseigné ! ;)");
         }
@@ -55,6 +55,8 @@ public class Cube : MonoBehaviour {
 
     protected void SetDissolveOnStart() {
         if (gm.map == null)
+            return;
+        if (transparentMaterial.GetFloat("_DissolveStartingTime") == Time.time) // Si c'est le cas, ça veut dire qu'on a déjà appelé cette fonction ailleurs (typiquement dans IntersectionEvent)
             return;
 
         if(gm.timerManager.GetElapsedTime() >= 1.0f) {
@@ -77,12 +79,15 @@ public class Cube : MonoBehaviour {
 
     public virtual void StartDissolveEffect(float dissolveTime, float playerProximityCoef = 0.0f) {
         SetTransparentMaterial();
-        GetMaterial().SetFloat("_DissolveTime", dissolveTime);
-        GetMaterial().SetFloat("_PlayerProximityCoef", playerProximityCoef);
-        GetMaterial().SetFloat("_DissolveStartingTime", Time.time);
+        if(dissolveTime == 1) {
+            Debug.Log(Environment.StackTrace);
+        }
+        transparentMaterial.SetFloat("_DissolveTime", dissolveTime);
+        transparentMaterial.SetFloat("_PlayerProximityCoef", playerProximityCoef);
+        transparentMaterial.SetFloat("_DissolveStartingTime", Time.time);
         Vector3 playerPosition = gm.player.transform.position;
-        GetMaterial().SetVector("_PlayerPosition", playerPosition);
-        GetMaterial().SetFloat("_DecomposeStartingTime", 999999f); // Reinitialise Décompose Effect
+        transparentMaterial.SetVector("_PlayerPosition", playerPosition);
+        transparentMaterial.SetFloat("_DecomposeStartingTime", 999999f); // Reinitialise Décompose Effect
         SetOpaqueAfterDissolve(dissolveTime, playerProximityCoef);
     }
 
@@ -109,7 +114,7 @@ public class Cube : MonoBehaviour {
 
     protected void StopDissolveEffect() {
         SetOpaqueMaterial();
-        float dissolveTime = materialTransparent.GetFloat("_DissolveTime");
+        float dissolveTime = transparentMaterial.GetFloat("_DissolveTime");
         GetMaterial().SetFloat("_DissolveStartingTime", Time.time - dissolveTime);
     }
 
@@ -120,8 +125,8 @@ public class Cube : MonoBehaviour {
     }
 
     private void ChainAnotherDecomposeEffect(float newDuree) {
-        float oldDuree = materialTransparent.GetFloat("_DecomposeTime");
-        float oldStartingTime = materialTransparent.GetFloat("_DecomposeStartingTime");
+        float oldDuree = transparentMaterial.GetFloat("_DecomposeTime");
+        float oldStartingTime = transparentMaterial.GetFloat("_DecomposeStartingTime");
 
         float time = Time.time - oldStartingTime;
         float oldPente = 1 / oldDuree;
@@ -131,13 +136,13 @@ public class Cube : MonoBehaviour {
         float newStartingTime = oldStartingTime - newOffset / newPente;
         float newDureeSinceNewStartingTime = Time.time - newStartingTime + newDuree;
 
-        materialTransparent.SetFloat("_DecomposeTime", newDureeSinceNewStartingTime);
-        materialTransparent.SetFloat("_DecomposeStartingTime", newStartingTime);
+        transparentMaterial.SetFloat("_DecomposeTime", newDureeSinceNewStartingTime);
+        transparentMaterial.SetFloat("_DecomposeStartingTime", newStartingTime);
     }
 
     public void FinishDecomposeEffect() {
         SetOpaqueMaterial();
-        float decomposeTime = materialTransparent.GetFloat("_DecomposeTime");
+        float decomposeTime = transparentMaterial.GetFloat("_DecomposeTime");
         GetMaterial().SetFloat("_DecomposeStartingTime", Time.time + decomposeTime);
     }
 
@@ -154,13 +159,13 @@ public class Cube : MonoBehaviour {
     }
 
     protected void SetOpaqueMaterial() {
-        if (materialOpaque != null) {
-            SetMaterial(materialOpaque);
+        if (opaqueMaterial != null) {
+            SetMaterial(opaqueMaterial);
         }
     }
 
     protected void SetTransparentMaterial() {
-        SetMaterial(materialTransparent);
+        SetMaterial(transparentMaterial);
     }
 
     public virtual void RegisterCubeToColorSources() {
@@ -241,13 +246,13 @@ public class Cube : MonoBehaviour {
     }
 
     public bool IsDecomposing() {
-        float decomposeStartingTime = materialTransparent.GetFloat("_DecomposeStartingTime");
+        float decomposeStartingTime = transparentMaterial.GetFloat("_DecomposeStartingTime");
         return Time.time >= decomposeStartingTime;
     }
 
     public float GetDureeDecomposeRemaining() {
-        float dureeAlreadyDecomposed = Time.time - materialTransparent.GetFloat("_DecomposeStartingTime");
-        float decomposeTime = materialTransparent.GetFloat("_DecomposeTime");
+        float dureeAlreadyDecomposed = Time.time - transparentMaterial.GetFloat("_DecomposeStartingTime");
+        float decomposeTime = transparentMaterial.GetFloat("_DecomposeTime");
         return decomposeTime - dureeAlreadyDecomposed;
     }
 
@@ -345,31 +350,31 @@ public class Cube : MonoBehaviour {
     }
 
     public void BothMaterialsSetFloat(string key, float value) {
-        if (materialOpaque != null) {
-            materialOpaque.SetFloat(key, value);
+        if (opaqueMaterial != null) {
+            opaqueMaterial.SetFloat(key, value);
         }
-        materialTransparent.SetFloat(key, value);
+        transparentMaterial.SetFloat(key, value);
     }
 
     public void BothMaterialsSetVector(string key, Vector3 vector) {
-        if (materialOpaque != null) {
-            materialOpaque.SetVector(key, vector);
+        if (opaqueMaterial != null) {
+            opaqueMaterial.SetVector(key, vector);
         }
-        materialTransparent.SetVector(key, vector);
+        transparentMaterial.SetVector(key, vector);
     }
 
     public void BothMaterialsSetTexture(string key, Texture texture) {
-        if (materialOpaque != null) {
-            materialOpaque.SetTexture(key, texture);
+        if (opaqueMaterial != null) {
+            opaqueMaterial.SetTexture(key, texture);
         }
-        materialTransparent.SetTexture(key, texture);
+        transparentMaterial.SetTexture(key, texture);
     }
 
     public void BothMaterialsSetColor(string key, Color color) {
-        if (materialOpaque != null) {
-            materialOpaque.SetColor(key, color);
+        if (opaqueMaterial != null) {
+            opaqueMaterial.SetColor(key, color);
         }
-        materialTransparent.SetColor(key, color);
+        transparentMaterial.SetColor(key, color);
     }
 
     public List<Vector3> GetCornerPositions() {

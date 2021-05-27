@@ -17,7 +17,7 @@ public class IntersectionEvent : RandomEvent {
     [Header("End Effect")]
     public float timeBeforeSwapCubeTypeAgain = 1.0f;
     public Cube.CubeType cubeTypeAfterEffect = Cube.CubeType.SPECIAL;
-    public float cubeAfterEffectDissolveTime = 0.0f;
+    public float cubeAfterEffectDissolveTime = 0.1f;
 
     protected static List<Cube> cubesAlreadyUsedInEvents = new List<Cube>();
 
@@ -123,7 +123,7 @@ public class IntersectionEvent : RandomEvent {
             Cube cube = gm.map.GetCubeAt(currentPosition);
             if (cube != null) {
                 cube = gm.map.SwapCubeType(cube, cubeTypeAfterEffect);
-                cube.StartDissolveEffect(cubeWhileEffectDissolveTime, gm.postProcessManager.dissolveInGamePlayerProximityCoef);
+                cube.StartDissolveEffect(cubeAfterEffectDissolveTime, gm.postProcessManager.dissolveInGamePlayerProximityCoef);
             }
             soundHolder.transform.position = currentPosition;
             currentPosition += direction;
