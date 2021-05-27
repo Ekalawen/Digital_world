@@ -37,8 +37,9 @@ public class IntersectionEvent : RandomEvent {
     }
 
     public override bool CanBeStarted() {
-        Vector3 center = GetIntersectionCenter();
-        return gm.map.IsInInsidedRegularMap(center);
+        //Vector3 center = GetIntersectionCenter();
+        //return gm.map.IsInInsidedRegularMap(center);
+        return true;
     }
 
     protected Vector3 GetIntersectionCenter() {

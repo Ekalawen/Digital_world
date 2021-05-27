@@ -1211,23 +1211,24 @@ public class MapManager : MonoBehaviour {
     }
 
     protected Cube GetClosestCubeInDirectionRegular(Vector3 center, Vector3 direction) {
-        if (!IsInRegularMap(center))
-            return null;
-        if(!MapManager.GetAllDirections().Contains(direction)) {
+        if(!GetAllDirections().Contains(direction)) {
             throw new Exception($"direction ({direction}) must be a unitary direction in GetClosestCubeInDirectionRegular()");
         }
         Vector3 current = center + direction;
-        while(IsInRegularMap(current)) {
-            Cube currentCube = cubesRegular[(int)current.x, (int)current.y, (int)current.z];
-            if (currentCube != null)
-                return currentCube;
+        int nbCubesMax = (int)Vector3.Distance(center, GetCenter()) + Mathf.Max(tailleMap.x, tailleMap.y, tailleMap.z);
+        for(int i = 0; i < nbCubesMax; i++) {
+            if (IsInRegularMap(current)) {
+                Cube currentCube = cubesRegular[(int)current.x, (int)current.y, (int)current.z];
+                if (currentCube != null)
+                    return currentCube;
+            }
             current += direction;
         }
         return null;
     }
 
     protected Cube GetClosestCubeInDirectionNonRegular(Vector3 center, Vector3 direction) {
-        if (!MapManager.GetAllDirections().Contains(direction)) {
+        if (!GetAllDirections().Contains(direction)) {
             throw new Exception($"direction ({direction}) must be a unitary direction in GetClosestCubeInDirectionNonRegular()");
         }
         List<Vector3> alignedPos = new List<Vector3>();
