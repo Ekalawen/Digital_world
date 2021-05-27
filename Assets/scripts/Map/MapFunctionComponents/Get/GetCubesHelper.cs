@@ -15,6 +15,7 @@ public class GetCubesHelper : MonoBehaviour {
         NOT_REGULAR,
         IN_CUBE_ENSEMBLES,
         CAVES_OPENINGS,
+        WITH_N_VOISINS,
     };
 
     public HowToGetCubes howToGetCubes = HowToGetCubes.ALL;
@@ -30,6 +31,8 @@ public class GetCubesHelper : MonoBehaviour {
     public float areaSphereRadius = 0f;
     [ConditionalHide("howToGetCubes", HowToGetCubes.IN_CUBE_ENSEMBLES)]
     public CubeEnsemble.CubeEnsembleType cubeEnsembleType;
+    [ConditionalHide("howToGetCubes", HowToGetCubes.WITH_N_VOISINS)]
+    public int nbCubesVoisins = 4;
     public List<GetCubesHelperModifier> modifiers;
 
     protected MapManager map;
@@ -67,6 +70,8 @@ public class GetCubesHelper : MonoBehaviour {
                 return GetCubesInCubeEnsembles();
             case HowToGetCubes.CAVES_OPENINGS:
                 return GetCubesInCavesOpenings();
+            case HowToGetCubes.WITH_N_VOISINS:
+                return GetCubesWithNVoisins(nbCubesVoisins);
             default:
                 return null;
         }
@@ -108,5 +113,10 @@ public class GetCubesHelper : MonoBehaviour {
         List<CubeEnsemble> cubeEnsembles = map.GetCubeEnsemblesOfType(CubeEnsemble.CubeEnsembleType.CAVE);
         List<Cave> caves = cubeEnsembles.Select(c => (Cave)c).ToList();
         return caves.SelectMany(c => c.GetOpenings()).ToList();
+    }
+
+    protected List<Cube> GetCubesWithNVoisins(int n) {
+        List<Cube> cubes = map.GetAllCubes().FindAll(c => map.GetVoisinsPleinsAll(c.transform.position).Count == n).ToList();
+        return cubes;
     }
 }
