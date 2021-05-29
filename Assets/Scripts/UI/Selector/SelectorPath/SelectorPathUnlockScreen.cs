@@ -94,6 +94,13 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
                 SubmitFalseLocked();
             }
         }
+        RememberNumberOfSubmits();
+    }
+
+    protected void RememberNumberOfSubmits() {
+        string key = selectorPath.GetNameId() + PrefsManager.NB_SUBMITS_PATH_KEY;
+        int nbSubmits = PrefsManager.GetInt(key, 0);
+        PrefsManager.SetInt(key, nbSubmits + 1);
     }
 
     protected void SubmitGoodUnlocked() {
