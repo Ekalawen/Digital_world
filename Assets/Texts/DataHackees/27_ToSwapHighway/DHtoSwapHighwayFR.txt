@@ -1,8 +1,122 @@
 ###New Fragment###
 #FragmentTreshold= 1
-Vous avez réussi ! Félicitation !
+Passe : 
+#include <iostream>
+using namespace std;
 
-Passe : Le Passe est vide !
+int calculerMdp(int k) {
+    <color=#GREY>// Calcule la somme des k premiers carrés.</color>
+    int mdp = 0;
+    for(int i = 1; i <= k; i++) {
+        mdp = mdp + (i * i);
+    }
+    return mdp;
+}
+
+int main() {
+    int k = 5;
+    cout << "Mot de passe = " << calculerMdp(k) << endl;
+   
+    return 0;
+}
 
 Trace : %Trace%
 
+###New Fragment###
+#FragmentTreshold= 2
+Passe : 
+
+<color=#GREY>// Ceci est un commentaire. Un commentaire n'a aucun effet sur le code. Il permet de donner des indications.</color>
+<color=#GREY>// L'ordre d'exécution du programme a été numéroté pour vous.</color>
+
+<color=#GREY>// Ces 2 lignes ne sont pas importantes à la compréhension du programme.</color>
+#include <iostream>
+using namespace std;
+
+<color=#GREY>// 4)</color>
+int calculerMdp(int k) {
+    <color=#GREY>// 5)</color>
+    int mdp = 0;
+    <color=#GREY>// 6-10) </color>
+    for(int i = 1; i <= k; i++) {
+        <color=#GREY>// Cette ligne est exécuté 5 fois en tout !</color>
+        mdp = mdp + (i * i);
+    }
+    <color=#GREY>// 11) </color>
+    return mdp;
+}
+
+<color=#GREY>// 1) Le programme commence ici !</color>
+int main() {
+    <color=#GREY>// 2)</color>
+    int k = 5;
+    <color=#GREY>// 3) Cette ligne fait appel à la fonction calculerMdp au numéro 4).</color>
+    cout << "Mot de passe = " << calculerMdp(k) << endl;
+   
+    <color=#GREY>// 12) et fin !</color>
+    return 0;
+}
+
+###New Fragment###
+#FragmentTreshold= 3
+Passe :
+<color=#GREY>// Nous allons vous donner un peu plus d'informations.</color>
+
+<color=#GREY>// Ces 2 lignes ne sont toujours pas importantes à la compréhension du programme.</color>
+#include <iostream>
+using namespace std;
+
+<color=#GREY>// 4) La fonction calculerMdp possède un paramètre : k. Sa valeur est définie ailleurs dans le programme.</color>
+int calculerMdp(int k) {
+    <color=#GREY>// 5) Le mot de passe commence à la valeur 0. Mais il va être modifié.</color>
+    int mdp = 0;
+    <color=#GREY>// 6) à 10) Puis, autant de fois que k, on va lui ajouter quelque chose.</color>
+    for(int i = 1; i <= k; i++) {
+        <color=#GREY>// A chaque fois, on ajoute i * i au mot de passe où i prend les valeurs 1, puis 2, puis 3 etc ...</color>
+        mdp = mdp + (i * i);
+    }
+    <color=#GREY>// 11) Donc en gros, mdp = 0 + (1 * 1) + (2 * 2) + (3 * 3) ...</color>
+    return mdp;
+}
+
+<color=#GREY>// 1) Le programme commence ici !</color>
+int main() {
+    <color=#GREY>// 2) Une opération va être effectuée 5 fois.</color>
+    int k = 5;
+    <color=#GREY>// 3) Ceci affiche le mot de passe à l'écran. Il nous faut comprendre ce qu'il affiche. Pour cela il nous faut regarder la fonction calculerMdp.</color>
+    cout << "Mot de passe = " << calculerMdp(k) << endl;
+   
+    <color=#GREY>// 12) et fin !</color>
+    return 0;
+}
+
+###New Fragment###
+#FragmentTreshold= 4
+Passe :
+<color=#GREY>// Nous allons vous donner encore plus d'informations.</color>
+
+<color=#GREY>// 3) La fonction calculerMdp calcule le Passe. Vous devez trouver la valeur de mdp pour trouver le Passe.</color>
+int calculerMdp() {
+    int mdp = 0;
+    mdp = mdp + (1 * 1); <color=#GREY>// Donc ici mdp = 0 + (1 * 1) = 1</color>
+    mdp = mdp + (2 * 2); <color=#GREY>// Donc ici mdp = 0 + (1 * 1) + (2 * 2) = 5</color>
+    mdp = mdp + (3 * 3); <color=#GREY>// Donc ici mdp = 0 + (1 * 1) + (2 * 2) + (3 * 3) = 14</color>
+    mdp = mdp + (4 * 4); <color=#GREY>// Et ici ?</color>
+    mdp = mdp + (5 * 5); <color=#GREY>// Si vous trouvez ici, vous trouvez le Passe.</color>
+    return mdp;
+}
+
+<color=#GREY>// 1) Le programme commence ici !</color>
+int main() {
+    <color=#GREY>// 2) Ceci affiche le mot de passe à l'écran. Il nous faut comprendre ce qu'il affiche. Pour cela il nous faut regarder la fonction calculerMdp.</color>
+    cout << "Mot de passe = " << calculerMdp() << endl;
+   
+    <color=#GREY>// 4) et fin !</color>
+    return 0;
+}
+
+###New Fragment###
+#FragmentTreshold= 5
+Vous avez réussi ! Félicitation !
+
+Passe : %Passe%

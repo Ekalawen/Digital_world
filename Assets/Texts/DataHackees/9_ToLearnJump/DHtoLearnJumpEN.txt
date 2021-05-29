@@ -3,26 +3,19 @@
 Pass: From now on, some Passes will be samples of simple codes.
 That you will have to hack.
 
-Trace : %Trace%
+Trace: %Trace%
 
 ###New Fragment###
 #FragmentTreshold= 15
 Pass: 
 #include <iostream>
+#include <string>
 using namespace std;
 
-int computePwd(int k) {
-    <color=#GREY>// Calculate the sum of the first k squares.</color>
-    int pwd = 0;
-    for(int i = 1; i <= k; i++) {
-        pwd = pwd + (i * i);
-    }
-    return pwd;
-}
-
 int main() {
-    int k = 5;
-    cout << "The password is " << computePwd(k) << endl;
+    string pwd1 = "tication";
+    string pwd2 = "authen";
+    cout << "The password is " << pwd2 << pwd1 << endl;
    
     return 0;
 }
@@ -32,95 +25,63 @@ int main() {
 Pass: 
 
 <color=#GREY>// This is a comment. A comment has no effect on the code. It allows to give indications.</color>
-<color=#GREY>// The execution order of the program has been numbered for you.</color>
 
-<color=#GREY>// These 2 lines are not important for understanding the program. </color>
+<color=#GREY>// These 3 lines are not important for understanding the program.</color>
 #include <iostream>
+#include <string>
 using namespace std;
 
-<color=#GREY>// 4)</color>
-int computePwd(int k) {
-    <color=#GREY>// 5)</color>
-    int pwd = 0;
-    <color=#GREY>// 6-10) </color>
-    for(int i = 1; i <= k; i++) {
-        <color=#GREY>// This line is executed 5 times!</color>
-        pwd = pwd + (i * i);
-    }
-    return pwd;
-}
-
-<color=#GREY>// 1) The program starts here!</color>
+<color=#GREY>// The program starts here.</color>
 int main() {
-    <color=#GREY>// 2)</color>
-    int k = 5;
-    <color=#GREY>// 3) This line calls the computePwd function at number 4). </color>
-    cout << "The password is " << computePwd(k) << endl;
+    <color=#GREY>// The next 2 lines are character strings. Words in fact.</color>
+    string pwd1 = "tication";
+    string pwd2 = "authen";
+    <color=#GREY>// This line appears to display the password on the screen.</color>
+    cout << "The password is " << pwd2 << pwd1 << endl;
    
-    <color=#GREY>// 6) et fin !</color>
+    <color=#GREY>// The program ends here.</color>
     return 0;
 }
 
 ###New Fragment###
 #FragmentTreshold= 30
 Pass:
-<color=#GREY>// We will give you a little more information. </color>
+<color=#GREY>// We will give you a little more information.</color>
 
-<color=#GREY>// These 2 lines are still not important for understanding the program. </color>
+<color=#GREY>// These 3 lines are still not important for understanding the program.</color>
 #include <iostream>
+#include <string>
 using namespace std;
 
-<color=#GREY>// 4) The computePwd function has one parameter: k. Its value is defined elsewhere in the program. </color>
-int computePwd(int k) {
-    <color=#GREY>// 5) The password starts at the value 0. But it will be changed. </color>
-    int pwd = 0;
-    <color=#GREY>// 6) to 10) Then, as many times as k, we will add something to it. </color>
-    for(int i = 1; i <= k; i++) {
-        <color=#GREY>// Each time, we add i * i to the password where i take the values 1, then 2, then 3 etc ... </color>
-        pwd = pwd + (i * i);
-    }
-    <color=#GREY>// So basically, pwd = 0 + (1 * 1) + (2 * 2) + (3 * 3) ...</color>
-    return pwd;
-}
-
-<color=#GREY>// 1) The program starts here! </color>
+<color=#GREY>// The program starts here.</color>
 int main() {
-    <color=#GREY>// 2) An operation will be performed 5 times. </color>
-    int k = 5;
-    <color=#GREY>// 3) This displays the password on the screen. We need to understand what it displays. For that we have to look at the computePwd function. </color>
-    cout << "The password is " << computePwd(k) << endl;
+    <color=#GREY>// The password seems to consist of 2 parts.</color>
+    string pwd1 = "tication";
+    string pwd2 = "authen";
+    <color=#GREY>// Which are then juxtaposed one after the other.</color>
+    cout << "The password is " << pwd2 << pwd1 << endl;
+    <color=#GREY>// Pay attention to order!</color>
    
-    <color=#GREY>// 6) and end!</color>
+    <color=#GREY>// The program ends here.</color>
     return 0;
 }
 
 ###New Fragment###
 #FragmentTreshold= 40
 Pass:
-<color=#GREY>// We will give you even more information. </color>
+<color=#GREY>// We will give you even more information.</color>
 
-<color=#GREY>// 4) The computePwd function calculates the Pass. You need to find the value of pwd to find the Pass. </color>
-int computePwd() {
-    int pwd = 0;
-    pwd = pwd + (1 * 1); <color=#GREY>// Here, pwd = 0 + (1 * 1) = 1</color>
-    pwd = pwd + (2 * 2); <color=#GREY>// Here, pwd = 0 + (1 * 1) + (2 * 2) = 5</color>
-    pwd = pwd + (3 * 3); <color=#GREY>// Here, pwd = 0 + (1 * 1) + (2 * 2) + (3 * 3) = 14</color>
-    pwd = pwd + (4 * 4); <color=#GREY>// And here?</color>
-    pwd = pwd + (5 * 5); <color=#GREY>// If you find here, you find the Pass.</color>
-    return pwd;
-}
-
-<color=#GREY>// 1) The program starts here! </color>
+<color=#GREY>// The program starts here.</color>
 int main() {
-    <color=#GREY>// 3) This displays the password on the screen. We need to understand what it displays. For that we have to look at the computePwd function. </color>
-    cout << "The password is " << computePwd() << endl;
+    <color=#GREY>// The password is between the quotes "" !</color>
+    cout << "The password is " << "authentication" << endl;
    
-    <color=#GREY>// 6) and end!</color>
+    <color=#GREY>// The program ends here.</color>
     return 0;
 }
 
 ###New Fragment###
 #FragmentTreshold= 50
-You succeeded! Congratulations! 
+You succeeded! Congratulations!
 
 Pass: %Passe%
