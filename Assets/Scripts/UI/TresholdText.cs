@@ -55,7 +55,8 @@ public class TresholdText {
         string[] splited = content.Split('\n');
         if (textAssetLineIndice >= splited.Length)
             return null;
-        string res = splited[textAssetLineIndice].Trim();
+        //string res = splited[textAssetLineIndice].Trim();
+        string res = splited[textAssetLineIndice];
         textAssetLineIndice++;
         return res;
     }
@@ -65,14 +66,14 @@ public class TresholdText {
         textAssetLineIndice = 0;
 
         string line = ReadLine();
-        if(line != NEW_FRAGMENT_SYMBOLE && line != null)
+        if(line.Trim() != NEW_FRAGMENT_SYMBOLE && line != null)
             Debug.LogErrorFormat("Un fragment doit commencer par {0}, ici le fragment vaut \n{1}", NEW_FRAGMENT_SYMBOLE, line);
         while((line = ReadLine()) != null) {
             if(line.StartsWith(FRAGMENT_TRESHOLD_SYMBOLE)) {
-                int treshold = int.Parse(line.Split(' ')[1]);
+                int treshold = int.Parse(line.Trim().Split(' ')[1]);
                 string content = "";
                 line = ReadLine();
-                while(line != NEW_FRAGMENT_SYMBOLE && line != null) {
+                while(line != null && line.Trim() != NEW_FRAGMENT_SYMBOLE) {
                     content += line + "\n";
                     line = ReadLine();
                 }

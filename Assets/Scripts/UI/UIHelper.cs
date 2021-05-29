@@ -20,6 +20,7 @@ public class UIHelper {
         YELLOW,
         MAGENTA,
         VIOLET,
+        GREY,
         PURE_RED,
         PURE_GREEN,
         PURE_BLUE,
@@ -37,6 +38,7 @@ public class UIHelper {
     public static string YELLOW = "#ffff00ff";
     public static string MAGENTA = "#ff00ffff";
     public static string VIOLET = "#7f00ffff";
+    public static string GREY = "#777777ff";
     public static string PURE_RED = "#ff0000ff";
     public static string PURE_GREEN = "#00ff00ff";
     public static string PURE_BLUE = "#0000ffff";
@@ -54,6 +56,8 @@ public class UIHelper {
             new Tuple<string, string>("#BLACK", BLACK),
             new Tuple<string, string>("#ORANGE", ORANGE),
             new Tuple<string, string>("#YELLOW", YELLOW),
+            new Tuple<string, string>("#VIOLET", VIOLET),
+            new Tuple<string, string>("#GREY", GREY),
             new Tuple<string, string>("#PURE_RED", PURE_RED),
             new Tuple<string, string>("#PURE_GREEN", PURE_GREEN),
             new Tuple<string, string>("#PURE_GREEN", PURE_GREEN),
