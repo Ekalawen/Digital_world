@@ -65,7 +65,7 @@ public class TexteExplicatif : MonoBehaviour {
         tresholdText = new TresholdText(textAsset);
     }
 
-    public void Run(int textTreshold = 0, bool shouldInitTresholdText = true) {
+    public void Run(int textTreshold = 0, bool shouldInitTresholdText = true, ReplacementStrings replacements = null) {
         InitColor();
 
         if (useTextAsset && shouldInitTresholdText) {
@@ -84,6 +84,10 @@ public class TexteExplicatif : MonoBehaviour {
             SetText(UseReplacementList(mainText.text));
         }
         mainText.text = ApplyColorReplacements(mainText.text);
+
+        if(replacements != null) {
+            mainText.text = UIHelper.ApplyReplacementList(mainText.text, replacements);
+        }
 
         //PutMainTextOnBottom();
 

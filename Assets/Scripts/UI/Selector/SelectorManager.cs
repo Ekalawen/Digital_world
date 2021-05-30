@@ -29,6 +29,7 @@ public class SelectorManager : MonoBehaviour {
     public SelectorManagerStrings strings;
     public ReplacementStrings archivesReplacementStrings;
     public ReplacementStrings docReplacementStrings;
+    public ReplacementStrings DHReplacementStrings;
     public SelectorLevelRunIntroduction introductionRunner;
     public TutorialTooltipManager tutorialTooltipManager;
 

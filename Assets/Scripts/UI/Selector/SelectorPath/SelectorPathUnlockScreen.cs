@@ -191,7 +191,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         selectorManager.popup.InitTresholdText();
         ReplaceTresholdsWithGoalTresholds(selectorManager.popup, selectorPath.goalTresholds);
         AddNextPallierMessage(selectorManager.popup, currentTreshold: currentTreshold);
-        selectorManager.popup.Run(textTreshold: selectorManager.popup.GetMaxTreshold(), shouldInitTresholdText: false);
+        selectorManager.popup.Run(textTreshold: selectorManager.popup.GetMaxTreshold(), shouldInitTresholdText: false, replacements: selectorManager.DHReplacementStrings);
     }
 
     protected void ReplaceTresholdsWithGoalTresholds(TexteExplicatif texteExplicatif, GoalTresholds goalTresholds) {
@@ -211,16 +211,16 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         popup.AddReplacement("%Trace3%", UIHelper.SurroundWithColor(selectorPath.GetTrace().Substring(2, 1), UIHelper.PURE_GREEN));
         popup.AddReplacement("%Trace4%", UIHelper.SurroundWithColor(selectorPath.GetTrace().Substring(3, 1), UIHelper.PURE_GREEN));
         popup.AddReplacement("%Passe%", UIHelper.SurroundWithColor(selectorPath.GetPasse(), UIHelper.PURE_GREEN));
-        MatchEvaluator blueSurrounder = new MatchEvaluator(TexteExplicatif.SurroundWithBlueColor);
-        MatchEvaluator orangeSurrounder = new MatchEvaluator(TexteExplicatif.SurroundWithOrangeColor);
-        string passe = selectorManager.strings.passe.GetLocalizedString().Result;
-        string passes = selectorManager.strings.passes.GetLocalizedString().Result;
-        string trace = selectorManager.strings.trace.GetLocalizedString().Result;
-        string traces = selectorManager.strings.traces.GetLocalizedString().Result;
-        string dataHackees = selectorManager.strings.dataHackees.GetLocalizedString().Result;
-        popup.AddReplacementEvaluator($@"({passes}|{passe})", blueSurrounder);
-        popup.AddReplacementEvaluator($@"({traces}|{trace})", blueSurrounder);
-        popup.AddReplacementEvaluator($@"{dataHackees}", orangeSurrounder);
+        //MatchEvaluator blueSurrounder = new MatchEvaluator(TexteExplicatif.SurroundWithBlueColor);
+        //MatchEvaluator orangeSurrounder = new MatchEvaluator(TexteExplicatif.SurroundWithOrangeColor);
+        //string passe = selectorManager.strings.passe.GetLocalizedString().Result;
+        //string passes = selectorManager.strings.passes.GetLocalizedString().Result;
+        //string trace = selectorManager.strings.trace.GetLocalizedString().Result;
+        //string traces = selectorManager.strings.traces.GetLocalizedString().Result;
+        //string dataHackees = selectorManager.strings.dataHackees.GetLocalizedString().Result;
+        //popup.AddReplacementEvaluator($@"({passes}|{passe})", blueSurrounder);
+        //popup.AddReplacementEvaluator($@"({traces}|{trace})", blueSurrounder);
+        //popup.AddReplacementEvaluator($@"{dataHackees}", orangeSurrounder);
     }
 
     protected void AddNextPallierMessage(TexteExplicatif texteExplicatif, int currentTreshold) {
