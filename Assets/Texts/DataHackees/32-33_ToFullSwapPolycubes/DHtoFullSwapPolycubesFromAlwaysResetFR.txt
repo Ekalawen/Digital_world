@@ -1,8 +1,70 @@
 ###New Fragment###
 #FragmentTreshold= 1
-Vous avez réussi ! Félicitation !
-
-Passe : Le Passe est vide !
+Passe : Clé : <color=#CYAN>vigenere</color>
 
 Trace : %Trace%
+
+###New Fragment###
+#FragmentTreshold= 2
+Passe : Associez cette clé avec un message à déchiffrer.
+
+###New Fragment###
+#FragmentTreshold= 3
+Passe : Cette Table de Vigenère a été utilisé pour coder le message.
+<color=#CYAN>Lignes</color> : Lettre de la clé
+<color=#ORANGE>Colonnes</color> : Lettre en clair
+\  |<color=#ORANGE>A</color>|<color=#ORANGE>B</color>|<color=#ORANGE>C</color>|<color=#ORANGE>D</color>|<color=#ORANGE>E</color>|<color=#ORANGE>F</color>|<color=#ORANGE>G</color>|<color=#ORANGE>H</color>|<color=#ORANGE>I</color>|<color=#ORANGE>J</color>|<color=#ORANGE>K</color>|<color=#ORANGE>L</color>|<color=#ORANGE>M</color>|<color=#ORANGE>N</color>|<color=#ORANGE>O</color>|<color=#ORANGE>P</color>|<color=#ORANGE>Q</color>|<color=#ORANGE>R</color>|<color=#ORANGE>S</color>|<color=#ORANGE>T</color>|<color=#ORANGE>U</color>|<color=#ORANGE>V</color>|<color=#ORANGE>W</color>|<color=#ORANGE>X</color>|<color=#ORANGE>Y</color>|<color=#ORANGE>Z</color>|
+-------------------------------------------------------
+<color=#CYAN>A</color>  |A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z|
+<color=#CYAN>B</color>  |B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z|A|
+<color=#CYAN>C</color>  |C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z|A|B|
+<color=#CYAN>D</color>  |D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z|A|B|C|
+<color=#CYAN>E</color>  |E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z|A|B|C|D|
+-------------------------------------------------------
+<color=#CYAN>F</color>  |F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z|A|B|C|D|E|
+<color=#CYAN>G</color>  |G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z|A|B|C|D|E|F|
+<color=#CYAN>H</color>  |H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z|A|B|C|D|E|F|G|
+<color=#CYAN>I</color>  |I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z|A|B|C|D|E|F|G|H|
+<color=#CYAN>J</color>  |J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z|A|B|C|D|E|F|G|H|I|
+-------------------------------------------------------
+<color=#CYAN>K</color>  |K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z|A|B|C|D|E|F|G|H|I|J|
+<color=#CYAN>L</color>  |L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z|A|B|C|D|E|F|G|H|I|J|K|
+<color=#CYAN>M</color>  |M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z|A|B|C|D|E|F|G|H|I|J|K|L|
+<color=#CYAN>N</color>  |N|O|P|Q|R|S|T|U|V|W|X|Y|Z|A|B|C|D|E|F|G|H|I|J|K|L|M|
+<color=#CYAN>O</color>  |O|P|Q|R|S|T|U|V|W|X|Y|Z|A|B|C|D|E|F|G|H|I|J|K|L|M|N|
+-------------------------------------------------------
+<color=#CYAN>P</color>  |P|Q|R|S|T|U|V|W|X|Y|Z|A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|
+<color=#CYAN>Q</color>  |Q|R|S|T|U|V|W|X|Y|Z|A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|
+<color=#CYAN>R</color>  |R|S|T|U|V|W|X|Y|Z|A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|
+<color=#CYAN>S</color>  |S|T|U|V|W|X|Y|Z|A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|
+<color=#CYAN>T</color>  |T|U|V|W|X|Y|Z|A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|
+-------------------------------------------------------
+<color=#CYAN>U</color>  |U|V|W|X|Y|Z|A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|
+<color=#CYAN>V</color>  |V|W|X|Y|Z|A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|
+<color=#CYAN>W</color>  |W|X|Y|Z|A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|
+<color=#CYAN>X</color>  |X|Y|Z|A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|
+<color=#CYAN>Y</color>  |Y|Z|A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|
+<color=#CYAN>Z</color>  |Z|A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|
+
+###New Fragment###
+#FragmentTreshold= 4
+Passe :
+Comment déchiffrer le message à l'aide de la clé et de la table :
+1) La lettre de la clé nous indique la ligne à regarder.
+2) On cherche la lettre chiffré sur cette ligne.
+3) On remonte de cette lettre haut de la colonne pour retrouver la lettre en clair.
+
+Par exemple, si la lettre de la clé est <color=#CYAN>V</color> et que la lettre chiffré est <color=#DARK_CYAN>X</color> alors :
+1) On regarde la ligne <color=#CYAN>V</color>, soit la 5ième ligne en partant du bas.
+2) On cherche la lettre <color=#DARK_CYAN>X</color> sur cette ligne, qui est dans la troisième colonne.
+3) La lettre en haut de la troisième colonne est <color=#ORANGE>C</color>. <color=#ORANGE>C</color> est donc la lettre en clair !
+
+###New Fragment###
+#FragmentTreshold= 5
+Passe :
+Message déchiffré -- : <color=#ORANGE>Ces Passes ne doivent surtout pas tomber aux mains de l'ennemis. Les Passes sont "chiffrement" et "dechiffrement".</color>
+
+###New Fragment###
+#FragmentTreshold= 6
+Passe : %Passe%
 

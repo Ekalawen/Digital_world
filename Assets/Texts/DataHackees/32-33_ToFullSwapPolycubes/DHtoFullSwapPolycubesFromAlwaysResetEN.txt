@@ -1,7 +1,68 @@
 ﻿###New Fragment###
 #FragmentTreshold= 1
-You succeeded! Congratulations!
-
-Pass: The Pass is empty!
+Pass: Key : <color=#CYAN>vigenere</color>
 
 Trace: %Trace%
+
+###New Fragment###
+#FragmentTreshold= 2
+Pass: Associate this key with a message to decipher.
+
+###New Fragment###
+#FragmentTreshold= 3
+Pass: This Vigenère Table was used to encode the message.
+<color=#CYAN>Rows</color> : Key letter
+<color=#ORANGE>Columns</color> : Unencoded letter
+\  |<color=#ORANGE>A</color>|<color=#ORANGE>B</color>|<color=#ORANGE>C</color>|<color=#ORANGE>D</color>|<color=#ORANGE>E</color>|<color=#ORANGE>F</color>|<color=#ORANGE>G</color>|<color=#ORANGE>H</color>|<color=#ORANGE>I</color>|<color=#ORANGE>J</color>|<color=#ORANGE>K</color>|<color=#ORANGE>L</color>|<color=#ORANGE>M</color>|<color=#ORANGE>N</color>|<color=#ORANGE>O</color>|<color=#ORANGE>P</color>|<color=#ORANGE>Q</color>|<color=#ORANGE>R</color>|<color=#ORANGE>S</color>|<color=#ORANGE>T</color>|<color=#ORANGE>U</color>|<color=#ORANGE>V</color>|<color=#ORANGE>W</color>|<color=#ORANGE>X</color>|<color=#ORANGE>Y</color>|<color=#ORANGE>Z</color>|
+-------------------------------------------------------
+<color=#CYAN>A</color>  |A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z|
+<color=#CYAN>B</color>  |B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z|A|
+<color=#CYAN>C</color>  |C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z|A|B|
+<color=#CYAN>D</color>  |D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z|A|B|C|
+<color=#CYAN>E</color>  |E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z|A|B|C|D|
+-------------------------------------------------------
+<color=#CYAN>F</color>  |F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z|A|B|C|D|E|
+<color=#CYAN>G</color>  |G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z|A|B|C|D|E|F|
+<color=#CYAN>H</color>  |H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z|A|B|C|D|E|F|G|
+<color=#CYAN>I</color>  |I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z|A|B|C|D|E|F|G|H|
+<color=#CYAN>J</color>  |J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z|A|B|C|D|E|F|G|H|I|
+-------------------------------------------------------
+<color=#CYAN>K</color>  |K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z|A|B|C|D|E|F|G|H|I|J|
+<color=#CYAN>L</color>  |L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z|A|B|C|D|E|F|G|H|I|J|K|
+<color=#CYAN>M</color>  |M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z|A|B|C|D|E|F|G|H|I|J|K|L|
+<color=#CYAN>N</color>  |N|O|P|Q|R|S|T|U|V|W|X|Y|Z|A|B|C|D|E|F|G|H|I|J|K|L|M|
+<color=#CYAN>O</color>  |O|P|Q|R|S|T|U|V|W|X|Y|Z|A|B|C|D|E|F|G|H|I|J|K|L|M|N|
+-------------------------------------------------------
+<color=#CYAN>P</color>  |P|Q|R|S|T|U|V|W|X|Y|Z|A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|
+<color=#CYAN>Q</color>  |Q|R|S|T|U|V|W|X|Y|Z|A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|
+<color=#CYAN>R</color>  |R|S|T|U|V|W|X|Y|Z|A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|
+<color=#CYAN>S</color>  |S|T|U|V|W|X|Y|Z|A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|
+<color=#CYAN>T</color>  |T|U|V|W|X|Y|Z|A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|
+-------------------------------------------------------
+<color=#CYAN>U</color>  |U|V|W|X|Y|Z|A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|
+<color=#CYAN>V</color>  |V|W|X|Y|Z|A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|
+<color=#CYAN>W</color>  |W|X|Y|Z|A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|
+<color=#CYAN>X</color>  |X|Y|Z|A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|
+<color=#CYAN>Y</color>  |Y|Z|A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|
+<color=#CYAN>Z</color>  |Z|A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|
+
+###New Fragment###
+#FragmentTreshold= 4
+Pass: How to decipher the message using the key and the table:
+1) The letter of the key tells us which line to look at.
+2) We look for the encrypted letter on this line.
+3) We go back from this letter to the top of the column to find the unencoded letter.
+
+For example, if the key letter is <color=#CYAN>V</color> and the encrypted letter is <color=#DARK_CYAN>O</color> then:
+1) We look at line <color=#CYAN>V</color>, i.e. the 5th line from the bottom.
+2) We are looking for the letter <color=#DARK_CYAN>O</color> on this line, which is in the third column.
+3) The letter at the top of the third column is <color=#ORANGE>T</color>. <color=#ORANGE>T</color> is therefore the unencoded letter!
+
+###New Fragment###
+#FragmentTreshold= 5
+Pass:
+Message deciphered -- : <color=#ORANGE>These Passes must especially not fall into the hands of the enemies. The Passes are "encryption" and "decryption".</color>
+
+###New Fragment###
+#FragmentTreshold= 6
+Pass: %Passe%
