@@ -8,6 +8,7 @@ using UnityEngine.Localization;
 public class UIHelper {
 
     public enum UIColor {
+        // Don't add colors in the middle to avoid breaking prefabs ! :)
         RED,
         GREEN,
         BLUE,
