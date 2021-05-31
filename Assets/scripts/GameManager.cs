@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
@@ -72,6 +73,9 @@ public class GameManager : MonoBehaviour {
     protected bool timeFreezed = false;
     protected bool isPaused = false;
     protected InputManager inputManager;
+    protected bool initializationIsOver = false;
+    [HideInInspector]
+    public UnityEvent onInitilizationFinish;
 
     void Awake() {
         if (!_instance) {
@@ -103,7 +107,8 @@ public class GameManager : MonoBehaviour {
         Initialize();
 	}
 
-    protected virtual void Initialize() {
+    protected virtual void Initialize()
+    {
         timerManager.Initialize();
         gravityManager.Initialize();
         goalManager.Initialize();
@@ -122,9 +127,15 @@ public class GameManager : MonoBehaviour {
         historyManager.Initialize();
         flockManager.Initialize();
         cheatCodeManager.Initialize();
+        FinishInitialization();
     }
 
-	void Update () {
+    private void FinishInitialization() {
+        initializationIsOver = true;
+        onInitilizationFinish.Invoke();
+    }
+
+    void Update () {
         CheckRestartGame();
 
         CheckPauseToggling();
@@ -295,6 +306,10 @@ public class GameManager : MonoBehaviour {
         } else {
             return MenuLevel.LevelType.INFINITE;
         }
+    }
+
+    public bool IsInitializationOver() {
+        return initializationIsOver;
     }
 }
 

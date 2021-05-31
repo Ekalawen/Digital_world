@@ -60,6 +60,14 @@ public class PostProcessManager : MonoBehaviour {
 
         ResetSkyboxParameters();
         hitVolume.weight = 0;
+
+        gm.onInitilizationFinish.AddListener(StartCubesDissolveOnStart);
+    }
+
+    protected void StartCubesDissolveOnStart() {
+        foreach(Cube cube in gm.map.GetAllCubes()) {
+            cube.SetDissolveOnInitialization();
+        }
     }
 
     protected void ResetSkyboxParameters() {

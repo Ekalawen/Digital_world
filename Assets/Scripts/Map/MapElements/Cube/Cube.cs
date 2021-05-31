@@ -32,11 +32,7 @@ public class Cube : MonoBehaviour {
         if (startAsLinky) {
             SetLinky();
         }
-    }
-
-    // Done after player initialization
-    public void Start() {
-        SetDissolveOnStart();
+        SetDissolveOnInitialization();
     }
 
     protected void InitializeMaterials() {
@@ -53,10 +49,10 @@ public class Cube : MonoBehaviour {
         dissolveTimeToUse = dissolveTime;
     }
 
-    protected void SetDissolveOnStart() {
+    public void SetDissolveOnInitialization() {
         if (gm.map == null)
             return;
-        if (transparentMaterial.GetFloat("_DissolveStartingTime") == Time.time) // Si c'est le cas, ça veut dire qu'on a déjà appelé cette fonction ailleurs (typiquement dans IntersectionEvent)
+        if(!gm.IsInitializationOver())
             return;
 
         if(gm.timerManager.GetElapsedTime() >= 1.0f) {
