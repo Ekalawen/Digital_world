@@ -15,7 +15,7 @@ public class NonBlackCube : Cube {
     }
 
     protected void InitColor() {
-        if (GetColor() == Color.black) {
+        if (!colorHasBeenChanged) {
             Color color = ColorSource.LimiteColorSaturation(Color.black, minColorSaturationAndValue);
             BothMaterialsSetColor("_Color", color);
         }
@@ -32,11 +32,13 @@ public class NonBlackCube : Cube {
         UninitColor();
         Color color = ColorSource.LimiteColorSaturation(GetColor() + addedColor, minColorSaturationAndValue);
         BothMaterialsSetColor("_Color", color);
+        colorHasBeenChanged = true;
     }
 
     public override void SetColor(Color newColor) {
         UninitColor();
         Color color = ColorSource.LimiteColorSaturation(newColor, minColorSaturationAndValue);
         base.SetColor(color);
+        colorHasBeenChanged = true;
     }
 }
