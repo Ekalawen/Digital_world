@@ -51,16 +51,18 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   endGameType: 0
-  endEventDeathCubesType: 1
+  endEventCubesSelectionMethod: 1
+  endEventSeuilProximite: 2.5
   dureeDestructionCubesDestruction: 2
   proportionToKeep: 0
   bNoEndgame: 0
+  mapFunctionsOnCreateFinalLight: []
   screenShakeMagnitude: 4
   screenShakeRoughness: 15
   dureeScreenShake: 3
-  randomEventsPrefabs: []
+  eventsPrefabs: []
   nbLumieresTriggers: 
-  eventsToAddPrefabs: []
+  nbLumieresSingleEvents: []
   quitSceneTime: 7
   reloadSceneTime: 7
   nbLumieresFinales: 3
@@ -71,11 +73,13 @@ MonoBehaviour:
     m_TableEntryReference:
       m_KeyId: 13735776776069120
       m_Key: 
+    m_FallbackState: 0
   - m_TableReference:
       m_TableCollectionName: GUID:ca68cd80ed439e849817e90afd077d38
     m_TableEntryReference:
       m_KeyId: 13736035543654400
       m_Key: 
+    m_FallbackState: 0
 --- !u!1001 &2004253452606249415
 PrefabInstance:
   m_ObjectHideFlags: 0
