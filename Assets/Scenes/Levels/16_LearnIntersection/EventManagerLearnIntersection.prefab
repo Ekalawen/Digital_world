@@ -12,6 +12,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d4e8fd3de3d15844a22364444d15d21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  messageConsole:
+    localizedString:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+    type: 2
+    timing: 0
+    duree: 2
+  messageImportant:
+    localizedString:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+    type: 2
+    timing: 0
+    duree: 2
   randomEventPrefab: {fileID: 3392428530494248707, guid: da137af4c56f5ab429e4974e3ecd32f3,
     type: 3}
   triggerRandomEventOnAdd: 1
@@ -27,6 +49,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d4e8fd3de3d15844a22364444d15d21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  messageConsole:
+    localizedString:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+    type: 2
+    timing: 0
+    duree: 2
+  messageImportant:
+    localizedString:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+    type: 2
+    timing: 0
+    duree: 2
   randomEventPrefab: {fileID: 3392428530494248707, guid: a7510fa0446d58a4e9fd2941ec7dc1d9,
     type: 3}
   triggerRandomEventOnAdd: 1
@@ -90,6 +134,17 @@ PrefabInstance:
       propertyPath: endGameType
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 114622475871070300, guid: 4ad9af6763aeb45c8962c1fadb06c2eb,
+        type: 3}
+      propertyPath: eventsPrefabs.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114622475871070300, guid: 4ad9af6763aeb45c8962c1fadb06c2eb,
+        type: 3}
+      propertyPath: eventsPrefabs.Array.data[0]
+      value: 
+      objectReference: {fileID: 3392428530494248707, guid: 5e579741ff222864c9cd1dab3358fc14,
+        type: 3}
     - target: {fileID: 114622475871070300, guid: 4ad9af6763aeb45c8962c1fadb06c2eb,
         type: 3}
       propertyPath: endEventCubesSelectionMethod
