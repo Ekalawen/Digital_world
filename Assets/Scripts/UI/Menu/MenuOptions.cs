@@ -22,7 +22,7 @@ public class MenuOptions : MonoBehaviour {
     public static float defaultSoundVolume = 0.5f;
     public static float defaultMouseSpeed = 1.81f;
     public static bool defaultGripActivation = true;
-    public static bool defaultConseilOnStart = true;
+    public static bool defaultConseilOnStart = false;
     public static bool defaultFpsCounter = false;
 
     public bool isInGame = false;
