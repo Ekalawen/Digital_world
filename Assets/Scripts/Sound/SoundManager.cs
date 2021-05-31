@@ -223,6 +223,10 @@ public class SoundManager : MonoBehaviour
     {
         PlayClipsOnSource(sounds.timeZoneButtonOutClips, pos);
     }
+    public void PlayOrbTriggerActivationClip(Vector3 pos)
+    {
+        PlayClipsOnSource(sounds.orbTriggerActivationClips, pos);
+    }
     public void PlayRewardBestScore()
     {
         PlayClipsOnSource(sounds.rewardBestScoreClips);

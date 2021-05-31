@@ -135,6 +135,7 @@ public class OrbTrigger : IZone {
 
     public void CallAllEvents() {
         events.Invoke();
+        gm.soundManager.PlayOrbTriggerActivationClip(transform.position);
         if (autoDestroyOnActivate) {
             Destroy(transform.parent.gameObject); // Attention ça c'est du au fait qu'on a un composant parent inutile pour les OrbTriggers !
         }
