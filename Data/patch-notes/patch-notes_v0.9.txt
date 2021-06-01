@@ -1,0 +1,171 @@
+@everyone Salut à vous les Runners !
+Aujourd'hui, nous assistons à un événement qui ne s'est encore jamais produit dans toute l'histoire de l'humanité ... La sortie de la version 0.9 de Netrunner ! ;)
+Et pour fêter ça, voici un petit (petit ?) patch-notes pour résumer les nouveaux changements ! :)
+
+#Patch-notes Version 0.9 :
+
+Avant de vous parler de ce que contient ce patch, je voulais vous annoncer une grande nouvelle : le site web https://netrunner-awakening.com/ est là !
+N'hésitez pas à aller y faire un tour ! En plus, il paraît qu'il y a des gifs plutôt cool dessus ! ;) Vous pourrez également vous inscrire à ma Newsletter pour récupérer le Mot de Passe Ultime ! Je ne vous en dis pas plus. ;)
+
+Pour ce qui est de la nouvelle version, voici ce à quoi vous pouvez vous attendre :
+- Plein de nouveaux graphismes cools ! Et notamment l'arrivé de la HDR !
+- Un nouvel outil pour pouvoir facilement capturer des gifs à la volé !
+- L'apparition de la Doc() qui rend les Conseils enfin facilement consultables à tous moments
+- Une tentative d'optimisation des performances : les cubes opaques ! Cela devrait à terme augmenter les performances de 30% à 50% :)
+- Sept (7 !) nouveaux niveaux et leurs Data Hackées() correspondantes. Cette nouvelle version a mis du temps à sortir, mais ça valait le coup !
+Bon, c'est parti ! :)
+
+
+# Gameplay
+
+## Génération de Map
+- Un nouvel algorithme a été rajouté pour pouvoir mieux contrôler la répartition des Datas à l'intérieur ou à l'extérieur des Caves.
+- Un bug faisant que l'on pouvait apparaître dans la zone de contrôle des ennemis et être immédiatement capturé au début du jeu a été corrigé.
+
+## Recommencer un niveau
+- Recommencer un niveau en appuyant sur R après 10 secondes de jeu compte maintenant comme une défaite. Avant 10 secondes, cela n'est pas pris en compte. Cette décision a été prise car nous avons réalisé que la plupart du temps, après 10 secondes de jeu, appuyer sur R revenait quasiment systématiquement à avouer sa défaite. Cependant, les appuis impulsifs sur R en début de partie ne sont pas pénalisés :)
+
+## Pouvoirs
+- Pathfinder fonctionne maintenant même s'il est utilisé en-dehors de la map principale.
+- Pathfinder n'essaye plus d'aller chercher une Data inaccessible comme celles des Firewalls() (voir plus bas).
+- Pathfinder ne coûte plus 1 seconde de temps à l'utilisation.
+- Dash015 ne coûte plus 1 seconde de temps à l'utilisation.
+
+## Cheat Codes
+- Un cheat code a été développé pour masquer l'interface utilisateur en jeu.
+
+## Nouveaux Niveaux /!\ Spoilers /!\
+Comme 7, c'est beaucoup, je vais essayer d'être assez succinct dans la description de chaque niveau. Mais sachez que chacun d'entre eux introduit une nouvelle mécanique de jeu qui lui est caractéristique.
+Ah oui ! Pour le nom des niveaux, ce sont pour la plupart des noms temporaires qui décrivent principalement la mécanique du niveau. Les noms définitifs arriveront en même temps que la narration :)
+
+### Brisable Road
+De la même façon que ce que j'expliquais dans le patch-notes 0.8, pouvoir interagir avec de nombreux cubes en simultané est important. Pour cela, j'avais introduit les LinkyCubes : tous les LinkyCubes adjacents réagissent à l'unisson à tous les événements. Si l'un est détruit, ils seront tous détruits en même temps.
+Et bien Brisable Road est l'introduction de la mécanique des LinkyCubes ! Il s'agit d'un InfiniteRunner où il faut détruire astucieusement certains parties des Blocs pour pouvoir les traverser.
+Un nouveau type de cube a également été introduit, les Cubes Brisables Instables. Ils se détruisent au contact, comme les Cubes Brisables, mais se détruisent 100% plus vite !
+
+### Sondes Optmisation
+Il s'agit du niveau d'introduction des SondesV2 ! Vous commenciez à vous ennuyer des Sondes qui n'étaient pas assez rapides pour vous ? Et bien les SondesV2 sont 45.9% plus rapides que les Sondes (V1 du coup).
+Elles sont également dotées d'un algorithme de recherche automatique si jamais elles vous perdent de vue. Vous ne serez jamais seul(e), quelle chance !
+Ce niveau contient également des Blackouts ! Un évenement périodique qui réduit drastiquement la luminosité pendant une courte période. Parce que sinon, c'était trop facile. ;)
+
+### Tracer Generation
+Ce niveau ne contient que 8 cubes. Si si ! Enfin au début. En fait l'entièreté du niveau se générera procéduralement au fur et à mesure que vous jouerez !
+Ah et bien sur, il n'y a pas que des cubes qui sont générés. Des Tracers sont également générés. Vous vous souvenez des Tracers ? :)
+Parce que croyez-moi, ils sont bien plus mortels lorsque la carte contient beaucoup moins de cubes pour vous abritter. Et vous empêcher d'être expulsé.
+
+### Harmonium
+L'ancien niveau Equilibrium est souvent qualifié comme "le plus difficile des niveaux du début". Mais c'est aussi un de vos niveaux préférés.
+Et bien, il a un grand frère, Harmonium ! Harmonium reprend le même principe des Datas Switchables que l'on doit attraper dans l'ordre. Mais avec beaucoup moins de temps. Moins de temps au départ, et moins de temps par Data.
+Ah ! Et il n'y a pas de murs extérieurs non plus.
+Impossible ? Non ! Car le sol est entièrement constitué de Bouncers pour vous permettre de remonter instantanément dans la partie. Et pour le problème temporel, un Reset Temporel qui réinitialisera votre temps à 10 secondes se trouve toujours dans le niveau !
+Vous seriez surpris de savoir tout ce que l'on peut faire en 10 secondes ;)
+
+### Closing Caves
+Dans ce niveau, les Caves (qui sont des structures cubiques de cubes d'envergures du niveau) ont maintenant un système de SAS ! À chacune de leurs entrées, un Cube de la Mort Swappy vous y attendra.
+Ces cubes changeront d'état (entre actif et inactif) toutes les 4 secondes pour vous permettre néanmoins de passer. Assurez-vous seulement de passer au bon moment si vous tenez à terminer le niveau en vie :)
+Ah, ce niveau contient également le retour des Intersections() (des événements qui font apparaître des Cubes de la Mort des 6 directions vers vous). Parce que c'est bien plus amusant à esquiver dans des espaces confinés :)
+
+### Full Swap Polycubes
+Dans ce niveau, nous avons introduit une nouvelle façon de générer des maps : les Polycubes ! Mais qu'est-ce qu'un Polycube, me direz-vous ?
+Vous voyez Tetris ? Et bien les blocks dans Tetris sont des Poly*carrés* en 2 dimensions.
+Ici, c'est pareil, sauf que ça utilise des cubes en 3 dimensions. Et qu'il y a plus que juste 4 cubes :)
+Et que ces Polycubes changent d'états (toujours entre actif et inactif) toute les 4 secondes. Vous feriez mieux de timer vos sauts si vous ne voulez pas vous retrouver en chute libre inopportune !
+
+### La Danse du Firewall()
+Une mécanique totalement différente : les Firewalls() ! Les Firewalls() sont des champs de force que vous devez pénétrer et occuper pendant 7 secondes pour déclencher un événement.
+Ici libérer les Datas.
+Bien entendu, le niveau est rempli de SondesV2 qui n'ont qu'une seule envie, vous expulser des Firewalls() et vous empêcher de finaliser tranquillement votre hack :'(
+Il ne vous restera plus qu'à vous caler dans les coins, glisser le long des murs, et être aussi insaisissable que possible dans cet espace confiné. En somme, dansez ;)
+
+
+# Optimisations
+
+## Cubes Opaques
+Dans la chaîne de rendu graphique d'un jeu vidéo, on fait une différence très distincte entre les objets opaques (à travers lesquels on ne peut pas voir), et les objets transparents (dans lesquel il y a au moins un endroit d'un peu transparent).
+La raison principale est qu'on sait que les objets opaques sont ... opaques. Et donc qu'il n'y aura rien à afficher derrière. Ce qui permet de faire des optimisations de rendu et d'obtenir de meilleures performances.
+Dans Netrunner, les Cubes sont opaques. Cependant, pour pouvoir faire les effets d'apparition et de destruction des cubes, les cubes doivent être transparents. Même si ce n'est que pour une seconde ou deux. Et on doit donc abandonner nos optimisations pour objets opaques.
+Alors que pourtant, les Cubes sont opaques plus de 90% du temps !
+Pour régler ce problème, tous les Cubes sont maintenant munis de 2 matériaux, un transparent pour assurer les effets cools d'apparition et de destruction, et un autre opaque pour tout le reste du jeu et bénéficier des meilleurs performances possibles !
+Le changement de matériau semble cependant un tout petit peu long, et je continue à travailler sur ce point pour qu'on ne ressente plus cette transition !
+Au final, on devrait observer un gain de FPS d'entre 30% et 50%. Mais des petites pertes ponctuelles. Problème qui devrait être résolu pour la 0.10 :)
+
+
+# Graphismes
+
+## Bloom et HDR
+HDR pour High Dynamic Range correspond à l'intervalle de couleurs que l'on peut afficher à l'écran. Sur un écran, on peut afficher 256 teintes différentes pour le rouge, pour le vert et pour le bleu.
+Et bien en utilisant l'HDR, on peut aller (à l'infini et) au-delà ! Et si on fait ça, la couleur paraîtra briller et émettre de la lumière à l'écran, ce qui est carrément esthétique.
+Ça permet notemment de donner un petit effet néon. Et ça permet d'activer le Bloom, ou flou lumineux, sur des zones très lumineuses.
+Et bien, il se trouve que pendant longtemps, l'option pour activer l'HDR de mon projet était désactivée ... x)
+Quand je l'ai découvert, (déjà c'était la fête) je me suis empressé de refondre la plupart des matériaux du jeu pour qu'ils fonctionnent dans ce nouveau mode et soient tous un peu plus shinny :)
+
+## Sondes
+- Le visuel des Sondes a été refait ! Elles sont maintenant plus visibles et plus menaçantes.
+- Le visuel des SondesV2 a été créé ! Elles sont bleues, contrairement aux Sondes qui sont vertes. Et les SondesV3 seront rouges, soyez prêts ;)
+
+## Lightings
+- Un nouveau composant de jeu a été développé, les Lightings ! En gros, ce sont des arcs électriques. Et c'est super pratique pour désigner plein de choses !
+- Les Datas Switchables (où l'on est forcé de les attraper dans un certain ordre) nous indiquent maintenant la Data suivante avec un Lightning.
+- Les Lightnings des Datas Switchables sont jaunes pour les Datas proches, et bleus pour les Datas éloignés.
+- Les Jumps() utilisent maintenant des Lightnings rouges aux 12 arêtes (oui, il y a bien 12 arêtes dans un cube ;)) de la map comme effet visuel.
+- Les Firewalls() (voir ci-dessous) utilisent un Lightning partant de vous et désignant le point central du Firewall() tant que vous êtes à l'intérieur pour vous permettre de mieux vous orienter.
+
+## Firewalls()
+- Les Firewalls() utilisent un nouveau material qui a demandé beaucoup de développement, mais dont le résultat ressemblant à un champ de force est très satisfaisant :)
+- Les Firewalls() s'agrandissent si vous rentrez dedans, et diminuent si vous en sortez.
+- Les Firewalls() possèdent des animations de création et de destruction.
+- Les Firewalls() s'affichent différemment si vous êtes à l'intérieur où à l'extérieur, vous permettant de toujours bien savoir où vous êtes :)
+
+## LinkyCubes
+- Les LinkyCubes brillent maintenant vers leur barycentre plutôt que vers un LinkyCube aléatoire.
+
+## Destruction des Cubes
+- L'effet de Destruction des Cubes se fait maintenant avec un tilling (découpage) de 10 au lieu de 8 pour correspondre avec le tilling de 10 des Cubes Brisables.
+- L'effet de Destruction des Cubes n'a plus de bug visuel lorsqu'il est appliqué sur un cube orienté.
+
+
+# Son
+- Le volume du son de meilleur score et de déblocage d'un nouveau palier est passé de 3.0 à 2.75.
+- Le volume du son de victoire est passé de 2.5 à 3.0.
+
+
+# Equilibrage
+- La taille du niveau Compression Mortelle est passée de 10, 10, 10 à 12, 12, 12 pour permettre de mieux circuler autour du bloc central et moins se faire bloquer par la Destruction de la Matrice.
+- Le Bloc de retour du BackJump du niveau DashTraining a été baissé d'un cube pour être plus facilement atteignable.
+- Equilibrium est toujours aussi dur malgré la demande populaire de diminuer sa difficulté. Accrochez-vous ! ;)
+- Le promontoire portant l'unique Data du niveau FirstSonde a maintenant la forme d'une croix pour que l'on puisse s'y accrocher plus facilement. Enfin ! x)
+
+
+# Interface Utilisateur
+- Les conseils en début de partie ont été désactivés par défaut. Vous pouvez toujours les réactiver dans les options.
+- L'option pour afficher les FPS est passée de l'onglet Gameplay à l'onglet Graphisme.
+- Les colliders dans le Sélecteur de niveau ont étés revus pour bien vous empêcher de vous retrouver perdu en pleins milieu.
+- Certaines astuces des Data Hackées() ont été améliorées pour apporter plus d'informations pertinentes.
+	- Pour rappeler que les lettres de la Trace sont en majuscule.
+	- Pour rappeler que si les lettres avec des accents doivent être remplacées par la même lettre sans accent.
+
+## La Doc()
+- Tous les niveaux ont maintenant un bouton pour accéder à leur Doc() ! La Doc() d'un niveau recense tous les conseils de ce niveau.
+- Tous les Conseils ont été revus et réordonnées pour être encore plus clair qu'avant.
+- La Doc() affiche maintenant les mots-clés en couleur.
+- Il paraît même que certains mots de passe seraient cachés dans la Doc() ! :o
+
+## Mots de Passes
+- Les Data Hackées() vers le niveau LearnJump ont été complètement modifiés.
+- Les Data Hackées() vers le niveau Analyze ont été améliorées. Le texte est maintenant signé de la CRINM. Le Passe est aussi plus facilement identifiable.
+- Les Data Hackées() vers le niveau LearnPathfinding depuis le niveau FurtiveGrid ont été clarifiées.
+- Les Data Hackées() vers le niveau BrisableRoad ont été ajoutées.
+- Les Data Hackées() vers le niveau FirstTracers ont été ajoutées.
+- Les Data Hackées() vers le niveau AlwaysReset ont été ajoutées.
+- Les Data Hackées() vers le niveau SwapHighway ont été ajoutées.
+- Les Data Hackées() vers le niveau SondesOptimisation ont été ajoutées.
+- Les Data Hackées() vers le niveau TracerGeneration ont été ajoutées.
+- Les Data Hackées() vers le niveau Harmonium ont été ajoutées.
+- Les Data Hackées() vers le niveau ClosingCaves ont été ajoutées.
+- Les 2 Data Hackées() vers le niveau FullSwapPolycubes ont été ajoutées.
+- Les 2 Data Hackées() vers le niveau La Danse des Firewalls() ont été ajoutées.
+
+
+# Autre
+- Un outil de capture de Gifs a été directement intégré dans la chaîne de rendu graphique du jeu, permettant de capturer les 7 dernières secondes de jeu à tous moments !
+Vous pouvez voir la plupart de ces gifs ici https://netrunner-awakening.com/presskit.html#presskit-gifs (ça risque de mettre un peu de temps à charger, je vous conseille d'ouvrir les gifs 1 par 1 dans d'autres ongles ;)) !
