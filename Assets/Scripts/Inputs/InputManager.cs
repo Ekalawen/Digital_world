@@ -144,6 +144,20 @@ public class InputManager : MonoBehaviour {
         return controllerLeftTrigger.Get();
     }
 
+    public bool GetShiftDown() {
+        if (GetCurrentKeybindingType() != KeybindingType.CONTROLLER) {
+            return Input.GetKeyDown(KeyCode.LeftShift);
+        }
+        return controllerLeftTrigger.GetDown();
+    }
+
+    public bool GetShiftUp() {
+        if (GetCurrentKeybindingType() != KeybindingType.CONTROLLER) {
+            return Input.GetKeyUp(KeyCode.LeftShift);
+        }
+        return controllerLeftTrigger.GetUp();
+    }
+
     public bool GetPouvoirADown() {
         return Input.GetKeyDown(GetPouvoirAKeyCode());
     }

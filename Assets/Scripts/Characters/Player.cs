@@ -33,6 +33,7 @@ public class Player : Character {
     [Header("Camera")]
 	public new Camera camera; // La camera du joueur !
     public VisualEffect dashVfx;
+    public VisualEffect shiftVfx;
 
 	[HideInInspector]
 	public GameObject personnage;
@@ -185,6 +186,9 @@ public class Player : Character {
 
         // Add post process effect when we are gripped to the wall
         gm.postProcessManager.UpdateGripEffect(etatAvant);
+
+        // Add post process effect when we are pressing the shift key :)
+        gm.postProcessManager.UpdateShiftEffect();
 
         // Pour détecter si le joueur a fait un grand saut
         DetecterGrandSaut(etatAvant);

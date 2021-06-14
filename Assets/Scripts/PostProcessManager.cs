@@ -52,14 +52,19 @@ public class PostProcessManager : MonoBehaviour {
     protected GameManager gm;
     protected new Camera camera;
     protected VisualEffect dashVfx;
+    protected VisualEffect shiftVfx;
+    protected InputManager inputManager;
 
     public void Initialize() {
         gm = GameManager.Instance;
         camera = gm.player.camera;
         dashVfx = gm.player.dashVfx;
+        shiftVfx = gm.player.shiftVfx;
+        inputManager = InputManager.Instance;
 
         ResetSkyboxParameters();
         hitVolume.weight = 0;
+        StopShiftVfx();
 
         gm.onInitilizationFinish.AddListener(StartCubesDissolveOnStart);
     }
@@ -100,6 +105,14 @@ public class PostProcessManager : MonoBehaviour {
                 StopCoroutine(gripCoroutine);
             }
             gripCoroutine = StartCoroutine(SetVignette(0.0f, changeTimeGrip, gripVolume));
+        }
+    }
+
+    public void UpdateShiftEffect() {
+        if(inputManager.GetShiftDown()) {
+            StartShiftVfx();
+        } else if (inputManager.GetShiftUp()) {
+            StopShiftVfx();
         }
     }
 
@@ -154,5 +167,13 @@ public class PostProcessManager : MonoBehaviour {
     public void StartDashVfx(float duree) {
         dashVfx.SetFloat("Duration", duree);
         dashVfx.SendEvent("Dash");
+    }
+
+    public void StartShiftVfx() {
+        shiftVfx.SendEvent("ShiftStart");
+    }
+
+    public void StopShiftVfx() {
+        shiftVfx.SendEvent("ShiftStop");
     }
 }
