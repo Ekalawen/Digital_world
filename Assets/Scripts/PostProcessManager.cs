@@ -53,6 +53,7 @@ public class PostProcessManager : MonoBehaviour {
     protected new Camera camera;
     protected VisualEffect dashVfx;
     protected VisualEffect shiftVfx;
+    protected VisualEffect wallVfx;
     protected InputManager inputManager;
 
     public void Initialize() {
@@ -60,6 +61,7 @@ public class PostProcessManager : MonoBehaviour {
         camera = gm.player.camera;
         dashVfx = gm.player.dashVfx;
         shiftVfx = gm.player.shiftVfx;
+        wallVfx = gm.player.wallVfx;
         inputManager = InputManager.Instance;
 
         ResetSkyboxParameters();
@@ -99,13 +101,68 @@ public class PostProcessManager : MonoBehaviour {
                 StopCoroutine(gripCoroutine);
             }
             gripCoroutine = StartCoroutine(SetVignette(intensityGrip, changeTimeGrip, gripVolume));
+            StartWallVfx();
         } else if (previousState == Player.EtatPersonnage.AU_MUR && etat != Player.EtatPersonnage.AU_MUR) {
             // Désactiver !
             if (gripCoroutine != null) {
                 StopCoroutine(gripCoroutine);
             }
             gripCoroutine = StartCoroutine(SetVignette(0.0f, changeTimeGrip, gripVolume));
+            StopWallVfx();
         }
+        if(etat == Player.EtatPersonnage.AU_MUR) {
+            OrientWallVfxEffect();
+        }
+    }
+
+    protected void OrientWallVfxEffect() {
+        Vector3 up = gm.gravityManager.Up();
+        Camera camera = gm.player.camera;
+        Vector3 cameraPosition = gm.player.transform.position;
+        Vector3 currentPointOnMur = gm.player.GetCurrentPosOnMur();
+        Vector3 camera2MurHorizontal = Vector3.ProjectOnPlane(currentPointOnMur - cameraPosition, up);
+        Vector3 cameraForwardHorizontal = Vector3.ProjectOnPlane(camera.transform.forward, up);
+        float horizontalAngle = Vector3.SignedAngle(cameraForwardHorizontal, camera2MurHorizontal, gm.gravityManager.Up());
+        float angle = 0;
+
+        float tresholdDownFront = 15;
+        float tresholdDownBack = 15;
+        float transitionToTresholdBack = 45;
+        float transitionToTresholdFront = 45;
+        if (Mathf.Abs(horizontalAngle) >= tresholdDownFront && Mathf.Abs(horizontalAngle) <= 180 - tresholdDownBack) {
+            if(horizontalAngle >= tresholdDownFront) {
+                if (horizontalAngle <= 180 - tresholdDownBack - transitionToTresholdBack) {
+                    angle = Mathf.Min(horizontalAngle.Remap(tresholdDownFront, tresholdDownFront + transitionToTresholdFront, 0, 90), 90);
+                } else {
+                    angle = horizontalAngle.Remap(180 - tresholdDownBack - transitionToTresholdBack, 180 - tresholdDownBack, 90, 0);
+                }
+            } else {
+                if (horizontalAngle >= -180 + tresholdDownBack + transitionToTresholdBack) {
+                    angle = Mathf.Max(horizontalAngle.Remap(-tresholdDownFront, -tresholdDownFront - transitionToTresholdFront, 0, -90), -90);
+                } else {
+                    angle = horizontalAngle.Remap(-180 + tresholdDownBack + transitionToTresholdBack, - 180 + tresholdDownBack, -90, 0);
+                }
+            }
+        } else {
+            angle = 0;
+        }
+
+        float verticalAngle = Vector3.SignedAngle(camera.transform.forward, cameraForwardHorizontal, camera.transform.right);
+        if (Mathf.Abs(horizontalAngle) <= 180 - tresholdDownBack - transitionToTresholdBack) {
+            if (verticalAngle <= -45) {
+                angle = 180 * Mathf.Sign(angle) - angle;
+            }
+        } else {
+            if (verticalAngle >= 45) {
+                angle = 180 * Mathf.Sign(angle) - angle;
+            }
+        }
+        Debug.Log($"FirstAngle = {horizontalAngle} HorizontalAngle = {verticalAngle} Angle = {angle}");
+
+        Transform wallVfxHolder = wallVfx.transform.parent;
+        Vector3 newRotation = wallVfxHolder.localRotation.eulerAngles;
+        newRotation.z = angle;
+        wallVfxHolder.localRotation = Quaternion.Euler(newRotation);
     }
 
     public void UpdateShiftEffect() {
@@ -175,5 +232,13 @@ public class PostProcessManager : MonoBehaviour {
 
     public void StopShiftVfx() {
         shiftVfx.SendEvent("ShiftStop");
+    }
+
+    public void StartWallVfx() {
+        wallVfx.SendEvent("WallStart");
+    }
+
+    public void StopWallVfx() {
+        wallVfx.SendEvent("WallStop");
     }
 }

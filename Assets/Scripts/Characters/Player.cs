@@ -34,6 +34,7 @@ public class Player : Character {
 	public new Camera camera; // La camera du joueur !
     public VisualEffect dashVfx;
     public VisualEffect shiftVfx;
+    public VisualEffect wallVfx;
 
 	[HideInInspector]
 	public GameObject personnage;
@@ -177,25 +178,31 @@ public class Player : Character {
         }
     }
 
-    void Update () {
+    void Update ()
+    {
         // On met à jour la caméra
         UpdateCamera();
 
         // Puis on met à jour la position du joueur
         UpdateMouvement();
 
-        // Add post process effect when we are gripped to the wall
-        gm.postProcessManager.UpdateGripEffect(etatAvant);
-
-        // Add post process effect when we are pressing the shift key :)
-        gm.postProcessManager.UpdateShiftEffect();
+        // Update post process effects
+        UpdatePostProcessEffects();
 
         // Pour détecter si le joueur a fait un grand saut
         DetecterGrandSaut(etatAvant);
 
         // On vérifie si le joueur a utilisé l'un de ses pouvoirs ! :)
         TryUsePouvoirs();
-	}
+    }
+
+    private void UpdatePostProcessEffects() {
+        // Add post process effect when we are gripped to the wall
+        gm.postProcessManager.UpdateGripEffect(etatAvant);
+
+        // Add post process effect when we are pressing the shift key :)
+        gm.postProcessManager.UpdateShiftEffect();
+    }
 
     // Utilisé pour gérer la caméra
     void UpdateCamera() {
@@ -355,8 +362,7 @@ public class Player : Character {
 
                     // Si ça fait trop longtemps qu'on est sur le mur
                     // Ou que l'on s'éloigne trop du mur on tombe
-                    Vector3 pos2mur = transform.position - pointMur;
-                    float distanceMur = (pos2mur - Vector3.ProjectOnPlane(pos2mur, normaleMur)).magnitude; // pourtant c'est clair non ? Fais un dessins si tu comprends pas <3
+                    float distanceMur = (GetCurrentPosOnMur() - transform.position).magnitude; // pourtant c'est clair non ? Fais un dessins si tu comprends pas <3
                     //if ((Time.timeSinceLevelLoad - debutMur) >= dureeMurTimer
                     if (dureeMurTimer.IsOver() || distanceMur >= distanceMurMax) {
                         FallFromWall();
@@ -376,6 +382,11 @@ public class Player : Character {
         }
 
         return move;
+    }
+
+    public Vector3 GetCurrentPosOnMur() {
+        Vector3 pos2mur = transform.position - pointMur;
+        return Vector3.ProjectOnPlane(pos2mur, normaleMur) + pointMur;
     }
 
     protected void FallFromWall() {

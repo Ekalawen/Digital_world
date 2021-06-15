@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MathCurves {
+public static class MathCurves {
 
     public static float Linear(float min, float max, float avancement) {
         return min + (max - min) * avancement;
@@ -97,5 +97,13 @@ public class MathCurves {
     public static float NormRandom(float min, float max, float mean, float variance) {
         float randNumber = UnityEngine.Random.Range(0.0f, 1.0f);
         return Norm(min, max, randNumber, mean, variance);
+    }
+
+    public static float Remap(this float value, Vector2 inRange, Vector2 outRange) {
+        return (value - inRange.x) / (inRange.y - inRange.x) * (outRange.y - outRange.x) + outRange.x;
+    }
+
+    public static float Remap(this float value, float inX, float inY, float outX, float outY) {
+        return Remap(value, new Vector2(inX, inY), new Vector2(outX, outY));
     }
 }
