@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
@@ -46,6 +47,15 @@ public class PostProcessManager : MonoBehaviour {
     [Header("CubeExplosion")]
     public GameObject explosionParticlesPrefab;
 
+    [Header("Wall VFX")]
+    public float tresholdDownFront = 15;
+    public float tresholdDownBack = 15;
+    public float transitionToTresholdBack = 45;
+    public float transitionToTresholdFront = 45;
+    public float inverseAngleTreshold = 45;
+    public float offsetPercentageOfScreenPrimary = -0.7f;
+    public float offsetPercentageOfScreenSecondary = 0.0f;
+
     protected Coroutine gripCoroutine = null;
     protected Coroutine hitCoroutine1 = null;
     protected Coroutine hitCoroutine2 = null;
@@ -58,6 +68,7 @@ public class PostProcessManager : MonoBehaviour {
     protected float lastFrameWallVfxAngle = 0;
     protected float lastFrameWallVfxHorizontalAngle = 0;
     protected Vector3 lastFrameWallVfxPoint = Vector3.zero;
+    protected Vector2 screenSizeAtVfxDistance;
 
     public void Initialize() {
         gm = GameManager.Instance;
@@ -66,12 +77,21 @@ public class PostProcessManager : MonoBehaviour {
         shiftVfx = gm.player.shiftVfx;
         wallVfx = gm.player.wallVfx;
         inputManager = InputManager.Instance;
+        InitScreenSizeAtVfxDistance();
 
         ResetSkyboxParameters();
         hitVolume.weight = 0;
         StopShiftVfx();
 
         gm.onInitilizationFinish.AddListener(StartCubesDissolveOnStart);
+    }
+
+    protected void InitScreenSizeAtVfxDistance() {
+        float vfxDistance = Vector3.Distance(camera.transform.position, wallVfx.transform.position);
+        Vector3[] frustumCorners = new Vector3[4];
+        camera.CalculateFrustumCorners(new Rect(0, 0, 1, 1), vfxDistance, Camera.MonoOrStereoscopicEye.Mono, frustumCorners);
+        screenSizeAtVfxDistance = new Vector2(frustumCorners.Select(c => c.x).Max() - frustumCorners.Select(c => c.x).Min(),
+                                              frustumCorners.Select(c => c.y).Max() - frustumCorners.Select(c => c.y).Min());
     }
 
     protected void StartCubesDissolveOnStart() {
@@ -135,10 +155,6 @@ public class PostProcessManager : MonoBehaviour {
         float angle = 0;
 
         // Angle
-        float tresholdDownFront = 15;
-        float tresholdDownBack = 15;
-        float transitionToTresholdBack = 45;
-        float transitionToTresholdFront = 45;
         if (Mathf.Abs(horizontalAngle) >= tresholdDownFront && Mathf.Abs(horizontalAngle) <= 180 - tresholdDownBack) {
             if(horizontalAngle >= tresholdDownFront) {
                 if (horizontalAngle <= 180 - tresholdDownBack - transitionToTresholdBack) {
@@ -158,7 +174,6 @@ public class PostProcessManager : MonoBehaviour {
         }
 
         // Inverse Angle
-        float inverseAngleTreshold = 45;
         float verticalAngle = Vector3.SignedAngle(camera.transform.forward, cameraForwardHorizontal, camera.transform.right);
         if (Mathf.Abs(horizontalAngle) <= 180 - tresholdDownBack - transitionToTresholdBack) {
             if (verticalAngle <= -inverseAngleTreshold) {
@@ -185,6 +200,12 @@ public class PostProcessManager : MonoBehaviour {
         Vector3 newRotation = wallVfxHolder.localRotation.eulerAngles;
         newRotation.z = angle;
         wallVfxHolder.localRotation = Quaternion.Euler(newRotation);
+
+        // Adjust Offset
+        float horizontalRatio = Mathf.Abs(angle) <= 90 ? Mathf.Abs(angle) / 90 : 1 - (Mathf.Abs(angle) - 90) / 90;
+        float screenSizeOriented = MathCurves.Linear(screenSizeAtVfxDistance.y, screenSizeAtVfxDistance.x, horizontalRatio);
+        wallVfx.SetFloat("ScreenOffsetPrimary", screenSizeOriented * offsetPercentageOfScreenPrimary);
+        wallVfx.SetFloat("ScreenOffsetSecondary", screenSizeOriented * offsetPercentageOfScreenSecondary);
     }
 
     public void UpdateShiftEffect() {
