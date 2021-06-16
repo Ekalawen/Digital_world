@@ -55,6 +55,9 @@ public class PostProcessManager : MonoBehaviour {
     protected VisualEffect shiftVfx;
     protected VisualEffect wallVfx;
     protected InputManager inputManager;
+    protected float lastFrameWallVfxAngle = 0;
+    protected float lastFrameWallVfxHorizontalAngle = 0;
+    protected Vector3 lastFrameWallVfxPoint = Vector3.zero;
 
     public void Initialize() {
         gm = GameManager.Instance;
@@ -116,15 +119,16 @@ public class PostProcessManager : MonoBehaviour {
     }
 
     protected void OrientWallVfxEffect() {
-        Vector3 up = gm.gravityManager.Up();
+        // Horizontal Angle
         Camera camera = gm.player.camera;
-        Vector3 cameraPosition = gm.player.transform.position;
+        Vector3 up = gm.gravityManager.Up();
         Vector3 currentPointOnMur = gm.player.GetCurrentPosOnMur();
-        Vector3 camera2MurHorizontal = Vector3.ProjectOnPlane(currentPointOnMur - cameraPosition, up);
+        Vector3 camera2MurHorizontal = Vector3.ProjectOnPlane(currentPointOnMur - gm.player.transform.position, up);
         Vector3 cameraForwardHorizontal = Vector3.ProjectOnPlane(camera.transform.forward, up);
-        float horizontalAngle = Vector3.SignedAngle(cameraForwardHorizontal, camera2MurHorizontal, gm.gravityManager.Up());
+        float horizontalAngle = Vector3.SignedAngle(cameraForwardHorizontal, camera2MurHorizontal, up);
         float angle = 0;
 
+        // Angle
         float tresholdDownFront = 15;
         float tresholdDownBack = 15;
         float transitionToTresholdBack = 45;
@@ -147,18 +151,30 @@ public class PostProcessManager : MonoBehaviour {
             angle = 0;
         }
 
+        // Inverse Angle
+        float inverseAngleTreshold = 45;
         float verticalAngle = Vector3.SignedAngle(camera.transform.forward, cameraForwardHorizontal, camera.transform.right);
         if (Mathf.Abs(horizontalAngle) <= 180 - tresholdDownBack - transitionToTresholdBack) {
-            if (verticalAngle <= -45) {
+            if (verticalAngle <= -inverseAngleTreshold) {
                 angle = 180 * Mathf.Sign(angle) - angle;
             }
         } else {
-            if (verticalAngle >= 45) {
+            if (verticalAngle >= inverseAngleTreshold) {
                 angle = 180 * Mathf.Sign(angle) - angle;
             }
         }
-        Debug.Log($"FirstAngle = {horizontalAngle} HorizontalAngle = {verticalAngle} Angle = {angle}");
 
+        // Ensure no flickering :)
+        if(Vector3.Distance(lastFrameWallVfxPoint, currentPointOnMur) <= 0.4f
+        && Mathf.Abs(lastFrameWallVfxHorizontalAngle - horizontalAngle) >= 15f) {
+            angle = lastFrameWallVfxAngle;
+        } else {
+            lastFrameWallVfxAngle = angle;
+        }
+        lastFrameWallVfxHorizontalAngle = horizontalAngle;
+        lastFrameWallVfxPoint = currentPointOnMur;
+
+        // Assign Angle
         Transform wallVfxHolder = wallVfx.transform.parent;
         Vector3 newRotation = wallVfxHolder.localRotation.eulerAngles;
         newRotation.z = angle;

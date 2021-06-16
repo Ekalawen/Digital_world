@@ -57,6 +57,7 @@ public class Player : Character {
 	protected float debutMur; // le timing où le personnage a commencé à s'accrocher au mur !
 	protected Vector3 normaleMur; // la normale au mur sur lequel le personnage est accroché !
 	protected Vector3 pointMur; // un point du mur sur lequel le personnage est accroché ! En effet, la normale ne suffit pas :p
+	protected Vector3 pointMurSecondary; // le deuxième point sur lequel le personnage est accroché : utile pour les coins ! 
     protected Vector3 normaleSol; // La normale au sol lorsque l'on est au sol et que l'on essaye de slider vers le bas.
     protected Timer dureeMurTimer; // Le temps qu'il nous reste à être accroché au mur (utile pour les shifts qui peuvent nous décrocher)
     protected float dureeMurRestante = 0; // Le temps qu'il nous reste à être accroché au mur après s'en être détaché via SHIFT ! :)
@@ -197,6 +198,9 @@ public class Player : Character {
     }
 
     private void UpdatePostProcessEffects() {
+        if (gm.IsPaused())
+            return;
+
         // Add post process effect when we are gripped to the wall
         gm.postProcessManager.UpdateGripEffect(etatAvant);
 
@@ -362,8 +366,9 @@ public class Player : Character {
 
                     // Si ça fait trop longtemps qu'on est sur le mur
                     // Ou que l'on s'éloigne trop du mur on tombe
-                    float distanceMur = (GetCurrentPosOnMur() - transform.position).magnitude; // pourtant c'est clair non ? Fais un dessins si tu comprends pas <3
-                    //if ((Time.timeSinceLevelLoad - debutMur) >= dureeMurTimer
+                    Vector3 pos2mur = transform.position - pointMur;
+                    Vector3 posOnMur = Vector3.ProjectOnPlane(pos2mur, normaleMur) + pointMur;
+                    float distanceMur = (posOnMur - transform.position).magnitude; // pourtant c'est clair non ? Fais un dessins si tu comprends pas <3
                     if (dureeMurTimer.IsOver() || distanceMur >= distanceMurMax) {
                         FallFromWall();
                     }
@@ -385,8 +390,16 @@ public class Player : Character {
     }
 
     public Vector3 GetCurrentPosOnMur() {
-        Vector3 pos2mur = transform.position - pointMur;
-        return Vector3.ProjectOnPlane(pos2mur, normaleMur) + pointMur;
+        if (pointMurSecondary == Vector3.zero) {
+            Vector3 pos2mur = transform.position - pointMur;
+            return Vector3.ProjectOnPlane(pos2mur, normaleMur) + pointMur;
+        } else {
+            Vector3 mergedPointMur = Vector3.ProjectOnPlane(pointMurSecondary - pointMur, normaleMur) + pointMur;
+            Vector3 mergedNormalMur = (normaleMur.normalized + (pointMur - mergedPointMur).normalized).normalized;
+            Vector3 pos2mur = transform.position - mergedPointMur;
+            Vector3 posOnMur = Vector3.ProjectOnPlane(pos2mur, mergedNormalMur) + mergedPointMur;
+            return posOnMur;
+        }
     }
 
     protected void FallFromWall() {
@@ -606,9 +619,16 @@ public class Player : Character {
     protected void GripOn(ControllerColliderHit hit, Vector3 wallNormal) {
         EtatPersonnage previousEtat = etat;
         etat = EtatPersonnage.AU_MUR; // YEAH !!!
+        if(debutMur == Time.timeSinceLevelLoad) {
+            if(!MathTools.IsInPlane(pointMur, hit.point, wallNormal)) {
+                pointMurSecondary = pointMur;
+            }
+        } else {
+            pointMurSecondary = Vector3.zero;
+        }
+        pointMur = hit.point;
         debutMur = Time.timeSinceLevelLoad;
         normaleMur = wallNormal;
-        pointMur = hit.point;
         if(normaleOrigineSaut == Vector3.zero || AreWallsNormalsDifferent(normaleOrigineSaut, normaleMur)) {
             ResetDureeMur();
             dureeMurRestante = 0;
@@ -623,7 +643,6 @@ public class Player : Character {
         // Pour pouvoir s'accrocher à un autre mur depuis ce mur-ci !
         origineSaut = EtatPersonnage.AU_MUR;
         normaleOrigineSaut = normaleMur;
-        gm.postProcessManager.UpdateGripEffect(previousEtat);
 
         //if (etat != previousEtat)
         //    gm.soundManager.PlayGripClip(transform.position);

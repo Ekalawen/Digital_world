@@ -251,4 +251,8 @@ public static class MathTools
         };
         return edges;
     }
+
+    public static bool IsInPlane(Vector3 point, Vector3 planePoint, Vector3 planeNormal) {
+        return point == Vector3.ProjectOnPlane(point - planePoint, planeNormal) + planePoint;
+    }
 }

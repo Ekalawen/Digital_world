@@ -27,8 +27,7 @@ public class PosVisualisator : MonoBehaviour {
         //etatPlayer = gm.player.GetEtat();
     }
 
-    public void CreateObjectAtPlayerPos()
-    {
+    public void CreateObjectAtPlayerPos() {
         GameObject go = Instantiate(visualisatorPrefab, gm.player.transform.position, gm.player.transform.rotation);
         go.transform.localScale = gm.player.transform.localScale;
     }
@@ -36,6 +35,10 @@ public class PosVisualisator : MonoBehaviour {
     public void CreateObjectAtPos(Vector3 pos) {
         GameObject go = Instantiate(visualisatorPrefab, pos, Quaternion.identity);
         go.transform.localScale = Vector3.one * 0.1f;
+    }
+
+    public static void DrawLine(Vector3 start, Vector3 end, Color color, bool depthTest = false) {
+        Debug.DrawLine(start, end, color, 10000, depthTest);
     }
 
     public static void DrawCross(Vector3 pos, Color color, bool depthTest = false) {
