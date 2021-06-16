@@ -180,6 +180,9 @@ public class MenuOptions : MonoBehaviour {
     public void OnGripActivationPress(bool active) {
         PrefsManager.SetBool(PrefsManager.GRIP_KEY, active);
         toggleGrip.isOn = active;
+        if(isInGame) {
+            gm.postProcessManager.StopWallVfx();
+        }
     }
 
     public void OnConseilOnStartPress(bool active) {

@@ -99,23 +99,29 @@ public class PostProcessManager : MonoBehaviour {
 
         Player.EtatPersonnage etat = gm.player.GetEtat();
         if(previousState != Player.EtatPersonnage.AU_MUR && etat == Player.EtatPersonnage.AU_MUR) {
-            // Activer !
-            if (gripCoroutine != null) {
-                StopCoroutine(gripCoroutine);
-            }
-            gripCoroutine = StartCoroutine(SetVignette(intensityGrip, changeTimeGrip, gripVolume));
+            //StartGripEffect();
             StartWallVfx();
         } else if (previousState == Player.EtatPersonnage.AU_MUR && etat != Player.EtatPersonnage.AU_MUR) {
-            // Désactiver !
-            if (gripCoroutine != null) {
-                StopCoroutine(gripCoroutine);
-            }
-            gripCoroutine = StartCoroutine(SetVignette(0.0f, changeTimeGrip, gripVolume));
+            //StopGripEffect();
             StopWallVfx();
         }
-        if(etat == Player.EtatPersonnage.AU_MUR) {
+        if (etat == Player.EtatPersonnage.AU_MUR) {
             OrientWallVfxEffect();
         }
+    }
+
+    protected void StopGripEffect() {
+        if (gripCoroutine != null) {
+            StopCoroutine(gripCoroutine);
+        }
+        gripCoroutine = StartCoroutine(SetVignette(0.0f, changeTimeGrip, gripVolume));
+    }
+
+    protected void StartGripEffect() {
+        if (gripCoroutine != null) {
+            StopCoroutine(gripCoroutine);
+        }
+        gripCoroutine = StartCoroutine(SetVignette(intensityGrip, changeTimeGrip, gripVolume));
     }
 
     protected void OrientWallVfxEffect() {
