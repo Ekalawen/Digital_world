@@ -78,9 +78,7 @@ MonoBehaviour:
   wallVFXOffsetPercentageOfScreenSecondary: 0
   shiftVFXOffsetPercentageOfScreenPrimary: -0.5
   shiftVFXOffsetPercentageOfScreenSecondary: 1
-  lensDistorsionVolume: {fileID: 8667884964662253249}
-  lensDistorsionMaxValue: 0.3
-  lensDistorsionCurve:
+  wallPostProcessCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
@@ -104,8 +102,11 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  timeToMaxLensDistorsion: 0.4
-  timeToMinLensDistorsion: 0.2
+  timeToMaxWallPostProcessCurve: 0.4
+  timeToMinWallPostProcessCurve: 0.1
+  wallPostProcessVolume: {fileID: 8667884964662253249}
+  lensDistorsionMaxValue: 0.3
+  chromaticAberrationMaxValue: 0.2
 --- !u!1 &8762028916712129147
 GameObject:
   m_ObjectHideFlags: 0
@@ -331,7 +332,7 @@ PrefabInstance:
     - target: {fileID: 3400678158419089052, guid: 8a9a1ffad3e030e4ca41b130911f2964,
         type: 3}
       propertyPath: m_Name
-      value: LensDistorsionVolume
+      value: WallLensDistorsionVolume
       objectReference: {fileID: 0}
     - target: {fileID: 3400678158419089054, guid: 8a9a1ffad3e030e4ca41b130911f2964,
         type: 3}
