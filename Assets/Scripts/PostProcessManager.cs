@@ -53,8 +53,12 @@ public class PostProcessManager : MonoBehaviour {
     public float transitionToTresholdBack = 45;
     public float transitionToTresholdFront = 45;
     public float inverseAngleTreshold = 45;
-    public float offsetPercentageOfScreenPrimary = -0.7f;
-    public float offsetPercentageOfScreenSecondary = 0.0f;
+    public float wallVFXOffsetPercentageOfScreenPrimary = -0.7f;
+    public float wallVFXOffsetPercentageOfScreenSecondary = 0.0f;
+
+    [Header("Shift VFX")]
+    public float shiftVFXOffsetPercentageOfScreenPrimary = -0.5f;
+    public float shiftVFXOffsetPercentageOfScreenSecondary = 1f;
 
     protected Coroutine gripCoroutine = null;
     protected Coroutine hitCoroutine1 = null;
@@ -78,6 +82,7 @@ public class PostProcessManager : MonoBehaviour {
         wallVfx = gm.player.wallVfx;
         inputManager = InputManager.Instance;
         InitScreenSizeAtVfxDistance();
+        InitShiftVfx();
 
         ResetSkyboxParameters();
         hitVolume.weight = 0;
@@ -204,8 +209,8 @@ public class PostProcessManager : MonoBehaviour {
         // Adjust Offset
         float horizontalRatio = Mathf.Abs(angle) <= 90 ? Mathf.Abs(angle) / 90 : 1 - (Mathf.Abs(angle) - 90) / 90;
         float screenSizeOriented = MathCurves.Linear(screenSizeAtVfxDistance.y, screenSizeAtVfxDistance.x, horizontalRatio);
-        wallVfx.SetFloat("ScreenOffsetPrimary", screenSizeOriented * offsetPercentageOfScreenPrimary);
-        wallVfx.SetFloat("ScreenOffsetSecondary", screenSizeOriented * offsetPercentageOfScreenSecondary);
+        wallVfx.SetFloat("ScreenOffsetPrimary", screenSizeOriented * wallVFXOffsetPercentageOfScreenPrimary);
+        wallVfx.SetFloat("ScreenOffsetSecondary", screenSizeOriented * wallVFXOffsetPercentageOfScreenSecondary);
     }
 
     public void UpdateShiftEffect() {
@@ -283,5 +288,10 @@ public class PostProcessManager : MonoBehaviour {
 
     public void StopWallVfx() {
         wallVfx.SendEvent("WallStop");
+    }
+
+    protected void InitShiftVfx() {
+        shiftVfx.SetFloat("ScreenOffsetPrimary", screenSizeAtVfxDistance.y * shiftVFXOffsetPercentageOfScreenPrimary);
+        shiftVfx.SetFloat("ScreenOffsetSecondary", screenSizeAtVfxDistance.y * shiftVFXOffsetPercentageOfScreenSecondary);
     }
 }
