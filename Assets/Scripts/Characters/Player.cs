@@ -61,6 +61,8 @@ public class Player : Character {
     protected Vector3 normaleSol; // La normale au sol lorsque l'on est au sol et que l'on essaye de slider vers le bas.
     protected Timer dureeMurTimer; // Le temps qu'il nous reste à être accroché au mur (utile pour les shifts qui peuvent nous décrocher)
     protected float dureeMurRestante = 0; // Le temps qu'il nous reste à être accroché au mur après s'en être détaché via SHIFT ! :)
+    protected Timer timerLastTimeAuMur; // La dernière fois que l'on était accroché au mur.
+    protected Timer timerLastTimeNotAuMur; // La dernière fois que l'on n'était PAS accroché au mur.
     protected int nbDoublesSautsMax = 0; // Nombre de doubles sauts
     protected int nbDoublesSautsCourrant = 0; // Le nombre de doubles sauts déjà utilisés
     protected float slideLimit; // La limite à partir de laquelle on va slider sur une surface.
@@ -105,6 +107,8 @@ public class Player : Character {
         timerLastTimeAuSol.SetOver();
         dureeMurTimer = new Timer(dureeMur);
         dureeMurTimer.SetOver();
+        timerLastTimeAuMur = new Timer();
+        timerLastTimeNotAuMur = new Timer();
 
         transform.position = position;
 
@@ -260,22 +264,22 @@ public class Player : Character {
     void GetEtatPersonnage() {
         etatAvant = etat;
         isGrounded = IsGrounded();
-		if (etat != EtatPersonnage.AU_MUR) {
-            if(inputManager.GetJump() && !sautTimer.IsOver()) {
+        if (etat != EtatPersonnage.AU_MUR) {
+            if (inputManager.GetJump() && !sautTimer.IsOver()) {
                 etat = EtatPersonnage.EN_SAUT;
             } else if (isGrounded) {
-				etat = EtatPersonnage.AU_SOL;
+                etat = EtatPersonnage.AU_SOL;
                 timerLastTimeAuSol.Reset();
                 if (etat != etatAvant) {
                     gm.soundManager.PlayLandClip(transform.position);
                 }
-			} else {
+            } else {
                 if (etat != EtatPersonnage.EN_SAUT) {
                     etat = EtatPersonnage.EN_CHUTE;
                     sautTimer.SetOver();
                 }
             }
-		}
+        }
 	}
 
     // On met à jour le mouvement du joueur
@@ -347,6 +351,7 @@ public class Player : Character {
                         origineSaut = EtatPersonnage.AU_MUR;
                         normaleOrigineSaut = normaleMur;
                         dureeMurRestante = dureeMurTimer.GetRemainingTime();
+                        timerLastTimeAuMur.Reset();
 
                     } else if (inputManager.GetJumpDown() && gm.gravityManager.HasGravity()) {
                         // On peut encore sauter quand on est au mur ! 
@@ -357,6 +362,7 @@ public class Player : Character {
                     } else if (inputManager.GetJump()) {
                         // On a le droit de terminer son saut lorsqu'on touche un mur
                         move = ApplyJumpMouvement(move);
+
                     } else {
                         // Si on ne fait rien, alors on ne chute pas.
                         if (!isGravityEffectRemoved) {
@@ -408,6 +414,7 @@ public class Player : Character {
         origineSaut = EtatPersonnage.AU_MUR;
         normaleOrigineSaut = normaleMur;
         dureeMurRestante = 0;
+        timerLastTimeAuMur.Reset();
     }
 
     protected Vector3 UpdateHorizontalMouvement(Vector3 move) {
@@ -639,6 +646,9 @@ public class Player : Character {
         if(cube != null) {
             cube.InteractWithPlayer();
         }
+        if(previousEtat != EtatPersonnage.AU_MUR) {
+            timerLastTimeNotAuMur.Reset();
+        }
 
         // Pour pouvoir s'accrocher à un autre mur depuis ce mur-ci !
         origineSaut = EtatPersonnage.AU_MUR;
@@ -696,6 +706,7 @@ public class Player : Character {
         if (from == EtatPersonnage.AU_SOL) {
         } else if (from == EtatPersonnage.AU_MUR) {
             normaleOrigineSaut = normaleMur;
+            timerLastTimeAuMur.Reset();
         } else {
             Debug.Log("On saute depuis un endroit non autorisé !");
         }
@@ -867,6 +878,26 @@ public class Player : Character {
     public void UnStun() {
         bIsStun = false;
         FreezePouvoirs(false);
+    }
+
+    public Timer GetSautTimer() {
+        return sautTimer;
+    }
+
+    public Timer GetDureeMurRestanteTimer() {
+        return dureeMurTimer;
+    }
+
+    public float GetDureeDejaAuMur() {
+        return dureeMurTimer.GetElapsedTime();
+    }
+
+    public Timer GetTimerLastTimeAuMur() {
+        return timerLastTimeAuMur;
+    }
+
+    public Timer GetTimerLastTimeNotAuMur() {
+        return timerLastTimeNotAuMur;
     }
 }
 

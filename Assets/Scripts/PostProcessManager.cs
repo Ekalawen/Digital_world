@@ -60,6 +60,13 @@ public class PostProcessManager : MonoBehaviour {
     public float shiftVFXOffsetPercentageOfScreenPrimary = -0.5f;
     public float shiftVFXOffsetPercentageOfScreenSecondary = 1f;
 
+    [Header("Lens Distorsion")]
+    public Volume lensDistorsionVolume;
+    public float lensDistorsionMaxValue = 0.4f;
+    public AnimationCurve lensDistorsionCurve;
+    public float timeToMaxLensDistorsion = 0.4f;
+    public float timeToMinLensDistorsion = 0.1f;
+
     protected Coroutine gripCoroutine = null;
     protected Coroutine hitCoroutine1 = null;
     protected Coroutine hitCoroutine2 = null;
@@ -132,6 +139,21 @@ public class PostProcessManager : MonoBehaviour {
         }
         if (etat == Player.EtatPersonnage.AU_MUR) {
             OrientWallVfxEffect();
+        }
+        UpdateLensDistorsionEffect(etat);
+    }
+
+    private void UpdateLensDistorsionEffect(Player.EtatPersonnage etat) {
+        LensDistortion lensDistortion;
+        lensDistorsionVolume.profile.TryGet<LensDistortion>(out lensDistortion);
+        if(etat == Player.EtatPersonnage.AU_MUR) {
+            float lastTimeSinceNotAuMur = gm.player.GetTimerLastTimeNotAuMur().GetElapsedTime();
+            float avancement = Mathf.Min(lastTimeSinceNotAuMur, timeToMaxLensDistorsion) / timeToMaxLensDistorsion;
+            lensDistortion.intensity.Override(lensDistorsionCurve.Evaluate(avancement) * lensDistorsionMaxValue);
+        } else {
+            float lastTimeSinceAuMur = gm.player.GetTimerLastTimeAuMur().GetElapsedTime();
+            float avancement = Mathf.Min(lastTimeSinceAuMur, timeToMinLensDistorsion) / timeToMinLensDistorsion;
+            lensDistortion.intensity.Override((1 - avancement) * lensDistorsionMaxValue);
         }
     }
 
