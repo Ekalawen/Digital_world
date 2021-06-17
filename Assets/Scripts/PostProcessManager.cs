@@ -22,7 +22,8 @@ public class PostProcessManager : MonoBehaviour {
 
     [Header("Hit")]
     public float changeTimeHit = 0.6f;
-    public float intensityHit= 0.4f;
+    public float intensityVignetteHit= 0.4f;
+    public float intensityChromaticHit = 1.0f;
     public Volume hitVolume;
 
     [Header("Poussee")]
@@ -69,8 +70,7 @@ public class PostProcessManager : MonoBehaviour {
     public float chromaticAberrationMaxValue = 0.2f;
 
     protected Coroutine gripCoroutine = null;
-    protected Coroutine hitCoroutine1 = null;
-    protected Coroutine hitCoroutine2 = null;
+    protected Coroutine hitCoroutine = null;
     protected Coroutine wallPostProcessCoroutine = null;
     protected GameManager gm;
     protected new Camera camera;
@@ -269,24 +269,26 @@ public class PostProcessManager : MonoBehaviour {
     }
 
     public void UpdateHitEffect() {
-        hitVolume.weight = 1;
-        Vignette vignette;
-        if (!hitVolume.profile.TryGet<Vignette>(out vignette)) {
-            Debug.LogError($"Le profil {hitVolume.profile} doit contenir une vignette !");
+        if (hitCoroutine != null) {
+            StopCoroutine(hitCoroutine);
         }
-        vignette.intensity.Override(intensityHit);
-        if (hitCoroutine1 != null) {
-            StopCoroutine(hitCoroutine1);
-            StopCoroutine(hitCoroutine2);
-        }
-        hitCoroutine2 = StartCoroutine(CUpdateHitEffect());
+        hitCoroutine = StartCoroutine(CUpdateHitEffect());
     }
 
     IEnumerator CUpdateHitEffect() {
-        hitCoroutine1 = StartCoroutine(SetVignette(0.0f, changeTimeHit, hitVolume));
+        Vignette vignette;
+        hitVolume.profile.TryGet<Vignette>(out vignette);
+        vignette.intensity.Override(intensityVignetteHit);
+
+        ChromaticAberration chromaticAberration;
+        hitVolume.profile.TryGet<ChromaticAberration>(out chromaticAberration);
+        chromaticAberration.intensity.Override(intensityChromaticHit);
+
         Timer timer = new Timer(changeTimeHit);
+        hitVolume.weight = 1;
         while(!timer.IsOver()) {
-            hitVolume.weight = MathCurves.Quadratic(0, 1, 1 - timer.GetAvancement());
+            float avancement = 1 - timer.GetAvancement();
+            hitVolume.weight = MathCurves.CubicInverse(0, 1, avancement);
             yield return null;
         }
         hitVolume.weight = 0;
