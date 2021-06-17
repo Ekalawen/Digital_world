@@ -189,6 +189,7 @@ public class GameManager : MonoBehaviour {
         Tooltip.Hide();
         console.ClosePauseMenu();
         soundManager.UnPauseSounds();
+        postProcessManager.UnPauseEffects();
     }
 
     public bool IsPaused() {

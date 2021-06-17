@@ -213,6 +213,12 @@ public class PostProcessManager : MonoBehaviour {
         wallVfx.SetFloat("ScreenOffsetSecondary", screenSizeOriented * wallVFXOffsetPercentageOfScreenSecondary);
     }
 
+    public void UnPauseEffects() {
+        if(!inputManager.GetShift()) {
+            StopShiftVfx();
+        }
+    }
+
     public void UpdateShiftEffect() {
         if(inputManager.GetShiftDown()) {
             StartShiftVfx();
