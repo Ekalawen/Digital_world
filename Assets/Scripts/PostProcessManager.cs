@@ -70,6 +70,7 @@ public class PostProcessManager : MonoBehaviour {
     protected Coroutine gripCoroutine = null;
     protected Coroutine hitCoroutine1 = null;
     protected Coroutine hitCoroutine2 = null;
+    protected Coroutine lensDistorsionCoroutine = null;
     protected GameManager gm;
     protected new Camera camera;
     protected VisualEffect dashVfx;
@@ -133,28 +134,36 @@ public class PostProcessManager : MonoBehaviour {
         if(previousState != Player.EtatPersonnage.AU_MUR && etat == Player.EtatPersonnage.AU_MUR) {
             //StartGripEffect();
             StartWallVfx();
+            StartLensDistorsionCoroutine(lensDistorsionMaxValue, timeToMaxLensDistorsion);
         } else if (previousState == Player.EtatPersonnage.AU_MUR && etat != Player.EtatPersonnage.AU_MUR) {
             //StopGripEffect();
             StopWallVfx();
+            StartLensDistorsionCoroutine(0.0f, timeToMinLensDistorsion);
         }
         if (etat == Player.EtatPersonnage.AU_MUR) {
             OrientWallVfxEffect();
         }
-        UpdateLensDistorsionEffect(etat);
     }
 
-    private void UpdateLensDistorsionEffect(Player.EtatPersonnage etat) {
+    protected void StartLensDistorsionCoroutine(float intensity, float duration) {
+        if(lensDistorsionCoroutine != null) {
+            StopCoroutine(lensDistorsionCoroutine);
+        }
+        lensDistorsionCoroutine = StartCoroutine(CStartLensDistorsionCoroutine(intensity, duration));
+    }
+
+    protected IEnumerator CStartLensDistorsionCoroutine(float targetIntensity, float duration) {
         LensDistortion lensDistortion;
         lensDistorsionVolume.profile.TryGet<LensDistortion>(out lensDistortion);
-        if(etat == Player.EtatPersonnage.AU_MUR) {
-            float lastTimeSinceNotAuMur = gm.player.GetTimerLastTimeNotAuMur().GetElapsedTime();
-            float avancement = Mathf.Min(lastTimeSinceNotAuMur, timeToMaxLensDistorsion) / timeToMaxLensDistorsion;
-            lensDistortion.intensity.Override(lensDistorsionCurve.Evaluate(avancement) * lensDistorsionMaxValue);
-        } else {
-            float lastTimeSinceAuMur = gm.player.GetTimerLastTimeAuMur().GetElapsedTime();
-            float avancement = Mathf.Min(lastTimeSinceAuMur, timeToMinLensDistorsion) / timeToMinLensDistorsion;
-            lensDistortion.intensity.Override((1 - avancement) * lensDistorsionMaxValue);
+        float startIntensity = lensDistortion.intensity.GetValue<float>();
+        Timer timer = new Timer(duration);
+        while(!timer.IsOver()) {
+            float avancement = lensDistorsionCurve.Evaluate(timer.GetAvancement());
+            float newIntensity = MathCurves.Linear(startIntensity, targetIntensity, avancement);
+            lensDistortion.intensity.Override(newIntensity);
+            yield return null;
         }
+        lensDistortion.intensity.Override(targetIntensity);
     }
 
     protected void StopGripEffect() {
