@@ -63,8 +63,8 @@ public class PostProcessManager : MonoBehaviour {
 
     [Header("Wall Post Process")]
     public AnimationCurve wallPostProcessCurve;
-    public float timeToMaxWallPostProcessCurve = 0.4f;
-    public float timeToMinWallPostProcessCurve = 0.1f;
+    public float timeToMaxWallPostProcess = 0.4f;
+    public float timeToMinWallPostProcess = 0.1f;
     public Volume wallPostProcessVolume;
     public float lensDistorsionMaxValue = 0.4f;
     public float chromaticAberrationMaxValue = 0.2f;
@@ -82,6 +82,8 @@ public class PostProcessManager : MonoBehaviour {
     protected float lastFrameWallVfxHorizontalAngle = 0;
     protected Vector3 lastFrameWallVfxPoint = Vector3.zero;
     protected Vector2 screenSizeAtVfxDistance;
+    protected Fluctuator wallLensDistorsionFluctuator;
+    protected Fluctuator wallChromaticAberrationFluctuator;
 
     public void Initialize() {
         gm = GameManager.Instance;
@@ -92,6 +94,8 @@ public class PostProcessManager : MonoBehaviour {
         inputManager = InputManager.Instance;
         InitScreenSizeAtVfxDistance();
         InitShiftVfx();
+        wallLensDistorsionFluctuator = new Fluctuator(this, GetLensDistorsionIntensity, SetLensDistorsionIntensity, wallPostProcessCurve);
+        wallChromaticAberrationFluctuator = new Fluctuator(this, GetChromaticAberrationIntensity, SetChromaticAberrationIntensity, wallPostProcessCurve);
 
         ResetSkyboxParameters();
         hitVolume.weight = 0;
@@ -134,46 +138,40 @@ public class PostProcessManager : MonoBehaviour {
         Player.EtatPersonnage etat = gm.player.GetEtat();
         if(previousState != Player.EtatPersonnage.AU_MUR && etat == Player.EtatPersonnage.AU_MUR) {
             StartWallVfx();
-            StartWallPostProcessCoroutine(lensDistorsionMaxValue, chromaticAberrationMaxValue, timeToMaxWallPostProcessCurve);
+            wallLensDistorsionFluctuator.GoTo(lensDistorsionMaxValue, timeToMaxWallPostProcess);
+            wallChromaticAberrationFluctuator.GoTo(chromaticAberrationMaxValue, timeToMaxWallPostProcess);
         } else if (previousState == Player.EtatPersonnage.AU_MUR && etat != Player.EtatPersonnage.AU_MUR) {
             StopWallVfx();
-            StartWallPostProcessCoroutine(0.0f, 0.0f, timeToMinWallPostProcessCurve);
+            wallLensDistorsionFluctuator.GoTo(0.0f, timeToMinWallPostProcess);
+            wallChromaticAberrationFluctuator.GoTo(0.0f, timeToMinWallPostProcess);
         }
         if (etat == Player.EtatPersonnage.AU_MUR) {
             OrientWallVfxEffect();
         }
     }
 
-    protected void StartWallPostProcessCoroutine(float lensIntensity, float chromaticIntensity, float duration) {
-        if(wallPostProcessCoroutine != null) {
-            StopCoroutine(wallPostProcessCoroutine);
-        }
-        wallPostProcessCoroutine = StartCoroutine(CStartWallPostProcessCoroutine(lensIntensity, chromaticIntensity, duration));
+    protected float GetLensDistorsionIntensity() {
+        LensDistortion lensDistortion;
+        wallPostProcessVolume.profile.TryGet<LensDistortion>(out lensDistortion);
+        return lensDistortion.intensity.GetValue<float>();
     }
 
-    protected IEnumerator CStartWallPostProcessCoroutine(float lensTargetIntensity, float chromaticTargetIntensity, float duration) {
+    protected void SetLensDistorsionIntensity(float intensity) {
         LensDistortion lensDistortion;
-        ChromaticAberration chromaticAberration;
         wallPostProcessVolume.profile.TryGet<LensDistortion>(out lensDistortion);
+        lensDistortion.intensity.Override(intensity);
+    }
+
+    protected float GetChromaticAberrationIntensity() {
+        ChromaticAberration chromaticAberration;
         wallPostProcessVolume.profile.TryGet<ChromaticAberration>(out chromaticAberration);
+        return chromaticAberration.intensity.GetValue<float>();
+    }
 
-        float lensStartIntensity = lensDistortion.intensity.GetValue<float>();
-        float chromaticStartIntensity = chromaticAberration.intensity.GetValue<float>();
-
-        Timer timer = new Timer(duration);
-        while(!timer.IsOver()) {
-            float avancement = wallPostProcessCurve.Evaluate(timer.GetAvancement());
-
-            float newLensIntensity = MathCurves.Linear(lensStartIntensity, lensTargetIntensity, avancement);
-            lensDistortion.intensity.Override(newLensIntensity);
-
-            float newChromaticIntensity = MathCurves.Linear(chromaticStartIntensity, chromaticTargetIntensity, avancement);
-            chromaticAberration.intensity.Override(newChromaticIntensity);
-
-            yield return null;
-        }
-        lensDistortion.intensity.Override(lensTargetIntensity);
-        chromaticAberration.intensity.Override(chromaticTargetIntensity);
+    protected void SetChromaticAberrationIntensity(float intensity) {
+        ChromaticAberration chromaticAberration;
+        wallPostProcessVolume.profile.TryGet<ChromaticAberration>(out chromaticAberration);
+        chromaticAberration.intensity.Override(intensity);
     }
 
     protected void StopGripEffect() {
