@@ -379,6 +379,8 @@ public class PostProcessManager : MonoBehaviour {
     }
 
     public void StartJumpEffect() {
-        jumpVfx.SendEvent("JumpStart");
+        if (PrefsManager.GetBool(PrefsManager.JUMP_WARP_KEY, MenuOptions.defaultJumpWarpActivation)) {
+            jumpVfx.SendEvent("JumpStart");
+        }
     }
 }

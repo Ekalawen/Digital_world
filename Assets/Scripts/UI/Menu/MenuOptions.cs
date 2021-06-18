@@ -21,6 +21,7 @@ public class MenuOptions : MonoBehaviour {
     public static float defaultMusicVolume = 0.5f;
     public static float defaultSoundVolume = 0.5f;
     public static float defaultMouseSpeed = 1.81f;
+    public static bool defaultJumpWarpActivation = true;
     public static bool defaultWallDistorsionActivation = true;
     public static bool defaultWallWarpActivation = true;
     public static bool defaultConseilOnStart = false;
@@ -44,8 +45,9 @@ public class MenuOptions : MonoBehaviour {
     public Slider sliderMusic;
     public Slider sliderSon;
     public Slider sliderMouse;
-    public Toggle toggleGripWarp;
-    public Toggle toggleGripDistorsion;
+    public Toggle toggleJumpWarp;
+    public Toggle toggleWallWarp;
+    public Toggle toggleWallDistorsion;
     public Toggle conseilOnStartToggle;
     public Toggle fpsCounterToggle;
 
@@ -81,8 +83,9 @@ public class MenuOptions : MonoBehaviour {
         OnMusicVolumeChange(PrefsManager.GetFloat(PrefsManager.MUSIC_VOLUME_KEY, defaultMusicVolume));
         OnSoundVolumeChange(PrefsManager.GetFloat(PrefsManager.SOUND_VOLUME_KEY, defaultSoundVolume));
         OnMouseSpeedChange(PrefsManager.GetFloat(PrefsManager.MOUSE_SPEED_KEY, defaultMouseSpeed));
-        OnWallDistorsionActivationPress(PrefsManager.GetBool(PrefsManager.WALL_DISTORSION_KEY, defaultWallDistorsionActivation));
+        OnJumpWarpActivationPress(PrefsManager.GetBool(PrefsManager.JUMP_WARP_KEY, defaultJumpWarpActivation));
         OnWallWarpActivationPress(PrefsManager.GetBool(PrefsManager.WALL_WARP_KEY, defaultWallWarpActivation));
+        OnWallDistorsionActivationPress(PrefsManager.GetBool(PrefsManager.WALL_DISTORSION_KEY, defaultWallDistorsionActivation));
         OnConseilOnStartPress(PrefsManager.GetBool(PrefsManager.ADVICE_ON_START_KEY, defaultConseilOnStart));
         OnFpsCounterPress(PrefsManager.GetBool(PrefsManager.FPS_COUNTER_KEY, defaultFpsCounter));
     }
@@ -180,20 +183,25 @@ public class MenuOptions : MonoBehaviour {
         }
     }
 
+    public void OnWallWarpActivationPress(bool active) {
+        PrefsManager.SetBool(PrefsManager.WALL_WARP_KEY, active);
+        toggleWallWarp.isOn = active;
+        if(isInGame && !active) {
+            gm.postProcessManager.StopWallVfx();
+        }
+    }
+
     public void OnWallDistorsionActivationPress(bool active) {
         PrefsManager.SetBool(PrefsManager.WALL_DISTORSION_KEY, active);
-        toggleGripDistorsion.isOn = active;
+        toggleWallDistorsion.isOn = active;
         if(isInGame && !active) {
             gm.postProcessManager.StopWallDistorsionEffect();
         }
     }
 
-    public void OnWallWarpActivationPress(bool active) {
-        PrefsManager.SetBool(PrefsManager.WALL_WARP_KEY, active);
-        toggleGripWarp.isOn = active;
-        if(isInGame && !active) {
-            gm.postProcessManager.StopWallVfx();
-        }
+    public void OnJumpWarpActivationPress(bool active) {
+        PrefsManager.SetBool(PrefsManager.JUMP_WARP_KEY, active);
+        toggleJumpWarp.isOn = active;
     }
 
     public void OnConseilOnStartPress(bool active) {
