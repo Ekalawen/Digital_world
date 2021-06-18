@@ -207,7 +207,7 @@ public class Player : Character {
             return;
 
         // Add post process effect when we are gripped to the wall
-        gm.postProcessManager.UpdateGripEffect(etatAvant);
+        gm.postProcessManager.UpdateWallEffect(etatAvant);
 
         // Add post process effect when we are pressing the shift key :)
         gm.postProcessManager.UpdateShiftEffect();

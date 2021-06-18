@@ -137,24 +137,44 @@ public class PostProcessManager : MonoBehaviour {
         //return color * Mathf.Pow(2, skyboxRectangleColorIntensity);
     }
 
-    public void UpdateGripEffect(Player.EtatPersonnage previousState) {
-        if (!PrefsManager.GetBool(PrefsManager.GRIP_KEY, MenuOptions.defaultGripActivation)) {
-            return;
-        }
-
+    public void UpdateWallEffect(Player.EtatPersonnage previousState) {
         Player.EtatPersonnage etat = gm.player.GetEtat();
         if(previousState != Player.EtatPersonnage.AU_MUR && etat == Player.EtatPersonnage.AU_MUR) {
-            StartWallVfx();
-            wallLensDistorsionFluctuator.GoTo(lensDistorsionMaxValue, timeToMaxWallPostProcess);
-            wallChromaticAberrationFluctuator.GoTo(chromaticAberrationMaxValue, timeToMaxWallPostProcess);
+            StartWallEffect();
         } else if (previousState == Player.EtatPersonnage.AU_MUR && etat != Player.EtatPersonnage.AU_MUR) {
-            StopWallVfx();
-            wallLensDistorsionFluctuator.GoTo(0.0f, timeToMinWallPostProcess);
-            wallChromaticAberrationFluctuator.GoTo(0.0f, timeToMinWallPostProcess);
+            StopWallEffect();
         }
         if (etat == Player.EtatPersonnage.AU_MUR) {
             OrientWallVfxEffect();
         }
+    }
+
+    public void StopWallEffect() {
+        if (PrefsManager.GetBool(PrefsManager.WALL_WARP_KEY, MenuOptions.defaultWallWarpActivation)) {
+            StopWallVfx();
+        }
+        if (PrefsManager.GetBool(PrefsManager.WALL_DISTORSION_KEY, MenuOptions.defaultWallDistorsionActivation)) {
+            StopWallDistorsionEffect();
+        }
+    }
+
+    public void StopWallDistorsionEffect() {
+        wallLensDistorsionFluctuator.GoTo(0.0f, timeToMinWallPostProcess);
+        wallChromaticAberrationFluctuator.GoTo(0.0f, timeToMinWallPostProcess);
+    }
+
+    public void StartWallEffect() {
+        if (PrefsManager.GetBool(PrefsManager.WALL_WARP_KEY, MenuOptions.defaultWallWarpActivation)) {
+            StartWallVfx();
+        }
+        if (PrefsManager.GetBool(PrefsManager.WALL_DISTORSION_KEY, MenuOptions.defaultWallDistorsionActivation)) {
+            StartWallDistorsionEffect();
+        }
+    }
+
+    public void StartWallDistorsionEffect() {
+        wallLensDistorsionFluctuator.GoTo(lensDistorsionMaxValue, timeToMaxWallPostProcess);
+        wallChromaticAberrationFluctuator.GoTo(chromaticAberrationMaxValue, timeToMaxWallPostProcess);
     }
 
     protected float GetLensDistorsionIntensity() {
@@ -196,6 +216,9 @@ public class PostProcessManager : MonoBehaviour {
     }
 
     protected void OrientWallVfxEffect() {
+        if (!PrefsManager.GetBool(PrefsManager.WALL_WARP_KEY, MenuOptions.defaultWallWarpActivation)) {
+            return;
+        }
         // Horizontal Angle
         Camera camera = gm.player.camera;
         Vector3 up = gm.gravityManager.Up();
