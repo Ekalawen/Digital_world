@@ -61,6 +61,10 @@ public class PostProcessManager : MonoBehaviour {
     public float shiftVFXOffsetPercentageOfScreenPrimary = -0.5f;
     public float shiftVFXOffsetPercentageOfScreenSecondary = 1f;
 
+    [Header("Jump VFX")]
+    public float jumpVFXOffsetPercentageOfScreenPrimary = 0.9f;
+    public float jumpVFXOffsetPercentageOfScreenSecondary = 0.9f;
+
     [Header("Wall Post Process")]
     public AnimationCurve wallPostProcessCurve;
     public float timeToMaxWallPostProcess = 0.4f;
@@ -76,6 +80,7 @@ public class PostProcessManager : MonoBehaviour {
     protected new Camera camera;
     protected VisualEffect dashVfx;
     protected VisualEffect shiftVfx;
+    protected VisualEffect jumpVfx;
     protected VisualEffect wallVfx;
     protected InputManager inputManager;
     protected float lastFrameWallVfxAngle = 0;
@@ -90,10 +95,12 @@ public class PostProcessManager : MonoBehaviour {
         camera = gm.player.camera;
         dashVfx = gm.player.dashVfx;
         shiftVfx = gm.player.shiftVfx;
+        jumpVfx = gm.player.jumpVfx;
         wallVfx = gm.player.wallVfx;
         inputManager = InputManager.Instance;
         InitScreenSizeAtVfxDistance();
         InitShiftVfx();
+        InitJumpVfx();
         wallLensDistorsionFluctuator = new Fluctuator(this, GetLensDistorsionIntensity, SetLensDistorsionIntensity, wallPostProcessCurve);
         wallChromaticAberrationFluctuator = new Fluctuator(this, GetChromaticAberrationIntensity, SetChromaticAberrationIntensity, wallPostProcessCurve);
 
@@ -340,5 +347,15 @@ public class PostProcessManager : MonoBehaviour {
     protected void InitShiftVfx() {
         shiftVfx.SetFloat("ScreenOffsetPrimary", screenSizeAtVfxDistance.y * shiftVFXOffsetPercentageOfScreenPrimary);
         shiftVfx.SetFloat("ScreenOffsetSecondary", screenSizeAtVfxDistance.y * shiftVFXOffsetPercentageOfScreenSecondary);
+    }
+
+    protected void InitJumpVfx() {
+        jumpVfx.SetFloat("ScreenOffsetPrimary", screenSizeAtVfxDistance.x * jumpVFXOffsetPercentageOfScreenPrimary);
+        jumpVfx.SetFloat("ScreenOffsetSecondary", screenSizeAtVfxDistance.x * jumpVFXOffsetPercentageOfScreenSecondary);
+        jumpVfx.SetFloat("ScreenOffsetSecondaryVertical", - screenSizeAtVfxDistance.y);
+    }
+
+    public void StartJumpEffect() {
+        jumpVfx.SendEvent("JumpStart");
     }
 }

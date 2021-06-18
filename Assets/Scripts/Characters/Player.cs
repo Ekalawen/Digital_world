@@ -35,6 +35,7 @@ public class Player : Character {
     public VisualEffect dashVfx;
     public VisualEffect shiftVfx;
     public VisualEffect wallVfx;
+    public VisualEffect jumpVfx;
 
 	[HideInInspector]
 	public GameObject personnage;
@@ -711,6 +712,7 @@ public class Player : Character {
             Debug.Log("On saute depuis un endroit non autorisé !");
         }
         PlayJumpSound();
+        gm.postProcessManager.StartJumpEffect();
     }
 
     public void PlayJumpSound() {
