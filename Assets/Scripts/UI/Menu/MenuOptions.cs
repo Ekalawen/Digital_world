@@ -24,6 +24,7 @@ public class MenuOptions : MonoBehaviour {
     public static bool defaultJumpWarpActivation = true;
     public static bool defaultWallDistorsionActivation = true;
     public static bool defaultWallWarpActivation = true;
+    public static bool defaultShiftWarpActivation = true;
     public static bool defaultConseilOnStart = false;
     public static bool defaultFpsCounter = false;
 
@@ -48,6 +49,7 @@ public class MenuOptions : MonoBehaviour {
     public Toggle toggleJumpWarp;
     public Toggle toggleWallWarp;
     public Toggle toggleWallDistorsion;
+    public Toggle toggleShiftWarp;
     public Toggle conseilOnStartToggle;
     public Toggle fpsCounterToggle;
 
@@ -86,6 +88,7 @@ public class MenuOptions : MonoBehaviour {
         OnJumpWarpActivationPress(PrefsManager.GetBool(PrefsManager.JUMP_WARP_KEY, defaultJumpWarpActivation));
         OnWallWarpActivationPress(PrefsManager.GetBool(PrefsManager.WALL_WARP_KEY, defaultWallWarpActivation));
         OnWallDistorsionActivationPress(PrefsManager.GetBool(PrefsManager.WALL_DISTORSION_KEY, defaultWallDistorsionActivation));
+        OnShiftWarpActivationPress(PrefsManager.GetBool(PrefsManager.SHIFT_WARP_KEY, defaultShiftWarpActivation));
         OnConseilOnStartPress(PrefsManager.GetBool(PrefsManager.ADVICE_ON_START_KEY, defaultConseilOnStart));
         OnFpsCounterPress(PrefsManager.GetBool(PrefsManager.FPS_COUNTER_KEY, defaultFpsCounter));
     }
@@ -202,6 +205,14 @@ public class MenuOptions : MonoBehaviour {
     public void OnJumpWarpActivationPress(bool active) {
         PrefsManager.SetBool(PrefsManager.JUMP_WARP_KEY, active);
         toggleJumpWarp.isOn = active;
+    }
+
+    public void OnShiftWarpActivationPress(bool active) {
+        PrefsManager.SetBool(PrefsManager.SHIFT_WARP_KEY, active);
+        toggleShiftWarp.isOn = active;
+        if(isInGame && !active) {
+            gm.postProcessManager.StopShiftVfx();
+        }
     }
 
     public void OnConseilOnStartPress(bool active) {

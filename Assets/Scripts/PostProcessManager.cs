@@ -289,6 +289,9 @@ public class PostProcessManager : MonoBehaviour {
     }
 
     public void UpdateShiftEffect() {
+        if (!PrefsManager.GetBool(PrefsManager.SHIFT_WARP_KEY, MenuOptions.defaultShiftWarpActivation)) {
+            return;
+        }
         if(inputManager.GetShiftDown()) {
             StartShiftVfx();
         } else if (inputManager.GetShiftUp()) {

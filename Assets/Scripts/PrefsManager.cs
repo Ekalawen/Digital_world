@@ -49,6 +49,7 @@ public class PrefsManager {
     public static string JUMP_WARP_KEY = "jumpWarpKey";
     public static string WALL_DISTORSION_KEY = "wallDistorsionKey";
     public static string WALL_WARP_KEY = "wallWarpKey";
+    public static string SHIFT_WARP_KEY = "shiftWarpKey";
     public static string ADVICE_ON_START_KEY = "adviceOnStartKey";
     public static string FPS_COUNTER_KEY = "fpsCounterKey";
     public static string KEYBINDING_INDICE_KEY = "keybindingIndiceKey";
