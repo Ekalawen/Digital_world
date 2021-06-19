@@ -6,13 +6,15 @@ using System;
 
 public class Node {
     public Vector3 pos;
-    public float cout, heuristique;
+    public float cout, distanceToGoal;
+    public float heuristique;
     public Node parent;
 
-    public Node(Vector3 pos, float cout, float heuristique, Node parent) {
+    public Node(Vector3 pos, float cout, float distanceToGoal, Node parent) {
         this.pos = pos;
         this.cout = cout;
-        this.heuristique = heuristique;
+        this.distanceToGoal = distanceToGoal;
+        this.heuristique = cout + distanceToGoal;
         this.parent = parent;
     }
 }
@@ -858,8 +860,6 @@ public class MapManager : MonoBehaviour {
         bool useNotInMapVoisins = false,
         bool collideWithCubes = true,
         bool ignoreSwappyCubes = false) {
-        List<Vector3> path = new List<Vector3>();
-
         start = MathTools.Round(start);
         end = MathTools.Round(end);
 
@@ -868,23 +868,23 @@ public class MapManager : MonoBehaviour {
 
         List<Node> closed = new List<Node>();
         List<Node> opened = new List<Node>();
-        opened.Add(new Node(start, 0, 0, null));
+        opened.Add(new Node(start, 0, Vector3.Distance(start, end), null));
 
         while(opened.Count > 0 && opened.Count + closed.Count <= GetVolume()) {
             Node current = opened.Last();
             opened.Remove(current);
 
             if (current.pos == end) {
-                return ComputePathBackward(start, path, ref current);
+                return ComputePathBackward(start, ref current);
             }
 
             List<Vector3> voisins = GetVoisinsLibreNotInPosToDodge(posToDodge, current, bIsRandom, useNotInMapVoisins, collideWithCubes, ignoreSwappyCubes);
 
-            for (int i = 0; i < voisins.Count; i++)
-            {
+            for (int i = 0; i < voisins.Count; i++) {
                 Vector3 voisin = voisins[i];
-                float distanceToGoal = Vector3.SqrMagnitude(voisin - end);
-                Node node = new Node(voisin, current.cout + 1, current.cout + 1 + distanceToGoal, current);
+                //float distanceToGoal = Vector3.SqrMagnitude(voisin - end);
+                float distanceToGoal = Vector3.Distance(voisin, end);
+                Node node = new Node(voisin, current.cout + 1, distanceToGoal, current);
 
                 if(IsNodeInCloseOrOpened(closed, opened, voisin, node))
                     continue;
@@ -989,7 +989,8 @@ public class MapManager : MonoBehaviour {
         return voisins;
     }
 
-    protected static List<Vector3> ComputePathBackward(Vector3 start, List<Vector3> path, ref Node current) {
+    protected static List<Vector3> ComputePathBackward(Vector3 start, ref Node current) {
+        List<Vector3> path = new List<Vector3>();
         while (current.pos != start) {
             path.Add(current.pos);
             current = current.parent;
