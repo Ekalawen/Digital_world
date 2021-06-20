@@ -24,9 +24,29 @@ public class SwappyCubesHolder : MonoBehaviour {
     }
 
     public void SetCubesLinky(int initialInterval, Texture2D linkyTexture, bool useEnableState = false) {
-        foreach(Cube cube in cubes) {
+        if (gm.GetMapType() == MenuLevel.LevelType.INFINITE) {
+            StartCoroutine(CSetCubesLinkyForIR(initialInterval, linkyTexture, useEnableState));
+        } else {
+            foreach (Cube cube in cubes) {
+                cube.SetLinky(linkyTexture);
+                cube.SetSwappy();
+            }
+            if (!useEnableState) {
+                SetInitialVisibleState(initialInterval);
+            }
+        }
+    }
+
+    // Optimisation
+    protected IEnumerator CSetCubesLinkyForIR(int initialInterval, Texture2D linkyTexture, bool useEnableState = false) {
+        int nbCubesByFrame = 4;
+        for(int i = 0; i < cubes.Count; i++) {
+            Cube cube = cubes[i];
             cube.SetLinky(linkyTexture);
             cube.SetSwappy();
+            if(i != 0 && i % nbCubesByFrame == 0) {
+                yield return null;
+            }
         }
         if (!useEnableState) {
             SetInitialVisibleState(initialInterval);
