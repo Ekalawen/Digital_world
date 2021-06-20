@@ -17,11 +17,11 @@ public class LinkyCubeComponent : MonoBehaviour {
     public void Initialize(Cube cube) {
         map = GameManager.Instance.map;
         this.cube = cube;
-        RegisterVoisins();
+        RegisterToVoisins();
         ChooseAnchor();
     }
 
-    protected void RegisterVoisins() {
+    protected void RegisterToVoisins() {
         linkyVoisins = map.GetVoisinsPleinsAll(cube.transform.position).Select(pos => map.GetCubeAt(pos)).ToList();
         linkyVoisins = linkyVoisins.FindAll(c => c.IsLinky());
         foreach(Cube voisin in linkyVoisins) {
@@ -39,8 +39,8 @@ public class LinkyCubeComponent : MonoBehaviour {
         linkyVoisins.Remove(voisin);
     }
 
-    public Vector3 GetBarycentre() {
-        List<Vector3> linkedPositions = GetLinkedCubes().Select(c => c.transform.position).ToList();
+    public Vector3 GetBarycentre(List<Vector3> preComputedLinkedPositions = null) {
+        List<Vector3> linkedPositions = preComputedLinkedPositions != null ? preComputedLinkedPositions : GetLinkedCubes().Select(c => c.transform.position).ToList();
         Vector3 sum = Vector3.zero;
         foreach(Vector3 linkedPosition in linkedPositions) {
             sum += linkedPosition;
@@ -85,8 +85,9 @@ public class LinkyCubeComponent : MonoBehaviour {
             InitParams();
         } else {
             LinkyCubeComponent mainVoisin = linkyVoisins[0].GetLinkyCubeComponent();
-            Vector3 barycentre = mainVoisin.GetBarycentre();
-            foreach(Cube linkedCube in GetLinkedCubes()) {
+            List<Cube> linkedCubes = GetLinkedCubes();
+            Vector3 barycentre = mainVoisin.GetBarycentre(preComputedLinkedPositions: linkedCubes.Select(c => c.transform.position).ToList());
+            foreach(Cube linkedCube in linkedCubes) {
                 linkedCube.GetLinkyCubeComponent().CopyParamsFrom(mainVoisin, barycentre);
             }
         }

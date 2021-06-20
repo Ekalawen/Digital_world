@@ -29,11 +29,15 @@ public class Block : MonoBehaviour {
         gm = GameManager.Instance;
         map = gm.map;
         this.originalBlockPrefab = originalBlockPrefab;
+        //Debug.Log($"BLOCK = {name} -----------------");
+        //StopwatchWrapper.Mesure(GatherCubes);
+        //StopwatchWrapper.Mesure(RegisterCubesToMap);
         GatherCubes();
         RegisterCubesToMap();
         if(gm.timerManager.HasGameStarted()) {
             RegisterCubesToColorSources();
         }
+        //StopwatchWrapper.Mesure(StartSwappingCubes);
         StartSwappingCubes();
     }
 
@@ -61,9 +65,11 @@ public class Block : MonoBehaviour {
             Cube cube = child.gameObject.GetComponent<Cube>();
             if (cube != null)
                 cubes.Add(cube);
+
             RandomCubes randomCubes = child.gameObject.GetComponent<RandomCubes>();
             if (randomCubes != null)
                 cubes.AddRange(randomCubes.GetChosenCubesAndDestroyOthers());
+
             SwappyCubesHolderManager swappyCubesHolderManager = child.gameObject.GetComponent<SwappyCubesHolderManager>();
             if (swappyCubesHolderManager != null) {
                 swappyCubesHolderManager.Initialize(gatherCubesInChildren: true);

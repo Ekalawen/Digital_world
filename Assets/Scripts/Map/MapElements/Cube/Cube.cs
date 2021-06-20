@@ -75,9 +75,6 @@ public class Cube : MonoBehaviour {
 
     public virtual void StartDissolveEffect(float dissolveTime, float playerProximityCoef = 0.0f) {
         SetTransparentMaterial();
-        if(dissolveTime == 1) {
-            Debug.Log(Environment.StackTrace);
-        }
         transparentMaterial.SetFloat("_DissolveTime", dissolveTime);
         transparentMaterial.SetFloat("_PlayerProximityCoef", playerProximityCoef);
         transparentMaterial.SetFloat("_DissolveStartingTime", Time.time);

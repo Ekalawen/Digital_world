@@ -38,7 +38,7 @@ public class SwappyCubesHolder : MonoBehaviour {
         foreach (Transform child in transform) {
             Cube cube = child.gameObject.GetComponent<Cube>();
             if (cube != null) {
-                cube.SetSwappy();
+                //cube.SetSwappy(); // Cette ligne pourrait être utile dans un autre niveau que SwapHighway !
                 cubes.Add(cube);
             }
         }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using EZCameraShake;
+using System.Diagnostics;
 
 public class InfiniteMap : MapManager {
 
@@ -370,7 +371,7 @@ public class InfiniteMap : MapManager {
                     block.timesForFinishing = new List<float>();
                 }
             }
-            Debug.LogWarning("All blocks time have been reseted !");
+            UnityEngine.Debug.LogWarning("All blocks time have been reseted !");
         }
     }
 
