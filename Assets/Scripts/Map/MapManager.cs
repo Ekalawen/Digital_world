@@ -21,8 +21,6 @@ public class Node {
 
 public class MapManager : MonoBehaviour {
 
-    // public enum TypeMap {CUBE_MAP, PLAINE_MAP, LABYRINTHE_MAP, GROUND_MAP, EMPTY_MAP, TUTORIAL_MAP}; // Plus vraiment utile ! :D
-
     [Header("Cube Prefabs")]
 	public GameObject cubePrefab; // On récupère ce qu'est un cube !
     public GameObject deathCubePrefab; // On récupère ce qu'est qu'un cube de la mort ! :)
@@ -46,9 +44,6 @@ public class MapManager : MonoBehaviour {
     public Vector3Int tailleMap; // La taille de la map, en largeur, hauteur et profondeur
 	public int nbLumieresInitial; // Le nombre de lumières lors de la création de la map
 
-    //public Transform alreadyExistingCubesFolder; // Le dossier contenant les cubes déjà existant !
-    //public Transform alreadyExistingLumiereFolder; // Le dossier contenant les data déjà existant !
-
 
     protected Cube[,,] cubesRegular; // Toutes les positions entières dans [0, tailleMap]
     //protected List<Cube> cubesNonRegular; // Toutes les autres positions (non-entières ou en-dehors de la map)
@@ -64,9 +59,6 @@ public class MapManager : MonoBehaviour {
     protected PlayerStartComponent playerStartComponent = null;
     protected List<SwappyCubesHolderManager> swappyCubesHolderManagers;
 
-    //////////////////////////////////////////////////////////////////////////////////////
-    // METHODES
-    //////////////////////////////////////////////////////////////////////////////////////
 
     public void Initialize() {
 		// Initialisation
@@ -92,10 +84,6 @@ public class MapManager : MonoBehaviour {
 
         // Récupérer tous les cubes et toutes les lumières qui pourraient déjà exister avant la création de la map !
         GetAllAlreadyExistingCubesAndLumieres();
-
-        //// Ici les classes qui hériteront de cette classe pourront faire leur génération !
-        //// Mais ce n'est maintenant plus nécessaire, tout passe par les MapFunctionsComponents ! :)
-        //GenerateMap();
 
         // Pour que les maps spéciales puissent faire leur initialisations spécifiques
         InitializeSpecific();
@@ -882,7 +870,6 @@ public class MapManager : MonoBehaviour {
 
             for (int i = 0; i < voisins.Count; i++) {
                 Vector3 voisin = voisins[i];
-                //float distanceToGoal = Vector3.SqrMagnitude(voisin - end);
                 float distanceToGoal = Vector3.Distance(voisin, end);
                 Node node = new Node(voisin, current.cout + 1, distanceToGoal, current);
 
