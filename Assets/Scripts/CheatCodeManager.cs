@@ -25,6 +25,7 @@ public class CheatCodeManager : MonoBehaviour {
     public List<KeyCode> gravityZeroCode;
     public List<KeyCode> cooldownsZeroCode;
     public List<KeyCode> hideConsoleCode;
+    public List<KeyCode> disableEnnemisCode;
 
     protected GameManager gm;
     protected List<CheatCode> cheatCodes;
@@ -136,6 +137,12 @@ public class CheatCodeManager : MonoBehaviour {
         hideConsoleCheatCode.code = hideConsoleCode;
         hideConsoleCheatCode.action = gm.console.SwapConsoleVisibility;
         cheatCodes.Add(hideConsoleCheatCode);
+
+        // Disable Ennemis
+        CheatCode disableEnnemisCheatCode = new CheatCode();
+        disableEnnemisCheatCode.code = disableEnnemisCode;
+        disableEnnemisCheatCode.action = gm.ennemiManager.SwapDisableEnnemis;
+        cheatCodes.Add(disableEnnemisCheatCode);
     }
 
     public void Update() {

@@ -137,4 +137,13 @@ public class EnnemiManager : MonoBehaviour {
         }
         return false;
     }
+
+    public void SwapDisableEnnemis() {
+        if (ennemis.Count > 0) {
+            bool newState = !ennemis[0].gameObject.activeInHierarchy;
+            foreach (Ennemi ennemi in ennemis) {
+                ennemi.gameObject.SetActive(newState);
+            }
+        }
+    }
 }
