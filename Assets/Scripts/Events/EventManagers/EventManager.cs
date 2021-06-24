@@ -511,8 +511,7 @@ public class EventManager : MonoBehaviour {
         QuitOrReloadInSeconds();
     }
 
-    private void StopEventsAndEndEvents()
-    {
+    private void StopEventsAndEndEvents() {
         if (coroutineDeathCubesCreation != null)
             StopCoroutine(coroutineDeathCubesCreation);
         if (coroutineCubesDestructions != null)

@@ -104,16 +104,18 @@ public class OrbTrigger : IZone {
             yield return null;
         }
 
-        AsyncOperationHandle<string> hackedHandle = gm.console.strings.lumiereProtectionHacked.GetLocalizedString();
-        yield return hackedHandle;
-        gm.console.AjouterMessageImportant(hackedHandle.Result,
-            Console.TypeText.BASIC_TEXT,
-            1.0f,
-            bAfficherInConsole: true,
-            precedantMessage);
-        precedantMessage = currentMessage;
+        if(!gm.eventManager.IsGameOver()) {
+            AsyncOperationHandle<string> hackedHandle = gm.console.strings.lumiereProtectionHacked.GetLocalizedString();
+            yield return hackedHandle;
+            gm.console.AjouterMessageImportant(hackedHandle.Result,
+                Console.TypeText.BASIC_TEXT,
+                1.0f,
+                bAfficherInConsole: true,
+                precedantMessage);
+            precedantMessage = currentMessage;
 
-        CallAllEvents();
+            CallAllEvents();
+        }
     }
 
     protected Vector3 InFrontOfPlayerPosition() {
