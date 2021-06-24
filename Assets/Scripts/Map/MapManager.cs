@@ -178,6 +178,12 @@ public class MapManager : MonoBehaviour {
         return cube;
     }
 
+    public void PoolAddCube(Cube.CubeType cubeType) {
+        Cube cube = Instantiate(GetPrefab(cubeType), Vector3.zero, Quaternion.identity, cubesFolder).GetComponent<Cube>();
+        // Don't initialize it, it will be when we will get it from the pool ! :)
+        StoreCubeInPool(cube);
+    }
+
     protected GameObject GetPrefab(Cube.CubeType cubeType) {
         switch(cubeType) {
             case Cube.CubeType.NORMAL:

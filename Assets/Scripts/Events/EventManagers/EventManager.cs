@@ -100,9 +100,10 @@ public class EventManager : MonoBehaviour {
     {
         name = "EventManager";
         gm = FindObjectOfType<GameManager>();
-        map = GameObject.Find("MapManager").GetComponent<MapManager>();
+        map = gm.map;
         randomEventsFolder = new GameObject("RandomEvents").transform;
         singleEventsFolder = new GameObject("SingleEvents").transform;
+        PreFillPoolIfDeathCubesEndEvent();
 
         AddRandomEventsAndStartSingleEvents();
     }
@@ -725,5 +726,18 @@ public class EventManager : MonoBehaviour {
     protected void RewardForNewRegularTresholdReached(int dataCount) {
         gm.console.RewardNewRegularTreshold(dataCount);
         gm.soundManager.PlayRewardBestScore();
+    }
+
+    protected void PreFillPoolIfDeathCubesEndEvent() {
+        if(endGameType == EndEventType.DEATH_CUBES || endGameType == EndEventType.HALF_DEATH_CUBES) {
+            List<Vector3> emptyPositions = map.GetAllEmptyPositions();
+            for(int i = 0; i < emptyPositions.Count; i++) {
+                Cube.CubeType cubeType = Cube.CubeType.DEATH;
+                if(endGameType == EndEventType.HALF_DEATH_CUBES && i > emptyPositions.Count / 2) {
+                    cubeType = Cube.CubeType.NORMAL;
+                }
+                map.PoolAddCube(cubeType);
+            }
+        }
     }
 }
