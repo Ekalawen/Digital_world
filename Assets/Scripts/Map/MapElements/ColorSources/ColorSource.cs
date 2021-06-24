@@ -31,6 +31,7 @@ public class ColorSource : MonoBehaviour {
     }
 
     public void AddCube(Cube cube) {
+        SanitizeCubesInRange();
         if(!cubesInRange.Contains(cube)) {
             cubesInRange.Add(cube);
             Color colorToAdd = GetColorForPosition(cube.transform.position);

@@ -183,6 +183,20 @@ public class Cube : MonoBehaviour {
         BothMaterialsSetColor("_LinkyCubeColor1", newColor); // Attention ! Dans le shader on a "color * 2" à cause d'un bug, ce pourquoi ici c'est plus sombre que la vrai couleur ! ;)
     }
 
+    public virtual void ResetColor() {
+        BothMaterialsSetColor("_Color", Color.black);
+        BothMaterialsSetColor("_LinkyCubeColor1", Color.black); // Attention ! Dans le shader on a "color * 2" à cause d'un bug, ce pourquoi ici c'est plus sombre que la vrai couleur ! ;)
+    }
+
+    public void ResetBeforeStoring() {
+        UnSetLinky();
+        ResetColor();
+        startAsLinky = false;
+        if (transparentMaterial != null) {
+            SetMaterial(transparentMaterial);
+        }
+    }
+
     public float GetLuminance() {
         return ColorManager.GetLuminance(GetMaterial().color);
     }
@@ -346,28 +360,36 @@ public class Cube : MonoBehaviour {
         if (opaqueMaterial != null) {
             opaqueMaterial.SetFloat(key, value);
         }
-        transparentMaterial.SetFloat(key, value);
+        if (transparentMaterial != null) {
+            transparentMaterial.SetFloat(key, value);
+        }
     }
 
     public void BothMaterialsSetVector(string key, Vector3 vector) {
         if (opaqueMaterial != null) {
             opaqueMaterial.SetVector(key, vector);
         }
-        transparentMaterial.SetVector(key, vector);
+        if (transparentMaterial != null) {
+            transparentMaterial.SetVector(key, vector);
+        }
     }
 
     public void BothMaterialsSetTexture(string key, Texture texture) {
         if (opaqueMaterial != null) {
             opaqueMaterial.SetTexture(key, texture);
         }
-        transparentMaterial.SetTexture(key, texture);
+        if (transparentMaterial != null) {
+            transparentMaterial.SetTexture(key, texture);
+        }
     }
 
     public void BothMaterialsSetColor(string key, Color color) {
         if (opaqueMaterial != null) {
             opaqueMaterial.SetColor(key, color);
         }
-        transparentMaterial.SetColor(key, color);
+        if (transparentMaterial != null) {
+            transparentMaterial.SetColor(key, color);
+        }
     }
 
     public List<Vector3> GetCornerPositions() {

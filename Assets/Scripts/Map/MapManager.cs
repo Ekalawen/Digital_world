@@ -220,9 +220,10 @@ public class MapManager : MonoBehaviour {
         if(!cubesPools.ContainsKey(cube.type)) {
             cubesPools[cube.type] = new Stack<Cube>();
         }
+        cube.ResetBeforeStoring();
         cubesPools[cube.type].Push(cube);
+        transform.SetParent(cubesPoolsFolder);
         cube.gameObject.SetActive(false);
-        cube.transform.SetParent(cubesPoolsFolder);
     }
 
     public void DeleteCubesAt(Vector3 pos) {
@@ -523,7 +524,7 @@ public class MapManager : MonoBehaviour {
                                      UnityEngine.Random.Range((float)offsetFromSides, (float)tailleMap.y - offsetFromSides),
                                      UnityEngine.Random.Range((float)offsetFromSides, (float)tailleMap.z - offsetFromSides)));
         int k = 0; int kmax = 5000;
-        while(GetCubesInLocation(center).Count > 0 && k <= kmax) {
+        while(IsCubeAt(center) && k <= kmax) {
             center = MathTools.Round(new Vector3(UnityEngine.Random.Range((float)offsetFromSides, (float)tailleMap.x - offsetFromSides),
                                      UnityEngine.Random.Range((float)offsetFromSides, (float)tailleMap.y - offsetFromSides),
                                      UnityEngine.Random.Range((float)offsetFromSides, (float)tailleMap.z - offsetFromSides)));
