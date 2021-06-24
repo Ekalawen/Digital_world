@@ -52,25 +52,28 @@ public class MapManager : MonoBehaviour {
     [HideInInspector]
     protected List<Lumiere> lumieres;
     [HideInInspector]
-    public GameObject mapFolder, cubesFolder, lumieresFolder, zonesFolder;
+    public Transform mapFolder, cubesFolder, lumieresFolder, zonesFolder, cubesPoolsFolder;
     protected Cube.CubeType currentCubeTypeUsed = Cube.CubeType.NORMAL;
     [HideInInspector]
     public GameManager gm;
     protected PlayerStartComponent playerStartComponent = null;
     protected List<SwappyCubesHolderManager> swappyCubesHolderManagers;
+    protected Dictionary<Cube.CubeType, Stack<Cube>> cubesPools;
 
 
     public void Initialize() {
 		// Initialisation
         gm = FindObjectOfType<GameManager>();
 		name = "MapManager";
-        mapFolder = new GameObject("Map");
-        cubesFolder = new GameObject("Cubes");
-        cubesFolder.transform.SetParent(mapFolder.transform);
-        lumieresFolder = new GameObject("Lumieres");
-        lumieresFolder.transform.SetParent(mapFolder.transform);
-        zonesFolder = new GameObject("Zones");
-        zonesFolder.transform.SetParent(mapFolder.transform);
+        mapFolder = new GameObject("Map").transform;
+        cubesFolder = new GameObject("Cubes").transform;
+        cubesFolder.transform.SetParent(mapFolder);
+        lumieresFolder = new GameObject("Lumieres").transform;
+        lumieresFolder.transform.SetParent(mapFolder);
+        zonesFolder = new GameObject("Zones").transform;
+        zonesFolder.transform.SetParent(mapFolder);
+        cubesPoolsFolder = new GameObject("cubesPoolsFolder").transform;
+        cubesPoolsFolder.transform.SetParent(cubesFolder);
         InitPlayerStartComponent();
         mapElements = new List<MapElement>();
         lumieres = new List<Lumiere>();
@@ -81,6 +84,7 @@ public class MapManager : MonoBehaviour {
                     cubesRegular[i, j, k] = null;
         nonRegularOctree = new Octree();
         swappyCubesHolderManagers = new List<SwappyCubesHolderManager>();
+        cubesPools = new Dictionary<Cube.CubeType, Stack<Cube>>();
 
         // Récupérer tous les cubes et toutes les lumières qui pourraient déjà exister avant la création de la map !
         GetAllAlreadyExistingCubesAndLumieres();
@@ -149,8 +153,28 @@ public class MapManager : MonoBehaviour {
         if (IsCubeAt(pos) || IsLumiereAt(pos)) // Si il y a déjà un cube ou une lumière à cette position, on ne fait rien !
             return null;
         Transform newParent = parent ?? cubesFolder.transform;
-        Cube cube = Instantiate(GetPrefab(cubeType), pos, quaternion, newParent).GetComponent<Cube>();
+        Cube cube = TryGetCubeFromPool(cubeType);
+        if (cube != null) {
+            cube.transform.position = pos;
+            cube.transform.rotation = quaternion;
+        } else {
+            cube = Instantiate(GetPrefab(cubeType), pos, quaternion, newParent).GetComponent<Cube>();
+        }
         AddCube(cube);
+        return cube;
+    }
+
+    protected Cube TryGetCubeFromPool(Cube.CubeType cubeType) {
+        if(!cubesPools.ContainsKey(cubeType)) {
+            return null;
+        }
+        Stack<Cube> cubesPool = cubesPools[cubeType];
+        if(cubesPool.Count == 0) {
+            return null;
+        }
+        Cube cube = cubesPool.Pop();
+        cube.gameObject.SetActive(true);
+        cube.transform.SetParent(cubesFolder);
         return cube;
     }
 
@@ -174,7 +198,7 @@ public class MapManager : MonoBehaviour {
         return null;
     }
 
-    private void DestroyImmediateCube(Cube cube, bool bJustInactive = false) {
+    private void DestroyImmediateCube(Cube cube) {
         if (cube == null)
             return;
         foreach(ColorSource colorSource in gm.colorManager.GetAllColorSources()) {
@@ -183,27 +207,33 @@ public class MapManager : MonoBehaviour {
         foreach(MapElement mapElement in mapElements) {
             mapElement.OnDeleteCube(cube);
         }
-        if (bJustInactive)
-            cube.gameObject.SetActive(false);
-        else
-            Destroy(cube.gameObject);
+        StoreCubeInPool(cube);
     }
 
-    public void DeleteCubesAt(Vector3 pos, bool bJustInactive = false) {
+    protected void StoreCubeInPool(Cube cube) {
+        if(!cubesPools.ContainsKey(cube.type)) {
+            cubesPools[cube.type] = new Stack<Cube>();
+        }
+        cubesPools[cube.type].Push(cube);
+        cube.gameObject.SetActive(false);
+        cube.transform.SetParent(cubesPoolsFolder);
+    }
+
+    public void DeleteCubesAt(Vector3 pos) {
         if(IsInRegularMap(pos) && MathTools.IsRounded(pos)) {
-            DestroyImmediateCube(cubesRegular[(int)pos.x, (int)pos.y, (int)pos.z], bJustInactive);
+            DestroyImmediateCube(cubesRegular[(int)pos.x, (int)pos.y, (int)pos.z]);
             cubesRegular[(int)pos.x, (int)pos.y, (int)pos.z] = null;
         } else {
             Cube cubeToDestroy = nonRegularOctree.PopAt(pos);
             if(cubeToDestroy != null) {
-                DestroyImmediateCube(cubeToDestroy, bJustInactive);
+                DestroyImmediateCube(cubeToDestroy);
             }
         }
     }
 
-    public void DeleteCube(Cube cube, bool bJustInactive = false) {
+    public void DeleteCube(Cube cube) {
         if(cube != null)
-            DeleteCubesAt(cube.transform.position, bJustInactive);
+            DeleteCubesAt(cube.transform.position);
     }
 
     public void DeleteCubesInSphere(Vector3 center, float radius) {
