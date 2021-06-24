@@ -11,11 +11,13 @@ public class ColorSource : MonoBehaviour {
     [HideInInspector] public List<Cube> cubesInRange;
     protected MapManager map;
     protected Coroutine goingToColor = null;
+    protected List<Cube> cubesNotInRangeAnymore;
 
     public void Initialize(Color color, float range) {
         this.color = color;
         this.range = range;
         this.map = FindObjectOfType<MapManager>();
+        this.cubesNotInRangeAnymore = new List<Cube>();
 
         // Récupère tous les cubes à portée !
         cubesInRange = new List<Cube>();
@@ -48,6 +50,7 @@ public class ColorSource : MonoBehaviour {
     }
 
     protected void AddColor() {
+        SanitizeCubesInRange();
         foreach(Cube cube in cubesInRange) {
             if (cube != null) {
                 float distance = Vector3.Distance(cube.transform.position, this.transform.position);
@@ -58,6 +61,7 @@ public class ColorSource : MonoBehaviour {
     }
 
     protected void RemoveColor() {
+        SanitizeCubesInRange();
         foreach(Cube cube in cubesInRange) {
             if (cube != null) {
                 float distance = Vector3.Distance(cube.transform.position, this.transform.position);
@@ -78,7 +82,14 @@ public class ColorSource : MonoBehaviour {
     }
 
     public void RemoveCube(Cube cube) {
-        cubesInRange.Remove(cube);
+        cubesNotInRangeAnymore.Add(cube);
+    }
+
+    protected void SanitizeCubesInRange() {
+        if (cubesNotInRangeAnymore.Count > 0) {
+            cubesInRange = cubesInRange.FindAll(c => !cubesNotInRangeAnymore.Contains(c));
+            cubesNotInRangeAnymore.Clear();
+        }
     }
 
     public void GoToColor(Color newColor, float overTime) {
