@@ -5,8 +5,10 @@ using UnityEngine;
 
 public class AddLumiereDataSonde: GenerateLumieresMapFunction {
 
+    public Sonde sonde;
     public OrbTrigger orbTrigger;
     public GameObject lightningPrefab;
+    public Material normalSondeMaterial;
 
     public void Trigger() {
         Initialize();
@@ -16,6 +18,7 @@ public class AddLumiereDataSonde: GenerateLumieresMapFunction {
     public override void Activate() {
         CreateLumiereAtSondePosition();
         InitializeOtherDataSonde();
+        ChangeMaterial();
     }
 
     protected void CreateLumiereAtSondePosition() {
@@ -34,5 +37,9 @@ public class AddLumiereDataSonde: GenerateLumieresMapFunction {
             Lightning lightning = Instantiate(lightningPrefab).GetComponent<Lightning>();
             lightning.Initialize(orbTrigger.transform.position, newOrbTrigger.transform.position, Lightning.PivotType.EXTREMITY);
         }
+    }
+
+    protected void ChangeMaterial() {
+        sonde.ChangeMaterial(normalSondeMaterial);
     }
 }

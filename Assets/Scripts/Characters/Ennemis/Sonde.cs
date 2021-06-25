@@ -20,16 +20,28 @@ public class Sonde : Ennemi {
     protected Coroutine spikesSizeCoroutine = null;
     protected Material material;
 
-	public override void Start () {
+	public override void Start ()
+    {
         base.Start();
-		// Initialisation
-		name = "Sonde_" + UnityEngine.Random.Range (0, 9999);
+        // Initialisation
+        name = "Sonde_" + UnityEngine.Random.Range(0, 9999);
         gm = GameManager.Instance;
         player = gm.player;
+        InitMaterial();
+    }
+
+    protected void InitMaterial() {
         material = GetComponent<Renderer>().material;
         ActivateWaves(false);
         SetSpikesSize(0.0f);
-	}
+    }
+
+    public void ChangeMaterial(Material newMaterial) {
+        GetComponent<Renderer>().material = newMaterial;
+        material = GetComponent<Renderer>().material;
+        ActivateWaves(true);
+        SetSpikesSize(0.0f);
+    }
 
     protected void SetSpikesSize(float size) {
         material.SetFloat("_SpikesSize", size);
