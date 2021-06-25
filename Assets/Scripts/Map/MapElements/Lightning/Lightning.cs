@@ -53,7 +53,7 @@ public class Lightning : MonoBehaviour {
         durationAfterArriving = dureeApresConnection;
     }
 
-    public void SetPosition(Vector3 start, Vector3 end) {
+    public void SetPosition(Vector3 start, Vector3 end, float parentSize = 1) {
         this.start = start;
         this.end = end;
         if (pivotType == PivotType.EXTREMITY) {
@@ -63,6 +63,7 @@ public class Lightning : MonoBehaviour {
         }
         transform.forward = (end - start).normalized;
         float distance = (end - start).magnitude;
+        distance /= parentSize;
         vfx.SetFloat("Lenght", distance);
     }
 

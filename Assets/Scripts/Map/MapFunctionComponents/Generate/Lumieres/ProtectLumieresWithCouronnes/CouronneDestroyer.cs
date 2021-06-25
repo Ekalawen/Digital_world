@@ -52,17 +52,11 @@ public class CouronneDestroyer : MonoBehaviour {
         }
     }
 
-    public void DestroyOrbTrigger() {
-        orbTrigger.ResizeOverTime(0, orbTrigger.dureeDestruction);
-        orbTrigger.SetIsDestroying();
-        Destroy(orbTrigger.gameObject, orbTrigger.dureeDestruction);
-    }
-
     public void DestroyProtection() {
         if (!isDestroyed) {
             isDestroyed = true;
             DestroyTheCouronne();
-            DestroyOrbTrigger();
+            orbTrigger.ReduceAndDestroy();
             lumiere.SetAccessible();
         }
     }

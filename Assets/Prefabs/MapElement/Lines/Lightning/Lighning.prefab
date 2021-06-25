@@ -59,21 +59,24 @@ VisualEffect:
       - m_Value: 0.5
         m_Name: TimeAtMaxLength
         m_Overridden: 1
-      - m_Value: 0.15
+      - m_Value: 0.03
         m_Name: Thickness
         m_Overridden: 1
-      - m_Value: 0.4
+      - m_Value: 0.095
         m_Name: DistorsionAmount
         m_Overridden: 1
-      - m_Value: 20
+      - m_Value: 14
         m_Name: NoiseScale
         m_Overridden: 1
       - m_Value: 0.5
-        m_Name: TimeAtmaxWidth
+        m_Name: MaskWidth
+        m_Overridden: 1
+      - m_Value: 0.5
+        m_Name: TimeAtMaxWidth
         m_Overridden: 1
     m_Vector2f:
       m_Array:
-      - m_Value: {x: 1.4, y: 0.875}
+      - m_Value: {x: 1.4, y: 0.8}
         m_Name: NoiseSpeed
         m_Overridden: 1
     m_Vector3f:
@@ -197,5 +200,7 @@ MonoBehaviour:
   lightningMode: 0
   vitesse: 5
   durationAfterArriving: 1
+  lifetime: 1
   refreshRate: 1
+  timeAtMaxWidth: 0.3
   vfx: {fileID: 7565811269512263925}

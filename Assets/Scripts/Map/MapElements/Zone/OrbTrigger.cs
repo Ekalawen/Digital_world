@@ -85,6 +85,12 @@ public class OrbTrigger : IZone {
         }
     }
 
+    public void ReduceAndDestroy() {
+        ResizeOverTime(0, dureeDestruction);
+        SetIsDestroying();
+        Destroy(gameObject, dureeDestruction);
+    }
+
     protected IEnumerator COnEnter(Collider other) {
         gm.soundManager.PlayTimeZoneButtonInClip(transform.position);
 
@@ -125,7 +131,7 @@ public class OrbTrigger : IZone {
 
     protected void UpdateLightningLink() {
         if(lightning != null) {
-            lightning.SetPosition(InFrontOfPlayerPosition(), transform.position);
+            lightning.SetPosition(InFrontOfPlayerPosition(), transform.position, parentSize: transform.localScale.x);
         }
     }
 
@@ -139,7 +145,7 @@ public class OrbTrigger : IZone {
         events.Invoke();
         gm.soundManager.PlayOrbTriggerActivationClip(transform.position);
         if (autoDestroyOnActivate) {
-            Destroy(transform.parent.gameObject); // Attention ça c'est du au fait qu'on a un composant parent inutile pour les OrbTriggers !
+            ReduceAndDestroy();
         }
     }
 
