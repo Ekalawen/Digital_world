@@ -801,12 +801,17 @@ public class Console : MonoBehaviour {
             messageCurrent.Arguments = new object[] { nbLumieresRestantes };
             EffacerImportantMessage(messageCurrent);
             AjouterMessageImportant(messageCurrent, new object[]{ nbLumieresRestantes }, Console.TypeText.ALLY_TEXT, 1.2f, true, messagePrecedent, new object[]{ nbLumieresRestantes + 1});
+		} else if (!gm.eventManager.IsEndGameStarted() && nbLumieresRestantes == 0 && !gm.eventManager.NoMoreElementsToBeDoneBeforeEndGame()) {
+            LocalizedString messageOne = strings.plusQueX;
+            messageOne.Arguments = new object[] { 1 };
+            EffacerImportantMessage(messageOne);
+            IlResteQuelqueChoseAFaire();
 		} else {
             if (!gm.eventManager.IsGameWin() && gm.eventManager.GetComponent<EventManagerWhileTrue>() == null) { // Ehhhh x)
                 LocalizedString messageOne = strings.plusQueX;
                 messageOne.Arguments = new object[] { 1 };
                 EffacerImportantMessage(messageOne);
-                StartEndGame();
+                FautTrouverLaSortie();
             }
         }
 	}
@@ -863,8 +868,12 @@ public class Console : MonoBehaviour {
     }
 
     // Lorsque le joueur rentre dans l'EndGame
-    public void StartEndGame() {
+    public void FautTrouverLaSortie() {
         AjouterMessageImportant(strings.fautTrouverLaSortie, TypeText.ALLY_TEXT, 1f);
+    }
+
+    public void IlResteQuelqueChoseAFaire() {
+        AjouterMessageImportant(strings.ilResteQuelqueChoseAFaire, TypeText.ALLY_TEXT, 1f);
     }
 
     // Si le joueur est trop haut, on l'informe !

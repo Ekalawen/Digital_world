@@ -95,14 +95,15 @@ public class EventManager : MonoBehaviour {
     protected Transform singleEventsFolder;
     protected bool shouldAutomaticallyQuitScene = true;
     protected Coroutine automaticallyQuitSceneCoroutine = null;
+    protected List<object> elementsToBeDoneBeforeStartEndGame;
 
-    public virtual void Initialize()
-    {
+    public virtual void Initialize() {
         name = "EventManager";
         gm = FindObjectOfType<GameManager>();
         map = gm.map;
         randomEventsFolder = new GameObject("RandomEvents").transform;
         singleEventsFolder = new GameObject("SingleEvents").transform;
+        elementsToBeDoneBeforeStartEndGame = new List<object>();
         PreFillPoolIfDeathCubesEndEvent();
 
         AddRandomEventsAndStartSingleEvents();
@@ -149,7 +150,7 @@ public class EventManager : MonoBehaviour {
     public virtual void OnLumiereCaptured(Lumiere.LumiereType type) {
         int nbLumieres = map.GetLumieres().Count;
         if (type == Lumiere.LumiereType.NORMAL) {
-            if (nbLumieres == 0 && !isEndGameStarted) {
+            if (nbLumieres == 0 && !isEndGameStarted && NoMoreElementsToBeDoneBeforeEndGame()) {
                 if (!bNoEndgame) {
                     gm.soundManager.PlayEndGameMusic(); // Ici car lorsqu'il y a plusieurs end-games on ne veut pas que la musique restart !
                     StartEndGame();
@@ -738,5 +739,19 @@ public class EventManager : MonoBehaviour {
                 map.PoolAddCube(cubeType);
             }
         }
+    }
+
+    public void AddElementToBeDoneBeforeEndGame(object element) {
+        if (!elementsToBeDoneBeforeStartEndGame.Contains(element)) {
+            elementsToBeDoneBeforeStartEndGame.Add(element);
+        }
+    }
+
+    public void RemoveElementToBeDoneBeforeEndGame(object element) {
+        elementsToBeDoneBeforeStartEndGame.Remove(element);
+    }
+    
+    public bool NoMoreElementsToBeDoneBeforeEndGame() {
+        return elementsToBeDoneBeforeStartEndGame.Count == 0;
     }
 }
