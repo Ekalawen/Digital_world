@@ -1,36 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &7166240126282793735
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7725085450022902550}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 250f4c1491511fa40bbc391dd5473c69, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  orbTrigger: {fileID: 1042638065660867210}
---- !u!114 &8452402099548391207
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7725085450022902550}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee00b5b90f775b74ca59242a56a8832e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lumiereType: 0
-  sonde: {fileID: 3595969431288943544}
-  orbTrigger: {fileID: 1042638065660867210}
-  lightningPrefab: {fileID: 2065035699496201962, guid: 4a7200b7209c5174190ee13b484d36b8,
-    type: 3}
-  normalSondeMaterial: {fileID: 2100000, guid: b3a46b20d6caa5a47980526d3785e6d3, type: 2}
 --- !u!1 &7818834974587880467
 GameObject:
   m_ObjectHideFlags: 0
@@ -69,51 +38,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8943111554649471773}
     m_Modifications:
-    - target: {fileID: 1375913614337508652, guid: 4a4108fed0c818c44aa267b9624dcc08,
+    - target: {fileID: 8452402099548391207, guid: 4a4108fed0c818c44aa267b9624dcc08,
         type: 3}
-      propertyPath: rayon
-      value: 4.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1375913614337508652, guid: 4a4108fed0c818c44aa267b9624dcc08,
-        type: 3}
-      propertyPath: hasToBeDestroyedBeforeEndGame
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1375913614337508652, guid: 4a4108fed0c818c44aa267b9624dcc08,
-        type: 3}
-      propertyPath: events.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1375913614337508652, guid: 4a4108fed0c818c44aa267b9624dcc08,
-        type: 3}
-      propertyPath: events.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1375913614337508652, guid: 4a4108fed0c818c44aa267b9624dcc08,
-        type: 3}
-      propertyPath: events.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      propertyPath: sonde
       value: 
-      objectReference: {fileID: 8452402099548391207}
-    - target: {fileID: 1375913614337508652, guid: 4a4108fed0c818c44aa267b9624dcc08,
-        type: 3}
-      propertyPath: events.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1375913614337508652, guid: 4a4108fed0c818c44aa267b9624dcc08,
-        type: 3}
-      propertyPath: events.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: Trigger
-      objectReference: {fileID: 0}
-    - target: {fileID: 1375913614337508652, guid: 4a4108fed0c818c44aa267b9624dcc08,
-        type: 3}
-      propertyPath: events.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: AddLumiereDataSonde, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 1375913614337508652, guid: 4a4108fed0c818c44aa267b9624dcc08,
-        type: 3}
-      propertyPath: events.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 3595969431288943544}
     - target: {fileID: 8526738675153071280, guid: 4a4108fed0c818c44aa267b9624dcc08,
         type: 3}
       propertyPath: m_Name
@@ -123,21 +52,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_RootOrder
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8526738675153071281, guid: 4a4108fed0c818c44aa267b9624dcc08,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8526738675153071281, guid: 4a4108fed0c818c44aa267b9624dcc08,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8526738675153071281, guid: 4a4108fed0c818c44aa267b9624dcc08,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8526738675153071281, guid: 4a4108fed0c818c44aa267b9624dcc08,
         type: 3}
@@ -191,30 +105,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4a4108fed0c818c44aa267b9624dcc08, type: 3}
---- !u!1 &7725085450022902550 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8526738675153071280, guid: 4a4108fed0c818c44aa267b9624dcc08,
-    type: 3}
-  m_PrefabInstance: {fileID: 2116704948626536358}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7725085450022902551 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8526738675153071281, guid: 4a4108fed0c818c44aa267b9624dcc08,
     type: 3}
   m_PrefabInstance: {fileID: 2116704948626536358}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1042638065660867210 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1375913614337508652, guid: 4a4108fed0c818c44aa267b9624dcc08,
-    type: 3}
-  m_PrefabInstance: {fileID: 2116704948626536358}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7725085450022902550}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c43ca45fe16e6fa458d9b1dd0111e99a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &3490730020091903128
 PrefabInstance:
   m_ObjectHideFlags: 0

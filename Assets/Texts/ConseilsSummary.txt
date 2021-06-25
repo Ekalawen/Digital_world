@@ -164,12 +164,12 @@ Ici les Sorties alternent entre le haut et le bas.
 END-EVENT : Ça vient d'en haut ou d'en bas !
 END-EVENT : La direction a changé !
 
-21_AlwaysReset
-Attraper un Reset Temporel remonte votre temps à son maximum !
-Chaque fois que vous attraperez un Reset Temporel, un autre apparaîtra ailleurs !
-Utilisez votre Pathfinder() pour localiser un Reset Temporel lorsque manquez de temps !
-Le Pathfinder() vous permet de localiser à la fois une Data en jaune et un Reset Temporel en violet !
-Si une Sonde vous éjecte hors de la Matrice, utilisez votre Dash015 pour revenir !
+21_BrisableRoad
+Les Cubes Brisables Instables se détruisent 100% plus vite que les Cubes Brisables.
+Vous pouvez distinguer les Cubes Brisables Instables des Cubes Brisables à leur granularité.
+Les LinkyCubes sont des Cubes connectés les uns aux autres. Ce qui arrive à l'un arrive à tous ceux connectés.
+Si vous touchez un LinkyCube Brisable, vous briserez tous les LinkyCubes qui lui sont liés, même s'ils ne sont pas Brisables.
+Vous pouvez reconnaître les LinkyCubes à leurs poignées carrés sur les bords.
 
 22_FirstTracers
 Les Tracers traceront à la première position où ils vous ont vu, avant de charger un Blast en 4 secondes.
@@ -178,19 +178,19 @@ Si vous ne voyez pas le centre du Tracer au moment du Blast alors celui-ci ne vo
 Vous pouvez interrompre un Tracer pendant 6 secondes en lui sautant dessus !
 Il vaut parfois mieux attendre caché que vos cooldown remontent et que les Tracers se soient calmés avant de repartir !
 
-23_SwapHighway
+23_AlwaysReset
+Attraper un Reset Temporel remonte votre temps à son maximum !
+Chaque fois que vous attraperez un Reset Temporel, un autre apparaîtra ailleurs !
+Utilisez votre Pathfinder() pour localiser un Reset Temporel lorsque manquez de temps !
+Le Pathfinder() vous permet de localiser à la fois une Data en jaune et un Reset Temporel en violet !
+Si une Sonde vous éjecte hors de la Matrice, utilisez votre Dash015 pour revenir !
+
+24_SwapHighway
 Les Cubes transparents sont désactivés et ne fonctionnent plus. Vous pouvez passer à travers.
 Les LinkyCubes sont des Cubes connectés les uns aux autres. Ce qui arrive à l'un arrive à tous ceux connectés.
 Les SwappyCubes sont des LinkyCubes qui s'activent et se désactivent cycliquement en rythme.
 Un cercle de prévisualisation vous permet d'anticiper quand des SwappyCubes changent d'état.
 Les poignées rondes sur les bords des LinkyCubes vous indique que ce sont des SwappyCubes.
-
-24_FullSwapPolycubes
-Ici, les Cubes activés et les Cubes désactivés échangent leurs états toutes les 4 secondes.
-Localisez des Cubes désactivés juste avant un changement d'état, ils seront ensuite activés.
-Sautez juste avant un changement d'état pour avoir plus de temps et savoir où atterrir.
-Les Datas en hauteur sont moins risqués que les Datas à basse altitude.
-Votre position de départ est toujours au-dessus d'un Cube pour que vous ne tombiez pas dès le début.
 
 25_SondesOptimisation
 Les SondesV2, de couleur bleue, sont 45.9% plus rapides que les Sondes de base.
@@ -198,7 +198,33 @@ Les SondesV2 ont une fonction de recherche active supplémentaire lorsqu'elles v
 Les Blackouts ne changent pas le gameplay autrement qu'en affectant votre perception.
 Si vous touchez un LinkyCube Brisable, vous briserez tous les LinkyCubes qui lui sont liés.
 
-25_OrbTriggerFactory
+26_TracerGeneration
+La Régénération de la Matrice crée des Cubes aléatoirement toutes les 4 secondes.
+Ici, la première Régénération de la Matrice est plus importante pour commencer rapidement.P
+Plus vous attendrez, plus le niveau sera plein, et plus il vous sera facile d'échapper aux Tracers.
+Cachez-vous derrière les Cubes pour éviter les Blasts des Tracers et éviter de vous faire éjecter.
+
+27_EquilibriumReset
+Gardez un œil sur le timer pour savoir quand aller chercher le Reset Temporel !
+Si vous attrapez les Datas suffisamment vite, vous n'avez presque pas besoin du Reset Temporel !
+Essayez de visualiser des chaînes de Datas pour toutes les attraper à la suite !
+Utilisez les Bouncers pour remonter rapidement.
+
+28_ClosingCaves
+Un SwappyCube désactivé perd toutes ses propriétés. Vous pouvez donc passer à travers un Cube de la Mort désactivé.
+Si un chemin se ferme devant vous, il vaut souvent mieux trouver un chemin alternatif plus rapide.
+Tant que vous ne voyez pas le cercle de prévisualisation, vous avez sûrement encore le temps de passer.
+Observez tout autour de vous quand vous arrivez à un nouvel endroit pour repérer les Cubes de la Mort hors de vue.
+Le Pathfinder peut passer à travers les SwappyCubes. Ce qui n'est pas toujours votre cas.
+
+29_FullSwapPolycubes
+Ici, les Cubes activés et les Cubes désactivés échangent leurs états toutes les 4 secondes.
+Localisez des Cubes désactivés juste avant un changement d'état, ils seront ensuite activés.
+Sautez juste avant un changement d'état pour avoir plus de temps et savoir où atterrir.
+Les Datas en hauteur sont moins risqués que les Datas à basse altitude.
+Votre position de départ est toujours au-dessus d'un Cube pour que vous ne tombiez pas dès le début.
+
+30_OrbTriggerFactory
 Restez 7 secondes dans un Firewall() sans en sortir pour libérer la Data !
 Pour rester proche des Firewalls(), dansez autour, calez-vous dans les coins, glissez le long des murs ...
 Les Firewalls() s'aggrandissent un peu lorsque vous rentrez dedans, et diminuent quand vous en sortez.
@@ -209,28 +235,9 @@ END-EVENT : Firewall : Ébréché
 END-EVENT : F1r3wall : Fissuré
 END-EVENT : F1r3w477 : ©r4©ké
 
-26_EquilibriumReset
-Gardez un œil sur le timer pour savoir quand aller chercher le Reset Temporel !
-Si vous attrapez les Datas suffisamment vite, vous n'avez presque pas besoin du Reset Temporel !
-Essayez de visualiser des chaînes de Datas pour toutes les attraper à la suite !
-Utilisez les Bouncers pour remonter rapidement.
-
-27_BrisableRoad
-Les Cubes Brisables Instables se détruisent 100% plus vite que les Cubes Brisables.
-Vous pouvez distinguer les Cubes Brisables Instables des Cubes Brisables à leur granularité.
-Les LinkyCubes sont des Cubes connectés les uns aux autres. Ce qui arrive à l'un arrive à tous ceux connectés.
-Si vous touchez un LinkyCube Brisable, vous briserez tous les LinkyCubes qui lui sont liés, même s'ils ne sont pas Brisables.
-Vous pouvez reconnaître les LinkyCubes à leurs poignées carrés sur les bords.
-
-28_TracerGeneration
-La Régénération de la Matrice crée des Cubes aléatoirement toutes les 4 secondes.
-Ici, la première Régénération de la Matrice est plus importante pour commencer rapidement.P
-Plus vous attendrez, plus le niveau sera plein, et plus il vous sera facile d'échapper aux Tracers.
-Cachez-vous derrière les Cubes pour éviter les Blasts des Tracers et éviter de vous faire éjecter.
-
-29_ClosingCaves
-Un SwappyCube désactivé perd toutes ses propriétés. Vous pouvez donc passer à travers un Cube de la Mort désactivé.
-Si un chemin se ferme devant vous, il vaut souvent mieux trouver un chemin alternatif plus rapide.
-Tant que vous ne voyez pas le cercle de prévisualisation, vous avez sûrement encore le temps de passer.
-Observez tout autour de vous quand vous arrivez à un nouvel endroit pour repérer les Cubes de la Mort hors de vue.
-Le Pathfinder peut passer à travers les SwappyCubes. Ce qui n'est pas toujours votre cas.
+31_FirstDataSondes
+Restez 7 secondes proche d'une DataSonde sans en sortir pour libérer la Data !
+Libérez toutes les Datas des DataSondes et récupérez-les pour débloquer la Sortie !
+Les DataSondes sont en mouvement, mais leur zone d'effet est 25% plus grande que les Firewalls().
+Les DataSondes sont jaunes. Une fois leur Data libéré, elles redeviennent vertes.
+Tournez autour d'une DataSonde pour rester proche d'elle sans la toucher.
