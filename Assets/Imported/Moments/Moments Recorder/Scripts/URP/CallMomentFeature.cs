@@ -11,7 +11,7 @@ namespace UnityEngine.Rendering.Universal
         [System.Serializable]
         public class Settings
         {
-            public RenderPassEvent renderPassEvent = RenderPassEvent.AfterRenderingOpaques;
+            public RenderPassEvent renderPassEvent = RenderPassEvent.AfterRendering;
 
             // public int blitMaterialPassIndex = -1; // I think I don't use that anymore, but not sure so I let it here ?
             public BufferType sourceType = BufferType.CameraColor;
