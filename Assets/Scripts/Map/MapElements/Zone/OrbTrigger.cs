@@ -27,7 +27,6 @@ public class OrbTrigger : IZone {
     [Header("OtherParams")]
     public bool shouldPopCubeInCenter = false;
     public bool autoDestroyOnActivate = false;
-    public bool shouldAutoInitialize = false;
     public bool hasToBeDestroyedBeforeEndGame = false;
 
     protected Coroutine coroutineOnEnter = null;
@@ -37,21 +36,12 @@ public class OrbTrigger : IZone {
     protected bool isDestroying = false;
     protected Lightning lightning;
 
-    protected override void Start() {
-        base.Start();
-        Resize(transform.position, Vector3.one * rayon);
-        PopCubeInCenter();
-        if(shouldAutoInitialize) {
-            shouldAutoInitialize = false;
-            Initialize(rayon, durationToActivate);
-        }
-    }
-
     public void Initialize(float rayon, float durationToActivate) {
         Initialize();
         Resize(transform.position, Vector3.zero);
         ResizeOverTime(rayon, dureeConstruction);
         RegisterHasToBeDestroyBeforeEndGame();
+        PopCubeInCenter();
         this.rayon = rayon;
         this.durationToActivate = durationToActivate;
     }

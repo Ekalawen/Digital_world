@@ -20,7 +20,8 @@ public class EnnemiManager : MonoBehaviour {
     [HideInInspector]
     public GameObject ennemisFolder;
 	protected Timer playerCaptureTimer; // Le temps depuis lequel le joueur est en contact avec un ennemi
-
+    [HideInInspector]
+    public DataSoundManager dataSoundManager;
 
     public void Initialize() {
         gm = GameManager.Instance;
@@ -31,6 +32,8 @@ public class EnnemiManager : MonoBehaviour {
         GetAllAlreadyExistingEnnemis();
 
         GenerateEnnemies();
+
+        InitializeDataSoundManager();
     }
 
     public void Update() {
@@ -144,6 +147,14 @@ public class EnnemiManager : MonoBehaviour {
             foreach (Ennemi ennemi in ennemis) {
                 ennemi.gameObject.SetActive(newState);
             }
+        }
+    }
+
+    protected void InitializeDataSoundManager() {
+        DataSoundManager dsm = GetComponent<DataSoundManager>();
+        if (dsm != null) {
+            dataSoundManager = dsm;
+            dataSoundManager.Initialize();
         }
     }
 }
