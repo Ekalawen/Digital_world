@@ -227,22 +227,49 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         TresholdText tresholdText = texteExplicatif.GetTresholdText();
         List<TresholdFragment> fragments = tresholdText.GetAllFragmentsOrdered();
         bool levelSucceeded = selectorPath.startLevel.IsSucceeded();
-        for(int i = 0; i < fragments.Count; i++) {
+        for(int i = 0; i < fragments.Count; i++)
+        {
             TresholdFragment fragment = fragments[i];
             //string nextPallierText = GetNextPallierText(fragment, fragments);
             string textOfTreshold = GetTresholdTextForPallier(fragment.treshold);
             string pallierNumberText = selectorManager.strings.palierTotalTexte.GetLocalizedString(i + 1, textOfTreshold, "").Result;
             pallierNumberText = UIHelper.SurroundWithColor(pallierNumberText, UIHelper.GREEN);
+
             if (levelSucceeded && fragment.treshold <= currentTreshold) {
                 fragment.text = pallierNumberText + fragment.text;
             } else {
                 string palierNotUnlockedYet = selectorManager.strings.palierNotUnlockedYet.GetLocalizedString().Result;
                 fragment.text = pallierNumberText + palierNotUnlockedYet;
             }
+
+            if (fragment == fragments.First()) {
+                string currentTresholdText = GetCurrentTresholdText(currentTreshold);
+                fragment.text = currentTresholdText + "\n\n" + fragment.text;
+            }
         }
         int maxTreshold = texteExplicatif.GetMaxTreshold();
         texteExplicatif.mainText.text = texteExplicatif.ComputeText(maxTreshold);
         texteExplicatif.mainText.text = TexteExplicatif.ApplyColorReplacements(texteExplicatif.mainText.text);
+    }
+
+    protected string GetCurrentTresholdText(int currentTreshold) {
+        string currentTresholdText;
+        if (selectorPath.startLevel.menuLevel.GetLevelType() == MenuLevel.LevelType.REGULAR) {
+            int nbVictoires = selectorPath.startLevel.menuLevel.GetNbWins();
+            currentTresholdText = selectorManager.strings.palierCurrentTresholdRegular.GetLocalizedString(currentTreshold, nbVictoires).Result;
+            string dataNumberToReplace = currentTreshold.ToString() + "<b></b>"; // To prevent to replace 0 in <#00FF00FF> XD
+            string victoryNumberToReplace = nbVictoires.ToString() + "<a></a>"; // To prevent to replace 0 in <#00FF00FF> XD
+            Tuple<string, string> victoryNumberReplacement = new Tuple<string, string>(victoryNumberToReplace, UIHelper.SurroundWithColor(nbVictoires.ToString(), UIHelper.CYAN));
+            Tuple<string, string> dataNumberReplacement = new Tuple<string, string>(dataNumberToReplace, UIHelper.SurroundWithColor(currentTreshold.ToString(), UIHelper.CYAN));
+            currentTresholdText = UIHelper.ApplyReplacement(currentTresholdText, victoryNumberReplacement);
+            currentTresholdText = UIHelper.ApplyReplacement(currentTresholdText, dataNumberReplacement);
+        } else {
+            currentTresholdText = selectorManager.strings.palierCurrentTresholdInfinite.GetLocalizedString(currentTreshold).Result;
+            Tuple<string, string> blockNumberReplacement = new Tuple<string, string>(currentTreshold.ToString(), UIHelper.SurroundWithColor(currentTreshold.ToString(), UIHelper.CYAN));
+            currentTresholdText = UIHelper.ApplyReplacement(currentTresholdText, blockNumberReplacement);
+        }
+        currentTresholdText = UIHelper.SurroundWithColor(currentTresholdText, UIHelper.GREEN);
+        return currentTresholdText;
     }
 
     protected string GetTresholdTextForPallier(int tresholdText) {

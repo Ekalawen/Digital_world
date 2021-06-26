@@ -28,6 +28,8 @@ public class SelectorManagerStrings : ScriptableObject {
     public LocalizedString palierNextPalierDernier;
     public LocalizedString palierNextPalierProchain;
     public LocalizedString palierNotUnlockedYet;
+    public LocalizedString palierCurrentTresholdRegular;
+    public LocalizedString palierCurrentTresholdInfinite;
 
     public LocalizedString traceDisplayer;
 
