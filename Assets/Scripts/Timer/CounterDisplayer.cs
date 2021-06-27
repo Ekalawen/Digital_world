@@ -20,6 +20,7 @@ public class CounterDisplayer : MonoBehaviour {
 
     public void Hide() {
         displayText.text = "";
+        imageContainer.gameObject.SetActive(false);
     }
 
     public Color GetTextColor() {
@@ -34,6 +35,10 @@ public class CounterDisplayer : MonoBehaviour {
 
     public void SetFontSize(int size) {
         displayText.fontSize = size;
+    }
+
+    public void SetBackgroundSize(float scale) {
+        imageContainer.rectTransform.localScale = Vector3.one * scale;
     }
 
     public void AddVolatileText(string message, Color color) {

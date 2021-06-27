@@ -68,6 +68,7 @@ public class InfiniteMap : MapManager {
         blocksFolder = new GameObject("Blocks").transform;
         blocksFolder.transform.SetParent(cubesFolder.transform);
         string nextTresholdSymbol = gm.goalManager.GetNextNotUnlockedTresholdSymbolFor(nbBlocksRun);
+        nbBlocksDisplayer.SetColor(gm.console.allyColor);
         nbBlocksDisplayer.Display($"{nbBlocksRun.ToString()}/{nextTresholdSymbol}");
         timerSinceLastBlock = new Timer();
         nbBlocksRun = 0;
