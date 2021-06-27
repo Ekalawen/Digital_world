@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,13 +16,17 @@ public class AutoAlphaer : MonoBehaviour {
     protected Timer timer;
     protected Vector3 startScale = Vector3.one;
     protected Image image;
+    protected TMP_Text text;
 
     void Start() {
         timer = new Timer(intervalTime);
         timer.SetOver();
         image = GetComponent<Image>();
         if(image == null) {
-            Debug.LogWarning("Un AutoAlphaer doit posséder un Image component ! :)");
+            text = GetComponent<TMP_Text>();
+            if (text == null) {
+                Debug.LogWarning("Un AutoAlphaer doit posséder un Image component OU un TMP_Text component ! :)");
+            }
         }
     }
 
@@ -53,8 +58,14 @@ public class AutoAlphaer : MonoBehaviour {
     }
 
     protected void ChangeAlpha(float newAlpha) {
-        Color currentColor = image.color;
-        currentColor.a = newAlpha;
-        image.color = currentColor;
+        if (image != null) {
+            Color currentColor = image.color;
+            currentColor.a = newAlpha;
+            image.color = currentColor;
+        } else if (text != null) {
+            Color currentColor = text.color;
+            currentColor.a = newAlpha;
+            text.color = currentColor;
+        }
     }
 }
