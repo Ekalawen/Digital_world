@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class CounterDisplayer : MonoBehaviour {
-    public Text displayText;
+    public TMP_Text displayText;
     public GameObject movingTextPrefab;
     public float dureeMoving = 1.0f;
     public float distanceMoving = 20.0f;
     public RectTransform textContainer;
+    public Image imageContainer;
     public int fontSize = 20;
 
     public void Display(string message) {
@@ -26,6 +28,8 @@ public class CounterDisplayer : MonoBehaviour {
 
     public void SetColor(Color color) {
         displayText.color = color;
+        Color hdrColor = color * 64;
+        imageContainer.material.SetColor("_Color", hdrColor);
     }
 
     public void SetFontSize(int size) {
@@ -33,14 +37,14 @@ public class CounterDisplayer : MonoBehaviour {
     }
 
     public void AddVolatileText(string message, Color color) {
-        Text t = Instantiate(movingTextPrefab, textContainer).GetComponent<Text>();
+        TMP_Text t = Instantiate(movingTextPrefab, textContainer).GetComponent<TMP_Text>();
         t.gameObject.SetActive(true);
         t.text = message;
         t.color = color;
         StartCoroutine(MoveTextDown(t));
     }
 
-    protected IEnumerator MoveTextDown(Text t) {
+    protected IEnumerator MoveTextDown(TMP_Text t) {
         float debut = Time.timeSinceLevelLoad;
         float yDebut = t.rectTransform.anchoredPosition.y - 10;
         while (Time.timeSinceLevelLoad - debut <= dureeMoving) {
@@ -55,4 +59,5 @@ public class CounterDisplayer : MonoBehaviour {
         }
         Destroy(t.gameObject);
     }
+
 }
