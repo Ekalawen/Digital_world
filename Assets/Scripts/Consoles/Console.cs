@@ -60,7 +60,7 @@ public class Console : MonoBehaviour {
 
     [Header("Links")]
 	public GameObject textContainer; // Là où l'on va afficher les lignes
-	public Text importantText; // Là où l'on affiche les informations importantes
+	public TMP_Text importantText; // Là où l'on affiche les informations importantes
     public GameObject escapeButton; // Le truc qui clignote pour nous dire d'appuyer sur Escape à la fin du jeu !
     public GameObject pauseMenu;
     public CounterDisplayer dataCountDisplayer;
