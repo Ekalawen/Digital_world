@@ -1,0 +1,113 @@
+@everyone Halte-là Runner !
+Pour rentrer dans cette partie-là de la Maille, vous devez prendre connaissance des informations ci-dessous.
+Ces informations sont notamment constitués du Patch-notes 0.10, lui-même décomposé en 127 sous-parties de 94 sous-parties chacune.
+Vous serez relâché lorsque vous serez en mesure de prouver que vos circuits ont bien imprimé l'information.
+
+#Patch-notes Version 0.10 :
+
+Le patch d'aujourd'hui s'est essentiellement concentré sur une partie des graphismes, du rendu et de la boucle de gameplay pour que vous, joueur, puissiez-avoir la meilleure expérience de jeu possible !
+Voici les points notables de ce patch :
+- Nouveaux effets visuels (super cools !) de la boucle de gameplay !
+- Un redesign de l'interface utilisateur en cours ! (ça, ça veut dire que c'est pas terminé :p)
+- Plein de petites optimisations !
+- 1 nouveau niveau !
+Ça ne vous suffit pas et vous voulez des détails ? Alors c'est juste en-dessous que ça se passe ! :)
+
+
+# Graphismes
+- Le Sélecteur de niveau a maintenant une Skybox (un fond d'écran) matricielle ! :)
+
+## Boucle de Gameplay
+Alors déjà, c'est quoi ça, la Boucle de Gameplay ?
+Pour faire simple, c'est un cycle qui se répète en permanence lorsque vous jouez :
+1) Vous voyez une image à l'écran et entendez du son (par exemple, un Cube vous bloque le chemin).
+2) Vous prenez une décision dans votre tête basée sur ce que vous percevez du jeu (vous voulez sauter).
+3) Vous exprimez cette décision au jeu via votre contrôleur (vous appuyez sur ESPACE).
+4) Le jeu prend en compte cette action du contrôleur, et modifie son état (vous vous élevez dans les airs).
+5) Retour à l'étape 1) !
+Le truc, c'est qu'il faut que cette boucle de rétroaction soit super fluide et intuitive pour le joueur : plus vous comprenez ce qui se passe à l'écran, plus vous êtes capable de prendre de bonnes décisions rapidement, mieux vous jouez. Et donc plus votre expérience de jeu sera agréable !
+Et donc, pour maximiser votre fun, il est super important que vous compreniez en permanence ce qui se passe dans le jeu.
+Et plus particulièrement, dans quel état se trouve votre personnage. Est-ce que vous êtes en train de sauter ? De tomber ? Vous êtes accroché à un mur ? Lequel ? Vous reste-t-il du temps à être accroché à ce mur ?
+Donc pour chacune des actions importantes des mouvements du joueur, un effet visuel a été ajouté !
+- Un effet visuel sur les bords de l'écran s'active à chaque fois que vous sautez.
+- Un effet visuel de distorsion de l'écran s'active lorsque vous vous accrochez à un mur.
+- Un effet visuel de warp sur un bord de l'écran vous indiquant la direction du mur auquel vous êtes accroché s'active lorsque vous vous accrochez à un mur.
+- Suppression de l'ancien effet visuel d'assombrissement des bords de l'écran lorsque l'on est accroché au mur.
+- Un effet visuel de warp sur le bas de l'écran s'active lorsque vous appuyez sur SHIFT.
+- L'effet visuel du Dash a été revu pour s'harmoniser avec les effets visuels ci-dessus.
+- L'effet visuel lorsque l'on se fait toucher par un ennemi est maintenant une aberration chromatique au lieu de rendre les bords de l'écran rouge.
+
+## Interface Utilisateur
+- Le message "Appuyez sur n'importe quelle touche" dans l'écran de chargement apparaît et disparaît maintenant progressivement et cycliquement pour que vous le remarquiez.
+
+### Un nouveau Timer !
+Parmi les informations vraiment importantes du jeu que vous devez toujours avoir facilement accessible, il y a le Timer !
+Et bonne nouvelle, il a été entièrement refait pour avoir un style plus technologique et moderne et être aussi plus lisible.
+Le Timer ne ressemble donc plus à un morceau de texte perdu en haut de l'écran ! Enfin ! x)
+D'ailleurs, le Data Count en haut à droite de l'écran a reçu le même traitement :)
+
+### Nouvelle police de caractère
+L'ancienne police de caractères n'était pas adaptée à de longs textes.
+Elle a donc été remplacée par une autre plus facile à lire sur les textes de plusieurs lignes. Les textes des boutons demeurent inchangés.
+La nouvelle police est en fait celle utilisée dans les Shells Linux par défaut, GNU Unifont !
+
+### Contour de police
+En jeu, il arrive souvent que les textes au centre de l'écran soient difficiles à lire lorsqu'ils sont de la même couleur que le fond d'écran.
+Ces textes ont maintenant un contour (un outline) de couleur noir pour être sûr que vous puissiez toujours les lire :)
+
+### Le DataCount directement dans les DH
+Souvent quand on regarde les Data Hackées(), on voit que le prochain Palier est à par exemple 60 Datas, mais on ne sait pas à combien on en est de notre DataCount.
+Ce qui nous rend très tristes car on doit alors : quitter les DH, revenir au niveau précédent, regarder le DataCount, revenir au Path, et recliquer sur les DH. Vous êtes triste là, n'est-ce pas ? :)
+Pour pallier à ce problème, le DataCount (ou le nombre de Blocs pour les IR) est maintenant directement injecté tout en haut du texte des Data Hackées() ! Et donc : fin de la tristesse dans le monde !
+
+### Options
+- Ajout de 4 nouvelles options pour pouvoir désactiver ou activer les nouveaux effects visuels.
+
+## Mots de Passes
+- Les Data Hackées() vers le niveau FirewallDance ont été corrigées.
+- Les Data Hackées() vers le niveau FirstDataSondes ont été ajoutées.
+/!\ Spoiler /!\
+Ces dernières DH consistent à retrouver un mot de passe parmi une base de données de plus de 400 mots de passe.
+Pour information, ces 400 mots de passe sont tous des mots de passe RÉELS appartenant à des personnes réelles dans le monde.
+Pour les curieux et les suspicieux, non, je ne les ai pas hackées moi-même (je ne vous l'aurai pas dit sinon :p). En fait, ils sont accessibles dans la base de données RockYou2021 qui consiste en un recensement de tous les mots de passe qui ont été récupérés sur des failles de sécurités aux cours des quelques dernières années.
+Cette base de données comprend 8.000.000.000 mots de passe. Donc plus que d'êtres humains sur terre. Et ça fait 130Go, ouch.
+Ce qui signifie que la plupart ne sont pas de véritables mots de passe. Ou sont obsolètes. De plus, ces mots de passe ne sont pas associés à des identifiants ou à des adresses mail, donc ils ne représentent aucun risque.
+Néanmoins, j'ai fouillé un peu, et j'ai trouvé un des anciens mots de passe que j'utilisais autrefois. F***.
+Donc prudence est toujours de mise, et j'en profite pour rappeler que changer vos mots de passe de temps à autre ne fait pas de mal !
+Enfin, tous les mots de passe utilisés dans ces DH ont été MODIFIÉS légèrement et aléatoirement. Ils ne sont donc d'absolument aucune utilité :)
+
+
+# Gameplay
+- L'aléatoire du chemin du Pathfinder a été supprimé. Le Pathfinder prendra maintenant toujours un des plus courts chemins :)
+- Lorsque vous capturez une Data, le tremblement de la caméra a été augmenté de 1.5 à 10 pour être plus marqué.
+- Nouveau CheatCode pour désactiver les ennemis. Comment ça ça vous intéresse ? Ah ! Est-ce que j'ai déjà mentionné le fait que tous les CheatCodes sont tous utilisables directement en jeu ? :)
+- Lorsque vous perdez la partie dans un Firewall(), celui-ci n'est plus hacké automatiquement.
+
+## Nouveau Niveau /!\ Spoiler /!\
+De son nom de code temporaire, FirstDataSondes, ce niveau est le premier à faire apparaître ... des DataSondes !
+Les DataSondes sont des Data qui sont aussi des Sondes. Ou plutôt des Sondes qui sont aussi des Datas. Ou l'inverse. Je sais jamais.
+Le truc, c'est que la CRINM s'est rendu compte que c'était un peu trop facile de laisser ses données accessibles comme ça directement sans surveillances.
+Du coup, ils ont eu l'idée d'incorporer ces données à des Sondes ! Heureusement pour vous, il est possible de Hacker ces Sondes à la manière d'un Firewall().
+Restez 7 secondes suffisamment proche de la Sonde, et cela désynchronisera la Data de la Sonde, et vous pourrez ensuite la récupérer ! Faites juste attention à ne pas vous faire toucher par la Sonde, sinon cela risque bien de vous éjecter en-dehors de la zone d'attraction du Hack, et vous devrez tout recommencer :'(
+Simple n'est-ce-pas ? Si seulement ces DataSondes n'étaient pas protégés par des SondesV2 ... ;)
+
+
+# Optimisations
+- Optimisations des SwappyCubes dans le niveau SwapHighway : le calcul des LinkyCubes voisins se répartie maintenant sur plusieurs frames pour éviter des spikes de performance en plein jeu ! :)
+- Optimisation de la destruction des Cubes. Un des appels de fonctions est remis à plus tard, ce qui optimise grandement la destruction de multiples Cubes dans la même frame.
+
+## Mise en place d'un Pool de Cubes
+Et c'est quoi ça ? Un Pool de Cubes ?
+C'est une technique d'optimisation où, lorsque l'on veut créer un objet (donc ici un Cube) dans le jeu, au lieu de le créer entièrement de zéro, on va réutiliser un ancien objet dont on avait plus besoin !
+Ça implique que lorsque l'on a plus besoin d'un objet, au lieu de le détruire (le pauvre), on va juste le désactiver et le stocker temporairement. Dans le Pool donc.
+Et quand on en aura à nouveau besoin, on n'aura qu'à se servir dans le Pool. Et ce sera plus rapide.
+Vous pouvez voir ça comme du recyclage virtuel ;)
+Typiquement, cette technique est super utile à la fin d'un niveau où la carte est entièrement remplie de Cubes de la Mort en quelques secondes.
+Pour éviter d'avoir des problèmes de performances à ce moment-là, on va "pré-créer" tous ces Cubes *au début du niveau* et les désactiver pour les mettre dans le Pool.
+Comme ça, au moment critique, on aura déjà sauvé pas mal de temps ! Et on aura donc de meilleures performances ! ;)
+
+
+# Equilibrage
+- Dans le niveau FirewallDance, les positions des Datas sont optimisées pour être au maximum éloignées les unes des autres. Le tout pour éviter la superposition des Firewalls(), car cela nuisait à la lisibilité du jeu lorsque ça arrivait.
+- Dans le niveau BounceHighway, le Bloc DeathJumpBounceBlock a maintenant un seul espace pour le franchir au lieu de deux auparavant.
+
