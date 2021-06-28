@@ -24,7 +24,7 @@ public class SwappyCubesHolder : MonoBehaviour {
     }
 
     public void SetCubesLinky(int initialInterval, Texture2D linkyTexture, bool useEnableState = false) {
-        if (gm.GetMapType() == MenuLevel.LevelType.INFINITE) {
+        if (gm.GetMapType() == MenuLevel.LevelType.INFINITE && gm.timerManager.HasGameStarted()) {
             StartCoroutine(CSetCubesLinkyForIR(initialInterval, linkyTexture, useEnableState));
         } else {
             foreach (Cube cube in cubes) {
