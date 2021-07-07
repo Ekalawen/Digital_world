@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Material_Skybox
-  m_Shader: {fileID: -6465566751694194690, guid: 46f222e6377bef94ea1485bd794a9473,
+  m_Name: Material_Buttons_UI_Blue
+  m_Shader: {fileID: -6465566751694194690, guid: 31e64a17c399bca4494cc14b8f2c64b8,
     type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
@@ -20,16 +20,20 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - Texture2DArray_4A2006A0:
+    - _MainTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _SampleTexture2DArray_8DA2821B_TextureArray_1:
+    - _MainText:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _SampleTexture2D_FEF74C36_Texture_1:
-        m_Texture: {fileID: 2800000, guid: 177326e68d0e84643a05303a56024179, type: 3}
+    - _MainTexture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Texture:
+        m_Texture: {fileID: 2800000, guid: 70581086b0b04464e99197ee8809b8f1, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -46,15 +50,11 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _GradientScale: 1.1
-    - _ProportionRectangles: 0.7
-    - _ScrollSpeed: 10
-    - _ScrollSpeedPower: 3
-    - _VariationsAmplitude: 0.3
+    - NoisePower: 2
+    - NoiseScale: 1
+    - Transparency: 0
     m_Colors:
-    - _BackgroundColor: {r: 0, g: 0, b: 0, a: 1}
-    - _NbRectangles: {r: 200, g: 80, b: 0, a: 0}
-    - _RectangleColor: {r: 1, g: 0, b: 0, a: 1}
-    - _RectangleOffsets: {r: 0.96, g: 0, b: 0, a: 0}
-    - _ScrollSpeed: {r: 3, g: 20, b: 0, a: 0}
+    - NoiseSpeed: {r: 0, g: 1, b: 0, a: 0}
+    - _Color: {r: 0, g: 0, b: 0, a: 1}
+    - _EdgesColor: {r: 0, g: 0, b: 63.999992, a: 64}
   m_BuildTextureStacks: []
