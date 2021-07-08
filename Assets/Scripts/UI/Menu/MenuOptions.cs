@@ -69,11 +69,13 @@ public class MenuOptions : MonoBehaviour {
 
     protected bool hasPanelOpen = false;
     protected GameManager gm;
+    protected float titleTextFontSize;
 
     public void Run() {
         if(isInGame) {
             gm = GameManager.Instance;
         }
+        titleTextFontSize = titleText.fontSize;
         SetBackground();
         menuPrecedent.SetActive(false);
         menuOptions.SetActive(true);
@@ -283,6 +285,8 @@ public class MenuOptions : MonoBehaviour {
         AsyncOperationHandle<string> handle = localizedString.GetLocalizedString();
         yield return handle;
         titleText.text = handle.Result;
+        titleText.fontSize = titleTextFontSize;
+        UIHelper.FitTextHorizontaly(titleText.text, titleText);
     }
 
     public void ChosePanelControles() {

@@ -81,10 +81,12 @@ public class UIHelper {
     public static bool IsOverflowing(string content, TMPro.TMP_Text text) {
         float preferedWidth = LayoutUtility.GetPreferredWidth(text.rectTransform);
         float maxWidth = text.GetComponent<RectTransform>().rect.width;
+        //float maxWidth = text.GetComponent<RectTransform>().rect.width + text.margin.x + text.margin.z; // Je sais pas pourquoi c'est '+' ici x)
         return preferedWidth > maxWidth;
     }
 
     public static void FitTextHorizontaly(string content, TMPro.TMP_Text text) {
+        //text.fontSize = text.fontSize * 2; // Pour être sur de ne pas rétrécir la font ! :)
         while (text.fontSize > 1 && IsOverflowing(content, text))
             text.fontSize -= 1;
     }

@@ -83,7 +83,7 @@ public class MenuLevel : MonoBehaviour {
 
         string key = GetNameId() + PrefsManager.CURRENT_INPUT_FIELD_KEY;
         inputFieldNext.text = PrefsManager.GetString(key, "");
-        UIHelper.FitTextHorizontaly(textLevelName.text, textLevelName);
+        //UIHelper.FitTextHorizontaly(textLevelName.text, textLevelName); // No need, margins are enought ! :)
 
         MakeBouncePlayButton();
         GenerateNextAndPreviousButtons();
