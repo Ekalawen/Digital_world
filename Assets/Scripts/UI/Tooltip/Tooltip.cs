@@ -12,9 +12,12 @@ public class Tooltip : MonoBehaviour {
     public RectTransform background;
     public TMPro.TMP_Text text;
 
+    protected float planeDistance;
+
     public void Awake() {
         instance = this;
         gameObject.SetActive(false);
+        planeDistance = FindObjectOfType<Canvas>().planeDistance;
     }
 
     public void Update() {
@@ -22,15 +25,20 @@ public class Tooltip : MonoBehaviour {
     }
 
     protected void SetPositionToMouse() {
-        Vector2 localPoint;
+        Vector3 localPoint;
         RectTransform rectTransform = GetComponent<RectTransform>();
         RectTransform screen = transform.parent.GetComponent<RectTransform>();
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(
-            screen, 
-            Input.mousePosition, 
-            null, 
-            out localPoint);
-        rectTransform.localPosition = localPoint;
+        Vector3 screenPoint = Input.mousePosition;
+        screenPoint.z = planeDistance;
+        localPoint = Camera.main.ScreenToWorldPoint(screenPoint);
+        //RectTransformUtility.ScreenPointToLocalPointInRectangle(
+        //    screen, 
+        //    Input.mousePosition, 
+        //    null, 
+        //    out localPoint);
+        localPoint.z = rectTransform.position.z;
+        rectTransform.position = localPoint;
+
         Vector2 minPosition = screen.rect.min - rectTransform.rect.min;
         Vector2 maxPosition = screen.rect.max - text.GetPreferredValues();
         Vector2 clampedPos = new Vector2(
