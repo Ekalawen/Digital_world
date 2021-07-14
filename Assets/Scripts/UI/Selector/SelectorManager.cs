@@ -349,7 +349,7 @@ public class SelectorManager : MonoBehaviour {
     }
 
     protected void PlaceCameraInFrontOfInterestPoint(Vector3 interestPos, Vector3 interestForward) {
-        SelectorCameraController cameraController = camera.GetComponent<SelectorCameraController>();
+        SelectorCameraController cameraController = camera.transform.parent.GetComponent<SelectorCameraController>();
         Vector3 posToGoTo = interestPos + interestForward * cameraController.GetIdealDistanceFromLevel();
         cameraController.PlaceAt(posToGoTo);
         cameraController.transform.LookAt(interestPos, Vector3.up);
