@@ -52,7 +52,7 @@ public class TutorialTooltip : MonoBehaviour {
     protected IEnumerator CDestroyTooltipAndNotify() {
         Timer timer = new Timer(dureeAnimation);
         RectTransform rect = GetComponent<RectTransform>();
-        Vector2 initialScale = rect.localScale;
+        Vector3 initialScale = rect.localScale;
         while(!timer.IsOver()) {
             float avancement = timer.GetAvancement();
             rect.localScale = initialScale * (1 - avancement);
@@ -69,7 +69,7 @@ public class TutorialTooltip : MonoBehaviour {
     protected IEnumerator CStartAnimation() {
         Timer timer = new Timer(dureeAnimation);
         RectTransform rect = GetComponent<RectTransform>();
-        Vector2 initialScale = rect.localScale;
+        Vector3 initialScale = rect.localScale;
         while (!timer.IsOver()) {
             float avancement = timer.GetAvancement();
             rect.localScale = initialScale * avancement;

@@ -29,11 +29,11 @@ public class SelectorPathCadenas : MonoBehaviour {
     }
 
     protected void RegisterCameraToCanvas() {
-        canvas.worldCamera = selectorManager.camera;
+        canvas.worldCamera = selectorManager.overlayCamera;
     }
 
     protected void MakeCadenaLookAtCamera() {
-        gameObject.GetComponent<LookAtTransform>().transformToLookAt = selectorManager.camera.transform;
+        gameObject.GetComponent<LookAtTransform>().transformToLookAt = selectorManager.baseCamera.transform;
     }
 
     public void DisplayGoodCadena() {

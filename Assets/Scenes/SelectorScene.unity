@@ -1596,8 +1596,8 @@ Canvas:
   m_GameObject: {fileID: 199321214}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
-  m_Camera: {fileID: 0}
+  m_RenderMode: 1
+  m_Camera: {fileID: 1726971889}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -14393,6 +14393,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1720571779}
   m_PrefabAsset: {fileID: 0}
+--- !u!20 &1726971889 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 3426557171076130065, guid: 7acf39209f110ac4b9f32775a4504cf0,
+    type: 3}
+  m_PrefabInstance: {fileID: 3344431067870363977}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1749805347
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18687,6 +18693,11 @@ PrefabInstance:
       objectReference: {fileID: 332243354}
     - target: {fileID: 3396177535230050443, guid: 05984be892311994e968884a39b96d7e,
         type: 3}
+      propertyPath: baseCamera
+      value: 
+      objectReference: {fileID: 826689549}
+    - target: {fileID: 3396177535230050443, guid: 05984be892311994e968884a39b96d7e,
+        type: 3}
       propertyPath: loadingMenu
       value: 
       objectReference: {fileID: 228537039}
@@ -18705,6 +18716,11 @@ PrefabInstance:
       propertyPath: unlockScreen
       value: 
       objectReference: {fileID: 611502946}
+    - target: {fileID: 3396177535230050443, guid: 05984be892311994e968884a39b96d7e,
+        type: 3}
+      propertyPath: overlayCamera
+      value: 
+      objectReference: {fileID: 1726971889}
     - target: {fileID: 3396177535230050443, guid: 05984be892311994e968884a39b96d7e,
         type: 3}
       propertyPath: tutorialTooltipManager

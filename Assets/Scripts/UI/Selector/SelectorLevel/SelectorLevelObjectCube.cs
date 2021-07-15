@@ -28,6 +28,7 @@ public class SelectorLevelObjectCube : MonoBehaviour {
     }
 
     public void OnMouseEnter() {
+        Debug.Log($"OnMouseEnter()");
         if (IsCubeClickable()) {
             objectLevel.level.OnMouseEnter();
             SetMaterial(focus: true);

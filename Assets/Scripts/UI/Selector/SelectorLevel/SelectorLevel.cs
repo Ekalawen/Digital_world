@@ -16,7 +16,7 @@ public class SelectorLevel : MonoBehaviour {
     public void Initialize(MenuBackgroundBouncing background)
     {
         selectorManager = SelectorManager.Instance;
-        objectLevel.title.GetComponent<LookAtTransform>().transformToLookAt = selectorManager.camera.transform;
+        objectLevel.title.GetComponent<LookAtTransform>().transformToLookAt = selectorManager.baseCamera.transform;
         InitializeObject();
         menuLevel.selectorManager = selectorManager;
         menuLevel.menuBouncingBackground = background;

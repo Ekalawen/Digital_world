@@ -53,6 +53,8 @@ MonoBehaviour:
     m_TableEntryReference:
       m_KeyId: 0
       m_Key: 
+    m_FallbackState: 0
+  goalTresholds: {fileID: 0}
   nbTresholdsToSeeTraceHint: 1
   passwordPasse:
     m_TableReference:
@@ -60,8 +62,10 @@ MonoBehaviour:
     m_TableEntryReference:
       m_KeyId: 0
       m_Key: 
-  dontUseAdvice: 0
+    m_FallbackState: 0
   dontUseTrace: 0
+  adviceType: 0
+  levenshteinDistance: 4
   timeBetweenTrails: 0.3
   trailColorUnlocked:
     serializedVersion: 2
@@ -142,6 +146,7 @@ MonoBehaviour:
     m_TableEntryReference:
       m_KeyId: 0
       m_Key: 
+    m_FallbackState: 0
   timeBeforeShowing: 0.4
 --- !u!1001 &6492116574664539345
 PrefabInstance:
@@ -204,6 +209,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1099691542879003306, guid: f41635011ffbc3f4da6a7b12afc9e081,
+        type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2461477049864876500, guid: f41635011ffbc3f4da6a7b12afc9e081,
         type: 3}
