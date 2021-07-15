@@ -71,7 +71,7 @@ public class MenuLevel : MonoBehaviour {
     protected bool texteArchivesLinkIsReady = false;
 
     public void Initialize() {
-        menuBouncingBackground.SetParameters(probaSource, distanceSource, decroissanceSource, themes);
+        //menuBouncingBackground.SetParameters(probaSource, distanceSource, decroissanceSource, themes);
         SetScores();
 
         MenuManager.DISABLE_HOTKEYS = false;

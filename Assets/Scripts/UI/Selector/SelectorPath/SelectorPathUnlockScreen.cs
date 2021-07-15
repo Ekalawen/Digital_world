@@ -45,7 +45,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
     public void Initialize(SelectorPath selectorPath, bool shouldHighlightDataHackees) {
         this.selectorManager = SelectorManager.Instance;
         this.selectorPath = selectorPath;
-        SetBackgroundAccordingToLockState();
+        //SetBackgroundAccordingToLockState();
         SetCadenasAccordingToLockState();
         SetTitles();
         FillInputWithPasswordIfAlreayDiscovered();
@@ -113,7 +113,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
     protected void SubmitGoodLocked() {
         selectorPath.UnlockPath();
         selectorManager.onUnlockPath.Invoke(selectorPath); // Not in UnlockPath because we don't want to trigger this with cheats !
-        SetBackgroundAccordingToLockState();
+        //SetBackgroundAccordingToLockState();
         SetCadenasAccordingToLockState();
         selectorPath.endLevel.objectLevel.cube.SetMaterial(focus: false);
         selectorPath.cadena.DisplayGoodCadena();

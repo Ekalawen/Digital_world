@@ -68,7 +68,8 @@ public class SelectorManager : MonoBehaviour {
         onNextLevelFrompath = new UnityEvent<SelectorPath>();
         GatherPaths();
         GatherLevels();
-        background.Initialize();
+        //background.Initialize();
+        //background.SetParameters(0, 0, 0, new List<ColorManager.Theme>() { ColorManager.Theme.ROUGE });
         background.gameObject.SetActive(false);
         SetCurrentLevelBasedOnLastSavedLevel();
         PlaceCameraInFrontOfCurrentLevel();

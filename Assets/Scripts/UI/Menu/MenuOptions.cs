@@ -117,8 +117,7 @@ public class MenuOptions : MonoBehaviour {
             float decroissanceSource = 0.003f;
             List<ColorManager.Theme> themes = new List<ColorManager.Theme>();
             themes.Add(ColorManager.Theme.BLEU);
-            menuPrecedent.GetComponent<MenuManager>().menuBouncingBackground.SetParameters(
-                probaSource, distanceSource, decroissanceSource, themes);
+            //menuPrecedent.GetComponent<MenuManager>().menuBouncingBackground.SetParameters(probaSource, distanceSource, decroissanceSource, themes);
         }
     }
 
