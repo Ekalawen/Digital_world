@@ -36,7 +36,7 @@ public class Tooltip : MonoBehaviour {
         //    Input.mousePosition, 
         //    null, 
         //    out localPoint);
-        localPoint.z = rectTransform.position.z;
+        //localPoint.z = rectTransform.position.z;
         rectTransform.position = localPoint;
 
         Vector2 minPosition = screen.rect.min - rectTransform.rect.min;
