@@ -8,7 +8,10 @@ public class UpdateUnscaledTime : MonoBehaviour {
     protected Material material;
 
     public void Start() {
-        material = gameObject.GetComponent<Image>().material;
+        Image image = gameObject.GetComponent<Image>();
+        image.material = new Material(image.material);
+        material = image.material;
+        //material = gameObject.GetComponent<Image>().material;
     }
 
     public void Update() {
