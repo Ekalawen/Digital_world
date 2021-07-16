@@ -20,11 +20,13 @@ public class TutorialTooltipFlechePosition : MonoBehaviour {
     public FlecheTrackingType flecheTrackingType;
     public float coefAvancement = 0.5f;
 
+    protected RectTransform screen;
     protected SelectorManager selectorManager;
     protected List<Vector3> interestPoints;
 
     public void Start() {
         selectorManager = SelectorManager.Instance;
+        screen = selectorManager.screen;
         ComputeInterestPoints();
     }
 
@@ -38,15 +40,21 @@ public class TutorialTooltipFlechePosition : MonoBehaviour {
 
     public void Update() {
         List<Vector2> interestPointsProjected = ComputeInterestPointsProjected();
-        Vector2 backgroundCenter = background.transform.position;
+        RectTransform rect = GetComponent<RectTransform>();
+        Vector2 backgroundCenter = background.GetComponent<RectTransform>().anchoredPosition;
         Vector2 bestPoint = interestPointsProjected.OrderBy(p => Vector2.Distance(backgroundCenter, p)).First();
-        transform.position = backgroundCenter * (1 - coefAvancement) + bestPoint * coefAvancement;
+        rect.anchoredPosition = backgroundCenter * (1 - coefAvancement) + bestPoint * coefAvancement;
         float angle = Vector2.SignedAngle(Vector2.right, bestPoint - backgroundCenter);
-        transform.rotation = Quaternion.Euler(0, 0, angle);
+        transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, angle);
     }
 
     protected List<Vector2> ComputeInterestPointsProjected() {
-        Camera camera = Camera.main;
-        return interestPoints.Select(p => (Vector2)camera.WorldToViewportPoint(p) * new Vector2(Screen.width, Screen.height)).ToList();
+        Camera camera = selectorManager.overlayCamera;
+        return interestPoints.Select(worldPoint => {
+            Vector3 screenPoint = camera.WorldToScreenPoint(worldPoint);
+            Vector2 rectanglePoint;
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(transform.parent.GetComponent<RectTransform>(), screenPoint, camera, out rectanglePoint);
+            return rectanglePoint;
+        }).ToList();
     }
 }

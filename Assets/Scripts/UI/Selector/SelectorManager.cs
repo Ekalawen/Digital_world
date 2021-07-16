@@ -22,6 +22,7 @@ public class SelectorManager : MonoBehaviour {
     public Transform pathsFolder;
     public Camera baseCamera;
     public Camera overlayCamera;
+    public RectTransform screen;
     public MenuBackgroundBouncing background;
     public LoadingMenu loadingMenu;
     public SelectorPathUnlockScreen unlockScreen;
