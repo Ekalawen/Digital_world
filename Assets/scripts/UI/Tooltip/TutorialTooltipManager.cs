@@ -119,8 +119,9 @@ public class TutorialTooltipManager : MonoBehaviour {
         if (prefabsAlreadyInstantiated.Contains(tutorialTooltipPrefab))
             return null;
         prefabsAlreadyInstantiated.Add(tutorialTooltipPrefab);
-        Vector3 pos = transform.transform.position;
-        TutorialTooltip tutorialTooltip = Instantiate(tutorialTooltipPrefab, pos, Quaternion.identity, transform).GetComponent<TutorialTooltip>();
+        Vector3 pos = transform.position;
+        Quaternion rotation = Quaternion.LookRotation(transform.forward);
+        TutorialTooltip tutorialTooltip = Instantiate(tutorialTooltipPrefab, pos, rotation, transform).GetComponent<TutorialTooltip>();
         if (parent != null) {
             transform.parent = parent;
         }

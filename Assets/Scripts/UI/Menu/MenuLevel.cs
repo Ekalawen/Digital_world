@@ -108,14 +108,16 @@ public class MenuLevel : MonoBehaviour {
             SelectorPath nextPath = nextPaths[i];
             float heightOffset = ComputeHeightOffset();
             Vector3 pos = fastUISystemNextTransform.transform.position + Vector3.up * heightOffset * (i - (nextPaths.Count - 1) / 2.0f);
-            FastUISystem fastUISystem = Instantiate(fastUISystemNextPrefab, pos, Quaternion.identity, fastUISystemNextTransform).GetComponent<FastUISystem>();
+            Quaternion rotation = Quaternion.LookRotation(fastUISystemNextTransform.transform.forward);
+            FastUISystem fastUISystem = Instantiate(fastUISystemNextPrefab, pos, rotation, fastUISystemNextTransform).GetComponent<FastUISystem>();
             fastUISystem.Initialize(nextPath, FastUISystem.DirectionType.FORWARD, FastUISystem.FromType.LEVEL);
         }
         for (int i = 0; i < previousPaths.Count; i++) {
             SelectorPath previousPath = previousPaths[i];
             float heightOffset = ComputeHeightOffset();
             Vector3 pos = fastUISystemPreviousTransform.transform.position + Vector3.up * heightOffset * (i - (previousPaths.Count - 1) / 2.0f);
-            FastUISystem fastUISystem = Instantiate(fastUISystemPreviousPrefab, pos, Quaternion.identity, fastUISystemPreviousTransform).GetComponent<FastUISystem>();
+            Quaternion rotation = Quaternion.LookRotation(fastUISystemPreviousTransform.transform.forward);
+            FastUISystem fastUISystem = Instantiate(fastUISystemPreviousPrefab, pos, rotation, fastUISystemPreviousTransform).GetComponent<FastUISystem>();
             fastUISystem.Initialize(previousPath, FastUISystem.DirectionType.BACKWARD, FastUISystem.FromType.LEVEL);
         }
     }

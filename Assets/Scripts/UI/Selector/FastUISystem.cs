@@ -71,6 +71,12 @@ public class FastUISystem : MonoBehaviour {
         levelButton = levelUnlocked ? levelButtonOpenned : levelButtonClosed;
         levelButtonOpenned.gameObject.SetActive(levelUnlocked);
         levelButtonClosed.gameObject.SetActive(!levelUnlocked);
+
+    //    OrientButtonsToCamera();
+    //}
+
+    //protected void OrientButtonsToCamera() {
+    //    transform.LookAt(2 * transform.position - selectorManager.overlayCamera.transform.position);
     }
 
     protected void SetNameInRect(string levelName) {
