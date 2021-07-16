@@ -107,10 +107,19 @@ public class FastUISystem : MonoBehaviour {
 
     protected void SetButtonsActivations() {
         UnityAction levelAction = new UnityAction(this.OnLevelButtonClick);
-        levelButton.onClick.AddListener(levelAction);
         UnityAction unlockScreenAction = new UnityAction(this.OnUnlockScreenButtonClick);
+        levelButton.onClick.AddListener(levelAction);
         if (unlockScreenButton != null) {
             unlockScreenButton.onClick.AddListener(unlockScreenAction);
+        }
+        if(level.IsAccessible()) {
+            middleButton.onClick.AddListener(levelAction);
+        } else {
+            if (fromType == FromType.LEVEL) {
+                middleButton.onClick.AddListener(unlockScreenAction);
+            } else {
+                middleButton.onClick.AddListener(levelAction);
+            }
         }
     }
 
