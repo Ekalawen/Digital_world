@@ -26,6 +26,7 @@ public class FastUISystem : MonoBehaviour {
     public Button levelButtonClosed;
     public Button unlockScreenButtonOpenned;
     public Button unlockScreenButtonClosed;
+    public Button middleButton;
 
     [Header("Localized Strings")]
     public LocalizedString niveauPrecedantString;
@@ -38,8 +39,8 @@ public class FastUISystem : MonoBehaviour {
     protected SelectorLevel level;
     protected FromType fromType;
     protected DirectionType directionType;
-    protected Button unlockScreenButton;
-    protected Button levelButton;
+    protected Button unlockScreenButton = null;
+    protected Button levelButton = null;
     
     public void Initialize(SelectorPath path, DirectionType directionType, FromType fromType)
     {
@@ -72,11 +73,19 @@ public class FastUISystem : MonoBehaviour {
         levelButtonOpenned.gameObject.SetActive(levelUnlocked);
         levelButtonClosed.gameObject.SetActive(!levelUnlocked);
 
-    //    OrientButtonsToCamera();
-    //}
+        SetColorsForMiddleButton();
+    }
 
-    //protected void OrientButtonsToCamera() {
-    //    transform.LookAt(2 * transform.position - selectorManager.overlayCamera.transform.position);
+    protected void SetColorsForMiddleButton() {
+        middleButton.image.material = new Material(middleButton.image.material);
+        if (levelButton != null) {
+            Color leftColor = levelButton.image.material.GetColor("_EdgesColor");
+            middleButton.image.material.SetColor("_EdgesLeftColor", leftColor);
+        }
+        if (unlockScreenButton != null) {
+            Color rightColor = unlockScreenButton.image.material.GetColor("_EdgesColor");
+            middleButton.image.material.SetColor("_EdgesRightColor", rightColor);
+        }
     }
 
     protected void SetNameInRect(string levelName) {
