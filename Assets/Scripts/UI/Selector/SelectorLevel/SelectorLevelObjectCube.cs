@@ -56,6 +56,8 @@ public class SelectorLevelObjectCube : MonoBehaviour {
             if (IsCubeClickable()) {
                 objectLevel.level.OnMouseDown();
                 tooltipActivator.Hide();
+                SetMaterial(focus: false);
+                objectLevel.title.SetUnfocused();
             }
         }
     }
@@ -67,10 +69,7 @@ public class SelectorLevelObjectCube : MonoBehaviour {
     }
 
     public void SetMaterial(bool focus) {
-        if (!selectorLevel.IsAccessible())
-            GetComponent<Renderer>().material = lockedMaterial;
-        else
-            GetComponent<Renderer>().material = focus ? focusedMaterial : normalMaterial;
+        GetComponent<Renderer>().material = focus ? focusedMaterial : (selectorLevel.IsAccessible() ? normalMaterial : lockedMaterial);
     }
 
     protected void InitSelectorIcone(GameObject selectorIconePrefab) {

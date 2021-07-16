@@ -10,11 +10,13 @@ public class SelectorLevelObjectTitle : MonoBehaviour {
 
     public TMPro.TMP_Text text;
     public Image background;
-    public Color normalColor;
+    public Color unlockedColor;
+    public Color lockedColor;
     public Color focusedColor;
 
     public void Initialize() {
         SetTitleToLevelName();
+        SetUnfocused();
     }
 
     protected void SetTitleToLevelName() {
@@ -27,6 +29,10 @@ public class SelectorLevelObjectTitle : MonoBehaviour {
     }
 
     public void SetUnfocused() {
-        background.color = normalColor;
+        SetNormalColor();
+    }
+
+    protected void SetNormalColor() {
+        background.color = objectLevel.level.IsAccessible() ? unlockedColor : lockedColor;
     }
 }
