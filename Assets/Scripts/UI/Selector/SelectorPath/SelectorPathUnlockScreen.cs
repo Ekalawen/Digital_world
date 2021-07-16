@@ -20,6 +20,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
     public Button returnButton;
     public TMPro.TMP_Text traceHintText;
     public GameObject traceHintContainer;
+    public SelectorPathArrow arrow;
 
     [Header("Background Unlocked theme")]
     public float probaBackgroundUnlocked;
@@ -40,13 +41,14 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
     public RectTransform fastUISystemPreviousTransform;
 
     protected SelectorManager selectorManager;
-    protected SelectorPath selectorPath;
+    [HideInInspector]
+    public SelectorPath selectorPath;
 
     public void Initialize(SelectorPath selectorPath, bool shouldHighlightDataHackees) {
         this.selectorManager = SelectorManager.Instance;
         this.selectorPath = selectorPath;
         //SetBackgroundAccordingToLockState();
-        SetCadenasAccordingToLockState();
+        SetCadenasAndArrowAccordingToLockState();
         SetTitles();
         FillInputWithPasswordIfAlreayDiscovered();
         FillTraceHint();
@@ -114,7 +116,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         selectorPath.UnlockPath();
         selectorManager.onUnlockPath.Invoke(selectorPath); // Not in UnlockPath because we don't want to trigger this with cheats !
         //SetBackgroundAccordingToLockState();
-        SetCadenasAccordingToLockState();
+        SetCadenasAndArrowAccordingToLockState();
         selectorPath.endLevel.objectLevel.cube.SetMaterial(focus: false);
         selectorPath.cadena.DisplayGoodCadena();
         GenerateNextAndPreviousButtons();
@@ -316,7 +318,8 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         }
     }
 
-    protected void SetCadenasAccordingToLockState() {
+    protected void SetCadenasAndArrowAccordingToLockState() {
+        arrow.SetCorrectMaterial();
         if (selectorPath.IsUnlocked()) {
             openCadena.SetActive(true);
             closedCadena.SetActive(false);
