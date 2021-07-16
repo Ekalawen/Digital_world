@@ -27,12 +27,14 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
     public float decroissanceBackgroundUnlocked;
     public int distanceBackgroundUnlocked;
     public List<ColorManager.Theme> themesBackgroundUnlocked;
+    public Material materialTitleUnlocked;
 
     [Header("Background Locked theme")]
     public float probaBackgroundLocked;
     public float decroissanceBackgroundLocked;
     public int distanceBackgroundLocked;
     public List<ColorManager.Theme> themesBackgroundLocked;
+    public Material materialTitleLocked;
 
     [Header("FastUI")]
     public GameObject fastUISystemNextPrefab;
@@ -48,7 +50,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         this.selectorManager = SelectorManager.Instance;
         this.selectorPath = selectorPath;
         //SetBackgroundAccordingToLockState();
-        SetCadenasAndArrowAccordingToLockState();
+        SetCadenasAndArrowAndTitlesAccordingToLockState();
         SetTitles();
         FillInputWithPasswordIfAlreayDiscovered();
         FillTraceHint();
@@ -116,7 +118,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         selectorPath.UnlockPath();
         selectorManager.onUnlockPath.Invoke(selectorPath); // Not in UnlockPath because we don't want to trigger this with cheats !
         //SetBackgroundAccordingToLockState();
-        SetCadenasAndArrowAccordingToLockState();
+        SetCadenasAndArrowAndTitlesAccordingToLockState();
         selectorPath.endLevel.objectLevel.cube.SetMaterial(focus: false);
         selectorPath.cadena.DisplayGoodCadena();
         GenerateNextAndPreviousButtons();
@@ -318,14 +320,22 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         }
     }
 
-    protected void SetCadenasAndArrowAccordingToLockState() {
+    protected void SetCadenasAndArrowAndTitlesAccordingToLockState() {
         arrow.SetCorrectMaterial();
         if (selectorPath.IsUnlocked()) {
             openCadena.SetActive(true);
             closedCadena.SetActive(false);
+            fromLevelTitle.transform.parent.GetComponent<Image>().material = materialTitleUnlocked;
+            fromLevelTitle.transform.parent.GetComponent<UpdateUnscaledTime>().Start();
+            toLevelTitle.transform.parent.GetComponent<Image>().material = materialTitleUnlocked;
+            toLevelTitle.transform.parent.GetComponent<UpdateUnscaledTime>().Start();
         } else {
             openCadena.SetActive(false);
             closedCadena.SetActive(true);
+            fromLevelTitle.transform.parent.GetComponent<Image>().material = materialTitleLocked;
+            fromLevelTitle.transform.parent.GetComponent<UpdateUnscaledTime>().Start();
+            toLevelTitle.transform.parent.GetComponent<Image>().material = materialTitleLocked;
+            toLevelTitle.transform.parent.GetComponent<UpdateUnscaledTime>().Start();
         }
     }
 
