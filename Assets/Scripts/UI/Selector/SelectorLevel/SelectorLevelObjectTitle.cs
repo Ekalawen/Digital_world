@@ -10,9 +10,9 @@ public class SelectorLevelObjectTitle : MonoBehaviour {
 
     public TMPro.TMP_Text text;
     public Image background;
-    public Color unlockedColor;
-    public Color lockedColor;
-    public Color focusedColor;
+    public Material materialUnlocked;
+    public Material materialLocked;
+    public Material materialFocused;
 
     public void Initialize() {
         SetTitleToLevelName();
@@ -25,7 +25,8 @@ public class SelectorLevelObjectTitle : MonoBehaviour {
     }
 
     public void SetFocused() {
-        background.color = focusedColor;
+        background.material = materialFocused;
+        background.GetComponent<UpdateUnscaledTime>().Start();
     }
 
     public void SetUnfocused() {
@@ -33,6 +34,7 @@ public class SelectorLevelObjectTitle : MonoBehaviour {
     }
 
     protected void SetNormalColor() {
-        background.color = objectLevel.level.IsAccessible() ? unlockedColor : lockedColor;
+        background.material = objectLevel.level.IsAccessible() ? materialUnlocked : materialLocked;
+        background.GetComponent<UpdateUnscaledTime>().Start();
     }
 }
