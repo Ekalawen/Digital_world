@@ -7,8 +7,9 @@ using UnityEngine.UI;
 public class SelectorPathCadenas : MonoBehaviour {
 
     [Header("Colors")]
-    public Color openColorBackground;
-    public Color closedColorBackground;
+    public Material materialOpened;
+    public Material materialClosed;
+    public Material materialFocused;
 
     [Header("Links")]
     public SelectorPath selectorPath;
@@ -40,28 +41,24 @@ public class SelectorPathCadenas : MonoBehaviour {
         if (selectorPath.IsUnlocked()) {
             cadenaOpen.gameObject.SetActive(true);
             cadenaClosed.gameObject.SetActive(false);
-            background.color = openColorBackground;
+            background.material = materialOpened;
         } else {
             cadenaOpen.gameObject.SetActive(false);
             cadenaClosed.gameObject.SetActive(true);
-            background.color = closedColorBackground;
+            background.material = materialClosed;
         }
+        background.GetComponent<UpdateUnscaledTime>().Start();
     }
 
-    public void DisplayReverseCadena() {
-        if (!selectorPath.IsUnlocked()) {
-            cadenaOpen.gameObject.SetActive(true);
-            cadenaClosed.gameObject.SetActive(false);
-            background.color = openColorBackground;
-        } else {
-            cadenaOpen.gameObject.SetActive(false);
-            cadenaClosed.gameObject.SetActive(true);
-            background.color = closedColorBackground;
-        }
+    public void DisplayFocusedCadenas() {
+        background.material = materialFocused;
+        cadenaClosed.gameObject.SetActive(false);
+        cadenaOpen.gameObject.SetActive(true);
+        background.GetComponent<UpdateUnscaledTime>().Start();
     }
 
     public void SetFocused() {
-        DisplayReverseCadena();
+        DisplayFocusedCadenas();
     }
 
     public void SetUnfocused() {
