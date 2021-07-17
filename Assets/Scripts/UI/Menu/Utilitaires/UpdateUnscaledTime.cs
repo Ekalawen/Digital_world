@@ -9,9 +9,14 @@ public class UpdateUnscaledTime : MonoBehaviour {
 
     public void Start() {
         Image image = gameObject.GetComponent<Image>();
-        image.material = new Material(image.material);
-        material = image.material;
-        //material = gameObject.GetComponent<Image>().material;
+        if (image != null) {
+            image.material = new Material(image.material);
+            material = image.material;
+        } else {
+            Renderer renderer = GetComponent<Renderer>();
+            renderer.material = new Material(renderer.material);
+            material = renderer.material;
+        }
     }
 
     public void Update() {

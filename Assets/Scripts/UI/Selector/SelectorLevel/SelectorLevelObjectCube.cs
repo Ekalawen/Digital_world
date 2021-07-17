@@ -70,6 +70,7 @@ public class SelectorLevelObjectCube : MonoBehaviour {
 
     public void SetMaterial(bool focus) {
         GetComponent<Renderer>().material = focus ? focusedMaterial : (selectorLevel.IsAccessible() ? normalMaterial : lockedMaterial);
+        GetComponent<UpdateUnscaledTime>().Start();
     }
 
     protected void InitSelectorIcone(GameObject selectorIconePrefab) {
