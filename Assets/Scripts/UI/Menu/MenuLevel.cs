@@ -393,6 +393,7 @@ public class MenuLevel : MonoBehaviour {
     }
 
     protected IEnumerator CInitTextesExplicatifs() {
+        texteArchivesLink.Initialize(useTextAsset: true);
         AsyncOperationHandle<TextAsset> handle = archivesTextAsset.LoadAssetAsync();
         yield return handle;
         texteArchivesLink.textAsset = handle.Result;

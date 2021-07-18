@@ -29,6 +29,10 @@ public class TexteExplicatif : MonoBehaviour {
     public Image externalTerminal;
     public Image internalTerminal;
 
+    [Header("Animation")]
+    public float dureeOpenAnimation = 0.4f;
+    public float dureeCloseAnimation = 0.2f;
+
     [Header("Themes")]
     public Material materialInternalTerminalPositif;
     public Material materialInternalTerminalNegatif;
@@ -50,6 +54,7 @@ public class TexteExplicatif : MonoBehaviour {
     protected Material materialInternalTerminal;
     protected Material materialExternalTerminal;
     protected Material materialButton;
+    protected Fluctuator animationFluctuator;
 
     public void Start() {
         selectorManager = SelectorManager.Instance;
@@ -70,6 +75,7 @@ public class TexteExplicatif : MonoBehaviour {
         this.textAsset = textAsset;
         this.currentTheme = theme;
         SetColorTheme(theme);
+        animationFluctuator = new Fluctuator(this, GetPopupScale, SetPopupScale);
     }
 
     public void InitTresholdText() {
@@ -104,6 +110,24 @@ public class TexteExplicatif : MonoBehaviour {
         //PutMainTextOnBottom();
 
         StartRevealingCharacters();
+        StartAnimation();
+    }
+
+    public float GetPopupScale() {
+        return externalTerminal.rectTransform.localScale.x;
+    }
+
+    public void SetPopupScale(float newScale) {
+        externalTerminal.rectTransform.localScale = Vector3.one * newScale;
+    }
+
+    protected void StartAnimation() {
+        SetPopupScale(0);
+        animationFluctuator.GoTo(1, dureeOpenAnimation);
+    }
+
+    protected void EndAnimation() {
+        animationFluctuator.GoTo(0, dureeCloseAnimation);
     }
 
     protected void StartRevealingCharacters() {
@@ -158,7 +182,14 @@ public class TexteExplicatif : MonoBehaviour {
         firstFrame = false;
     }
 
-    public void Disable() {
+    public void Disable()
+    {
+        EndAnimation();
+        StartCoroutine(CDisableIn());
+    }
+
+    protected IEnumerator CDisableIn() {
+        yield return new WaitForSeconds(dureeCloseAnimation);
         EnableHotkeysNextFrame();
         content.SetActive(false);
     }
