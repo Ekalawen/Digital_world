@@ -15,24 +15,30 @@ public class TexteExplicatif : MonoBehaviour {
 
     public enum Theme { POSITIF, NEGATIF, NEUTRAL };
 
+    public float nbCharactersPrintedBySeconds = 150;
+    public bool dontDisableOnSpace = false;
+
+    [Header("Links")]
     public GameObject content;
     public Text titleTextSource;
     public TMPro.TMP_Text titleTextTarget;
     public TMPro.TMP_Text mainText;
     public bool useTextAsset = false;
     public TextAsset textAsset;
-
-    public Color color;
     public Button doneButton;
-    public Image fondSombre;
-    public Image fondClair;
-    public Color positifThemeColor;
-    public Color negatifThemeColor;
-    public Color neutralThemeColor;
+    public Image externalTerminal;
+    public Image internalTerminal;
 
-    public float nbCharactersPrintedBySeconds = 150;
-
-    public bool dontDisableOnSpace = false;
+    [Header("Themes")]
+    public Material materialInternalTerminalPositif;
+    public Material materialInternalTerminalNegatif;
+    public Material materialInternalTerminalNeutral;
+    public Material materialExternalTerminalPositif;
+    public Material materialExternalTerminalNegatif;
+    public Material materialExternalTerminalNeutral;
+    public Material materialButtonPositif;
+    public Material materialButtonNegatif;
+    public Material materialButtonNeutral;
 
     protected SelectorManager selectorManager;
     protected bool firstFrame;
@@ -40,6 +46,10 @@ public class TexteExplicatif : MonoBehaviour {
     protected string rootPath = "";
     protected List<Tuple<string, string>> replacementList = new List<Tuple<string, string>>();
     protected List<Tuple<string, MatchEvaluator>> replacementListEvaluator = new List<Tuple<string, MatchEvaluator>>();
+    protected Theme currentTheme;
+    protected Material materialInternalTerminal;
+    protected Material materialExternalTerminal;
+    protected Material materialButton;
 
     public void Start() {
         selectorManager = SelectorManager.Instance;
@@ -58,6 +68,7 @@ public class TexteExplicatif : MonoBehaviour {
         SetText(mainText);
         this.useTextAsset = useTextAsset;
         this.textAsset = textAsset;
+        this.currentTheme = theme;
         SetColorTheme(theme);
     }
 
@@ -66,6 +77,7 @@ public class TexteExplicatif : MonoBehaviour {
     }
 
     public void Run(int textTreshold = 0, bool shouldInitTresholdText = true, ReplacementStrings replacements = null) {
+        SetColorTheme(currentTheme);
         InitColor();
 
         if (useTextAsset && shouldInitTresholdText) {
@@ -198,13 +210,19 @@ public class TexteExplicatif : MonoBehaviour {
     public void SetColorTheme(Theme theme) {
         switch(theme) {
             case Theme.POSITIF:
-                color = positifThemeColor;
+                materialExternalTerminal = materialExternalTerminalPositif;
+                materialInternalTerminal = materialInternalTerminalPositif;
+                materialButton = materialButtonPositif;
                 break;
             case Theme.NEGATIF:
-                color = negatifThemeColor;
+                materialExternalTerminal = materialExternalTerminalNegatif;
+                materialInternalTerminal = materialExternalTerminalNegatif;
+                materialButton = materialButtonNegatif;
                 break;
             case Theme.NEUTRAL:
-                color = neutralThemeColor;
+                materialExternalTerminal = materialExternalTerminalNeutral;
+                materialInternalTerminal = materialInternalTerminalNeutral;
+                materialButton = materialButtonNeutral;
                 break;
             default:
                 break;
@@ -212,13 +230,13 @@ public class TexteExplicatif : MonoBehaviour {
     }
 
     protected void InitColor() {
-        fondSombre.color = color;
-        Color halfSaturated = color;
-        halfSaturated.a = 0.90f;
-        fondClair.color = halfSaturated;
-        Color saturated = color;
-        saturated.a = 1.0f;
-        doneButton.GetComponent<Image>().color = saturated;
+        Debug.Log($"InitColor() : m1 = {materialExternalTerminal} m2 = {materialInternalTerminal} m3 = {materialButton}");
+        externalTerminal.material = materialExternalTerminal;
+        internalTerminal.material = materialInternalTerminal;
+        doneButton.GetComponent<Image>().material = materialButton;
+        externalTerminal.GetComponent<UpdateUnscaledTime>().Start();
+        internalTerminal.GetComponent<UpdateUnscaledTime>().Start();
+        doneButton.GetComponent<UpdateUnscaledTime>().Start();
     }
 
     public static string ApplyColorReplacements(string originalText) {

@@ -60,21 +60,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 072a23b4a766a424faf401ea653021e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nbCharactersPrintedBySeconds: 150
+  dontDisableOnSpace: 0
   content: {fileID: 3280705160243486359}
   titleTextSource: {fileID: 0}
   titleTextTarget: {fileID: 7160593957500566783}
   mainText: {fileID: 5248588357078846313}
   useTextAsset: 0
   textAsset: {fileID: 0}
-  color: {r: 0, g: 1, b: 1, a: 0.4}
   doneButton: {fileID: 1324175314139111402}
-  fondSombre: {fileID: 1320690978835082529}
-  fondClair: {fileID: 2272936608710765211}
-  positifThemeColor: {r: 0, g: 1, b: 0, a: 0.4}
-  negatifThemeColor: {r: 1, g: 0, b: 0, a: 0.4}
-  neutralThemeColor: {r: 0, g: 1, b: 1, a: 0.4}
-  nbCharactersPrintedBySeconds: 150
-  dontDisableOnSpace: 0
+  externalTerminal: {fileID: 2272936608710765211}
+  internalTerminal: {fileID: 4474718694539355066}
+  materialInternalTerminalPositif: {fileID: 2100000, guid: c26909a85ec205b43821b1390891d6f1,
+    type: 2}
+  materialInternalTerminalNegatif: {fileID: 2100000, guid: 34ce5c46ff470394fbaccc47669d4c56,
+    type: 2}
+  materialInternalTerminalNeutral: {fileID: 2100000, guid: 98f95621813500d49885a59c2e7a8a36,
+    type: 2}
+  materialExternalTerminalPositif: {fileID: 2100000, guid: b6e4d299b83763448a5da29732efb435,
+    type: 2}
+  materialExternalTerminalNegatif: {fileID: 2100000, guid: c24eb1e2cb6061f4db4b37db853fd66b,
+    type: 2}
+  materialExternalTerminalNeutral: {fileID: 2100000, guid: 83ff9746c5d5a51498772eaa81990fbc,
+    type: 2}
+  materialButtonPositif: {fileID: 2100000, guid: d268e968d064d5f40ad88f99c56badd8,
+    type: 2}
+  materialButtonNegatif: {fileID: 2100000, guid: 4cfbbe5f1c90f224bbd2a6c32f11ff80,
+    type: 2}
+  materialButtonNeutral: {fileID: 2100000, guid: 3daf1dc8aaf1c5947bdc71e523d05f87,
+    type: 2}
 --- !u!1001 &6824833904354959993
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -237,6 +251,11 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 5540174335070277464, guid: 0f523275f5e018244a2de6cc87f0b633,
+        type: 3}
+      propertyPath: m_Color.a
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8300637349478677742, guid: 0f523275f5e018244a2de6cc87f0b633,
         type: 3}
       propertyPath: m_Name
@@ -261,18 +280,6 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 6824833904354959993}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1320690978835082529 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5540174335070277464, guid: 0f523275f5e018244a2de6cc87f0b633,
-    type: 3}
-  m_PrefabInstance: {fileID: 6824833904354959993}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3280705160243486359}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &2272936608710765211 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4701117594293307618, guid: 0f523275f5e018244a2de6cc87f0b633,
@@ -313,6 +320,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4474718694539355066 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6967010036326318531, guid: 0f523275f5e018244a2de6cc87f0b633,
+    type: 3}
+  m_PrefabInstance: {fileID: 6824833904354959993}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &5248588357078846313 stripped

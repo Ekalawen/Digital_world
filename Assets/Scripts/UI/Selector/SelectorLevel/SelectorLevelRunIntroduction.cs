@@ -21,7 +21,7 @@ public class SelectorLevelRunIntroduction : MonoBehaviour {
             title: introductionTitle.GetLocalizedString().Result,
             useTextAsset: true,
             textAsset: handleTexte.Result,
-            theme: TexteExplicatif.Theme.NEUTRAL);
+            theme: TexteExplicatif.Theme.POSITIF);
         selectorManager.popup.Run();
     }
 }
