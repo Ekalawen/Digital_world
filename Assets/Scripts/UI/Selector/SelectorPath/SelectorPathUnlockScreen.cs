@@ -36,6 +36,11 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
     public List<ColorManager.Theme> themesBackgroundLocked;
     public Material materialTitleLocked;
 
+    [Header("Unlock Animation")]
+    public float dureeUnlockAnimation = 1.3f;
+    public int nbTurnsUnlockAnimation = 10;
+    public AnimationCurve curveUnlockAnimation;
+
     [Header("FastUI")]
     public GameObject fastUISystemNextPrefab;
     public GameObject fastUISystemPreviousPrefab;
@@ -45,6 +50,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
     protected SelectorManager selectorManager;
     [HideInInspector]
     public SelectorPath selectorPath;
+    protected Fluctuator cadenaAnimationFluctuator;
 
     public void Initialize(SelectorPath selectorPath, bool shouldHighlightDataHackees) {
         this.selectorManager = SelectorManager.Instance;
@@ -56,6 +62,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         FillTraceHint();
         HighlightDataHackees(shouldHighlightDataHackees);
         GenerateNextAndPreviousButtons();
+        cadenaAnimationFluctuator = new Fluctuator(this, GetCadenasRotation, SetCadenasRotation);
     }
 
     protected void GenerateNextAndPreviousButtons() {
@@ -115,6 +122,10 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
     }
 
     protected void SubmitGoodLocked() {
+        StartCoroutine(CSubmitGoodLocked());
+    }
+
+    protected IEnumerator CSubmitGoodLocked() {
         selectorPath.UnlockPath();
         selectorManager.onUnlockPath.Invoke(selectorPath); // Not in UnlockPath because we don't want to trigger this with cheats !
         //SetBackgroundAccordingToLockState();
@@ -124,7 +135,20 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         GenerateNextAndPreviousButtons();
         selectorPath.startLevel?.InitializeObject();
         selectorPath.endLevel?.InitializeObject();
+
+        cadenaAnimationFluctuator.GoTo(- 360 * nbTurnsUnlockAnimation, dureeUnlockAnimation, oneTimeCurve: curveUnlockAnimation);
+        yield return new WaitForSeconds(dureeUnlockAnimation);
         selectorManager.RunPopup(selectorManager.strings.pathGoodLockedTitle, selectorManager.strings.pathGoodLockedTexte, TexteExplicatif.Theme.POSITIF);
+    }
+
+    protected float GetCadenasRotation() {
+        return openCadena.GetComponent<RectTransform>().localRotation.z;
+    }
+
+    protected void SetCadenasRotation(float newRotation) {
+        Quaternion newQuaternion = Quaternion.Euler(0, 0, newRotation);
+        openCadena.GetComponent<RectTransform>().localRotation = newQuaternion;
+        closedCadena.GetComponent<RectTransform>().localRotation = newQuaternion;
     }
 
     protected void SubmitFalseLocked() {

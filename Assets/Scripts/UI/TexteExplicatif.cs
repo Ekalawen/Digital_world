@@ -261,7 +261,6 @@ public class TexteExplicatif : MonoBehaviour {
     }
 
     protected void InitColor() {
-        Debug.Log($"InitColor() : m1 = {materialExternalTerminal} m2 = {materialInternalTerminal} m3 = {materialButton}");
         externalTerminal.material = materialExternalTerminal;
         internalTerminal.material = materialInternalTerminal;
         doneButton.GetComponent<Image>().material = materialButton;
