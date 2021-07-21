@@ -40,6 +40,8 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
     public float dureeUnlockAnimation = 1.3f;
     public int nbTurnsUnlockAnimation = 10;
     public AnimationCurve curveUnlockAnimation;
+    public GameObject particlesUnlockAnimationPrefab;
+    public float dureeUnlockAnimationParticleSystem = 1.4f;
 
     [Header("FastUI")]
     public GameObject fastUISystemNextPrefab;
@@ -129,17 +131,42 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         selectorPath.UnlockPath();
         selectorManager.onUnlockPath.Invoke(selectorPath); // Not in UnlockPath because we don't want to trigger this with cheats !
         //SetBackgroundAccordingToLockState();
-        SetCadenasAndArrowAndTitlesAccordingToLockState();
         selectorPath.endLevel.objectLevel.cube.SetMaterial(focus: false);
-        selectorPath.cadena.DisplayGoodCadena();
-        GenerateNextAndPreviousButtons();
         selectorPath.startLevel?.InitializeObject();
         selectorPath.endLevel?.InitializeObject();
         UISoundManager.Instance.PlayUnlockPathClip();
 
+        SetFromTitleAccordingToLockState();
+        StartUnlockPathParticles(fromLevelTitle.transform);
         cadenaAnimationFluctuator.GoTo(- 360 * nbTurnsUnlockAnimation, dureeUnlockAnimation, oneTimeCurve: curveUnlockAnimation);
-        yield return new WaitForSeconds(dureeUnlockAnimation);
+
+        yield return new WaitForSeconds(dureeUnlockAnimation / 3);
+        SetArrowAccordingToLockState();
+        SetCadenasAccordingToLockState();
+        selectorPath.cadena.DisplayGoodCadena();
+        StartUnlockPathParticles(arrow.transform);
+
+        yield return new WaitForSeconds(dureeUnlockAnimation / 3);
+        SetToTitleAccordingToLockState();
+        StartUnlockPathParticles(toLevelTitle.transform);
+
+        yield return new WaitForSeconds(dureeUnlockAnimation / 3);
+        StartUnlockPathParticles(fastUISystemNextTransform);
+        GenerateNextAndPreviousButtons();
+
+        yield return new WaitForSeconds(dureeUnlockAnimationParticleSystem);
         selectorManager.RunPopup(selectorManager.strings.pathGoodLockedTitle, selectorManager.strings.pathGoodLockedTexte, TexteExplicatif.Theme.POSITIF);
+    }
+
+    protected void StartUnlockPathParticles(Transform parent, float delay = 0) {
+        StartCoroutine(CStartUnlockPathParticles(parent, delay));
+    }
+
+    protected IEnumerator CStartUnlockPathParticles(Transform parent, float delay) {
+        yield return new WaitForSeconds(delay);
+        GameObject go = Instantiate(particlesUnlockAnimationPrefab, parent: parent);
+        yield return new WaitForSeconds(dureeUnlockAnimationParticleSystem);
+        Destroy(go);
     }
 
     protected float GetCadenasRotation() {
@@ -345,23 +372,45 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         }
     }
 
-    protected void SetCadenasAndArrowAndTitlesAccordingToLockState() {
-        arrow.SetCorrectMaterial();
+    protected void SetCadenasAndArrowAndTitlesAccordingToLockState()
+    { SetArrowAccordingToLockState();
+        SetCadenasAccordingToLockState();
+        SetFromTitleAccordingToLockState();
+        SetToTitleAccordingToLockState();
+    }
+
+    private void SetToTitleAccordingToLockState() {
         if (selectorPath.IsUnlocked()) {
-            openCadena.SetActive(true);
-            closedCadena.SetActive(false);
-            fromLevelTitle.transform.parent.GetComponent<Image>().material = materialTitleUnlocked;
-            fromLevelTitle.transform.parent.GetComponent<UpdateUnscaledTime>().Start();
             toLevelTitle.transform.parent.GetComponent<Image>().material = materialTitleUnlocked;
             toLevelTitle.transform.parent.GetComponent<UpdateUnscaledTime>().Start();
         } else {
-            openCadena.SetActive(false);
-            closedCadena.SetActive(true);
-            fromLevelTitle.transform.parent.GetComponent<Image>().material = materialTitleLocked;
-            fromLevelTitle.transform.parent.GetComponent<UpdateUnscaledTime>().Start();
             toLevelTitle.transform.parent.GetComponent<Image>().material = materialTitleLocked;
             toLevelTitle.transform.parent.GetComponent<UpdateUnscaledTime>().Start();
         }
+    }
+
+    private void SetFromTitleAccordingToLockState() {
+        if (selectorPath.IsUnlocked()) {
+            fromLevelTitle.transform.parent.GetComponent<Image>().material = materialTitleUnlocked;
+            fromLevelTitle.transform.parent.GetComponent<UpdateUnscaledTime>().Start();
+        } else {
+            fromLevelTitle.transform.parent.GetComponent<Image>().material = materialTitleLocked;
+            fromLevelTitle.transform.parent.GetComponent<UpdateUnscaledTime>().Start();
+        }
+    }
+
+    private void SetCadenasAccordingToLockState() {
+        if (selectorPath.IsUnlocked()) {
+            openCadena.SetActive(true);
+            closedCadena.SetActive(false);
+        } else {
+            openCadena.SetActive(false);
+            closedCadena.SetActive(true);
+        }
+    }
+
+    private void SetArrowAccordingToLockState() {
+        arrow.SetCorrectMaterial();
     }
 
     protected void FillInputWithPasswordIfAlreayDiscovered() {
