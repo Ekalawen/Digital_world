@@ -75,7 +75,7 @@ public class SelectorPath : MonoBehaviour {
 
     protected void CloseIfEscape() {
         if (!selectorManager.PopupIsEnabled()) {
-            if (Input.GetKeyDown(KeyCode.Escape)) {
+            if (!MenuManager.DISABLE_HOTKEYS && Input.GetKeyDown(KeyCode.Escape)) {
                 CloseUnlockScreen();
             }
         }

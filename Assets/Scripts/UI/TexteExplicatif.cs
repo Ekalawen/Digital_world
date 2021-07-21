@@ -173,6 +173,7 @@ public class TexteExplicatif : MonoBehaviour {
     private void Update() {
         if(content.activeInHierarchy
         && !firstFrame /*&& content.activeInHierarchy*/
+        && !MenuManager.DISABLE_HOTKEYS
         && (Input.GetKeyDown(KeyCode.Escape)
         || Input.GetKeyDown(KeyCode.KeypadEnter) 
         || Input.GetKeyDown(KeyCode.Return) 

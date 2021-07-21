@@ -213,12 +213,12 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    protected static void ShowCursor() {
+    public static void ShowCursor() {
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
     }
 
-    protected static void HideCursor() {
+    public static void HideCursor() {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
