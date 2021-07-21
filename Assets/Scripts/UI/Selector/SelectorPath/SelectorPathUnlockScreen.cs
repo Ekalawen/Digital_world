@@ -135,6 +135,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         GenerateNextAndPreviousButtons();
         selectorPath.startLevel?.InitializeObject();
         selectorPath.endLevel?.InitializeObject();
+        UISoundManager.Instance.PlayUnlockPathClip();
 
         cadenaAnimationFluctuator.GoTo(- 360 * nbTurnsUnlockAnimation, dureeUnlockAnimation, oneTimeCurve: curveUnlockAnimation);
         yield return new WaitForSeconds(dureeUnlockAnimation);

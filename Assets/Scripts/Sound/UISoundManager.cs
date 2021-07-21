@@ -137,6 +137,9 @@ public class UISoundManager : MonoBehaviour {
     public void PlayClickedButtonClip() {
         PlayClipsOnSource(sounds.clickedButtonClips);
     }
+    public void PlayUnlockPathClip() {
+        PlayClipsOnSource(sounds.unlockPathClips);
+    }
 
     public void StartMusic() {
         StartCoroutine(CStartMusic());

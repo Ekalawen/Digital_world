@@ -7,5 +7,7 @@ public class SoundBankUI : ScriptableObject {
     public AudioClipParams hoverButtonClips;
     public AudioClipParams clickedButtonClips;
 
+    public AudioClipParams unlockPathClips;
+
     public AudioClipParams menuMusicClips;
 }
