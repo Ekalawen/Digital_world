@@ -103,7 +103,8 @@ public class LoadingMenu : MonoBehaviour {
         string levelToUnlockPouvoirName = display.levelToUnlockPouvoirName.GetLocalizedString().Result;
         string description = pouvoir ? pouvoir.description.GetLocalizedString().Result : PouvoirDisplay.GetNullDescription(levelToUnlockPouvoirName);
         Sprite sprite = pouvoir ? pouvoir.sprite : null;
-        display.Initialize(nom, keyName, description, sprite);
+        PouvoirDisplay.PouvoirType pouvoirType = pouvoir ? pouvoir.pouvoirType : PouvoirDisplay.PouvoirType.DEFAULT;
+        display.Initialize(nom, keyName, description, sprite, pouvoirType);
     }
 
     protected void HidePouvoirs() {

@@ -14,6 +14,7 @@ public abstract class IPouvoir : MonoBehaviour {
     public LocalizedString description;
     public Sprite sprite;
 
+    public PouvoirDisplay.PouvoirType pouvoirType = PouvoirDisplay.PouvoirType.DEFAULT;
     public float cooldown = 0.0f;
     public float timerMalus = 0.0f;
     public bool timerMalusTimeProportional = false;

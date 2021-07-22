@@ -9,24 +9,40 @@ using UnityEngine.UI;
 
 public class PouvoirDisplay : MonoBehaviour {
 
+    public enum PouvoirType { DASH, PATHFINDER, HACK, RESET, DEFAULT };
+
     public TMPro.TMP_Text textName;
     public TMPro.TMP_Text textDescription;
     public LocalizedString keyName;
     public LocalizedString levelToUnlockPouvoirName;
     public Image image;
     public Image bordure;
-    public Color bordureColorActive;
-    public Color bordureColorSpecial;
+    public Color bordureColorDash;
+    public Color bordureColorPathfinder;
+    public Color bordureColorHack;
+    public Color bordureColorReset;
+    public Color bordureColorDefault;
 
-    public void Initialize(string name, string keyName, string description, Sprite sprite) {
+    public void Initialize(string name, string keyName, string description, Sprite sprite, PouvoirType pouvoirType) {
         textName.text = textName.text.Replace("%PouvoirName%", name);
         textName.text = textName.text.Replace("%ToucheName%", keyName);
         textDescription.text = description;
-        if(name != GetNullName()) {
-            if(name != "PathFinder" && name != "Localisateur")
-                bordure.color = bordureColorSpecial;
-            else
-                bordure.color = bordureColorActive;
+        switch (pouvoirType) {
+            case PouvoirType.DASH:
+                bordure.color = bordureColorDash;
+                break;
+            case PouvoirType.PATHFINDER:
+                bordure.color = bordureColorPathfinder;
+                break;
+            case PouvoirType.HACK:
+                bordure.color = bordureColorHack;
+                break;
+            case PouvoirType.RESET:
+                bordure.color = bordureColorReset;
+                break;
+            case PouvoirType.DEFAULT:
+                bordure.color = bordureColorDefault;
+                break;
         }
         this.image.sprite = sprite;
         if(sprite != null)
