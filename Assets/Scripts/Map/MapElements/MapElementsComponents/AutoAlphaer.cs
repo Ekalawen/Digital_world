@@ -12,6 +12,11 @@ public class AutoAlphaer : MonoBehaviour {
     public float timeToMaxAlphaSize = 0.6f;
     public float minAlpha = 0.0f;
     public float maxAlpha = 1.0f;
+    public bool useCurves = false;
+    [ConditionalHide("useCurves")]
+    public AnimationCurve toMinCurve;
+    [ConditionalHide("useCurves")]
+    public AnimationCurve toMaxCurve;
 
     protected Timer timer;
     protected Vector3 startScale = Vector3.one;
@@ -41,12 +46,18 @@ public class AutoAlphaer : MonoBehaviour {
         Timer toMinAlphaTimer = new Timer(timeToMinAlphaSize);
         while(!toMinAlphaTimer.IsOver()) {
             float avancement = toMinAlphaTimer.GetAvancement();
+            if(useCurves) {
+                avancement = toMinCurve.Evaluate(avancement);
+            }
             ChangeAlpha(MathCurves.Linear(maxAlpha, minAlpha, avancement));
             yield return null;
         }
         Timer toMaxAlphaTimer = new Timer(timeToMaxAlphaSize);
         while(!toMaxAlphaTimer.IsOver()) {
             float avancement = toMaxAlphaTimer.GetAvancement();
+            if(useCurves) {
+                avancement = toMaxCurve.Evaluate(avancement);
+            }
             ChangeAlpha(MathCurves.Linear(minAlpha, maxAlpha, avancement));
             yield return null;
         }

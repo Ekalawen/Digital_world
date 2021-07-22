@@ -56,7 +56,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &3199105571990781779
 RectTransform:
   m_ObjectHideFlags: 0
@@ -129,11 +129,60 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed315dc2b07e6fb45a262ffd95d7685b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  intervalTime: 2
-  timeToMinAlphaSize: 1
-  timeToMaxAlphaSize: 1
+  intervalTime: 1.2
+  timeToMinAlphaSize: 0.6
+  timeToMaxAlphaSize: 0.6
   minAlpha: 0.1
   maxAlpha: 1
+  useCurves: 1
+  toMinCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  toMaxCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!114 &4637955954092906194
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -236,11 +285,60 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed315dc2b07e6fb45a262ffd95d7685b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  intervalTime: 2
-  timeToMinAlphaSize: 1
-  timeToMaxAlphaSize: 1
+  intervalTime: 1.2
+  timeToMinAlphaSize: 0.6
+  timeToMaxAlphaSize: 0.6
   minAlpha: 0.1
   maxAlpha: 1
+  useCurves: 1
+  toMinCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  toMaxCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!114 &8425453472755555614
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -773,6 +871,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: AppuyezSurUneTouche
       objectReference: {fileID: 0}
+    - target: {fileID: 5607446081610329186, guid: 162182fc2409c2e448c05f095f1864e2,
+        type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 2100000, guid: 462819607461c244987bb6fc8e6c510a, type: 2}
     - target: {fileID: 6056781544454849383, guid: 162182fc2409c2e448c05f095f1864e2,
         type: 3}
       propertyPath: m_StringReference.m_TableEntryReference.m_KeyId
