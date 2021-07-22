@@ -31,12 +31,6 @@ public class Tooltip : MonoBehaviour {
         Vector3 screenPoint = Input.mousePosition;
         screenPoint.z = planeDistance;
         localPoint = Camera.main.ScreenToWorldPoint(screenPoint);
-        //RectTransformUtility.ScreenPointToLocalPointInRectangle(
-        //    screen, 
-        //    Input.mousePosition, 
-        //    null, 
-        //    out localPoint);
-        //localPoint.z = rectTransform.position.z;
         rectTransform.position = localPoint;
 
         Vector2 minPosition = screen.rect.min - rectTransform.rect.min;
