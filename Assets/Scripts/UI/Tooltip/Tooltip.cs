@@ -9,6 +9,7 @@ public class Tooltip : MonoBehaviour {
 
     protected static Tooltip instance;
 
+    public bool useOverlay = false;
     public RectTransform background;
     public TMPro.TMP_Text text;
 
@@ -25,13 +26,20 @@ public class Tooltip : MonoBehaviour {
     }
 
     protected void SetPositionToMouse() {
-        Vector3 localPoint;
-        RectTransform rectTransform = GetComponent<RectTransform>();
         RectTransform screen = transform.parent.GetComponent<RectTransform>();
-        Vector3 screenPoint = Input.mousePosition;
-        screenPoint.z = planeDistance;
-        localPoint = Camera.main.ScreenToWorldPoint(screenPoint);
-        rectTransform.position = localPoint;
+        RectTransform rectTransform = GetComponent<RectTransform>();
+        if (useOverlay) {
+            Vector2 localPoint2D;
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(screen, Input.mousePosition, null, out localPoint2D);
+            rectTransform.localPosition = localPoint2D;
+        } else {
+            Vector3 localPoint;
+            Vector3 screenPoint = Input.mousePosition;
+            screenPoint.z = planeDistance;
+            localPoint = Camera.main.ScreenToWorldPoint(screenPoint);
+            rectTransform.position = localPoint;
+        }
+
 
         Vector2 minPosition = screen.rect.min - rectTransform.rect.min;
         Vector2 maxPosition = screen.rect.max - text.GetPreferredValues();
