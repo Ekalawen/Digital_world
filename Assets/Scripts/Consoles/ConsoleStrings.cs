@@ -137,4 +137,7 @@ public class ConsoleStrings : ScriptableObject {
 
     public LocalizedString controllerPlugIn;
     public LocalizedString controllerPlugOut;
+
+    public LocalizedString restartButtonRestart;
+    public LocalizedString restartButtonContinue;
 }

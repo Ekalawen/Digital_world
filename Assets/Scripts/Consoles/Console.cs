@@ -62,6 +62,7 @@ public class Console : MonoBehaviour {
 	public GameObject textContainer; // Là où l'on va afficher les lignes
 	public TMP_Text importantText; // Là où l'on affiche les informations importantes
     public GameObject escapeButton; // Le truc qui clignote pour nous dire d'appuyer sur Escape à la fin du jeu !
+    public TMP_Text escapeButtonText;
     public GameObject pauseMenu;
     public CounterDisplayer dataCountDisplayer;
     public TMP_Text frameRateText;
@@ -1039,6 +1040,11 @@ public class Console : MonoBehaviour {
 
     public void DisplayEscapeButton() {
         escapeButton.SetActive(IsConsoleVisible());
+        if (gm.eventManager.IsGameWin()) {
+            escapeButtonText.text = strings.restartButtonContinue.GetLocalizedString().Result;
+        } else {
+            escapeButtonText.text = strings.restartButtonRestart.GetLocalizedString().Result;
+        }
     }
 
     public void NotifyPlayerToPressShift() {
