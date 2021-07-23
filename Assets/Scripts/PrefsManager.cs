@@ -55,6 +55,7 @@ public class PrefsManager {
     public static string KEYBINDING_INDICE_KEY = "keybindingIndiceKey";
     public static string KEYBINDING_PRECEDENT_INDICE_KEY = "keybindingPrecedentIndiceKey";
     public static string DATA_QUALITY_KEY = "dataQualityKey";
+    public static string DISPLAY_CONSOLE_KEY = "displayConsoleKey";
 
     public static string HAS_DISPLAY_TUTORIAL_TOOLTIP_PREFIX = "hasDisplayTutorialTooltipPrefix"; // <==
     public static string HAS_DISPLAY_TUTORIAL_TOOLTIP_SELECTOR_MOUVEMENT = "hasDisplayTutorialTooltipSelectorMouvement";

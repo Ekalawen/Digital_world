@@ -59,7 +59,7 @@ public class Console : MonoBehaviour {
     public PouvoirDisplayInGame pouvoirDisplayRightClick;
 
     [Header("Links")]
-	public GameObject textContainer; // Là où l'on va afficher les lignes
+	public GameObject consoleBackground; // Là où l'on va afficher les lignes
 	public TMP_Text importantText; // Là où l'on affiche les informations importantes
     public GameObject escapeButton; // Le truc qui clignote pour nous dire d'appuyer sur Escape à la fin du jeu !
     public TMP_Text escapeButtonText;
@@ -111,8 +111,14 @@ public class Console : MonoBehaviour {
         InitFrameRateCounter();
         arrowKeysTimer.SetOver();
         HideDataCountDisplayerIfIR();
+        DisplayOrNotConsole();
 
         StartCoroutine(CInitialize());
+    }
+
+    public void DisplayOrNotConsole() {
+        bool shouldDisplayConsole = PrefsManager.GetBool(PrefsManager.DISPLAY_CONSOLE_KEY, MenuOptions.defaultDisplayConsole);
+        consoleBackground.SetActive(shouldDisplayConsole);
     }
 
     private IEnumerator CInitialize() {
@@ -513,8 +519,8 @@ public class Console : MonoBehaviour {
 		// On crée le nouveau texte !
 		GameObject newText = new GameObject(message, typeof(RectTransform));
 
-		// On définit son parent
-		newText.transform.SetParent (textContainer.transform);
+        // On définit son parent
+        newText.transform.SetParent (consoleBackground.transform);
 
 		// On définit sa position !
 		RectTransform rt = newText.GetComponent<RectTransform> ();
@@ -1138,7 +1144,7 @@ public class Console : MonoBehaviour {
     public void SetConsoleVisibility(bool isVisible)
     {
         isConsoleVisible = isVisible;
-        textContainer.SetActive(isVisible);
+        consoleBackground.SetActive(isVisible);
         importantText.gameObject.SetActive(isVisible);
         dataCountDisplayer.gameObject.SetActive(isVisible);
         frameRateText.gameObject.SetActive(isVisible);

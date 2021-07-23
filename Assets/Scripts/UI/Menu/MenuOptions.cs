@@ -27,6 +27,7 @@ public class MenuOptions : MonoBehaviour {
     public static bool defaultShiftWarpActivation = true;
     public static bool defaultConseilOnStart = false;
     public static bool defaultFpsCounter = false;
+    public static bool defaultDisplayConsole = false;
 
     public bool isInGame = false;
 
@@ -52,6 +53,7 @@ public class MenuOptions : MonoBehaviour {
     public Toggle toggleShiftWarp;
     public Toggle conseilOnStartToggle;
     public Toggle fpsCounterToggle;
+    public Toggle displayConsoleToggle;
 
     [Header("OtherLinks")]
     public GameObject resetButton;
@@ -93,6 +95,7 @@ public class MenuOptions : MonoBehaviour {
         OnShiftWarpActivationPress(PrefsManager.GetBool(PrefsManager.SHIFT_WARP_KEY, defaultShiftWarpActivation));
         OnConseilOnStartPress(PrefsManager.GetBool(PrefsManager.ADVICE_ON_START_KEY, defaultConseilOnStart));
         OnFpsCounterPress(PrefsManager.GetBool(PrefsManager.FPS_COUNTER_KEY, defaultFpsCounter));
+        OnDisplayConsolePress(PrefsManager.GetBool(PrefsManager.DISPLAY_CONSOLE_KEY, defaultDisplayConsole));
     }
 
     protected void CenterInGamePanels() {
@@ -229,6 +232,14 @@ public class MenuOptions : MonoBehaviour {
         }
     }
 
+    public void OnDisplayConsolePress(bool active) {
+        PrefsManager.SetBool(PrefsManager.DISPLAY_CONSOLE_KEY, active);
+        displayConsoleToggle.isOn = active;
+        if(isInGame) {
+            gm.console.DisplayOrNotConsole();
+        }
+    }
+
     public void RememberLastLevel(int indiceLevel) {
         PrefsManager.SetInt(PrefsManager.LAST_LEVEL_KEY, indiceLevel);
     }
@@ -242,6 +253,7 @@ public class MenuOptions : MonoBehaviour {
         OnWallWarpActivationPress(MenuOptions.defaultWallWarpActivation);
         OnConseilOnStartPress(MenuOptions.defaultConseilOnStart);
         OnFpsCounterPress(MenuOptions.defaultFpsCounter);
+        OnDisplayConsolePress(MenuOptions.defaultDisplayConsole);
         int index = LocalizationSettings.AvailableLocales.Locales.IndexOf(LocalizationSettings.SelectedLocale);
         PrefsManager.SetInt(PrefsManager.LOCALE_INDEX_KEY, index);
         PrefsManager.Save();
