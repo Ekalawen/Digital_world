@@ -18,4 +18,9 @@ public class ConsoleTutoriel : Console {
 	public override void GrandSaut(float hauteurSaut) {
         // On le fait pas !
 	}
+
+    // On affiche toujours la Console dans le Tuto ! :)
+    public override void DisplayOrNotConsole() {
+        consoleBackground.SetActive(true);
+    }
 }

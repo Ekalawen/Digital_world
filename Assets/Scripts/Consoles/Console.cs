@@ -116,7 +116,7 @@ public class Console : MonoBehaviour {
         StartCoroutine(CInitialize());
     }
 
-    public void DisplayOrNotConsole() {
+    public virtual void DisplayOrNotConsole() {
         bool shouldDisplayConsole = PrefsManager.GetBool(PrefsManager.DISPLAY_CONSOLE_KEY, MenuOptions.defaultDisplayConsole);
         consoleBackground.SetActive(shouldDisplayConsole);
     }
