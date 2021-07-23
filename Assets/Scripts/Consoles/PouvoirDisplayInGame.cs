@@ -14,12 +14,17 @@ public class PouvoirDisplayInGame : MonoBehaviour {
     public GameObject onCooldownGroup;
     public Text cooldown;
     public Image loadingCircle;
-    public Color bordureColorActive;
-    public Color bordureColorSpecial;
     public float vitesseRotationLoadingCircle = 5.0f;
     public Text keyText;
     public LocalizedString keyLocalizedString;
     public PouvoirDisplayFlash flash;
+
+    [Header("Bordures Colors")]
+    public Color bordureColorDash;
+    public Color bordureColorPathfinder;
+    public Color bordureColorHack;
+    public Color bordureColorReset;
+    public Color bordureColorDefault;
 
     protected GameManager gm;
     protected IPouvoir pouvoir;
@@ -48,15 +53,31 @@ public class PouvoirDisplayInGame : MonoBehaviour {
         yield return handleKeyText;
         keyText.text = keyText.text.Replace("%PouvoirName%", handleKeyText.Result);
 
-        if (nom != PouvoirDisplay.GetNullName()) {
-            if (nom != "PathFinder" && nom != "Localisateur")
-                bordure.color = bordureColorSpecial;
-            else
-                bordure.color = bordureColorActive;
-        }
+        SetBordureColor(pouvoir.pouvoirType);
+
         this.image.sprite = sprite;
         if (sprite != null)
             this.image.color = Color.white; // Sinon c'est transparent !
+    }
+
+    protected void SetBordureColor(PouvoirDisplay.PouvoirType pouvoirType) {
+        switch (pouvoirType) {
+            case PouvoirDisplay.PouvoirType.DASH:
+                bordure.color = bordureColorDash;
+                break;
+            case PouvoirDisplay.PouvoirType.PATHFINDER:
+                bordure.color = bordureColorPathfinder;
+                break;
+            case PouvoirDisplay.PouvoirType.HACK:
+                bordure.color = bordureColorHack;
+                break;
+            case PouvoirDisplay.PouvoirType.RESET:
+                bordure.color = bordureColorReset;
+                break;
+            case PouvoirDisplay.PouvoirType.DEFAULT:
+                bordure.color = bordureColorDefault;
+                break;
+        }
     }
 
     public void Update() {

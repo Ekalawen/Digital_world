@@ -23,11 +23,21 @@ public class PouvoirDisplay : MonoBehaviour {
     public Color bordureColorReset;
     public Color bordureColorDefault;
 
-    public void Initialize(string name, string keyName, string description, Sprite sprite, PouvoirType pouvoirType) {
+    public void Initialize(string name, string keyName, string description, Sprite sprite, PouvoirType pouvoirType)
+    {
         textName.text = textName.text.Replace("%PouvoirName%", name);
         textName.text = textName.text.Replace("%ToucheName%", keyName);
         textDescription.text = description;
-        switch (pouvoirType) {
+        SetBordureColor(pouvoirType);
+        this.image.sprite = sprite;
+        if (sprite != null)
+            this.image.color = Color.white; // Sinon c'est transparent !
+    }
+
+    private void SetBordureColor(PouvoirType pouvoirType)
+    {
+        switch (pouvoirType)
+        {
             case PouvoirType.DASH:
                 bordure.color = bordureColorDash;
                 break;
@@ -44,9 +54,6 @@ public class PouvoirDisplay : MonoBehaviour {
                 bordure.color = bordureColorDefault;
                 break;
         }
-        this.image.sprite = sprite;
-        if(sprite != null)
-            this.image.color = Color.white; // Sinon c'est transparent !
     }
 
     public static string GetNullName() {
