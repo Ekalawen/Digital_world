@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -23,9 +24,16 @@ public class RewardManager : MonoBehaviour {
     public GameObject consolePrefab; // On récupère la console !
 
     [Header("Links")]
+    public RewardStrings strings;
     public RegularRewardCamera regularCamera;
     public InfiniteRewardCamera infiniteCamera;
+    public TMP_Text titleCompletedText;
+    public TMP_Text scoreText;
+    public TMP_Text bestScoreText;
+    public TMP_Text allReplayStats;
 
+    protected float dureeReward;
+    protected float accelerationCoefficiant;
 
     protected Transform displayersFolder;
     protected RewardTrailThemeDisplayer playerDisplayer;
@@ -56,8 +64,8 @@ public class RewardManager : MonoBehaviour {
         Debug.Log($"itemsHistory.Count = {itemsHistory.Count}");
 
         float dureeGame = hm.GetDureeGame();
-        float dureeReward = ComputeDurationTrail(dureeGame);
-        float accelerationCoefficiant = dureeReward / dureeGame;
+        dureeReward = ComputeDurationTrail(dureeGame);
+        accelerationCoefficiant = dureeReward / dureeGame;
         Debug.Log("DureeGame = " + dureeGame + " DureeReward = " + dureeReward + " Acceleration = " + accelerationCoefficiant);
 
         float playerTrailDurationTime = dureeReward;
@@ -101,7 +109,35 @@ public class RewardManager : MonoBehaviour {
         console.Initialize();
         console.SetDureeReward(dureeReward, delayBetweenTrails);
 
+        InitializeTitleAndStats();
+
         InitializeCamera();
+    }
+
+    protected void InitializeTitleAndStats()
+    {
+        titleCompletedText.text = strings.levelCompleted.GetLocalizedString(hm.levelNameVisual).Result;
+        UIHelper.FitTextHorizontaly(titleCompletedText.text, titleCompletedText);
+
+        string score = hm.score.ToString("0.00");
+        string bestScore = PrefsManager.GetFloat(GetKeyFor(PrefsManager.BEST_SCORE_KEY), 0).ToString("0.00");
+        scoreText.text = strings.score.GetLocalizedString(score).Result;
+        bestScoreText.text = strings.bestScore.GetLocalizedString(bestScore).Result;
+
+        SetAllReplayStatsTexts(currentReplayLength: 0.0f);
+    }
+
+    protected void SetAllReplayStatsTexts(float currentReplayLength) {
+        string gameLength = hm.GetDureeGame().ToString("0.00");
+        string replayLength = dureeReward.ToString("0.00");
+        string currentReplayLengthText = currentReplayLength.ToString("0.00");
+        string acceleration = ((1.0f / accelerationCoefficiant - 1) * 100).ToString("0.00");
+        string gameDurationText = strings.gameDuration.GetLocalizedString(gameLength).Result;
+        string replayDurationText = strings.replayDuration.GetLocalizedString($"{currentReplayLengthText}/{replayLength}").Result;
+        string accelerationText = strings.acceleration.GetLocalizedString(acceleration).Result;
+
+        allReplayStats.text = $"{gameDurationText}   {replayDurationText}   {accelerationText}";
+        UIHelper.FitTextHorizontaly(allReplayStats.text, allReplayStats);
     }
 
     protected void InitializeCamera() {
@@ -119,6 +155,12 @@ public class RewardManager : MonoBehaviour {
 
     public void Update() {
         TestExit();
+        SetAllReplayStatsTexts(currentReplayLength: GetCurrentReplayTime());
+    }
+
+    protected float GetCurrentReplayTime() {
+        Timer replayTimer = playerDisplayer.GetDurationTimer();
+        return Mathf.Min(replayTimer.GetElapsedTime(), dureeReward);
     }
 
     public void TestExit() {
@@ -155,5 +197,10 @@ public class RewardManager : MonoBehaviour {
 
     public RewardTrailThemeDisplayer GetPlayerDisplayer() {
         return playerDisplayer;
+    }
+
+    protected string GetKeyFor(string keySuffix) {
+        string levelNameKey = hm.levelNameId;
+        return levelNameKey + keySuffix;
     }
 }

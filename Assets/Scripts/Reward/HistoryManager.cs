@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public struct TimedVector3 {
     public Vector3 position;
@@ -52,6 +53,12 @@ public class HistoryManager : MonoBehaviour {
     protected Timer echantillonnageTimer;
     protected float dureeGame;
     protected MenuLevel.LevelType mapType;
+    [HideInInspector]
+    public string levelNameVisual;
+    [HideInInspector]
+    public string levelNameId;
+    [HideInInspector]
+    public float score;
 
     private void Awake() {
         if (!_instance) {
@@ -78,6 +85,8 @@ public class HistoryManager : MonoBehaviour {
         mapSize = gm.map.tailleMap;
         mapCenter = gm.map.GetCenter();
         themes = gm.colorManager.themes;
+        levelNameId = SceneManager.GetActiveScene().name;
+        levelNameVisual = gm.console.levelVisualName.GetLocalizedString().Result;
     }
 
     public void Update() {

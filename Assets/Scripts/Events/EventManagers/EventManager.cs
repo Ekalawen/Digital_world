@@ -525,6 +525,7 @@ public class EventManager : MonoBehaviour {
             success = IsNewBestScore();
 
         RememberSincelastBestScore(success);
+        gm.historyManager.score = GetScore();
         if (!success) {
             IncrementDeathCount();
         } else {
