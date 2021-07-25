@@ -30,7 +30,9 @@ public class RewardManager : MonoBehaviour {
     public TMP_Text titleCompletedText;
     public TMP_Text scoreText;
     public TMP_Text bestScoreText;
-    public TMP_Text allReplayStats;
+    public TMP_Text gameDurationText;
+    public TMP_Text accelerationText;
+    public TMP_Text replayDurationText;
 
     protected float dureeReward;
     protected float accelerationCoefficiant;
@@ -132,12 +134,9 @@ public class RewardManager : MonoBehaviour {
         string replayLength = dureeReward.ToString("0.00");
         string currentReplayLengthText = currentReplayLength.ToString("0.00");
         string acceleration = ((1.0f / accelerationCoefficiant - 1) * 100).ToString("0.00");
-        string gameDurationText = strings.gameDuration.GetLocalizedString(gameLength).Result;
-        string replayDurationText = strings.replayDuration.GetLocalizedString($"{currentReplayLengthText}/{replayLength}").Result;
-        string accelerationText = strings.acceleration.GetLocalizedString(acceleration).Result;
-
-        allReplayStats.text = $"{gameDurationText}   {replayDurationText}   {accelerationText}";
-        UIHelper.FitTextHorizontaly(allReplayStats.text, allReplayStats);
+        gameDurationText.text = strings.gameDuration.GetLocalizedString(gameLength).Result;
+        accelerationText.text = strings.acceleration.GetLocalizedString(acceleration).Result;
+        replayDurationText.text = strings.replayDuration.GetLocalizedString($"{currentReplayLengthText}/{replayLength}").Result;
     }
 
     protected void InitializeCamera() {
