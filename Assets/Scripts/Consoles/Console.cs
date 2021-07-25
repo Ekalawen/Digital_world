@@ -65,7 +65,7 @@ public class Console : MonoBehaviour {
     public TMP_Text escapeButtonText;
     public GameObject pauseMenu;
     public CounterDisplayer dataCountDisplayer;
-    public TMP_Text frameRateText;
+    public FrameRateManager frameRateManager;
 
 
     [HideInInspector]
@@ -91,8 +91,6 @@ public class Console : MonoBehaviour {
     protected string allyPrefix;
     protected bool isLocalizationLoaded = false;
     protected List<float> deltaTimeList;
-    protected Timer frameRateTimer;
-    protected bool showFrameRate;
     protected bool isConsoleVisible = true;
 
     public virtual void Initialize()
@@ -109,7 +107,7 @@ public class Console : MonoBehaviour {
         importantText.text = "";
         eventManager = gm.eventManager;
         InitFrameRateCounter();
-        arrowKeysTimer.SetOver();
+        arrowKeysTimer = new Timer(2, setOver: true);
         HideDataCountDisplayerIfIR();
         DisplayOrNotConsole();
 
@@ -119,6 +117,7 @@ public class Console : MonoBehaviour {
     public virtual void DisplayOrNotConsole() {
         bool shouldDisplayConsole = PrefsManager.GetBool(PrefsManager.DISPLAY_CONSOLE_KEY, MenuOptions.defaultDisplayConsole);
         consoleBackground.SetActive(shouldDisplayConsole);
+        frameRateManager.SetToAccordingConsolePosition(shouldDisplayConsole);
     }
 
     private IEnumerator CInitialize() {
@@ -1113,41 +1112,23 @@ public class Console : MonoBehaviour {
     }
 
     public void InitFrameRateCounter() {
-        deltaTimeList = new List<float>();
-        frameRateTimer = new Timer(0.1f, setOver: true);
-        arrowKeysTimer = new Timer(2);
-        showFrameRate = PrefsManager.GetBool(PrefsManager.FPS_COUNTER_KEY, MenuOptions.defaultFpsCounter);
-        frameRateText.gameObject.SetActive(showFrameRate);
+        frameRateManager.Initialize();
     }
 
     protected void UpdateFrameRate() {
-        if (!showFrameRate)
-            return;
-        if (frameRateTimer.IsOver()) {
-            frameRateTimer.Reset();
-            float deltaTime = Time.deltaTime;
-            deltaTimeList.Add(deltaTime);
-            if (deltaTimeList.Count > 10) {
-                deltaTimeList.RemoveAt(0);
-            }
-            float meanDeltaTime = deltaTimeList.Average();
-            int fps = Mathf.RoundToInt(1.0f / meanDeltaTime);
-            int ms = Mathf.RoundToInt(meanDeltaTime * 1000.0f);
-            frameRateText.text = $"FPS : {fps} ({ms}ms)";
-        }
+        frameRateManager.Tick();
     }
 
     public bool IsConsoleVisible() {
         return isConsoleVisible;
     }
 
-    public void SetConsoleVisibility(bool isVisible)
-    {
+    public void SetConsoleVisibility(bool isVisible) {
         isConsoleVisible = isVisible;
         consoleBackground.SetActive(isVisible);
         importantText.gameObject.SetActive(isVisible);
         dataCountDisplayer.gameObject.SetActive(isVisible);
-        frameRateText.gameObject.SetActive(isVisible);
+        frameRateManager.SetVisibility(isVisible);
         pouvoirsCanvas.SetActive(isVisible);
         escapeButton.SetActive(isVisible && gm.eventManager.IsGameOver());
         pauseMenu.SetActive(isVisible && gm.IsPaused());
