@@ -16,7 +16,14 @@ public class RewardConsole : Console {
 		numLines = new List<int> ();
 		importantText.text = "";
 
+        DisplayOrNotConsole();
+
         InitTimersMessages();
+    }
+    public override void DisplayOrNotConsole() {
+        bool shouldDisplayConsole = PrefsManager.GetBool(PrefsManager.DISPLAY_CONSOLE_KEY, MenuOptions.defaultDisplayConsole);
+        consoleBackground.SetActive(shouldDisplayConsole);
+        // don't display frame rate here as we don't have one :)
     }
 
     public override void Update() {

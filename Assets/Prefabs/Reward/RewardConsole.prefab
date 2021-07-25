@@ -229,12 +229,13 @@ MonoBehaviour:
   pouvoirDisplayE: {fileID: 0}
   pouvoirDisplayLeftClick: {fileID: 0}
   pouvoirDisplayRightClick: {fileID: 0}
-  textContainer: {fileID: 1968408244200114}
+  consoleBackground: {fileID: 1968408244200114}
   importantText: {fileID: 4103114704440000620}
   escapeButton: {fileID: 0}
+  escapeButtonText: {fileID: 0}
   pauseMenu: {fileID: 0}
   dataCountDisplayer: {fileID: 0}
-  frameRateText: {fileID: 0}
+  frameRateManager: {fileID: 0}
   gm: {fileID: 0}
   map: {fileID: 0}
   player: {fileID: 0}
@@ -250,6 +251,7 @@ GameObject:
   - component: {fileID: 224957178065615488}
   - component: {fileID: 222872725289472732}
   - component: {fileID: 114011805422424358}
+  - component: {fileID: 1561427581103855308}
   m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
@@ -296,15 +298,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 0.0647059, g: 0.32352942, b: 0, a: 0.392}
+  m_Material: {fileID: 2100000, guid: 54626a89fb15b89419345b49f6f57030, type: 2}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -314,6 +316,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1561427581103855308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1968408244200114}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 101b089c210da9e4e9cd77d3d8b4f330, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4903916934507408910
 GameObject:
   m_ObjectHideFlags: 0
