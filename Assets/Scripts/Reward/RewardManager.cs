@@ -33,6 +33,7 @@ public class RewardManager : MonoBehaviour {
     public TMP_Text gameDurationText;
     public TMP_Text accelerationText;
     public TMP_Text replayDurationText;
+    public GameObject newBestScoreTag;
 
     protected float dureeReward;
     protected float accelerationCoefficiant;
@@ -116,8 +117,7 @@ public class RewardManager : MonoBehaviour {
         InitializeCamera();
     }
 
-    protected void InitializeTitleAndStats()
-    {
+    protected void InitializeTitleAndStats() {
         titleCompletedText.text = strings.levelCompleted.GetLocalizedString(hm.levelNameVisual).Result;
         UIHelper.FitTextHorizontaly(titleCompletedText.text, titleCompletedText);
 
@@ -125,6 +125,8 @@ public class RewardManager : MonoBehaviour {
         string bestScore = PrefsManager.GetFloat(GetKeyFor(PrefsManager.BEST_SCORE_KEY), 0).ToString("0.00");
         scoreText.text = strings.score.GetLocalizedString(score).Result;
         bestScoreText.text = strings.bestScore.GetLocalizedString(bestScore).Result;
+
+        newBestScoreTag.SetActive(IsNewBestScoreAfterBestScoreAssignation());
 
         SetAllReplayStatsTexts(currentReplayLength: 0.0f);
     }
@@ -201,5 +203,10 @@ public class RewardManager : MonoBehaviour {
     protected string GetKeyFor(string keySuffix) {
         string levelNameKey = hm.levelNameId;
         return levelNameKey + keySuffix;
+    }
+
+    public bool IsNewBestScoreAfterBestScoreAssignation() {
+        string key = GetKeyFor(PrefsManager.HAS_JUST_MAKE_BEST_SCORE_KEY);
+        return PrefsManager.GetBool(key, false);
     }
 }
