@@ -10,4 +10,7 @@ public class SoundBankUI : ScriptableObject {
     public AudioClipParams unlockPathClips;
 
     public AudioClipParams menuMusicClips;
+
+    public AudioClipParams newBestScoreClips;
+    public AudioClipParams newBestScoreClickedClips;
 }

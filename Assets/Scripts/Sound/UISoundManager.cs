@@ -140,6 +140,12 @@ public class UISoundManager : MonoBehaviour {
     public void PlayUnlockPathClip() {
         PlayClipsOnSource(sounds.unlockPathClips);
     }
+    public void PlayNewBestScoreClip() {
+        PlayClipsOnSource(sounds.newBestScoreClips);
+    }
+    public void PlayNewBestScoreClickedClip() {
+        PlayClipsOnSource(sounds.newBestScoreClickedClips);
+    }
 
     public void StartMusic() {
         StartCoroutine(CStartMusic());
