@@ -12,6 +12,7 @@ public class Tooltip : MonoBehaviour {
     public bool useOverlay = false;
     public RectTransform background;
     public TMPro.TMP_Text text;
+    public new Camera camera;
 
     protected float planeDistance;
 
@@ -36,7 +37,7 @@ public class Tooltip : MonoBehaviour {
             Vector3 localPoint;
             Vector3 screenPoint = Input.mousePosition;
             screenPoint.z = planeDistance;
-            localPoint = Camera.main.ScreenToWorldPoint(screenPoint);
+            localPoint = camera.ScreenToWorldPoint(screenPoint);
             rectTransform.position = localPoint;
         }
 
