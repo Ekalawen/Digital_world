@@ -34,6 +34,7 @@ public class RewardManager : MonoBehaviour {
     public TMP_Text accelerationText;
     public TMP_Text replayDurationText;
     public GameObject newBestScoreTag;
+    public RewardNewBestScoreButton newBestScoreButton;
 
     protected float dureeReward;
     protected float accelerationCoefficiant;
@@ -113,6 +114,8 @@ public class RewardManager : MonoBehaviour {
         console.SetDureeReward(dureeReward, delayBetweenTrails);
 
         InitializeTitleAndStats();
+
+        InitializeNewBestScoreButton();
 
         InitializeCamera();
     }
@@ -208,5 +211,11 @@ public class RewardManager : MonoBehaviour {
     public bool IsNewBestScoreAfterBestScoreAssignation() {
         string key = GetKeyFor(PrefsManager.HAS_JUST_MAKE_BEST_SCORE_KEY);
         return PrefsManager.GetBool(key, false);
+    }
+
+    protected void InitializeNewBestScoreButton() {
+        if(IsNewBestScoreAfterBestScoreAssignation()) {
+            newBestScoreButton.Initialize();
+        }
     }
 }

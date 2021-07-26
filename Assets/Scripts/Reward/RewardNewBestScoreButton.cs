@@ -25,7 +25,7 @@ public class RewardNewBestScoreButton : MonoBehaviour {
     protected float startSize;
 
 
-    public void Start() {
+    public void Initialize() {
         addedCoefs = new List<Coef>();
         startSize = GetSystemsSize();
         UISoundManager.Instance.PlayNewBestScoreClip();
