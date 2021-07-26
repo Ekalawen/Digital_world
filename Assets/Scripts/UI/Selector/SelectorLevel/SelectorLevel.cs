@@ -55,9 +55,10 @@ public class SelectorLevel : MonoBehaviour {
 
     protected void RewardIfNewBestScore() {
         if (menuLevel.HasJustMakeNewBestScore()) {
-            if (menuLevel.GetPrecedentBestScore() > 0) {
-                RewardNewBestScore();
-            }
+            /// On a plus besoin de cette Popup avec le nouveau boutton de BestScore dans le Reward ! :)
+            //if (menuLevel.GetPrecedentBestScore() > 0) {
+            //    RewardNewBestScore();
+            //}
             menuLevel.SetNotJustMakeNewBestScore();
         }
     }

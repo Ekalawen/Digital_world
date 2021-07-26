@@ -33,7 +33,6 @@ public class RewardManager : MonoBehaviour {
     public TMP_Text gameDurationText;
     public TMP_Text accelerationText;
     public TMP_Text replayDurationText;
-    public GameObject newBestScoreTag;
     public RewardNewBestScoreButton newBestScoreButton;
 
     protected float dureeReward;
@@ -129,8 +128,6 @@ public class RewardManager : MonoBehaviour {
         scoreText.text = strings.score.GetLocalizedString(score).Result;
         bestScoreText.text = strings.bestScore.GetLocalizedString(bestScore).Result;
 
-        newBestScoreTag.SetActive(IsNewBestScoreAfterBestScoreAssignation());
-
         SetAllReplayStatsTexts(currentReplayLength: 0.0f);
     }
 
@@ -212,10 +209,16 @@ public class RewardManager : MonoBehaviour {
         string key = GetKeyFor(PrefsManager.HAS_JUST_MAKE_BEST_SCORE_KEY);
         return PrefsManager.GetBool(key, false);
     }
+    public float GetPrecedentBestScore() {
+        return PrefsManager.GetFloat(GetKeyFor(PrefsManager.PRECEDENT_BEST_SCORE_KEY), 0);
+    }
 
     protected void InitializeNewBestScoreButton() {
-        if(IsNewBestScoreAfterBestScoreAssignation()) {
+        if(IsNewBestScoreAfterBestScoreAssignation() && GetPrecedentBestScore() > 0) {
+            newBestScoreButton.gameObject.SetActive(true);
             newBestScoreButton.Initialize();
+        } else {
+            newBestScoreButton.gameObject.SetActive(false);
         }
     }
 }
