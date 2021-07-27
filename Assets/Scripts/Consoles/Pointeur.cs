@@ -21,16 +21,31 @@ public class Pointeur : MonoBehaviour {
     public float enChuteScale = 3;
     public float auMurScale = 5;
 
-    protected GameManager gm;
+    [Header("Textures")]
+    public Texture2D textureFull;
+    public Texture2D texture3Dashs;
+    public Texture2D texture2Dashs;
+    public Texture2D texture1Dashs;
+    public Texture2D texture0Dashs;
 
-    void Start() {
+    protected GameManager gm;
+    protected ChargeCooldown tripleDashChargeCooldown = null;
+
+    public void Initialize() {
         gm = GameManager.Instance;
         auSolPointeur.color = auSolColor;
         auSolPointeur.rectTransform.sizeDelta = Vector2.one * auSolScale;
+
+        InitTexture();
     }
 
     void Update() {
-        switch(gm.player.GetEtat()) {
+        SetColorAndSize();
+        UpdateTexture();
+    }
+
+    protected void SetColorAndSize() {
+        switch (gm.player.GetEtat()) {
             case Player.EtatPersonnage.AU_SOL:
                 auMurPointeur.color = auSolColor;
                 auMurPointeur.rectTransform.sizeDelta = Vector2.one * auSolScale;
@@ -47,6 +62,43 @@ public class Pointeur : MonoBehaviour {
                 auMurPointeur.color = GetFinalColorAuMur();
                 auMurPointeur.rectTransform.sizeDelta = Vector2.one * GetFinalScaleAuMur();
                 break;
+        }
+    }
+
+    protected void InitTexture() {
+        IPouvoir dash = gm.player.GetPouvoirLeftClick().GetComponent<PouvoirDash>();
+        if (dash != null) {
+            tripleDashChargeCooldown = dash.GetCooldown() as ChargeCooldown;
+        }
+        if (dash == null || tripleDashChargeCooldown == null) {
+            SetTexture(textureFull);
+        }
+    }
+
+    protected void SetTexture(Texture2D texture) {
+        auMurPointeur.texture = texture;
+        auSolPointeur.texture = texture;
+    }
+
+    protected void UpdateTexture() {
+        if(tripleDashChargeCooldown != null) {
+            switch (tripleDashChargeCooldown.GetCurrentCharges()) {
+                case 0:
+                    SetTexture(texture0Dashs);
+                    break;
+                case 1:
+                    SetTexture(texture1Dashs);
+                    break;
+                case 2:
+                    SetTexture(texture2Dashs);
+                    break;
+                case 3:
+                    SetTexture(texture3Dashs);
+                    break;
+                default:
+                    SetTexture(textureFull);
+                    break;
+            }
         }
     }
 

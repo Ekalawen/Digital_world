@@ -75,4 +75,8 @@ public class ChargeCooldown : Cooldown {
     public override bool ShouldDisplayTextOnPouvoirDisplay() {
         return true;
     }
+
+    public int GetCurrentCharges() {
+        return currentCharges;
+    }
 }

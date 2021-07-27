@@ -141,14 +141,22 @@ public class Player : Character {
     }
 
     protected void InitPouvoirs() {
-        if (pouvoirAPrefab != null)
+        if (pouvoirAPrefab != null) {
             pouvoirA = Instantiate(pouvoirAPrefab, parent: this.transform).GetComponent<IPouvoir>();
-        if (pouvoirEPrefab != null)
+            pouvoirA.Initialize();
+        }
+        if (pouvoirEPrefab != null) {
             pouvoirE = Instantiate(pouvoirEPrefab, parent: this.transform).GetComponent<IPouvoir>();
-        if(pouvoirLeftBoutonPrefab != null)
+            pouvoirE.Initialize();
+        }
+        if(pouvoirLeftBoutonPrefab != null) {
             pouvoirLeftBouton = Instantiate(pouvoirLeftBoutonPrefab, parent: this.transform).GetComponent<IPouvoir>();
-        if(pouvoirRightBoutonPrefab != null)
+            pouvoirLeftBouton.Initialize();
+        }
+        if (pouvoirRightBoutonPrefab != null) {
             pouvoirRightBouton = Instantiate(pouvoirRightBoutonPrefab, parent: this.transform).GetComponent<IPouvoir>();
+            pouvoirRightBouton.Initialize();
+        }
     }
 
     public void SetPouvoir(GameObject pouvoirPrefab, PouvoirGiverItem.PouvoirBinding pouvoirBinding) {

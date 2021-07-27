@@ -24,8 +24,8 @@ public class PouvoirRollback : IPouvoir {
     protected Curve playerCurve;
     protected List<EnnemiCurve> ennemisCurves;
 
-    public override void Start() {
-        base.Start();
+    public override void Initialize() {
+        base.Initialize();
         acceleration = dureeRevertedMax / dureeTotalRevert;
     }
 

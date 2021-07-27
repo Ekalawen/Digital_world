@@ -31,7 +31,7 @@ public abstract class IPouvoir : MonoBehaviour {
     protected Cooldown cooldown;
     protected PouvoirDisplayInGame pouvoirDisplay;
 
-    public virtual void Start() {
+    public virtual void Initialize() {
         pouvoirEnabled = true;
         gm = FindObjectOfType<GameManager>();
         player = gm.player;

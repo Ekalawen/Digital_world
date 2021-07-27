@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour {
 	[HideInInspector]
 	public Player player;
 	[HideInInspector]
-	public GameObject pointeur;
+	public Pointeur pointeur;
 	[HideInInspector]
 	public Console console;
 	[HideInInspector]
@@ -93,7 +93,7 @@ public class GameManager : MonoBehaviour {
 		eventManager = Instantiate(eventManagerPrefab, managerFolder.transform).GetComponent<EventManager>();
 		console = Instantiate(consolePrefab, managerFolder.transform).GetComponent<Console>();
 		colorManager = Instantiate(colorManagerPrefab, managerFolder.transform).GetComponent<ColorManager>();
-        pointeur = Instantiate(pointeurPrefab, managerFolder.transform);
+        pointeur = Instantiate(pointeurPrefab, managerFolder.transform).GetComponent<Pointeur>();
         ennemiManager = Instantiate(ennemiManagerPrefab, managerFolder.transform).GetComponent<EnnemiManager>();
         itemManager = Instantiate(itemManagerPrefab, managerFolder.transform).GetComponent<ItemManager>();
         soundManager = Instantiate(soundManagerPrefab, managerFolder.transform).GetComponent<SoundManager>();
@@ -122,6 +122,7 @@ public class GameManager : MonoBehaviour {
         itemManager.Initialize();
         console.Initialize();
         soundManager.Initialize();
+        pointeur.Initialize();
         postProcessManager.Initialize();
         scanManager.Initialize();
         historyManager.Initialize();
@@ -176,7 +177,7 @@ public class GameManager : MonoBehaviour {
         isPaused = true;
         Time.timeScale = 0.0f;
         ShowCursor();
-        pointeur.SetActive(false);
+        pointeur.gameObject.SetActive(false);
         console.OpenPauseMenu();
         soundManager.PauseSounds();
     }
@@ -185,7 +186,7 @@ public class GameManager : MonoBehaviour {
         isPaused = false;
         Time.timeScale = 1.0f;
         HideCursor();
-        pointeur.SetActive(true);
+        pointeur.gameObject.SetActive(true);
         Tooltip.Hide();
         console.ClosePauseMenu();
         soundManager.UnPauseSounds();
