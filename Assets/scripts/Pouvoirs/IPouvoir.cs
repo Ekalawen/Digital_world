@@ -29,6 +29,7 @@ public abstract class IPouvoir : MonoBehaviour {
     protected Player player;
     protected KeyCode binding;
     protected Cooldown cooldown;
+    protected PouvoirDisplayInGame pouvoirDisplay;
 
     public virtual void Start() {
         pouvoirEnabled = true;
@@ -109,5 +110,13 @@ public abstract class IPouvoir : MonoBehaviour {
     public void SetTimerMalus(float timerMalusValue) {
         timerMalus = timerMalusValue;
         timerMalusTimeProportional = false;
+    }
+
+    public void SetPouvoirDisplay(PouvoirDisplayInGame pouvoirDisplay) {
+        this.pouvoirDisplay = pouvoirDisplay;
+    }
+
+    public PouvoirDisplayInGame GetPouvoirDisplay() {
+        return pouvoirDisplay;
     }
 }

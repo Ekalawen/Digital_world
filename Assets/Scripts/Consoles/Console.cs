@@ -998,6 +998,9 @@ public class Console : MonoBehaviour {
 
     protected void InitPouvoir(IPouvoir pouvoir, PouvoirDisplayInGame display) {
         display.Initialize(pouvoir);
+        if (pouvoir != null) {
+            pouvoir.SetPouvoirDisplay(display);
+        }
     }
 
     public void RewardBestScore() {

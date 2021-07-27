@@ -119,7 +119,7 @@ public class PouvoirDisplayInGame : MonoBehaviour {
         }
     }
 
-    protected void FlashPouvoirAvailable() {
+    public void FlashPouvoirAvailable() {
         flash.Flash();
         gm.soundManager.PlayPouvoirAvailableClip();
     }
