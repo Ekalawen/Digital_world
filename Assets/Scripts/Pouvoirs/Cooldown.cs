@@ -44,6 +44,9 @@ public class Cooldown : MonoBehaviour {
     }
 
     public virtual float GetTextToDisplayOnPouvoirDisplay() {
+        if(!pouvoir.IsEnabled()) {
+            return 0.0f;
+        }
         return cooldownTimer.GetRemainingTime();
     }
 
@@ -52,6 +55,6 @@ public class Cooldown : MonoBehaviour {
     }
 
     public virtual bool ShouldDisplayTextOnPouvoirDisplay() {
-        return !IsAvailable();
+        return !IsAvailable() || !pouvoir.IsEnabled();
     }
 }

@@ -53,6 +53,9 @@ public class ChargeCooldown : Cooldown {
     }
 
     public override float GetTextToDisplayOnPouvoirDisplay() {
+        if(!pouvoir.IsEnabled()) {
+            return 0.0f;
+        }
         if(IsAvailable()) {
             return currentCharges;
         }
@@ -60,6 +63,9 @@ public class ChargeCooldown : Cooldown {
     }
 
     public override bool IsTextToDisplayOnPouvoirDisplayATimer() {
+        if(!pouvoir.IsEnabled()) {
+            return true;
+        }
         if(IsAvailable()) {
             return false;
         }
