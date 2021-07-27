@@ -12,7 +12,7 @@ public class PouvoirDisplayInGame : MonoBehaviour {
     public Image image;
     public Image bordure;
     public GameObject onCooldownGroup;
-    public Text cooldownText;
+    public TMP_Text cooldownText;
     public Image loadingCircle;
     public float vitesseRotationLoadingCircle = 5.0f;
     public Text keyText;
@@ -26,9 +26,11 @@ public class PouvoirDisplayInGame : MonoBehaviour {
     public Color bordureColorReset;
     public Color bordureColorDefault;
 
-    [Header("Text Colors")]
+    [Header("Text params")]
     public Color defaultTextColor;
     public Color specialTextColor;
+    public int defaultFontSize = 30;
+    public int specialFontSize = 60;
 
     protected GameManager gm;
     protected IPouvoir pouvoir;
@@ -109,9 +111,11 @@ public class PouvoirDisplayInGame : MonoBehaviour {
                 if (cooldown.IsTextToDisplayOnPouvoirDisplayATimer()) {
                     cooldownText.text = TimerManager.TimerToClearString(cooldownTime);
                     cooldownText.color = defaultTextColor;
+                    cooldownText.fontSize = defaultFontSize;
                 } else {
                     cooldownText.text = ((int)cooldownTime).ToString();
                     cooldownText.color = specialTextColor;
+                    cooldownText.fontSize = specialFontSize;
                 }
             } else {
                 cooldownText.gameObject.SetActive(false);
