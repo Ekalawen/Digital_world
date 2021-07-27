@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Localization;
@@ -23,6 +24,10 @@ public class Cooldown : MonoBehaviour {
         return cooldownTimer.IsOver();
     }
 
+    public virtual bool IsCharging() {
+        return !IsAvailable();
+    }
+
     public virtual float GetRemainingTimeBeforeUse() {
         if(IsAvailable()) {
             return 0.0f;
@@ -38,4 +43,15 @@ public class Cooldown : MonoBehaviour {
         }
     }
 
+    public virtual float GetTextToDisplayOnPouvoirDisplay() {
+        return cooldownTimer.GetRemainingTime();
+    }
+
+    public virtual bool IsTextToDisplayOnPouvoirDisplayATimer() {
+        return true;
+    }
+
+    public virtual bool ShouldDisplayTextOnPouvoirDisplay() {
+        return !IsAvailable();
+    }
 }

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1579303118}
   - component: {fileID: 1579303117}
   m_Layer: 5
-  m_Name: Cooldown
+  m_Name: CooldownText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29,8 +29,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 6554771191473262033}
-  m_RootOrder: 2
+  m_Father: {fileID: 3974133309955573142}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -337,6 +337,7 @@ RectTransform:
   - {fileID: 8172005426382087172}
   - {fileID: 6981710276803806755}
   - {fileID: 6554771191473262033}
+  - {fileID: 1579303116}
   - {fileID: 1859212886673897609}
   - {fileID: 7817840737000059276}
   m_Father: {fileID: 8172005426081589647}
@@ -426,7 +427,6 @@ RectTransform:
   m_Children:
   - {fileID: 2039013697031656876}
   - {fileID: 4146338289726115119}
-  - {fileID: 1579303116}
   m_Father: {fileID: 3974133309955573142}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -466,7 +466,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3974133309955573142}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -579,7 +579,7 @@ RectTransform:
   m_Children:
   - {fileID: 6890116479972011581}
   m_Father: {fileID: 3974133309955573142}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -682,7 +682,7 @@ MonoBehaviour:
   image: {fileID: 8172005426382087173}
   bordure: {fileID: 4375648510414707849}
   onCooldownGroup: {fileID: 5510396945118164454}
-  cooldown: {fileID: 1579303117}
+  cooldownText: {fileID: 1579303117}
   loadingCircle: {fileID: 4540193900804005942}
   vitesseRotationLoadingCircle: 300
   keyText: {fileID: 7817840737000059275}
@@ -699,6 +699,8 @@ MonoBehaviour:
   bordureColorHack: {r: 0, g: 1, b: 0, a: 1}
   bordureColorReset: {r: 0.83137256, g: 0, b: 1, a: 1}
   bordureColorDefault: {r: 1, g: 1, b: 1, a: 1}
+  defaultTextColor: {r: 0, g: 1, b: 1, a: 1}
+  specialTextColor: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &8172005426382087175
 GameObject:
   m_ObjectHideFlags: 0

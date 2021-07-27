@@ -83,6 +83,10 @@ public abstract class IPouvoir : MonoBehaviour {
         }
     }
 
+    public bool IsCharging() {
+        return cooldown.IsCharging();
+    }
+
     // La véritable fonction qui appelle le pouvoir
     protected abstract bool UsePouvoir();
 

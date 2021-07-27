@@ -46,4 +46,26 @@ public class ChargeCooldown : Cooldown {
     public override bool IsAvailable() {
         return currentCharges > 0;
     }
+
+    public override bool IsCharging() {
+        return currentCharges < maxCharges;
+    }
+
+    public override float GetTextToDisplayOnPouvoirDisplay() {
+        if(IsAvailable()) {
+            return currentCharges;
+        }
+        return base.GetTextToDisplayOnPouvoirDisplay();
+    }
+
+    public override bool IsTextToDisplayOnPouvoirDisplayATimer() {
+        if(IsAvailable()) {
+            return false;
+        }
+        return base.IsTextToDisplayOnPouvoirDisplayATimer();
+    }
+
+    public override bool ShouldDisplayTextOnPouvoirDisplay() {
+        return true;
+    }
 }

@@ -12,7 +12,7 @@ public class PouvoirDisplayInGame : MonoBehaviour {
     public Image image;
     public Image bordure;
     public GameObject onCooldownGroup;
-    public Text cooldown;
+    public Text cooldownText;
     public Image loadingCircle;
     public float vitesseRotationLoadingCircle = 5.0f;
     public Text keyText;
@@ -26,8 +26,13 @@ public class PouvoirDisplayInGame : MonoBehaviour {
     public Color bordureColorReset;
     public Color bordureColorDefault;
 
+    [Header("Text Colors")]
+    public Color defaultTextColor;
+    public Color specialTextColor;
+
     protected GameManager gm;
     protected IPouvoir pouvoir;
+    protected Cooldown cooldown;
 
     public void Initialize(IPouvoir pouvoir) {
         gm = GameManager.Instance;
@@ -41,6 +46,7 @@ public class PouvoirDisplayInGame : MonoBehaviour {
     protected IEnumerator CInitialize(IPouvoir pouvoir) {
         bordure.gameObject.SetActive(true);
         this.pouvoir = pouvoir;
+        this.cooldown = pouvoir.GetCooldown();
         string nom = PouvoirDisplay.GetNullName();
         if (pouvoir != null) {
             AsyncOperationHandle<string> handleNom = pouvoir.nom.GetLocalizedString();
@@ -83,8 +89,8 @@ public class PouvoirDisplayInGame : MonoBehaviour {
     public void Update() {
         if (pouvoir != null) {
             bool onCooldownGroupOldState = onCooldownGroup.activeInHierarchy;
-            if(!pouvoir.IsEnabled() || !pouvoir.IsAvailable()) {
-                if (!pouvoir.IsEnabled() || pouvoir.GetCooldown().cooldown >= 0.1f) { // On ne veut pas afficher les cooldown trop courts
+            if(!pouvoir.IsEnabled() || cooldown.IsCharging()) {
+                if(cooldown.cooldown >= 0.1f) {
                     onCooldownGroup.SetActive(true);
                 }
             } else {
@@ -97,8 +103,19 @@ public class PouvoirDisplayInGame : MonoBehaviour {
             float rotationAngle = Time.timeSinceLevelLoad * vitesseRotationLoadingCircle % 360;
             loadingCircle.rectTransform.rotation = Quaternion.Euler(0, 0, rotationAngle);
 
-            float cooldownTime = Mathf.Max(pouvoir.GetRemainingCooldown(), 0.0f);
-            cooldown.text = TimerManager.TimerToClearString(cooldownTime);
+            if (cooldown.ShouldDisplayTextOnPouvoirDisplay() && cooldown.cooldown >= 0.1f) {
+                cooldownText.gameObject.SetActive(true);
+                float cooldownTime = Mathf.Max(cooldown.GetTextToDisplayOnPouvoirDisplay(), 0.0f);
+                if (cooldown.IsTextToDisplayOnPouvoirDisplayATimer()) {
+                    cooldownText.text = TimerManager.TimerToClearString(cooldownTime);
+                    cooldownText.color = defaultTextColor;
+                } else {
+                    cooldownText.text = ((int)cooldownTime).ToString();
+                    cooldownText.color = specialTextColor;
+                }
+            } else {
+                cooldownText.gameObject.SetActive(false);
+            }
         }
     }
 
