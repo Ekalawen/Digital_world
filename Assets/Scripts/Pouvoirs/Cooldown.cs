@@ -8,8 +8,10 @@ public class Cooldown : MonoBehaviour {
     public float cooldown = 1.0f;
 
     protected Timer cooldownTimer;
+    protected IPouvoir pouvoir;
 
-    public void Initialize() {
+    public virtual void Initialize() {
+        pouvoir = GetComponent<IPouvoir>();
         cooldownTimer = new Timer(cooldown, setOver: true);
     }
 
