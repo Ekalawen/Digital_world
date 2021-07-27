@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7324250301190615901}
   - component: {fileID: 68428756070356398}
+  - component: {fileID: -934493089882912364}
   m_Layer: 0
   m_Name: PouvoirRollbackBlackAndWhite
   m_TagString: Untagged
@@ -43,11 +44,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78782b42fb030b44480b658db2b1110e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nom: RetourTemorel
-  description: "Restez appuy\xE9 pour remonter dans le temps."
+  nom:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+  description:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
   sprite: {fileID: 0}
+  pouvoirType: 4
   cooldown: 3.5
   timerMalus: 0
+  timerMalusTimeProportional: 0
+  timerMalusTimeProportion: 0.33333334
   activationAudioClips:
     relativeVolume: 1
     spatialBlend: 1
@@ -60,3 +76,16 @@ MonoBehaviour:
   dureeTotalRevert: 1
   shouldRevertEnnemis: 1
   maxTimerMalus: 10
+--- !u!114 &-934493089882912364
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5474762033359417457}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f03f4255da793cf41aa6b059bf4599eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cooldown: 3.5

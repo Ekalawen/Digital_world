@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Localization;
@@ -15,34 +16,42 @@ public abstract class IPouvoir : MonoBehaviour {
     public Sprite sprite;
 
     public PouvoirDisplay.PouvoirType pouvoirType = PouvoirDisplay.PouvoirType.DEFAULT;
-    public float cooldown = 0.0f;
     public float timerMalus = 0.0f;
     public bool timerMalusTimeProportional = false;
+    [ConditionalHide("timerMalusTimeProportional")]
     public float timerMalusTimeProportion = 1.0f / 3.0f;
 
     public AudioClipParams activationAudioClips;
 
-    protected bool pouvoirAvailable;
-    protected bool freezePouvoir = false;
+    protected bool pouvoirEnabled;
+    protected bool pouvoirFreezed = false;
     protected GameManager gm;
     protected Player player;
-    protected Timer cooldownTimer;
     protected KeyCode binding;
+    protected Cooldown cooldown;
 
     public virtual void Start() {
-        pouvoirAvailable = true;
+        pouvoirEnabled = true;
         gm = FindObjectOfType<GameManager>();
         player = gm.player;
-        cooldownTimer = new Timer(cooldown);
-        cooldownTimer.SetOver();
+        InitializeCooldown();
+    }
+
+    protected void InitializeCooldown() {
+        cooldown = GetComponent<Cooldown>();
+        if(cooldown == null) {
+            Debug.LogWarning($"Un Cooldown par défault a été généré pour le pouvoir {name} ! ;)");
+            cooldown = gameObject.AddComponent<Cooldown>();
+        }
+        cooldown.Initialize();
     }
 
     // La fonction appelée lorsque le joueur appui sur une touche
     public void TryUsePouvoir(KeyCode binding) {
         this.binding = binding;
-        if(IsAvailable() && IsTimerOver()) {
+        if(IsEnabled() && IsAvailable()) {
             if(UsePouvoir()) {
-                cooldownTimer.Reset();
+                cooldown.Use();
                 ApplyTimerMalus();
                 gm.soundManager.PlayActivationPouvoirClip((activationAudioClips.clips.Count > 0) ? activationAudioClips : null);
             } else {
@@ -53,12 +62,12 @@ public abstract class IPouvoir : MonoBehaviour {
         }
     }
 
-    public bool IsAvailable() {
-        return pouvoirAvailable && !freezePouvoir;
+    public bool IsEnabled() {
+        return pouvoirEnabled && !pouvoirFreezed;
     }
 
-    public bool IsTimerOver() {
-        return cooldownTimer.IsOver();
+    public bool IsAvailable() {
+        return cooldown.IsAvailable();
     }
 
     protected virtual void ApplyTimerMalus() {
@@ -78,18 +87,19 @@ public abstract class IPouvoir : MonoBehaviour {
     protected abstract bool UsePouvoir();
 
     public void FreezePouvoir(bool value = true) {
-        freezePouvoir = value;
+        pouvoirFreezed = value;
     }
 
-    public float GetCurrentCooldown() {
-        if (cooldownTimer == null)
-            return 0.0f;
-        return cooldownTimer.GetRemainingTime();
+    public Cooldown GetCooldown() {
+        return cooldown;
     }
 
-    public void SetCooldown(float cooldownValue) {
-        cooldown = cooldownValue;
-        cooldownTimer.SetDuree(cooldownValue);
+    public float GetRemainingCooldown() {
+        return cooldown.GetRemainingTimeBeforeUse();
+    }
+
+    public void SetCooldownDuration(float duration) {
+        cooldown.SetCooldownDuration(duration, keepRemainingTime: false);
     }
 
     public void SetTimerMalus(float timerMalusValue) {

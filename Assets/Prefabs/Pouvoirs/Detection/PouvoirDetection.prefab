@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5780963728283393192}
   - component: {fileID: 5780963728283393191}
+  - component: {fileID: 3182500912217935588}
   m_Layer: 0
   m_Name: PouvoirDetection
   m_TagString: Untagged
@@ -49,13 +50,16 @@ MonoBehaviour:
     m_TableEntryReference:
       m_KeyId: 999015292928
       m_Key: 
+    m_FallbackState: 0
   description:
     m_TableReference:
       m_TableCollectionName: GUID:bdcfcf5557c4ec14ea653537ddc22373
     m_TableEntryReference:
       m_KeyId: 1057219649536
       m_Key: 
+    m_FallbackState: 0
   sprite: {fileID: 21300000, guid: 4df181cfffb19d04ab75a91337775046, type: 3}
+  pouvoirType: 4
   cooldown: 0
   timerMalus: 1
   timerMalusTimeProportional: 0
@@ -74,3 +78,16 @@ MonoBehaviour:
     type: 3}
   trailItemsPrefab: {fileID: 1140410629866252707, guid: ac89450f469098742b6f2aca75b1ce6b,
     type: 3}
+--- !u!114 &3182500912217935588
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5780963728283393190}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f03f4255da793cf41aa6b059bf4599eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cooldown: 0

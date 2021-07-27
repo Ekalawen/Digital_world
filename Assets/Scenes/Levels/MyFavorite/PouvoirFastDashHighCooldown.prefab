@@ -7,10 +7,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1262352015429642806, guid: 8c964a2d15245c344a2db086d7983f18,
+    - target: {fileID: 1262352015429642800, guid: 8c964a2d15245c344a2db086d7983f18,
         type: 3}
-      propertyPath: m_Name
-      value: PouvoirFastDashHighCooldown
+      propertyPath: m_RootOrder
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1262352015429642800, guid: 8c964a2d15245c344a2db086d7983f18,
         type: 3}
@@ -29,6 +29,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1262352015429642800, guid: 8c964a2d15245c344a2db086d7983f18,
         type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1262352015429642800, guid: 8c964a2d15245c344a2db086d7983f18,
+        type: 3}
       propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
@@ -40,16 +45,6 @@ PrefabInstance:
     - target: {fileID: 1262352015429642800, guid: 8c964a2d15245c344a2db086d7983f18,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1262352015429642800, guid: 8c964a2d15245c344a2db086d7983f18,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1262352015429642800, guid: 8c964a2d15245c344a2db086d7983f18,
-        type: 3}
-      propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1262352015429642800, guid: 8c964a2d15245c344a2db086d7983f18,
@@ -67,7 +62,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1262352015429642806, guid: 8c964a2d15245c344a2db086d7983f18,
+        type: 3}
+      propertyPath: m_Name
+      value: PouvoirFastDashHighCooldown
+      objectReference: {fileID: 0}
     - target: {fileID: 1262352015429642807, guid: 8c964a2d15245c344a2db086d7983f18,
+        type: 3}
+      propertyPath: cooldown
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6430363259543522675, guid: 8c964a2d15245c344a2db086d7983f18,
         type: 3}
       propertyPath: cooldown
       value: 3

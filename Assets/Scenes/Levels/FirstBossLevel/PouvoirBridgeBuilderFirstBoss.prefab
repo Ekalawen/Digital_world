@@ -12,6 +12,10 @@ PrefabInstance:
       value: PouvoirBridgeBuilderFirstBoss
       objectReference: {fileID: 0}
     - target: {fileID: 4042448225208702, guid: 00a0694679e69cf48b78dfb4cb64ea83, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4042448225208702, guid: 00a0694679e69cf48b78dfb4cb64ea83, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -24,6 +28,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4042448225208702, guid: 00a0694679e69cf48b78dfb4cb64ea83, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4042448225208702, guid: 00a0694679e69cf48b78dfb4cb64ea83, type: 3}
       propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
@@ -33,14 +41,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4042448225208702, guid: 00a0694679e69cf48b78dfb4cb64ea83, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4042448225208702, guid: 00a0694679e69cf48b78dfb4cb64ea83, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4042448225208702, guid: 00a0694679e69cf48b78dfb4cb64ea83, type: 3}
-      propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4042448225208702, guid: 00a0694679e69cf48b78dfb4cb64ea83, type: 3}
@@ -57,9 +57,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 114276670561027700, guid: 00a0694679e69cf48b78dfb4cb64ea83,
         type: 3}
-      propertyPath: timerMalus
-      value: 5
-      objectReference: {fileID: 0}
+      propertyPath: sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 773dc68964886104a8ca2566e954dbfa,
+        type: 3}
     - target: {fileID: 114276670561027700, guid: 00a0694679e69cf48b78dfb4cb64ea83,
         type: 3}
       propertyPath: cooldown
@@ -67,9 +68,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 114276670561027700, guid: 00a0694679e69cf48b78dfb4cb64ea83,
         type: 3}
-      propertyPath: sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 773dc68964886104a8ca2566e954dbfa,
+      propertyPath: timerMalus
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3608562516125188880, guid: 00a0694679e69cf48b78dfb4cb64ea83,
         type: 3}
+      propertyPath: cooldown
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 00a0694679e69cf48b78dfb4cb64ea83, type: 3}

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4825563985713288727}
   - component: {fileID: 4825563985713288726}
+  - component: {fileID: 892074740403514876}
   m_Layer: 0
   m_Name: PouvoirDestructionRayPerforant
   m_TagString: Untagged
@@ -43,9 +44,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41dc027dca14b024382436637a137b7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nom: RayonPerforant
-  description: "D\xE9truit tous les cubes rencontr\xE9s en ligne."
+  nom:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+  description:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
   sprite: {fileID: 0}
+  pouvoirType: 4
   cooldown: 0.5
   timerMalus: 10
   timerMalusTimeProportional: 0
@@ -60,3 +74,16 @@ MonoBehaviour:
     - {fileID: 8300000, guid: eba6031eaa2a82e489a67ff68af19033, type: 3}
   porteeRay: 5
   bDestroyAllCubes: 1
+--- !u!114 &892074740403514876
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4825563985713288729}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f03f4255da793cf41aa6b059bf4599eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cooldown: 0.5

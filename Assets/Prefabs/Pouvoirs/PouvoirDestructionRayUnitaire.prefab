@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4825563985713288727}
   - component: {fileID: 4825563985713288726}
+  - component: {fileID: -3603640719372712005}
   m_Layer: 0
   m_Name: PouvoirDestructionRayUnitaire
   m_TagString: Untagged
@@ -49,13 +50,16 @@ MonoBehaviour:
     m_TableEntryReference:
       m_KeyId: 0
       m_Key: 
+    m_FallbackState: 0
   description:
     m_TableReference:
       m_TableCollectionName: 
     m_TableEntryReference:
       m_KeyId: 0
       m_Key: 
+    m_FallbackState: 0
   sprite: {fileID: 0}
+  pouvoirType: 4
   cooldown: 0.5
   timerMalus: 10
   timerMalusTimeProportional: 0
@@ -70,3 +74,16 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 2ad59f2ef1a9b824380848c6b0abf32b, type: 3}
   porteeRay: 1000
   bDestroyAllCubes: 0
+--- !u!114 &-3603640719372712005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4825563985713288729}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f03f4255da793cf41aa6b059bf4599eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cooldown: 0.5

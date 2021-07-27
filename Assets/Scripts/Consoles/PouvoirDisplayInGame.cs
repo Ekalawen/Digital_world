@@ -83,8 +83,8 @@ public class PouvoirDisplayInGame : MonoBehaviour {
     public void Update() {
         if (pouvoir != null) {
             bool onCooldownGroupOldState = onCooldownGroup.activeInHierarchy;
-            if(!pouvoir.IsAvailable() || !pouvoir.IsTimerOver()) {
-                if (!pouvoir.IsAvailable() || pouvoir.cooldown >= 0.1f) {// On ne veut pas afficher les cooldown trop courts
+            if(!pouvoir.IsEnabled() || !pouvoir.IsAvailable()) {
+                if (!pouvoir.IsEnabled() || pouvoir.GetCooldown().cooldown >= 0.1f) { // On ne veut pas afficher les cooldown trop courts
                     onCooldownGroup.SetActive(true);
                 }
             } else {
@@ -97,7 +97,7 @@ public class PouvoirDisplayInGame : MonoBehaviour {
             float rotationAngle = Time.timeSinceLevelLoad * vitesseRotationLoadingCircle % 360;
             loadingCircle.rectTransform.rotation = Quaternion.Euler(0, 0, rotationAngle);
 
-            float cooldownTime = Mathf.Max(pouvoir.GetCurrentCooldown(), 0.0f);
+            float cooldownTime = Mathf.Max(pouvoir.GetRemainingCooldown(), 0.0f);
             cooldown.text = TimerManager.TimerToClearString(cooldownTime);
         }
     }

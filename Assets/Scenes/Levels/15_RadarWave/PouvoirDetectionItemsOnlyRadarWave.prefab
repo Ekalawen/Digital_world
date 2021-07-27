@@ -7,10 +7,35 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 54061750572552582, guid: 8c8f068d453bfc048be0e74cd23ef187,
+        type: 3}
+      propertyPath: cooldown
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 638304111139372720, guid: 8c8f068d453bfc048be0e74cd23ef187,
         type: 3}
       propertyPath: m_Name
       value: PouvoirDetectionItemsOnlyRadarWave
+      objectReference: {fileID: 0}
+    - target: {fileID: 638304111139372721, guid: 8c8f068d453bfc048be0e74cd23ef187,
+        type: 3}
+      propertyPath: cooldown
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 638304111139372721, guid: 8c8f068d453bfc048be0e74cd23ef187,
+        type: 3}
+      propertyPath: timerMalus
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 638304111139372721, guid: 8c8f068d453bfc048be0e74cd23ef187,
+        type: 3}
+      propertyPath: timerMalusTimeProportional
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 638304111139372734, guid: 8c8f068d453bfc048be0e74cd23ef187,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 638304111139372734, guid: 8c8f068d453bfc048be0e74cd23ef187,
         type: 3}
@@ -29,6 +54,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 638304111139372734, guid: 8c8f068d453bfc048be0e74cd23ef187,
         type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 638304111139372734, guid: 8c8f068d453bfc048be0e74cd23ef187,
+        type: 3}
       propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
@@ -40,16 +70,6 @@ PrefabInstance:
     - target: {fileID: 638304111139372734, guid: 8c8f068d453bfc048be0e74cd23ef187,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 638304111139372734, guid: 8c8f068d453bfc048be0e74cd23ef187,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 638304111139372734, guid: 8c8f068d453bfc048be0e74cd23ef187,
-        type: 3}
-      propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 638304111139372734, guid: 8c8f068d453bfc048be0e74cd23ef187,
@@ -66,21 +86,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 638304111139372721, guid: 8c8f068d453bfc048be0e74cd23ef187,
-        type: 3}
-      propertyPath: timerMalusTimeProportional
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 638304111139372721, guid: 8c8f068d453bfc048be0e74cd23ef187,
-        type: 3}
-      propertyPath: cooldown
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 638304111139372721, guid: 8c8f068d453bfc048be0e74cd23ef187,
-        type: 3}
-      propertyPath: timerMalus
-      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8c8f068d453bfc048be0e74cd23ef187, type: 3}

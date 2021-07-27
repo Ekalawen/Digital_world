@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4042448225208702}
   - component: {fileID: 114715623820781360}
+  - component: {fileID: -6135620931831926101}
   m_Layer: 0
   m_Name: PouvoirTripleSauts
   m_TagString: Untagged
@@ -43,9 +44,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8528831a7fd8cae4d891d32088b99453, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nom: TripleDash
-  description: "Arr\xEAte le temps pour vous permettre de faire 3 dashs."
+  nom:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+  description:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
   sprite: {fileID: 0}
+  pouvoirType: 4
   cooldown: 0
   timerMalus: 5
   timerMalusTimeProportional: 0
@@ -64,3 +78,16 @@ MonoBehaviour:
   distanceDash: 5
   nbFramesDash: 5
   tempsPourDash: 2.25
+--- !u!114 &-6135620931831926101
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1859676056984938}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f03f4255da793cf41aa6b059bf4599eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cooldown: 0

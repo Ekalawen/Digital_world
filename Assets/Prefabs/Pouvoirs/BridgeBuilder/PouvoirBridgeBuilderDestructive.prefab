@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4042448225208702}
   - component: {fileID: 114276670561027700}
+  - component: {fileID: 2544041554073329391}
   m_Layer: 0
   m_Name: PouvoirBridgeBuilderDestructive
   m_TagString: Untagged
@@ -49,13 +50,16 @@ MonoBehaviour:
     m_TableEntryReference:
       m_KeyId: 813744496640
       m_Key: 
+    m_FallbackState: 0
   description:
     m_TableReference:
       m_TableCollectionName: GUID:bdcfcf5557c4ec14ea653537ddc22373
     m_TableEntryReference:
       m_KeyId: 852827021312
       m_Key: 
+    m_FallbackState: 0
   sprite: {fileID: 21300000, guid: 3fd16fbb97603244abf5f79e474d8f02, type: 3}
+  pouvoirType: 4
   cooldown: 0
   timerMalus: 5
   timerMalusTimeProportional: 0
@@ -75,3 +79,16 @@ MonoBehaviour:
   rayonDestruction: 2
   untilLastCubeTouched: 0
   cubesDissolveTime: 0.3
+--- !u!114 &2544041554073329391
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1859676056984938}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f03f4255da793cf41aa6b059bf4599eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cooldown: 0
