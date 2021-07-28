@@ -92,7 +92,7 @@ public class PouvoirDisplayInGame : MonoBehaviour {
         if (pouvoir != null) {
             bool onCooldownGroupOldState = onCooldownGroup.activeInHierarchy;
             if(!pouvoir.IsEnabled() || cooldown.IsCharging()) {
-                if(cooldown.cooldown >= 0.1f) {
+                if(!pouvoir.IsEnabled() || cooldown.cooldown >= 0.1f) { // C'est important de répéter la condition pour pouvoir toujours désactiver les pouvoirs cooldown = 0 !
                     onCooldownGroup.SetActive(true);
                 }
             } else {
@@ -105,7 +105,7 @@ public class PouvoirDisplayInGame : MonoBehaviour {
             float rotationAngle = Time.timeSinceLevelLoad * vitesseRotationLoadingCircle % 360;
             loadingCircle.rectTransform.rotation = Quaternion.Euler(0, 0, rotationAngle);
 
-            if (cooldown.ShouldDisplayTextOnPouvoirDisplay() && cooldown.cooldown >= 0.1f) {
+            if (cooldown.ShouldDisplayTextOnPouvoirDisplay() && (cooldown.cooldown >= 0.1f || !pouvoir.IsEnabled())) {
                 cooldownText.gameObject.SetActive(true);
                 float cooldownTime = Mathf.Max(cooldown.GetTextToDisplayOnPouvoirDisplay(), 0.0f);
                 if (cooldown.IsTextToDisplayOnPouvoirDisplayATimer()) {
