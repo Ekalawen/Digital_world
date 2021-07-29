@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class TimerManager : MonoBehaviour {
 
+    public AnimationCurve curve = new AnimationCurve();
+
     [Header("Time")]
     public bool isInfinitTime = false;
     public float initialTime = 40.0f;
@@ -89,12 +91,11 @@ public class TimerManager : MonoBehaviour {
             float avancement = (remainingTime - 10.0f) / 10.0f;
             timerDisplayer.SetFontSize(fontSize);
         } else {
-            float avancement = remainingTime / 10.0f;
-            float size = fontSize * (1.0f + (1.0f - avancement));
-            if (remainingTime <= 10.0f) {
-                float coefBounce = 1 + (1.0f - soundTimeOutTimer.GetAvancement()) * (fontSizeBounceCoef - 1.0f);
-                size *= coefBounce;
-            }
+            float avancement = 1 - remainingTime / 10.0f;
+            float size = fontSize * (1.0f + avancement);
+            float soundTimeOutTimerAvancement = Mathf.Min(soundTimeOutTimer.GetAvancement(), 1.0f);
+            float coefBounce = 1 + (1.0f - soundTimeOutTimerAvancement) * (fontSizeBounceCoef - 1.0f);
+            size *= coefBounce;
             timerDisplayer.SetFontSize((int)size);
         }
     }
@@ -146,13 +147,14 @@ public class TimerManager : MonoBehaviour {
 
     protected void PlayTimeOutSound() {
         if(GetRemainingTime() <= 10.0f) {
-            if (GetRemainingTime() <= 1.6f)
+            if (GetRemainingTime() <= 1.6f) {
                 soundTimeOutTimer.SetDuree(0.2f);
-            else if (GetRemainingTime() <= 5.0f)
+            } else if (GetRemainingTime() <= 5.0f) {
                 soundTimeOutTimer.SetDuree(0.5f);
-            else
+            } else {
                 soundTimeOutTimer.SetDuree(1.0f);
-            if(soundTimeOutTimer.IsOver()) {
+            }
+            if (soundTimeOutTimer.IsOver()) {
                 soundTimeOutTimer.Reset();
                 gm.soundManager.PlayTimeOutClip();
             }
