@@ -132,7 +132,7 @@ public class EnnemiManager : MonoBehaviour {
     public bool IsInCaptureRange(Vector3 position) {
         foreach (Ennemi ennemi in ennemis) {
             if (ennemi.CanCapture()) {
-                float captureDistance = gm.player.GetSizeRadius() + ennemi.transform.localScale[0] + playerCaptureDistance;
+                float captureDistance = gm.player.GetSizeRadius() + ennemi.transform.localScale[0] / 2 + playerCaptureDistance;
                 if (Vector3.Distance(ennemi.transform.position, position) <= captureDistance) {
                     return true;
                 }
