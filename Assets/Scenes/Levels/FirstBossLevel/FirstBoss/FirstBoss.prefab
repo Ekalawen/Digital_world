@@ -16,7 +16,6 @@ GameObject:
   - component: {fileID: 6859634591761783048}
   - component: {fileID: 1756146987721204656}
   - component: {fileID: 143727705574006242}
-  - component: {fileID: -5116954398695036221}
   - component: {fileID: -3270952119784135351}
   m_Layer: 0
   m_Name: FirstBoss
@@ -36,7 +35,6 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 3, y: 3, z: 3}
   m_Children:
-  - {fileID: 4362161399578992}
   - {fileID: 2490465529169916915}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -183,7 +181,7 @@ MonoBehaviour:
   tempsInactifDebutJeu: 3
   distanceDeDetection: 99999
   canAlwaysSeePlayer: 1
-  spikesTimeOnDetectPlayer: 0.3
+  spikesTimeOnDetectPlayer: 1.5
 --- !u!114 &1756146987721204656
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -236,21 +234,6 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &-5116954398695036221
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1252573298759596}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 557a840502824d349a6ec6711ddbdf22, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onlyOnStart: 0
-  fixValue: 0
-  fixedValue: 0
 --- !u!114 &-3270952119784135351
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -263,85 +246,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2898d42de4ac1a945bff1fc30311748f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &1279410113604906
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4362161399578992}
-  - component: {fileID: 215913695647600812}
-  - component: {fileID: 114026881373933044}
-  m_Layer: 0
-  m_Name: reflection_probe
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4362161399578992
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1279410113604906}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 4901542301328802}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!215 &215913695647600812
-ReflectionProbe:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1279410113604906}
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Type: 0
-  m_Mode: 1
-  m_RefreshMode: 0
-  m_TimeSlicingMode: 0
-  m_Resolution: 16
-  m_UpdateFrequency: 0
-  m_BoxSize: {x: 0, y: 0, z: 0}
-  m_BoxOffset: {x: 0, y: 0, z: 0}
-  m_NearClip: 0.3
-  m_FarClip: 1000
-  m_ShadowDistance: 100
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
-  m_CullingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IntensityMultiplier: 1
-  m_BlendDistance: 1
-  m_HDR: 1
-  m_BoxProjection: 0
-  m_RenderDynamicObjects: 0
-  m_UseOcclusionCulling: 1
-  m_Importance: 1
-  m_CustomBakedTexture: {fileID: 0}
---- !u!114 &114026881373933044
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1279410113604906}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 41edbc50f944648b180e0893de34cddc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  distanceDeRafraichissement: 5
-  frequenceDeRafraichissement: 20
 --- !u!1 &2728229505169324050
 GameObject:
   m_ObjectHideFlags: 0
@@ -375,7 +279,7 @@ Transform:
   - {fileID: 4053090127049370211}
   - {fileID: 3772460916041600912}
   m_Father: {fileID: 4901542301328802}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4265888498341522221
 GameObject:

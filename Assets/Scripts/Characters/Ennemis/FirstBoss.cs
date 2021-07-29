@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class FirstBoss : Sonde {
 
-    public Transform componentsFolder;
+    [Header("FirstBoss Parameters")]
+
+    [Header("Attacks")]
     public float attackDelay = 0.5f;
     public List<float> attackRateByPhases;
     public GameObject attacksPrefab;
@@ -16,14 +18,23 @@ public class FirstBoss : Sonde {
     public float explosionAttackDamage = 100f;
     public GameObject explosionAttackParticulesPrefab;
     public GameObject fastExplosionAttackParticulesPrefab;
+
+    [Header("OrbTriggers")]
     public List<GameObject> timeZoneByPhases;
+
+    [Header("RandomFillings")]
     public List<float> esperanceApparitionRandomFillingByPhases;
     public GameObject generateRandomFillingEventPrefab;
-    public IController sondeController;
-    public IController tracerController;
+
+    [Header("Items&DataToPop")]
     public GameObject itemToPopPrefab;
     public int nbLumieres = 15;
     public GameObject pouvoirLocalisationPrefab;
+
+    [Header("Links")]
+    public Transform componentsFolder;
+    public IController sondeController;
+    public IController tracerController;
 
     protected List<Sonde> satellites;
     protected Timer timerAttacks;
