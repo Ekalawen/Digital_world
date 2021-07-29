@@ -20,7 +20,7 @@ public class FirstBoss : Sonde {
     public GameObject fastExplosionAttackParticulesPrefab;
 
     [Header("OrbTriggers")]
-    public List<GameObject> timeZoneByPhases;
+    public List<OrbTrigger> orbTriggersByPhases;
 
     [Header("RandomFillings")]
     public List<float> esperanceApparitionRandomFillingByPhases;
@@ -48,7 +48,6 @@ public class FirstBoss : Sonde {
         satellites = new List<Sonde>(GetComponentsInChildren<Sonde>());
         satellites.Remove(this);
         SetSatellitesActivation(false);
-        //gm.soundManager.PlayFirstBossPresenceClip(transform.position, transform); // ==> Ca rend pas bien pour le moment !
         GoToPhase1();
     }
 
@@ -71,8 +70,8 @@ public class FirstBoss : Sonde {
 
     protected IEnumerator CAttackInDelay(Vector3 direction) {
         yield return new WaitForSeconds(attackDelay);
-        Vector3 spawn = transform.position + direction * (transform.localScale[0] / 2.0f + 0.55f);
-        Ennemi attack = gm.ennemiManager.GenerateEnnemiFromPrefab(attacksPrefab, spawn);
+        Vector3 spawnPosition = transform.position + direction * (transform.localScale[0] / 2.0f + 0.55f);
+        Ennemi attack = gm.ennemiManager.GenerateEnnemiFromPrefab(attacksPrefab, spawnPosition);
         GoToDirectionController projectile = attack.GetComponent<GoToDirectionController>();
         projectile.direction = direction;
     }
@@ -93,8 +92,9 @@ public class FirstBoss : Sonde {
 
     public void SetSatellitesActivation(bool activation) {
         if (!activation) {
-            foreach (Sonde satellite in satellites)
+            foreach (Sonde satellite in satellites) {
                 satellite.gameObject.SetActive(activation);
+            }
         } else {
             StartCoroutine(CActivateSatellitesProgressively());
         }
@@ -116,8 +116,10 @@ public class FirstBoss : Sonde {
         randomEventToRemove = randomEvent;
     }
 
-    protected void UpdateTimeZone(int phaseIndice) {
-        timeZoneByPhases[phaseIndice - 1].SetActive(true);
+    protected void UpdateOrbTrigger(int phaseIndice) {
+        OrbTrigger orbTrigger = orbTriggersByPhases[phaseIndice - 1];
+        orbTrigger.gameObject.SetActive(true);
+        orbTrigger.Initialize(orbTrigger.rayon, orbTrigger.durationToActivate);
     }
 
     protected void UpdateConsoleMessage(int phaseIndice) {
@@ -147,7 +149,7 @@ public class FirstBoss : Sonde {
     public void GoToPhase1() {
         UpdateRandomEvent(phaseIndice: 1);
         UpdateAttackRate(phaseIndice: 1);
-        UpdateTimeZone(phaseIndice: 1);
+        UpdateOrbTrigger(phaseIndice: 1);
     }
 
     public void GoToPhase2() {
@@ -157,7 +159,7 @@ public class FirstBoss : Sonde {
         UpdateConsoleMessage(phaseIndice: 2);
         AddTimeItem();
         yield return StartCoroutine(CExplosionAttackNormale());
-        UpdateTimeZone(phaseIndice: 2);
+        UpdateOrbTrigger(phaseIndice: 2);
         UpdateAttackRate(phaseIndice: 2);
         UpdateRandomEvent(phaseIndice: 2);
     }
@@ -171,7 +173,7 @@ public class FirstBoss : Sonde {
         AddTimeItem();
         yield return StartCoroutine(CExplosionAttackNormale());
         SetSatellitesActivation(true);
-        UpdateTimeZone(phaseIndice: 3);
+        UpdateOrbTrigger(phaseIndice: 3);
         UpdateAttackRate(phaseIndice: 3);
         UpdateRandomEvent(phaseIndice: 3);
     }

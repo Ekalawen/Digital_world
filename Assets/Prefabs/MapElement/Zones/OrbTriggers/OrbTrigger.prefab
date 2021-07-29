@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 3331541113027473190}
   - component: {fileID: 3331541113027473189}
   - component: {fileID: 5436187247130953406}
-  - component: {fileID: 1370665313013149256}
   m_Layer: 2
   m_Name: OrbTrigger
   m_TagString: Trigger
@@ -123,19 +122,5 @@ MonoBehaviour:
     type: 3}
   dureeDestructionLightningLink: 0.3
   shouldPopCubeInCenter: 0
-  autoDestroyOnActivate: 0
---- !u!114 &1370665313013149256
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3331541113027473186}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 557a840502824d349a6ec6711ddbdf22, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onlyOnStart: 1
-  fixValue: 1
-  fixedValue: 0.28
+  autoDestroyOnActivate: 1
+  hasToBeDestroyedBeforeEndGame: 0
