@@ -983,7 +983,7 @@ public class Console : MonoBehaviour {
         chargement.Arguments = new object[] { newPhaseIndice };
         AjouterMessageImportant(chargement, TypeText.ENNEMI_TEXT, duree, bAfficherInConsole: true);
         yield return new WaitForSeconds(duree);
-        LocalizedString termine = strings.pouvoirGiverActive;
+        LocalizedString termine = strings.bossChangementDePhaseTermine;
         termine.Arguments = new object[] { newPhaseIndice };
         AjouterMessageImportant(termine, TypeText.ENNEMI_TEXT, 2, bAfficherInConsole: true);
     }
