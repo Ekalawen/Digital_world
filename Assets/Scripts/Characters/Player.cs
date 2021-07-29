@@ -136,6 +136,11 @@ public class Player : Character {
         InitPouvoirs();
     }
 
+    internal void SetPouvoir(object pouvoirDash333Prefab, PouvoirGiverItem.PouvoirBinding pouvoirBinding)
+    {
+        throw new NotImplementedException();
+    }
+
     public void GetPlayerSensitivity() {
         sensibilite = PrefsManager.GetFloat(PrefsManager.MOUSE_SPEED_KEY, MenuOptions.defaultMouseSpeed);
     }
@@ -163,15 +168,27 @@ public class Player : Character {
         switch (pouvoirBinding) {
             case PouvoirGiverItem.PouvoirBinding.A:
                 pouvoirA = pouvoirPrefab == null ? null : Instantiate(pouvoirPrefab, parent: this.transform).GetComponent<IPouvoir>();
+                if(pouvoirA != null) {
+                    pouvoirA.Initialize();
+                }
                 break;
             case PouvoirGiverItem.PouvoirBinding.E:
                 pouvoirE = pouvoirPrefab == null ? null : Instantiate(pouvoirPrefab, parent: this.transform).GetComponent<IPouvoir>();
+                if(pouvoirE != null) {
+                    pouvoirE.Initialize();
+                }
                 break;
             case PouvoirGiverItem.PouvoirBinding.LEFT_CLICK:
                 pouvoirLeftBouton = pouvoirPrefab == null ? null : Instantiate(pouvoirPrefab, parent: this.transform).GetComponent<IPouvoir>();
+                if(pouvoirLeftBouton != null) {
+                    pouvoirLeftBouton.Initialize();
+                }
                 break;
             case PouvoirGiverItem.PouvoirBinding.RIGHT_CLICK:
                 pouvoirRightBouton = pouvoirPrefab == null ? null : Instantiate(pouvoirPrefab, parent: this.transform).GetComponent<IPouvoir>();
+                if(pouvoirRightBouton != null) {
+                    pouvoirRightBouton.Initialize();
+                }
                 break;
         }
         gm.console.InitPouvoirsDisplays();

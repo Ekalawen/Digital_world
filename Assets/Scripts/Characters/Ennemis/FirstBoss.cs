@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -26,7 +27,8 @@ public class FirstBoss : Sonde {
     public List<float> esperanceApparitionRandomFillingByPhases;
     public GameObject generateRandomFillingEventPrefab;
 
-    [Header("Items&DataToPop")]
+    [Header("ThingsToDrop")]
+    public GameObject pouvoirDash333Prefab;
     public GameObject itemToPopPrefab;
     public int nbLumieres = 15;
     public GameObject pouvoirLocalisationPrefab;
@@ -41,7 +43,7 @@ public class FirstBoss : Sonde {
     protected List<Coroutine> coroutinesOfNextAttacks;
     protected RandomEvent randomEventToRemove = null;
 
-	public override void Start () {
+    public override void Start () {
         base.Start();
         name = "FirstBoss";
         coroutinesOfNextAttacks = new List<Coroutine>();
@@ -157,11 +159,20 @@ public class FirstBoss : Sonde {
     }
     protected IEnumerator CGoToPhase2() {
         UpdateConsoleMessage(phaseIndice: 2);
+        GiveDash333();
         AddTimeItem();
         yield return StartCoroutine(CExplosionAttackNormale());
         UpdateOrbTrigger(phaseIndice: 2);
         UpdateAttackRate(phaseIndice: 2);
         UpdateRandomEvent(phaseIndice: 2);
+    }
+
+    protected void GiveDash333() {
+        PouvoirGiverItem.PouvoirBinding pouvoirBinding = PouvoirGiverItem.PouvoirBinding.LEFT_CLICK;
+        player.SetPouvoir(pouvoirDash333Prefab, pouvoirBinding);
+        IPouvoir pouvoir = player.GetPouvoirLeftClick().GetComponent<IPouvoir>();
+        gm.console.CapturePouvoirGiverItem(pouvoir.nom, pouvoirBinding);
+        gm.pointeur.Initialize();
     }
 
     public void GoToPhase3() {
