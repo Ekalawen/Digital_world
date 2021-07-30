@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class FirstBoss : Sonde {
 
@@ -27,8 +28,13 @@ public class FirstBoss : Sonde {
     public List<float> esperanceApparitionRandomFillingByPhases;
     public GameObject generateRandomFillingEventPrefab;
 
-    [Header("ThingsToDrop")]
+    [Header("PouvoirGiver")]
     public GameObject pouvoirDash333Prefab;
+    public VisualEffect particlesGainPouvoir;
+    public float timeBeforeGivingDash = 3.0f;
+    public float timeAfterGivingDash = 3.0f;
+
+    [Header("ThingsToDrop")]
     public GameObject itemToPopPrefab;
     public int nbLumieres = 15;
     public GameObject pouvoirLocalisationPrefab;
@@ -158,8 +164,8 @@ public class FirstBoss : Sonde {
         StartCoroutine(CGoToPhase2());
     }
     protected IEnumerator CGoToPhase2() {
+        yield return StartCoroutine(CGiveDash333());
         UpdateConsoleMessage(phaseIndice: 2);
-        GiveDash333();
         AddTimeItem();
         yield return StartCoroutine(CExplosionAttackNormale());
         UpdateOrbTrigger(phaseIndice: 2);
@@ -167,12 +173,40 @@ public class FirstBoss : Sonde {
         UpdateRandomEvent(phaseIndice: 2);
     }
 
-    protected void GiveDash333() {
+    protected IEnumerator CGiveDash333() {
+        StartCoroutine(CStartParticlesGainPouvoir());
+        yield return new WaitForSeconds(timeBeforeGivingDash);
+        GiveDash333();
+        yield return new WaitForSeconds(timeAfterGivingDash);
+    }
+
+    protected void GiveDash333()
+    {
         PouvoirGiverItem.PouvoirBinding pouvoirBinding = PouvoirGiverItem.PouvoirBinding.LEFT_CLICK;
         player.SetPouvoir(pouvoirDash333Prefab, pouvoirBinding);
         IPouvoir pouvoir = player.GetPouvoirLeftClick().GetComponent<IPouvoir>();
         gm.console.CapturePouvoirGiverItem(pouvoir.nom, pouvoirBinding);
         gm.pointeur.Initialize();
+    }
+
+    protected IEnumerator CStartParticlesGainPouvoir() {
+        IController controller = GetComponent<IController>();
+        float oldVitesse = controller.vitesse;
+        controller.vitesse = 0.0f;
+
+        particlesGainPouvoir.SendEvent("Explode");
+        Timer timerToStop = new Timer(timeBeforeGivingDash);
+        Timer timerToUpdate = new Timer(particlesGainPouvoir.GetVector2("Lifetime").y);
+        while(!timerToUpdate.IsOver()) {
+            particlesGainPouvoir.SetVector3("PositionToGoTo", player.transform.position);
+            if(timerToStop.IsOver()) {
+                particlesGainPouvoir.SendEvent("Stop");
+                timerToStop.SetDuree(timerToUpdate.GetDuree());
+            }
+            yield return null;
+        }
+
+        controller.vitesse = oldVitesse;
     }
 
     public void GoToPhase3() {

@@ -41,29 +41,32 @@ VisualEffect:
   m_GameObject: {fileID: 4290835295678912785}
   m_Enabled: 1
   m_Asset: {fileID: 8926484042661614526, guid: a0293c4a6714b7f4f8c32b34846e8846, type: 3}
-  m_InitialEventName: OnPlay
-  m_InitialEventNameOverriden: 0
+  m_InitialEventName: Explode
+  m_InitialEventNameOverriden: 1
   m_StartSeed: 0
   m_ResetSeedOnPlay: 1
   m_ResourceVersion: 1
   m_PropertySheet:
     m_Float:
       m_Array:
-      - m_Value: 15
+      - m_Value: 10
         m_Name: ForceToPosition
         m_Overridden: 1
-      - m_Value: 5
+      - m_Value: 4
         m_Name: ForceStrength
         m_Overridden: 1
-      - m_Value: 150
+      - m_Value: 1000
         m_Name: ParticulesCount
         m_Overridden: 1
       - m_Value: 1
         m_Name: ParticulesScale
         m_Overridden: 1
+      - m_Value: 2
+        m_Name: RadiusExplosion
+        m_Overridden: 1
     m_Vector2f:
       m_Array:
-      - m_Value: {x: 2, y: 3}
+      - m_Value: {x: 5, y: 6}
         m_Name: Lifetime
         m_Overridden: 1
     m_Vector3f:
@@ -94,8 +97,8 @@ VisualEffect:
             inWeight: 0
             outWeight: 0.19460174
           - serializedVersion: 3
-            time: 0.45
-            value: 0
+            time: 0.26999998
+            value: 0.0014078617
             inSlope: 0.04860353
             outSlope: -0.06361076
             tangentMode: 1
@@ -103,8 +106,8 @@ VisualEffect:
             inWeight: 0.21122362
             outWeight: 0.21560736
           - serializedVersion: 3
-            time: 0.55
-            value: 1
+            time: 0.42
+            value: 1.0014079
             inSlope: -0.00058818434
             outSlope: 0.07263209
             tangentMode: 1
