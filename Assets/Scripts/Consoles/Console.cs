@@ -774,6 +774,14 @@ public class Console : MonoBehaviour {
                 AjouterMessageImportant (strings.deathFlirdHit2, Console.TypeText.RED_TEXT, timeDeathMessage);
                 AjouterMessageImportant (strings.deathFlirdHit1, Console.TypeText.RED_TEXT, timeDeathMessage);
                 break;
+            case EventManager.DeathReason.FIRST_BOSS_BLAST:
+                AjouterMessageImportant (strings.deathFirstBossBlast2, Console.TypeText.RED_TEXT, timeDeathMessage);
+                AjouterMessageImportant (strings.deathFirstBossBlast1, Console.TypeText.RED_TEXT, timeDeathMessage);
+                break;
+            case EventManager.DeathReason.FIRST_BOSS_HIT:
+                AjouterMessageImportant (strings.deathFirstBossHit2, Console.TypeText.RED_TEXT, timeDeathMessage);
+                AjouterMessageImportant (strings.deathFirstBossHit1, Console.TypeText.RED_TEXT, timeDeathMessage);
+                break;
         }
         DisplayEscapeButton();
 		StartCoroutine (SeMoquer());

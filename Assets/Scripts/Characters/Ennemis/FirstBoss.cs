@@ -49,6 +49,7 @@ public class FirstBoss : Sonde {
     protected Timer timerAttacks;
     protected List<Coroutine> coroutinesOfNextAttacks;
     protected RandomEvent randomEventToRemove = null;
+    protected EventManager.DeathReason currentDeathReason = EventManager.DeathReason.FIRST_BOSS_HIT;
 
     public override void Start () {
         base.Start();
@@ -279,7 +280,7 @@ public class FirstBoss : Sonde {
         Timer timer = new Timer(totalTime - delay);
         while(!timer.IsOver()) {
             if (Vector3.Distance(player.transform.position, transform.position) <= explosionAttackDistance)
-                HitPlayer(useCustomTimeMalus: true, explosionAttackDamage);
+                HitPlayerCustom(EventManager.DeathReason.FIRST_BOSS_BLAST, explosionAttackDamage);
             List<Cube> nearCubes = gm.map.GetCubesInSphere(transform.position, explosionAttackDistance);
             foreach (Cube cube in nearCubes) {
                 if(cube != null)
@@ -309,5 +310,16 @@ public class FirstBoss : Sonde {
 
     public override bool IsInactive() {
         return !IsMoving();
+    }
+
+    public override EventManager.DeathReason GetDeathReason() {
+        return currentDeathReason;
+    }
+
+    protected void HitPlayerCustom(EventManager.DeathReason deathReason, float timeMalus) {
+        EventManager.DeathReason oldDeathReason = currentDeathReason;
+        currentDeathReason = deathReason;
+        HitPlayer(useCustomTimeMalus: true, customTimeMalus: timeMalus);
+        currentDeathReason = oldDeathReason;
     }
 }

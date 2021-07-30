@@ -57,6 +57,10 @@ public class ConsoleStrings : ScriptableObject {
     public LocalizedString deathTracerBlast2;
     public LocalizedString deathFlirdHit1;
     public LocalizedString deathFlirdHit2;
+    public LocalizedString deathFirstBossHit1;
+    public LocalizedString deathFirstBossHit2;
+    public LocalizedString deathFirstBossBlast1;
+    public LocalizedString deathFirstBossBlast2;
 
     public LocalizedString plusQueX;
     public LocalizedString localisationIlTeResteXData;
