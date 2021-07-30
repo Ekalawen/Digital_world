@@ -32,6 +32,7 @@ public class FirstBoss : Sonde {
     public GameObject pouvoirDash333Prefab;
     public VisualEffect particlesGainPouvoir;
     public float timeBeforeGivingDash = 3.0f;
+    public float timeToStopParticles = 1.5f;
     public float timeAfterGivingDash = 3.0f;
 
     [Header("ThingsToDrop")]
@@ -197,8 +198,8 @@ public class FirstBoss : Sonde {
         controller.vitesse = 0.0f;
 
         particlesGainPouvoir.SendEvent("Explode");
-        Timer timerToStop = new Timer(timeBeforeGivingDash);
-        Timer timerToUpdate = new Timer(particlesGainPouvoir.GetVector2("Lifetime").y);
+        Timer timerToStop = new Timer(timeToStopParticles);
+        Timer timerToUpdate = new Timer(timeToStopParticles + particlesGainPouvoir.GetVector2("Lifetime").y);
         while(!timerToUpdate.IsOver()) {
             particlesGainPouvoir.SetVector3("PositionToGoTo", player.transform.position);
             if(timerToStop.IsOver()) {
