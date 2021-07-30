@@ -21,7 +21,7 @@ public struct TimerMessage {
 
 public class Console : MonoBehaviour {
 
-	public enum TypeText {BASIC_TEXT, ENNEMI_TEXT, ALLY_TEXT};
+	public enum TypeText {GREEN_TEXT, RED_TEXT, BLUE_TEXT};
 
     [Header("Messages")]
     public LocalizedString levelVisualName;
@@ -184,7 +184,7 @@ public class Console : MonoBehaviour {
         }
 
         if(!displayImportant) {
-            AjouterMessageImportant(customInitMessage, TypeText.ALLY_TEXT, 3);
+            AjouterMessageImportant(customInitMessage, TypeText.BLUE_TEXT, 3);
         }
 
         PremierGrandConseil();
@@ -194,15 +194,15 @@ public class Console : MonoBehaviour {
         string levelName = levelVisualName.GetLocalizedString().Result;
         LocalizedString niveauString = strings.initialisationNiveau;
         niveauString.Arguments = new object[] { levelName };
-        AjouterMessage(niveauString, TypeText.BASIC_TEXT, bUsePrefix: false);
-        AjouterMessage(strings.initialisationMatrice, TypeText.BASIC_TEXT, bUsePrefix: false);
+        AjouterMessage(niveauString, TypeText.GREEN_TEXT, bUsePrefix: false);
+        AjouterMessage(strings.initialisationMatrice, TypeText.GREEN_TEXT, bUsePrefix: false);
     }
 
     protected void VaAussiLoinQueTuPeux(bool displayImportant) {
         if (displayImportant) {
-            AjouterMessageImportant(strings.vaAussiLoinQueTuPeux, TypeText.ALLY_TEXT, 3);
+            AjouterMessageImportant(strings.vaAussiLoinQueTuPeux, TypeText.BLUE_TEXT, 3);
         } else {
-            AjouterMessage(strings.vaAussiLoinQueTuPeux, TypeText.ALLY_TEXT);
+            AjouterMessage(strings.vaAussiLoinQueTuPeux, TypeText.BLUE_TEXT);
         }
     }
 
@@ -211,15 +211,15 @@ public class Console : MonoBehaviour {
             if (displayImportant) {
                 int nbEnnemis = gm.ennemiManager.ennemis.Count;
                 if (nbEnnemis > 0) {
-                    AjouterMessageImportant(GetEnnemisCountDisplayMessage(), TypeText.ALLY_TEXT, 3, bAfficherInConsole: false);
+                    AjouterMessageImportant(GetEnnemisCountDisplayMessage(), TypeText.BLUE_TEXT, 3, bAfficherInConsole: false);
                 }
                 int nbLumieres = map.GetLumieres().Count;
                 if (nbLumieres > 0) {
-                    AjouterMessageImportant(GetDataCountDisplayMessage(), TypeText.ALLY_TEXT, 3, bAfficherInConsole: false);
+                    AjouterMessageImportant(GetDataCountDisplayMessage(), TypeText.BLUE_TEXT, 3, bAfficherInConsole: false);
                 }
             }
-            AjouterMessage(GetDataCountDisplayMessage(), TypeText.ALLY_TEXT);
-            AjouterMessage(GetEnnemisCountDisplayMessage(), TypeText.ALLY_TEXT);
+            AjouterMessage(GetDataCountDisplayMessage(), TypeText.BLUE_TEXT);
+            AjouterMessage(GetEnnemisCountDisplayMessage(), TypeText.BLUE_TEXT);
         }
     }
 
@@ -249,9 +249,9 @@ public class Console : MonoBehaviour {
     }
 
     public void PouvoirsDesactives() {
-		AjouterMessageImportant (strings.pouvoirsDesactives, TypeText.ALLY_TEXT, 3);
-		AjouterMessageImportant (strings.pouvoirsDesactives, TypeText.ENNEMI_TEXT, 3);
-		AjouterMessageImportant (strings.pouvoirsDesactives, TypeText.BASIC_TEXT, 3);
+		AjouterMessageImportant (strings.pouvoirsDesactives, TypeText.BLUE_TEXT, 3);
+		AjouterMessageImportant (strings.pouvoirsDesactives, TypeText.RED_TEXT, 3);
+		AjouterMessageImportant (strings.pouvoirsDesactives, TypeText.GREEN_TEXT, 3);
     }
 
     protected void LancerConseils() {
@@ -271,7 +271,7 @@ public class Console : MonoBehaviour {
         if (map.GetLumieres().Count > 0) {
 			if (Time.timeSinceLevelLoad - timeLastLumiereAttrapee > 25) {
 				timeLastLumiereAttrapee = Time.timeSinceLevelLoad;
-				AjouterMessage (strings.geolocaliserData, TypeText.ALLY_TEXT);
+				AjouterMessage (strings.geolocaliserData, TypeText.BLUE_TEXT);
 			}
 		}
     }
@@ -444,11 +444,11 @@ public class Console : MonoBehaviour {
 
     public Color GetTextTypeColor(TypeText type) {
         switch (type) {
-            case TypeText.BASIC_TEXT:
+            case TypeText.GREEN_TEXT:
                 return basicColor;
-            case TypeText.ENNEMI_TEXT:
+            case TypeText.RED_TEXT:
                 return ennemiColor;
-            case TypeText.ALLY_TEXT:
+            case TypeText.BLUE_TEXT:
                 return allyColor;
         }
         throw new Exception("Couleur inconnue !");
@@ -503,13 +503,13 @@ public class Console : MonoBehaviour {
         // On préfixe ! :)
         if (bUsePrefix) {
             switch (type) {
-                case TypeText.ALLY_TEXT:
+                case TypeText.BLUE_TEXT:
                     message = allyPrefix + message;
                     break;
-                case TypeText.BASIC_TEXT:
+                case TypeText.GREEN_TEXT:
                     message = basicPrefix + message;
                     break;
-                case TypeText.ENNEMI_TEXT:
+                case TypeText.RED_TEXT:
                     message = ennemiPrefix + message;
                     break;
             }
@@ -537,13 +537,13 @@ public class Console : MonoBehaviour {
         text.horizontalOverflow = HorizontalWrapMode.Overflow;
         text.verticalOverflow = VerticalWrapMode.Overflow;
 		switch (type) {
-		case TypeText.BASIC_TEXT:
+		case TypeText.GREEN_TEXT:
 			text.color = basicColor;
 			break;
-		case TypeText.ENNEMI_TEXT:
+		case TypeText.RED_TEXT:
 			text.color = ennemiColor;
 			break;
-		case TypeText.ALLY_TEXT:
+		case TypeText.BLUE_TEXT:
 			text.color = allyColor;
 			break;
 		}
@@ -632,7 +632,7 @@ public class Console : MonoBehaviour {
         //}
 
 		string phrase = phrases [UnityEngine.Random.Range (0, phrases.Count)];
-		AjouterMessage (phrase, TypeText.BASIC_TEXT);
+		AjouterMessage (phrase, TypeText.GREEN_TEXT);
 	}
 
     protected void Conseiller(bool withImportantText = false) {
@@ -647,25 +647,25 @@ public class Console : MonoBehaviour {
         AsyncOperationHandle<string> handle = localizedString.GetLocalizedString();
         yield return handle;
         if (!withImportantText) {
-            AjouterMessage(handle.Result, TypeText.BASIC_TEXT);
+            AjouterMessage(handle.Result, TypeText.GREEN_TEXT);
         } else {
             float duration = Mathf.Max(3, 3 + (handle.Result.Length - 40) * 0.05f);
-            AjouterMessageImportant(handle.Result, TypeText.BASIC_TEXT, duration);
+            AjouterMessageImportant(handle.Result, TypeText.GREEN_TEXT, duration);
         }
     }
 
     // Lorsqu'un ennemi repère le joueur
     public void JoueurDetecte() {
         EffacerImportantMessage(strings.dissimule);
-        AjouterMessageImportant(strings.detecte, Console.TypeText.ENNEMI_TEXT, 2, bAfficherInConsole: false, strings.detecte);
-        AjouterMessage (strings.jeSaisOuVousEtes, Console.TypeText.ENNEMI_TEXT);
+        AjouterMessageImportant(strings.detecte, Console.TypeText.RED_TEXT, 2, bAfficherInConsole: false, strings.detecte);
+        AjouterMessage (strings.jeSaisOuVousEtes, Console.TypeText.RED_TEXT);
 	}
 
 	// Quand le joueur réussit à semer toutes les sondes
 	public void SemerEnnemis() {
         EffacerImportantMessage(strings.detecte);
-		AjouterMessageImportant (strings.dissimule, TypeText.ALLY_TEXT, 2, bAfficherInConsole: false, strings.dissimule);
-        AjouterMessage(strings.onLesASemes, TypeText.ALLY_TEXT);
+		AjouterMessageImportant (strings.dissimule, TypeText.BLUE_TEXT, 2, bAfficherInConsole: false, strings.dissimule);
+        AjouterMessage(strings.onLesASemes, TypeText.BLUE_TEXT);
 	}
 	
 	// Lorsqu'une sonde perd le joueur de vue
@@ -674,30 +674,30 @@ public class Console : MonoBehaviour {
 	}
 
 	public void JoueurToucheSonde() {
-		AjouterMessageImportant (strings.toucheParUneSondeImportant, Console.TypeText.ENNEMI_TEXT, 1, bAfficherInConsole: false, strings.toucheParUneSondeImportant);
-        AjouterMessage(strings.toucheParUneSondeConsole, Console.TypeText.ENNEMI_TEXT);
+		AjouterMessageImportant (strings.toucheParUneSondeImportant, Console.TypeText.RED_TEXT, 1, bAfficherInConsole: false, strings.toucheParUneSondeImportant);
+        AjouterMessage(strings.toucheParUneSondeConsole, Console.TypeText.RED_TEXT);
 	}
 
 	public void JoueurToucheTracer() {
-		AjouterMessageImportant (strings.toucheParUnTracerImportant, Console.TypeText.ENNEMI_TEXT, 1, bAfficherInConsole: false, strings.toucheParUnTracerImportant);
-        AjouterMessage(strings.toucheParUnTracerConsole, Console.TypeText.ENNEMI_TEXT);
+		AjouterMessageImportant (strings.toucheParUnTracerImportant, Console.TypeText.RED_TEXT, 1, bAfficherInConsole: false, strings.toucheParUnTracerImportant);
+        AjouterMessage(strings.toucheParUnTracerConsole, Console.TypeText.RED_TEXT);
 	}
 
 	public void JoueurBlasteTracer() {
-		AjouterMessageImportant (strings.blasteParUnTracerImportant, Console.TypeText.ENNEMI_TEXT, 1, bAfficherInConsole: false, strings.blasteParUnTracerImportant);
-        AjouterMessage(strings.blasteParUnTracerConsole, Console.TypeText.ENNEMI_TEXT);
+		AjouterMessageImportant (strings.blasteParUnTracerImportant, Console.TypeText.RED_TEXT, 1, bAfficherInConsole: false, strings.blasteParUnTracerImportant);
+        AjouterMessage(strings.blasteParUnTracerConsole, Console.TypeText.RED_TEXT);
 	}
 
 	public void JoueurBlasteTracerLearning() {
-		AjouterMessageImportant (strings.blasteParUnTracerImportantLearning, Console.TypeText.ENNEMI_TEXT, 3, bAfficherInConsole: false, strings.blasteParUnTracerImportantLearning);
-        AjouterMessage(strings.blasteParUnTracerConsole, Console.TypeText.ENNEMI_TEXT);
+		AjouterMessageImportant (strings.blasteParUnTracerImportantLearning, Console.TypeText.RED_TEXT, 3, bAfficherInConsole: false, strings.blasteParUnTracerImportantLearning);
+        AjouterMessage(strings.blasteParUnTracerConsole, Console.TypeText.RED_TEXT);
 	}
 
 	// Lorsque le joueur réussi à s'échapper
 	public void WinGame() {
-		AjouterMessage (strings.winGameConsole1, Console.TypeText.ENNEMI_TEXT);
-		AjouterMessage (strings.winGameConsole2, Console.TypeText.ENNEMI_TEXT);
-		AjouterMessageImportant (strings.winGameImportant, Console.TypeText.ALLY_TEXT, 5);
+		AjouterMessage (strings.winGameConsole1, Console.TypeText.RED_TEXT);
+		AjouterMessage (strings.winGameConsole2, Console.TypeText.RED_TEXT);
+		AjouterMessageImportant (strings.winGameImportant, Console.TypeText.BLUE_TEXT, 5);
         DisplayEscapeButton();
 		StartCoroutine (Recompenser ());
 	}
@@ -717,7 +717,7 @@ public class Console : MonoBehaviour {
 			for (int i = 0; i < UnityEngine.Random.Range (1, 6); i++)
 				exclamations += "!";
             ls.Arguments = new object[] { spaces, ss, exclamations };
-			AjouterMessage (ls, Console.TypeText.ALLY_TEXT);
+			AjouterMessage (ls, Console.TypeText.BLUE_TEXT);
 			yield return null;
 		}
 	}
@@ -727,52 +727,52 @@ public class Console : MonoBehaviour {
         float timeDeathMessage = 5;
         switch(reason) {
             case EventManager.DeathReason.TIME_OUT:
-                AjouterMessageImportant (strings.deathTimeOut2, Console.TypeText.ENNEMI_TEXT, timeDeathMessage);
-                AjouterMessageImportant (strings.deathTimeOut1, Console.TypeText.ENNEMI_TEXT, timeDeathMessage);
+                AjouterMessageImportant (strings.deathTimeOut2, Console.TypeText.RED_TEXT, timeDeathMessage);
+                AjouterMessageImportant (strings.deathTimeOut1, Console.TypeText.RED_TEXT, timeDeathMessage);
                 break;
             case EventManager.DeathReason.FALL_OUT:
-                AjouterMessageImportant (strings.deathFallOut2, Console.TypeText.ENNEMI_TEXT, timeDeathMessage);
-                AjouterMessageImportant (strings.deathFallOut1, Console.TypeText.ENNEMI_TEXT, timeDeathMessage);
+                AjouterMessageImportant (strings.deathFallOut2, Console.TypeText.RED_TEXT, timeDeathMessage);
+                AjouterMessageImportant (strings.deathFallOut1, Console.TypeText.RED_TEXT, timeDeathMessage);
                 break;
             case EventManager.DeathReason.CAPTURED:
-                AjouterMessageImportant (strings.deathCaptured2, Console.TypeText.ENNEMI_TEXT, timeDeathMessage);
-                AjouterMessageImportant (strings.deathCaptured1, Console.TypeText.ENNEMI_TEXT, timeDeathMessage);
+                AjouterMessageImportant (strings.deathCaptured2, Console.TypeText.RED_TEXT, timeDeathMessage);
+                AjouterMessageImportant (strings.deathCaptured1, Console.TypeText.RED_TEXT, timeDeathMessage);
                 break;
             case EventManager.DeathReason.TOUCHED_DEATH_CUBE:
-                AjouterMessageImportant (strings.deathTouchedDeathCube2, Console.TypeText.ENNEMI_TEXT, timeDeathMessage);
-                AjouterMessageImportant (strings.deathTouchedDeathCube1, Console.TypeText.ENNEMI_TEXT, timeDeathMessage);
+                AjouterMessageImportant (strings.deathTouchedDeathCube2, Console.TypeText.RED_TEXT, timeDeathMessage);
+                AjouterMessageImportant (strings.deathTouchedDeathCube1, Console.TypeText.RED_TEXT, timeDeathMessage);
                 break;
             case EventManager.DeathReason.TOUCHED_BOUNCY_CUBE:
-                AjouterMessageImportant (strings.deathTouchedBouncyCube2, Console.TypeText.ENNEMI_TEXT, timeDeathMessage);
-                AjouterMessageImportant (strings.deathTouchedBouncyCube1, Console.TypeText.ENNEMI_TEXT, timeDeathMessage);
+                AjouterMessageImportant (strings.deathTouchedBouncyCube2, Console.TypeText.RED_TEXT, timeDeathMessage);
+                AjouterMessageImportant (strings.deathTouchedBouncyCube1, Console.TypeText.RED_TEXT, timeDeathMessage);
                 break;
             case EventManager.DeathReason.POUVOIR_COST:
-                AjouterMessageImportant (strings.deathPouvoirCost2, Console.TypeText.ENNEMI_TEXT, timeDeathMessage);
-                AjouterMessageImportant (strings.deathPouvoirCost1, Console.TypeText.ENNEMI_TEXT, timeDeathMessage);
+                AjouterMessageImportant (strings.deathPouvoirCost2, Console.TypeText.RED_TEXT, timeDeathMessage);
+                AjouterMessageImportant (strings.deathPouvoirCost1, Console.TypeText.RED_TEXT, timeDeathMessage);
                 break;
             case EventManager.DeathReason.OUT_OF_BLOCKS:
-                AjouterMessageImportant (strings.deathOutOfBlocks2, Console.TypeText.ENNEMI_TEXT, timeDeathMessage);
-                AjouterMessageImportant (strings.deathOutOfBlocks1, Console.TypeText.ENNEMI_TEXT, timeDeathMessage);
+                AjouterMessageImportant (strings.deathOutOfBlocks2, Console.TypeText.RED_TEXT, timeDeathMessage);
+                AjouterMessageImportant (strings.deathOutOfBlocks1, Console.TypeText.RED_TEXT, timeDeathMessage);
                 break;
             case EventManager.DeathReason.FAILED_JUMP_EVENT:
-                AjouterMessageImportant (strings.deathFailedJumpEvent2, Console.TypeText.ENNEMI_TEXT, timeDeathMessage);
-                AjouterMessageImportant (strings.deathFailedJumpEvent1, Console.TypeText.ENNEMI_TEXT, timeDeathMessage);
+                AjouterMessageImportant (strings.deathFailedJumpEvent2, Console.TypeText.RED_TEXT, timeDeathMessage);
+                AjouterMessageImportant (strings.deathFailedJumpEvent1, Console.TypeText.RED_TEXT, timeDeathMessage);
                 break;
             case EventManager.DeathReason.SONDE_HIT:
-                AjouterMessageImportant (strings.deathSondeHit2, Console.TypeText.ENNEMI_TEXT, timeDeathMessage);
-                AjouterMessageImportant (strings.deathSondeHit1, Console.TypeText.ENNEMI_TEXT, timeDeathMessage);
+                AjouterMessageImportant (strings.deathSondeHit2, Console.TypeText.RED_TEXT, timeDeathMessage);
+                AjouterMessageImportant (strings.deathSondeHit1, Console.TypeText.RED_TEXT, timeDeathMessage);
                 break;
             case EventManager.DeathReason.TRACER_HIT:
-                AjouterMessageImportant (strings.deathTracerHit2, Console.TypeText.ENNEMI_TEXT, timeDeathMessage);
-                AjouterMessageImportant (strings.deathTracerHit1, Console.TypeText.ENNEMI_TEXT, timeDeathMessage);
+                AjouterMessageImportant (strings.deathTracerHit2, Console.TypeText.RED_TEXT, timeDeathMessage);
+                AjouterMessageImportant (strings.deathTracerHit1, Console.TypeText.RED_TEXT, timeDeathMessage);
                 break;
             case EventManager.DeathReason.TRACER_BLAST:
-                AjouterMessageImportant (strings.deathTracerBlast2, Console.TypeText.ENNEMI_TEXT, timeDeathMessage);
-                AjouterMessageImportant (strings.deathTracerBlast1, Console.TypeText.ENNEMI_TEXT, timeDeathMessage);
+                AjouterMessageImportant (strings.deathTracerBlast2, Console.TypeText.RED_TEXT, timeDeathMessage);
+                AjouterMessageImportant (strings.deathTracerBlast1, Console.TypeText.RED_TEXT, timeDeathMessage);
                 break;
             case EventManager.DeathReason.FLIRD_HIT:
-                AjouterMessageImportant (strings.deathFlirdHit2, Console.TypeText.ENNEMI_TEXT, timeDeathMessage);
-                AjouterMessageImportant (strings.deathFlirdHit1, Console.TypeText.ENNEMI_TEXT, timeDeathMessage);
+                AjouterMessageImportant (strings.deathFlirdHit2, Console.TypeText.RED_TEXT, timeDeathMessage);
+                AjouterMessageImportant (strings.deathFlirdHit1, Console.TypeText.RED_TEXT, timeDeathMessage);
                 break;
         }
         DisplayEscapeButton();
@@ -794,7 +794,7 @@ public class Console : MonoBehaviour {
 				exclamations += "!";
             LocalizedString ls = strings.loseRecompense;
             ls.Arguments = new object[] { spaces, has, exclamations };
-            AjouterMessage(ls, Console.TypeText.ENNEMI_TEXT);
+            AjouterMessage(ls, Console.TypeText.RED_TEXT);
 			yield return null;
 		}
 	}
@@ -806,7 +806,7 @@ public class Console : MonoBehaviour {
             LocalizedString messageCurrent = strings.plusQueX;
             messageCurrent.Arguments = new object[] { nbLumieresRestantes };
             EffacerImportantMessage(messageCurrent);
-            AjouterMessageImportant(messageCurrent, new object[]{ nbLumieresRestantes }, Console.TypeText.ALLY_TEXT, 1.2f, true, messagePrecedent, new object[]{ nbLumieresRestantes + 1});
+            AjouterMessageImportant(messageCurrent, new object[]{ nbLumieresRestantes }, Console.TypeText.BLUE_TEXT, 1.2f, true, messagePrecedent, new object[]{ nbLumieresRestantes + 1});
 		} else if (!gm.eventManager.IsEndGameStarted() && nbLumieresRestantes == 0 && !gm.eventManager.NoMoreElementsToBeDoneBeforeEndGame()) {
             LocalizedString messageOne = strings.plusQueX;
             messageOne.Arguments = new object[] { 1 };
@@ -827,16 +827,16 @@ public class Console : MonoBehaviour {
         if (nbLumieres > 0) {
             LocalizedString ls = strings.localisationIlTeResteXData;
             ls.Arguments = new object[] { nbLumieres };
-            AjouterMessage(ls, Console.TypeText.ALLY_TEXT);
+            AjouterMessage(ls, Console.TypeText.BLUE_TEXT);
         }
         if (nbItems > 0) {
             LocalizedString ls = strings.localisationIlTeResteXItems;
             ls.Arguments = new object[] { nbItems };
-            AjouterMessage(ls, Console.TypeText.ALLY_TEXT);
+            AjouterMessage(ls, Console.TypeText.BLUE_TEXT);
         }
         if (nbItems + nbLumieres == 0) {
             LocalizedString ls = strings.localisationRienTrouve;
-            AjouterMessage(ls, Console.TypeText.ALLY_TEXT);
+            AjouterMessage(ls, Console.TypeText.BLUE_TEXT);
         }
 	}
 
@@ -844,20 +844,20 @@ public class Console : MonoBehaviour {
 	public void RunDetection(Vector3 position) {
         LocalizedString ls = strings.runDetection;
         ls.Arguments = new object[] { position.ToString() };
-        AjouterMessage (ls, Console.TypeText.ALLY_TEXT);
+        AjouterMessage (ls, Console.TypeText.BLUE_TEXT);
 	}
 
     // Quand on essaye de faire une localisation alors qu'il n'a pas le droit !
     public void FailLocalisationUnauthorized() {
-		AjouterMessageImportant(strings.failLocalisationUnauthorized, Console.TypeText.ENNEMI_TEXT, 2.0f, true, strings.failLocalisationUnauthorized);
+		AjouterMessageImportant(strings.failLocalisationUnauthorized, Console.TypeText.RED_TEXT, 2.0f, true, strings.failLocalisationUnauthorized);
     }
 
     // Quand on essaye de faire une localisation et qu'on ne trouve pas de chemin !
     public void FailLocalisationObjectifInateignable() {
-		AjouterMessageImportant(strings.failLocalisationObjectifInateignable, Console.TypeText.ENNEMI_TEXT, 2.0f, true, strings.failLocalisationObjectifInateignable);
+		AjouterMessageImportant(strings.failLocalisationObjectifInateignable, Console.TypeText.RED_TEXT, 2.0f, true, strings.failLocalisationObjectifInateignable);
     }
     public void FailLocalisationInEndEvent() {
-		AjouterMessageImportant(strings.failLocalisationInEndEvent, Console.TypeText.ENNEMI_TEXT, 2.0f, true, strings.failLocalisationInEndEvent);
+		AjouterMessageImportant(strings.failLocalisationInEndEvent, Console.TypeText.RED_TEXT, 2.0f, true, strings.failLocalisationInEndEvent);
     }
 
 
@@ -865,21 +865,21 @@ public class Console : MonoBehaviour {
 	public virtual void GrandSaut(float hauteurSaut) {
         LocalizedString ls = strings.wowQuelSaut;
         ls.Arguments = new object[] { (int)hauteurSaut };
-		AjouterMessage(ls, Console.TypeText.BASIC_TEXT);
+		AjouterMessage(ls, Console.TypeText.GREEN_TEXT);
 	}
 
     // Lorsque le joueur tente de construire un pont avec une cible invalide !
     public void PouvoirBridgeBuilderInvalide() {
-        AjouterMessageImportant(strings.bridgeBuilderInvalid, TypeText.ENNEMI_TEXT, 1f, true, strings.bridgeBuilderInvalid);
+        AjouterMessageImportant(strings.bridgeBuilderInvalid, TypeText.RED_TEXT, 1f, true, strings.bridgeBuilderInvalid);
     }
 
     // Lorsque le joueur rentre dans l'EndGame
     public void FautTrouverLaSortie() {
-        AjouterMessageImportant(strings.fautTrouverLaSortie, TypeText.ALLY_TEXT, 1f);
+        AjouterMessageImportant(strings.fautTrouverLaSortie, TypeText.BLUE_TEXT, 1f);
     }
 
     public void IlResteQuelqueChoseAFaire() {
-        AjouterMessageImportant(strings.ilResteQuelqueChoseAFaire, TypeText.ALLY_TEXT, 1f);
+        AjouterMessageImportant(strings.ilResteQuelqueChoseAFaire, TypeText.BLUE_TEXT, 1f);
     }
 
     // Si le joueur est trop haut, on l'informe !
@@ -888,27 +888,27 @@ public class Console : MonoBehaviour {
             return;
 		// On regarde si le joueur n'est pas trop haut en altitude
 		if (player.transform.position.y > map.tailleMap.y + 3) {
-			AjouterMessage (strings.altitudeCritique, TypeText.BASIC_TEXT);
+			AjouterMessage (strings.altitudeCritique, TypeText.GREEN_TEXT);
 		}
     }
 
     // Message lorsqu'un event de gravité se déclenche !
     public void GravityEventMessage(GravityManager.Direction direction, float intensité) {
-        AjouterMessageImportant(strings.changementDeGravite, TypeText.ENNEMI_TEXT, 2, bAfficherInConsole: false, strings.changementDeGravite);
+        AjouterMessageImportant(strings.changementDeGravite, TypeText.RED_TEXT, 2, bAfficherInConsole: false, strings.changementDeGravite);
         float pourcentage = intensité / 5.0f * 100.0f;
         LocalizedString ls = strings.changementDeGraviteDirection;
         ls.Arguments = new object[] { direction.ToString(), pourcentage.ToString("N2") };
-        AjouterMessage(ls, TypeText.ENNEMI_TEXT);
+        AjouterMessage(ls, TypeText.RED_TEXT);
     }
 
     // Message lors d'un blackout !
     public void BlackoutMessage() {
-        AjouterMessageImportant(strings.blackout, TypeText.ENNEMI_TEXT, 2, bAfficherInConsole: true, strings.blackout);
+        AjouterMessageImportant(strings.blackout, TypeText.RED_TEXT, 2, bAfficherInConsole: true, strings.blackout);
     }
 
     // Lorsque l'on alerte les tracers !
     public void AlerterTracers() {
-        AjouterMessageImportant(strings.tracersAlertes, TypeText.ENNEMI_TEXT, 2, bAfficherInConsole: true, strings.tracersAlertes);
+        AjouterMessageImportant(strings.tracersAlertes, TypeText.RED_TEXT, 2, bAfficherInConsole: true, strings.tracersAlertes);
     }
 
     // Lorsque l'on capture la première lumière dans la map Analyze
@@ -918,36 +918,36 @@ public class Console : MonoBehaviour {
     protected IEnumerator CAnalyzeLevelDeuxiemeSalve() {
         float tempsPremierMessage = 1.5f;
         float tempsDeuxiemeMessage = 1.5f;
-        AjouterMessageImportant(strings.analyzeLevelDeuxiemeSalveIntrusion, TypeText.ENNEMI_TEXT, tempsPremierMessage);
+        AjouterMessageImportant(strings.analyzeLevelDeuxiemeSalveIntrusion, TypeText.RED_TEXT, tempsPremierMessage);
         yield return new WaitForSeconds(tempsPremierMessage);
         yield return null;
-        AjouterMessageImportant(strings.analyzeLevelDeuxiemeSalveReplication, TypeText.ENNEMI_TEXT, tempsDeuxiemeMessage);
+        AjouterMessageImportant(strings.analyzeLevelDeuxiemeSalveReplication, TypeText.RED_TEXT, tempsDeuxiemeMessage);
     }
 
     // Lorsque le joueur tombe, typiquement dans le tutoriel !
     public void SavedFromFalling() {
-        AjouterMessageImportant(strings.attentionANePasEtreEjecte, TypeText.ALLY_TEXT, 3);
+        AjouterMessageImportant(strings.attentionANePasEtreEjecte, TypeText.BLUE_TEXT, 3);
     }
 
     // Lorsque le joueur touche un cube de la mort dans le tutoriel !
     public void SavedFromDeathCube() {
-        AjouterMessageImportant(strings.attentionAuxCubesDeLaMort, TypeText.ALLY_TEXT, 3);
+        AjouterMessageImportant(strings.attentionAuxCubesDeLaMort, TypeText.BLUE_TEXT, 3);
     }
 
     // Lorsque le joueur capture un item double saut !
     public void CaptureAddDoubleJump() {
         if (player.GetNbDoubleSautsMax() == 1) {
-            AjouterMessageImportant(strings.doubleSautActive, TypeText.ALLY_TEXT, 2, bAfficherInConsole: false);
+            AjouterMessageImportant(strings.doubleSautActive, TypeText.BLUE_TEXT, 2, bAfficherInConsole: false);
         } else {
-            AjouterMessageImportant(strings.doubleSautPlusUn, TypeText.ALLY_TEXT, 2, bAfficherInConsole: false);
+            AjouterMessageImportant(strings.doubleSautPlusUn, TypeText.BLUE_TEXT, 2, bAfficherInConsole: false);
         }
-        AjouterMessage(strings.doubleSautExplications, TypeText.ALLY_TEXT);
+        AjouterMessage(strings.doubleSautExplications, TypeText.BLUE_TEXT);
     }
 
     // Lorsque le joueur capture un item pour voler !
     public void CapturePouvoirGiverVoler() {
-        AjouterMessageImportant(strings.volActive, TypeText.ALLY_TEXT, 2, bAfficherInConsole: false);
-        AjouterMessage(strings.volExplications, TypeText.ALLY_TEXT);
+        AjouterMessageImportant(strings.volActive, TypeText.BLUE_TEXT, 2, bAfficherInConsole: false);
+        AjouterMessage(strings.volExplications, TypeText.BLUE_TEXT);
     }
 
     public void CapturePouvoirGiverItem(LocalizedString pouvoirName, PouvoirGiverItem.PouvoirBinding pouvoirBinding) {
@@ -960,7 +960,7 @@ public class Console : MonoBehaviour {
         string pouvoirNameString = handlePouvoirName.Result;
         LocalizedString pouvoirGiverActive = strings.pouvoirGiverActive;
         pouvoirGiverActive.Arguments = new object[] { pouvoirNameString };
-        AjouterMessageImportant(pouvoirGiverActive, TypeText.ALLY_TEXT, 2, bAfficherInConsole: false);
+        AjouterMessageImportant(pouvoirGiverActive, TypeText.BLUE_TEXT, 2, bAfficherInConsole: false);
         LocalizedString strBinding = null;
         switch (pouvoirBinding) {
             case PouvoirGiverItem.PouvoirBinding.A: strBinding = strings.keyA; break;
@@ -972,7 +972,7 @@ public class Console : MonoBehaviour {
         yield return handlePouvoirBinding;
         LocalizedString pouvoirGiverExplications = strings.pouvoirGiverExplications;
         pouvoirGiverExplications.Arguments = new object[] { pouvoirNameString, handlePouvoirBinding.Result };
-        AjouterMessage(pouvoirGiverExplications, TypeText.ALLY_TEXT);
+        AjouterMessage(pouvoirGiverExplications, TypeText.BLUE_TEXT);
     }
 
     public void FirstBossChangementDePhase(int newPhaseIndice, float duree) {
@@ -981,11 +981,11 @@ public class Console : MonoBehaviour {
     protected IEnumerator CFirstBossChangementDePhase(int newPhaseIndice, float duree) {
         LocalizedString chargement = strings.bossChangementDePhaseChargement;
         chargement.Arguments = new object[] { newPhaseIndice };
-        AjouterMessageImportant(chargement, TypeText.ENNEMI_TEXT, duree, bAfficherInConsole: true);
+        AjouterMessageImportant(chargement, TypeText.RED_TEXT, duree, bAfficherInConsole: true);
         yield return new WaitForSeconds(duree);
         LocalizedString termine = strings.bossChangementDePhaseTermine;
         termine.Arguments = new object[] { newPhaseIndice };
-        AjouterMessageImportant(termine, TypeText.ENNEMI_TEXT, 2, bAfficherInConsole: true);
+        AjouterMessageImportant(termine, TypeText.RED_TEXT, 2, bAfficherInConsole: true);
     }
 
     public void InitPouvoirsDisplays() {
@@ -1004,30 +1004,30 @@ public class Console : MonoBehaviour {
     }
 
     public void RewardBestScore() {
-        AjouterMessageImportant(strings.meilleurScore, TypeText.BASIC_TEXT, 3, bAfficherInConsole: true);
+        AjouterMessageImportant(strings.meilleurScore, TypeText.GREEN_TEXT, 3, bAfficherInConsole: true);
     }
 
     public void RewardNewRegularTreshold(int dataCount) {
         object[] argument = new object[] { dataCount };
-        AjouterMessageImportant(strings.rewardNewRegularTreshold, argument, TypeText.BASIC_TEXT, 3, bAfficherInConsole: true);
+        AjouterMessageImportant(strings.rewardNewRegularTreshold, argument, TypeText.GREEN_TEXT, 3, bAfficherInConsole: true);
     }
 
     public void RewardNewInfiniteTreshold(int dataCount) {
         object[] argument = new object[] { dataCount };
-        AjouterMessageImportant(strings.rewardNewInfinitereshold, argument, TypeText.BASIC_TEXT, 3, bAfficherInConsole: true);
+        AjouterMessageImportant(strings.rewardNewInfinitereshold, argument, TypeText.GREEN_TEXT, 3, bAfficherInConsole: true);
     }
 
     public void WhileTrueEndEventAutoDestructionEnclenche() {
-        AjouterMessageImportant(strings.autoDestructionEnclenchee, Console.TypeText.ENNEMI_TEXT, 2.0f);
+        AjouterMessageImportant(strings.autoDestructionEnclenchee, Console.TypeText.RED_TEXT, 2.0f);
     }
 
     // Lorsque l'on commence à détruire les blocks dans l'infinite runner :)
     public void InfiniteRunnerStartCubeDestruction() {
-        AjouterMessageImportant(strings.deconnexionEnclenchee, Console.TypeText.ENNEMI_TEXT, 2.0f);
+        AjouterMessageImportant(strings.deconnexionEnclenchee, Console.TypeText.RED_TEXT, 2.0f);
     }
 
     public void AddGapInConsole() {
-        AjouterMessage("", TypeText.ALLY_TEXT, bUsePrefix: false);
+        AjouterMessage("", TypeText.BLUE_TEXT, bUsePrefix: false);
     }
 
     public void CleanAllImportantTexts() {
@@ -1036,14 +1036,14 @@ public class Console : MonoBehaviour {
 
     public void DontUseArrowKeys() {
         if (arrowKeysTimer.IsOver()) {
-            AjouterMessageImportant(strings.ZQSDinsteadOfArrows, TypeText.BASIC_TEXT, arrowKeysTimer.GetDuree(), false, strings.ZQSDinsteadOfArrows);
+            AjouterMessageImportant(strings.ZQSDinsteadOfArrows, TypeText.GREEN_TEXT, arrowKeysTimer.GetDuree(), false, strings.ZQSDinsteadOfArrows);
             arrowKeysTimer.Reset();
         }
     }
 
     public void JumpStun() {
-        AjouterMessageImportant(strings.jumpStunImportant, TypeText.ENNEMI_TEXT, 2.0f, bAfficherInConsole: false, messageToReplace: strings.jumpActivation);
-        AjouterMessage(strings.jumpStunConsole, TypeText.ENNEMI_TEXT);
+        AjouterMessageImportant(strings.jumpStunImportant, TypeText.RED_TEXT, 2.0f, bAfficherInConsole: false, messageToReplace: strings.jumpActivation);
+        AjouterMessage(strings.jumpStunConsole, TypeText.RED_TEXT);
     }
 
     public void DisplayEscapeButton() {
@@ -1056,8 +1056,8 @@ public class Console : MonoBehaviour {
     }
 
     public void NotifyPlayerToPressShift() {
-        gm.console.AjouterMessageImportant(strings.pressShiftImportant, Console.TypeText.ALLY_TEXT, 2.0f, bAfficherInConsole: false);
-        gm.console.AjouterMessage(strings.pressShiftConsole, Console.TypeText.ALLY_TEXT);
+        gm.console.AjouterMessageImportant(strings.pressShiftImportant, Console.TypeText.BLUE_TEXT, 2.0f, bAfficherInConsole: false);
+        gm.console.AjouterMessage(strings.pressShiftConsole, Console.TypeText.BLUE_TEXT);
     }
 
     protected void InitPrefixs() {
@@ -1099,23 +1099,23 @@ public class Console : MonoBehaviour {
     public void ResetTimeItemMessage(float resetTime) {
         LocalizedString lsImportant = strings.timeResetImportant;
         lsImportant.Arguments = new object[] { resetTime };
-        gm.console.AjouterMessageImportant(lsImportant, Console.TypeText.BASIC_TEXT, 2.0f, bAfficherInConsole: false);
+        gm.console.AjouterMessageImportant(lsImportant, Console.TypeText.GREEN_TEXT, 2.0f, bAfficherInConsole: false);
 
         LocalizedString lsConsole = strings.timeResetConsole;
         lsConsole.Arguments = new object[] { resetTime };
-        gm.console.AjouterMessage(lsConsole, Console.TypeText.BASIC_TEXT);
+        gm.console.AjouterMessage(lsConsole, Console.TypeText.GREEN_TEXT);
     }
 
     public void ControllerPlugIn() {
-        AjouterMessageImportant(strings.controllerPlugIn, Console.TypeText.BASIC_TEXT, 3.0f);
+        AjouterMessageImportant(strings.controllerPlugIn, Console.TypeText.GREEN_TEXT, 3.0f);
     }
 
     public void ControllerPlugOut() {
-        AjouterMessageImportant(strings.controllerPlugOut, Console.TypeText.BASIC_TEXT, 3.0f);
+        AjouterMessageImportant(strings.controllerPlugOut, Console.TypeText.GREEN_TEXT, 3.0f);
     }
 
     public void ApparitionDesDatas() {
-        AjouterMessageImportant(strings.apparitionDesDatas, Console.TypeText.ALLY_TEXT, 3.0f);
+        AjouterMessageImportant(strings.apparitionDesDatas, Console.TypeText.BLUE_TEXT, 3.0f);
     }
 
     public void InitFrameRateCounter() {

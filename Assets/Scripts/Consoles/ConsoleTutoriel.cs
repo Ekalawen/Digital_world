@@ -8,8 +8,8 @@ public class ConsoleTutoriel : Console {
         string levelName = levelVisualName.GetLocalizedString().Result;
         LocalizedString initializationNiveau = strings.initialisationNiveau;
         initializationNiveau.Arguments = new object[] { levelName };
-		AjouterMessage (initializationNiveau, TypeText.BASIC_TEXT, bUsePrefix: false);
-		AjouterMessage (strings.initialisationMatrice, TypeText.BASIC_TEXT, bUsePrefix: false);
+		AjouterMessage (initializationNiveau, TypeText.GREEN_TEXT, bUsePrefix: false);
+		AjouterMessage (strings.initialisationMatrice, TypeText.GREEN_TEXT, bUsePrefix: false);
     }
     public override void AltitudeCritique() {
         // On le fait pas !

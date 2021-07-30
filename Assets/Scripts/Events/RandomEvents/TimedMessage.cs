@@ -7,7 +7,7 @@ using UnityEngine.Localization;
 [Serializable]
 public class TimedMessage : MonoBehaviour {
     public string message = "Je suis un message qui apparaitra au bout de 5 secondes !";
-    public Console.TypeText type = Console.TypeText.ALLY_TEXT;
+    public Console.TypeText type = Console.TypeText.BLUE_TEXT;
     public float timing = 0f;
     public float duree = 2f;
 
@@ -22,7 +22,7 @@ public class TimedMessage : MonoBehaviour {
 [Serializable]
 public class TimedLocalizedMessage {
     public LocalizedString localizedString;
-    public Console.TypeText type = Console.TypeText.ALLY_TEXT;
+    public Console.TypeText type = Console.TypeText.BLUE_TEXT;
     public float timing = 0f;
     public float duree = 2f;
 

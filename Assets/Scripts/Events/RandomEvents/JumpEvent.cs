@@ -93,13 +93,13 @@ public class JumpEvent : RandomEvent {
         while(!timer.IsOver()) {
             AsyncOperationHandle<string> messageHandle = gm.console.strings.jumpTimer.GetLocalizedString(new object[] { TimerManager.TimerToClearerString(timer.GetRemainingTime()) });
             yield return messageHandle;
-            gm.console.AjouterMessageImportant(messageHandle.Result, Console.TypeText.ENNEMI_TEXT, dureeAttente, bAfficherInConsole: false, precedantMessage);
+            gm.console.AjouterMessageImportant(messageHandle.Result, Console.TypeText.RED_TEXT, dureeAttente, bAfficherInConsole: false, precedantMessage);
             precedantMessage = messageHandle.Result;
             yield return null;
         }
         AsyncOperationHandle<string> messageFinalHandle = gm.console.strings.jumpActivation.GetLocalizedString();
         yield return messageFinalHandle;
-        gm.console.AjouterMessageImportant(messageFinalHandle.Result, Console.TypeText.ENNEMI_TEXT, dureeAttente, bAfficherInConsole: false, precedantMessage);
+        gm.console.AjouterMessageImportant(messageFinalHandle.Result, Console.TypeText.RED_TEXT, dureeAttente, bAfficherInConsole: false, precedantMessage);
     }
 
     public override void StopEvent() {

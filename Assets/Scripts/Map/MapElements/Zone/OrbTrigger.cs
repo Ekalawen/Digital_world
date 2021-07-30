@@ -98,7 +98,7 @@ public class OrbTrigger : IZone {
             }
             currentMessage = TimerManager.TimerToString(timer.GetRemainingTime());
             gm.console.AjouterMessageImportant(currentMessage,
-                Console.TypeText.ALLY_TEXT,
+                Console.TypeText.BLUE_TEXT,
                 0.1f,
                 bAfficherInConsole: false,
                 precedantMessage);
@@ -111,7 +111,7 @@ public class OrbTrigger : IZone {
             AsyncOperationHandle<string> hackedHandle = gm.console.strings.lumiereProtectionHacked.GetLocalizedString();
             yield return hackedHandle;
             gm.console.AjouterMessageImportant(hackedHandle.Result,
-                Console.TypeText.BASIC_TEXT,
+                Console.TypeText.GREEN_TEXT,
                 1.0f,
                 bAfficherInConsole: true,
                 precedantMessage);

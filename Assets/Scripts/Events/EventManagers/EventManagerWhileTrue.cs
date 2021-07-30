@@ -47,7 +47,7 @@ public class EventManagerWhileTrue : EventManager {
         } else {
             StopCoroutine(coroutineCubesDestructions);
         } if (messagesAChaqueLumiere.Count > 0) {
-            gm.console.AjouterMessageImportant(messagesAChaqueLumiere[nbLumieresFinalesAttrappees - 1], Console.TypeText.ALLY_TEXT, 2f);
+            gm.console.AjouterMessageImportant(messagesAChaqueLumiere[nbLumieresFinalesAttrappees - 1], Console.TypeText.BLUE_TEXT, 2f);
         }
         yield return CRestoreOriginalMap();
         StartEndGame();
