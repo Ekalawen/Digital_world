@@ -207,10 +207,22 @@ MonoBehaviour:
   dureePauseEntreNodes: 0.05
   goToPosJustBeforePlayer: 0
   doesPathAvoidCubes: 0
-  dureeAttack: 4
+  dureeAttack: 2
   startAttackEvents:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: -5689596036216416664}
+        m_TargetAssemblyTypeName: FirstBoss, Assembly-CSharp
+        m_MethodName: ExplosionAttackFast
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   stopAttackEvents:
     m_PersistentCalls:
       m_Calls: []
