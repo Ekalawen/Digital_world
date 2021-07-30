@@ -232,7 +232,7 @@ public class FirstBoss : Sonde {
         UpdateConsoleMessage(phaseIndice: 4);
         AddTimeItem();
         yield return StartCoroutine(CExplosionAttackNormale());
-        RemovePouvoirs();
+        //RemovePouvoirs();
         PopAllDatas();
         UpdateAttackRate(phaseIndice: 4);
         UpdateRandomEvent(phaseIndice: 4);
