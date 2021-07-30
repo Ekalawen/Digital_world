@@ -176,10 +176,16 @@ public class FirstBoss : Sonde {
     }
 
     protected IEnumerator CGiveDash333() {
+        IController controller = GetComponent<IController>();
+        float oldVitesse = controller.vitesse;
+        controller.vitesse = 0.0f;
+
         StartCoroutine(CStartParticlesGainPouvoir());
         yield return new WaitForSeconds(timeBeforeGivingDash);
         GiveDash333();
         yield return new WaitForSeconds(timeAfterGivingDash);
+
+        controller.vitesse = oldVitesse;
     }
 
     protected void GiveDash333()
@@ -193,10 +199,6 @@ public class FirstBoss : Sonde {
     }
 
     protected IEnumerator CStartParticlesGainPouvoir() {
-        IController controller = GetComponent<IController>();
-        float oldVitesse = controller.vitesse;
-        controller.vitesse = 0.0f;
-
         particlesGainPouvoir.SendEvent("Explode");
         Timer timerToStop = new Timer(timeToStopParticles);
         Timer timerToUpdate = new Timer(timeToStopParticles + particlesGainPouvoir.GetVector2("Lifetime").y);
@@ -208,8 +210,6 @@ public class FirstBoss : Sonde {
             }
             yield return null;
         }
-
-        controller.vitesse = oldVitesse;
     }
 
     public void GoToPhase3() {
