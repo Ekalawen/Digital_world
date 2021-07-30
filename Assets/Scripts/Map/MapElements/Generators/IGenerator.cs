@@ -12,20 +12,22 @@ public abstract class IGenerator : MonoBehaviour {
     public float maxRangeOfSelection = 10.0f;
     public float frequenceActivation = 0.25f;
     public ChoseType choseType;
-    [ConditionalHide("choseType")]
+    [ConditionalHide("choseType", ChoseType.GET_CUBES)]
     public GetCubesHelper getCubesHelper;
-    [ConditionalHide("choseType")]
+    [ConditionalHide("choseType", ChoseType.GET_EMPTY)]
     public GetEmptyPositionsHelper getEmptyPositionsHelper;
 
     [Header("Lightning")]
     public GameObject lightningPrefab;
 
     protected GameManager gm;
+    protected MapManager map;
     protected Stack<Vector3> precomputedPositions;
     protected Timer generateTimer;
 
     public void Initialize() {
         gm = GameManager.Instance;
+        map = gm.map;
         generateTimer = new Timer(frequenceActivation, setOver: true);
         ComputePrecomputedPositions();
     }
@@ -73,5 +75,10 @@ public abstract class IGenerator : MonoBehaviour {
 
     public void StopGenerate() {
         generateTimer.Stop();
+    }
+
+    public void DestroyIn(float duree) {
+        StopGenerate();
+        Destroy(gameObject, duree);
     }
 }
