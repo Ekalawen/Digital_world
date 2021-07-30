@@ -9,7 +9,6 @@ public abstract class IGenerator : MonoBehaviour {
     public enum ChoseType { GET_CUBES, GET_EMPTY };
 
     [Header("Parameters")]
-    public float maxRangeOfSelection = 10.0f;
     public float frequenceActivation = 0.25f;
     public ChoseType choseType;
     [ConditionalHide("choseType", ChoseType.GET_CUBES)]
@@ -20,6 +19,9 @@ public abstract class IGenerator : MonoBehaviour {
     [Header("Lightning")]
     public GameObject lightningPrefab;
 
+    [Header("Links")]
+    public OrbTrigger orbTrigger;
+
     protected GameManager gm;
     protected MapManager map;
     protected Stack<Vector3> precomputedPositions;
@@ -29,14 +31,15 @@ public abstract class IGenerator : MonoBehaviour {
         gm = GameManager.Instance;
         map = gm.map;
         generateTimer = new Timer(frequenceActivation, setOver: true);
+        orbTrigger.Initialize(orbTrigger.rayon, orbTrigger.durationToActivate);
         ComputePrecomputedPositions();
     }
 
     protected void ComputePrecomputedPositions() {
         if (choseType == ChoseType.GET_CUBES) {
-            precomputedPositions = new Stack<Vector3>(getCubesHelper.Get().Select(c => c.transform.position).OrderBy(p => PositionScore(p)));
+            precomputedPositions = new Stack<Vector3>(getCubesHelper.Get().Select(c => c.transform.position).OrderByDescending(p => PositionScore(p)));
         } else {
-            precomputedPositions = new Stack<Vector3>(getEmptyPositionsHelper.Get().OrderBy(p => PositionScore(p)));
+            precomputedPositions = new Stack<Vector3>(getEmptyPositionsHelper.Get().OrderByDescending(p => PositionScore(p)));
         }
     }
 

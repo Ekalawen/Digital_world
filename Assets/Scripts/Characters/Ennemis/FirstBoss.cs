@@ -39,6 +39,7 @@ public class FirstBoss : Sonde {
     public GameObject itemToPopPrefab;
     public int nbLumieres = 15;
     public GameObject pouvoirLocalisationPrefab;
+    public List<GameObject> generatorPrefabs;
 
     [Header("Links")]
     public Transform componentsFolder;
@@ -158,6 +159,7 @@ public class FirstBoss : Sonde {
     }
 
     public void GoToPhase1() {
+        DropGenerators();
         UpdateRandomEvent(phaseIndice: 1);
         UpdateAttackRate(phaseIndice: 1);
         UpdateOrbTrigger(phaseIndice: 1);
@@ -174,6 +176,14 @@ public class FirstBoss : Sonde {
         UpdateOrbTrigger(phaseIndice: 2);
         UpdateAttackRate(phaseIndice: 2);
         UpdateRandomEvent(phaseIndice: 2);
+    }
+
+    protected void DropGenerators() {
+        foreach(GameObject generatorPrefab in generatorPrefabs) {
+            Vector3 pos = gm.map.GetFreeRoundedLocation();
+            IGenerator generator = Instantiate(generatorPrefab, pos, Quaternion.identity, parent: gm.map.zonesFolder).GetComponent<IGenerator>();
+            generator.Initialize();
+        }
     }
 
     protected IEnumerator CGiveDash333() {

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4963224914880968689}
   - component: {fileID: 4963224914880968686}
+  - component: {fileID: 3390147263197962974}
   m_Layer: 0
   m_Name: CubeGenerator
   m_TagString: Untagged
@@ -44,15 +45,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eebdbf6943869554fb51ae4f85fd5d7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxRangeOfSelection: 10
   frequenceActivation: 0.25
   choseType: 0
-  getCubesHelper: {fileID: 0}
+  getCubesHelper: {fileID: 3390147263197962974}
   getEmptyPositionsHelper: {fileID: 0}
   lightningPrefab: {fileID: 8725588450735506554, guid: f19400e69a5f00143942de1fb6b2f8b4,
     type: 3}
-  cubeType: 1
+  orbTrigger: {fileID: 9219331088902830557}
+  cubeType: 4
   setLinky: 1
+--- !u!114 &3390147263197962974
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4963224914880968687}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d32f251341a9bbb4288f70238f2864fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  howToGetCubes: 0
+  cubeType: 0
+  areaBoxCenter: {x: 0, y: 0, z: 0}
+  areaBoxHalfExtents: {x: 0, y: 0, z: 0}
+  areaSphereCenter: {x: 0, y: 0, z: 0}
+  areaSphereRadius: 0
+  cubeEnsembleType: 0
+  nbCubesVoisins: 4
+  modifiers: []
 --- !u!1001 &814098241384081988
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -128,7 +150,12 @@ PrefabInstance:
     - target: {fileID: 8412133455549387673, guid: cd6b2b721ba4af24e9ee25db5af032e2,
         type: 3}
       propertyPath: durationToActivate
-      value: 5
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8412133455549387673, guid: cd6b2b721ba4af24e9ee25db5af032e2,
+        type: 3}
+      propertyPath: shouldPopCubeInCenter
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8412133455549387673, guid: cd6b2b721ba4af24e9ee25db5af032e2,
         type: 3}
@@ -178,3 +205,15 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 814098241384081988}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &9219331088902830557 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8412133455549387673, guid: cd6b2b721ba4af24e9ee25db5af032e2,
+    type: 3}
+  m_PrefabInstance: {fileID: 814098241384081988}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c43ca45fe16e6fa458d9b1dd0111e99a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

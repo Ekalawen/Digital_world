@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class CubeGenerator : IGenerator {
 
+    [Header("CubeGenerator")]
     public Cube.CubeType cubeType = Cube.CubeType.NORMAL;
     public bool setLinky = false;
 
