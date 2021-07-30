@@ -211,6 +211,9 @@ public class SoundManager : MonoBehaviour
     {
         PlayClipsOnSource(sounds.notFoundPouvoirClips);
     }
+    public void PlayGainDash333() {
+        PlayClipsOnSource(sounds.gainDash333);
+    }
     public void PlayPouvoirAvailableClip()
     {
         PlayClipsOnSource(sounds.pouvoirAvailableClips);

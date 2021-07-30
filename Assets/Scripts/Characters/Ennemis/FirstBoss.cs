@@ -187,6 +187,7 @@ public class FirstBoss : Sonde {
         IPouvoir pouvoir = player.GetPouvoirLeftClick().GetComponent<IPouvoir>();
         gm.console.CapturePouvoirGiverItem(pouvoir.nom, pouvoirBinding);
         gm.pointeur.Initialize();
+        gm.soundManager.PlayGainDash333();
     }
 
     protected IEnumerator CStartParticlesGainPouvoir() {

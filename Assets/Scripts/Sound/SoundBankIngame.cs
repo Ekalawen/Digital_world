@@ -34,6 +34,7 @@ public class SoundBankIngame : ScriptableObject {
     public AudioClipParams deniedPouvoirClips;
     public AudioClipParams notFoundPouvoirClips;
     public AudioClipParams pouvoirAvailableClips;
+    public AudioClipParams gainDash333;
     public AudioClipParams timeZoneButtonInClips;
     public AudioClipParams timeZoneButtonOutClips;
     public AudioClipParams orbTriggerActivationClips;
