@@ -246,6 +246,10 @@ public class SoundManager : MonoBehaviour
     {
         PlayClipsOnSource(sounds.bounceClips);
     }
+    public void PlayGeneratorGeneratesClip(Vector3 pos) {
+        PlayClipsOnSource(sounds.generatorGeneratesClips, pos);
+    }
+
 
     protected AudioSource PlayClipsOnSource(
         AudioClipParams audioClipParams,

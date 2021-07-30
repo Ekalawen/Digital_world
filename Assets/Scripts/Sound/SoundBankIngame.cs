@@ -38,6 +38,7 @@ public class SoundBankIngame : ScriptableObject {
     public AudioClipParams timeZoneButtonInClips;
     public AudioClipParams timeZoneButtonOutClips;
     public AudioClipParams orbTriggerActivationClips;
+    public AudioClipParams generatorGeneratesClips;
     public AudioClipParams bounceClips;
     public AudioClipParams rewardBestScoreClips;
     public AudioClipParams victoryClips;
