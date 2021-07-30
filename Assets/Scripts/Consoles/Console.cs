@@ -1107,11 +1107,15 @@ public class Console : MonoBehaviour {
     }
 
     public void ControllerPlugIn() {
-        gm.console.AjouterMessageImportant(strings.controllerPlugIn, Console.TypeText.BASIC_TEXT, 3.0f);
+        AjouterMessageImportant(strings.controllerPlugIn, Console.TypeText.BASIC_TEXT, 3.0f);
     }
 
     public void ControllerPlugOut() {
-        gm.console.AjouterMessageImportant(strings.controllerPlugOut, Console.TypeText.BASIC_TEXT, 3.0f);
+        AjouterMessageImportant(strings.controllerPlugOut, Console.TypeText.BASIC_TEXT, 3.0f);
+    }
+
+    public void ApparitionDesDatas() {
+        AjouterMessageImportant(strings.apparitionDesDatas, Console.TypeText.ALLY_TEXT, 3.0f);
     }
 
     public void InitFrameRateCounter() {

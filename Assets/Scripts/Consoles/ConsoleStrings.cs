@@ -14,6 +14,7 @@ public class ConsoleStrings : ScriptableObject {
 
     public LocalizedString pouvoirsDesactives;
     public LocalizedString geolocaliserData;
+    public LocalizedString apparitionDesDatas;
 
     public LocalizedString jeSaisOuVousEtes;
     public LocalizedString onLesASemes;

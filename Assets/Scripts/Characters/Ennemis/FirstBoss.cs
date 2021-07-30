@@ -147,6 +147,7 @@ public class FirstBoss : Sonde {
     }
 
     protected void PopAllDatas() {
+        gm.console.ApparitionDesDatas();
         FixNbLumieres fixNbLumieres = gm.map.gameObject.AddComponent<FixNbLumieres>();
         fixNbLumieres.lumiereType = Lumiere.LumiereType.NORMAL;
         gm.map.nbLumieresInitial = nbLumieres;
