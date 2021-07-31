@@ -11,6 +11,7 @@ public abstract class IGenerator : MonoBehaviour {
     [Header("Parameters")]
     public float frequenceActivation = 0.25f;
     public float activationRange = 7.0f;
+    public float frequenceRecomputePositions = 5.0f;
     public ChoseType choseType;
     [ConditionalHide("choseType", ChoseType.GET_CUBES)]
     public GetCubesHelper getCubesHelper;
@@ -27,11 +28,13 @@ public abstract class IGenerator : MonoBehaviour {
     protected MapManager map;
     protected Stack<Vector3> precomputedPositions;
     protected Timer generateTimer;
+    protected Timer recomputeTimer;
 
     public void Initialize() {
         gm = GameManager.Instance;
         map = gm.map;
         generateTimer = new Timer(frequenceActivation, setOver: true);
+        recomputeTimer = new Timer(MathTools.RandArround(frequenceRecomputePositions, 0.1f));
         orbTrigger.Initialize(orbTrigger.rayon, orbTrigger.durationToActivate);
         ComputePrecomputedPositions();
     }
@@ -61,8 +64,11 @@ public abstract class IGenerator : MonoBehaviour {
 
     protected void TryGenerate() {
         if(generateTimer.IsOver()) {
-            if(precomputedPositions.Count == 0) {
+            if(precomputedPositions.Count == 0 || recomputeTimer.IsOver()) {
                 ComputePrecomputedPositions();
+                if(recomputeTimer.IsOver()) {
+                    recomputeTimer.Reset();
+                }
             }
             if (precomputedPositions.Count != 0) { // Can still have 0 elements after the recomputation !
                 GenerateOne(precomputedPositions.Pop());

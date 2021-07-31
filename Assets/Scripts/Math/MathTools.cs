@@ -59,6 +59,10 @@ public static class MathTools
         return RandBetween(range.x, range.y);
     }
 
+    public static float RandArround(float source, float percentage) {
+        return UnityEngine.Random.Range(source * (1 - percentage), source * (1 + percentage));
+    }
+
     public static T GetOne<T>(List<T> vector) {
         return vector[UnityEngine.Random.Range(0, vector.Count)];
     }
