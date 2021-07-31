@@ -40,6 +40,7 @@ public class FirstBoss : Sonde {
     public int nbLumieres = 15;
     public GameObject pouvoirLocalisationPrefab;
     public List<GameObject> generatorPrefabs;
+    public int nbTriesByGeneratorPositions = 3;
 
     [Header("Links")]
     public Transform componentsFolder;
@@ -179,8 +180,10 @@ public class FirstBoss : Sonde {
     }
 
     protected void DropGenerators() {
-        foreach(GameObject generatorPrefab in generatorPrefabs) {
-            Vector3 pos = gm.map.GetFreeRoundedLocation();
+        List<Vector3> optimalySpacedPositions = GetOptimalySpacedPositions.GetSpacedPositions(gm.map, generatorPrefabs.Count, null, nbTriesByGeneratorPositions, GetOptimalySpacedPositions.Mode.MAX_MIN_DISTANCE);
+        for(int i = 0; i < generatorPrefabs.Count; i++) {
+            GameObject generatorPrefab = generatorPrefabs[i];
+            Vector3 pos = optimalySpacedPositions[i];
             IGenerator generator = Instantiate(generatorPrefab, pos, Quaternion.identity, parent: gm.map.zonesFolder).GetComponent<IGenerator>();
             generator.Initialize();
         }

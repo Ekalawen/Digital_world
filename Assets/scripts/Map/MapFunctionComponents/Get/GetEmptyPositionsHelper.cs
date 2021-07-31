@@ -10,12 +10,19 @@ public class GetEmptyPositionsHelper : MonoBehaviour {
         ALL,
         WITH_N_CUBES_VOISINS,
         IN_PASSAGES,
+        OPTIMALY_SPACED,
     };
 
     public HowToGetPositions howToGetPositions = HowToGetPositions.ALL;
     [ConditionalHide("howToGetPositions", HowToGetPositions.WITH_N_CUBES_VOISINS)]
     public int nbCubesVoisins = 4;
     public List<GetHelperModifier> modifiers;
+    [ConditionalHide("howToGetPositions", HowToGetPositions.OPTIMALY_SPACED)]
+    public int optimalySpacedNbPositions;
+    [ConditionalHide("howToGetPositions", HowToGetPositions.OPTIMALY_SPACED)]
+    public int optimalySpacedNbTriesByPosition;
+    [ConditionalHide("howToGetPositions", HowToGetPositions.OPTIMALY_SPACED)]
+    public GetOptimalySpacedPositions.Mode optimalySpacedMode;
 
     protected MapManager map;
 
@@ -41,6 +48,8 @@ public class GetEmptyPositionsHelper : MonoBehaviour {
                 return GetCubesWithNVoisins(nbCubesVoisins);
             case HowToGetPositions.IN_PASSAGES:
                 return GetCubesInPassages();
+            case HowToGetPositions.OPTIMALY_SPACED:
+                return GetOptimalySpaced();
             default:
                 return null;
         }
@@ -70,5 +79,9 @@ public class GetEmptyPositionsHelper : MonoBehaviour {
         nbSameAxes += pos1.y == pos2.y ? 1 : 0;
         nbSameAxes += pos1.z == pos2.z ? 1 : 0;
         return nbSameAxes == 2 && MathTools.CubeDistance(pos1, pos2) == 2;
+    }
+
+    protected List<Vector3> GetOptimalySpaced() {
+        return GetOptimalySpacedPositions.GetSpacedPositions(map, optimalySpacedNbPositions, null, optimalySpacedNbTriesByPosition, optimalySpacedMode);
     }
 }
