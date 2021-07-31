@@ -187,6 +187,8 @@ public class FirstBoss : Sonde {
             Vector3 pos = optimalySpacedPositions[i];
             IGenerator generator = Instantiate(generatorPrefab, pos, Quaternion.identity, parent: gm.map.zonesFolder).GetComponent<IGenerator>();
             generator.Initialize();
+            Lightning lightning = Instantiate(generator.lightningPrefab).GetComponent<Lightning>();
+            lightning.Initialize(transform.position, generator.transform.position);
             yield return new WaitForSeconds(timeBetweenDropGenerators);
         }
     }

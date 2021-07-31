@@ -6,9 +6,14 @@ using UnityEngine.VFX;
 
 public class FirstBossCollecteur : MonoBehaviour {
 
+    protected bool hasCollected = false;
+
     public void Collect() {
-        FirstBoss firstBoss = FindObjectOfType<FirstBoss>();
-        firstBoss.CollectGeneratorsOfPhase2();
+        if (!hasCollected) {
+            FirstBoss firstBoss = FindObjectOfType<FirstBoss>();
+            firstBoss.CollectGeneratorsOfPhase2();
+            hasCollected = true;
+        }
     }
 
 }
