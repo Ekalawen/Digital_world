@@ -45,8 +45,11 @@ public abstract class IGenerator : MonoBehaviour {
         }
         float activationRangeSqr = activationRange * activationRange;
         positions = positions.FindAll(p => Vector3.SqrMagnitude(p - transform.position) <= activationRangeSqr);
+        positions = positions.FindAll(p => IsValidPosition(p));
         precomputedPositions = new Stack<Vector3>(positions);
     }
+
+    protected abstract bool IsValidPosition(Vector3 p);
 
     protected float PositionScore(Vector3 position) {
         return Vector3.SqrMagnitude(position - transform.position);

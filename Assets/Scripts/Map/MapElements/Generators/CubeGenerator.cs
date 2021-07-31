@@ -28,4 +28,10 @@ public class CubeGenerator : IGenerator {
             }
         }
     }
+
+    protected override bool IsValidPosition(Vector3 position) {
+        Cube cube = map.GetCubeAt(position);
+        return (choseType == ChoseType.GET_CUBES && cube != null)
+            || (choseType == ChoseType.GET_EMPTY && cube == null);
+    }
 }
