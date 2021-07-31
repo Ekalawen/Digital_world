@@ -173,6 +173,7 @@ public class OrbTrigger : IZone {
         if (!shouldPopCubeInCenter)
             return;
         Cube cube = gm.map.AddCube(transform.position, Cube.CubeType.NORMAL);
+        cube.RegisterCubeToColorSources();
     }
 
     public void AddEvent(UnityAction call) {
