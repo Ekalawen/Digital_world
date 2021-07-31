@@ -15,6 +15,7 @@ public class GetEmptyPositionsHelper : MonoBehaviour {
     public HowToGetPositions howToGetPositions = HowToGetPositions.ALL;
     [ConditionalHide("howToGetPositions", HowToGetPositions.WITH_N_CUBES_VOISINS)]
     public int nbCubesVoisins = 4;
+    public List<GetHelperModifier> modifiers;
 
     protected MapManager map;
 
@@ -22,9 +23,16 @@ public class GetEmptyPositionsHelper : MonoBehaviour {
     {
         map = GameManager.Instance.map;
         List<Vector3> positions = BasicGet();
+        positions = ApplyModifier(positions);
         return positions;
     }
 
+    protected List<Vector3> ApplyModifier(List<Vector3> positions) {
+        foreach (GetHelperModifier modifier in modifiers) {
+            positions = modifier.ModifyEmpties(positions);
+        }
+        return positions;
+    }
     protected List<Vector3> BasicGet() {
         switch (howToGetPositions) {
             case HowToGetPositions.ALL:

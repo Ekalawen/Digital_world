@@ -33,7 +33,7 @@ public class GetCubesHelper : MonoBehaviour {
     public CubeEnsemble.CubeEnsembleType cubeEnsembleType;
     [ConditionalHide("howToGetCubes", HowToGetCubes.WITH_N_VOISINS)]
     public int nbCubesVoisins = 4;
-    public List<GetCubesHelperModifier> modifiers;
+    public List<GetHelperModifier> modifiers;
 
     protected MapManager map;
 
@@ -46,8 +46,8 @@ public class GetCubesHelper : MonoBehaviour {
     }
 
     protected List<Cube> ApplyModifier(List<Cube> cubes) {
-        foreach (GetCubesHelperModifier modifier in modifiers) {
-            cubes = modifier.Modify(cubes);
+        foreach (GetHelperModifier modifier in modifiers) {
+            cubes = modifier.ModifyCubes(cubes);
         }
         return cubes;
     }
