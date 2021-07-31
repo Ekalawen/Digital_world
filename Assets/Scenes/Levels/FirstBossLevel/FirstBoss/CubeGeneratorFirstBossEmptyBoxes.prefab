@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   modulo: 3
   nbAxesToCheck: {x: 2, y: 3}
+  usePositionOffset: 1
 --- !u!114 &5633868866771786480
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37,6 +38,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1926574466379796549, guid: 71ed08f666e8c9441946793de60bd977,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 4ab7e231146a5d6448015521b078ad61, type: 2}
     - target: {fileID: 4963224914880968686, guid: 71ed08f666e8c9441946793de60bd977,
         type: 3}
       propertyPath: cubeType
@@ -56,6 +62,11 @@ PrefabInstance:
         type: 3}
       propertyPath: getCubesHelper
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4963224914880968686, guid: 71ed08f666e8c9441946793de60bd977,
+        type: 3}
+      propertyPath: dissolveEffectDuration
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 4963224914880968686, guid: 71ed08f666e8c9441946793de60bd977,
         type: 3}
