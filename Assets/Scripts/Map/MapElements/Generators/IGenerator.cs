@@ -10,6 +10,7 @@ public abstract class IGenerator : MonoBehaviour {
 
     [Header("Parameters")]
     public float frequenceActivation = 0.25f;
+    public float activationRange = 7.0f;
     public ChoseType choseType;
     [ConditionalHide("choseType", ChoseType.GET_CUBES)]
     public GetCubesHelper getCubesHelper;
@@ -36,11 +37,15 @@ public abstract class IGenerator : MonoBehaviour {
     }
 
     protected void ComputePrecomputedPositions() {
+        List<Vector3> positions;
         if (choseType == ChoseType.GET_CUBES) {
-            precomputedPositions = new Stack<Vector3>(getCubesHelper.Get().Select(c => c.transform.position).OrderByDescending(p => PositionScore(p)));
+            positions = getCubesHelper.Get().Select(c => c.transform.position).OrderByDescending(p => PositionScore(p)).ToList();
         } else {
-            precomputedPositions = new Stack<Vector3>(getEmptyPositionsHelper.Get().OrderByDescending(p => PositionScore(p)));
+            positions = getEmptyPositionsHelper.Get().OrderByDescending(p => PositionScore(p)).ToList();
         }
+        float activationRangeSqr = activationRange * activationRange;
+        positions = positions.FindAll(p => Vector3.SqrMagnitude(p - transform.position) <= activationRangeSqr);
+        precomputedPositions = new Stack<Vector3>(positions);
     }
 
     protected float PositionScore(Vector3 position) {
