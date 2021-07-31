@@ -41,6 +41,7 @@ public class FirstBoss : Sonde {
     public GameObject pouvoirLocalisationPrefab;
     public List<GameObject> generatorPrefabs;
     public int nbTriesByGeneratorPositions = 3;
+    public float timeBetweenDropGenerators = 0.8f;
 
     [Header("Links")]
     public Transform componentsFolder;
@@ -52,6 +53,7 @@ public class FirstBoss : Sonde {
     protected List<Coroutine> coroutinesOfNextAttacks;
     protected RandomEvent randomEventToRemove = null;
     protected EventManager.DeathReason currentDeathReason = EventManager.DeathReason.FIRST_BOSS_HIT;
+    protected int nbGeneratorsOfPhase2Collected = 0;
 
     public override void Start () {
         base.Start();
@@ -160,7 +162,6 @@ public class FirstBoss : Sonde {
     }
 
     public void GoToPhase1() {
-        DropGenerators();
         UpdateRandomEvent(phaseIndice: 1);
         UpdateAttackRate(phaseIndice: 1);
         UpdateOrbTrigger(phaseIndice: 1);
@@ -174,18 +175,26 @@ public class FirstBoss : Sonde {
         UpdateConsoleMessage(phaseIndice: 2);
         AddTimeItem();
         yield return StartCoroutine(CExplosionAttackNormale());
-        UpdateOrbTrigger(phaseIndice: 2);
+        yield return StartCoroutine(CDropGenerators());
         UpdateAttackRate(phaseIndice: 2);
         UpdateRandomEvent(phaseIndice: 2);
     }
 
-    protected void DropGenerators() {
+    protected IEnumerator CDropGenerators() {
         List<Vector3> optimalySpacedPositions = GetOptimalySpacedPositions.GetSpacedPositions(gm.map, generatorPrefabs.Count, null, nbTriesByGeneratorPositions, GetOptimalySpacedPositions.Mode.MAX_MIN_DISTANCE);
         for(int i = 0; i < generatorPrefabs.Count; i++) {
             GameObject generatorPrefab = generatorPrefabs[i];
             Vector3 pos = optimalySpacedPositions[i];
             IGenerator generator = Instantiate(generatorPrefab, pos, Quaternion.identity, parent: gm.map.zonesFolder).GetComponent<IGenerator>();
             generator.Initialize();
+            yield return new WaitForSeconds(timeBetweenDropGenerators);
+        }
+    }
+
+    public void CollectGeneratorsOfPhase2() {
+        nbGeneratorsOfPhase2Collected++;
+        if(nbGeneratorsOfPhase2Collected >= generatorPrefabs.Count) {
+            UpdateOrbTrigger(phaseIndice: 2);
         }
     }
 
