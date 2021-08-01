@@ -6,6 +6,7 @@ using UnityEngine.VFX;
 
 public class FirstBossCollecteur : MonoBehaviour {
 
+    public int phaseIndice = 2;
     protected bool hasCollected = false;
 
     public void Collect() {

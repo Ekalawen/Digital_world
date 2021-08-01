@@ -94,7 +94,7 @@ public abstract class IGenerator : MonoBehaviour {
         generateTimer.Stop();
     }
 
-    public void DestroyIn(float duree) {
+    public virtual void DestroyIn(float duree) {
         StopGenerate();
         Destroy(gameObject, duree);
     }

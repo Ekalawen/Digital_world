@@ -26,6 +26,10 @@ public static class MathTools
         return Mathf.Abs(start.x - end.x) + Mathf.Abs(start.y - end.y) + Mathf.Abs(start.z - end.z);
     }
 
+    public static float DistanceLInfini(Vector3 pos1, Vector3 pos2) {
+        return Mathf.Max(Mathf.Abs(pos1.x - pos2.x), Mathf.Abs(pos1.y - pos2.y), Mathf.Abs(pos1.z - pos2.z));
+    }
+
     public static Vector3Int RoundToInt(Vector3 pos) {
         Vector3Int res = new Vector3Int();
         res.x = (int)Mathf.Round(pos.x);

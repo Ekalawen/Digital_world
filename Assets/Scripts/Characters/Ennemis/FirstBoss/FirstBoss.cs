@@ -41,7 +41,8 @@ public class FirstBoss : Sonde {
     public GameObject lightningToItemPrefab;
     public GameObject lightningToDataPrefab;
     public GameObject pouvoirLocalisationPrefab;
-    public List<GameObject> generatorPrefabs;
+    public List<GameObject> generatorPhase2Prefabs;
+    public List<GameObject> generatorPhase3Prefabs;
     public int nbTriesByGeneratorPositions = 3;
     public float timeBetweenDropGenerators = 0.8f;
 
@@ -56,6 +57,7 @@ public class FirstBoss : Sonde {
     protected RandomEvent randomEventToRemove = null;
     protected EventManager.DeathReason currentDeathReason = EventManager.DeathReason.FIRST_BOSS_HIT;
     protected int nbGeneratorsOfPhase2Collected = 0;
+    protected int nbGeneratorsOfPhase3Collected = 0;
 
     public override void Start () {
         base.Start();
@@ -186,13 +188,14 @@ public class FirstBoss : Sonde {
         UpdateConsoleMessage(phaseIndice: 2);
         AddTimeItem();
         yield return StartCoroutine(CExplosionAttackNormale());
-        yield return StartCoroutine(CDropGenerators());
+        yield return StartCoroutine(CDropGenerators(generatorPhase2Prefabs));
         UpdateAttackRate(phaseIndice: 2);
         UpdateRandomEvent(phaseIndice: 2);
     }
 
-    protected IEnumerator CDropGenerators() {
-        List<Vector3> optimalySpacedPositions = GetOptimalySpacedPositions.GetSpacedPositions(gm.map, generatorPrefabs.Count, null, nbTriesByGeneratorPositions, GetOptimalySpacedPositions.Mode.MAX_MIN_DISTANCE);
+    protected IEnumerator CDropGenerators(List<GameObject> generatorPrefabs) {
+        List<Vector3> playerPos = new List<Vector3>() { player.transform.position };
+        List<Vector3> optimalySpacedPositions = GetOptimalySpacedPositions.GetSpacedPositions(gm.map, generatorPrefabs.Count, playerPos, nbTriesByGeneratorPositions, GetOptimalySpacedPositions.Mode.MAX_MIN_DISTANCE);
         for(int i = 0; i < generatorPrefabs.Count; i++) {
             GameObject generatorPrefab = generatorPrefabs[i];
             Vector3 pos = optimalySpacedPositions[i];
@@ -205,8 +208,15 @@ public class FirstBoss : Sonde {
 
     public void CollectGeneratorsOfPhase2() {
         nbGeneratorsOfPhase2Collected++;
-        if(nbGeneratorsOfPhase2Collected >= generatorPrefabs.Count) {
+        if(nbGeneratorsOfPhase2Collected >= generatorPhase2Prefabs.Count) {
             UpdateOrbTrigger(phaseIndice: 2);
+        }
+    }
+
+    public void CollectGeneratorsOfPhase3() {
+        nbGeneratorsOfPhase3Collected++;
+        if(nbGeneratorsOfPhase3Collected >= generatorPhase3Prefabs.Count) {
+            UpdateOrbTrigger(phaseIndice: 3);
         }
     }
 
@@ -255,8 +265,8 @@ public class FirstBoss : Sonde {
         UpdateConsoleMessage(phaseIndice: 3);
         AddTimeItem();
         yield return StartCoroutine(CExplosionAttackNormale());
+        yield return StartCoroutine(CDropGenerators(generatorPhase3Prefabs));
         SetSatellitesActivation(true);
-        UpdateOrbTrigger(phaseIndice: 3);
         UpdateAttackRate(phaseIndice: 3);
         UpdateRandomEvent(phaseIndice: 3);
     }
