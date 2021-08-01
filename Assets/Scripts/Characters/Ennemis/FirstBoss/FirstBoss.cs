@@ -188,7 +188,8 @@ public class FirstBoss : Sonde {
         UpdateConsoleMessage(phaseIndice: 2);
         AddTimeItem();
         yield return StartCoroutine(CExplosionAttackNormale());
-        yield return StartCoroutine(CDropGenerators(generatorPhase2Prefabs));
+        yield return StartCoroutine(CDropGenerators(generatorPhase3Prefabs));
+        //yield return StartCoroutine(CDropGenerators(generatorPhase2Prefabs));
         UpdateAttackRate(phaseIndice: 2);
         UpdateRandomEvent(phaseIndice: 2);
     }
@@ -265,7 +266,7 @@ public class FirstBoss : Sonde {
         UpdateConsoleMessage(phaseIndice: 3);
         AddTimeItem();
         yield return StartCoroutine(CExplosionAttackNormale());
-        yield return StartCoroutine(CDropGenerators(generatorPhase3Prefabs));
+        //yield return StartCoroutine(CDropGenerators(generatorPhase3Prefabs));
         SetSatellitesActivation(true);
         UpdateAttackRate(phaseIndice: 3);
         UpdateRandomEvent(phaseIndice: 3);
