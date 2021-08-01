@@ -36,7 +36,8 @@ public class FirstBoss : Sonde {
     public float timeAfterGivingDash = 3.0f;
 
     [Header("ThingsToDrop")]
-    public GameObject itemToPopPrefab;
+    public GameObject resetTemporelPrefab;
+    public List<float> resetTemporelValuesByPhases;
     public int nbLumieres = 15;
     public GameObject lightningToItemPrefab;
     public GameObject lightningToDataPrefab;
@@ -147,9 +148,10 @@ public class FirstBoss : Sonde {
         gm.console.FirstBossChangementDePhase(phaseIndice, explosionAttackTotalTime);
     }
 
-    protected void AddTimeItem() {
-        Item item = gm.itemManager.PopItem(itemToPopPrefab);
-        GenerateLightningTo(item.transform.position, lightningToItemPrefab);
+    protected void AddTimeItem(int phaseIndice) {
+        ResetTimeItem resetTemporel = gm.itemManager.PopItem(resetTemporelPrefab) as ResetTimeItem;
+        resetTemporel.settedTime = resetTemporelValuesByPhases[phaseIndice - 1];
+        GenerateLightningTo(resetTemporel.transform.position, lightningToItemPrefab);
     }
 
     protected void GenerateLightningTo(Vector3 position, GameObject lightningPrefab) {
@@ -189,7 +191,7 @@ public class FirstBoss : Sonde {
     protected IEnumerator CGoToPhase2() {
         yield return StartCoroutine(CGiveDash333());
         UpdateConsoleMessage(phaseIndice: 2);
-        AddTimeItem();
+        AddTimeItem(2);
         yield return StartCoroutine(CExplosionAttackNormale());
         yield return StartCoroutine(CDropGenerators(generatorPhase2Prefabs));
         UpdateAttackRate(phaseIndice: 2);
@@ -266,7 +268,7 @@ public class FirstBoss : Sonde {
     public IEnumerator CGoToPhase3() {
         SetAttackRate(99999);
         UpdateConsoleMessage(phaseIndice: 3);
-        AddTimeItem();
+        AddTimeItem(3);
         yield return StartCoroutine(CExplosionAttackNormale());
         yield return StartCoroutine(CDropGenerators(generatorPhase3Prefabs));
         SetSatellitesActivation(true);
@@ -280,7 +282,7 @@ public class FirstBoss : Sonde {
     public IEnumerator CGoToPhase4() {
         SetAttackRate(99999);
         UpdateConsoleMessage(phaseIndice: 4);
-        AddTimeItem();
+        AddTimeItem(4);
         yield return StartCoroutine(CExplosionAttackNormale());
         //RemovePouvoirs();
         PopAllDatas();
