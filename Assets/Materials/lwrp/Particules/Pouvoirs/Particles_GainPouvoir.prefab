@@ -61,17 +61,26 @@ VisualEffect:
       - m_Value: 1
         m_Name: ParticulesScale
         m_Overridden: 1
-      - m_Value: 2
+      - m_Value: 3
         m_Name: RadiusExplosion
+        m_Overridden: 1
+      - m_Value: 15
+        m_Name: TurbulenceIntensity
+        m_Overridden: 1
+      - m_Value: 1000
+        m_Name: ParticulesBurstCount
+        m_Overridden: 1
+      - m_Value: 0
+        m_Name: ParticulesSpawnRate
         m_Overridden: 1
     m_Vector2f:
       m_Array:
-      - m_Value: {x: 5, y: 6}
+      - m_Value: {x: 4, y: 5}
         m_Name: Lifetime
         m_Overridden: 1
     m_Vector3f:
       m_Array:
-      - m_Value: {x: 4, y: 0, z: 0}
+      - m_Value: {x: 5.5, y: 0, z: 0}
         m_Name: PositionToGoTo
         m_Overridden: 1
     m_Vector4f:
@@ -88,8 +97,8 @@ VisualEffect:
           serializedVersion: 2
           m_Curve:
           - serializedVersion: 3
-            time: 0.0022392273
-            value: 0.0014038086
+            time: 0
+            value: 0
             inSlope: -0.000035768953
             outSlope: -0.000035768953
             tangentMode: 0
@@ -97,8 +106,8 @@ VisualEffect:
             inWeight: 0
             outWeight: 0.19460174
           - serializedVersion: 3
-            time: 0.26999998
-            value: 0.0014078617
+            time: 0.44
+            value: 0.000004053116
             inSlope: 0.04860353
             outSlope: -0.06361076
             tangentMode: 1
@@ -106,8 +115,8 @@ VisualEffect:
             inWeight: 0.21122362
             outWeight: 0.21560736
           - serializedVersion: 3
-            time: 0.42
-            value: 1.0014079
+            time: 0.59
+            value: 1.000004
             inSlope: -0.00058818434
             outSlope: 0.07263209
             tangentMode: 1
@@ -116,7 +125,7 @@ VisualEffect:
             outWeight: 0.13616681
           - serializedVersion: 3
             time: 1
-            value: 0.9999996
+            value: 0.9985958
             inSlope: 0.04299748
             outSlope: 0.04299748
             tangentMode: 0
@@ -132,16 +141,16 @@ VisualEffect:
       m_Array:
       - m_Value:
           serializedVersion: 2
-          key0: {r: 8.95331, g: 21.112125, b: 21.112123, a: 0}
-          key1: {r: 0.32051814, g: 15.519255, b: 30.609423, a: 1}
-          key2: {r: 0.03945101, g: 0.520309, b: 3.7675643, a: 1}
-          key3: {r: 0, g: 0.0008747625, b: 0.3137255, a: 0}
+          key0: {r: 18.12769, g: 42.22425, b: 42.22425, a: 0}
+          key1: {r: 0.96155256, g: 31.090199, b: 61.218845, a: 1}
+          key2: {r: 0.23670563, g: 2.1303506, b: 15.070258, a: 1}
+          key3: {r: 0, g: 0, b: 2.509804, a: 0}
           key4: {r: 0, g: 0, b: 0, a: 0}
           key5: {r: 0, g: 0, b: 0, a: 0}
           key6: {r: 0, g: 0, b: 0, a: 0}
           key7: {r: 0, g: 0, b: 0, a: 0}
           ctime0: 4048
-          ctime1: 19082
+          ctime1: 18697
           ctime2: 40863
           ctime3: 65535
           ctime4: 0
