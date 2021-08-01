@@ -12,20 +12,20 @@ public class Lightning : MonoBehaviour {
     }
 
     public enum LightningMode {
-        SHOT,
         RAY,
+        LINK,
     }
 
-    public LightningMode lightningMode = LightningMode.SHOT;
-    [ConditionalHide("lightningMode", LightningMode.SHOT)]
+    public LightningMode lightningMode = LightningMode.RAY;
+    [ConditionalHide("lightningMode", LightningMode.RAY)]
     public float vitesse = 10.0f;
-    [ConditionalHide("lightningMode", LightningMode.SHOT)]
+    [ConditionalHide("lightningMode", LightningMode.RAY)]
     public float durationAfterArriving = 0.5f;
-    [ConditionalHide("lightningMode", LightningMode.RAY)]
+    [ConditionalHide("lightningMode", LightningMode.LINK)]
     public float lifetime = 1.0f;
-    [ConditionalHide("lightningMode", LightningMode.RAY)]
+    [ConditionalHide("lightningMode", LightningMode.LINK)]
     public float refreshRate = 1.0f;
-    [ConditionalHide("lightningMode", LightningMode.RAY)]
+    [ConditionalHide("lightningMode", LightningMode.LINK)]
     public float timeAtMaxWidth = 0.3f;
     public VisualEffect vfx;
 
@@ -35,7 +35,7 @@ public class Lightning : MonoBehaviour {
     protected Coroutine refreshCoroutine = null;
 
     public void Initialize(Vector3 start, Vector3 end, PivotType pivotType = PivotType.EXTREMITY) {
-        if (lightningMode == LightningMode.SHOT) {
+        if (lightningMode == LightningMode.RAY) {
             this.pivotType = pivotType;
             SetPosition(start, end);
             SetdurationAfterArriving(durationAfterArriving);
