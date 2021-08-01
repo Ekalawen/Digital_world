@@ -30,9 +30,9 @@ public class ItemManager : MonoBehaviour {
         }
     }
 
-    public virtual void PopItem(GameObject itemPrefab) {
+    public virtual Item PopItem(GameObject itemPrefab) {
         Vector3 pos = gm.map.GetFreeRoundedLocation();
-        GenerateItemFromPrefab(itemPrefab, pos);
+        return GenerateItemFromPrefab(itemPrefab, pos);
     }
 
     public Item GenerateItemFromPrefab(GameObject itemPrefab, Vector3 pos) {

@@ -38,6 +38,8 @@ public class FirstBoss : Sonde {
     [Header("ThingsToDrop")]
     public GameObject itemToPopPrefab;
     public int nbLumieres = 15;
+    public GameObject lightningToItemPrefab;
+    public GameObject lightningToDataPrefab;
     public GameObject pouvoirLocalisationPrefab;
     public List<GameObject> generatorPrefabs;
     public int nbTriesByGeneratorPositions = 3;
@@ -141,7 +143,13 @@ public class FirstBoss : Sonde {
     }
 
     protected void AddTimeItem() {
-        gm.itemManager.PopItem(itemToPopPrefab);
+        Item item = gm.itemManager.PopItem(itemToPopPrefab);
+        GenerateLightningTo(item.transform.position, lightningToItemPrefab);
+    }
+
+    protected void GenerateLightningTo(Vector3 position, GameObject lightningPrefab) {
+        Lightning lightning = Instantiate(lightningPrefab, position, Quaternion.identity).GetComponent<Lightning>();
+        lightning.Initialize(transform.position, position, Lightning.PivotType.EXTREMITY);
     }
 
     protected void RemovePouvoirs() {
@@ -159,6 +167,9 @@ public class FirstBoss : Sonde {
         gm.map.nbLumieresInitial = nbLumieres;
         fixNbLumieres.Initialize();
         fixNbLumieres.Activate();
+        foreach(Vector3 lumierePosition in gm.map.GetAllLumieresPositions()) {
+            GenerateLightningTo(lumierePosition, lightningToDataPrefab);
+        }
     }
 
     public void GoToPhase1() {
@@ -187,8 +198,7 @@ public class FirstBoss : Sonde {
             Vector3 pos = optimalySpacedPositions[i];
             IGenerator generator = Instantiate(generatorPrefab, pos, Quaternion.identity, parent: gm.map.zonesFolder).GetComponent<IGenerator>();
             generator.Initialize();
-            Lightning lightning = Instantiate(generator.lightningPrefab).GetComponent<Lightning>();
-            lightning.Initialize(transform.position, generator.transform.position);
+            GenerateLightningTo(generator.transform.position, generator.lightningPrefab);
             yield return new WaitForSeconds(timeBetweenDropGenerators);
         }
     }

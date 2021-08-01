@@ -13,7 +13,7 @@ public class ItemManagerBlackAndWhite : ItemManager {
         base.Initialize();
     }
 
-    public override void PopItem(GameObject itemPrefab) {
+    public override Item PopItem(GameObject itemPrefab) {
         BlackAndWhiteMap map = (BlackAndWhiteMap)gm.map;
         List<Cube> surface = map.GetAllCubesOfType(Cube.CubeType.INDESTRUCTIBLE);
         Vector3 pos;
@@ -24,6 +24,6 @@ public class ItemManagerBlackAndWhite : ItemManager {
                 break;
         }
         shouldPopOnTop = !shouldPopOnTop;
-        GenerateItemFromPrefab(itemPrefab, pos);
+        return GenerateItemFromPrefab(itemPrefab, pos);
     }
 }
