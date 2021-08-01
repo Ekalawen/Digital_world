@@ -58,11 +58,14 @@ public class FirstBoss : Sonde {
     protected EventManager.DeathReason currentDeathReason = EventManager.DeathReason.FIRST_BOSS_HIT;
     protected int nbGeneratorsOfPhase2Collected = 0;
     protected int nbGeneratorsOfPhase3Collected = 0;
+    protected Fluctuator attackColorFluctuator;
 
     public override void Start () {
         base.Start();
         name = "FirstBoss";
         coroutinesOfNextAttacks = new List<Coroutine>();
+        attackColorFluctuator = new Fluctuator(this, GetExplosionAttackColor, SetExplosionAttackColor);
+        SetExplosionAttackColor(0);
         satellites = new List<Sonde>(GetComponentsInChildren<Sonde>());
         satellites.Remove(this);
         SetSatellitesActivation(false);
@@ -315,6 +318,7 @@ public class FirstBoss : Sonde {
         IController controller = GetComponent<IController>();
         float oldVitesse = controller.vitesse;
         controller.vitesse = 0.0f;
+        attackColorFluctuator.GoTo(1, delay);
 
         // Wait until end of decreasing ...
         yield return new WaitForSeconds(delay);
@@ -334,7 +338,15 @@ public class FirstBoss : Sonde {
         }
 
         // End of explosion
+        attackColorFluctuator.GoTo(0, 0.5f);
         controller.vitesse = oldVitesse;
+    }
+
+    protected float GetExplosionAttackColor() {
+        return material.GetFloat("_MatrixRectangleColor4Proportion");
+    }
+    protected void SetExplosionAttackColor(float value) {
+        material.SetFloat("_MatrixRectangleColor4Proportion", value);
     }
 
     protected void PlayParticles(float totalTime, GameObject particlesPrefab) {

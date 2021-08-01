@@ -24,17 +24,17 @@ namespace UnityEngine.Rendering.Universal
         CallMomentPass callMomentPass;
 
         public override void Create() {
-//#if UNITY_EDITOR
-//            callMomentPass = new CallMomentPass(name);
-//#endif
+#if UNITY_EDITOR
+            callMomentPass = new CallMomentPass(name);
+#endif
         }
 
         public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData) {
-//#if UNITY_EDITOR
-//            callMomentPass.renderPassEvent = settings.renderPassEvent;
-//            callMomentPass.settings = settings;
-//            renderer.EnqueuePass(callMomentPass);
-//#endif
+#if UNITY_EDITOR
+            callMomentPass.renderPassEvent = settings.renderPassEvent;
+            callMomentPass.settings = settings;
+            renderer.EnqueuePass(callMomentPass);
+#endif
         }
     }
 }
