@@ -50,6 +50,16 @@ public class Lightning : MonoBehaviour {
             SetLifetime(lifetime, timeAtMaxWidth);
             refreshCoroutine = StartCoroutine(CUpdateConstantLightning());
         }
+        AutoDestroyRayIn();
+    }
+
+    protected void AutoDestroyRayIn() {
+        if(lightningMode == LightningMode.RAY) {
+            float distance = (end - start).magnitude;
+            float durationToArriving = distance / vitesse;
+            float lifetime = durationAfterArriving + durationToArriving;
+            Destroy(gameObject, lifetime);
+        }
     }
 
     public void SetDurees(float dureeAvantConnection, float distance, float dureeApresConnection) {
