@@ -175,7 +175,6 @@ public class FirstBoss : Sonde {
     }
 
     public void GoToPhase1() {
-        StartCoroutine(CDropGenerators(generatorPhase3Prefabs));
         UpdateRandomEvent(phaseIndice: 1);
         UpdateAttackRate(phaseIndice: 1);
         UpdateOrbTrigger(phaseIndice: 1);
@@ -266,7 +265,7 @@ public class FirstBoss : Sonde {
         UpdateConsoleMessage(phaseIndice: 3);
         AddTimeItem();
         yield return StartCoroutine(CExplosionAttackNormale());
-        //yield return StartCoroutine(CDropGenerators(generatorPhase3Prefabs));
+        yield return StartCoroutine(CDropGenerators(generatorPhase3Prefabs));
         SetSatellitesActivation(true);
         UpdateAttackRate(phaseIndice: 3);
         UpdateRandomEvent(phaseIndice: 3);
