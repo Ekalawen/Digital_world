@@ -222,11 +222,6 @@ public class Cube : MonoBehaviour {
         Material newMaterial = new Material(mat);
 
         newMaterial.color = GetColor();
-        //if (type != CubeType.BOUNCY) {
-        //    newMaterial.color = GetColor();
-        //} else {
-        //    newMaterial.color = GetMaterial().GetColor("_BounceColor");
-        //}
 
         psr.material = newMaterial;
         float particuleTime = particle.main.duration;
@@ -303,9 +298,9 @@ public class Cube : MonoBehaviour {
 
     public GameObject GetExplosionParticlesPrefab() {
         if (type == CubeType.BOUNCY) {
-            return gm.postProcessManager.cubeExplosionParticlesPrefab;
-        } else {
             return gm.postProcessManager.cubeBouncyExplosionParticlesPrefab;
+        } else {
+            return gm.postProcessManager.cubeExplosionParticlesPrefab;
         }
     }
 
