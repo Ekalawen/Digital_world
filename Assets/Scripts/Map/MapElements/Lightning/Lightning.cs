@@ -61,7 +61,7 @@ public class Lightning : MonoBehaviour {
         } else {
             transform.position = (start + end) / 2;
         }
-        transform.forward = (end - start).normalized;
+        transform.forward = (start != end) ? (end - start).normalized : Vector3.right;
         float distance = (end - start).magnitude;
         distance /= parentSize;
         vfx.SetFloat("Lenght", distance);

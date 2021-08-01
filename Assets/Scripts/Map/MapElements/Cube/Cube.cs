@@ -283,12 +283,16 @@ public class Cube : MonoBehaviour {
     }
 
     protected void DestroyIn(float duree) {
-        StartCoroutine(CDestroyIn(duree));
+        if (gameObject.activeSelf) {
+            StartCoroutine(CDestroyIn(duree));
+        }
     }
 
     protected virtual IEnumerator CDestroyIn(float duree) {
-        yield return new WaitForSeconds(duree);
-        Destroy();
+        if (gameObject.activeSelf) {
+            yield return new WaitForSeconds(duree);
+            Destroy();
+        }
     }
 
     public GameObject GetExplosionParticlesPrefab() {

@@ -260,6 +260,9 @@ public class SoundManager : MonoBehaviour
 
         // On get la source
         AudioSource source = GetAvailableSource();
+        if(source == null) {
+            Debug.Log($"SOURCE NUL OMG !!! XD");
+        }
 
         // On set le volume
         if (audioClipParams.bIsMusic)
