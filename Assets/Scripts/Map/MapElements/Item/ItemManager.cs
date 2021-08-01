@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class ItemManager : MonoBehaviour {
@@ -87,5 +88,9 @@ public class ItemManager : MonoBehaviour {
                 i--;
             }
         }
+    }
+
+    public bool IsItemAt(Vector3 pos) {
+        return items != null && items.Select(i => i.transform.position).Any(p => p == pos);
     }
 }
