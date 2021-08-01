@@ -11,6 +11,7 @@ public class GetEmptyPositionsHelper : MonoBehaviour {
         WITH_N_CUBES_VOISINS,
         IN_PASSAGES,
         OPTIMALY_SPACED,
+        CENTER,
     };
 
     public HowToGetPositions howToGetPositions = HowToGetPositions.ALL;
@@ -50,6 +51,8 @@ public class GetEmptyPositionsHelper : MonoBehaviour {
                 return GetCubesInPassages();
             case HowToGetPositions.OPTIMALY_SPACED:
                 return GetOptimalySpaced();
+            case HowToGetPositions.CENTER:
+                return GetCenterPosition();
             default:
                 return null;
         }
@@ -83,5 +86,9 @@ public class GetEmptyPositionsHelper : MonoBehaviour {
 
     protected List<Vector3> GetOptimalySpaced() {
         return GetOptimalySpacedPositions.GetSpacedPositions(map, optimalySpacedNbPositions, null, optimalySpacedNbTriesByPosition, optimalySpacedMode);
+    }
+
+    protected List<Vector3> GetCenterPosition() {
+        return new List<Vector3>() { transform.position };
     }
 }
