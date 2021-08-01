@@ -46,7 +46,8 @@ public class PostProcessManager : MonoBehaviour {
     public float dissolveInGamePlayerProximityCoef = 0.0f;
 
     [Header("CubeExplosion")]
-    public GameObject explosionParticlesPrefab;
+    public GameObject cubeExplosionParticlesPrefab;
+    public GameObject cubeBouncyExplosionParticlesPrefab;
 
     [Header("Wall VFX")]
     public float tresholdDownFront = 15;

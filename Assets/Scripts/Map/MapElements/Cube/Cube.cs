@@ -217,11 +217,14 @@ public class Cube : MonoBehaviour {
         ParticleSystemRenderer psr = go.GetComponent<ParticleSystemRenderer>();
         Material mat = psr.material;
         Material newMaterial = new Material(mat);
-        if (type != CubeType.BOUNCY) {
-            newMaterial.color = GetColor();
-        } else {
-            newMaterial.color = GetMaterial().GetColor("_BounceColor");
-        }
+
+        newMaterial.color = GetColor();
+        //if (type != CubeType.BOUNCY) {
+        //    newMaterial.color = GetColor();
+        //} else {
+        //    newMaterial.color = GetMaterial().GetColor("_BounceColor");
+        //}
+
         psr.material = newMaterial;
         float particuleTime = particle.main.duration;
         Destroy(go, particuleTime);
@@ -296,7 +299,11 @@ public class Cube : MonoBehaviour {
     }
 
     public GameObject GetExplosionParticlesPrefab() {
-        return gm.postProcessManager.explosionParticlesPrefab;
+        if (type == CubeType.BOUNCY) {
+            return gm.postProcessManager.cubeExplosionParticlesPrefab;
+        } else {
+            return gm.postProcessManager.cubeBouncyExplosionParticlesPrefab;
+        }
     }
 
     public float GetExplosionParticuleTimeDuration() {
