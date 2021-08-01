@@ -18,7 +18,7 @@ MonoBehaviour:
   choseType: 0
   getCubesHelper: {fileID: 3261412117680343403}
   getEmptyPositionsHelper: {fileID: 0}
-  lightningPrefab: {fileID: 8725588450735506554, guid: 90f42a60d387eff46a398deefd72021f,
+  lightningPrefab: {fileID: 8725588450735506554, guid: f19400e69a5f00143942de1fb6b2f8b4,
     type: 3}
   orbTrigger: {fileID: 9061032669966766696}
   decomposeTime: 0.5
@@ -37,6 +37,7 @@ MonoBehaviour:
   minDistance: 1
   useCustomPosition: 0
   customPosition: {x: 0, y: 0, z: 0}
+  distanceType: 0
 --- !u!114 &4358890426399383221
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -49,6 +50,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41432109cac49dc439276f1e9506d3cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  phaseIndice: 2
 --- !u!1001 &166323071510162357
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -56,11 +58,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1926574466379796549, guid: 71ed08f666e8c9441946793de60bd977,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 36ddd6eb936ed7a4b88650248196b0a1, type: 2}
     - target: {fileID: 3390147263197962974, guid: 71ed08f666e8c9441946793de60bd977,
         type: 3}
       propertyPath: modifiers.Array.size
@@ -146,12 +143,6 @@ PrefabInstance:
       propertyPath: rayon
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 9219331088902830557, guid: 71ed08f666e8c9441946793de60bd977,
-        type: 3}
-      propertyPath: lightningLinkPrefab
-      value: 
-      objectReference: {fileID: 8725588450735506554, guid: 283ba6269e1fe73479f13eaab33e963f,
-        type: 3}
     - target: {fileID: 9219331088902830557, guid: 71ed08f666e8c9441946793de60bd977,
         type: 3}
       propertyPath: shouldPopCubeInCenter
