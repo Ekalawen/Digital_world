@@ -13,7 +13,11 @@ public class FirstBossCollecteur : MonoBehaviour {
         if (!hasCollected) {
             FirstBoss firstBoss = FindObjectOfType<FirstBoss>();
             if (firstBoss != null) {
-                firstBoss.CollectGeneratorsOfPhase2();
+                if (phaseIndice == 2) {
+                    firstBoss.CollectGeneratorsOfPhase2();
+                } else {
+                    firstBoss.CollectGeneratorsOfPhase3();
+                }
                 hasCollected = true;
             }
         }
