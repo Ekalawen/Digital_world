@@ -29,12 +29,17 @@ public class Lightning : MonoBehaviour {
     public float timeAtMaxWidth = 0.3f;
     public VisualEffect vfx;
 
+    protected GameManager gm;
     protected Vector3 start;
     protected Vector3 end;
     protected PivotType pivotType;
     protected Coroutine refreshCoroutine = null;
 
     public void Initialize(Vector3 start, Vector3 end, PivotType pivotType = PivotType.EXTREMITY) {
+        gm = GameManager.Instance;
+        if(transform.parent == null) {
+            transform.SetParent(gm.map.lightningsFolder);
+        }
         if (lightningMode == LightningMode.RAY) {
             this.pivotType = pivotType;
             SetPosition(start, end);

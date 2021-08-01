@@ -175,7 +175,6 @@ public class FirstBoss : Sonde {
     }
 
     public void GoToPhase1() {
-        StartCoroutine(CDropGenerators(generatorPhase3Prefabs));
         UpdateRandomEvent(phaseIndice: 1);
         UpdateAttackRate(phaseIndice: 1);
         UpdateOrbTrigger(phaseIndice: 1);

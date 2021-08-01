@@ -52,7 +52,7 @@ public class MapManager : MonoBehaviour {
     [HideInInspector]
     protected List<Lumiere> lumieres;
     [HideInInspector]
-    public Transform mapFolder, cubesFolder, lumieresFolder, zonesFolder, cubesPoolsFolder;
+    public Transform mapFolder, cubesFolder, lumieresFolder, zonesFolder, cubesPoolsFolder, lightningsFolder;
     protected Cube.CubeType currentCubeTypeUsed = Cube.CubeType.NORMAL;
     [HideInInspector]
     public GameManager gm;
@@ -72,8 +72,10 @@ public class MapManager : MonoBehaviour {
         lumieresFolder.transform.SetParent(mapFolder);
         zonesFolder = new GameObject("Zones").transform;
         zonesFolder.transform.SetParent(mapFolder);
-        cubesPoolsFolder = new GameObject("cubesPoolsFolder").transform;
+        cubesPoolsFolder = new GameObject("CubesPools").transform;
         cubesPoolsFolder.transform.SetParent(cubesFolder);
+        lightningsFolder = new GameObject("Lightnings").transform;
+        lightningsFolder.transform.SetParent(mapFolder);
         InitPlayerStartComponent();
         mapElements = new List<MapElement>();
         lumieres = new List<Lumiere>();
