@@ -47,6 +47,7 @@ public class Cube : MonoBehaviour {
 
     public void SetDissolveTime(float dissolveTime) {
         dissolveTimeToUse = dissolveTime;
+        StartCoroutine(CSetOpaqueMaterialIn(dissolveTime));
     }
 
     public void SetDissolveOnInitialization() {
@@ -102,7 +103,9 @@ public class Cube : MonoBehaviour {
 
     protected IEnumerator CSetOpaqueMaterialIn(float duree) {
         yield return new WaitForSeconds(duree);
-        SetOpaqueMaterial();
+        if (!IsDecomposing()) {
+            SetOpaqueMaterial();
+        }
     }
 
     protected void StopDissolveEffect() {
@@ -151,7 +154,7 @@ public class Cube : MonoBehaviour {
         BothMaterialsSetTexture("_ColorTexture", newTexture);
     }
 
-    public void SetOpaqueMaterial() {
+    protected void SetOpaqueMaterial() {
         if (opaqueMaterial != null) {
             SetMaterial(opaqueMaterial);
         }

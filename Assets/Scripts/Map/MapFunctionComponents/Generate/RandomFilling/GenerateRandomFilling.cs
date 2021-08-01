@@ -11,6 +11,9 @@ public class GenerateRandomFilling : GenerateCubesMapFunction {
     public float proportionRandomFilling = 0.02f;
     public int sizeCubeRandomFilling = 1; // Ca peut être intéressant d'augmenter cette taille ! :)
     public bool registerToColorSources = false;
+    public bool setDissolveTime = false;
+    [ConditionalHide("setDissolveTime")]
+    public float dissolveTime = 1.0f;
 
     public override void Activate() {
         GenerateRandomFillingCubes();
@@ -27,6 +30,11 @@ public class GenerateRandomFilling : GenerateCubesMapFunction {
         foreach(Vector3 pos in selectedPos) {
             Vector3 finalPos = pos - Vector3.one * (int)Mathf.Floor(sizeCubeRandomFilling / 2.0f);
             FullBlock fb = new FullBlock(finalPos, Vector3Int.one * sizeCubeRandomFilling, cleanSpaceBeforeSpawning: false);
+            if(setDissolveTime) {
+                foreach(Cube cube in fb.GetCubes()) {
+                    cube.SetDissolveTime(dissolveTime);
+                }
+            }
             if (registerToColorSources)
                 fb.RegisterToColorSources();
             fullBlocks.Add(fb);
