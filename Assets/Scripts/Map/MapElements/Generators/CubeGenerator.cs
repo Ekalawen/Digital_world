@@ -31,6 +31,14 @@ public class CubeGenerator : IGenerator {
         if(newCube != null && setLinky) {
             newCube.SetLinkyValue(true);
         }
+        StartCoroutine(SetOpaqueMaterialIn(newCube, dissolveEffectDuration));
+    }
+
+    protected IEnumerator SetOpaqueMaterialIn(Cube cube, float duree) {
+        yield return new WaitForSeconds(duree);
+        if(cube != null && !cube.IsDecomposing()) {
+            cube.SetOpaqueMaterial();
+        }
     }
 
     protected override bool IsValidPosition(Vector3 position) {

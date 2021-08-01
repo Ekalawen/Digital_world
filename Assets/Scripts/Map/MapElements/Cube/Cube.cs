@@ -151,7 +151,7 @@ public class Cube : MonoBehaviour {
         BothMaterialsSetTexture("_ColorTexture", newTexture);
     }
 
-    protected void SetOpaqueMaterial() {
+    public void SetOpaqueMaterial() {
         if (opaqueMaterial != null) {
             SetMaterial(opaqueMaterial);
         }
