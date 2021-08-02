@@ -889,6 +889,7 @@ public class MapManager : MonoBehaviour {
         bool useNotInMapVoisins = false,
         bool collideWithCubes = true,
         bool ignoreSwappyCubes = false) {
+
         start = MathTools.Round(start);
         end = MathTools.Round(end);
 
@@ -911,10 +912,11 @@ public class MapManager : MonoBehaviour {
 
             for (int i = 0; i < voisins.Count; i++) {
                 Vector3 voisin = voisins[i];
-                float distanceToGoal = Vector3.Distance(voisin, end);
+                //float distanceToGoal = Vector3.Distance(voisin, end);
+                float distanceToGoal = Vector3.SqrMagnitude(voisin - end);
                 Node node = new Node(voisin, current.cout + 1, distanceToGoal, current);
 
-                if(IsNodeInCloseOrOpened(closed, opened, voisin, node))
+                if (IsNodeInCloseOrOpened(closed, opened, voisin, node))
                     continue;
 
                 InsertNodeInOpened(opened, node);
