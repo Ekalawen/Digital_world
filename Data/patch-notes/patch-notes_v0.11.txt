@@ -1,0 +1,59 @@
+@everyone Il est enfin là ! Le premier Boss du jeu est enfin là !
+
+#Patch-notes Version 0.11 :
+
+Dans ce patch-ci, on a travaillé sur deux changements majeurs :
+- La refonte du design graphique de l'interface utilisateur (maintenant c'est classy-shiny !)
+- La création du premier Boss du jeu : FirstBoss ! Il m'a fallut 4 heures pour le battre moi-même la première fois ...
+Et à chaque fois que je perdais, je diminuais la difficulté de telle ou telle mécanique jusqu'à le rendre abordable.
+Maintenant, dans son état équilibré, vous devriez pouvoir le réussir en moins de 100 tentatives ;)
+Allez, c'est parti pour les détails !
+
+
+# Création du niveau du Boss
+Je ne veux pas trop vous spoiler, alors voilà ce que je peux vous dire, tout en vous gardant la surprise des nouvelles mécaniques ! :)
+## 4 Phases
+Votre combat, ou plutôt votre survie, contre le Boss se déroulera en 4 étapes, ou 4 Phases.
+Chaque Phase est plus compliqué que la précédente et rajoute une mécanique supplémentaire au Boss.
+Si l'on devait lister toutes les choses que vous devez faire pendant cet affrontement, je dirais qu'il y en a 14, mais vous ne vous en rendrez surement pas compte dans le feu de l'action ;)
+## Votre nouveau pouvoir : Dash333
+Au début de la Phase 2, le Boss vous donne votre nouveau pouvoir, le Dash333 !!! Et croyez-moi, ça change littéralement votre vie !
+Vous vous rappelez le Dash15 que vous avez pu expérimenter uniquement lors du niveau DashTraining ? Et bien maintenant, vous l'avez ... 3 fois !
+En fait, le Dash333 est un Dash15 avec 3 charges qui se rechargent chacune en 3 secondes. Donc si vous économisez bien votre temps, vous pouvez faire un triple Dash d'un seul coup !
+C'est extrêmement pratique pour atteindre des plateformes éloignées ou en hauteur. Et n'oubliez pas qu'utiliser le Dash réinitialise votre temps d'accrochage au mur !
+De plus, pour toujours savoir combien de Dash il vous reste sans avoir à perpétuellement regarder en bas à droite de votre écran, votre réticule adaptera automatiquement sa forme en fonction du nombre de charges qu'il vous reste ! :)
+## Nouvelle mécanique clé : les Génerators
+Lors de la Phase 2 et de la Phase 3, une nouvelle mécanique apparaîtra : les Générators !
+Les Générators sont des sortes de Firewalls qui doivent être désactivés. Sauf que tant qu'ils ne sont pas désactivés ... ils vont générer plein de trucs pénibles !
+Que ce soit des Cubes, des Cubes de la Mort, des ennemis, ou même qu'ils détruisent des Cubes, tous les Générators seront différents et vous en découvrirez 6 pendant votre affrontement avec le Boss !
+Quoi qu'il en soit, bonne chance dans votre Run. Et n'oubliez pas que l'accomplissement n'a d'égal que la persévérance qui vous y aura mené.
+
+# Gameplay
+- Optimisation du temps de calcul du chemin des Tracers et du Pathfinder. En contrepartie, les chemins ne sont pas toujours optimaux. Il s'agit d'une solution temporaire :)
+- La transparence des Firewalls (et des Générators) lorsque l'on est à l'intérieur a été augmentée pour nous permettre de mieux voir ce qui se passe à l'extérieur de la zone.
+
+# Data Hackées du niveau du Boss
+Il y a 4 chemins qui amènent au FirstBoss. Il faut débloquer les 4 pour accéder au niveau. Et bien entendu, ces 4 Data Hackées() de ces 4 niveaux forment une énorme énigme collective ! 
+Je ne vous en dis pas plus, sachez juste que vous aurez besoin d'informations sur les 4 chemins pour pouvoir les débloquer ! Tout est lié :D
+
+# Est-ce la fin des niveaux alors ?
+Bien sûr que non ! Ce Boss est bien entendu extrêmement important dans l'avancement du développement du jeu (c'est le premier !), mais il ne marque en aucun cas sa fin !
+En fait, il marque la fin du troisième acte sur cinq ! Donc oui, il y aura 5 actes, et chacun sera caractérisé par l'acquisition d'un nouveau pouvoir ! Pour ce Boss-là, c'est le Dash333 !
+Et il nous reste 2 emplacements de pouvoirs à utiliser, donc il nous reste encore plein de niveaux en perspective !
+
+# Refonte du design graphique de l'interface utilisateur
+Je ne sais pas quoi vous dire ! Il y a eu tellement de changements, tout est différent ! Le mieux est encore pour vous d'aller jeter un coup d'oeil ;)
+Mais pour lister certaines features importantes, voilà ce que l'on peut noter :
+- Les couleurs ont été repensées pour être à dominante rouge et vert.
+- L'interface graphique possède maintenant un post-process de bloom qui lui donne un effet néon (on a enfin l'impression d'être dans la Matrice !) (c'est pas trop tôt x)).
+- Nouvelle animation super cool et satisfaisante lorsque l'on réussit (enfin !) à trouver le mot de passe des Datas Hackées() !
+- L'écran de récompense a été ... fait. Il contient maintenant tout un tas de statistiques sur la partie que vous venez de jouer. Ainsi qu'un bouton Nouveau Meilleur Score BEAUCOUP TROP ADDICTIF !
+- Tous les boutons ont été refondus, leurs contours s'animent maintenant de manière dynamique et néon.
+- Les fonds d'écran de plein de carrés de toutes les couleurs nous fond leur adieu :'( En effet, nombre de vos retours laissaient clairement sous-entendre que vous ne voyiez pas le lien
+avec le jeu, ou que cela ne faisait pas assez carré (!!), pas assez pro. Donc pour le moment on a un fond noir sobre en attendant de trouver une meilleure idée :)
+- Les Popups (vous savez ces messages qui arrivaient d'un coup en plein milieu de l'écran ?) arrivent maintenant progressivement, vous permettant de comprendre ce qui vient juste de vous arriver.
+- Les boutons sur les côtés de l'écran pour passer d'un niveau à l'autre ont été redesignés pour avoir un comportement "intelligent" et vous amener directement aux Data Hackées() si vous n'avez pas débloqué le niveau, et directement au niveau si vous l'avez déjà débloqué :)
+- Le compteur de FPS et la Console ont maintenant un nouveau look !
+- La Console est également désactivée par défaut car personne n'avait vraiment le temps de la lire. Vous pouvez cependant toujours la réactiver dans les Options ! :)
+- Le numéro de version est maintenant directement visible dans le menu principal.
+
