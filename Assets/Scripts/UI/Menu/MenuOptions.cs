@@ -58,7 +58,6 @@ public class MenuOptions : MonoBehaviour {
     [Header("OtherLinks")]
     public GameObject resetButton;
     public GameObject panelLanguageButton;
-    public TMP_Text versionNumberText;
 
     [Header("Titles")]
     public TMP_Text titleText;
@@ -84,7 +83,6 @@ public class MenuOptions : MonoBehaviour {
         BackFromPanel();
         HideSomeOptionsInGame();
         CenterInGamePanels();
-        SetVersionNumber();
 
         OnMusicVolumeChange(PrefsManager.GetFloat(PrefsManager.MUSIC_VOLUME_KEY, defaultMusicVolume));
         OnSoundVolumeChange(PrefsManager.GetFloat(PrefsManager.SOUND_VOLUME_KEY, defaultSoundVolume));
@@ -335,9 +333,5 @@ public class MenuOptions : MonoBehaviour {
         hasPanelOpen = false;
         mainPanel.SetActive(true);
         CloseAllPanels();
-    }
-
-    protected void SetVersionNumber() {
-        versionNumberText.text = $"v{Application.version}";
     }
 }
