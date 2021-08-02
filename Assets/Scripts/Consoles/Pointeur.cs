@@ -66,7 +66,7 @@ public class Pointeur : MonoBehaviour {
     }
 
     protected void InitTexture() {
-        IPouvoir dash = gm.player.GetPouvoirLeftClick().GetComponent<PouvoirDash>();
+        IPouvoir dash = gm.player.GetPouvoirLeftClick();
         if (dash != null) {
             tripleDashChargeCooldown = dash.GetCooldown() as ChargeCooldown;
         }
