@@ -23,6 +23,8 @@ public class Console : MonoBehaviour {
 
 	public enum TypeText {GREEN_TEXT, RED_TEXT, BLUE_TEXT};
 
+    public enum UIVisibility { ALL, JUST_CROSSHAIR, NOTHING };
+
     [Header("Messages")]
     public LocalizedString levelVisualName;
     public List<LocalizedString> conseils; // Les conseils à dispenser au joueur !
@@ -92,6 +94,7 @@ public class Console : MonoBehaviour {
     protected bool isLocalizationLoaded = false;
     protected List<float> deltaTimeList;
     protected bool isConsoleVisible = true;
+    protected UIVisibility uiVisibility = UIVisibility.ALL;
 
     public virtual void Initialize()
     {
@@ -1155,6 +1158,22 @@ public class Console : MonoBehaviour {
     }
 
     public void SwapConsoleVisibility() {
-        SetConsoleVisibility(!IsConsoleVisible());
+        switch (uiVisibility) {
+            case UIVisibility.ALL:
+                SetConsoleVisibility(false);
+                gm.pointeur.gameObject.SetActive(true);
+                uiVisibility = UIVisibility.JUST_CROSSHAIR;
+                break;
+            case UIVisibility.JUST_CROSSHAIR:
+                SetConsoleVisibility(false);
+                gm.pointeur.gameObject.SetActive(false);
+                uiVisibility = UIVisibility.NOTHING;
+                break;
+            case UIVisibility.NOTHING:
+                SetConsoleVisibility(true);
+                gm.pointeur.gameObject.SetActive(true);
+                uiVisibility = UIVisibility.ALL;
+                break;
+        }
     }
 }
