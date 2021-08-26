@@ -95,6 +95,7 @@ public class Console : MonoBehaviour {
     protected List<float> deltaTimeList;
     protected bool isConsoleVisible = true;
     protected UIVisibility uiVisibility = UIVisibility.ALL;
+    protected UIVisibilitySaver uiVisibilitySaver = null;
 
     public virtual void Initialize()
     {
@@ -113,6 +114,7 @@ public class Console : MonoBehaviour {
         arrowKeysTimer = new Timer(2, setOver: true);
         HideDataCountDisplayerIfIR();
         DisplayOrNotConsole();
+        ToggleUIVisibilityBasedOnSaver();
 
         StartCoroutine(CInitialize());
     }
@@ -1160,20 +1162,54 @@ public class Console : MonoBehaviour {
     public void SwapConsoleVisibility() {
         switch (uiVisibility) {
             case UIVisibility.ALL:
-                SetConsoleVisibility(false);
+                SetUIVisibilityTo(UIVisibility.JUST_CROSSHAIR);
+                break;
+            case UIVisibility.JUST_CROSSHAIR:
+                SetUIVisibilityTo(UIVisibility.NOTHING);
+                break;
+            case UIVisibility.NOTHING:
+                SetUIVisibilityTo(UIVisibility.ALL);
+                break;
+        }
+        SaveUIVisibilityForNextScene();
+    }
+
+    private void SetUIVisibilityTo(UIVisibility newVisibility) {
+        switch (newVisibility) {
+            case UIVisibility.ALL:
+                SetConsoleVisibility(true);
                 gm.pointeur.gameObject.SetActive(true);
-                uiVisibility = UIVisibility.JUST_CROSSHAIR;
                 break;
             case UIVisibility.JUST_CROSSHAIR:
                 SetConsoleVisibility(false);
-                gm.pointeur.gameObject.SetActive(false);
-                uiVisibility = UIVisibility.NOTHING;
+                gm.pointeur.gameObject.SetActive(true);
                 break;
             case UIVisibility.NOTHING:
-                SetConsoleVisibility(true);
-                gm.pointeur.gameObject.SetActive(true);
-                uiVisibility = UIVisibility.ALL;
+                SetConsoleVisibility(false);
+                gm.pointeur.gameObject.SetActive(false);
                 break;
+        }
+        uiVisibility = newVisibility;
+    }
+
+    protected void SaveUIVisibilityForNextScene() {
+        if(uiVisibilitySaver == null) {
+            uiVisibilitySaver = new GameObject("UIVisibilitySaver").AddComponent<UIVisibilitySaver>();
+        }
+        uiVisibilitySaver.uIVisibility = uiVisibility;
+        DontDestroyOnLoad(uiVisibilitySaver);
+    }
+
+    public void DestroyUIVisibilitySaver() {
+        if (uiVisibilitySaver != null) {
+            Destroy(uiVisibilitySaver.gameObject);
+        }
+    }
+
+    protected void ToggleUIVisibilityBasedOnSaver() {
+        uiVisibilitySaver = FindObjectOfType<UIVisibilitySaver>();
+        if(uiVisibilitySaver != null) {
+            SetUIVisibilityTo(uiVisibilitySaver.uIVisibility);
         }
     }
 }
