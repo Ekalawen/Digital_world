@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour {
     public static GameManager Instance { get { return _instance ?? (_instance = new GameObject().AddComponent<GameManager>()); } }
 
 
+    public bool openInFullScreen = false;
     public GameObject playerPrefab; // On récupère le personnage !
 	public GameObject consolePrefab; // On récupère la console !
 	public GameObject pointeurPrefab; // Pour avoir un visuel du centre de l'écran
@@ -84,6 +85,7 @@ public class GameManager : MonoBehaviour {
     }
 
     void Start () {
+        StartFullScreen();
         managerFolder = new GameObject("Managers");
         timerManager = Instantiate(timerManagerPrefab, managerFolder.transform).GetComponent<TimerManager>();
         gravityManager = Instantiate(gravityManagerPrefab, managerFolder.transform).GetComponent<GravityManager>();
@@ -180,6 +182,7 @@ public class GameManager : MonoBehaviour {
         pointeur.gameObject.SetActive(false);
         console.OpenPauseMenu();
         soundManager.PauseSounds();
+        StopFullScreen();
     }
 
     public void UnPause() {
@@ -191,6 +194,7 @@ public class GameManager : MonoBehaviour {
         console.ClosePauseMenu();
         soundManager.UnPauseSounds();
         postProcessManager.UnPauseEffects();
+        StartFullScreen();
     }
 
     public bool IsPaused() {
@@ -307,6 +311,20 @@ public class GameManager : MonoBehaviour {
 
     public bool IsInitializationOver() {
         return initializationIsOver;
+    }
+
+    protected void StartFullScreen() {
+#if UNITY_EDITOR
+        if (openInFullScreen) {
+            FullscreenGameView.StartFullScreen();
+        }
+#endif
+    }
+
+    protected void StopFullScreen() {
+#if UNITY_EDITOR
+        FullscreenGameView.StopFullScreen();
+#endif
     }
 }
 
