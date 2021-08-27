@@ -15,7 +15,7 @@ MonoBehaviour:
   ejectionType: 0
   ejectionTreshold: -10
   ejectionCubesArroundRadius: 20
-  endGameDuration: 25
+  endGameDuration: 12.5
   endGameFrameRate: 0.1
   endEventCurveSpeed:
     serializedVersion: 2
@@ -51,16 +51,18 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   endGameType: 0
-  endEventDeathCubesType: 0
+  endEventCubesSelectionMethod: 0
+  endEventSeuilProximite: 2.5
   dureeDestructionCubesDestruction: 2
   proportionToKeep: 0
   bNoEndgame: 0
+  mapFunctionsOnCreateFinalLight: []
   screenShakeMagnitude: 2
   screenShakeRoughness: 15
   dureeScreenShake: 3
-  randomEventsPrefabs: []
+  eventsPrefabs: []
   nbLumieresTriggers: 
-  eventsToAddPrefabs: []
+  nbLumieresSingleEvents: []
   quitSceneTime: 7
   reloadSceneTime: 7
   nbLumieresFinales: 5
@@ -71,21 +73,25 @@ MonoBehaviour:
     m_TableEntryReference:
       m_KeyId: 78373953536
       m_Key: 
+    m_FallbackState: 0
   - m_TableReference:
       m_TableCollectionName: GUID:ca68cd80ed439e849817e90afd077d38
     m_TableEntryReference:
       m_KeyId: 117267734528
       m_Key: 
+    m_FallbackState: 0
   - m_TableReference:
       m_TableCollectionName: GUID:ca68cd80ed439e849817e90afd077d38
     m_TableEntryReference:
       m_KeyId: 127287926784
       m_Key: 
+    m_FallbackState: 0
   - m_TableReference:
       m_TableCollectionName: GUID:ca68cd80ed439e849817e90afd077d38
     m_TableEntryReference:
       m_KeyId: 138289586176
       m_Key: 
+    m_FallbackState: 0
 --- !u!1001 &2004253452606249415
 PrefabInstance:
   m_ObjectHideFlags: 0
