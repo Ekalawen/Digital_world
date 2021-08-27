@@ -340,7 +340,7 @@ public class EventManager : MonoBehaviour {
             Vector3 barycentre = DestroyFirstCubes(cubes, nbCubesToDestroy);
             nbCubesDestroyed += nbCubesToDestroy;
 
-            PlaySoundRate(timerSoundRate, nbCubesToDestroy, barycentre);
+            //PlaySoundRate(timerSoundRate, nbCubesToDestroy, barycentre);
             yield return null;
         }
         Debug.Log($"{map.GetAllCubes().FindAll(c => !c.IsDecomposing()).Count}/{nbCubesToReach}");
