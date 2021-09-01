@@ -22,6 +22,7 @@ public class CheatCodeManager : MonoBehaviour {
     public List<KeyCode> minus1000Code;
     public List<KeyCode> plus10DataCount;
     public List<KeyCode> plus100DataCount;
+    public List<KeyCode> startEndEventCode;
     public List<KeyCode> gravityZeroCode;
     public List<KeyCode> cooldownsZeroCode;
     public List<KeyCode> hideConsoleCode;
@@ -119,6 +120,12 @@ public class CheatCodeManager : MonoBehaviour {
             plus100DataCountCheatCode.action = gm.eventManager.Add100DataCount;
             cheatCodes.Add(plus100DataCountCheatCode);
         }
+
+        // Start End Event
+        CheatCode startEndEventCheatCode = new CheatCode();
+        startEndEventCheatCode.code = startEndEventCode;
+        startEndEventCheatCode.action = gm.eventManager.ExternalStartEndGame;
+        cheatCodes.Add(startEndEventCheatCode);
 
         // Gravity Zero
         CheatCode gravityZeroCheatCode = new CheatCode();
