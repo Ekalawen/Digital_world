@@ -168,6 +168,11 @@ public class EventManager : MonoBehaviour {
         gm.console.OnLumiereCaptured();
     }
 
+    public void ExternalStartEndGame() {
+        gm.soundManager.PlayEndGameMusic(); // Ici car lorsqu'il y a plusieurs end-games on ne veut pas que la musique restart !
+        StartEndGame();
+    }
+
     protected virtual void StartEndGame()
     {
         isEndGameStarted = true;
