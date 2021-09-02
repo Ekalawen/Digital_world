@@ -58,7 +58,9 @@ public abstract class IController : MonoBehaviour {
 
     protected Vector3 Move(Vector3 mouvement) {
         if (controller != null) {
-            controller.Move(mouvement);
+            if (controller.enabled) {
+                controller.Move(mouvement);
+            }
         } else {
             RaycastHit hit;
             if (rigidbody.SweepTest(mouvement.normalized, out hit, mouvement.magnitude)) {
