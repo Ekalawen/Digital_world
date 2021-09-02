@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -29,6 +30,14 @@ public class GenerateProtectionArroundLumieresWithOrbTrigger : GenerateProtectio
             couronneDestroyer.Initialize(couronne, orbTrigger, lumiere, dureeDestruction, dureeDecompose);
             orbTrigger.AddEvent(new UnityAction(couronneDestroyer.DestroyProtection));
             couronne.onDeleteCube.AddListener(new UnityAction<Cube>(couronneDestroyer.OnDeleteCouronneCube));
+            DeactivateLumiereTrailIfNeeded(lumiere);
+        }
+    }
+
+    protected void DeactivateLumiereTrailIfNeeded(Lumiere lumiere) {
+        if(lumiere.HasTrails()) {
+            lumiere.DeactivateTrails();
+            orbTrigger.AddEvent(new UnityAction(lumiere.ActivateTrails));
         }
     }
 }

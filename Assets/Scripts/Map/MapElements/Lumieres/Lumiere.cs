@@ -82,6 +82,18 @@ public class Lumiere : MonoBehaviour {
         gm.timerManager.AddTime(timeBonus);
     }
 
+    public void DeactivateTrails() {
+        lumiereTrails.enabled = false;
+    }
+
+    public void ActivateTrails() {
+        lumiereTrails.enabled = true;
+    }
+
+    public bool HasTrails() {
+        return type == LumiereType.ALMOST_FINAL || type == LumiereType.FINAL;
+    }
+
     public static int GetCurrentDataCount() {
         string key = SceneManager.GetActiveScene().name + PrefsManager.DATA_COUNT_KEY;
         return PrefsManager.GetInt(key, 0);
