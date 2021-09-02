@@ -23,23 +23,25 @@ public class AutoBouncer : MonoBehaviour {
 
     void Update() {
         if(timer.IsOver()) {
-            StartCoroutine(CBounce());
             timer.Reset();
+            StartCoroutine(CBounce());
         }
     }
 
     protected IEnumerator CBounce() {
-        Timer toBounceTimer = new Timer(timeToBounceSize);
         startScale = transform.localScale;
+        Debug.Log($"ENCORE AVANT timer.GetElapsedTime() = {timer.GetElapsedTime()}");
         while (timer.GetElapsedTime() <= timeToBounceSize) {
             float avancement = timer.GetElapsedTime() / timeToBounceSize;
             SetScale(avancement);
             yield return null;
         }
         SetScale(1.0f);
+        Debug.Log($"AVANT timer.GetElapsedTime() = {timer.GetElapsedTime()}");
         while (timer.GetElapsedTime() <= timeToBounceSize + inBounceTime) {
             yield return null;
         }
+        Debug.Log($"APRES timer.GetElapsedTime() = {timer.GetElapsedTime()}");
         while (timer.GetElapsedTime() <= timeToBounceSize + inBounceTime + timeToNormalSize) {
             float avancement = 1 - (timer.GetElapsedTime() - timeToBounceSize - inBounceTime) / timeToNormalSize;
             SetScale(avancement);
