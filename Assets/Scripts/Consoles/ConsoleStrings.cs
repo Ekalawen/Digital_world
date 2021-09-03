@@ -99,6 +99,7 @@ public class ConsoleStrings : ScriptableObject {
 
     public LocalizedString pouvoirGiverActive;
     public LocalizedString pouvoirGiverExplications;
+    public LocalizedString pouvoirGiverDash333SubPhrase;
 
     public LocalizedString keyA;
     public LocalizedString keyE;

@@ -243,7 +243,7 @@ public class FirstBoss : Sonde {
         PouvoirGiverItem.PouvoirBinding pouvoirBinding = PouvoirGiverItem.PouvoirBinding.LEFT_CLICK;
         player.SetPouvoir(pouvoirDash333Prefab, pouvoirBinding);
         IPouvoir pouvoir = player.GetPouvoirLeftClick().GetComponent<IPouvoir>();
-        gm.console.CapturePouvoirGiverItem(pouvoir.nom, pouvoirBinding);
+        gm.console.CapturePouvoirGiverItem(pouvoir.nom, pouvoirBinding, gm.console.strings.pouvoirGiverDash333SubPhrase);
         gm.pointeur.Initialize();
         gm.soundManager.PlayGainDash333();
     }

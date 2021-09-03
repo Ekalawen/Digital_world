@@ -963,16 +963,19 @@ public class Console : MonoBehaviour {
         AjouterMessage(strings.volExplications, TypeText.BLUE_TEXT);
     }
 
-    public void CapturePouvoirGiverItem(LocalizedString pouvoirName, PouvoirGiverItem.PouvoirBinding pouvoirBinding) {
-        StartCoroutine(CCapturePouvoirGiverTime(pouvoirName, pouvoirBinding));
+    public void CapturePouvoirGiverItem(LocalizedString pouvoirName, PouvoirGiverItem.PouvoirBinding pouvoirBinding, LocalizedString subPhrase = null) {
+        StartCoroutine(CCapturePouvoirGiverTime(pouvoirName, pouvoirBinding, subPhrase));
     }
 
-    private IEnumerator CCapturePouvoirGiverTime(LocalizedString pouvoirName, PouvoirGiverItem.PouvoirBinding pouvoirBinding) {
+    private IEnumerator CCapturePouvoirGiverTime(LocalizedString pouvoirName, PouvoirGiverItem.PouvoirBinding pouvoirBinding, LocalizedString subPhrase = null) {
         AsyncOperationHandle<string> handlePouvoirName = pouvoirName.GetLocalizedString();
         yield return handlePouvoirName;
         string pouvoirNameString = handlePouvoirName.Result;
         LocalizedString pouvoirGiverActive = strings.pouvoirGiverActive;
         pouvoirGiverActive.Arguments = new object[] { pouvoirNameString };
+        if(subPhrase != null) {
+            AjouterMessageImportant(subPhrase, TypeText.BLUE_TEXT, 2);
+        }
         AjouterMessageImportant(pouvoirGiverActive, TypeText.BLUE_TEXT, 2, bAfficherInConsole: false);
         LocalizedString strBinding = null;
         switch (pouvoirBinding) {
