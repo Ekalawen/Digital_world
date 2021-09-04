@@ -112,8 +112,9 @@ public class InfiniteMap : MapManager {
     protected void CreateBlock(GameObject blockPrefab) {
         Vector3 blockStartPoint = blockPrefab.GetComponent<Block>().startPoint.position;
         Vector3 blockPosition = GetNextBlockPosition(blockStartPoint);
+        Quaternion blockRotation = GetNextBlockRotation();
 
-        Block newBlock = Instantiate(blockPrefab, blockPosition, Quaternion.identity, blocksFolder).GetComponent<Block>();
+        Block newBlock = Instantiate(blockPrefab, blockPosition, blockRotation, blocksFolder).GetComponent<Block>();
         newBlock.Initialize(blocksFolder, blockPrefab.GetComponent<Block>());
         if (blocksNameToNotifyPlayerToPressShift.Contains(newBlock.name)) {
             newBlock.ShouldNotifyPlayerHowToPressShift();
@@ -262,7 +263,7 @@ public class InfiniteMap : MapManager {
         return -blockStartPoint;
     }
 
-    protected Quaternion GetNextBlockOrientation() {
+    protected Quaternion GetNextBlockRotation() {
         if(blocks.Any()) {
             return blocks.Last().endPoint.rotation;
         }
