@@ -559,4 +559,29 @@ public class Cube : MonoBehaviour {
         BothMaterialsSetFloat("_IsImpacting", 0.0f);
     }
 
+    public float Size() {
+        return transform.localScale.x;
+    }
+
+    public float HalfExtent() {
+        return Size() / 2;
+    }
+
+    public Vector3 VectorSize() {
+        return transform.localScale;
+    }
+
+    public Vector3 VectorHalfExtent() {
+        return VectorSize() / 2;
+    }
+
+    public bool IsInEdges(Vector3 position) {
+        Vector3 localPos = position - transform.position;
+        localPos = MathTools.VecAbs(localPos);
+        bool areAllInCube = MathTools.VecAllLower(localPos, VectorHalfExtent());
+        bool atLeast2AtExtremities = (localPos.x == HalfExtent() && localPos.y == HalfExtent())
+                                  || (localPos.x == HalfExtent() && localPos.z == HalfExtent())
+                                  || (localPos.y == HalfExtent() && localPos.z == HalfExtent());
+        return areAllInCube && atLeast2AtExtremities;
+    }
 }

@@ -294,12 +294,9 @@ public class Player : Character {
             if (inputManager.GetJump() && !sautTimer.IsOver()) {
                 etat = EtatPersonnage.EN_SAUT;
             } else if (isGrounded) {
-                etat = EtatPersonnage.AU_SOL;
-                timerLastTimeAuSol.Reset();
-                if (etat != etatAvant) {
-                    gm.soundManager.PlayLandClip(transform.position);
-                }
-            } else {
+                SetAuSol();
+            }
+            else {
                 if (etat != EtatPersonnage.EN_SAUT) {
                     etat = EtatPersonnage.EN_CHUTE;
                     sautTimer.SetOver();
@@ -307,6 +304,14 @@ public class Player : Character {
             }
         }
 	}
+
+    public void SetAuSol(bool useSound = true) {
+        etat = EtatPersonnage.AU_SOL;
+        timerLastTimeAuSol.Reset();
+        if (useSound && etat != etatAvant) {
+            gm.soundManager.PlayLandClip(transform.position);
+        }
+    }
 
     // On met à jour le mouvement du joueur
     void UpdateMouvement() {

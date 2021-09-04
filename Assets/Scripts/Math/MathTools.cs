@@ -97,11 +97,15 @@ public static class MathTools
     }
 
     public static bool AABBSphere(Vector3 aabbCenter, Vector3 aabbHalfExtents, Vector3 sphereCenter, float sphereRayon) {
-        Vector3 aabbClosestPointToSphere = new Vector3(
+        Vector3 aabbClosestPointToSphere = AABBPoint_ContactPoint(aabbCenter, aabbHalfExtents, sphereCenter);
+        return Vector3.Distance(aabbClosestPointToSphere, sphereCenter) <= sphereRayon;
+    }
+
+    public static Vector3 AABBPoint_ContactPoint(Vector3 aabbCenter, Vector3 aabbHalfExtents, Vector3 sphereCenter) {
+        return new Vector3(
             Mathf.Clamp(sphereCenter.x, aabbCenter.x - aabbHalfExtents.x, aabbCenter.x + aabbHalfExtents.x),
             Mathf.Clamp(sphereCenter.y, aabbCenter.y - aabbHalfExtents.y, aabbCenter.y + aabbHalfExtents.y),
             Mathf.Clamp(sphereCenter.z, aabbCenter.z - aabbHalfExtents.z, aabbCenter.z + aabbHalfExtents.z));
-        return Vector3.Distance(aabbClosestPointToSphere, sphereCenter) <= sphereRayon;
     }
 
     public static bool AABB_AABB(Vector3 center1, Vector3 halfExtents1, Vector3 center2, Vector3 halfExtents2) {
@@ -278,5 +282,25 @@ public static class MathTools
 
     public static bool IsInPlane(Vector3 point, Vector3 planePoint, Vector3 planeNormal) {
         return point == Vector3.ProjectOnPlane(point - planePoint, planeNormal) + planePoint;
+    }
+
+    public static Vector3 VecAbs(Vector3 v) {
+        return new Vector3(Mathf.Abs(v.x), Mathf.Abs(v.y), Mathf.Abs(v.z));
+    }
+
+    public static bool VecAllLower(Vector3 v1, Vector3 v2) {
+        return v1.x <= v2.x && v1.y <= v2.y && v1.z <= v2.z;
+    }
+
+    public static bool VecAllStrictLower(Vector3 v1, Vector3 v2) {
+        return v1.x < v2.x && v1.y < v2.y && v1.z < v2.z;
+    }
+    
+    public static bool VecAllGreater(Vector3 v1, Vector3 v2) {
+        return !VecAllStrictLower(v1, v2);
+    }
+
+    public static bool VecAllStrictGreater(Vector3 v1, Vector3 v2) {
+        return !VecAllLower(v1, v2);
     }
 }

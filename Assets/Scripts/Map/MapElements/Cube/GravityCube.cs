@@ -15,13 +15,17 @@ public class GravityCube : NonBlackCube {
     }
 
     public override void InteractWithPlayer() {
-        Player player = gm.player;
-        Vector3 directionVector = GetGravityDirection(player.transform.position);
+        Vector3 directionVector = GetGravityDirection(gm.player.transform.position);
         GravityManager.Direction direction = GravityManager.OppositeDir(GravityManager.VecToDir(directionVector));
-        if (direction != gm.gravityManager.gravityDirection) {
+        if (CanChangeGravity(direction, directionVector)) {
             gm.gravityManager.SetGravity(direction, gm.gravityManager.gravityIntensity);
-            gm.player.ResetGrip();
+            gm.player.SetAuSol(useSound: true);
         }
+    }
+
+    protected bool CanChangeGravity(GravityManager.Direction direction, Vector3 directionVector) {
+        Vector3 contactPoint = MathTools.AABBPoint_ContactPoint(transform.position, VectorHalfExtent(), gm.player.transform.position);
+        return direction != gm.gravityManager.gravityDirection && !IsInEdges(contactPoint);
     }
 
     protected Vector3 GetGravityDirection(Vector3 position) {
