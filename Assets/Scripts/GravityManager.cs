@@ -153,6 +153,21 @@ public class GravityManager : MonoBehaviour {
         return list[(int)dir];
     }
 
+    public static Direction VecToDir(Vector3 vec) {
+        Dictionary<Vector3, Direction> map = new Dictionary<Vector3, Direction>();
+        map.Add(Vector3.right, Direction.DROITE);
+        map.Add(Vector3.left, Direction.GAUCHE);
+        map.Add(Vector3.up, Direction.HAUT);
+        map.Add(Vector3.down, Direction.BAS);
+        map.Add(Vector3.forward, Direction.AVANT);
+        map.Add(Vector3.back, Direction.ARRIERE);
+        if (map.ContainsKey(vec)) {
+            return map[vec];
+        } else {
+            throw new Exception("GravityManager.VecToDir prend uniquement une direction orthogonale normalisé en entrée ! :p");
+        }
+    }
+
     public static Direction OppositeDir(Direction dir) {
         switch(dir) {
             case Direction.HAUT:
