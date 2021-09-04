@@ -68,7 +68,7 @@ public class GravityManager : MonoBehaviour {
         gravityIntensity = newGravityIntensity;
 
         gm.player.bSetUpRotation = false;
-        ScreenShakeOnGravityChange();
+        //ScreenShakeOnGravityChange();
         StartCoroutine(RotateCamera(axe, angle));
     }
 
