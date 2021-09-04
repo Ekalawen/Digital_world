@@ -208,8 +208,24 @@ public static class MathTools
         };
     }
 
+    public static List<Vector3> GetAllOrthogonalNormals() {
+        return new List<Vector3>() {
+            Vector3.right,
+            Vector3.left,
+            Vector3.up,
+            Vector3.down,
+            Vector3.forward,
+            Vector3.back
+        };
+    }
+
     public static Vector3 GetClosestToNormals(Transform t, Vector3 currentNormal) {
         List<Vector3> normals = MathTools.GetAllNormals(t);
+        return normals.OrderBy(n => Vector3.Dot(currentNormal, n)).Last();
+    }
+
+    public static Vector3 GetClosestToOrthogonalNormals(Vector3 currentNormal) {
+        List<Vector3> normals = MathTools.GetAllOrthogonalNormals();
         return normals.OrderBy(n => Vector3.Dot(currentNormal, n)).Last();
     }
 

@@ -61,7 +61,7 @@ public class GravityManager : MonoBehaviour {
         float angle = Vector3.Angle(DirToVec(gravityDirection), DirToVec(newGravityDirection));
         Vector3 axe = Vector3.Cross(DirToVec(gravityDirection), DirToVec(newGravityDirection));
         if (axe.magnitude == 0) {
-            axe = gm.player.camera.transform.forward;
+            axe = Vector3.ProjectOnPlane(gm.player.camera.transform.forward, Up());
         }
 
         gravityDirection = newGravityDirection;
