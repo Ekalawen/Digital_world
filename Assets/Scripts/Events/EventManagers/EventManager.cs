@@ -623,7 +623,7 @@ public class EventManager : MonoBehaviour {
     }
 
     protected virtual bool IsPlayerEjected() {
-        switch(ejectionType) {
+        switch (ejectionType) {
             case EjectionType.FIX_TRESHOLD:
                 return gm.gravityManager.GetHeightInMap(gm.player.transform.position) < ejectionTreshold;
             case EjectionType.LOWEST_CUBE_TRESHOLD:
@@ -634,7 +634,9 @@ public class EventManager : MonoBehaviour {
                 if (cubesArround.Count == 0)
                     return true;
                 float lowestHeight = GetLessHighCubeAltitude(cubesArround);
-                return gm.gravityManager.GetHeightInMap(gm.player.transform.position) < lowestHeight + ejectionTreshold;
+                float playerHeight = gm.gravityManager.GetHeightInMap(gm.player.transform.position);
+                Debug.Log($"lowestCubeHeight = {lowestHeight} playerHeight = {playerHeight}");
+                return playerHeight < lowestHeight + ejectionTreshold;
             default:
                 return true;
         }
@@ -643,12 +645,7 @@ public class EventManager : MonoBehaviour {
     protected float GetLessHighCubeAltitude(List<Cube> cubes) {
         if (!cubes.Any())
             return 0;
-        float lowest = gm.gravityManager.GetHeightInMap(cubes[0].transform.position);
-        foreach(Cube cube in cubes) {
-            float altitude = gm.gravityManager.GetHeightInMap(cube.transform.position);
-            lowest = Mathf.Min(lowest, altitude);
-        }
-        return lowest;
+        return cubes.Select(c => gm.gravityManager.GetHeightInMap(c.transform.position)).Min();
     }
 
     public bool CheckPartiePerdu() {

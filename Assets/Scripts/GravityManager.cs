@@ -228,17 +228,18 @@ public class GravityManager : MonoBehaviour {
 
     public float GetHeightInMap(Vector3 pos) {
         float sign = GetHeightSign();
-        float mapHeight = sign > 0 ? GetHeightAbsolute(gm.map.tailleMap) : 0;
-        return GetHeightAbsolute(pos) * sign + mapHeight;
+        float mapHeight = sign < 0 ? - GetHeightAbsolute(gm.map.tailleMap) : 0;
+        float posHeight = GetHeightAbsolute(pos);
+        return mapHeight + posHeight;
         //switch(gravityDirection) {
         //    case Direction.HAUT:
         //        return gm.map.tailleMap.y - pos.y;
         //    case Direction.BAS:
         //        return pos.y;
         //    case Direction.GAUCHE:
-        //        return gm.map.tailleMap.x - pos.x;
-        //    case Direction.DROITE:
         //        return pos.x;
+        //    case Direction.DROITE:
+        //        return gm.map.tailleMap.x - pos.x;
         //    case Direction.AVANT:
         //        return gm.map.tailleMap.z - pos.z;
         //    case Direction.ARRIERE:
