@@ -103,7 +103,7 @@ public class RunAwayPlayerController : IController {
         foreach (Vector3 pos in allFarAwayPositions) {
             Vector3 direction = pos - transform.position;
             float dist = direction.magnitude;
-            float verticalMalus = Mathf.Abs(gm.gravityManager.GetHigh(pos) - gm.gravityManager.GetHigh(transform.position)) * malusVerticalMouvement;
+            float verticalMalus = Mathf.Abs(gm.gravityManager.GetHeightInMap(pos) - gm.gravityManager.GetHeightInMap(transform.position)) * malusVerticalMouvement;
             if (dist + verticalMalus < minDist) {
                 RaycastHit hit;
                 Ray ray = new Ray(transform.position, direction);

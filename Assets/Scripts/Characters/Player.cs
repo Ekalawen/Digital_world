@@ -7,6 +7,7 @@ using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.Events;
 using System.Linq;
 using UnityEngine.VFX;
+using EZCameraShake;
 
 public class Player : Character {
 
@@ -36,6 +37,7 @@ public class Player : Character {
     public VisualEffect shiftVfx;
     public VisualEffect wallVfx;
     public VisualEffect jumpVfx;
+    public CameraShaker cameraShaker;
 
 	[HideInInspector]
 	public GameObject personnage;
@@ -73,6 +75,7 @@ public class Player : Character {
     protected bool isGravityEffectRemoved = false;
     protected Timer gravityEffectRemovedForTimer = null;
     protected Coroutine gravityEffectRemovedForCoroutine = null;
+    protected float cameraShakerInitialHeight;
 
     protected IPouvoir pouvoirA; // Le pouvoir de la touche A (souvent la détection)
     protected IPouvoir pouvoirE; // Le pouvoir de la touche E (souvent la localisation)
@@ -110,6 +113,7 @@ public class Player : Character {
         dureeMurTimer.SetOver();
         timerLastTimeAuMur = new Timer();
         timerLastTimeNotAuMur = new Timer();
+        cameraShakerInitialHeight = cameraShaker.RestPositionOffset.y;
 
         transform.position = position;
 
@@ -593,7 +597,7 @@ public class Player : Character {
 	void DetecterGrandSaut(EtatPersonnage etatAvant) {
 		if((etatAvant == EtatPersonnage.EN_CHUTE || etatAvant == EtatPersonnage.EN_SAUT || etatAvant == EtatPersonnage.AU_MUR)
 		&& (etat == EtatPersonnage.AU_SOL || etat == EtatPersonnage.AU_MUR)) {
-            float hauteurSaut = hauteurMaxSaut - gm.gravityManager.GetHigh(transform.position);
+            float hauteurSaut = hauteurMaxSaut - gm.gravityManager.GetHeightInMap(transform.position);
 			if(hauteurSaut > 7) {
 				console.GrandSaut(hauteurSaut);
 			}
@@ -691,11 +695,11 @@ public class Player : Character {
 
 	public void MajHauteurMaxSaut() {
 		if(etat == EtatPersonnage.EN_SAUT || etat == EtatPersonnage.EN_CHUTE) {
-			if(gm.gravityManager.GetHigh(transform.position) > hauteurMaxSaut) {
-                hauteurMaxSaut = gm.gravityManager.GetHigh(transform.position);
+			if(gm.gravityManager.GetHeightInMap(transform.position) > hauteurMaxSaut) {
+                hauteurMaxSaut = gm.gravityManager.GetHeightInMap(transform.position);
 			}
 		} else {
-            hauteurMaxSaut = gm.gravityManager.GetHigh(transform.position);
+            hauteurMaxSaut = gm.gravityManager.GetHeightInMap(transform.position);
 		}
 	}
 
@@ -931,6 +935,28 @@ public class Player : Character {
     public Timer GetTimerLastTimeNotAuMur() {
         return timerLastTimeNotAuMur;
     }
+
+    public float GetCameraShakerHeight() {
+        return gm.gravityManager.GetHeightAbsolute(cameraShaker.RestPositionOffset);
+    }
+
+    public void SetCameraShakerHeight(float newHeight) {
+        Vector3 offset = cameraShaker.RestPositionOffset;
+        int heightIndice = gm.gravityManager.GetHeightIndice();
+        float sign = gm.gravityManager.GetHeightSign();
+        for(int i = 0; i < 3; i++) {
+            if (i == heightIndice) {
+                offset[i] = sign * newHeight;
+            } else {
+                if(offset[i] != 0) {
+                    offset[i] = Mathf.Sign(offset[i]) * (cameraShakerInitialHeight - newHeight);
+                }
+            }
+        }
+        cameraShaker.RestPositionOffset = offset;
+    }
+
+    public float GetCameraShakerInitialHeight() {
+        return cameraShakerInitialHeight;
+    }
 }
-
-

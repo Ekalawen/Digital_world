@@ -264,7 +264,7 @@ public class EventManager : MonoBehaviour {
     protected void OrderPositionsFromTopOrBottom(Vector3 exitPos, List<Vector3> allEmptyPositions) {
         Vector3 playerPos = gm.player.transform.position;
         GravityManager.Direction direction;
-        if(gm.gravityManager.GetHigh(playerPos) <= gm.gravityManager.GetHigh(exitPos)) { // Player is under exit
+        if(gm.gravityManager.GetHeightInMap(playerPos) <= gm.gravityManager.GetHeightInMap(exitPos)) { // Player is under exit
             direction = GravityManager.OppositeDir(gm.gravityManager.gravityDirection);
         } else {
             direction = gm.gravityManager.gravityDirection;
@@ -625,16 +625,16 @@ public class EventManager : MonoBehaviour {
     protected virtual bool IsPlayerEjected() {
         switch(ejectionType) {
             case EjectionType.FIX_TRESHOLD:
-                return gm.gravityManager.GetHigh(gm.player.transform.position) < ejectionTreshold;
+                return gm.gravityManager.GetHeightInMap(gm.player.transform.position) < ejectionTreshold;
             case EjectionType.LOWEST_CUBE_TRESHOLD:
                 float lowest = GetLessHighCubeAltitude(gm.map.GetAllCubes());
-                return gm.gravityManager.GetHigh(gm.player.transform.position) < lowest + ejectionTreshold;
+                return gm.gravityManager.GetHeightInMap(gm.player.transform.position) < lowest + ejectionTreshold;
             case EjectionType.LOWEST_CUBE_ARROUND_TRESHOLD:
                 List<Cube> cubesArround = gm.map.GetCubesInSphere(gm.player.transform.position, ejectionCubesArroundRadius);
                 if (cubesArround.Count == 0)
                     return true;
                 float lowestHeight = GetLessHighCubeAltitude(cubesArround);
-                return gm.gravityManager.GetHigh(gm.player.transform.position) < lowestHeight + ejectionTreshold;
+                return gm.gravityManager.GetHeightInMap(gm.player.transform.position) < lowestHeight + ejectionTreshold;
             default:
                 return true;
         }
@@ -643,9 +643,9 @@ public class EventManager : MonoBehaviour {
     protected float GetLessHighCubeAltitude(List<Cube> cubes) {
         if (!cubes.Any())
             return 0;
-        float lowest = gm.gravityManager.GetHigh(cubes[0].transform.position);
+        float lowest = gm.gravityManager.GetHeightInMap(cubes[0].transform.position);
         foreach(Cube cube in cubes) {
-            float altitude = gm.gravityManager.GetHigh(cube.transform.position);
+            float altitude = gm.gravityManager.GetHeightInMap(cube.transform.position);
             lowest = Mathf.Min(lowest, altitude);
         }
         return lowest;

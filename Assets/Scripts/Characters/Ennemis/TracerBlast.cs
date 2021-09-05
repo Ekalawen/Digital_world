@@ -88,8 +88,8 @@ public class TracerBlast : Ennemi {
     }
 
     protected bool IsPlayerComingFromTop() {
-        float playerHeight = gm.gravityManager.GetHigh(player.transform.position);
-        float tracerHeight = gm.gravityManager.GetHigh(transform.position);
+        float playerHeight = gm.gravityManager.GetHeightInMap(player.transform.position);
+        float tracerHeight = gm.gravityManager.GetHeightInMap(transform.position);
         float tracerHalfSize = transform.localScale.x / 2;
         return playerHeight > tracerHeight + tracerHalfSize;
     }

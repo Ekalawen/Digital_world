@@ -23,6 +23,7 @@ public class GravityManager : MonoBehaviour {
     [HideInInspector]
     public float gravityIntensity;
     protected GameManager gm;
+    protected Fluctuator playerCameraOffsetFluctuator;
 
     protected Timer timer;
 
@@ -43,6 +44,7 @@ public class GravityManager : MonoBehaviour {
         timer = new Timer(5);
         gravityDirection = initialGravityDirection;
         gravityIntensity = initialGravityIntensity;
+        playerCameraOffsetFluctuator = new Fluctuator(this, gm.player.GetCameraShakerHeight, gm.player.SetCameraShakerHeight);
     }
 
     public Vector3 ApplyGravity(Vector3 initialMovement) {
@@ -70,6 +72,7 @@ public class GravityManager : MonoBehaviour {
         gm.player.bSetUpRotation = false;
         //ScreenShakeOnGravityChange();
         StartCoroutine(RotateCamera(axe, angle));
+        playerCameraOffsetFluctuator.GoTo(gm.player.GetCameraShakerInitialHeight(), dureeGravityTransition);
     }
 
     public void SetGravityZeroSwap() {
@@ -186,22 +189,66 @@ public class GravityManager : MonoBehaviour {
         throw new System.Exception("Erreur dans OppositeDir()");
     }
 
-    public float GetHigh(Vector3 pos) {
+    public int GetHeightIndice() {
         switch(gravityDirection) {
             case Direction.HAUT:
-                return gm.map.tailleMap.y - pos.y;
+                return 1;
             case Direction.BAS:
-                return pos.y;
+                return 1;
             case Direction.GAUCHE:
-                return pos.x;
+                return 0;
             case Direction.DROITE:
-                return gm.map.tailleMap.x - pos.x;
+                return 0;
             case Direction.AVANT:
-                return pos.z;
+                return 2;
             case Direction.ARRIERE:
-                return gm.map.tailleMap.z - pos.z;
+                return 2;
         }
-        throw new System.Exception("Erreur dans GetHigh()");
+        throw new System.Exception("Erreur dans GetHeightIndice()");
+    }
+
+    public float GetHeightSign() {
+        // C'est "inversé" car on cherche le sens du "haut", pas de la gravité !
+        switch(gravityDirection) {
+            case Direction.HAUT:
+                return -1;
+            case Direction.BAS:
+                return 1;
+            case Direction.GAUCHE:
+                return 1;
+            case Direction.DROITE:
+                return -1;
+            case Direction.AVANT:
+                return -1;
+            case Direction.ARRIERE:
+                return 1;
+        }
+        throw new System.Exception("Erreur dans GetHeightSign()");
+    }
+
+    public float GetHeightInMap(Vector3 pos) {
+        float sign = GetHeightSign();
+        float mapHeight = sign > 0 ? GetHeightAbsolute(gm.map.tailleMap) : 0;
+        return GetHeightAbsolute(pos) * sign + mapHeight;
+        //switch(gravityDirection) {
+        //    case Direction.HAUT:
+        //        return gm.map.tailleMap.y - pos.y;
+        //    case Direction.BAS:
+        //        return pos.y;
+        //    case Direction.GAUCHE:
+        //        return gm.map.tailleMap.x - pos.x;
+        //    case Direction.DROITE:
+        //        return pos.x;
+        //    case Direction.AVANT:
+        //        return gm.map.tailleMap.z - pos.z;
+        //    case Direction.ARRIERE:
+        //        return pos.z;
+        //}
+        //throw new System.Exception("Erreur dans GetHigh()");
+    }
+
+    public float GetHeightAbsolute(Vector3 pos) {
+        return pos[GetHeightIndice()] * GetHeightSign();
     }
 
     public bool HasGravity() {
