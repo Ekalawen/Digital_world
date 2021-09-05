@@ -635,7 +635,6 @@ public class EventManager : MonoBehaviour {
                     return true;
                 float lowestHeight = GetLessHighCubeAltitude(cubesArround);
                 float playerHeight = gm.gravityManager.GetHeightInMap(gm.player.transform.position);
-                Debug.Log($"lowestCubeHeight = {lowestHeight} playerHeight = {playerHeight}");
                 return playerHeight < lowestHeight + ejectionTreshold;
             default:
                 return true;

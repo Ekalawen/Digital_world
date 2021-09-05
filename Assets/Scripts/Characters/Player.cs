@@ -407,10 +407,11 @@ public class Player : Character {
 
                     // Si ça fait trop longtemps qu'on est sur le mur
                     // Ou que l'on s'éloigne trop du mur on tombe
+                    // Ou que l'on est trop du côté intérieur du mur
                     Vector3 pos2mur = transform.position - pointMur;
                     Vector3 posOnMur = Vector3.ProjectOnPlane(pos2mur, normaleMur) + pointMur;
                     float distanceMur = (posOnMur - transform.position).magnitude; // pourtant c'est clair non ? Fais un dessins si tu comprends pas <3
-                    if (dureeMurTimer.IsOver() || distanceMur >= distanceMurMax) {
+                    if (dureeMurTimer.IsOver() || distanceMur >= distanceMurMax || IsOnInternalSideOfMur(pointMur, normaleMur)) {
                         FallFromWall();
                     }
 
@@ -624,10 +625,19 @@ public class Player : Character {
                 Vector3 up = gm.gravityManager.Up();
                 Vector3 nProject = Vector3.ProjectOnPlane(wallNormal, up);
                 if (nProject != Vector3.zero && Mathf.Abs(Vector3.Angle(wallNormal, nProject)) < slideLimit) {
-                    GripOn(hit, wallNormal);
+                    if (!IsOnInternalSideOfMur(hit.point, wallNormal)) {
+                        GripOn(hit, wallNormal);
+                    }
                 }
             }
         }
+    }
+
+    protected bool IsOnInternalSideOfMur(Vector3 pointOfMur, Vector3 murNormal) {
+        Vector3 pos2mur = transform.position - pointOfMur;
+        Vector3 posOnMur = Vector3.ProjectOnPlane(pos2mur, murNormal) + pointOfMur;
+        float distanceMurSigne = Vector3.Dot(transform.position - posOnMur, murNormal);
+        return distanceMurSigne <= 0;
     }
 
     protected Vector3 GetWallNormalFromHit(ControllerColliderHit hit) {
