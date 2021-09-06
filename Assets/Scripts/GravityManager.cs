@@ -74,6 +74,7 @@ public class GravityManager : MonoBehaviour {
 
         gm.player.bSetUpRotation = false;
         //ScreenShakeOnGravityChange();
+        gm.soundManager.PlayGravityChangeClip();
         StartCoroutine(RotateCamera(axe, angle, gravityTransitionCurve));
         playerCameraOffsetFluctuator.GoTo(gm.player.GetCameraShakerInitialHeight(), dureeGravityTransition);
     }

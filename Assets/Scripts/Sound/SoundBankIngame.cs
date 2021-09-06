@@ -7,10 +7,12 @@ public class SoundBankIngame : ScriptableObject {
     public AudioClipParams jumpClips;
     public AudioClipParams landClips;
     public AudioClipParams gripClips;
+
     public AudioClipParams createCubeClips;
     public AudioClipParams getLumiereClips;
     public AudioClipParams getItemClips;
     public AudioClipParams failActionClips;
+
     public AudioClipParams hitClips;
     public AudioClipParams tracerHitClips;
     public AudioClipParams tracerBlastLoadClips;
@@ -20,6 +22,7 @@ public class SoundBankIngame : ScriptableObject {
     public AudioClipParams firstBossIncreasingBall;
     public AudioClipParams detectionClips;
     public AudioClipParams dissimuleClips;
+
     public AudioClipParams timeOutClips;
     public AudioClipParams receivedMessageClips;
     public AudioClipParams newBlockClips;
@@ -30,16 +33,21 @@ public class SoundBankIngame : ScriptableObject {
     public AudioClipParams jumpEventStunClips;
     public AudioClipParams jumpEventUnStunClips;
     public AudioClipParams intersectionEventClips;
+
     public AudioClipParams activationPouvoirClips;
     public AudioClipParams deniedPouvoirClips;
     public AudioClipParams notFoundPouvoirClips;
     public AudioClipParams pouvoirAvailableClips;
     public AudioClipParams gainDash333;
+
     public AudioClipParams timeZoneButtonInClips;
     public AudioClipParams timeZoneButtonOutClips;
     public AudioClipParams orbTriggerActivationClips;
     public AudioClipParams generatorGeneratesClips;
+
     public AudioClipParams bounceClips;
+    public AudioClipParams gravityChangeClips;
+
     public AudioClipParams rewardBestScoreClips;
     public AudioClipParams victoryClips;
     public AudioClipParams defeatClips;
