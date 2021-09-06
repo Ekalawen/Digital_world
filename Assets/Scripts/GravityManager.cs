@@ -8,10 +8,13 @@ public class GravityManager : MonoBehaviour {
 
     public enum Direction { HAUT, BAS, GAUCHE, DROITE, AVANT, ARRIERE };
 
-    [Header("Gravity initial")]
+    [Header("Gravity Initial")]
     public Direction initialGravityDirection = Direction.BAS;
     public float initialGravityIntensity = 5; // 5 est la gravity par défautl !
+
+    [Header("Gravity Transitions")]
     public float dureeGravityTransition = 0.4f; // Le temps pendant lequel on fait tourner la caméra quand on change de gravité !
+    public AnimationCurve gravityTransitionCurve;
 
     [Header("ScreenShake on SetGravity")]
     public float screenShakeMagnitude = 10;
@@ -71,7 +74,7 @@ public class GravityManager : MonoBehaviour {
 
         gm.player.bSetUpRotation = false;
         //ScreenShakeOnGravityChange();
-        StartCoroutine(RotateCamera(axe, angle));
+        StartCoroutine(RotateCamera(axe, angle, gravityTransitionCurve));
         playerCameraOffsetFluctuator.GoTo(gm.player.GetCameraShakerInitialHeight(), dureeGravityTransition);
     }
 
@@ -102,20 +105,20 @@ public class GravityManager : MonoBehaviour {
         StartCoroutine(RotateCamera(axe, angle));
     }
 
-    protected IEnumerator RotateCamera(Vector3 axe, float angle) {
+    protected IEnumerator RotateCamera(Vector3 axe, float angle, AnimationCurve curve = null) {
         Timer t = new Timer(dureeGravityTransition);
         Camera camera = gm.player.camera;
-        float currentAvancement = 0;
+        float currentAvancement = curve != null ? curve.Evaluate(0) : 0;
         float totalPortion = 0.0f;
         while (!t.IsOver()) {
-            float portion = t.GetAvancement() - currentAvancement;
+            float portion = curve != null ? curve.Evaluate(t.GetAvancement()) - curve.Evaluate(currentAvancement) : t.GetAvancement() - currentAvancement;
             totalPortion += portion;
             currentAvancement = t.GetAvancement();
             float value = angle * portion;
             camera.transform.RotateAround(camera.transform.position, axe, value);
             yield return null;
         }
-        float finalValue = angle * (1.0f - totalPortion);
+        float finalValue = angle * (curve != null ? curve.Evaluate(1.0f - totalPortion) : 1.0f - totalPortion);
         camera.transform.RotateAround(camera.transform.position, axe, finalValue);
         gm.player.bSetUpRotation = true;
     }
