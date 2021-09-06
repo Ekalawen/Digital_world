@@ -19,7 +19,7 @@ public class GravityCube : NonBlackCube {
         GravityManager.Direction direction = GravityManager.OppositeDir(GravityManager.VecToDir(directionVector));
         if (CanChangeGravity(direction, directionVector)) {
             gm.gravityManager.SetGravity(direction, gm.gravityManager.gravityIntensity);
-            gm.player.SetAuSol(useSound: true);
+            gm.player.SetAuSol(useSound: false);
         }
     }
 
