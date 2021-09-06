@@ -422,6 +422,11 @@ public class Player : Character {
                     List<string> hitTags = hits.Select(h => h.collider.tag).ToList();
                     if (hits.Length == 0 || (!hitTags.Contains("Cube") && !hitTags.Contains("Ennemi"))) { // Pour pouvoir s'accrocher sur les Tracers inactifs !
                         FallFromWall();
+                    } else if (hits.Length > 0 && hitTags.Contains("Cube")) { // On veut trigger les cubes sur lesquels on slide !
+                        Cube firstCube = hits.ToList().Find(h => h.collider.tag == "Cube").collider.GetComponent<Cube>();
+                        if(firstCube != null) {
+                            firstCube.InteractWithPlayer();
+                        }
                     }
                     break;
                 default: break;
@@ -643,10 +648,15 @@ public class Player : Character {
     protected Vector3 GetWallNormalFromHit(ControllerColliderHit hit) {
         // Il est possible de supprimer cette fonctionnalité pour permettre au joueur d'être plus sticky sur les murs :) (et notemment les angles !)
         BoxCollider box = hit.gameObject.GetComponent<BoxCollider>();
-        if(box != null && box.transform.rotation == Quaternion.identity) {
+        if(box != null && MathTools.IsOrthogonalRotation(box.transform)) {
             Vector3 normalizedNormal = MathTools.GetClosestToNormals(box.transform, hit.normal);
             return normalizedNormal;
         } else {
+            if (box == null) {
+                Debug.LogError($"On est pas censé arriver ici pour le moment car tous les cubes sont des AxesAligned ! :) wallRotation = null");
+            } else {
+                Debug.LogError($"On est pas censé arriver ici pour le moment car tous les cubes sont des AxesAligned ! :) wallRotation = {box.transform.rotation}");
+            }
             return hit.normal;
         }
     }
@@ -738,6 +748,10 @@ public class Player : Character {
 
     public float GetSizeRadius() {
         return transform.localScale.y / 2 + controller.skinWidth;
+    }
+
+    public float GetSizeTotal() {
+        return GetSizeRadius() * 2;
     }
 
     protected void Jump(EtatPersonnage from) {
@@ -968,5 +982,9 @@ public class Player : Character {
 
     public float GetCameraShakerInitialHeight() {
         return cameraShakerInitialHeight;
+    }
+
+    public Vector3 GetNormaleMur() {
+        return normaleMur;
     }
 }

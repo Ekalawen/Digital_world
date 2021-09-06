@@ -212,15 +212,22 @@ public static class MathTools
         };
     }
 
+    public static List<Vector3> orthogonalNormals = new List<Vector3>() {
+        Vector3.right,
+        Vector3.left,
+        Vector3.up,
+        Vector3.down,
+        Vector3.forward,
+        Vector3.back
+    };
+
     public static List<Vector3> GetAllOrthogonalNormals() {
-        return new List<Vector3>() {
-            Vector3.right,
-            Vector3.left,
-            Vector3.up,
-            Vector3.down,
-            Vector3.forward,
-            Vector3.back
-        };
+        return orthogonalNormals;
+    }
+
+    public static bool IsOrthogonalRotation(Transform transform) {
+        var normales = GetAllOrthogonalNormals();
+        return normales.Contains(transform.up) && normales.Contains(transform.forward);
     }
 
     public static Vector3 GetClosestToNormals(Transform t, Vector3 currentNormal) {

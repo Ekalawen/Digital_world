@@ -28,7 +28,7 @@ public class GravityManager : MonoBehaviour {
     protected GameManager gm;
     protected Fluctuator playerCameraOffsetFluctuator;
 
-    protected Timer timer;
+    protected Timer cooldownChangeGravity;
 
     public static Direction GetRandomDirection() {
         System.Array enumValues = System.Enum.GetValues(typeof(Direction));
@@ -44,7 +44,7 @@ public class GravityManager : MonoBehaviour {
 
     public void Initialize() {
         gm = GameManager.Instance;
-        timer = new Timer(5);
+        cooldownChangeGravity = new Timer(dureeGravityTransition, setOver: true);
         gravityDirection = initialGravityDirection;
         gravityIntensity = initialGravityIntensity;
         playerCameraOffsetFluctuator = new Fluctuator(this, gm.player.GetCameraShakerHeight, gm.player.SetCameraShakerHeight);
@@ -63,6 +63,11 @@ public class GravityManager : MonoBehaviour {
     }
 
     public void SetGravity(Direction newGravityDirection, float newGravityIntensity) {
+        if(!cooldownChangeGravity.IsOver()) {
+            return;
+        }
+        cooldownChangeGravity.Reset();
+
         float angle = Vector3.Angle(DirToVec(gravityDirection), DirToVec(newGravityDirection));
         Vector3 axe = Vector3.Cross(DirToVec(gravityDirection), DirToVec(newGravityDirection));
         if (axe.magnitude == 0) {

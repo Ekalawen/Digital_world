@@ -30,7 +30,7 @@ public class GravityCube : NonBlackCube {
 
     protected Vector3 GetGravityDirection(Vector3 position) {
         Vector3 direction = (position - transform.position).normalized;
-        Vector3 directionPoussee = MathTools.GetClosestToNormals(transform, direction);
-        return directionPoussee;
+        Vector3 gravityDirection = MathTools.GetClosestToNormals(transform, direction);
+        return gravityDirection;
     }
 }
