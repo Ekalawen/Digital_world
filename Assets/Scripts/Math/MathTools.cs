@@ -225,9 +225,18 @@ public static class MathTools
         return orthogonalNormals;
     }
 
+    public static Vector3 SanitizeIfOrthogonal(Vector3 vector) {
+        foreach(Vector3 normal in GetAllOrthogonalNormals()) {
+            if(AlmostEqual(vector, normal)) {
+                return normal;
+            }
+        }
+        return vector;
+    }
+
     public static bool IsOrthogonalRotation(Transform transform) {
         var normales = GetAllOrthogonalNormals();
-        return normales.Contains(transform.up) && normales.Contains(transform.forward);
+        return normales.Any(n => AlmostEqual(n, transform.up)) && normales.Any(n => AlmostEqual(n, transform.forward));
     }
 
     public static Vector3 GetClosestToNormals(Transform t, Vector3 currentNormal) {
@@ -238,6 +247,12 @@ public static class MathTools
     public static Vector3 GetClosestToOrthogonalNormals(Vector3 currentNormal) {
         List<Vector3> normals = MathTools.GetAllOrthogonalNormals();
         return normals.OrderBy(n => Vector3.Dot(currentNormal, n)).Last();
+    }
+
+    public static bool AlmostEqual(Vector3 v1, Vector3 v2, float epsilon = 0.00001f) {
+        return Mathf.Abs(v1.x - v2.x) <= epsilon
+            && Mathf.Abs(v1.y - v2.y) <= epsilon
+            && Mathf.Abs(v1.z - v2.z) <= epsilon;
     }
 
     public static Vector3 VecMul(Vector3 vector1, Vector3 vector2) {

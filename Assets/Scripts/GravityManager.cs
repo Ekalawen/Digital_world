@@ -176,7 +176,7 @@ public class GravityManager : MonoBehaviour {
         if (map.ContainsKey(vec)) {
             return map[vec];
         } else {
-            throw new Exception("GravityManager.VecToDir prend uniquement une direction orthogonale normalisé en entrée ! :p");
+            throw new Exception($"GravityManager.VecToDir prend uniquement une direction orthogonale normalisé en entrée ! :p Ici c'était {vec}");
         }
     }
 
