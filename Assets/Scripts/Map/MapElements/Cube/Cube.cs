@@ -21,10 +21,12 @@ public class Cube : MonoBehaviour {
     protected Coroutine enableDisableCoroutine = null;
     protected Material transparentMaterial;
     protected Coroutine changeMaterialCoroutine = null;
+    protected bool isStored = false;
 
     // Done before player initialization
     public virtual void Initialize() {
         gm = GameManager.Instance;
+        isStored = false;
         InitializeMaterials();
         if (shouldRegisterToColorSources || gm.timerManager.HasGameStarted()) {
             RegisterCubeToColorSources();
@@ -198,6 +200,7 @@ public class Cube : MonoBehaviour {
         if (transparentMaterial != null) {
             SetMaterial(transparentMaterial);
         }
+        isStored = true;
     }
 
     public float GetLuminance() {
@@ -266,7 +269,13 @@ public class Cube : MonoBehaviour {
 
 
     public void DecomposeIn(float dureeDecompose, float timeBeforeDecompose) {
-        StartCoroutine(CDecomposeIn(dureeDecompose, timeBeforeDecompose));
+        if (IsNotStored()) {
+            StartCoroutine(CDecomposeIn(dureeDecompose, timeBeforeDecompose));
+        }
+    }
+
+    public bool IsNotStored() {
+        return !isStored;
     }
 
     protected IEnumerator CDecomposeIn(float dureeDecompose, float timeBeforeDecompose) {
