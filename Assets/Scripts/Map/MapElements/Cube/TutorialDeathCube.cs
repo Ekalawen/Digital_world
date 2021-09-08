@@ -9,8 +9,10 @@ public class TutorialDeathCube : DeathCube {
     }
 
     public override void KillPlayer() {
-        EventManagerTutoriel eventManager = (EventManagerTutoriel)gm.eventManager;
-        eventManager.GoBackToPreviousSaveZone();
-        gm.console.SavedFromDeathCube();
+        if (!gm.player.IsInvincible()) {
+            EventManagerTutoriel eventManager = (EventManagerTutoriel)gm.eventManager;
+            eventManager.GoBackToPreviousSaveZone();
+            gm.console.SavedFromDeathCube();
+        }
     }
 }

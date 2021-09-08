@@ -402,7 +402,7 @@ public class EventManager : MonoBehaviour {
     }
 
     public void LoseGame(DeathReason reason) {
-        if (gameIsEnded)
+        if (gameIsEnded || gm.player.IsInvincible())
             return;
         gameIsEnded = true;
         gameIsLost = true;
@@ -648,7 +648,7 @@ public class EventManager : MonoBehaviour {
     }
 
     public bool CheckPartiePerdu() {
-        if (IsPlayerEjected()) {
+        if (IsPlayerEjected() && !gm.player.IsInvincible()) {
             LoseGame(EventManager.DeathReason.FALL_OUT);
             return true;
         }

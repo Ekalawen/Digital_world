@@ -25,6 +25,7 @@ public class CheatCodeManager : MonoBehaviour {
     public List<KeyCode> startEndEventCode;
     public List<KeyCode> gravityZeroCode;
     public List<KeyCode> cooldownsZeroCode;
+    public List<KeyCode> invincibilityCode;
     public List<KeyCode> hideConsoleCode;
     public List<KeyCode> disableEnnemisCode;
 
@@ -138,6 +139,12 @@ public class CheatCodeManager : MonoBehaviour {
         cooldownsZeroCheatCode.code = cooldownsZeroCode;
         cooldownsZeroCheatCode.action = gm.player.SetPouvoirsCooldownZeroSwap;
         cheatCodes.Add(cooldownsZeroCheatCode);
+
+        // Invincibility
+        CheatCode invincibilityCheatCode = new CheatCode();
+        invincibilityCheatCode.code = invincibilityCode;
+        invincibilityCheatCode.action = gm.player.SwapInvincible;
+        cheatCodes.Add(invincibilityCheatCode);
 
         // Hide Console
         CheatCode hideConsoleCheatCode = new CheatCode();

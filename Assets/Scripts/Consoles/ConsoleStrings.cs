@@ -146,4 +146,7 @@ public class ConsoleStrings : ScriptableObject {
 
     public LocalizedString restartButtonRestart;
     public LocalizedString restartButtonContinue;
+
+    public LocalizedString setInvincible;
+    public LocalizedString unsetInvincible;
 }

@@ -1134,6 +1134,14 @@ public class Console : MonoBehaviour {
         AjouterMessageImportant(strings.apparitionDesDatas, Console.TypeText.BLUE_TEXT, 3.0f);
     }
 
+    public void SetInvincible() {
+        AjouterMessageImportant(strings.setInvincible, Console.TypeText.BLUE_TEXT, 2.0f);
+    }
+
+    public void UnsetInvincible() {
+        AjouterMessageImportant(strings.unsetInvincible, Console.TypeText.BLUE_TEXT, 2.0f);
+    }
+
     public void InitFrameRateCounter() {
         frameRateManager.Initialize();
     }

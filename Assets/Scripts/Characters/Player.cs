@@ -84,6 +84,7 @@ public class Player : Character {
     protected bool bCanUseLocalisation = true;
     [HideInInspector]
     public bool bIsStun = false;
+    protected bool isInvincible = false;
     protected UnityEvent onHitEvent;
 
     protected GameManager gm;
@@ -986,5 +987,29 @@ public class Player : Character {
 
     public Vector3 GetNormaleMur() {
         return normaleMur;
+    }
+
+    public bool IsInvincible() {
+        return isInvincible;
+    }
+
+    public void SetInvincible() {
+        isInvincible = true;
+        gm.console.SetInvincible();
+        gm.soundManager.PlayGetItemClip(transform.position);
+    }
+
+    public void UnsetInvincible() {
+        isInvincible = false;
+        gm.console.UnsetInvincible();
+        gm.soundManager.PlayGetItemClip(transform.position);
+    }
+
+    public void SwapInvincible() {
+        if(IsInvincible()) {
+            UnsetInvincible();
+        } else {
+            SetInvincible();
+        }
     }
 }

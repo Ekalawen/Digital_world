@@ -20,7 +20,7 @@ public class DeathCube : NonBlackCube {
     public override void InteractWithPlayer() {
         float time = Time.time;
         float decomposeStartingTime = transparentMaterial.GetFloat("_DecomposeStartingTime");
-        if (time < decomposeStartingTime) {
+        if (time < decomposeStartingTime && !gm.player.IsInvincible()) {
             Debug.Log("Looooooooooooooooose ! :'(");
             KillPlayer();
         }
