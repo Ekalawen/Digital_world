@@ -1142,6 +1142,14 @@ public class Console : MonoBehaviour {
         AjouterMessageImportant(strings.unsetInvincible, Console.TypeText.BLUE_TEXT, 2.0f);
     }
 
+    public void SetPouvoirsCooldownZero() {
+        AjouterMessageImportant(strings.setPouvoirsCooldownZero, Console.TypeText.BLUE_TEXT, 2.0f);
+    }
+
+    public void UnsetPouvoirsCooldownZero() {
+        AjouterMessageImportant(strings.unsetPouvoirsCooldownZero, Console.TypeText.BLUE_TEXT, 2.0f);
+    }
+
     public void InitFrameRateCounter() {
         frameRateManager.Initialize();
     }

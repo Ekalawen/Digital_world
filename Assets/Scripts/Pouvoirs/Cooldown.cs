@@ -35,10 +35,11 @@ public class Cooldown : MonoBehaviour {
         return cooldownTimer.GetRemainingTime();
     }
 
-    public void SetCooldownDuration(float duration, bool keepRemainingTime) {
-        float remainingTime = GetRemainingTimeBeforeUse();
+    public virtual void SetCooldownDuration(float duration, bool keepRemainingTime) {
+        cooldown = duration;
         cooldownTimer = new Timer(duration);
         if(keepRemainingTime) {
+            float remainingTime = GetRemainingTimeBeforeUse();
             cooldownTimer.SetRemainingTime(remainingTime);
         }
     }

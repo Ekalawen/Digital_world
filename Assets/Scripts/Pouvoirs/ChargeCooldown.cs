@@ -79,4 +79,13 @@ public class ChargeCooldown : Cooldown {
     public int GetCurrentCharges() {
         return currentCharges;
     }
+
+    public override void SetCooldownDuration(float duration, bool keepRemainingTime) {
+        base.SetCooldownDuration(duration, keepRemainingTime);
+        if(duration == 0.0f) {
+            currentCharges = maxCharges;
+            StopCoroutine(chargingCoroutine);
+            chargingCoroutine = null;
+        }
+    }
 }

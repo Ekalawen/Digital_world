@@ -204,6 +204,9 @@ public class Player : Character {
         if (pouvoirs.FindAll(p => p != null).Select(p => p.GetCooldown().cooldown).Contains(0.0f)) {
             InitPouvoirs();
             gm.console.InitPouvoirsDisplays();
+            gm.pointeur.Initialize();
+            gm.console.UnsetPouvoirsCooldownZero();
+            gm.soundManager.PlayGetItemClip(transform.position);
         } else {
             foreach (IPouvoir pouvoir in pouvoirs) {
                 if (pouvoir != null) {
@@ -211,6 +214,8 @@ public class Player : Character {
                     pouvoir.SetTimerMalus(0.0f);
                 }
             }
+            gm.console.SetPouvoirsCooldownZero();
+            gm.soundManager.PlayGetItemClip(transform.position);
         }
     }
 

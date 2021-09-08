@@ -3,7 +3,8 @@ using UnityEngine;
 using UnityEngine.Localization;
 
 [CreateAssetMenu(fileName = "ConsoleStrings", menuName = "ConsoleStrings")]
-public class ConsoleStrings : ScriptableObject {
+public class ConsoleStrings : ScriptableObject
+{
 
     public LocalizedString initialisationNiveau;
     public LocalizedString initialisationMatrice;
@@ -149,4 +150,7 @@ public class ConsoleStrings : ScriptableObject {
 
     public LocalizedString setInvincible;
     public LocalizedString unsetInvincible;
+
+    public LocalizedString setPouvoirsCooldownZero;
+    public LocalizedString unsetPouvoirsCooldownZero;
 }
