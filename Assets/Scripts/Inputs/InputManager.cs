@@ -99,14 +99,14 @@ public class InputManager : MonoBehaviour {
 
     public Vector3 GetCameraSelectorMouvement() {
         float x;
-        float y = Input.GetAxis("CameraSelector_Y");
-        float z;
+        float y;
+        float z = Input.GetAxis("CameraSelector_Z");
         if (GetCurrentKeybindingType() == KeybindingType.QWERTY) {
             x = Input.GetAxis("CameraSelector_X_QWERTY");
-            z = Input.GetAxis("CameraSelector_Z_QWERTY");
+            y = Input.GetAxis("CameraSelector_Y_QWERTY");
         } else {
             x = Input.GetAxis("CameraSelector_X_AZERTY");
-            z = Input.GetAxis("CameraSelector_Z_AZERTY");
+            y = Input.GetAxis("CameraSelector_Y_AZERTY");
         }
         return new Vector3(x, y, z);
     }
