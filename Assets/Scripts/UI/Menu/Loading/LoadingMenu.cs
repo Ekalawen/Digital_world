@@ -45,7 +45,7 @@ public class LoadingMenu : MonoBehaviour {
         }
         appuyezSurUneToucheTexte.SetActive(true);
 
-        while (!Input.anyKeyDown) {
+        while (!InputManager.Instance.GetAnyKeyOrButtonDown()) {
             yield return null;
         }
 

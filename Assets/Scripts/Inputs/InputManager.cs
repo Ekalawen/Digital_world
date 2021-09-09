@@ -289,4 +289,8 @@ public class InputManager : MonoBehaviour {
         string[] joystickNames = Input.GetJoystickNames();
         return joystickNames.Length > 0 ? joystickNames[0] : "";
     }
+
+    public bool GetAnyKeyOrButtonDown() {
+        return Input.anyKeyDown;
+    }
 }

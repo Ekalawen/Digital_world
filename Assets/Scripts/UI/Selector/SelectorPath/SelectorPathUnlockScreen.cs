@@ -42,6 +42,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
     public AnimationCurve curveUnlockAnimation;
     public GameObject particlesUnlockAnimationPrefab;
     public float dureeUnlockAnimationParticleSystem = 1.4f;
+    public float unlockAnimationCancelSoundAcceleration = 4.0f;
 
     [Header("FastUI")]
     public GameObject fastUISystemNextPrefab;
@@ -53,6 +54,8 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
     [HideInInspector]
     public SelectorPath selectorPath;
     protected Fluctuator cadenaAnimationFluctuator;
+    protected Coroutine unlockAnimationCoroutine = null;
+    protected List<GameObject> particlesToDestroy = new List<GameObject>();
 
     public void Initialize(SelectorPath selectorPath, bool shouldHighlightDataHackees) {
         this.selectorManager = SelectorManager.Instance;
@@ -124,10 +127,39 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
     }
 
     protected void SubmitGoodLocked() {
-        StartCoroutine(CSubmitGoodLocked());
+        unlockAnimationCoroutine = StartCoroutine(CUnlockAnimation());
+        StartCoroutine(CCancelUnlockAnimation(unlockAnimationCoroutine));
     }
 
-    protected IEnumerator CSubmitGoodLocked() {
+    protected IEnumerator CCancelUnlockAnimation(Coroutine coroutine) {
+        float dureeTotaleAnimation = dureeUnlockAnimation + dureeUnlockAnimationParticleSystem;
+        Timer timer = new Timer(dureeTotaleAnimation);
+        while(!timer.IsOver()) {
+            yield return null;
+            if(InputManager.Instance.GetAnyKeyOrButtonDown()) {
+                StopCoroutine(coroutine);
+
+                SetArrowAccordingToLockState();
+                SetCadenasAccordingToLockState();
+                selectorPath.cadena.DisplayGoodCadena();
+
+                SetToTitleAccordingToLockState();
+
+                GenerateNextAndPreviousButtons();
+
+                MenuManager.DISABLE_HOTKEYS = false;
+                GameManager.ShowCursor();
+                RunPathUnlockedPopup();
+
+                StopAllParticles();
+                cadenaAnimationFluctuator.GoTo(0, 0.1f);
+                UISoundManager.Instance.AccelerateUnlockPathClip(unlockAnimationCancelSoundAcceleration);
+                break;
+            }
+        }
+    }
+
+    protected IEnumerator CUnlockAnimation() {
         selectorPath.UnlockPath();
         selectorManager.onUnlockPath.Invoke(selectorPath); // Not in UnlockPath because we don't want to trigger this with cheats !
         //SetBackgroundAccordingToLockState();
@@ -159,7 +191,15 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         yield return new WaitForSeconds(dureeUnlockAnimationParticleSystem);
         MenuManager.DISABLE_HOTKEYS = false;
         GameManager.ShowCursor();
-        selectorManager.RunPopup(selectorManager.strings.pathGoodLockedTitle, selectorManager.strings.pathGoodLockedTexte, TexteExplicatif.Theme.POSITIF);
+        RunPathUnlockedPopup();
+    }
+
+    protected void RunPathUnlockedPopup() {
+        string key = PrefsManager.HAS_DISPLAY_PATH_UNLOCK_POPUP_KEY;
+        if(PrefsManager.GetBool(key, false)) {
+            selectorManager.RunPopup(selectorManager.strings.pathGoodLockedTitle, selectorManager.strings.pathGoodLockedTexte, TexteExplicatif.Theme.POSITIF);
+            PrefsManager.SetBool(key, true);
+        }
     }
 
     protected void StartUnlockPathParticles(Transform parent, float delay = 0) {
@@ -169,8 +209,27 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
     protected IEnumerator CStartUnlockPathParticles(Transform parent, float delay) {
         yield return new WaitForSeconds(delay);
         GameObject go = Instantiate(particlesUnlockAnimationPrefab, parent: parent);
+        particlesToDestroy.Add(go);
         yield return new WaitForSeconds(dureeUnlockAnimationParticleSystem);
-        Destroy(go);
+        if (go != null) {
+            particlesToDestroy.Remove(go);
+            Destroy(go);
+        }
+    }
+
+    protected void StopAllParticles() {
+        foreach(GameObject particle in particlesToDestroy) {
+            foreach (Transform t in particle.transform) {
+                t.gameObject.GetComponent<ParticleSystem>().Stop();
+            }
+        }
+    }
+
+    public void DestroyAllParticles() {
+        foreach(GameObject particle in particlesToDestroy) {
+            Destroy(particle);
+        }
+        particlesToDestroy.Clear();
     }
 
     protected float GetCadenasRotation() {

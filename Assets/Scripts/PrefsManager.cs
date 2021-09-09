@@ -34,6 +34,7 @@ public class PrefsManager {
     public static string HAS_JUST_INCREASED_DATA_COUNT_KEY = "hasJustIncreaseDataCountKey";
 
     public static string IS_UNLOCKED_PATH_KEY = "IS_UNLOCKED_PATH_KEY";
+    public static string HAS_DISPLAY_PATH_UNLOCK_POPUP_KEY = "HAS_DISPLAY_PATH_UNLOCK_POPUP_KEY";
     public static string IS_HIGHLIGHTED_PATH_KEY = "IS_HIGHLIGHTED_PATH_KEY";
     public static string NB_SUBMITS_PATH_KEY = "NB_SUBMITS_PATH_KEY";
 

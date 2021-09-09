@@ -131,6 +131,14 @@ public class UISoundManager : MonoBehaviour {
         return source;
     }
 
+    public AudioSource GetAudioSourceFor(AnimationClip clip) {
+        return usedSources.Find(s => s.clip == clip);
+    }
+
+    public AudioSource GetAudioSourceFor(AudioClipParams clipParams) {
+        return usedSources.Find(s => clipParams.clips.Contains(s.clip));
+    }
+
     public void PlayHoverButtonClip() {
         PlayClipsOnSource(sounds.hoverButtonClips);
     }
@@ -139,6 +147,12 @@ public class UISoundManager : MonoBehaviour {
     }
     public void PlayUnlockPathClip() {
         PlayClipsOnSource(sounds.unlockPathClips);
+    }
+    public void AccelerateUnlockPathClip(float acceleration) {
+        AudioSource source = GetAudioSourceFor(sounds.unlockPathClips);
+        if(source != null) {
+            source.pitch *= acceleration;
+        }
     }
     public void PlayNewBestScoreClip() {
         PlayClipsOnSource(sounds.newBestScoreClips);

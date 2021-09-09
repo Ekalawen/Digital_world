@@ -153,6 +153,7 @@ public class SelectorPath : MonoBehaviour {
     }
 
     public void CloseUnlockScreen(bool instantDisplay = false) {
+        unlockScreen.DestroyAllParticles();
         if (!instantDisplay) {
             selectorManager.FadeOut(selectorManager.background.gameObject, selectorManager.dureeFading);
             selectorManager.FadeOut(unlockScreen.gameObject, selectorManager.dureeFading);
