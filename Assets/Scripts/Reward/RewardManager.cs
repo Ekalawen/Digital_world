@@ -34,6 +34,7 @@ public class RewardManager : MonoBehaviour {
     public TMP_Text accelerationText;
     public TMP_Text replayDurationText;
     public RewardNewBestScoreButton newBestScoreButton;
+    public RewardNewBestScoreButton firstTimeButton;
 
     protected float dureeReward;
     protected float accelerationCoefficiant;
@@ -114,7 +115,7 @@ public class RewardManager : MonoBehaviour {
 
         InitializeTitleAndStats();
 
-        InitializeNewBestScoreButton();
+        InitializeNewBestScoreAndFirstTimeButtons();
 
         InitializeCamera();
     }
@@ -212,13 +213,25 @@ public class RewardManager : MonoBehaviour {
     public float GetPrecedentBestScore() {
         return PrefsManager.GetFloat(GetKeyFor(PrefsManager.PRECEDENT_BEST_SCORE_KEY), 0);
     }
+    public bool IsFirstTimeFinishingLevel() {
+        bool hasJustWin = PrefsManager.GetBool(GetKeyFor(PrefsManager.HAS_JUST_WIN_KEY), false);
+        int nbWins = PrefsManager.GetInt(GetKeyFor(PrefsManager.NB_WINS_KEY), 0);
+        Debug.Log($"hasJustWin = {hasJustWin} nbWins = {nbWins}");
+        return hasJustWin && nbWins == 1;
+    }
 
-    protected void InitializeNewBestScoreButton() {
+    protected void InitializeNewBestScoreAndFirstTimeButtons() {
         if(IsNewBestScoreAfterBestScoreAssignation() && GetPrecedentBestScore() > 0) {
             newBestScoreButton.gameObject.SetActive(true);
             newBestScoreButton.Initialize();
         } else {
             newBestScoreButton.gameObject.SetActive(false);
+        }
+        if(IsFirstTimeFinishingLevel()) {
+            firstTimeButton.gameObject.SetActive(true);
+            firstTimeButton.Initialize();
+        } else {
+            firstTimeButton.gameObject.SetActive(false);
         }
     }
 }
