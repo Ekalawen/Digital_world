@@ -31,11 +31,10 @@ float3x3 AngleAxis3x3(float angle, float3 axis) {
         );
 }
 
-void VoronoiLoopOnSphere_float(float3 pos, float time, float nbCells, float cellSpeed, float cellRange, float centerSpeed, float cellMaxOffset, out float indice, out float distanceInCell) {
-    float3 center = float3(sin(time * centerSpeed), cos(time  * centerSpeed * 0.5f), sin(time * centerSpeed * 0.3f)) / 2 + 0.5f;
-    //float3 center = float3(0.5f, 0.5f, 0.5f);
+void VoronoiLoopOnSphere_float(float3 pos, float time, float nbCells, float cellSpeed, float cellRange, float rotationSpeed, float cellMaxOffset, float edgeThickness, out float indice, out float distanceInCell, out float isInEdge) {
     float3 pp = float3(0, 0, 0); // Temporary vector
     float minDist = 4.0f;
+    float secondMinDist = 4.0f;
 
     pos = normalize(pos);
 
@@ -44,19 +43,15 @@ void VoronoiLoopOnSphere_float(float3 pos, float time, float nbCells, float cell
     float z = 1 - dz / 2.0f;
     float longitude = 0.0f;
 
-    float angleRot = sin(time) * cos(time) * PI;
-    float thetaRot = (sin(time) + 1) * PI;
-    float phiRot = (cos(time) + 1) * PI;
+    float rotTime = rotationSpeed * time;
+    float angleRot = sin(rotTime) * cos(rotTime) * PI;
+    //float thetaRot = (sin(rotTime) + 1) * PI;
+    //float phiRot = (cos(rotTime) + 1) * PI;
+    float thetaRot = frac(rotTime) * 2 * PI;
+    float phiRot = frac(rotTime * 0.5f) * 2 * PI;
     float3 axisRot = float3(cos(phiRot) * sin(thetaRot), sin(phiRot) * sin(thetaRot), cos(thetaRot));
 
     for (float i = 0.0f; i < nbCells; i += 1.0f) {
-        //float angle1 = hash(i) * 2 * PI + sin(time * PI * cellSpeed / 100000);
-        //float angle2 = hash(angle1) * 2 * PI + cos(time * PI * cellSpeed / 100000);
-        //float radius = (sqrt(hash(angle2)) + 0.2f) * cellRange;
-        //float2 p = float2(center.x + cos(angle) * radius, center.y + sin(angle) * radius);
-        //float3 p = float3(center.x + cos(angle),
-        //                  center.y + sin(angle),
-        //                  center.z + 
         float radius = sqrt(1 - z * z);
         float3 p = float3(cos(longitude) * radius, sin(longitude) * radius, z);
         float thetaOffset = hash(i) * 2 * PI + sin(time * PI * cellSpeed / 100000);
@@ -70,12 +65,17 @@ void VoronoiLoopOnSphere_float(float3 pos, float time, float nbCells, float cell
         z = z - dz;
         longitude += s / radius;
         float dist = segmentDistance(pos, p);
-        minDist = min(minDist, dist);
-        if (minDist == dist) {
+        if (dist < minDist) {
+            secondMinDist = minDist;
+            minDist = dist;
             distanceInCell = minDist;
             indice = hash(i);
+        } else if (dist < secondMinDist) {
+            secondMinDist = dist;
         }
     }
+
+    isInEdge = secondMinDist - minDist < edgeThickness ? 1.0f : 0.0f;
 }
 
 #endif // VORONOILOOP_INCLUDED
