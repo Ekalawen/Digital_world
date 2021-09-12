@@ -21,7 +21,7 @@ public class EnnemiManager : MonoBehaviour {
     public GameObject ennemisFolder;
 	protected Timer playerCaptureTimer; // Le temps depuis lequel le joueur est en contact avec un ennemi
     [HideInInspector]
-    public DataSoundManager dataSoundManager;
+    public DataSondeManager dataSoundManager;
 
     public void Initialize() {
         gm = GameManager.Instance;
@@ -151,7 +151,7 @@ public class EnnemiManager : MonoBehaviour {
     }
 
     protected void InitializeDataSoundManager() {
-        DataSoundManager dsm = GetComponent<DataSoundManager>();
+        DataSondeManager dsm = GetComponent<DataSondeManager>();
         if (dsm != null) {
             dataSoundManager = dsm;
             dataSoundManager.Initialize();

@@ -26,7 +26,7 @@ public class AddLumiereDataSonde: GenerateLumieresMapFunction {
     }
 
     protected void InitializeOtherDataSonde() {
-        DataSoundManager dataSoundManager = gm.ennemiManager.dataSoundManager;
+        DataSondeManager dataSoundManager = gm.ennemiManager.dataSoundManager;
         dataSoundManager.UnregisterDataSondeTrigger(orbTrigger);
         OrbTrigger newOrbTrigger = dataSoundManager.ActivateNextDataSonde(orbTrigger.transform.position);
         ThrowLightningToNextOne(newOrbTrigger);
