@@ -28,6 +28,7 @@ public class MenuOptions : MonoBehaviour {
     public static bool defaultConseilOnStart = false;
     public static bool defaultFpsCounter = false;
     public static bool defaultDisplayConsole = false;
+    public static Lumiere.LumiereQuality defaultLumiereQuality = Lumiere.LumiereQuality.LOW;
 
     public bool isInGame = false;
 

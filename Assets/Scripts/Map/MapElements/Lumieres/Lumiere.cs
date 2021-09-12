@@ -48,7 +48,7 @@ public class Lumiere : MonoBehaviour {
 
     protected virtual void Start () {
         gm = GameManager.Instance;
-        SetLumiereQuality((LumiereQuality)PrefsManager.GetInt(PrefsManager.DATA_QUALITY_KEY, (int)LumiereQuality.HIGH));
+        SetLumiereQuality((LumiereQuality)PrefsManager.GetInt(PrefsManager.DATA_QUALITY_KEY, (int)MenuOptions.defaultLumiereQuality));
 	}
 
     protected virtual void OnTriggerEnter(Collider hit) {

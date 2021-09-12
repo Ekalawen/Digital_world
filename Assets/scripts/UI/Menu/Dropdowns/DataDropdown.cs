@@ -16,7 +16,7 @@ public class DataDropdown : MonoBehaviour {
         LocalizationSettings.SelectedLocaleChanged += OnLocaleChange;
         SetDropdownData();
 
-        dropdown.value = PrefsManager.GetInt(PrefsManager.DATA_QUALITY_KEY, (int)Lumiere.LumiereQuality.HIGH);
+        dropdown.value = PrefsManager.GetInt(PrefsManager.DATA_QUALITY_KEY, (int)MenuOptions.defaultLumiereQuality);
         dropdown.onValueChanged.AddListener(DataQualitySelected);
     }
 
