@@ -216,7 +216,6 @@ public class RewardManager : MonoBehaviour {
     public bool IsFirstTimeFinishingLevel() {
         bool hasJustWin = PrefsManager.GetBool(GetKeyFor(PrefsManager.HAS_JUST_WIN_KEY), false);
         int nbWins = PrefsManager.GetInt(GetKeyFor(PrefsManager.NB_WINS_KEY), 0);
-        Debug.Log($"hasJustWin = {hasJustWin} nbWins = {nbWins}");
         return hasJustWin && nbWins == 1;
     }
 
