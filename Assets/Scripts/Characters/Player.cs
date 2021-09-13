@@ -385,7 +385,8 @@ public class Player : Character {
 
                 case EtatPersonnage.AU_MUR:
                     ResetDoubleJump();
-                    if (inputManager.GetShift()) {
+                    if (inputManager.GetShift())
+                    {
                         // On peut se décrocher du mur en appuyant sur shift
                         etat = EtatPersonnage.EN_CHUTE;
                         pointDebutSaut = transform.position;
@@ -394,52 +395,71 @@ public class Player : Character {
                         dureeMurRestante = dureeMurTimer.GetRemainingTime();
                         timerLastTimeAuMur.Reset();
 
-                    } else if (inputManager.GetJumpDown() && gm.gravityManager.HasGravity()) {
+                    }
+                    else if (inputManager.GetJumpDown() && gm.gravityManager.HasGravity())
+                    {
                         // On peut encore sauter quand on est au mur ! 
                         // Mais il faut appuyer à nouveau !
                         Jump(from: EtatPersonnage.AU_MUR);
                         move = ApplyJumpMouvement(move);
 
-                    } else if (inputManager.GetJump()) {
+                    }
+                    else if (inputManager.GetJump())
+                    {
                         // On a le droit de terminer son saut lorsqu'on touche un mur
                         move = ApplyJumpMouvement(move);
 
-                    } else {
+                    }
+                    else
+                    {
                         // Si on ne fait rien, alors on ne chute pas.
-                        if (!isGravityEffectRemoved) {
+                        if (!isGravityEffectRemoved)
+                        {
                             move = gm.gravityManager.CounterGravity(move);
                         }
                     }
 
-                    // Si ça fait trop longtemps qu'on est sur le mur
-                    // Ou que l'on s'éloigne trop du mur on tombe
-                    // Ou que l'on est trop du côté intérieur du mur
-                    Vector3 pos2mur = transform.position - pointMur;
-                    Vector3 posOnMur = Vector3.ProjectOnPlane(pos2mur, normaleMur) + pointMur;
-                    float distanceMur = (posOnMur - transform.position).magnitude; // pourtant c'est clair non ? Fais un dessins si tu comprends pas <3
-                    if (dureeMurTimer.IsOver() || distanceMur >= distanceMurMax || IsOnInternalSideOfMur(pointMur, normaleMur)) {
-                        FallFromWall();
-                    }
+                    CheckIfWeAreNotToFarFromWallForSlidding();
 
-                    // Et on veut aussi vérifier que le mur continue encore à nos cotés !
-                    // Pour ça on va lancer un rayon ! <3
-                    Ray ray = new Ray(transform.position, -normaleMur);
-                    RaycastHit[] hits = Physics.SphereCastAll(ray, GetSizeRadius(), distanceMurMax);
-                    List<string> hitTags = hits.Select(h => h.collider.tag).ToList();
-                    if (hits.Length == 0 || (!hitTags.Contains("Cube") && !hitTags.Contains("Ennemi"))) { // Pour pouvoir s'accrocher sur les Tracers inactifs !
-                        FallFromWall();
-                    } else if (hits.Length > 0 && hitTags.Contains("Cube")) { // On veut trigger les cubes sur lesquels on slide !
-                        Cube firstCube = hits.ToList().Find(h => h.collider.tag == "Cube").collider.GetComponent<Cube>();
-                        if(firstCube != null) {
-                            firstCube.InteractWithPlayer();
-                        }
-                    }
+                    CheckIfTheWallContinueForSlidding();
                     break;
                 default: break;
             }
         }
 
         return move;
+    }
+
+    protected void CheckIfWeAreNotToFarFromWallForSlidding() {
+        // Si ça fait trop longtemps qu'on est sur le mur
+        // Ou que l'on s'éloigne trop du mur on tombe
+        // Ou que l'on est trop du côté intérieur du mur
+        Vector3 pos2mur = transform.position - pointMur;
+        Vector3 posOnMur = Vector3.ProjectOnPlane(pos2mur, normaleMur) + pointMur;
+        float distanceMur = (posOnMur - transform.position).magnitude; // pourtant c'est clair non ? Fais un dessins si tu comprends pas <3
+        if (dureeMurTimer.IsOver() || distanceMur >= distanceMurMax || IsOnInternalSideOfMur(pointMur, normaleMur)) {
+            FallFromWall();
+        }
+    }
+
+    // Et on veut aussi vérifier que le mur continue encore à nos cotés !
+    // Pour ça on va lancer un rayon ! <3
+    protected void CheckIfTheWallContinueForSlidding() {
+        Ray ray = new Ray(transform.position, -normaleMur);
+        RaycastHit[] hits = Physics.SphereCastAll(ray, GetSizeRadius(), distanceMurMax);
+        // On ne veut pas interragir avec les cubes de la mort lorsque l'on slide sur eux (si on a pas commencé à slidder sur eux)
+        hits = hits.ToList().FindAll(h => h.collider.tag == "Cube" && h.collider.GetComponent<Cube>().type != Cube.CubeType.DEATH).ToArray();
+        List<string> hitTags = hits.Select(h => h.collider.tag).ToList();
+        // Pour pouvoir s'accrocher sur les Tracers inactifs !
+        if (hits.Length == 0 || (!hitTags.Contains("Cube") && !hitTags.Contains("Ennemi"))) {
+            FallFromWall();
+        // On veut trigger les cubes sur lesquels on slide !
+        } else if (hits.Length > 0 && hitTags.Contains("Cube")) {
+            Cube firstCube = hits.ToList().Find(h => h.collider.tag == "Cube").collider.GetComponent<Cube>();
+            if (firstCube != null) {
+                firstCube.InteractWithPlayer();
+            }
+        }
     }
 
     public Vector3 GetCurrentPosOnMur() {
