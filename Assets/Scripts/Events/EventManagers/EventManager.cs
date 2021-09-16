@@ -406,6 +406,9 @@ public class EventManager : MonoBehaviour {
             return;
         gameIsEnded = true;
         gameIsLost = true;
+
+        RememberGameResult(success: false);
+
         StopEventsAndEndEvents();
 
         if (reason != DeathReason.FALL_OUT)
@@ -422,8 +425,6 @@ public class EventManager : MonoBehaviour {
         gm.soundManager.PlayDefeatClip();
 
         gm.timerManager.StopScreenShake();
-
-        RememberGameResult(success: false);
 
         QuitOrReloadInSeconds();
     }

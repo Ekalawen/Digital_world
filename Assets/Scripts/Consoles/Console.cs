@@ -1064,10 +1064,10 @@ public class Console : MonoBehaviour {
 
     public void DisplayEscapeButton() {
         escapeButton.SetActive(IsConsoleVisible());
-        if (gm.eventManager.IsGameWin()) {
-            escapeButtonText.text = strings.restartButtonContinue.GetLocalizedString().Result;
-        } else {
+        if (gm.eventManager.ShouldQuitOrReload() == EventManager.QuitType.RELOAD) {
             escapeButtonText.text = strings.restartButtonRestart.GetLocalizedString().Result;
+        } else {
+            escapeButtonText.text = strings.restartButtonContinue.GetLocalizedString().Result;
         }
     }
 
