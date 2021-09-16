@@ -461,8 +461,14 @@ public class EventManager : MonoBehaviour {
         if(gm.GetMapType() == MenuLevel.LevelType.REGULAR) {
             return QuitType.RELOAD;
         }
-        if(IsNewBestScoreAfterBestScoreAssignation()) {
-            return QuitType.QUIT;
+        // Below it is only IR levels :)
+        if(IsIRFirstTresholdHasBeenBeaten()) {
+            if(HasJustBeatIRFirstTreshold()) {
+                return QuitType.QUIT;
+            }
+            if(IsNewBestScoreAfterBestScoreAssignation()) {
+                return QuitType.QUIT;
+            }
         }
         return QuitType.RELOAD;
     }
@@ -555,10 +561,17 @@ public class EventManager : MonoBehaviour {
             PrefsManager.SetBool(keyHasJustBestScore, true);
         }
 
-        string keyHighestScore = GetKeyFor(PrefsManager.BEST_SCORE_KEY);
+        string bestScoreKey = GetKeyFor(PrefsManager.BEST_SCORE_KEY);
+        string precedentBestScoreKey = GetKeyFor(PrefsManager.PRECEDENT_BEST_SCORE_KEY);
         float score = GetScore();
-        float newValueScore = PlayerPrefs.HasKey(keyHighestScore) ?  Mathf.Max(PlayerPrefs.GetFloat(keyHighestScore), score) : score;
-        PlayerPrefs.SetFloat(keyHighestScore, newValueScore);
+        float bestScore = PrefsManager.GetFloat(bestScoreKey, 0);
+        float precedentBestScore = PrefsManager.GetFloat(precedentBestScoreKey, 0);
+        if(score > bestScore) {
+            PlayerPrefs.SetFloat(bestScoreKey, score);
+            PlayerPrefs.SetFloat(precedentBestScoreKey, bestScore);
+        } else if(score > precedentBestScore) {
+            PlayerPrefs.SetFloat(precedentBestScoreKey, score);
+        }
     }
 
     protected void IncrementWinsCount() {
@@ -614,8 +627,22 @@ public class EventManager : MonoBehaviour {
     }
 
     public bool IsNewBestScoreAfterBestScoreAssignation() {
-        string key = GetKeyFor(PrefsManager.HAS_JUST_MAKE_BEST_SCORE_KEY);
-        return PrefsManager.GetBool(key, false);
+        string hasMakeBestScoreKey = GetKeyFor(PrefsManager.HAS_JUST_MAKE_BEST_SCORE_KEY);
+        string precedentBestScoreKey = GetKeyFor(PrefsManager.PRECEDENT_BEST_SCORE_KEY);
+        return PrefsManager.GetBool(hasMakeBestScoreKey, false) && PrefsManager.GetFloat(precedentBestScoreKey, 0) != 0;
+    }
+
+    protected bool IsIRFirstTresholdHasBeenBeaten() {
+        string bestScoreKey = GetKeyFor(PrefsManager.BEST_SCORE_KEY);
+        float firstTreshold = (float)gm.goalManager.GetFirstTreshold();
+        return PrefsManager.GetFloat(bestScoreKey, 0) >= firstTreshold;
+    }
+
+    protected bool HasJustBeatIRFirstTreshold() {
+        float score = GetScore();
+        float firstTreshold = (float)gm.goalManager.GetFirstTreshold();
+        string precedentBestScoreKey = GetKeyFor(PrefsManager.PRECEDENT_BEST_SCORE_KEY);
+        return score >= firstTreshold && PrefsManager.GetFloat(precedentBestScoreKey, 0) < firstTreshold;
     }
 
     protected string GetKeyFor(string keySuffix) {

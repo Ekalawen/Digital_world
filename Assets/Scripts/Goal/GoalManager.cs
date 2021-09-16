@@ -62,6 +62,10 @@ public class GoalManager : MonoBehaviour {
         return GetAllNotUnlockedTresholds().Find(n => n > dataCount);
     }
 
+    public int GetFirstTreshold() {
+        return GetAllTresholds().First();
+    }
+
     public string GetNextTresholdSymbolFor(int dataCount) {
         int nextTreshold = GetNextTresholdFor(dataCount);
         return nextTreshold == int.MaxValue ? "∞" : nextTreshold.ToString();
