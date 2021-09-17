@@ -506,4 +506,8 @@ public class MenuLevel : MonoBehaviour {
         docText = UIHelper.ApplyReplacementList(docText, selectorManager.docReplacementStrings);
         selectorManager.RunPopup(titleString, docText, TexteExplicatif.Theme.NEUTRAL);
     }
+
+    public string GetKey(string keySuffix) {
+        return GetNameId() + keySuffix;
+    }
 }

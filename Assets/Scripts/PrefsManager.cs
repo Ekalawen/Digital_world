@@ -37,6 +37,7 @@ public class PrefsManager {
     public static string HAS_DISPLAY_PATH_UNLOCK_POPUP_KEY = "HAS_DISPLAY_PATH_UNLOCK_POPUP_KEY";
     public static string IS_HIGHLIGHTED_PATH_KEY = "IS_HIGHLIGHTED_PATH_KEY";
     public static string NB_SUBMITS_PATH_KEY = "NB_SUBMITS_PATH_KEY";
+    public static string CONSEIL_INDICE_KEY = "CONSEIL_INDICE_KEY";
 
     public static string SAVE_LEVEL_NAME_KEY = "saveLevelNameKey";
     public static string SAVE_LEVEL_NAME_MUST_BE_USED_KEY = "saveLevelNameMustBeUsedKey";

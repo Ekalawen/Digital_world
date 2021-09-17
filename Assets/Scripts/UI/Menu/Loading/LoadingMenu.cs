@@ -78,7 +78,10 @@ public class LoadingMenu : MonoBehaviour {
     protected IEnumerator CInitConseil() {
         if (level != null) {
             Console console = level.consolePrefab.GetComponent<Console>();
-            LocalizedString conseil = console.conseils[UnityEngine.Random.Range(0, console.conseils.Count)];
+            string conseilKey = level.GetKey(PrefsManager.CONSEIL_INDICE_KEY);
+            int conseilIndice = PrefsManager.GetInt(conseilKey, 0);
+            PrefsManager.SetInt(conseilKey, (conseilIndice + 1) % console.conseils.Count);
+            LocalizedString conseil = console.conseils[conseilIndice];
             AsyncOperationHandle<string> handle = conseil.GetLocalizedString();
             yield return handle.Task;
             conseilText.text += handle.Result;
