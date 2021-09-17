@@ -17,6 +17,7 @@ public class TexteExplicatif : MonoBehaviour {
 
     public float nbCharactersPrintedBySeconds = 150;
     public bool dontDisableOnSpace = false;
+    public bool isInGame = false;
 
     [Header("Links")]
     public GameObject content;
@@ -75,7 +76,7 @@ public class TexteExplicatif : MonoBehaviour {
         this.textAsset = textAsset;
         this.currentTheme = theme;
         SetColorTheme(theme);
-        animationFluctuator = new Fluctuator(this, GetPopupScale, SetPopupScale, useUnscaleTime: true);
+        animationFluctuator = new Fluctuator(this, GetPopupScale, SetPopupScale, useUnscaleTime: isInGame);
     }
 
     public void InitTresholdText() {
@@ -137,7 +138,8 @@ public class TexteExplicatif : MonoBehaviour {
     protected IEnumerator CStartRevealingCharacters() {
         int nbCharacters = mainText.text.Length;
         mainText.maxVisibleCharacters = 0;
-        Timer timer = new UnpausableTimer((float)nbCharacters / nbCharactersPrintedBySeconds);
+        float timerDuration = (float)nbCharacters / nbCharactersPrintedBySeconds;
+        Timer timer = isInGame ? new UnpausableTimer(timerDuration) : new Timer(timerDuration);
         while (!timer.IsOver()) {
             int nbCharactersVisibles = (int)(nbCharacters * timer.GetAvancement());
             mainText.maxVisibleCharacters = nbCharactersVisibles;
@@ -190,7 +192,10 @@ public class TexteExplicatif : MonoBehaviour {
     }
 
     protected IEnumerator CDisableIn() {
-        yield return new WaitForSecondsRealtime(dureeCloseAnimation);
+        if(isInGame)
+            yield return new WaitForSecondsRealtime(dureeCloseAnimation);
+        else
+            yield return new WaitForSeconds(dureeCloseAnimation);
         EnableHotkeysNextFrame();
         content.SetActive(false);
     }
