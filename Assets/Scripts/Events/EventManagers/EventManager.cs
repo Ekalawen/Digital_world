@@ -645,7 +645,7 @@ public class EventManager : MonoBehaviour {
         return score >= firstTreshold && PrefsManager.GetFloat(precedentBestScoreKey, 0) < firstTreshold;
     }
 
-    protected string GetKeyFor(string keySuffix) {
+    public string GetKeyFor(string keySuffix) {
         string levelNameKey = SceneManager.GetActiveScene().name;
         return levelNameKey + keySuffix;
     }

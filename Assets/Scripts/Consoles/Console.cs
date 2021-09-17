@@ -25,6 +25,8 @@ public class Console : MonoBehaviour {
 
     public enum UIVisibility { ALL, JUST_CROSSHAIR, NOTHING };
 
+    public enum ConseilType { RANDOM, CYCLIC };
+
     [Header("Messages")]
     public LocalizedString levelVisualName;
     public List<LocalizedString> conseils; // Les conseils à dispenser au joueur !
@@ -236,7 +238,7 @@ public class Console : MonoBehaviour {
 
     protected IEnumerator CPremierGrandConseil() {
         yield return new WaitForSeconds(3.1f);
-        Conseiller(withImportantText: true);
+        Conseiller(ConseilType.CYCLIC, withImportantText: true);
     }
 
     protected LocalizedString GetDataCountDisplayMessage() {
@@ -261,7 +263,7 @@ public class Console : MonoBehaviour {
 
     protected void LancerConseils() {
         if (timerConseiller.IsOver()) {
-            Conseiller();
+            Conseiller(ConseilType.RANDOM);
             timerConseiller = new Timer(UnityEngine.Random.Range(tempsAvantConseiller.x, tempsAvantConseiller.y));
         }
     }
@@ -640,11 +642,19 @@ public class Console : MonoBehaviour {
 		AjouterMessage (phrase, TypeText.GREEN_TEXT);
 	}
 
-    protected void Conseiller(bool withImportantText = false) {
+    protected void Conseiller(ConseilType conseilType, bool withImportantText = false) {
         if (conseils.Count == 0)
             return;
 
-        LocalizedString conseil = conseils[UnityEngine.Random.Range(0, conseils.Count)];
+        int conseilIndice;
+        if (conseilType == ConseilType.CYCLIC) {
+            string conseilKey = gm.eventManager.GetKeyFor(PrefsManager.CONSEIL_INDICE_KEY);
+            conseilIndice = PrefsManager.GetInt(conseilKey, 0);
+            PrefsManager.SetInt(conseilKey, (conseilIndice + 1) % conseils.Count);
+        } else {
+            conseilIndice = UnityEngine.Random.Range(0, conseils.Count);
+        }
+        LocalizedString conseil = conseils[conseilIndice];
         StartCoroutine(CConseiller(conseil, withImportantText));
     }
 
