@@ -12,29 +12,44 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a964fc2ed4cf954cb98c399e0951951, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  touchSondeMessage:
+  readDocMessage:
     timedMessage:
-      message:
+      localizedString:
         m_TableReference:
           m_TableCollectionName: GUID:0589e7d3c8829a243a3f17f1b80e6301
         m_TableEntryReference:
           m_KeyId: 809288154193920
           m_Key: 
-      type: 2
-      duree: 2
+        m_FallbackState: 0
+      type: 0
       timing: 50
+      duree: 3
+    useSound: 1
+  touchSondeMessage:
+    timedMessage:
+      localizedString:
+        m_TableReference:
+          m_TableCollectionName: GUID:0589e7d3c8829a243a3f17f1b80e6301
+        m_TableEntryReference:
+          m_KeyId: 85056876642017280
+          m_Key: 
+        m_FallbackState: 0
+      type: 0
+      timing: 100
+      duree: 3
     useSound: 1
   jumpOnSondeMessage:
     timedMessage:
-      message:
+      localizedString:
         m_TableReference:
           m_TableCollectionName: GUID:0589e7d3c8829a243a3f17f1b80e6301
         m_TableEntryReference:
           m_KeyId: 809387802468352
           m_Key: 
-      type: 2
-      duree: 2
+        m_FallbackState: 0
+      type: 0
       timing: 150
+      duree: 3
     useSound: 1
 --- !u!1001 &2004253452606249415
 PrefabInstance:

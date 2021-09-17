@@ -6,6 +6,7 @@ using UnityEngine.Events;
 
 public class HelperFirstSonde : MonoBehaviour {
 
+    public HelperMessage readDocMessage;
     public HelperMessage touchSondeMessage;
     public HelperMessage jumpOnSondeMessage;
 
@@ -19,7 +20,10 @@ public class HelperFirstSonde : MonoBehaviour {
 
     public void Update() {
         float dureePartie = gm.timerManager.initialTime;
-        if (!hasBeenHit && gm.timerManager.GetRemainingTime() <= dureePartie - touchSondeMessage.GetTiming()) {
+        if (gm.timerManager.GetRemainingTime() <= dureePartie - readDocMessage.GetTiming()) {
+            readDocMessage.DisplayMessage();
+        }
+        if (/*!hasBeenHit && */gm.timerManager.GetRemainingTime() <= dureePartie - touchSondeMessage.GetTiming()) {
             touchSondeMessage.DisplayMessage();
         }
         if (gm.timerManager.GetRemainingTime() <= dureePartie - jumpOnSondeMessage.GetTiming()) {
