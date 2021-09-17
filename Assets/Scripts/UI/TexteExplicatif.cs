@@ -75,7 +75,7 @@ public class TexteExplicatif : MonoBehaviour {
         this.textAsset = textAsset;
         this.currentTheme = theme;
         SetColorTheme(theme);
-        animationFluctuator = new Fluctuator(this, GetPopupScale, SetPopupScale);
+        animationFluctuator = new Fluctuator(this, GetPopupScale, SetPopupScale, useUnscaleTime: true);
     }
 
     public void InitTresholdText() {
@@ -137,7 +137,7 @@ public class TexteExplicatif : MonoBehaviour {
     protected IEnumerator CStartRevealingCharacters() {
         int nbCharacters = mainText.text.Length;
         mainText.maxVisibleCharacters = 0;
-        Timer timer = new Timer((float)nbCharacters / nbCharactersPrintedBySeconds);
+        Timer timer = new UnpausableTimer((float)nbCharacters / nbCharactersPrintedBySeconds);
         while (!timer.IsOver()) {
             int nbCharactersVisibles = (int)(nbCharacters * timer.GetAvancement());
             mainText.maxVisibleCharacters = nbCharactersVisibles;
@@ -190,7 +190,7 @@ public class TexteExplicatif : MonoBehaviour {
     }
 
     protected IEnumerator CDisableIn() {
-        yield return new WaitForSeconds(dureeCloseAnimation);
+        yield return new WaitForSecondsRealtime(dureeCloseAnimation);
         EnableHotkeysNextFrame();
         content.SetActive(false);
     }

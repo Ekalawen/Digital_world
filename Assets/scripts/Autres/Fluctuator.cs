@@ -13,13 +13,15 @@ public class Fluctuator {
     protected Getter GetValue;
     protected Setter SetValue;
     protected AnimationCurve globalCurve;
+    protected bool useUnscaleTime;
 
-    public Fluctuator(MonoBehaviour monoBehavior, Getter getter, Setter setter, AnimationCurve curve = null) {
+    public Fluctuator(MonoBehaviour monoBehavior, Getter getter, Setter setter, AnimationCurve curve = null, bool useUnscaleTime = false) {
         this.monoBehavior = monoBehavior;
         this.GetValue = getter;
         this.SetValue = setter;
         this.coroutine = null;
         this.globalCurve = curve;
+        this.useUnscaleTime = useUnscaleTime;
     }
 
     public void GoTo(float targetValue, float duration, AnimationCurve oneTimeCurve = null) {
@@ -30,7 +32,7 @@ public class Fluctuator {
     }
 
     protected IEnumerator CGoTo(float targetValue, float duration, AnimationCurve oneTimeCurve) {
-        Timer timer = new Timer(duration);
+        Timer timer = useUnscaleTime ? new UnpausableTimer(duration) : new Timer(duration);
         float startValue = GetValue();
         while(!timer.IsOver()) {
             float avancement = ApplyCurve(timer.GetAvancement(), oneTimeCurve, globalCurve);
