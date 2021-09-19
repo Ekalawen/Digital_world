@@ -18,6 +18,13 @@ public class GetCubesHelper : MonoBehaviour {
         WITH_N_VOISINS,
     };
 
+    public enum HowToGetCubesInCubesEnsembles {
+        ALL,
+        FIX_QUANTITY,
+        PROPORTION,
+    }
+
+
     public HowToGetCubes howToGetCubes = HowToGetCubes.ALL;
     [ConditionalHide("howToGetCubes", HowToGetCubes.OF_TYPE)]
     public Cube.CubeType cubeType = Cube.CubeType.NORMAL;
@@ -31,6 +38,12 @@ public class GetCubesHelper : MonoBehaviour {
     public float areaSphereRadius = 0f;
     [ConditionalHide("howToGetCubes", HowToGetCubes.IN_CUBE_ENSEMBLES)]
     public CubeEnsemble.CubeEnsembleType cubeEnsembleType;
+    [ConditionalHide("howToGetCubes", HowToGetCubes.IN_CUBE_ENSEMBLES)]
+    public HowToGetCubesInCubesEnsembles howToGetCubesInCubeEnsemble;
+    [ConditionalHide("howToGetCubesInCubeEnsemble", HowToGetCubesInCubesEnsembles.FIX_QUANTITY)]
+    public int cubeEnsembleQuantity = 1;
+    [ConditionalHide("howToGetCubesInCubeEnsemble", HowToGetCubesInCubesEnsembles.PROPORTION)]
+    public float cubeEnsembleProportion = 0.5f;
     [ConditionalHide("howToGetCubes", HowToGetCubes.WITH_N_VOISINS)]
     public int nbCubesVoisins = 4;
     public List<GetHelperModifier> modifiers;
@@ -104,8 +117,17 @@ public class GetCubesHelper : MonoBehaviour {
     protected List<Cube> GetCubesInCubeEnsembles() {
         List<CubeEnsemble> cubeEnsembles = map.GetCubeEnsemblesOfType(cubeEnsembleType);
         List<Cube> cubes = new List<Cube>();
-        foreach (CubeEnsemble cubeEnsemble in cubeEnsembles)
-            cubes.AddRange(cubeEnsemble.GetCubes());
+        if (howToGetCubesInCubeEnsemble == HowToGetCubesInCubesEnsembles.ALL) {
+            cubes.AddRange(cubeEnsembles.SelectMany(ce => ce.GetCubes()));
+        } else if (howToGetCubesInCubeEnsemble == HowToGetCubesInCubesEnsembles.FIX_QUANTITY) {
+            MathTools.Shuffle(cubeEnsembles);
+            cubeEnsembles = cubeEnsembles.Take(cubeEnsembleQuantity).ToList();
+            cubes.AddRange(cubeEnsembles.SelectMany(ce => ce.GetCubes()));
+        } else { // HowToGetCubesInCubesEnsembles.PROPORTION
+            MathTools.Shuffle(cubeEnsembles);
+            cubeEnsembles = cubeEnsembles.Take(Mathf.RoundToInt(cubeEnsembles.Count * cubeEnsembleProportion)).ToList();
+            cubes.AddRange(cubeEnsembles.SelectMany(ce => ce.GetCubes()));
+        }
         return cubes;
     }
 
