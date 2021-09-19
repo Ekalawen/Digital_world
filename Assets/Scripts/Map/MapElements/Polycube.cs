@@ -6,14 +6,22 @@ using UnityEngine;
 
 public class Polycube : CubeEnsemble {
 
+    public enum ChosingVoisinsMethodType { UNIFORM, LESS_CUBES_FIRST, MORE_CUBES_FIRST };
+
     public Vector3 depart;
     public int nbInitCubes = 5;
     public int distanceArround = 1;
+    public ChosingVoisinsMethodType chosingVoisinsMethodType;
+    public float coefChosingMethod;
 
-    public Polycube(Vector3 depart, int nbInitCubes, int distanceArround, bool stayInMap) : base() {
+    public Polycube(Vector3 depart, int nbInitCubes, int distanceArround, bool stayInMap,
+        ChosingVoisinsMethodType chosingVoisinsMethodType = ChosingVoisinsMethodType.UNIFORM,
+        float coefChosingMethod = 1) : base() {
         this.depart = depart;
         this.nbInitCubes = nbInitCubes;
         this.distanceArround = distanceArround;
+        this.chosingVoisinsMethodType = chosingVoisinsMethodType;
+        this.coefChosingMethod = coefChosingMethod;
 
         AssertGoodStartingPosition();
         GeneratePolycube(stayInMap);
@@ -33,18 +41,44 @@ public class Polycube : CubeEnsemble {
         CreateCube(depart);
         nbCubesToCreate--;
 
-        for(int i = 0; i < nbCubesToCreate; i++) {
+        for(int i = 0; i < nbCubesToCreate; i++)
+        {
             List<Vector3> voisinsLibres = GetPossiblesVoisins();
-            if (stayInMap) {
+            if (stayInMap)
+            {
                 voisinsLibres = voisinsLibres.FindAll(v => map.IsInRegularMap(v));
             }
-            if(voisinsLibres.Count == 0) {
-                nbInitCubes -= nbCubesToCreate - i;
+            if (voisinsLibres.Count == 0)
+            {
+                nbInitCubes -= nbCubesToCreate - i; // = cubes.Count ?
                 break;
             }
-            Vector3 voisinChosen = MathTools.GetOne(voisinsLibres);
+            Vector3 voisinChosen = ChoiceVoisin(voisinsLibres);
             CreateCube(voisinChosen); // Add to cubes
         }
+    }
+
+    protected Vector3 ChoiceVoisin(List<Vector3> voisinsLibres) {
+        if(chosingVoisinsMethodType == ChosingVoisinsMethodType.UNIFORM) {
+            return MathTools.ChoiceOne(voisinsLibres);
+        } else {
+            List<float> nbPolycubeVoisins;
+            if (chosingVoisinsMethodType == ChosingVoisinsMethodType.LESS_CUBES_FIRST) {
+                nbPolycubeVoisins = voisinsLibres.Select(vl => (float)GetPolycubesVoisins(vl, 1).Count).ToList();
+                float maxVoisins = nbPolycubeVoisins.Max();
+                nbPolycubeVoisins = nbPolycubeVoisins.Select(nb => maxVoisins + 1 - nb).ToList();
+            } else { // MORE_CUBES_FIRST
+                nbPolycubeVoisins = voisinsLibres.Select(vl => /*1 +*/ (float)GetPolycubesVoisins(vl, 1).Count).ToList(); // Don't need +1 cause we always have at least 1 voisin ! :)
+            }
+            float maxWeight = nbPolycubeVoisins.Max();
+            List<float> weights = nbPolycubeVoisins.Select(w => w / maxWeight).ToList();
+            weights = weights.Select(w => Mathf.Pow(w, coefChosingMethod)).ToList();
+            return MathTools.ChoiceOneWeighted(voisinsLibres, weights);
+        }
+    }
+
+    public List<Vector3> GetPolycubesVoisins(Vector3 pos, int distance) {
+        return Positions().FindAll(p => MathTools.DistanceLInfini(p, pos) <= distance);
     }
 
     protected List<Vector3> GetPossiblesVoisins() {

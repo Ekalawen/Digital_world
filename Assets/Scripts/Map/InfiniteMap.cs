@@ -137,15 +137,7 @@ public class InfiniteMap : MapManager {
     }
 
     protected GameObject GetRandomBlockPrefab() {
-        float totalWeight = blockWeights.Sum(bw => bw.weight);
-        float randomNumber = UnityEngine.Random.Range(0f, 1f) * totalWeight;
-        float sum = 0;
-        for(int i = 0; i < blockWeights.Count; i++) {
-            sum += blockWeights[i].weight;
-            if (randomNumber <= sum)
-                return blockWeights[i].block;
-        }
-        return blockWeights.Last().block;
+        return MathTools.ChoiceOneWeighted(blockWeights.Select(bw => bw.block).ToList(), blockWeights.Select(bw => bw.weight).ToList());
     }
 
     protected GameObject GetRandomNotCompletedBlockPrefab() {

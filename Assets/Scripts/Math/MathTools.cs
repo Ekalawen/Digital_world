@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public static class MathTools
 {
@@ -67,8 +68,21 @@ public static class MathTools
         return UnityEngine.Random.Range(source * (1 - percentage), source * (1 + percentage));
     }
 
-    public static T GetOne<T>(List<T> vector) {
+    public static T ChoiceOne<T>(List<T> vector) {
         return vector[UnityEngine.Random.Range(0, vector.Count)];
+    }
+
+    public static T ChoiceOneWeighted<T>(List<T> vector, List<float> weights) {
+        Assert.AreEqual(vector.Count, weights.Count, "Les tailles des listes dans ChoiceOneWeighted doivent être égales ! :)");
+        float totalWeight = weights.Sum();
+        float randomNumber = UnityEngine.Random.Range(0f, 1f) * totalWeight;
+        float sum = 0;
+        for(int i = 0; i < weights.Count; i++) {
+            sum += weights[i];
+            if (randomNumber <= sum)
+                return vector[i];
+        }
+        return vector.Last();
     }
 
     public static bool AreListEqual<T>(List<T> l1, List<T> l2) {

@@ -20,6 +20,9 @@ public class GeneratePolycubes : GenerateCubesMapFunction {
     public Vector2Int nbInitCubesRange = new Vector2Int(5, 10);
     public int makeSpaceArroundAtEndDistance = 0;
     public bool stayInMap = true;
+    public Polycube.ChosingVoisinsMethodType chosingVoisinsMethodType = Polycube.ChosingVoisinsMethodType.UNIFORM;
+    [ConditionalHide("!chosingVoisinsMethodType", Polycube.ChosingVoisinsMethodType.UNIFORM)]
+    public float coefChosingMethod = 2;
 
     public override void Activate() {
         GenerateAllPolycubes();
@@ -64,7 +67,7 @@ public class GeneratePolycubes : GenerateCubesMapFunction {
         try {
             Vector3 depart = GetPolycubeStartingPosition();
             int nbInitCubes = MathTools.RandBetween(nbInitCubesRange);
-            Polycube polycube = new Polycube(depart, nbInitCubes, makeSpaceArroundAtEndDistance, stayInMap);
+            Polycube polycube = new Polycube(depart, nbInitCubes, makeSpaceArroundAtEndDistance, stayInMap, chosingVoisinsMethodType, coefChosingMethod);
             return polycube;
         } catch(NoPolycubeStartingPositionException) {
             return null;
@@ -80,10 +83,10 @@ public class GeneratePolycubes : GenerateCubesMapFunction {
             throw new NoPolycubeStartingPositionException();
         }
 
-        Vector3 chosenPosition = MathTools.GetOne(emptyPositions);
+        Vector3 chosenPosition = MathTools.ChoiceOne(emptyPositions);
         while(!Polycube.IsGoodStartingPosition(chosenPosition, makeSpaceArroundAtEndDistance, map) && emptyPositions.Count > 1) {
             emptyPositions.Remove(chosenPosition);
-            chosenPosition = MathTools.GetOne(emptyPositions);
+            chosenPosition = MathTools.ChoiceOne(emptyPositions);
         }
         if(emptyPositions.Count <= 1) {
             throw new NoPolycubeStartingPositionException();
