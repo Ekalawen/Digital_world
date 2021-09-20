@@ -527,11 +527,30 @@ public class MapManager : MonoBehaviour {
 
     public bool MoveCubeTo(Cube cube, Vector3 newPosition) {
         Vector3 oldPosition = cube.transform.position;
+        Vector3 roundedOldPosition = MathTools.Round(oldPosition);
         Vector3 roundedNewPosition = MathTools.Round(newPosition);
+
+        // On vérifie que l'on ne sera pas à moitié dans un autre cube
         Cube otherCube = GetCubeAt(roundedNewPosition);
         if(otherCube != null && otherCube != cube) {
             return false;
         }
+
+        // On vérifie que l'on ne touchera pas du tout le prochain cube
+        Vector3 mouvement = newPosition - oldPosition;
+        Vector3 mouvementNormalized = mouvement.normalized;
+        if(roundedNewPosition == roundedOldPosition && mouvement.magnitude <= 1) {
+            // Si on sera "après" le "cube de départ"
+            if(Vector3.Dot(newPosition, mouvementNormalized) > Vector3.Dot(roundedNewPosition, mouvementNormalized)) {
+                otherCube = GetCubeAt(roundedNewPosition + mouvementNormalized);
+                if(otherCube != null && otherCube != cube) {
+                    newPosition = roundedNewPosition; // On se met alors pile au bon endroit :)
+                    // C'est un peu fourbe puisque au lieu de dire que le mouvement n'a pas fonctionné, on l'ajuste comme on "imagine" que le voulait l'appelant, ce qui pourra être génant par la suite ^^
+                }
+            }
+        }
+
+        // On met à jour la position ! :)
         cube.transform.position = newPosition;
         if(MathTools.IsRounded(oldPosition)) {
             cubesRegular[(int)oldPosition.x, (int)oldPosition.y, (int)oldPosition.z] = null;

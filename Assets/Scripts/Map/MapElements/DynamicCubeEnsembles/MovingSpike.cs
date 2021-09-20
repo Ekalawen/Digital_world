@@ -21,14 +21,16 @@ public class MovingSpike : DynamicCubeEnsemble {
     protected Vector3 end;
     protected float delay;
     protected Coroutine coroutine = null;
+    protected bool shouldDisplayPrevisualization;
 
-    public void Initialize(Vector3 start, Vector3 direction, float delay)
+    public void Initialize(Vector3 start, Vector3 direction, float delay, bool shouldDisplayPrevisualization)
     {
         base.Initialize();
         this.start = start;
         this.direction = direction;
         this.end = ComputeEnd();
         this.delay = delay;
+        this.shouldDisplayPrevisualization = shouldDisplayPrevisualization;
         if (CanStartAtThisPosition(start)) {
             coroutine = StartCoroutine(CStartSpike());
         } else {
@@ -55,8 +57,10 @@ public class MovingSpike : DynamicCubeEnsemble {
     protected IEnumerator CStartSpike() {
         yield return new WaitForSeconds(delay);
 
-        Lightning lightning = Instantiate(previsualizationLightningPrefab).GetComponent<Lightning>();
-        lightning.Initialize(start, end, Lightning.PivotType.EXTREMITY);
+        if (shouldDisplayPrevisualization) {
+            Lightning lightning = Instantiate(previsualizationLightningPrefab).GetComponent<Lightning>();
+            lightning.Initialize(start, end, Lightning.PivotType.EXTREMITY);
+        }
 
         yield return new WaitForSeconds(previsualizationTime);
 
@@ -65,7 +69,7 @@ public class MovingSpike : DynamicCubeEnsemble {
 
         yield return new WaitForSeconds(dissolveTime);
 
-        int distance = (int)(end - start).magnitude;
+        float distance = Vector3.Distance(start, end);
         float time = distance / speed;
         Timer timer = new Timer(time);
         while(!timer.IsOver()) {
@@ -73,6 +77,8 @@ public class MovingSpike : DynamicCubeEnsemble {
             Vector3 newPosition = Vector3.Lerp(start, end, avancement);
             bool moveSucceed = cube.MoveTo(newPosition);
             if(!moveSucceed) {
+                //end = MathTools.Round(newPosition);
+                //cube.MoveTo(end);
                 break;
             }
             yield return null;

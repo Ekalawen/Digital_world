@@ -8,6 +8,7 @@ public class DeathWallEvent : RandomEvent {
     public GameObject movingSpikePrefab;
     public float delayCoef = 0.02f;
     public float delayRandPercentage = 0.01f;
+    public int previsualizationModulo = 1;
 
     protected MapManager map;
     protected List<MovingSpike> movingSpikes;
@@ -16,6 +17,7 @@ public class DeathWallEvent : RandomEvent {
         base.Start();
         map = gm.map;
         movingSpikes = new List<MovingSpike>();
+        this.esperanceDuree = ComputeEsperanceDuree();
     }
 
     protected override void StartEvent() {
@@ -26,7 +28,8 @@ public class DeathWallEvent : RandomEvent {
             MovingSpike movingSpike = Instantiate(movingSpikePrefab, parent: transform).GetComponent<MovingSpike>();
             float delay = Vector3.Distance(leadingPosition, startingPosition) * delayCoef;
             delay = Mathf.Max(0, MathTools.RandArround(delay, delayRandPercentage));
-            movingSpike.Initialize(startingPosition, mainDirection, delay);
+            bool shouldDisplayPrevisualization = (startingPosition.x + startingPosition.y + startingPosition.z) % previsualizationModulo == 0;
+            movingSpike.Initialize(startingPosition, mainDirection, delay, shouldDisplayPrevisualization);
             movingSpikes.Add(movingSpike);
         }
     }
@@ -67,6 +70,13 @@ public class DeathWallEvent : RandomEvent {
             }
         }
         movingSpikes.Clear();
+    }
+
+    protected float ComputeEsperanceDuree() {
+        MovingSpike movingSpike = movingSpikePrefab.GetComponent<MovingSpike>();
+        float maxTailleMap = Mathf.Max(map.tailleMap.x, map.tailleMap.y, map.tailleMap.z);
+        float movingTime = maxTailleMap / movingSpike.speed;
+        return movingSpike.dissolveTime + movingSpike.previsualizationTime + movingSpike.decomposeTime + movingTime;
     }
 }
 
