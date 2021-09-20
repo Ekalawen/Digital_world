@@ -563,7 +563,9 @@ public class MapManager : MonoBehaviour {
             nonRegularOctree.Add(cube);
         }
         cube.UpdateColorForNewPosition(oldPosition);
-        gm.player.DoubleCheckInteractWithCube(cube);
+        if(gm.player.DoubleCheckInteractWithCube(cube)) {
+            cube.InteractWithPlayer();
+        }
         return true;
     }
 
