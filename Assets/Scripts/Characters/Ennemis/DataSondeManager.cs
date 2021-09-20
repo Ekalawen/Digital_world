@@ -28,7 +28,7 @@ public class DataSondeManager : MonoBehaviour {
         foreach(OrbTrigger orbTrigger in dataSondesTriggers) {
             orbTrigger.Resize(orbTrigger.transform.position, Vector3.zero);
         }
-        OrbTrigger chosenOne = MathTools.ChoiceOne(dataSondesTriggers);
+        OrbTrigger chosenOne = MathTools.ChoseOne(dataSondesTriggers);
         chosenOne.Initialize(chosenOne.rayon, chosenOne.durationToActivate);
     }
 

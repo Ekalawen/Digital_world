@@ -83,10 +83,10 @@ public class GeneratePolycubes : GenerateCubesMapFunction {
             throw new NoPolycubeStartingPositionException();
         }
 
-        Vector3 chosenPosition = MathTools.ChoiceOne(emptyPositions);
+        Vector3 chosenPosition = MathTools.ChoseOne(emptyPositions);
         while(!Polycube.IsGoodStartingPosition(chosenPosition, makeSpaceArroundAtEndDistance, map) && emptyPositions.Count > 1) {
             emptyPositions.Remove(chosenPosition);
-            chosenPosition = MathTools.ChoiceOne(emptyPositions);
+            chosenPosition = MathTools.ChoseOne(emptyPositions);
         }
         if(emptyPositions.Count <= 1) {
             throw new NoPolycubeStartingPositionException();

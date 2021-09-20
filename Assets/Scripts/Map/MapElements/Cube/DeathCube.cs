@@ -27,6 +27,8 @@ public class DeathCube : NonBlackCube {
     }
 
     public virtual void KillPlayer() {
-        gm.eventManager.LoseGame(EventManager.DeathReason.TOUCHED_DEATH_CUBE);
+        if (!gm.eventManager.IsGameOver()) {
+            gm.eventManager.LoseGame(EventManager.DeathReason.TOUCHED_DEATH_CUBE);
+        }
     }
 }

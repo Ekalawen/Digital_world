@@ -150,5 +150,6 @@ public class IntersectionEvent : RandomEvent {
             if(coroutine != null)
                 StopCoroutine(coroutine);
         }
+        coroutines.Clear();
     }
 }

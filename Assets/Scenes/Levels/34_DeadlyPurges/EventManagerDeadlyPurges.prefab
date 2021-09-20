@@ -9,7 +9,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1848378137720066, guid: 4ad9af6763aeb45c8962c1fadb06c2eb, type: 3}
       propertyPath: m_Name
-      value: EventManagerFullSwapPolycubes
+      value: EventManagerDeadlyPurges
       objectReference: {fileID: 0}
     - target: {fileID: 4331339866297836, guid: 4ad9af6763aeb45c8962c1fadb06c2eb, type: 3}
       propertyPath: m_RootOrder
@@ -72,9 +72,20 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 114622475871070300, guid: 4ad9af6763aeb45c8962c1fadb06c2eb,
         type: 3}
+      propertyPath: eventsPrefabs.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114622475871070300, guid: 4ad9af6763aeb45c8962c1fadb06c2eb,
+        type: 3}
       propertyPath: nbCubesToDestroyByPeriod
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114622475871070300, guid: 4ad9af6763aeb45c8962c1fadb06c2eb,
+        type: 3}
+      propertyPath: eventsPrefabs.Array.data[0]
+      value: 
+      objectReference: {fileID: 6732515167519668042, guid: 79199a7672a0da145be20f2daa0823ca,
+        type: 3}
     - target: {fileID: 114622475871070300, guid: 4ad9af6763aeb45c8962c1fadb06c2eb,
         type: 3}
       propertyPath: endEventCubesDestructionType
@@ -108,13 +119,53 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 114622475871070300, guid: 4ad9af6763aeb45c8962c1fadb06c2eb,
         type: 3}
+      propertyPath: endEventCurveSpeed.m_Curve.Array.data[0].time
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114622475871070300, guid: 4ad9af6763aeb45c8962c1fadb06c2eb,
+        type: 3}
       propertyPath: endEventCurveSpeed.m_Curve.Array.data[1].time
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114622475871070300, guid: 4ad9af6763aeb45c8962c1fadb06c2eb,
         type: 3}
+      propertyPath: endEventCurveSpeed.m_Curve.Array.data[2].time
+      value: 0.8967794
+      objectReference: {fileID: 0}
+    - target: {fileID: 114622475871070300, guid: 4ad9af6763aeb45c8962c1fadb06c2eb,
+        type: 3}
+      propertyPath: endEventCurveSpeed.m_Curve.Array.data[3].time
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114622475871070300, guid: 4ad9af6763aeb45c8962c1fadb06c2eb,
+        type: 3}
+      propertyPath: endEventCurveSpeed.m_Curve.Array.data[4].time
+      value: 0.9958353
+      objectReference: {fileID: 0}
+    - target: {fileID: 114622475871070300, guid: 4ad9af6763aeb45c8962c1fadb06c2eb,
+        type: 3}
+      propertyPath: endEventCurveSpeed.m_Curve.Array.data[0].value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114622475871070300, guid: 4ad9af6763aeb45c8962c1fadb06c2eb,
+        type: 3}
       propertyPath: endEventCurveSpeed.m_Curve.Array.data[1].value
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114622475871070300, guid: 4ad9af6763aeb45c8962c1fadb06c2eb,
+        type: 3}
+      propertyPath: endEventCurveSpeed.m_Curve.Array.data[2].value
+      value: 0.009079662
+      objectReference: {fileID: 0}
+    - target: {fileID: 114622475871070300, guid: 4ad9af6763aeb45c8962c1fadb06c2eb,
+        type: 3}
+      propertyPath: endEventCurveSpeed.m_Curve.Array.data[3].value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114622475871070300, guid: 4ad9af6763aeb45c8962c1fadb06c2eb,
+        type: 3}
+      propertyPath: endEventCurveSpeed.m_Curve.Array.data[4].value
+      value: 1.0049013
       objectReference: {fileID: 0}
     - target: {fileID: 114622475871070300, guid: 4ad9af6763aeb45c8962c1fadb06c2eb,
         type: 3}
@@ -125,6 +176,21 @@ PrefabInstance:
         type: 3}
       propertyPath: endEventCurveSpeed.m_Curve.Array.data[1].inSlope
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114622475871070300, guid: 4ad9af6763aeb45c8962c1fadb06c2eb,
+        type: 3}
+      propertyPath: endEventCurveSpeed.m_Curve.Array.data[2].inSlope
+      value: 0.04425996
+      objectReference: {fileID: 0}
+    - target: {fileID: 114622475871070300, guid: 4ad9af6763aeb45c8962c1fadb06c2eb,
+        type: 3}
+      propertyPath: endEventCurveSpeed.m_Curve.Array.data[3].inSlope
+      value: 9.600027
+      objectReference: {fileID: 0}
+    - target: {fileID: 114622475871070300, guid: 4ad9af6763aeb45c8962c1fadb06c2eb,
+        type: 3}
+      propertyPath: endEventCurveSpeed.m_Curve.Array.data[4].inSlope
+      value: 0.039110985
       objectReference: {fileID: 0}
     - target: {fileID: 114622475871070300, guid: 4ad9af6763aeb45c8962c1fadb06c2eb,
         type: 3}
@@ -143,6 +209,36 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 114622475871070300, guid: 4ad9af6763aeb45c8962c1fadb06c2eb,
         type: 3}
+      propertyPath: endEventCurveSpeed.m_Curve.Array.data[2].inWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 114622475871070300, guid: 4ad9af6763aeb45c8962c1fadb06c2eb,
+        type: 3}
+      propertyPath: endEventCurveSpeed.m_Curve.Array.data[2].outSlope
+      value: 0.04425996
+      objectReference: {fileID: 0}
+    - target: {fileID: 114622475871070300, guid: 4ad9af6763aeb45c8962c1fadb06c2eb,
+        type: 3}
+      propertyPath: endEventCurveSpeed.m_Curve.Array.data[3].inWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 114622475871070300, guid: 4ad9af6763aeb45c8962c1fadb06c2eb,
+        type: 3}
+      propertyPath: endEventCurveSpeed.m_Curve.Array.data[3].outSlope
+      value: 9.600027
+      objectReference: {fileID: 0}
+    - target: {fileID: 114622475871070300, guid: 4ad9af6763aeb45c8962c1fadb06c2eb,
+        type: 3}
+      propertyPath: endEventCurveSpeed.m_Curve.Array.data[4].inWeight
+      value: 0.12683348
+      objectReference: {fileID: 0}
+    - target: {fileID: 114622475871070300, guid: 4ad9af6763aeb45c8962c1fadb06c2eb,
+        type: 3}
+      propertyPath: endEventCurveSpeed.m_Curve.Array.data[4].outSlope
+      value: 0.039110985
+      objectReference: {fileID: 0}
+    - target: {fileID: 114622475871070300, guid: 4ad9af6763aeb45c8962c1fadb06c2eb,
+        type: 3}
       propertyPath: endEventCurveSpeed.m_Curve.Array.data[0].outWeight
       value: 0
       objectReference: {fileID: 0}
@@ -153,12 +249,37 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 114622475871070300, guid: 4ad9af6763aeb45c8962c1fadb06c2eb,
         type: 3}
+      propertyPath: endEventCurveSpeed.m_Curve.Array.data[2].outWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 114622475871070300, guid: 4ad9af6763aeb45c8962c1fadb06c2eb,
+        type: 3}
+      propertyPath: endEventCurveSpeed.m_Curve.Array.data[3].outWeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114622475871070300, guid: 4ad9af6763aeb45c8962c1fadb06c2eb,
+        type: 3}
+      propertyPath: endEventCurveSpeed.m_Curve.Array.data[4].outWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 114622475871070300, guid: 4ad9af6763aeb45c8962c1fadb06c2eb,
+        type: 3}
       propertyPath: endEventCurveSpeed.m_Curve.Array.data[0].tangentMode
       value: 34
       objectReference: {fileID: 0}
     - target: {fileID: 114622475871070300, guid: 4ad9af6763aeb45c8962c1fadb06c2eb,
         type: 3}
       propertyPath: endEventCurveSpeed.m_Curve.Array.data[1].tangentMode
+      value: 34
+      objectReference: {fileID: 0}
+    - target: {fileID: 114622475871070300, guid: 4ad9af6763aeb45c8962c1fadb06c2eb,
+        type: 3}
+      propertyPath: endEventCurveSpeed.m_Curve.Array.data[2].tangentMode
+      value: 136
+      objectReference: {fileID: 0}
+    - target: {fileID: 114622475871070300, guid: 4ad9af6763aeb45c8962c1fadb06c2eb,
+        type: 3}
+      propertyPath: endEventCurveSpeed.m_Curve.Array.data[3].tangentMode
       value: 34
       objectReference: {fileID: 0}
     m_RemovedComponents: []

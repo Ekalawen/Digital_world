@@ -60,7 +60,7 @@ public class Polycube : CubeEnsemble {
 
     protected Vector3 ChoiceVoisin(List<Vector3> voisinsLibres) {
         if(chosingVoisinsMethodType == ChosingVoisinsMethodType.UNIFORM) {
-            return MathTools.ChoiceOne(voisinsLibres);
+            return MathTools.ChoseOne(voisinsLibres);
         } else {
             List<float> nbPolycubeVoisins;
             if (chosingVoisinsMethodType == ChosingVoisinsMethodType.LESS_CUBES_FIRST) {
@@ -73,7 +73,7 @@ public class Polycube : CubeEnsemble {
             float maxWeight = nbPolycubeVoisins.Max();
             List<float> weights = nbPolycubeVoisins.Select(w => w / maxWeight).ToList();
             weights = weights.Select(w => Mathf.Pow(w, coefChosingMethod)).ToList();
-            return MathTools.ChoiceOneWeighted(voisinsLibres, weights);
+            return MathTools.ChoseOneWeighted(voisinsLibres, weights);
         }
     }
 

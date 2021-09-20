@@ -1,0 +1,144 @@
+M1, M2, M3
+p1, p2, p3
+
+p1 = 0.2
+p2 = 0.3
+p3 = 0.5
+
+fonction f : [0, 1]^3 * R => [0, 1]^3
+lambda € [0, 1]
+
+Cas 1 (equiprobable):
+lambda = 0
+==> 
+pf1 = pf2 = pf3 = 1/3
+f0: pfn = 1 / n
+
+Cas 2:
+lambda = 1
+==> 
+pf1 = 0
+pf2 = 0
+pf3 = 1
+f1: pfn = pn is max ? 1 : 0
+
+Cas 3:
+lambda = 0.5
+==> 
+pf1 = 0.05
+pf2 = 0.08
+pf2 = 0.87
+
+Cas 4:
+p1 = 0.1
+p2 = 0.1
+p3 = 0.1
+p4 = 0.7
+lambda = 0 ==> pf1 = pf2 = pf3 = pf4 = 1/4
+lambda = 1 ==> pf1 = pf2 = pf3 = 0, pf4 = 1
+lambda = 0.5 ==> pf1 = pf2 = pf3 = 0.05, pf4 = 0.85
+lambda = 0.9 ==> pf1 = pf2 = pf3 = 0.01, pf4 = 0.97
+
+Cas 5:
+p1 = 0.11
+p2 = 0.12
+p3 = 0.13
+p4 = 0.64
+..........xxx.............................................................x...................................
+lambda = 0 ==> pf1 = pf2 = pf3 = pf4 = 1/4
+lambda = 1 ==> pf1 = pf2 = pf3 = 0, pf4 = 1
+lambda = 0.1 ==> pf1 = 0.241, pf2 = 0.242, pf3 = 0.243, pf4 = 0.274
+lambda = 0.5 ==> pf1 = 0.051, pf2 = 0.052, pf3 = 0.053, pf4 = 0.844
+lambda = 0.9 ==> pf1 = 0.011, pf2 = 0.012, pf3 = 0.013, pf4 = 0.964
+
+q1 = p1 - 0 = 0.11
+q2 = p2 - p1 = 0.1
+q3 = p3 - p2 = 0.1
+q4 = p4 - p3 = 0.51
+
+qn = pn - p(n-1)
+f(x) = x^2
+f2(x) = e^x
+
+pf1 = f(q1) = 0.01
+pf2 = f(q2) = 0.01
+pf3 = f(q3) = 0.01
+pf4 = f(q4) = 0.25
+
+sum(2, 3, 4) = 9
+sum(2, 2, 4) = 8
+sum(2, 2, 2, 3, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2) = 28
+sum(2, 2, 2, 3, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2) = 30
+sum(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 30) = 30
+
+1 / n = 1 / array.Count
+
+flambda : [0, 1]^n * R => [0, 1]^n, n € N+
+
+
+Cas 6:
+n = 32
+Il y a 32 M.
+Il y a 4 P.
+lambda = 0.9
+p0 = 21 ==> 0.01 / somme des 32 points
+p0 = 21 ==> 0.01 / somme des 32 points
+p0 = 21 ==> 0.01 / somme des 32 points
+p0 = 21 ==> 0.01 / somme des 32 points
+p0 = 21 ==> 0.01 / somme des 32 points
+p0 = 21 ==> 0.01 / somme des 32 points
+p0 = 21 ==> 0.01 / somme des 32 points
+p0 = 21 ==> 0.01 / somme des 32 points
+p0 = 21 ==> 0.01 / somme des 32 points
+p0 = 21 ==> 0.01 / somme des 32 points
+-------
+p1 = 22 ==> 0.1 / somme des 32 points
+p1 = 22 ==> 0.1 / somme des 32 points
+p1 = 22 ==> 0.1 / somme des 32 points
+p1 = 22 ==> 0.1 / somme des 32 points
+p1 = 22 ==> 0.1 / somme des 32 points
+p1 = 22 ==> 0.1 / somme des 32 points
+p1 = 22 ==> 0.1 / somme des 32 points
+p1 = 22 ==> 0.1 / somme des 32 points
+p1 = 22 ==> 0.1 / somme des 32 points
+p1 = 22 ==> 0.1 / somme des 32 points
+-------
+p2 = 23 ==> 0.9 / somme des 32 points
+p2 = 23 ==> 0.9 / somme des 32 points
+p2 = 23 ==> 0.9 / somme des 32 points
+p2 = 23 ==> 0.9 / somme des 32 points
+p2 = 23 ==> 0.9 / somme des 32 points
+p2 = 23 ==> 0.9 / somme des 32 points
+p2 = 23 ==> 0.9 / somme des 32 points
+p2 = 23 ==> 0.9 / somme des 32 points
+p2 = 23 ==> 0.9 / somme des 32 points
+p2 = 23 ==> 0.9 / somme des 32 points
+-------
+p3 = 24 ==> 0.99 / somme des 32 points
+p3 = 24 ==> 0.99 / somme des 32 points
+
+après renormalization de tous les points
+p0 ==> 0
+p1 ==> 0
+p2 ==> 0
+p3 ==> 1 / 2
+
+fexp(x, lambda) = 1 + lambda * x + lambda^2 * x^2 / 2
+fexp(x, 0) = 1
+fexp(x, 1) = 1 + x + x^2 / 2
+fexp(x, 0.5) = 1 + x / 2 + x^2 / 8
+
+fexp(x, lambda) = (exp(lambda * x) - 1) / (exp(lambda) - 1)) + eps
+fexp(x, 0) = exp(0)
+fexp(0, 0) = eps
+fexp(0.5, 0) = eps
+fexp(1, 0) = eps
+fexp(x, 0) = fexp(y, 0) V(x, y) € [0, 1]^2       <== On veut ça
+fexp(x, 1) = exp(x)
+fexp(0, 1) = eps
+fexp(0.5, 1) != eps
+fexp(1, 1) = 1 + eps
+
+
+flambda = lambda * f0 + (1 - lambda) * f1
+==> cette fonction ne fonctionne pas !

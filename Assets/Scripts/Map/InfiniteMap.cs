@@ -137,7 +137,7 @@ public class InfiniteMap : MapManager {
     }
 
     protected GameObject GetRandomBlockPrefab() {
-        return MathTools.ChoiceOneWeighted(blockWeights.Select(bw => bw.block).ToList(), blockWeights.Select(bw => bw.weight).ToList());
+        return MathTools.ChoseOneWeighted(blockWeights.Select(bw => bw.block).ToList(), blockWeights.Select(bw => bw.weight).ToList());
     }
 
     protected GameObject GetRandomNotCompletedBlockPrefab() {

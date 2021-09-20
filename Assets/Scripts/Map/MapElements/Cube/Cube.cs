@@ -174,6 +174,20 @@ public class Cube : MonoBehaviour {
             }
         }
     }
+    public void UpdateColorForNewPosition(Vector3 oldPosition) {
+        ColorManager colorManager = gm.colorManager;
+        foreach(ColorSource colorSource in colorManager.sources) {
+            if (Vector3.Distance(oldPosition, colorSource.transform.position) <= colorSource.range) {
+                colorSource.RemoveCube(this);
+            }
+        }
+        SetColor(Color.black);
+        foreach(ColorSource colorSource in colorManager.sources) {
+            if (Vector3.Distance(transform.position, colorSource.transform.position) <= colorSource.range) {
+                colorSource.AddCube(this);
+            }
+        }
+    }
 
     public Color GetColor() {
         return GetMaterial().color;
@@ -592,5 +606,9 @@ public class Cube : MonoBehaviour {
                                   || (localPos.x == HalfExtent() && localPos.z == HalfExtent())
                                   || (localPos.y == HalfExtent() && localPos.z == HalfExtent());
         return areAllInCube && atLeast2AtExtremities;
+    }
+
+    public bool MoveTo(Vector3 newPosition) {
+        return gm.map.MoveCubeTo(this, newPosition);
     }
 }

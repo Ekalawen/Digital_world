@@ -20,7 +20,7 @@ public class AddLumieresNotInCaves : GenerateLumieresMapFunction {
 
         int nbLumieresToAdd = Mathf.Min(nbLumieres, emptyPositionsNotInCaves.Count);
         for(int i = 0; i < nbLumieresToAdd; i++) {
-            Vector3 posLumiere = MathTools.ChoiceOne(emptyPositionsNotInCaves);
+            Vector3 posLumiere = MathTools.ChoseOne(emptyPositionsNotInCaves);
             map.CreateLumiere(posLumiere, lumiereType);
             emptyPositionsNotInCaves.Remove(posLumiere);
         }

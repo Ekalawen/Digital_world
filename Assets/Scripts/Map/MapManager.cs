@@ -49,6 +49,7 @@ public class MapManager : MonoBehaviour {
     //protected List<Cube> cubesNonRegular; // Toutes les autres positions (non-entières ou en-dehors de la map)
     protected Octree nonRegularOctree; // Toutes les autres positions (non-entières ou en-dehors de la map)
     [HideInInspector] public List<MapElement> mapElements;
+    [HideInInspector] public List<DynamicCubeEnsemble> dynamicCubeEnsembles;
     [HideInInspector]
     protected List<Lumiere> lumieres;
     [HideInInspector]
@@ -80,6 +81,7 @@ public class MapManager : MonoBehaviour {
         particlesFolder.transform.SetParent(mapFolder);
         InitPlayerStartComponent();
         mapElements = new List<MapElement>();
+        dynamicCubeEnsembles = new List<DynamicCubeEnsemble>();
         lumieres = new List<Lumiere>();
         cubesRegular = new Cube[tailleMap.x + 1, tailleMap.y + 1, tailleMap.z + 1];
         for (int i = 0; i <= tailleMap.x; i++)
@@ -216,6 +218,9 @@ public class MapManager : MonoBehaviour {
         }
         foreach(MapElement mapElement in mapElements) {
             mapElement.OnDeleteCube(cube);
+        }
+        foreach(DynamicCubeEnsemble dynamicCubeEnsemble in dynamicCubeEnsembles) {
+            dynamicCubeEnsemble.OnDeleteCube(cube);
         }
         StoreCubeInPool(cube);
     }
@@ -445,6 +450,102 @@ public class MapManager : MonoBehaviour {
         return offsetFromSides <= pos.x && pos.x <= tailleMap.x - offsetFromSides
         && offsetFromSides <= pos.y && pos.y <= tailleMap.y - offsetFromSides
         && offsetFromSides <= pos.z && pos.z <= tailleMap.z - offsetFromSides;
+    }
+
+    public bool IsOnMapBordure(Vector3 pos) {
+        return pos.x == 0 || pos.x == tailleMap.x
+            || pos.y == 0 || pos.y == tailleMap.y
+            || pos.z == 0 || pos.z == tailleMap.z;
+    }
+
+    public List<Vector3> GetAllPositionsOnBordures() {
+        List<Vector3> positions = new List<Vector3>();
+        positions.AddRange(GetAllPositionsOnBorduresHaut());
+        positions.AddRange(GetAllPositionsOnBorduresBas());
+        positions.AddRange(GetAllPositionsOnBorduresGauche());
+        positions.AddRange(GetAllPositionsOnBorduresDroite());
+        positions.AddRange(GetAllPositionsOnBorduresAvant());
+        positions.AddRange(GetAllPositionsOnBorduresArriere());
+        positions = MathTools.RemoveDoublons(positions);
+        return positions;
+    }
+
+    public List<Vector3> GetAllPositionsOnBorduresHaut() {
+        List<Vector3> positions = new List<Vector3>();
+        for(int x = 0; x <= tailleMap.x; x++) {
+            for(int z = 0; z <= tailleMap.z; z++) {
+                positions.Add(new Vector3(x, tailleMap.y, z));
+            }
+        }
+        return positions;
+    }
+    public List<Vector3> GetAllPositionsOnBorduresBas() {
+        List<Vector3> positions = new List<Vector3>();
+        for(int x = 0; x <= tailleMap.x; x++) {
+            for(int z = 0; z <= tailleMap.z; z++) {
+                positions.Add(new Vector3(x, 0, z));
+            }
+        }
+        return positions;
+    }
+    public List<Vector3> GetAllPositionsOnBorduresGauche() {
+        List<Vector3> positions = new List<Vector3>();
+        for(int y = 0; y <= tailleMap.y; y++) {
+            for(int z = 0; z <= tailleMap.z; z++) {
+                positions.Add(new Vector3(0, y, z));
+            }
+        }
+        return positions;
+    }
+    public List<Vector3> GetAllPositionsOnBorduresDroite() {
+        List<Vector3> positions = new List<Vector3>();
+        for(int y = 0; y <= tailleMap.y; y++) {
+            for(int z = 0; z <= tailleMap.z; z++) {
+                positions.Add(new Vector3(tailleMap.x, y, z));
+            }
+        }
+        return positions;
+    }
+    public List<Vector3> GetAllPositionsOnBorduresAvant() {
+        List<Vector3> positions = new List<Vector3>();
+        for(int x = 0; x <= tailleMap.x; x++) {
+            for(int y = 0; y <= tailleMap.y; y++) {
+                positions.Add(new Vector3(x, y, tailleMap.z));
+            }
+        }
+        return positions;
+    }
+    public List<Vector3> GetAllPositionsOnBorduresArriere() {
+        List<Vector3> positions = new List<Vector3>();
+        for(int x = 0; x <= tailleMap.x; x++) {
+            for(int y = 0; y <= tailleMap.y; y++) {
+                positions.Add(new Vector3(x, y, 0));
+            }
+        }
+        return positions;
+    }
+
+    public bool MoveCubeTo(Cube cube, Vector3 newPosition) {
+        Vector3 oldPosition = cube.transform.position;
+        Vector3 roundedNewPosition = MathTools.Round(newPosition);
+        Cube otherCube = GetCubeAt(roundedNewPosition);
+        if(otherCube != null && otherCube != cube) {
+            return false;
+        }
+        cube.transform.position = newPosition;
+        if(MathTools.IsRounded(oldPosition)) {
+            cubesRegular[(int)oldPosition.x, (int)oldPosition.y, (int)oldPosition.z] = null;
+        } else {
+            nonRegularOctree.Remove(cube);
+        }
+        if(MathTools.IsRounded(newPosition)) {
+            cubesRegular[(int)newPosition.x, (int)newPosition.y, (int)newPosition.z] = cube;
+        } else {
+            nonRegularOctree.Add(cube);
+        }
+        cube.UpdateColorForNewPosition(oldPosition);
+        gm.player.DoubleCheckInteractWithCube(cube);
+        return true;
     }
 
     public List<Cube> GetAllCubes() {
@@ -1179,6 +1280,10 @@ public class MapManager : MonoBehaviour {
 
     public List<MapElement> GetMapElements() {
         return mapElements;
+    }
+
+    public List<DynamicCubeEnsemble> GetAllDynamicCubeEnsembles() {
+        return dynamicCubeEnsembles;
     }
 
     public List<T> GetMapElementsOfType<T>() where T : MapElement {

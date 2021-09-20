@@ -25,7 +25,7 @@ public class AddLumieresInCaves : GenerateLumieresMapFunction {
         }
         int nbGrandesCaves = cavesGrandes.Count;
         for(int k = 0; k < nbGrandesCaves; k++) {
-            Cave chosenCave = MathTools.ChoiceOne(cavesGrandes);
+            Cave chosenCave = MathTools.ChoseOne(cavesGrandes);
             if(chosenCave.AddNLumiereInside(1)) {
                 break;
             }
