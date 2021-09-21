@@ -126,9 +126,11 @@ public class DeathWallEvent : RandomEvent {
 
     protected float ComputeEsperanceDuree() {
         MovingSpike movingSpike = movingSpikePrefab.GetComponent<MovingSpike>();
-        float maxTailleMap = Mathf.Max(map.tailleMap.x, map.tailleMap.y, map.tailleMap.z);
+        BoundingBox boundingBox = map.GetBoundingBox();
+        float maxTailleMap = positionMode != PositionsMode.MAP_SIZE ?
+            Mathf.Max(boundingBox.width, boundingBox.height, boundingBox.depth) : Mathf.Max(map.tailleMap.x, map.tailleMap.y, map.tailleMap.z);
         float movingTime = maxTailleMap / movingSpike.speed;
-        return movingSpike.dissolveTime + movingSpike.previsualizationTime + movingSpike.decomposeTime + movingTime;
+        return movingSpike.previsualizationTime + movingSpike.dissolveTime + movingTime + movingSpike.decomposeTime;
     }
 }
 
