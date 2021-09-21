@@ -8,7 +8,6 @@ public class DeathWallEvent : RandomEvent {
     public GameObject movingSpikePrefab;
     public float delayCoef = 0.02f;
     public float delayRandPercentage = 0.01f;
-    public int previsualizationModulo = 1;
 
     protected MapManager map;
     protected List<MovingSpike> movingSpikes;
@@ -26,10 +25,9 @@ public class DeathWallEvent : RandomEvent {
         Vector3 leadingPosition = MathTools.ChoseOne(startingPositions);
         foreach (Vector3 startingPosition in startingPositions) {
             MovingSpike movingSpike = Instantiate(movingSpikePrefab, parent: transform).GetComponent<MovingSpike>();
-            float delay = Vector3.Distance(leadingPosition, startingPosition) * delayCoef;
-            delay = Mathf.Max(0, MathTools.RandArround(delay, delayRandPercentage));
-            bool shouldDisplayPrevisualization = (startingPosition.x + startingPosition.y + startingPosition.z) % previsualizationModulo == 0;
-            movingSpike.Initialize(startingPosition, mainDirection, delay, shouldDisplayPrevisualization);
+            float previsualizationDelay = Vector3.Distance(leadingPosition, startingPosition) * delayCoef;
+            previsualizationDelay = Mathf.Max(0, MathTools.RandArround(previsualizationDelay, delayRandPercentage));
+            movingSpike.Initialize(startingPosition, mainDirection, previsualizationDelay, shouldDisplayPrevisualization: true);
             movingSpikes.Add(movingSpike);
         }
     }

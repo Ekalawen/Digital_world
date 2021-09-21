@@ -19,20 +19,22 @@ public class MovingSpike : DynamicCubeEnsemble {
     protected Vector3 start;
     protected Vector3 direction;
     protected Vector3 end;
-    protected float delay;
-    protected Coroutine coroutine = null;
+    protected float previsualizationDelay;
+    protected Coroutine coroutinePrevisualization = null;
+    protected Coroutine coroutineSpike = null;
     protected bool shouldDisplayPrevisualization;
 
-    public void Initialize(Vector3 start, Vector3 direction, float delay, bool shouldDisplayPrevisualization)
+    public void Initialize(Vector3 start, Vector3 direction, float previsualizationDelay, bool shouldDisplayPrevisualization)
     {
         base.Initialize();
         this.start = start;
         this.direction = direction;
         this.end = ComputeEnd();
-        this.delay = delay;
+        this.previsualizationDelay = previsualizationDelay;
         this.shouldDisplayPrevisualization = shouldDisplayPrevisualization;
         if (CanStartAtThisPosition(start)) {
-            coroutine = StartCoroutine(CStartSpike());
+            coroutinePrevisualization = StartCoroutine(CStartPrevisualization());
+            coroutineSpike = StartCoroutine(CStartSpike());
         } else {
             DestroyCubeEnsemble();
         }
@@ -54,14 +56,16 @@ public class MovingSpike : DynamicCubeEnsemble {
         return current;
     }
 
+    protected IEnumerator CStartPrevisualization() {
+        yield return new WaitForSeconds(previsualizationDelay);
+
+        if (shouldDisplayPrevisualization) {
+            Lightning lightning = Instantiate(previsualizationLightningPrefab).GetComponent<Lightning>();
+            lightning.Initialize(start, end, Lightning.PivotType.EXTREMITY);
+        }
+    }
+
     protected IEnumerator CStartSpike() {
-        yield return new WaitForSeconds(delay);
-
-        //if (shouldDisplayPrevisualization) {
-        //    Lightning lightning = Instantiate(previsualizationLightningPrefab).GetComponent<Lightning>();
-        //    lightning.Initialize(start, end, Lightning.PivotType.EXTREMITY);
-        //}
-
         yield return new WaitForSeconds(previsualizationTime);
 
         Cube cube = CreateCube(start);
@@ -99,8 +103,11 @@ public class MovingSpike : DynamicCubeEnsemble {
     }
 
     public void Stop() {
-        if(coroutine != null) {
-            StopCoroutine(coroutine);
+        if(coroutinePrevisualization != null) {
+            StopCoroutine(coroutinePrevisualization);
+        }
+        if(coroutineSpike != null) {
+            StopCoroutine(coroutineSpike);
         }
     }
 }
