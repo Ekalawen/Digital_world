@@ -41,4 +41,8 @@ public class NonBlackCube : Cube {
         base.SetColor(color);
         colorHasBeenChanged = true;
     }
+
+    public override bool IsBlack() {
+        return GetColor() == ColorSource.LimiteColorSaturation(Color.black, NonBlackCube.minColorSaturationAndValue);
+    }
 }

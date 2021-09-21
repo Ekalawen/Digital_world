@@ -29,12 +29,10 @@ public class Cube : MonoBehaviour {
         SetName();
         isStored = false;
         InitializeMaterials();
-        if (shouldRegisterToColorSources || gm.timerManager.HasGameStarted())
-        {
+        if (shouldRegisterToColorSources || gm.timerManager.HasGameStarted()) {
             RegisterCubeToColorSources();
         }
-        if (startAsLinky)
-        {
+        if (startAsLinky) {
             SetLinky();
         }
         SetDissolveOnInitialization();
@@ -182,10 +180,15 @@ public class Cube : MonoBehaviour {
                 colorSource.AddCube(this);
             }
         }
-        if(GetColor() == ColorSource.LimiteColorSaturation(Color.black, NonBlackCube.minColorSaturationAndValue)) {
-            Debug.Log($"Couleur noir ! x)");
+        if(IsBlack()) {
+            colorManager.GenerateColorSourceAt(transform.position);
         }
     }
+
+    public virtual bool IsBlack() {
+        return GetColor() == Color.black;
+    }
+
     public void UpdateColorForNewPosition(Vector3 oldPosition) {
         ColorManager colorManager = gm.colorManager;
         foreach(ColorSource colorSource in colorManager.GetAllColorSourcesInSphere(oldPosition, colorManager.porteeSourceRange.y)) {
