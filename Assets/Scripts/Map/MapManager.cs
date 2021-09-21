@@ -238,7 +238,7 @@ public class MapManager : MonoBehaviour {
         }
         cube.ResetBeforeStoring();
         cubesPools[cube.type].Push(cube);
-        transform.SetParent(cubesPoolsFolder);
+        cube.transform.SetParent(cubesPoolsFolder);
         cube.gameObject.SetActive(false);
     }
 

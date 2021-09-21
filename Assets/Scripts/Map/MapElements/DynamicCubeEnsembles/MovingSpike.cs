@@ -93,7 +93,7 @@ public class MovingSpike : DynamicCubeEnsemble {
         }
 
         cube.Decompose(decomposeTime);
-        yield return new WaitForSeconds(decomposeTime);
+        yield return new WaitForSeconds(decomposeTime + 1); // +1 For security :)
 
         DestroyCubeEnsemble();
     }

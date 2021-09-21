@@ -66,7 +66,7 @@ public abstract class DynamicCubeEnsemble : MonoBehaviour {
         foreach(Cube cube in cubes) {
             cube.Destroy();
         }
-        //Destroy(cubesEnsembleFolder);
+        Destroy(cubesEnsembleFolder);
         Destroy(gameObject);
     }
 }
