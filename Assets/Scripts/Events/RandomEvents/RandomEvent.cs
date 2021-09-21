@@ -9,24 +9,25 @@ public abstract class RandomEvent : MonoBehaviour {
     public float varianceApparition = 4.0f;
     public float esperanceDuree = 5.0f;
     public float varianceDuree = 0.0f;
+    public float startOffset = 0.0f;
     public bool bPlayEndSound = true;
 
     protected bool bEventIsOn = false;
     protected float dureeCourante = 0.0f;
-    protected Timer timer;
     protected GameManager gm;
 
     public virtual void Start() {
         gm = GameManager.Instance;
-        timer = new Timer(NextTime());
+        StartCoroutine(CStartEvents());
     }
 
-    protected void Update() {
-        if(timer.IsOver() && !gm.eventManager.IsGameOver()) {
-            if (!bEventIsOn) {
+    protected IEnumerator CStartEvents() {
+        yield return new WaitForSeconds(startOffset);
+        while (!gm.eventManager.IsGameOver()) {
+            yield return new WaitForSeconds(NextTime());
+            if(!bEventIsOn) {
                 TriggerEvent();
             }
-            timer = new Timer(NextTime());
         }
     }
 

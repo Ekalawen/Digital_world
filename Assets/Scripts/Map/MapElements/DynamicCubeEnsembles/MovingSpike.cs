@@ -73,7 +73,7 @@ public class MovingSpike : DynamicCubeEnsemble {
         yield return new WaitForSeconds(previsualizationTime);
 
         Cube cube = CreateCube(start);
-        cube.SetDissolveTime(dissolveTime);
+        cube.StartDissolveEffect(dissolveTime);
 
         yield return new WaitForSeconds(dissolveTime);
 

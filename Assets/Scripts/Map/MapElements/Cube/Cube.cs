@@ -47,7 +47,9 @@ public class Cube : MonoBehaviour {
         }
     }
 
-    public void SetDissolveTime(float dissolveTime) {
+    // Cette fonction ne met pas à jour le material ! Elle attend que StartDissolveEffect soit appelé à l'initialization pour être utile
+    // Il vaudra mieux la supprimer pour la remplacer par StartDissolveEffect à un moment. Je ne le fais pas pour le moment par peur de casser des trucs :)
+    public void SetDissolveTimeBeCareful(float dissolveTime) {
         dissolveTimeToUse = dissolveTime;
         StartCoroutine(CSetOpaqueMaterialIn(dissolveTime));
     }
@@ -55,8 +57,8 @@ public class Cube : MonoBehaviour {
     public void SetDissolveOnInitialization() {
         if (gm.map == null)
             return;
-        if(!gm.IsInitializationOver())
-            return;
+        //if(!gm.IsInitializationOver()) // Je ne me rappelle plus pourquoi j'avais cette condition, du coup je l'enlève. Je l'enlève car lorsque les cubes sont recyclés, ça les empêche de lancer leur dissolve effect à nouveau ! :)
+        //    return;
 
         if(gm.timerManager.GetElapsedTime() >= 1.0f) {
             float dissolveTime = dissolveTimeToUse != -1 ? dissolveTimeToUse : gm.postProcessManager.dissolveInGameTime;
@@ -207,9 +209,15 @@ public class Cube : MonoBehaviour {
         BothMaterialsSetColor("_LinkyCubeColor1", Color.black); // Attention ! Dans le shader on a "color * 2" à cause d'un bug, ce pourquoi ici c'est plus sombre que la vrai couleur ! ;)
     }
 
+    protected void ResetDissolveAndDecomposeStartingTimes() {
+        transparentMaterial.SetFloat("_DissolveStartingTime", 0);
+        transparentMaterial.SetFloat("_DecomposeStartingTime", 999999f);
+    }
+
     public void ResetBeforeStoring() {
         UnSetLinky();
         ResetColor();
+        ResetDissolveAndDecomposeStartingTimes();
         startAsLinky = false;
         if (transparentMaterial != null) {
             SetMaterial(transparentMaterial);

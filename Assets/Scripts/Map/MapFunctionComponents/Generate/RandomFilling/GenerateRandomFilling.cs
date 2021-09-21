@@ -32,7 +32,7 @@ public class GenerateRandomFilling : GenerateCubesMapFunction {
             FullBlock fb = new FullBlock(finalPos, Vector3Int.one * sizeCubeRandomFilling, cleanSpaceBeforeSpawning: false);
             if(setDissolveTime) {
                 foreach(Cube cube in fb.GetCubes()) {
-                    cube.SetDissolveTime(dissolveTime);
+                    cube.SetDissolveTimeBeCareful(dissolveTime);
                 }
             }
             if (registerToColorSources)

@@ -83,7 +83,7 @@ public class PouvoirBridgeBuilder : IPouvoir {
         // Créer le cube
         if (gm.map.CubeFarEnoughtFromLumieres(position)) {
             Cube cube = gm.map.AddCube(position, Cube.CubeType.NORMAL, orientation);
-            cube.SetDissolveTime(cubesDissolveTime);
+            cube.SetDissolveTimeBeCareful(cubesDissolveTime);
             //cube.ShouldRegisterToColorSources();
             cube.RegisterCubeToColorSources();
         }
