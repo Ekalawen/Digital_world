@@ -186,6 +186,7 @@ public class MapManager : MonoBehaviour {
         Cube cube = cubesPool.Pop();
         cube.gameObject.SetActive(true);
         cube.transform.SetParent(cubesFolder);
+        cube.SetColor(Color.black);
         return cube;
     }
 
