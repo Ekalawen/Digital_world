@@ -448,7 +448,7 @@ public class Player : Character {
         Ray ray = new Ray(transform.position, -normaleMur);
         RaycastHit[] hits = Physics.SphereCastAll(ray, GetSizeRadius(), distanceMurMax);
         // On ne veut pas interragir avec les cubes de la mort lorsque l'on slide sur eux (si on a pas commencé à slidder sur eux)
-        hits = hits.ToList().FindAll(h => h.collider.tag == "Cube" && h.collider.GetComponent<Cube>().type != Cube.CubeType.DEATH).ToArray();
+        hits = hits.ToList().FindAll(h => h.collider.tag == "Cube" && CanSlideOnThisCube(h.collider.GetComponent<Cube>())).ToArray();
         List<string> hitTags = hits.Select(h => h.collider.tag).ToList();
         // Pour pouvoir s'accrocher sur les Tracers inactifs !
         if (hits.Length == 0 || (!hitTags.Contains("Cube") && !hitTags.Contains("Ennemi"))) {
@@ -460,6 +460,10 @@ public class Player : Character {
                 firstCube.InteractWithPlayer();
             }
         }
+    }
+
+    protected bool CanSlideOnThisCube(Cube cube) {
+        return cube.type != Cube.CubeType.DEATH || cube.IsDecomposing();
     }
 
     public Vector3 GetCurrentPosOnMur() {
