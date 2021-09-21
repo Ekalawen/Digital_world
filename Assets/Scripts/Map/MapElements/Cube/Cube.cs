@@ -168,7 +168,7 @@ public class Cube : MonoBehaviour {
 
     public virtual void RegisterCubeToColorSources() {
         ColorManager colorManager = gm.colorManager;
-        foreach(ColorSource colorSource in colorManager.sources) {
+        foreach(ColorSource colorSource in colorManager.GetAllColorSources()) {
             if (Vector3.Distance(transform.position, colorSource.transform.position) <= colorSource.range) {
                 colorSource.AddCube(this);
             }
@@ -176,16 +176,16 @@ public class Cube : MonoBehaviour {
     }
     public void UpdateColorForNewPosition(Vector3 oldPosition) {
         ColorManager colorManager = gm.colorManager;
-        foreach(ColorSource colorSource in colorManager.sources) {
-            if (Vector3.Distance(oldPosition, colorSource.transform.position) <= colorSource.range) {
+        foreach(ColorSource colorSource in colorManager.GetAllColorSourcesInSphere(oldPosition, colorManager.porteeSourceRange.y)) {
+            //if (Vector3.Distance(oldPosition, colorSource.transform.position) <= colorSource.range) {
                 colorSource.RemoveCube(this);
-            }
+            //}
         }
         SetColor(Color.black);
-        foreach(ColorSource colorSource in colorManager.sources) {
-            if (Vector3.Distance(transform.position, colorSource.transform.position) <= colorSource.range) {
+        foreach(ColorSource colorSource in colorManager.GetAllColorSourcesInSphere(transform.position, colorManager.porteeSourceRange.y)) {
+            //if (Vector3.Distance(transform.position, colorSource.transform.position) <= colorSource.range) {
                 colorSource.AddCube(this);
-            }
+            //}
         }
     }
 

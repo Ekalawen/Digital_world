@@ -4,35 +4,35 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class Octree {
+public class Octree<T> where T : MonoBehaviour {
 
-    protected static int SIZE_OCTREE_CELL = 8;
+    protected Dictionary<Vector3Int, List<T>> octree;
+    protected int cellSize;
 
-    protected Dictionary<Vector3Int, List<Cube>> octree;
-
-    public Octree() {
-        octree = new Dictionary<Vector3Int, List<Cube>>();
+    public Octree(int cellSize) {
+        octree = new Dictionary<Vector3Int, List<T>>();
+        this.cellSize = cellSize;
     }
 
-    public Vector3Int GetCellIndice(Cube cube) {
+    public Vector3Int GetCellIndice(T cube) {
         return GetCellIndice(cube.transform.position);
     }
 
     public Vector3Int GetCellIndice(Vector3 pos) {
-        return MathTools.FloorToInt(pos / SIZE_OCTREE_CELL);
+        return MathTools.FloorToInt(pos / cellSize);
     }
 
-    public void Add(Cube cube) {
+    public void Add(T cube) {
         Vector3Int cellIndice = GetCellIndice(cube);
         if(!octree.ContainsKey(cellIndice)) {
-            List<Cube> newCubesList = new List<Cube>() { cube };
+            List<T> newCubesList = new List<T>() { cube };
             octree.Add(cellIndice, newCubesList);
         } else {
             octree[cellIndice].Add(cube);
         }
     }
 
-    public Cube GetAt(Vector3 pos) {
+    public T GetAt(Vector3 pos) {
         Vector3Int cellIndice = GetCellIndice(pos);
         if (!octree.ContainsKey(cellIndice)) {
             return null;
@@ -41,7 +41,7 @@ public class Octree {
         }
     }
 
-    public bool Contains(Cube cube) {
+    public bool Contains(T cube) {
         Vector3Int cellIndice = GetCellIndice(cube);
         if (!octree.ContainsKey(cellIndice)) {
             return false;
@@ -50,12 +50,12 @@ public class Octree {
         }
     }
 
-    public Cube PopAt(Vector3 pos) {
+    public T PopAt(Vector3 pos) {
         Vector3Int cellIndice = GetCellIndice(pos);
         if (!octree.ContainsKey(cellIndice)) {
             return null;
         } else {
-            Cube cube = octree[cellIndice].Find(c => c.transform.position == pos);
+            T cube = octree[cellIndice].Find(c => c.transform.position == pos);
             if(cube != null) {
                 octree[cellIndice].Remove(cube);
             }
@@ -73,8 +73,8 @@ public class Octree {
         }
     }
 
-    public List<Cube> GetInSphere(Vector3 center, float radius) {
-        List<Cube> cubes = new List<Cube>();
+    public List<T> GetInSphere(Vector3 center, float radius) {
+        List<T> cubes = new List<T>();
         List<Vector3Int> cells = GetCellsInSphere(center, radius);
         foreach(Vector3Int cell in cells) {
             cubes.AddRange(octree[cell].FindAll(c => Vector3.Distance(c.transform.position, center) <= radius));
@@ -94,18 +94,18 @@ public class Octree {
     }
 
     public CubeInt GetCubeIntFromCell(Vector3Int cell) {
-        return new CubeInt(cell * SIZE_OCTREE_CELL, Vector3Int.one * SIZE_OCTREE_CELL);
+        return new CubeInt(cell * cellSize, Vector3Int.one * cellSize);
     }
 
-    public void Remove(Cube cube) {
+    public void Remove(T cube) {
         Vector3Int cell = GetCellIndice(cube);
         if(octree.ContainsKey(cell)) {
             octree[cell].Remove(cube);
         }
     }
 
-    public List<Cube> GetInBox(Vector3 center, Vector3 halfExtents) {
-        List<Cube> cubes = new List<Cube>();
+    public List<T> GetInBox(Vector3 center, Vector3 halfExtents) {
+        List<T> cubes = new List<T>();
         List<Vector3Int> cells = GetCellsInBox(center, halfExtents);
         foreach(Vector3Int cell in cells) {
             CubeInt cellCube = GetCubeIntFromCell(cell);
@@ -125,8 +125,8 @@ public class Octree {
         return cells;
     }
 
-    public List<Cube> GetAll() {
-        List<Cube> cubes = new List<Cube>();
+    public List<T> GetAll() {
+        List<T> cubes = new List<T>();
         foreach(Vector3Int cell in octree.Keys) {
             cubes.AddRange(octree[cell]);
         }

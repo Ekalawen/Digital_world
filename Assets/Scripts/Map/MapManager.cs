@@ -47,7 +47,7 @@ public class MapManager : MonoBehaviour {
 
     protected Cube[,,] cubesRegular; // Toutes les positions entières dans [0, tailleMap]
     //protected List<Cube> cubesNonRegular; // Toutes les autres positions (non-entières ou en-dehors de la map)
-    protected Octree nonRegularOctree; // Toutes les autres positions (non-entières ou en-dehors de la map)
+    protected Octree<Cube> nonRegularOctree; // Toutes les autres positions (non-entières ou en-dehors de la map)
     [HideInInspector] public List<MapElement> mapElements;
     [HideInInspector] public List<DynamicCubeEnsemble> dynamicCubeEnsembles;
     [HideInInspector]
@@ -88,7 +88,7 @@ public class MapManager : MonoBehaviour {
             for (int j = 0; j <= tailleMap.y; j++)
                 for (int k = 0; k <= tailleMap.z; k++)
                     cubesRegular[i, j, k] = null;
-        nonRegularOctree = new Octree();
+        nonRegularOctree = new Octree<Cube>(cellSize: 8);
         swappyCubesHolderManagers = new List<SwappyCubesHolderManager>();
         cubesPools = new Dictionary<Cube.CubeType, Stack<Cube>>();
 
@@ -562,7 +562,7 @@ public class MapManager : MonoBehaviour {
         } else {
             nonRegularOctree.Add(cube);
         }
-        cube.UpdateColorForNewPosition(oldPosition);
+        //cube.UpdateColorForNewPosition(oldPosition); // ==> Beaucoup trop coûteux en performances alors qu'on ne le remarque même pas ! :D
         if(gm.player.DoubleCheckInteractWithCube(cube)) {
             cube.InteractWithPlayer();
             if(mouvement.magnitude <= 1 && cube.ShouldPushPlayerWhenMoveAndInteractingWithHim()) {

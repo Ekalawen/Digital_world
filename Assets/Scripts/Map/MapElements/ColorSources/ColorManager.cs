@@ -54,7 +54,7 @@ public class ColorManager : MonoBehaviour {
     [HideInInspector]
     public GameObject colorSourceFolder;
 
-    [HideInInspector] public List<ColorSource> sources;
+    protected Octree<ColorSource> sourcesOctree = new Octree<ColorSource>(cellSize: 8);
 
     public virtual void Initialize() {
         map = FindObjectOfType<MapManager>();
@@ -210,7 +210,7 @@ public class ColorManager : MonoBehaviour {
         GameObject go = Instantiate(colorSourcePrefab, position, Quaternion.identity, colorSourceFolder.transform);
         ColorSource source = go.GetComponent<ColorSource>();
         source.Initialize(GetColor(themes), Random.Range(porteeSourceRange[0], porteeSourceRange[1]));
-        sources.Add(go.GetComponent<ColorSource>());
+        sourcesOctree.Add(go.GetComponent<ColorSource>());
     }
 
 	public static Color GetColor(List<ColorManager.Theme> currentThemes) {
@@ -256,6 +256,10 @@ public class ColorManager : MonoBehaviour {
 		}
 		return c;
 	}
+
+    public List<ColorSource> GetAllColorSourcesInSphere(Vector3 center, float range) {
+        return sourcesOctree.GetInSphere(center, range);
+    }
 
     public void CheckCubeSaturation() {
         List<Cube> cubes = map.GetAllCubes();
@@ -313,29 +317,31 @@ public class ColorManager : MonoBehaviour {
 
     public List<ColorSource> GetClosestsColorSources(Vector3 pos, int nb)
     {
-        sources.Sort(delegate (ColorSource A, ColorSource B) {
+        List<ColorSource> sortedSources = sourcesOctree.GetAll();
+        sortedSources.Sort(delegate (ColorSource A, ColorSource B) {
             float distAToStart = Vector3.Distance(A.transform.position, pos);
             float distBToStart = Vector3.Distance(B.transform.position, pos);
             return distBToStart.CompareTo(distAToStart);
         });
-        return sources.Take(nb).ToList();
+        return sortedSources.Take(nb).ToList();
     }
 
     public List<ColorSource> GetColorSourcesInRange(Vector3 pos, float range) {
-        return sources.Where(source => Vector3.Distance(source.transform.position, pos) <= range).ToList();
+        return sourcesOctree.GetAll().Where(source => Vector3.Distance(source.transform.position, pos) <= range).ToList();
     }
 
     protected void RemoveClosestSource(Vector3 pos) {
-        float distMin = Vector3.Distance(pos, sources[0].transform.position);
-        ColorSource closest = sources[0];
-        foreach(ColorSource source in sources) {
+        List<ColorSource> colorSources = sourcesOctree.GetAll();
+        float distMin = Vector3.Distance(pos, colorSources.First().transform.position);
+        ColorSource closest = colorSources.First();
+        foreach(ColorSource source in colorSources) {
             float dist = Vector3.Distance(pos, source.transform.position);
             if(dist < distMin) {
                 distMin = dist;
                 closest = source;
             }
         }
-        sources.Remove(closest);
+        sourcesOctree.Remove(closest);
         closest.Delete();
     }
 
@@ -344,12 +350,12 @@ public class ColorManager : MonoBehaviour {
     }
 
     public List<ColorSource> GetAllColorSources() {
-        return sources;
+        return sourcesOctree.GetAll();
     }
 
     public void ChangeTheme(List<ColorManager.Theme> newThemes) {
         themes = newThemes;
-        foreach(ColorSource source in sources) {
+        foreach(ColorSource source in sourcesOctree.GetAll()) {
             source.ChangeColor(GetColor(themes));
         }
     }
@@ -378,7 +384,7 @@ public class ColorManager : MonoBehaviour {
 
     public Color GetColorForPosition(Vector3 pos) {
         Color color = Color.black;
-        foreach(ColorSource source in sources) {
+        foreach(ColorSource source in sourcesOctree.GetAll()) {
             if (source != null) {
                 float dist = Vector3.Distance(pos, source.transform.position);
                 if (dist < source.range) {
@@ -529,8 +535,8 @@ public class ColorManager : MonoBehaviour {
     }
 
     public IEnumerator CMakeAllColorSourcesBounceToColor(Color targetColor, float fadeIn, float fadeOut) {
-        List<Color> initialColors = this.sources.Select(s => s.color).ToList();
-        List<ColorSource> sources = this.sources;
+        List<Color> initialColors = sourcesOctree.GetAll().Select(s => s.color).ToList();
+        List<ColorSource> sources = sourcesOctree.GetAll();
         foreach(ColorSource source in sources) {
             source.GoToColor(targetColor, fadeIn);
         }

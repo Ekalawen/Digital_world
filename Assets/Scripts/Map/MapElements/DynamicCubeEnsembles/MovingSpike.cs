@@ -57,10 +57,10 @@ public class MovingSpike : DynamicCubeEnsemble {
     protected IEnumerator CStartSpike() {
         yield return new WaitForSeconds(delay);
 
-        if (shouldDisplayPrevisualization) {
-            Lightning lightning = Instantiate(previsualizationLightningPrefab).GetComponent<Lightning>();
-            lightning.Initialize(start, end, Lightning.PivotType.EXTREMITY);
-        }
+        //if (shouldDisplayPrevisualization) {
+        //    Lightning lightning = Instantiate(previsualizationLightningPrefab).GetComponent<Lightning>();
+        //    lightning.Initialize(start, end, Lightning.PivotType.EXTREMITY);
+        //}
 
         yield return new WaitForSeconds(previsualizationTime);
 
