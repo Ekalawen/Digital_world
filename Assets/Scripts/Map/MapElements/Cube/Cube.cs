@@ -26,15 +26,22 @@ public class Cube : MonoBehaviour {
     // Done before player initialization
     public virtual void Initialize() {
         gm = GameManager.Instance;
+        SetName();
         isStored = false;
         InitializeMaterials();
-        if (shouldRegisterToColorSources || gm.timerManager.HasGameStarted()) {
+        if (shouldRegisterToColorSources || gm.timerManager.HasGameStarted())
+        {
             RegisterCubeToColorSources();
         }
-        if (startAsLinky) {
+        if (startAsLinky)
+        {
             SetLinky();
         }
         SetDissolveOnInitialization();
+    }
+
+    public void SetName() {
+        name = $"{GetType().Name} {transform.position}";
     }
 
     protected void InitializeMaterials() {
@@ -174,6 +181,9 @@ public class Cube : MonoBehaviour {
             if (Vector3.Distance(transform.position, colorSource.transform.position) <= colorSource.range) {
                 colorSource.AddCube(this);
             }
+        }
+        if(GetColor() == ColorSource.LimiteColorSaturation(Color.black, NonBlackCube.minColorSaturationAndValue)) {
+            Debug.Log($"Couleur noir ! x)");
         }
     }
     public void UpdateColorForNewPosition(Vector3 oldPosition) {

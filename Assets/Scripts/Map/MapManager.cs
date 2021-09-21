@@ -168,10 +168,11 @@ public class MapManager : MonoBehaviour {
         if (cube != null) {
             cube.transform.position = pos;
             cube.transform.rotation = quaternion;
+            cube.transform.SetParent(newParent);
         } else {
             cube = Instantiate(GetPrefab(cubeType), pos, quaternion, newParent).GetComponent<Cube>();
         }
-        AddCube(cube);
+        cube = AddCube(cube);
         return cube;
     }
 
@@ -665,12 +666,13 @@ public class MapManager : MonoBehaviour {
         }
 
         // On met à jour la position ! :)
-        cube.transform.position = newPosition;
         if(MathTools.IsRounded(oldPosition) && IsInRegularMap(oldPosition)) {
             cubesRegular[(int)oldPosition.x, (int)oldPosition.y, (int)oldPosition.z] = null;
         } else {
             nonRegularOctree.Remove(cube);
         }
+        cube.transform.position = newPosition;
+        cube.SetName();
         if(MathTools.IsRounded(newPosition) && IsInRegularMap(newPosition)) {
             cubesRegular[(int)newPosition.x, (int)newPosition.y, (int)newPosition.z] = cube;
         } else {
