@@ -370,6 +370,10 @@ public class Cube : MonoBehaviour {
     public virtual void InteractWithPlayer() {
     }
 
+    public virtual bool ShouldPushPlayerWhenMoveAndInteractingWithHim() {
+        return false;
+    }
+
     public void SetOpacity(float alpha) {
         if(alpha == 1) {
             SetOpaqueMaterial();

@@ -531,7 +531,7 @@ public class EventManager : MonoBehaviour {
             StopCoroutine(coroutineDeathCubesCreation);
         if (coroutineCubesDestructions != null)
             StopCoroutine(coroutineCubesDestructions);
-        StopEvents();
+        StopEventsAtEndOfFrame();
     }
 
     public void RememberGameResult(bool success) {
@@ -698,6 +698,15 @@ public class EventManager : MonoBehaviour {
 
     public bool IsEndGameStarted() {
         return isEndGameStarted;
+    }
+
+    protected void StopEventsAtEndOfFrame() {
+        StartCoroutine(CStopEventsAtEndOfFrame());
+    }
+
+    protected IEnumerator CStopEventsAtEndOfFrame() {
+        yield return new WaitForEndOfFrame();
+        StopEvents();
     }
 
     protected void StopEvents() {

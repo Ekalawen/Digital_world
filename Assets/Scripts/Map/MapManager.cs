@@ -565,6 +565,10 @@ public class MapManager : MonoBehaviour {
         cube.UpdateColorForNewPosition(oldPosition);
         if(gm.player.DoubleCheckInteractWithCube(cube)) {
             cube.InteractWithPlayer();
+            if(mouvement.magnitude <= 1 && cube.ShouldPushPlayerWhenMoveAndInteractingWithHim()) {
+                Vector3 contactPoint = MathTools.AABBPoint_ContactPoint(cube.transform.position, cube.VectorHalfExtent(), gm.player.transform.position);
+                gm.player.transform.position = contactPoint + mouvementNormalized * gm.player.GetSizeRadius();
+            }
         }
         return true;
     }

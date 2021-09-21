@@ -31,4 +31,8 @@ public class DeathCube : NonBlackCube {
             gm.eventManager.LoseGame(EventManager.DeathReason.TOUCHED_DEATH_CUBE);
         }
     }
+
+    public override bool ShouldPushPlayerWhenMoveAndInteractingWithHim() {
+        return true;
+    }
 }
