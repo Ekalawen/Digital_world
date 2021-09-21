@@ -60,6 +60,7 @@ public class MapManager : MonoBehaviour {
     protected PlayerStartComponent playerStartComponent = null;
     protected List<SwappyCubesHolderManager> swappyCubesHolderManagers;
     protected Dictionary<Cube.CubeType, Stack<Cube>> cubesPools;
+    protected BoundingBox boundingBox; // La taille de la map minimum comprenant tous les cubes :) [inclusif, inclusif]
 
 
     public void Initialize() {
@@ -83,6 +84,7 @@ public class MapManager : MonoBehaviour {
         mapElements = new List<MapElement>();
         dynamicCubeEnsembles = new List<DynamicCubeEnsemble>();
         lumieres = new List<Lumiere>();
+        boundingBox = new BoundingBox(Vector3Int.zero, new Vector3Int(tailleMap.x, tailleMap.y, tailleMap.z));
         cubesRegular = new Cube[tailleMap.x + 1, tailleMap.y + 1, tailleMap.z + 1];
         for (int i = 0; i <= tailleMap.x; i++)
             for (int j = 0; j <= tailleMap.y; j++)
@@ -134,6 +136,9 @@ public class MapManager : MonoBehaviour {
             }
         } else {
             if (cubeAtPos == null) {
+                if (MathTools.IsRounded(pos)) {
+                    ExtendBoundingBox(pos);
+                }
                 nonRegularOctree.Add(cube);
                 cube.SetRegularValue(false);
                 cube.Initialize();
@@ -525,6 +530,114 @@ public class MapManager : MonoBehaviour {
         return positions;
     }
 
+    protected void ExtendBoundingBox(Vector3 position) {
+        Vector3Int pos = MathTools.RoundToInt(position);
+        if(pos.x < boundingBox.xMin) {
+            boundingBox.xMin = pos.x;
+        } else if (pos.x > boundingBox.xMax) {
+            boundingBox.xMax = pos.x;
+        } else if (pos.y < boundingBox.yMin) {
+            boundingBox.yMin = pos.y;
+        } else if (pos.y > boundingBox.yMax) {
+            boundingBox.yMax = pos.y;
+        } else if (pos.z < boundingBox.zMin) {
+            boundingBox.zMin = pos.z;
+        } else if (pos.z > boundingBox.zMax) {
+            boundingBox.zMax = pos.z;
+        }
+    }
+
+    public BoundingBox GetBoundingBox() {
+        return boundingBox;
+    }
+
+    public bool IsOnBoundingBox(Vector3 pos) {
+        BoundingBox boundingBox = GetBoundingBox();
+        return pos.x == boundingBox.xMin || pos.x == boundingBox.xMax
+            || pos.y == boundingBox.yMin || pos.y == boundingBox.yMax
+            || pos.z == boundingBox.zMin || pos.z == boundingBox.zMax;
+    }
+
+    public bool IsInsideBoundingBox(Vector3 pos) {
+        BoundingBox boundingBox = GetBoundingBox();
+        return pos.x >= boundingBox.xMin || pos.x <= boundingBox.xMax
+            || pos.y >= boundingBox.yMin || pos.y <= boundingBox.yMax
+            || pos.z >= boundingBox.zMin || pos.z <= boundingBox.zMax;
+    }
+
+    public List<Vector3> GetAllPositionsOnBoundingBox() {
+        List<Vector3> positions = new List<Vector3>();
+        positions.AddRange(GetAllPositionsOnBoundingBoxHaut());
+        positions.AddRange(GetAllPositionsOnBoundingBoxBas());
+        positions.AddRange(GetAllPositionsOnBoundingBoxGauche());
+        positions.AddRange(GetAllPositionsOnBoundingBoxDroite());
+        positions.AddRange(GetAllPositionsOnBoundingBoxAvant());
+        positions.AddRange(GetAllPositionsOnBoundingBoxArriere());
+        positions = MathTools.RemoveDoublons(positions);
+        return positions;
+    }
+
+    public List<Vector3> GetAllPositionsOnBoundingBoxHaut() {
+        BoundingBox boundingBox = GetBoundingBox();
+        List<Vector3> positions = new List<Vector3>();
+        for(int x = boundingBox.xMin; x <= boundingBox.xMax; x++) {
+            for(int z = boundingBox.zMin; z <= boundingBox.zMax; z++) {
+                positions.Add(new Vector3(x, boundingBox.yMax, z));
+            }
+        }
+        return positions;
+    }
+    public List<Vector3> GetAllPositionsOnBoundingBoxBas() {
+        BoundingBox boundingBox = GetBoundingBox();
+        List<Vector3> positions = new List<Vector3>();
+        for(int x = boundingBox.xMin; x <= boundingBox.xMax; x++) {
+            for(int z = boundingBox.zMin; z <= boundingBox.zMax; z++) {
+                positions.Add(new Vector3(x, boundingBox.yMin, z));
+            }
+        }
+        return positions;
+    }
+    public List<Vector3> GetAllPositionsOnBoundingBoxGauche() {
+        BoundingBox boundingBox = GetBoundingBox();
+        List<Vector3> positions = new List<Vector3>();
+        for(int y = boundingBox.yMin; y <= boundingBox.yMax; y++) {
+            for(int z = boundingBox.zMin; z <= boundingBox.zMax; z++) {
+                positions.Add(new Vector3(boundingBox.xMin, y, z));
+            }
+        }
+        return positions;
+    }
+    public List<Vector3> GetAllPositionsOnBoundingBoxDroite() {
+        BoundingBox boundingBox = GetBoundingBox();
+        List<Vector3> positions = new List<Vector3>();
+        for(int y = boundingBox.yMin; y <= boundingBox.yMax; y++) {
+            for(int z = boundingBox.zMin; z <= boundingBox.zMax; z++) {
+                positions.Add(new Vector3(boundingBox.xMax, y, z));
+            }
+        }
+        return positions;
+    }
+    public List<Vector3> GetAllPositionsOnBoundingBoxAvant() {
+        BoundingBox boundingBox = GetBoundingBox();
+        List<Vector3> positions = new List<Vector3>();
+        for(int x = boundingBox.xMin; x <= boundingBox.xMax; x++) {
+            for(int y = boundingBox.yMin; y <= boundingBox.yMax; y++) {
+                positions.Add(new Vector3(x, y, boundingBox.zMax));
+            }
+        }
+        return positions;
+    }
+    public List<Vector3> GetAllPositionsOnBoundingBoxArriere() {
+        BoundingBox boundingBox = GetBoundingBox();
+        List<Vector3> positions = new List<Vector3>();
+        for(int x = boundingBox.xMin; x <= boundingBox.xMax; x++) {
+            for(int y = boundingBox.yMin; y <= boundingBox.yMax; y++) {
+                positions.Add(new Vector3(x, y, boundingBox.zMin));
+            }
+        }
+        return positions;
+    }
+
     public bool MoveCubeTo(Cube cube, Vector3 newPosition) {
         Vector3 oldPosition = cube.transform.position;
         Vector3 roundedOldPosition = MathTools.Round(oldPosition);
@@ -552,12 +665,12 @@ public class MapManager : MonoBehaviour {
 
         // On met à jour la position ! :)
         cube.transform.position = newPosition;
-        if(MathTools.IsRounded(oldPosition)) {
+        if(MathTools.IsRounded(oldPosition) && IsInRegularMap(oldPosition)) {
             cubesRegular[(int)oldPosition.x, (int)oldPosition.y, (int)oldPosition.z] = null;
         } else {
             nonRegularOctree.Remove(cube);
         }
-        if(MathTools.IsRounded(newPosition)) {
+        if(MathTools.IsRounded(newPosition) && IsInRegularMap(newPosition)) {
             cubesRegular[(int)newPosition.x, (int)newPosition.y, (int)newPosition.z] = cube;
         } else {
             nonRegularOctree.Add(cube);
@@ -1453,6 +1566,17 @@ public class MapManager : MonoBehaviour {
             return tailleMap.y;
         } else {
             return tailleMap.z;
+        }
+    }
+
+    public int GetBoundingBoxSizeAlongDirection(GravityManager.Direction direction) {
+        BoundingBox boundingBox = GetBoundingBox();
+        if(direction == GravityManager.Direction.DROITE || direction == GravityManager.Direction.GAUCHE) {
+            return boundingBox.xMax - boundingBox.xMin;
+        } else if (direction == GravityManager.Direction.BAS || direction == GravityManager.Direction.HAUT) {
+            return boundingBox.yMax - boundingBox.yMin;
+        } else {
+            return boundingBox.zMax - boundingBox.zMin;
         }
     }
 

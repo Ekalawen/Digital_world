@@ -23,12 +23,14 @@ public class MovingSpike : DynamicCubeEnsemble {
     protected Coroutine coroutinePrevisualization = null;
     protected Coroutine coroutineSpike = null;
     protected bool shouldDisplayPrevisualization;
+    protected bool useBoundingBox;
 
-    public void Initialize(Vector3 start, Vector3 direction, float previsualizationDelay, bool shouldDisplayPrevisualization)
+    public void Initialize(Vector3 start, Vector3 direction, float previsualizationDelay, bool shouldDisplayPrevisualization, bool useBoundingBox)
     {
         base.Initialize();
         this.start = start;
         this.direction = direction;
+        this.useBoundingBox = useBoundingBox;
         this.end = ComputeEnd();
         this.previsualizationDelay = previsualizationDelay;
         this.shouldDisplayPrevisualization = shouldDisplayPrevisualization;
@@ -41,14 +43,16 @@ public class MovingSpike : DynamicCubeEnsemble {
     }
 
     public bool CanStartAtThisPosition(Vector3 position) {
-        return map.IsInRegularMap(position) && !map.IsCubeAt(position);
+        return !map.IsCubeAt(position);
     }
 
     protected Vector3 ComputeEnd() {
         Vector3 current = start;
-        int tailleMap = map.GetTailleMapAlongDirection(GravityManager.VecToDir(direction));
+        GravityManager.Direction gravityDir = GravityManager.VecToDir(direction);
+        int tailleMap = useBoundingBox ? map.GetBoundingBoxSizeAlongDirection(gravityDir) : map.GetTailleMapAlongDirection(gravityDir);
         for(int i = 0; i < tailleMap; i++) {
-            if(map.IsCubeAt(current) || !map.IsInRegularMap(current)) {
+            bool isInMap = useBoundingBox ? map.IsInsideBoundingBox(current) : map.IsInRegularMap(current);
+            if(map.IsCubeAt(current) || !isInMap) {
                 return current;
             }
             current += direction;
@@ -80,7 +84,7 @@ public class MovingSpike : DynamicCubeEnsemble {
             float avancement = Math.Min(timer.GetAvancement(), 1);
             Vector3 newPosition = Vector3.Lerp(start, end, avancement);
             bool moveSucceed = cube.MoveTo(newPosition);
-            if(!moveSucceed) {
+            if (!moveSucceed) {
                 //end = MathTools.Round(newPosition);
                 //cube.MoveTo(end);
                 break;
