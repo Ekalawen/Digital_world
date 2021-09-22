@@ -61,7 +61,7 @@ MonoBehaviour:
   specialCubePrefab: {fileID: 0}
   lumierePrefab: {fileID: 6314060265175529593, guid: 9a6a33eb2030ee248896ac9e0bcb4f84,
     type: 3}
-  lumiereSpecialePrefab: {fileID: 5254473934532257617, guid: cdec25a2116ad2146964ccdc515e948a,
+  lumiereSpecialePrefab: {fileID: 473164739186614350, guid: 58f3cda65e595644b8565a4405711109,
     type: 3}
   lumiereFinalePrefab: {fileID: 5816829342276544026, guid: 1773660cfdde3be48af02e96a567d79a,
     type: 3}
@@ -72,12 +72,17 @@ MonoBehaviour:
   - {fileID: 3425981728395409398}
   - {fileID: 694806362120025368}
   - {fileID: 3182079684695872772}
+  dissolveEffectType: 0
   tailleMap: {x: 15, y: 15, z: 15}
   nbLumieresInitial: 15
+  dynamicCubeEnsembles: []
   mapFolder: {fileID: 0}
   cubesFolder: {fileID: 0}
   lumieresFolder: {fileID: 0}
   zonesFolder: {fileID: 0}
+  cubesPoolsFolder: {fileID: 0}
+  lightningsFolder: {fileID: 0}
+  particlesFolder: {fileID: 0}
   gm: {fileID: 0}
 --- !u!114 &7291592381796525078
 MonoBehaviour:
@@ -116,7 +121,7 @@ MonoBehaviour:
   preserveMapBordure: 0
   nbLumieresPerCaves: 1
   offsetLumieresFromCenter: 1
-  caveOffsetFromSides: 2
+  caveOffsetFromSidesXZandY: {x: 2, y: 2}
   useCaveFixedOffset: 0
   useCaveFixedOffsetX: 0
   caveFixedOffsetX: 0

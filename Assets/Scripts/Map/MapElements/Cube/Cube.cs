@@ -309,6 +309,10 @@ public class Cube : MonoBehaviour {
         }
     }
 
+    public bool IsStored() {
+        return isStored;
+    }
+
     public bool IsNotStored() {
         return !isStored;
     }
@@ -581,6 +585,9 @@ public class Cube : MonoBehaviour {
         }
         if(enableDisableCoroutine != null) {
             StopCoroutine(enableDisableCoroutine);
+        }
+        if(IsStored()) {
+            return;
         }
         enableDisableCoroutine = StartCoroutine(CSetEnableValueIn(value, duration, impactPoint));
     }

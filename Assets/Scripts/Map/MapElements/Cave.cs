@@ -335,18 +335,35 @@ public class Cave : CubeEnsemble {
         return depart + GetFreeIndiceLocation(offsetFromSides);
     }
 
-    protected Vector3Int GetFreeIndiceLocation(int offsetFromSides = 0) {
+    public Vector3 GetFreeLocationOverCube(int offsetFromSides = 0) {
+        return depart + GetFreeIndiceLocation(offsetFromSides, shouldBeOverAnotherCube: true);
+    }
+
+    protected Vector3Int GetFreeIndiceLocation(int offsetFromSides = 0, bool shouldBeOverAnotherCube = false) {
         int k = 0, kmax = 100000;
         while(k < kmax) {
             Vector3Int pos = new Vector3Int(
                 Random.Range(offsetFromSides, nbCubesParAxe.x - offsetFromSides),
                 Random.Range(offsetFromSides, nbCubesParAxe.y - offsetFromSides),
                 Random.Range(offsetFromSides, nbCubesParAxe.z - offsetFromSides));
-            if (cubeMatrix[pos.x, pos.y, pos.z] == null)
-                return pos;
+            if (cubeMatrix[pos.x, pos.y, pos.z] == null) {
+                if (!shouldBeOverAnotherCube
+                || IsAnotherCubeUnder(pos)) {
+                    return pos;
+                }
+            }
             k++;
         }
         throw new System.Exception("Cette cave est pleine ! Impossible de trouver une free location !");
+    }
+
+    public bool IsAnotherCubeUnder(Vector3Int pos) {
+        for(int i = pos.y - 1; i >= 0; i--) {
+            if(cubeMatrix[pos.x, i, pos.z] != null) {
+                return true;
+            }
+        }
+        return false;
     }
 
     protected void DisplayDebugCave() {

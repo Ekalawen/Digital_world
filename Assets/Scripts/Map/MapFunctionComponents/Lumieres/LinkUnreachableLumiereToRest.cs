@@ -16,7 +16,9 @@ public class LinkUnreachableLumiereToRest : MapFunctionComponent {
             if (!MathTools.IsRounded(lumiere.transform.position)) {
                 Debug.LogWarning("Attention une lumière n'est pas à une position entière ! Peut engendrer des bugs dans le Link !");
             }
-            map.LinkPositionToReachableArea(MathTools.Round(lumiere.transform.position), reachableArea);
+            if (lumiere.IsAccessible()) {
+                map.LinkPositionToReachableArea(MathTools.Round(lumiere.transform.position), reachableArea);
+            }
         }
     }
 }
