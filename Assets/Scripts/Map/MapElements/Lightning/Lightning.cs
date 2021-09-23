@@ -36,21 +36,35 @@ public class Lightning : MonoBehaviour {
     protected Coroutine refreshCoroutine = null;
 
     public void Initialize(Vector3 start, Vector3 end, PivotType pivotType = PivotType.EXTREMITY) {
-        gm = GameManager.Instance;
-        if(transform.parent == null) {
-            transform.SetParent(gm.map.lightningsFolder);
-        }
+        SetGmAndParent();
+        InitializeLightning(start, end, pivotType);
+        AutoDestroyRayIn();
+    }
+
+    public void InitializeWithoutGM(Vector3 start, Vector3 end, Transform parent, PivotType pivotType = PivotType.EXTREMITY) {
+        transform.SetParent(parent);
+        InitializeLightning(start, end, pivotType);
+        AutoDestroyRayIn();
+    }
+
+    protected void InitializeLightning(Vector3 start, Vector3 end, PivotType pivotType) {
         if (lightningMode == LightningMode.RAY) {
             this.pivotType = pivotType;
             SetPosition(start, end);
             SetdurationAfterArriving(durationAfterArriving);
-        } else {
+        } else { // LightningMode.LINK
             this.pivotType = pivotType;
             SetPosition(start, end);
             SetLifetime(lifetime, timeAtMaxWidth);
             refreshCoroutine = StartCoroutine(CUpdateConstantLightning());
         }
-        AutoDestroyRayIn();
+    }
+
+    protected void SetGmAndParent() {
+        gm = GameManager.Instance;
+        if (transform.parent == null) {
+            transform.SetParent(gm.map.lightningsFolder);
+        }
     }
 
     protected void AutoDestroyRayIn() {

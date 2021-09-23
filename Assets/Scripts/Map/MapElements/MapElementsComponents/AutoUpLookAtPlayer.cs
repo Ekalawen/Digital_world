@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class AutoUpLookAtPlayer : MonoBehaviour {
 
-    protected Transform playerTransform;
     protected GameManager gm;
 
     void Start() {
