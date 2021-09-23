@@ -323,7 +323,9 @@ public class Cube : MonoBehaviour {
     }
 
     public void RealDecomposeIn(float dureeDecompose, float timeBeforeDecompose) {
-        StartCoroutine(CRealDecomposeIn(dureeDecompose, timeBeforeDecompose));
+        if (IsNotStored()) {
+            StartCoroutine(CRealDecomposeIn(dureeDecompose, timeBeforeDecompose));
+        }
     }
 
     protected IEnumerator CRealDecomposeIn(float dureeDecompose, float timeBeforeDecompose) {

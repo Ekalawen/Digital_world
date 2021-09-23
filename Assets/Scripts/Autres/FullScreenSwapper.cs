@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿#if UNITY_EDITOR
+
+using UnityEngine;
 using System.Collections;
 using System;
 using UnityEngine.Events;
@@ -36,3 +38,5 @@ public class FullScreenSwapper : MonoBehaviour {
         isFullScreen = false;
     }
 }
+
+#endif // UNITY_EDITOR
