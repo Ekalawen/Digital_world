@@ -12,9 +12,11 @@ public class FurtiveController : IController {
     protected EtatFurtif etat;
     protected Vector3 posObjectifHidden;
     protected Vector3 posObjectifVisible;
+    protected Lumiere lumiereComponent;
 
     public override void Start() {
         base.Start();
+        lumiereComponent = GetComponent<Lumiere>();
         player = gm.player;
         posObjectifHidden = transform.position;
         posObjectifVisible = transform.position;
@@ -162,5 +164,13 @@ public class FurtiveController : IController {
 
     public override bool IsMoving() {
         return true;
+    }
+
+    protected override Vector3 MoveToTarget(Vector3 target, bool useCustomVitesse = false, float customVitesse = 0) {
+        Vector3 toReturn = base.MoveToTarget(target, useCustomVitesse, customVitesse);
+        if(lumiereComponent != null) {
+            lumiereComponent.SetName();
+        }
+        return toReturn;
     }
 }

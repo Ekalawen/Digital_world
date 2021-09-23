@@ -36,7 +36,7 @@ public abstract class IController : MonoBehaviour {
     public abstract bool IsInactive();
     public abstract bool IsMoving();
 
-    protected Vector3 MoveToTarget(Vector3 target, bool useCustomVitesse = false, float customVitesse = 0.0f) {
+    protected virtual Vector3 MoveToTarget(Vector3 target, bool useCustomVitesse = false, float customVitesse = 0.0f) {
         float vitesseToUse = useCustomVitesse ? customVitesse : vitesse;
         Vector3 direction = (target - transform.position).normalized;
         Vector3 finalMouvement = direction * vitesseToUse * Time.deltaTime;
