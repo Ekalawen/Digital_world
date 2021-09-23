@@ -223,8 +223,10 @@ public class Cube : MonoBehaviour {
     }
 
     protected void ResetDissolveAndDecomposeStartingTimes() {
-        transparentMaterial.SetFloat("_DissolveStartingTime", 0);
-        transparentMaterial.SetFloat("_DecomposeStartingTime", 999999f);
+        if (transparentMaterial != null) { // is null when PreFillWithDeathCubes is called before cubes initializations ! :)
+            transparentMaterial.SetFloat("_DissolveStartingTime", 0);
+            transparentMaterial.SetFloat("_DecomposeStartingTime", 999999f);
+        }
     }
 
     public void ResetBeforeStoring() {
