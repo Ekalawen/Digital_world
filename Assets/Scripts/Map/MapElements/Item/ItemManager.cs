@@ -100,7 +100,9 @@ public class ItemManager : MonoBehaviour {
     }
 
     public void AddOrbTrigger(OrbTrigger orbTrigger) {
-        orbTriggers.Add(orbTrigger);
+        if (!orbTriggers.Contains(orbTrigger)) {
+            orbTriggers.Add(orbTrigger);
+        }
     }
 
     public bool RemoveOrbTrigger(OrbTrigger orbTrigger) {
