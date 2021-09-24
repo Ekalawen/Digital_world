@@ -174,6 +174,9 @@ public class Cube : MonoBehaviour {
     }
 
     public virtual void RegisterCubeToColorSources() {
+        if (!gm.IsInitializationOver()) { // Sinon certains appellent cette fonction alors que le ColorManager n'est pas encore initialisé !
+            return;
+        }
         ColorManager colorManager = gm.colorManager;
         foreach(ColorSource colorSource in colorManager.GetAllColorSources()) {
             if (Vector3.Distance(transform.position, colorSource.transform.position) <= colorSource.range) {

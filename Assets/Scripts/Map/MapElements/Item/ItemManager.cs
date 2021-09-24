@@ -12,6 +12,7 @@ public class ItemManager : MonoBehaviour {
     protected GameManager gm;
     protected GameObject itemsFolder;
     protected List<Item> items; // Tous les items
+    protected List<OrbTrigger> orbTriggers = new List<OrbTrigger>(); // Toutes les OrbTriggers ! :3
 
     public virtual void Initialize() {
         gm = GameManager.Instance;
@@ -92,5 +93,17 @@ public class ItemManager : MonoBehaviour {
 
     public bool IsItemAt(Vector3 pos) {
         return items != null && items.Select(i => i.transform.position).Any(p => p == pos);
+    }
+
+    public List<OrbTrigger> GetAllOrbTriggers() {
+        return orbTriggers;
+    }
+
+    public void AddOrbTrigger(OrbTrigger orbTrigger) {
+        orbTriggers.Add(orbTrigger);
+    }
+
+    public bool RemoveOrbTrigger(OrbTrigger orbTrigger) {
+        return orbTriggers.Remove(orbTrigger);
     }
 }

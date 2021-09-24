@@ -37,7 +37,8 @@ public class OrbTrigger : IZone {
     protected Lightning lightning;
 
     public void Initialize(float rayon, float durationToActivate) {
-        Initialize();
+        base.Initialize();
+        gm.itemManager.AddOrbTrigger(this);
         Resize(transform.position, Vector3.zero);
         ResizeOverTime(rayon, dureeConstruction);
         RegisterHasToBeDestroyBeforeEndGame();
@@ -85,6 +86,7 @@ public class OrbTrigger : IZone {
     public void ReduceAndDestroy() {
         ResizeOverTime(0, dureeDestruction);
         SetIsDestroying();
+        gm.itemManager.RemoveOrbTrigger(this);
         Destroy(gameObject, dureeDestruction);
     }
 

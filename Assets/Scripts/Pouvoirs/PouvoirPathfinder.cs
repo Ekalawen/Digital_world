@@ -7,20 +7,26 @@ public class PouvoirPathfinder : IPouvoir {
 
 	public GameObject lumiereOrbesPathPrefab;
 	public GameObject itemsOrbesPathPrefab;
+	public GameObject orbTriggerPathPrefab;
     public bool detectLumieres = true;
     public bool detectItems = true;
+    public bool detectOrbTriggers = true;
     public float dureePath = 3.0f;
     public float vitessePath = 30.0f;
     [ColorUsage(true, true)]
     public Color lumierePathColor = Color.yellow;
     [ColorUsage(true, true)]
     public Color itemPathColor = Color.magenta;
+    [ColorUsage(true, true)]
+    public Color orbTriggerPathColor = Color.blue;
 
     protected override bool UsePouvoir() {
         List<Vector3> lumieresPositions = GetAllLumieresPositions();
         List<Vector3> itemsPositions = GetAllItemsPositions();
+        List<Vector3> orbTriggersPositions = GetAllOrbTriggersPositions();
 
-        if (!player.CanUseLocalisation() || lumieresPositions.Count + itemsPositions.Count == 0) {
+        int nbObjectifs = lumieresPositions.Count + itemsPositions.Count + orbTriggersPositions.Count;
+        if (!player.CanUseLocalisation() || nbObjectifs == 0) {
             if (gm.map.GetLumieresFinalesAndAlmostFinales().Count == 0) {
                 gm.console.FailLocalisationUnauthorized();
             } else {
@@ -32,8 +38,9 @@ public class PouvoirPathfinder : IPouvoir {
 
         bool haveFoundLumiere = detectLumieres && DrawPathToPositions(lumieresPositions, lumierePathColor, lumiereOrbesPathPrefab);
         bool haveFoundItem = detectItems && DrawPathToPositions(itemsPositions, itemPathColor, itemsOrbesPathPrefab);
+        bool haveFoundOrbTrigger = detectOrbTriggers && DrawPathToPositions(orbTriggersPositions, orbTriggerPathColor, orbTriggerPathPrefab);
 
-        if (!haveFoundLumiere && !haveFoundItem) {
+        if (!haveFoundLumiere && !haveFoundItem && !haveFoundOrbTrigger) {
             gm.console.FailLocalisationObjectifInateignable();
             gm.soundManager.PlayFailActionClip();
             return false;
@@ -117,6 +124,10 @@ public class PouvoirPathfinder : IPouvoir {
 
     protected List<Vector3> GetAllItemsPositions() {
         return gm.itemManager.GetItemsPositions();
+    }
+
+    protected List<Vector3> GetAllOrbTriggersPositions() {
+        return gm.itemManager.GetAllOrbTriggers().Select(o => o.transform.position).ToList();
     }
 
     protected IEnumerator DrawPath(List<Vector3> path, Color pathColor, GameObject orbePrefab) {
