@@ -18,6 +18,8 @@ MonoBehaviour:
   proportionRandomFilling: 0.03
   sizeCubeRandomFilling: 1
   registerToColorSources: 0
+  setDissolveTime: 0
+  dissolveTime: 1
 --- !u!114 &-8153691210454139774
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37,6 +39,9 @@ MonoBehaviour:
   areaSphereCenter: {x: 0, y: 0, z: 0}
   areaSphereRadius: 0
   cubeEnsembleType: 3
+  howToGetCubesInCubeEnsemble: 0
+  cubeEnsembleQuantity: 1
+  cubeEnsembleProportion: 0.5
   nbCubesVoisins: 4
   modifiers:
   - {fileID: 3337689697667150711}
@@ -105,6 +110,8 @@ MonoBehaviour:
   nbInitCubesRange: {x: 5, y: 10}
   makeSpaceArroundAtEndDistance: 2
   stayInMap: 1
+  chosingVoisinsMethodType: 0
+  coefChosingMethod: 2
 --- !u!114 &3337689697667150711
 MonoBehaviour:
   m_ObjectHideFlags: 0

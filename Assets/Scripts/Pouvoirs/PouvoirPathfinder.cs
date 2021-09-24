@@ -36,9 +36,15 @@ public class PouvoirPathfinder : IPouvoir {
             return false;
         }
 
-        bool haveFoundLumiere = detectLumieres && DrawPathToPositions(lumieresPositions, lumierePathColor, lumiereOrbesPathPrefab);
-        bool haveFoundItem = detectItems && DrawPathToPositions(itemsPositions, itemPathColor, itemsOrbesPathPrefab);
-        bool haveFoundOrbTrigger = detectOrbTriggers && DrawPathToPositions(orbTriggersPositions, orbTriggerPathColor, orbTriggerPathPrefab);
+        float nbPathsToDraw = ((detectLumieres && lumieresPositions.Count > 0) ? 1 : 0)
+                          + ((detectItems && itemsPositions.Count > 0) ? 1 : 0)
+                          + ((detectOrbTriggers && orbTriggersPositions.Count > 0) ? 1 : 0);
+        float lumiereOrbeStartOffset = 0;
+        float itemOrbeStartOffset = ((detectLumieres && lumieresPositions.Count > 0) ? 1 : 0) / nbPathsToDraw;
+        float orbTriggerOrbeStartOffset = (((detectLumieres && lumieresPositions.Count > 0) ? 1 : 0) + ((detectItems && itemsPositions.Count > 0) ? 1 : 0)) / nbPathsToDraw;
+        bool haveFoundLumiere = detectLumieres && DrawPathToPositions(lumieresPositions, lumierePathColor, lumiereOrbesPathPrefab, lumiereOrbeStartOffset);
+        bool haveFoundItem = detectItems && DrawPathToPositions(itemsPositions, itemPathColor, itemsOrbesPathPrefab, itemOrbeStartOffset);
+        bool haveFoundOrbTrigger = detectOrbTriggers && DrawPathToPositions(orbTriggersPositions, orbTriggerPathColor, orbTriggerPathPrefab, orbTriggerOrbeStartOffset);
 
         if (!haveFoundLumiere && !haveFoundItem && !haveFoundOrbTrigger) {
             gm.console.FailLocalisationObjectifInateignable();
@@ -49,9 +55,9 @@ public class PouvoirPathfinder : IPouvoir {
         return true;
     }
 
-    protected bool DrawPathToPositions(List<Vector3> positions, Color pathColor, GameObject orbePrefab) {
+    protected bool DrawPathToPositions(List<Vector3> positions, Color pathColor, GameObject orbePrefab, float orbeStartOffset) {
         try {
-            Vector3 nearestPosition = DrawPathToNearestPosition(positions, pathColor, orbePrefab);
+            Vector3 nearestPosition = DrawPathToNearestPosition(positions, pathColor, orbePrefab, orbeStartOffset);
 
             gm.console.RunDetection(nearestPosition);
 
@@ -65,12 +71,12 @@ public class PouvoirPathfinder : IPouvoir {
         }
     }
 
-    private Vector3 DrawPathToNearestPosition(List<Vector3> positions, Color pathColor, GameObject orbePrefab) {
+    private Vector3 DrawPathToNearestPosition(List<Vector3> positions, Color pathColor, GameObject orbePrefab, float orbeStartOffset) {
         //Vector3 nearestPosition = positions.OrderBy(p => Vector3.Distance(p, player.transform.position)).First();
         //List<Vector3> posToDodge = GetPosToDodge();
         //List<Vector3> shortestPath = GetPathForPosition(nearestPosition, posToDodge);
         List<List<Vector3>> pathsToPositions = new List<List<Vector3>>();
-        List<Vector3> posToDodge = GetPosToDodge();
+        List<Vector3> posToDodge = GetNonRegularCubesToDodge();
         positions = positions.OrderBy(p => Vector3.Distance(p, player.transform.position)).Take(3).ToList();
         foreach (Vector3 pos in positions) {
             List<Vector3> pathToPosition = GetPathForPosition(pos, posToDodge);
@@ -82,13 +88,13 @@ public class PouvoirPathfinder : IPouvoir {
         List<Vector3> shortestPath = notNullPaths.OrderBy(p => p.Count).First();
         Vector3 nearestPosition = positions[pathsToPositions.IndexOf(shortestPath)];
 
-        DrawPathToPosition(nearestPosition, shortestPath, pathColor, orbePrefab);
+        DrawPathToPosition(nearestPosition, shortestPath, pathColor, orbePrefab, orbeStartOffset);
         return nearestPosition;
     }
 
-    protected void DrawPathToPosition(Vector3 position, List<Vector3> path, Color pathColor, GameObject orbePrefab) {
+    protected void DrawPathToPosition(Vector3 position, List<Vector3> path, Color pathColor, GameObject orbePrefab, float orbeStartOffset) {
         if (path != null)
-            StartCoroutine(DrawPath(path, pathColor, orbePrefab));
+            StartCoroutine(DrawPath(path, pathColor, orbePrefab, orbeStartOffset));
         else
             Debug.Log("Objectif inaccessible en " + position + " !");
     }
@@ -98,8 +104,7 @@ public class PouvoirPathfinder : IPouvoir {
         return path;
     }
 
-    private List<Vector3> GetPosToDodge()
-    {
+    protected List<Vector3> GetNonRegularCubesToDodge() {
         List<Vector3> posToDodge = gm.map.GetAllNonRegularCubePos();
         for (int i = 0; i < posToDodge.Count; i++)
             posToDodge[i] = MathTools.Round(posToDodge[i]);
@@ -130,7 +135,7 @@ public class PouvoirPathfinder : IPouvoir {
         return gm.itemManager.GetAllOrbTriggers().Select(o => o.transform.position).ToList();
     }
 
-    protected IEnumerator DrawPath(List<Vector3> path, Color pathColor, GameObject orbePrefab) {
+    protected IEnumerator DrawPath(List<Vector3> path, Color pathColor, GameObject orbePrefab, float orbeStartOffset) {
         int nbSpheresByNodes = 4;
         for(int i = 0; i < path.Count - 1; i++) {
             Vector3 current = path[i];
@@ -144,7 +149,11 @@ public class PouvoirPathfinder : IPouvoir {
                 Material material = go.GetComponent<MeshRenderer>().material;
                 material.color = color;
                 material.SetColor("_EmissionColor", color);
-                go.GetComponent<AutoColorBouncer>().colorToBounceTo = pathColor;
+                AutoColorBouncer colorBouncer = go.GetComponent<AutoColorBouncer>();
+                colorBouncer.colorToBounceTo = pathColor;
+                colorBouncer.startingTime = colorBouncer.intervalTime * orbeStartOffset;
+                AutoBouncer bouncer = go.GetComponent<AutoBouncer>();
+                bouncer.startingTime = bouncer.intervalTime * orbeStartOffset;
                 Destroy(go, dureePath);
                 yield return new WaitForSeconds(1.0f / vitessePath);
             }
