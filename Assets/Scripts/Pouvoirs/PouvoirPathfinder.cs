@@ -28,9 +28,9 @@ public class PouvoirPathfinder : IPouvoir {
         int nbObjectifs = lumieresPositions.Count + itemsPositions.Count + orbTriggersPositions.Count;
         if (!player.CanUseLocalisation() || nbObjectifs == 0) {
             if (gm.map.GetLumieresFinalesAndAlmostFinales().Count == 0) {
-                gm.console.FailLocalisationUnauthorized();
+                gm.console.FailPathfinderUnauthorized();
             } else {
-                gm.console.FailLocalisationInEndEvent();
+                gm.console.FailPathfinderInEndEvent();
             }
             gm.soundManager.PlayFailActionClip();
             return false;
@@ -47,9 +47,12 @@ public class PouvoirPathfinder : IPouvoir {
         bool haveFoundOrbTrigger = detectOrbTriggers && DrawPathToPositions(orbTriggersPositions, orbTriggerPathColor, orbTriggerPathPrefab, orbTriggerOrbeStartOffset, distanceMinToEnd: 2);
 
         if (!haveFoundLumiere && !haveFoundItem && !haveFoundOrbTrigger) {
-            gm.console.FailLocalisationObjectifInateignable();
+            gm.console.FailPathfinderObjectifInateignable();
             gm.soundManager.PlayFailActionClip();
             return false;
+        } else { // On a au moins trouvé quelque chose
+            gm.console.SummarizePathfinder(new List<bool>() { haveFoundLumiere, haveFoundItem, haveFoundOrbTrigger },
+                new List<int>() { lumieresPositions.Count, itemsPositions.Count, orbTriggersPositions.Count });
         }
 
         return true;
@@ -59,7 +62,7 @@ public class PouvoirPathfinder : IPouvoir {
         try {
             Vector3 nearestPosition = DrawPathToNearestPosition(positions, pathColor, orbePrefab, orbeStartOffset, distanceMinToEnd);
 
-            gm.console.RunDetection(nearestPosition);
+            gm.console.RunPathfinder(nearestPosition);
 
             if (detectItems)
                 NotifyOnlyVisibleOnTriggerItems();

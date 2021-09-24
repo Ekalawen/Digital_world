@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Localization;
 
@@ -68,6 +69,7 @@ public class ConsoleStrings : ScriptableObject
     public LocalizedString localisationIlTeResteXItems;
     public LocalizedString localisationRienTrouve;
     public LocalizedString runDetection;
+    public List<LocalizedString> summarizePathfinder;
     public LocalizedString failLocalisationUnauthorized;
     public LocalizedString failLocalisationObjectifInateignable;
     public LocalizedString failLocalisationInEndEvent;

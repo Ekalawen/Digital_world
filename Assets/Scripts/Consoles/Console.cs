@@ -864,22 +864,32 @@ public class Console : MonoBehaviour {
 	}
 
 	// Quand le joueur lance la détection
-	public void RunDetection(Vector3 position) {
+	public void RunPathfinder(Vector3 position) {
         LocalizedString ls = strings.runDetection;
         ls.Arguments = new object[] { position.ToString() };
         AjouterMessage (ls, Console.TypeText.BLUE_TEXT);
 	}
 
+	public void SummarizePathfinder(List<bool> hasFound, List<int> nbFound) {
+        for(int i = hasFound.Count - 1; i >= 0; i--) {
+            if(hasFound[i]) {
+                LocalizedString ls = strings.summarizePathfinder[i];
+                ls.Arguments = new object[] { nbFound[i] };
+                AjouterMessageImportant(ls, TypeText.BLUE_TEXT, 2.0f);
+            }
+        }
+	}
+
     // Quand on essaye de faire une localisation alors qu'il n'a pas le droit !
-    public void FailLocalisationUnauthorized() {
+    public void FailPathfinderUnauthorized() {
 		AjouterMessageImportant(strings.failLocalisationUnauthorized, Console.TypeText.RED_TEXT, 2.0f, true, strings.failLocalisationUnauthorized);
     }
 
     // Quand on essaye de faire une localisation et qu'on ne trouve pas de chemin !
-    public void FailLocalisationObjectifInateignable() {
+    public void FailPathfinderObjectifInateignable() {
 		AjouterMessageImportant(strings.failLocalisationObjectifInateignable, Console.TypeText.RED_TEXT, 2.0f, true, strings.failLocalisationObjectifInateignable);
     }
-    public void FailLocalisationInEndEvent() {
+    public void FailPathfinderInEndEvent() {
 		AjouterMessageImportant(strings.failLocalisationInEndEvent, Console.TypeText.RED_TEXT, 2.0f, true, strings.failLocalisationInEndEvent);
     }
 
