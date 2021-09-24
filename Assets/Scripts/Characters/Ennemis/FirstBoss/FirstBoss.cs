@@ -30,6 +30,7 @@ public class FirstBoss : Sonde {
 
     [Header("PouvoirGiver")]
     public GameObject pouvoirDash333Prefab;
+    public GameObject pouvoirPathfinder5Prefab;
     public VisualEffect particlesGainPouvoir;
     public float timeBeforeGivingDash = 3.0f;
     public float timeToStopParticles = 1.5f;
@@ -240,10 +241,12 @@ public class FirstBoss : Sonde {
 
     protected void GiveDash333()
     {
-        PouvoirGiverItem.PouvoirBinding pouvoirBinding = PouvoirGiverItem.PouvoirBinding.LEFT_CLICK;
-        player.SetPouvoir(pouvoirDash333Prefab, pouvoirBinding);
+        PouvoirGiverItem.PouvoirBinding pouvoirBindingLeft = PouvoirGiverItem.PouvoirBinding.LEFT_CLICK;
+        player.SetPouvoir(pouvoirDash333Prefab, pouvoirBindingLeft);
+        PouvoirGiverItem.PouvoirBinding pouvoirBindingA = PouvoirGiverItem.PouvoirBinding.A;
+        player.SetPouvoir(pouvoirPathfinder5Prefab, pouvoirBindingA);
         IPouvoir pouvoir = player.GetPouvoirLeftClick().GetComponent<IPouvoir>();
-        gm.console.CapturePouvoirGiverItem(pouvoir.nom, pouvoirBinding, gm.console.strings.pouvoirGiverDash333SubPhrase);
+        gm.console.CapturePouvoirGiverItem(pouvoir.nom, pouvoirBindingLeft, gm.console.strings.pouvoirGiverDash333SubPhrase);
         gm.pointeur.Initialize();
         gm.soundManager.PlayGainDash333();
     }
