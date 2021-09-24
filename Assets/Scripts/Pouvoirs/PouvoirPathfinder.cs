@@ -42,9 +42,9 @@ public class PouvoirPathfinder : IPouvoir {
         float lumiereOrbeStartOffset = 0;
         float itemOrbeStartOffset = ((detectLumieres && lumieresPositions.Count > 0) ? 1 : 0) / nbPathsToDraw;
         float orbTriggerOrbeStartOffset = (((detectLumieres && lumieresPositions.Count > 0) ? 1 : 0) + ((detectItems && itemsPositions.Count > 0) ? 1 : 0)) / nbPathsToDraw;
-        bool haveFoundLumiere = detectLumieres && DrawPathToPositions(lumieresPositions, lumierePathColor, lumiereOrbesPathPrefab, lumiereOrbeStartOffset);
-        bool haveFoundItem = detectItems && DrawPathToPositions(itemsPositions, itemPathColor, itemsOrbesPathPrefab, itemOrbeStartOffset);
-        bool haveFoundOrbTrigger = detectOrbTriggers && DrawPathToPositions(orbTriggersPositions, orbTriggerPathColor, orbTriggerPathPrefab, orbTriggerOrbeStartOffset);
+        bool haveFoundLumiere = detectLumieres && DrawPathToPositions(lumieresPositions, lumierePathColor, lumiereOrbesPathPrefab, lumiereOrbeStartOffset, distanceMinToEnd: 0);
+        bool haveFoundItem = detectItems && DrawPathToPositions(itemsPositions, itemPathColor, itemsOrbesPathPrefab, itemOrbeStartOffset, distanceMinToEnd: 0);
+        bool haveFoundOrbTrigger = detectOrbTriggers && DrawPathToPositions(orbTriggersPositions, orbTriggerPathColor, orbTriggerPathPrefab, orbTriggerOrbeStartOffset, distanceMinToEnd: 2);
 
         if (!haveFoundLumiere && !haveFoundItem && !haveFoundOrbTrigger) {
             gm.console.FailLocalisationObjectifInateignable();
@@ -55,9 +55,9 @@ public class PouvoirPathfinder : IPouvoir {
         return true;
     }
 
-    protected bool DrawPathToPositions(List<Vector3> positions, Color pathColor, GameObject orbePrefab, float orbeStartOffset) {
+    protected bool DrawPathToPositions(List<Vector3> positions, Color pathColor, GameObject orbePrefab, float orbeStartOffset, float distanceMinToEnd) {
         try {
-            Vector3 nearestPosition = DrawPathToNearestPosition(positions, pathColor, orbePrefab, orbeStartOffset);
+            Vector3 nearestPosition = DrawPathToNearestPosition(positions, pathColor, orbePrefab, orbeStartOffset, distanceMinToEnd);
 
             gm.console.RunDetection(nearestPosition);
 
@@ -71,7 +71,7 @@ public class PouvoirPathfinder : IPouvoir {
         }
     }
 
-    private Vector3 DrawPathToNearestPosition(List<Vector3> positions, Color pathColor, GameObject orbePrefab, float orbeStartOffset) {
+    private Vector3 DrawPathToNearestPosition(List<Vector3> positions, Color pathColor, GameObject orbePrefab, float orbeStartOffset, float distanceMinToEnd) {
         //Vector3 nearestPosition = positions.OrderBy(p => Vector3.Distance(p, player.transform.position)).First();
         //List<Vector3> posToDodge = GetPosToDodge();
         //List<Vector3> shortestPath = GetPathForPosition(nearestPosition, posToDodge);
@@ -79,7 +79,7 @@ public class PouvoirPathfinder : IPouvoir {
         List<Vector3> posToDodge = GetNonRegularCubesToDodge();
         positions = positions.OrderBy(p => Vector3.Distance(p, player.transform.position)).Take(3).ToList();
         foreach (Vector3 pos in positions) {
-            List<Vector3> pathToPosition = GetPathForPosition(pos, posToDodge);
+            List<Vector3> pathToPosition = GetPathForPosition(pos, posToDodge, distanceMinToEnd);
             pathsToPositions.Add(pathToPosition);
         }
         List<List<Vector3>> notNullPaths = pathsToPositions.FindAll(p => p != null);
@@ -99,8 +99,27 @@ public class PouvoirPathfinder : IPouvoir {
             Debug.Log("Objectif inaccessible en " + position + " !");
     }
 
-    protected List<Vector3> GetPathForPosition(Vector3 position, List<Vector3> posToDodge) {
-        List<Vector3> path = gm.map.GetPath(player.transform.position, position, posToDodge, bIsRandom: true, useNotInMapVoisins: true, ignoreSwappyCubes: true);
+    protected List<Vector3> GetPathForPosition(Vector3 position, List<Vector3> posToDodge, float distanceMinToEnd) {
+        List<Vector3> path = gm.map.GetPath(
+            start: player.transform.position,
+            end: position,
+            posToDodge: posToDodge,
+            bIsRandom: true,
+            useNotInMapVoisins: true,
+            ignoreSwappyCubes: true,
+            distanceMinToEnd: distanceMinToEnd);
+        if(distanceMinToEnd > 0 && path != null && path.Last() != position) {
+            List<Vector3> complementaryPath = gm.map.GetPath(
+                start: path.Last(),
+                end: position,
+                posToDodge: null,
+                bIsRandom: false,
+                useNotInMapVoisins: true,
+                collideWithCubes: false, // c'est surtout cette ligne qui compte !
+                ignoreSwappyCubes: true,
+                distanceMinToEnd: 0 );
+            path.AddRange(complementaryPath);
+        }
         return path;
     }
 

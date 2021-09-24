@@ -390,6 +390,26 @@ public class MapManager : MonoBehaviour {
         return cubes;
     }
 
+    public List<Vector3> GetEmptyLocationsInBox(Vector3 center, Vector3 halfExtents) {
+        List<Vector3> emptyPositions = new List<Vector3>();
+        int xMin = (int)Mathf.Ceil(center.x - halfExtents.x);
+        int xMax = (int)Mathf.Floor(center.x + halfExtents.x);
+        int yMin = (int)Mathf.Ceil(center.y - halfExtents.y);
+        int yMax = (int)Mathf.Floor(center.y + halfExtents.y);
+        int zMin = (int)Mathf.Ceil(center.z - halfExtents.z);
+        int zMax = (int)Mathf.Floor(center.z + halfExtents.z);
+        for (int i = xMin; i <= xMax; i++) {
+            for (int j = yMin; j <= yMax; j++) {
+                for (int k = zMin; k <= zMax; k++) {
+                    if(!IsCubeAt(i, j, k)) {
+                        emptyPositions.Add(new Vector3(i, j, k));
+                    }
+                }
+            }
+        }
+        return emptyPositions;
+    }
+
     public List<Cube> GetCubesAtLessThanCubeDistance(Vector3 center, int cubeDistance) {
         List<Cube> cubesInRange = GetCubesInBox(center, Vector3.one * cubeDistance);
         cubesInRange = cubesInRange.FindAll(c => MathTools.CubeDistance(c.transform.position, center) <= cubeDistance);
@@ -1130,12 +1150,13 @@ public class MapManager : MonoBehaviour {
         bool bIsRandom = false,
         bool useNotInMapVoisins = false,
         bool collideWithCubes = true,
-        bool ignoreSwappyCubes = false) {
+        bool ignoreSwappyCubes = false,
+        float distanceMinToEnd = 0) {
 
         start = MathTools.Round(start);
         end = MathTools.Round(end);
 
-        if (posToDodge.Contains(end) || (collideWithCubes && GetCubeAt(end) != null))
+        if (distanceMinToEnd == 0 && ((posToDodge != null && posToDodge.Contains(end)) || (collideWithCubes && GetCubeAt(end) != null)))
             return null;
 
         List<Node> closed = new List<Node>();
@@ -1146,7 +1167,7 @@ public class MapManager : MonoBehaviour {
             Node current = opened.Last();
             opened.Remove(current);
 
-            if (current.pos == end) {
+            if (current.pos == end || (distanceMinToEnd > 0 && Vector3.Distance(current.pos, end) <= distanceMinToEnd)) {
                 return ComputePathBackward(start, ref current);
             }
 
@@ -1253,7 +1274,9 @@ public class MapManager : MonoBehaviour {
         } else {
             voisins = (!useNotRegularVoisins) ? GetVoisinsNoObstaclesInMap(current.pos) : GetVoisinsNoObstacles(current.pos);
         }
-        voisins = voisins.FindAll(v => !posToDodge.Contains(v));
+        if (posToDodge != null) {
+            voisins = voisins.FindAll(v => !posToDodge.Contains(v));
+        }
         if (bIsRandom) {
             MathTools.Shuffle(voisins);
         }
