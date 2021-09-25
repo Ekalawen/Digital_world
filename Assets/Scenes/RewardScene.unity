@@ -418,6 +418,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 129162855}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &129162857 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3400678158419089052, guid: bddc8e97ad628524f9bc7c8905cfbcc0,
+    type: 3}
+  m_PrefabInstance: {fileID: 129162855}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &281171682 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4124474516100157910, guid: 530a28f1af9dbc942bac8a2ab9dca5fb,
@@ -1396,6 +1402,7 @@ GameObject:
   - component: {fileID: 1763415503}
   - component: {fileID: 1763415505}
   - component: {fileID: 1763415504}
+  - component: {fileID: 1763415506}
   m_Layer: 0
   m_Name: RewardCameras
   m_TagString: Untagged
@@ -1425,11 +1432,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1763415502}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 89c9e893a65938748a11b49fde6b095f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cam: {fileID: 0}
   playerTimeOffset: 15
   verticalOffsetCoef: 10
   verticalOffsetCurve:
@@ -1534,8 +1542,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e853bef17fbb62429270fdb816ac934, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cam: {fileID: 0}
   thetaSpeed: 0.5
   coefDistance: 1
+--- !u!114 &1763415506
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1763415502}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6ba223f90dbc9b4d9e4020a150f68ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cam: {fileID: 0}
 --- !u!114 &1967918512 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8293361655095387231, guid: 861cb025f4b96c74e890921f72c0799b,
@@ -1808,6 +1830,11 @@ PrefabInstance:
       objectReference: {fileID: 1283383817632941238}
     - target: {fileID: 1586392827639462890, guid: e574d352e00bdbc4fa38b9e33af33947,
         type: 3}
+      propertyPath: bloomProfile
+      value: 
+      objectReference: {fileID: 129162857}
+    - target: {fileID: 1586392827639462890, guid: e574d352e00bdbc4fa38b9e33af33947,
+        type: 3}
       propertyPath: rewardCamera
       value: 
       objectReference: {fileID: 0}
@@ -1830,7 +1857,7 @@ PrefabInstance:
         type: 3}
       propertyPath: infiniteCamera
       value: 
-      objectReference: {fileID: 1763415504}
+      objectReference: {fileID: 1763415506}
     - target: {fileID: 1586392827639462890, guid: e574d352e00bdbc4fa38b9e33af33947,
         type: 3}
       propertyPath: firstTimeButton

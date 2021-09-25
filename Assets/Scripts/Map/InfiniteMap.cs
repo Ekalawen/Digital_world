@@ -275,13 +275,27 @@ public class InfiniteMap : MapManager {
         if(indice > indiceCurrentBlock) {
             int nbBlocksAdded = indice - indiceCurrentBlock;
             AddBlockRun(nbBlocksAdded);
+
+            RegisterPassedBlocksToHistory(indiceCurrentBlock, nbBlocksAdded);
+
             CreateNewBlocks(nbBlocksAdded);
+
             RememberTimeNeededForBlock(indice, indiceCurrentBlock);
+
             timerSinceLastBlock.Reset();
+
             indiceCurrentBlock = indice;
+
             block.NotifyPlayerToPressShiftIfNeeded();
+
             if(GetNonStartNbBlocksRun() >= nbBlocksStartCubeDestruction)
                 StartBlocksDestruction();
+        }
+    }
+
+    protected void RegisterPassedBlocksToHistory(int indiceCurrentBlock, int nbBlocksAdded) {
+        for(int i = indiceCurrentBlock; i < indiceCurrentBlock + nbBlocksAdded; i++) {
+            gm.historyManager.AddBlockPassed(blocks[i]);
         }
     }
 

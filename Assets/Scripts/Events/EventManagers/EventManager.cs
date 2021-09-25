@@ -461,16 +461,17 @@ public class EventManager : MonoBehaviour {
         if(gm.GetMapType() == MenuLevel.LevelType.REGULAR) {
             return QuitType.RELOAD;
         }
+        return QuitType.QUIT;
         // Below it is only IR levels :)
-        if(IsIRFirstTresholdHasBeenBeaten()) {
-            if(HasJustBeatIRFirstTreshold()) {
-                return QuitType.QUIT;
-            }
-            if(IsNewBestScoreAfterBestScoreAssignation()) {
-                return QuitType.QUIT;
-            }
-        }
-        return QuitType.RELOAD;
+        //if(IsIRFirstTresholdHasBeenBeaten()) {
+        //    if(HasJustBeatIRFirstTreshold()) {
+        //        return QuitType.QUIT;
+        //    }
+        //    if(IsNewBestScoreAfterBestScoreAssignation()) {
+        //        return QuitType.QUIT;
+        //    }
+        //}
+        //return QuitType.RELOAD;
     }
 
     protected void ReloadSceneInSeconds(float seconds) {

@@ -10,7 +10,7 @@ public class RewardManager : MonoBehaviour {
     static RewardManager _instance;
     public static RewardManager Instance { get { return _instance ?? (_instance = new GameObject().AddComponent<RewardManager>()); } }
 
-    [Header("Parameters")]
+    [Header("Parameters Regular")]
     public float delayBetweenTrails = 10.0f;
     public float durationTrailMinimum = 10.0f;
     public float durationLogarithmeRegular = 1.3f;
@@ -23,10 +23,17 @@ public class RewardManager : MonoBehaviour {
     public GameObject ennemiTrailPrefab;
     public GameObject consolePrefab; // On récupère la console !
 
+    [Header("Parameters Infinite")]
+    public Color blocksColor;
+    public float blocksDistance = 30;
+    public GameObject bloomProfile;
+    public Vector4 gridRect;
+    public float blockRotationSpeed = 3.0f;
+
     [Header("Links")]
     public RewardStrings strings;
     public RegularRewardCamera regularCamera;
-    public InfiniteRewardCamera infiniteCamera;
+    public InfiniteStaticRewardCamera infiniteCamera;
     public TMP_Text titleCompletedText;
     public TMP_Text scoreText;
     public TMP_Text bestScoreText;
@@ -40,6 +47,7 @@ public class RewardManager : MonoBehaviour {
     protected float accelerationCoefficiant;
 
     protected Transform displayersFolder;
+    protected Transform blocksFolder;
     protected RewardTrailThemeDisplayer playerDisplayer;
     protected List<RewardTrailDisplayer> ennemisDisplayers;
     protected List<RewardPointDisplayer> lumieresDisplayers;
@@ -55,22 +63,39 @@ public class RewardManager : MonoBehaviour {
 
     public void Start() {
         displayersFolder = new GameObject("Displayers").transform;
-
+        blocksFolder = new GameObject("Blocks").transform;
         hm = HistoryManager.Instance;
-        Debug.Log($"HistoryManager = {hm}");
-        ObjectHistory playerHistory = hm.GetPlayerHistory();
-        Debug.Log($"PlayerHistory = {playerHistory}");
-        List<ObjectHistory> ennemisHistory = hm.GetEnnemisHistory();
-        Debug.Log($"ennemisHistory.Count = {ennemisHistory.Count}");
-        List<ObjectHistory> lumieresHistory = hm.GetLumieresHistory();
-        Debug.Log($"lumieresHistory.Count = {lumieresHistory.Count}");
-        List<ObjectHistory> itemsHistory = hm.GetItemsHistory();
-        Debug.Log($"itemsHistory.Count = {itemsHistory.Count}");
+        ComputeDureeGameAndReward();
 
-        float dureeGame = hm.GetDureeGame();
-        dureeReward = ComputeDurationTrail(dureeGame);
-        accelerationCoefficiant = dureeReward / dureeGame;
-        Debug.Log("DureeGame = " + dureeGame + " DureeReward = " + dureeReward + " Acceleration = " + accelerationCoefficiant);
+        InitializeCamera();
+
+        if (hm.GetMapType() == MenuLevel.LevelType.REGULAR) {
+            InitializeRegularLevelMode();
+        } else { // INFINITE
+            InitializeInfiniteLevelMode();
+        }
+
+        //On lance la console ! :)
+        console = Instantiate(consolePrefab).GetComponent<RewardConsole>();
+        console.timedMessages = new List<TimedMessage>();
+        foreach (TimedMessage tm in hm.GetTimedMessages())
+        {
+            tm.timing *= accelerationCoefficiant;
+            console.timedMessages.Add(tm);
+        }
+        console.Initialize();
+        console.SetDureeReward(dureeReward, delayBetweenTrails);
+
+        InitializeTitleAndStats();
+
+        InitializeNewBestScoreAndFirstTimeButtons();
+    }
+
+    protected void InitializeRegularLevelMode() {
+        ObjectHistory playerHistory = hm.GetPlayerHistory();
+        List<ObjectHistory> ennemisHistory = hm.GetEnnemisHistory();
+        List<ObjectHistory> lumieresHistory = hm.GetLumieresHistory();
+        List<ObjectHistory> itemsHistory = hm.GetItemsHistory();
 
         float playerTrailDurationTime = dureeReward;
         float ennemiTrailDurationTime = playerTrailDurationTime * pourcentageEnnemiTrailTime;
@@ -101,23 +126,68 @@ public class RewardManager : MonoBehaviour {
             displayer.Initialize(history.prefab, history, dureeReward, delayBetweenTrails, accelerationCoefficiant, pointDisplayerScaleFactor);
             itemsDisplayers.Add(displayer);
         }
+    }
 
-        //On lance la console ! :)
-        console = Instantiate(consolePrefab).GetComponent<RewardConsole>();
-        console.timedMessages = new List<TimedMessage>();
-        foreach (TimedMessage tm in hm.GetTimedMessages())
-        {
-            tm.timing *= accelerationCoefficiant;
-            console.timedMessages.Add(tm);
+    protected void InitializeInfiniteLevelMode() {
+        bloomProfile.SetActive(false);
+        int nbBlocks = hm.GetBlocksPassedPrefabs().Count;
+        Vector2 gridShape = ComputeGridShape(nbBlocks);
+        List<Vector2> gridPositions = ComputeGridPositions(nbBlocks, gridShape);
+        for(int i = 0; i < nbBlocks; i++) {
+            GameObject blockPrefab = hm.GetBlocksPassedPrefabs()[i];
+            BlockTriggerZone triggerZone = blockPrefab.GetComponentInChildren<BlockTriggerZone>();
+            Vector2 screenPosition = gridPositions[i];
+            Vector3 worldPosition = camera.cam.ScreenToWorldPoint(new Vector3(screenPosition.x, screenPosition.y, blocksDistance));
+            worldPosition = worldPosition - (triggerZone.transform.localPosition - triggerZone.transform.localScale / 2);
+            Block block = Instantiate(blockPrefab, worldPosition, Quaternion.identity, parent: blocksFolder).GetComponent<Block>();
+            foreach(Cube cube in block.GetCubesNonInitialized()) {
+                cube.GetComponent<MeshRenderer>().material.SetColor("_Color", blocksColor);
+            }
+            AutoRotate rotator = block.gameObject.AddComponent<AutoRotate>();
+            rotator.vitesse = blockRotationSpeed;
         }
-        console.Initialize();
-        console.SetDureeReward(dureeReward, delayBetweenTrails);
+    }
 
-        InitializeTitleAndStats();
+    protected Vector2 ComputeGridShape(int nbBlocks) {
+        Vector2 columnsRows = Vector2.one;
+        for(int i = 0; i <= nbBlocks; i++) {
+            if(columnsRows.x * columnsRows.y < nbBlocks) {
+                if(columnsRows.x == columnsRows.y) {
+                    columnsRows.x += 1;
+                } else {
+                    columnsRows.y += 1;
+                }
+            } else {
+                break;
+            }
+        }
+        return columnsRows;
+    }
 
-        InitializeNewBestScoreAndFirstTimeButtons();
+    protected List<Vector2> ComputeGridPositions(int nbBlocks, Vector2 gridShape) {
+        List<Vector2> gridPositions = new List<Vector2>();
+        int nbNotOnLastLine = (int)(gridShape.x * (gridShape.y - 1));
+        int nbOnLastLine = nbBlocks - nbNotOnLastLine;
+        for(int i = 0; i < nbBlocks; i++) {
+            Vector2 position;
+            if(i < nbNotOnLastLine) {
+                position = new Vector2((i % gridShape.x + 1) / (gridShape.x + 1), 1 - (i / (int)gridShape.x + 1) / (gridShape.y + 1));
+            } else {
+                position = new Vector2((i - nbNotOnLastLine + 1) / (float)(nbOnLastLine + 1), 1 - (i / (int)gridShape.x + 1) / (gridShape.y + 1));
+            }
+            position.x = gridRect.x * camera.cam.pixelWidth + position.x * (camera.cam.pixelWidth * (1 - gridRect.x - gridRect.z));
+            position.y = gridRect.y * camera.cam.pixelHeight + position.y * (camera.cam.pixelHeight * (1 - gridRect.y - gridRect.w));
+            gridPositions.Add(position);
+        }
+        return gridPositions;
+    }
 
-        InitializeCamera();
+
+    protected void ComputeDureeGameAndReward() {
+        float dureeGame = hm.GetDureeGame();
+        dureeReward = ComputeDurationTrail(dureeGame);
+        accelerationCoefficiant = dureeReward / dureeGame;
+        Debug.Log("DureeGame = " + dureeGame + " DureeReward = " + dureeReward + " Acceleration = " + accelerationCoefficiant);
     }
 
     protected void InitializeTitleAndStats() {
@@ -129,7 +199,9 @@ public class RewardManager : MonoBehaviour {
         scoreText.text = strings.score.GetLocalizedString(score).Result;
         bestScoreText.text = strings.bestScore.GetLocalizedString(bestScore).Result;
 
-        SetAllReplayStatsTexts(currentReplayLength: 0.0f);
+        if (hm.GetMapType() == MenuLevel.LevelType.REGULAR) {
+            SetAllReplayStatsTexts(currentReplayLength: 0.0f);
+        }
     }
 
     protected void SetAllReplayStatsTexts(float currentReplayLength) {
@@ -157,7 +229,9 @@ public class RewardManager : MonoBehaviour {
 
     public void Update() {
         TestExit();
-        SetAllReplayStatsTexts(currentReplayLength: GetCurrentReplayTime());
+        if (hm.GetMapType() == MenuLevel.LevelType.REGULAR) {
+            SetAllReplayStatsTexts(currentReplayLength: GetCurrentReplayTime());
+        }
     }
 
     protected float GetCurrentReplayTime() {

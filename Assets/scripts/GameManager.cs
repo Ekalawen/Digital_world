@@ -276,16 +276,32 @@ public class GameManager : MonoBehaviour {
 		Cursor.visible = true;
         Time.timeScale = 1.0f;
 
-        if(SceneManager.GetActiveScene().name == "TutorialScene") {
+        if (SceneManager.GetActiveScene().name == "TutorialScene") {
             Destroy(historyManager.gameObject);
             SceneManager.LoadScene("MenuScene");
-        } else if ((GetMapType() == MenuLevel.LevelType.REGULAR && eventManager.IsGameWin())) {
-            SceneManager.LoadScene("RewardScene");
-        } else {
-            Destroy(historyManager.gameObject);
-            SceneManager.LoadScene("SelectorScene");
+        } else if ((GetMapType() == MenuLevel.LevelType.REGULAR)) {
+            if (eventManager.IsGameWin()) {
+                GoToRewardScene();
+            } else {
+                GoToSelectorScene();
+            }
+        } else { // MenuLevel.LevelType == INFINITE
+            if (eventManager.ShouldQuitOrReload() == EventManager.QuitType.QUIT) { // We did good
+                GoToRewardScene();
+            } else {
+                GoToSelectorScene();
+            }
         }
-	}
+    }
+
+    protected void GoToRewardScene() {
+        SceneManager.LoadScene("RewardScene");
+    }
+
+    protected void GoToSelectorScene() {
+        Destroy(historyManager.gameObject);
+        SceneManager.LoadScene("SelectorScene");
+    }
 
     public bool IsTimeFreezed() {
         return timeFreezed;

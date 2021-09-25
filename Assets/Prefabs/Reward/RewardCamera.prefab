@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4124474516100157913}
   - component: {fileID: 4124474516100157912}
   - component: {fileID: 8085775237083427528}
+  - component: {fileID: 382284588063892009}
   m_Layer: 0
   m_Name: RewardCamera
   m_TagString: MainCamera
@@ -99,6 +100,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   thetaSpeed: 0.5
+  coefDistance: 1
 --- !u!114 &4124474516100157912
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -231,6 +233,19 @@ MonoBehaviour:
   m_StopNaN: 0
   m_Dithering: 0
   m_ClearDepth: 1
+  m_AllowXRRendering: 1
   m_RequiresDepthTexture: 0
   m_RequiresColorTexture: 0
   m_Version: 2
+--- !u!114 &382284588063892009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4124474516100157909}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6ba223f90dbc9b4d9e4020a150f68ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

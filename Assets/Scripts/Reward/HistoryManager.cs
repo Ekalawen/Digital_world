@@ -50,6 +50,7 @@ public class HistoryManager : MonoBehaviour {
     protected List<ObjectHistory> lumieresHistory;
     protected List<ObjectHistory> itemsHistory;
     protected List<TimedMessage> timedMessages;
+    protected List<GameObject> blockPassedPrefabs;
     protected Timer echantillonnageTimer;
     protected float dureeGame;
     protected MenuLevel.LevelType mapType;
@@ -80,6 +81,7 @@ public class HistoryManager : MonoBehaviour {
             itemsHistory = new List<ObjectHistory>();
         if(timedMessages == null)
             timedMessages = new List<TimedMessage>();
+        blockPassedPrefabs = new List<GameObject>();
 
         echantillonnageTimer = new Timer(frequenceEchantillonnagePositions);
         mapSize = gm.map.tailleMap;
@@ -209,5 +211,13 @@ public class HistoryManager : MonoBehaviour {
 
     public void SetMapType(MenuLevel.LevelType type) {
         mapType = type;
+    }
+
+    public void AddBlockPassed(Block block) {
+        blockPassedPrefabs.Add(block.GetOriginalBlockPrefab());
+    }
+
+    public List<GameObject> GetBlocksPassedPrefabs() {
+        return blockPassedPrefabs;
     }
 }
