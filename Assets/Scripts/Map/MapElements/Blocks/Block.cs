@@ -81,18 +81,14 @@ public class Block : MonoBehaviour {
 
     public List<Cube> GetCubesNonInitialized() {
         List<Cube> cubes = new List<Cube>();
-        Stack<Transform> transformsToVisit = new Stack<Transform>();
-        transformsToVisit.Push(cubeFolder);
-        while (transformsToVisit.Count != 0) {
-            Transform folder = transformsToVisit.Pop();
-            foreach (Transform child in folder) {
-                Cube cube = child.gameObject.GetComponent<Cube>();
-                if (cube != null) {
-                    cubes.Add(cube);
-                } else {
-                    transformsToVisit.Push(child);
-                }
-            }
+        foreach (Transform child in cubeFolder) {
+            Cube cube = child.gameObject.GetComponent<Cube>();
+            if (cube != null)
+                cubes.Add(cube);
+
+            RandomCubes randomCubes = child.gameObject.GetComponent<RandomCubes>();
+            if (randomCubes != null)
+                cubes.AddRange(randomCubes.GetChosenCubesAndDestroyOthers());
         }
         return cubes;
     }
