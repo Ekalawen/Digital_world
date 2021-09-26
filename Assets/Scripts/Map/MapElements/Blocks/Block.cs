@@ -14,6 +14,7 @@ public class Block : MonoBehaviour {
 
     public Transform startPoint;
     public Transform endPoint;
+    public BlockTriggerZone triggerZone;
     public Transform cubeFolder;
     public List<float> timesForFinishing; // { private get; set; }  // Don't use this directly ! Use GetTimeList() !
     public bool shouldPlayerPressShift = false;

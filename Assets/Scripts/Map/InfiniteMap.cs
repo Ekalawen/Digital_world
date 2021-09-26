@@ -63,7 +63,8 @@ public class InfiniteMap : MapManager {
     protected CameraShakeInstance cameraShakeInstance;
     protected List<string> blocksNameToNotifyPlayerToPressShift = new List<string>();
 
-    protected override void InitializeSpecific() {
+    protected override void InitializeSpecific()
+    {
         blocks = new List<Block>();
         blocksFolder = new GameObject("Blocks").transform;
         blocksFolder.transform.SetParent(cubesFolder.transform);
@@ -79,6 +80,16 @@ public class InfiniteMap : MapManager {
         ResetAllBlocksTime();
         CreateFirstBlocks();
         cameraShakeInstance = CameraShaker.Instance.StartShake(0, 0, 0);
+
+        StartCoroutine(AddFirstBlocksToHistory());
+    }
+
+    protected IEnumerator AddFirstBlocksToHistory() {
+        yield return new WaitForSeconds(0.1f);
+        for (int i = 0; i < blocks.Count; i++) {
+            gm.historyManager.AddBlockPassed(blocks[i]);
+        }
+        gm.eventManager.LoseGame(EventManager.DeathReason.FALL_OUT);
     }
 
     protected override void Update() {

@@ -135,17 +135,26 @@ public class RewardManager : MonoBehaviour {
         List<Vector2> gridPositions = ComputeGridPositions(nbBlocks, gridShape);
         for(int i = 0; i < nbBlocks; i++) {
             GameObject blockPrefab = hm.GetBlocksPassedPrefabs()[i];
-            BlockTriggerZone triggerZone = blockPrefab.GetComponentInChildren<BlockTriggerZone>();
             Vector2 screenPosition = gridPositions[i];
+
             Vector3 worldPosition = camera.cam.ScreenToWorldPoint(new Vector3(screenPosition.x, screenPosition.y, blocksDistance));
-            worldPosition = worldPosition - (triggerZone.transform.localPosition - triggerZone.transform.localScale / 2);
-            Block block = Instantiate(blockPrefab, worldPosition, Quaternion.identity, parent: blocksFolder).GetComponent<Block>();
-            foreach(Cube cube in block.GetCubesNonInitialized()) {
-                cube.GetComponent<MeshRenderer>().material.SetColor("_Color", blocksColor);
-            }
-            AutoRotate rotator = block.gameObject.AddComponent<AutoRotate>();
-            rotator.vitesse = blockRotationSpeed;
+            BlockTriggerZone triggerZone = blockPrefab.GetComponent<Block>().triggerZone;
+            worldPosition = worldPosition - triggerZone.transform.localPosition; // La position de la triggerZone est en son centre ! Theuh ! XD
+
+            InstantiateBlockPrefab(blockPrefab, worldPosition);
         }
+    }
+
+    protected void InstantiateBlockPrefab(GameObject blockPrefab, Vector3 worldPosition) {
+        Block block = Instantiate(blockPrefab, worldPosition, Quaternion.identity, parent: blocksFolder).GetComponent<Block>();
+        foreach (Cube cube in block.GetCubesNonInitialized())
+        {
+            cube.GetComponent<MeshRenderer>().material.SetColor("_Color", blocksColor);
+        }
+        AutoRotate rotator = block.gameObject.AddComponent<AutoRotate>();
+        rotator.vitesse = blockRotationSpeed;
+        rotator.usePivot = true;
+        rotator.pivot = block.triggerZone.transform.localPosition;
     }
 
     protected Vector2 ComputeGridShape(int nbBlocks) {

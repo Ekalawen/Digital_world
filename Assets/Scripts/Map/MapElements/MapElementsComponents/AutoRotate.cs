@@ -4,9 +4,13 @@ using UnityEngine;
 
 public class AutoRotate : MonoBehaviour {
 
-    public Vector3 axeToUse = Vector3.up;
     public bool useAxe = true;
+    [ConditionalHide("useAxe")]
+    public Vector3 axeToUse = Vector3.up;
     public float vitesse = 3.0f;
+    public bool usePivot = false;
+    [ConditionalHide("usePivot")]
+    public Vector3 pivot;
 
     protected Vector3 axe;
 
@@ -20,7 +24,13 @@ public class AutoRotate : MonoBehaviour {
 
     void Update() {
         float angle = 100 * vitesse * Time.deltaTime;
+        if(usePivot) {
+            transform.position += transform.rotation * pivot;
+        }
         transform.RotateAround(transform.position, axe, angle);
+        if(usePivot) {
+            transform.position -= transform.rotation * pivot;
+        }
     }
 
     protected void ComputeRandomAxe() {
