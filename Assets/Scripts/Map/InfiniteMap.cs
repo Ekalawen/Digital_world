@@ -86,7 +86,7 @@ public class InfiniteMap : MapManager {
 
     protected IEnumerator AddFirstBlocksToHistory() {
         yield return new WaitForSeconds(0.1f);
-        for (int i = 0; i < blocks.Count; i++) {
+        for (int i = nbFirstBlocks; i < blocks.Count; i++) {
             gm.historyManager.AddBlockPassed(blocks[i]);
         }
         gm.eventManager.LoseGame(EventManager.DeathReason.FALL_OUT);
@@ -305,7 +305,7 @@ public class InfiniteMap : MapManager {
     }
 
     protected void RegisterPassedBlocksToHistory(int indiceCurrentBlock, int nbBlocksAdded) {
-        for(int i = indiceCurrentBlock; i < indiceCurrentBlock + nbBlocksAdded; i++) {
+        for(int i = Mathf.Max(indiceCurrentBlock, nbFirstBlocks); i < indiceCurrentBlock + nbBlocksAdded; i++) {
             gm.historyManager.AddBlockPassed(blocks[i]);
         }
     }
