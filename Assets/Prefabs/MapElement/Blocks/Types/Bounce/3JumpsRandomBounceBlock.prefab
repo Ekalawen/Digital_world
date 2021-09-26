@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74f31951e3970094593657a3a434aa5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nbCubesToChose: 1
+  nbToChose: 1
 --- !u!1 &3711203925219595217
 GameObject:
   m_ObjectHideFlags: 0
@@ -93,7 +93,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74f31951e3970094593657a3a434aa5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nbCubesToChose: 1
+  nbToChose: 1
 --- !u!1 &5230655376434405634
 GameObject:
   m_ObjectHideFlags: 0
@@ -215,6 +215,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startPoint: {fileID: 5230655376434405635}
   endPoint: {fileID: 5230655378405645168}
+  triggerZone: {fileID: 3772634410014625415}
   cubeFolder: {fileID: 5230655376723090585}
   timesForFinishing:
   - 3.7799997
@@ -304,7 +305,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74f31951e3970094593657a3a434aa5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nbCubesToChose: 1
+  nbToChose: 1
 --- !u!1001 &124662879537943520
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1342,6 +1343,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 5761839558848064515}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &3772634410014625415 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8911846913062003332, guid: 03333e28cb2a3944dbd44d66a84d475e,
+    type: 3}
+  m_PrefabInstance: {fileID: 5761839558848064515}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf61826adb5039142aeb60ecdc28f8f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &5852181031437276475
 PrefabInstance:
   m_ObjectHideFlags: 0
