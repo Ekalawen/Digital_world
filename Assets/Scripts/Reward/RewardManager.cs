@@ -25,6 +25,8 @@ public class RewardManager : MonoBehaviour {
     public GameObject consolePrefab; // On récupère la console !
 
     [Header("Parameters Infinite")]
+    public float revealTime = 5f;
+    public AnimationCurve revealCurve;
     public float blocksDistance = 30;
     public GameObject bloomProfile;
     public Vector4 gridRect;
@@ -131,19 +133,34 @@ public class RewardManager : MonoBehaviour {
     }
 
     protected void InitializeInfiniteLevelMode() {
+        StartCoroutine(CInitializeInfiniteLevelMode());
+    }
+
+    protected IEnumerator CInitializeInfiniteLevelMode() {
         bloomProfile.SetActive(false);
         int nbBlocks = hm.GetBlocksPassedPrefabs().Count;
         Vector2 gridShape = ComputeGridShape(nbBlocks);
         List<Vector2> gridPositions = ComputeGridPositions(nbBlocks, gridShape);
         Vector3 tailleMaxBlock = ComputeTailleMaxBlock(gridShape, gridPositions);
         Color pureColor = ColorManager.GetColor(ColorManager.RemoveSpecificColorFromThemes(hm.themes, ColorManager.Theme.BLANC));
-        for(int i = 0; i < nbBlocks; i++) {
-            GameObject blockPrefab = hm.GetBlocksPassedPrefabs()[i];
-            float blockRedimensionnement = GetBlockRedimensionnement(tailleMaxBlock, blockPrefab);
-            Vector3 worldPosition = GetBlockWorldPosition(gridPositions[i], blockPrefab, blockRedimensionnement);
-            Color color = ColorManager.InterpolateColors(Color.white, pureColor, mainColorCurve.Evaluate((float)i / Mathf.Max(1, (nbBlocks - 1))));
-            InstantiateBlockPrefab(blockPrefab, worldPosition, blockRedimensionnement, color);
+        Timer timer = new Timer(revealTime);
+        int indiceToReveal = 0;
+        while(indiceToReveal < nbBlocks) {
+            float avancement = timer.GetAvancement();
+            if (revealCurve.Evaluate(avancement) >= (float)indiceToReveal / Mathf.Max(1, (nbBlocks - 1))) {
+                RevealBlock(nbBlocks, gridPositions, tailleMaxBlock, pureColor, indiceToReveal);
+                indiceToReveal++;
+            }
+            yield return null;
         }
+    }
+
+    protected void RevealBlock(int nbBlocks, List<Vector2> gridPositions, Vector3 tailleMaxBlock, Color pureColor, int indice) {
+        GameObject blockPrefab = hm.GetBlocksPassedPrefabs()[indice];
+        float blockRedimensionnement = GetBlockRedimensionnement(tailleMaxBlock, blockPrefab);
+        Vector3 worldPosition = GetBlockWorldPosition(gridPositions[indice], blockPrefab, blockRedimensionnement);
+        Color color = ColorManager.InterpolateColors(Color.white, pureColor, mainColorCurve.Evaluate((float)indice / Mathf.Max(1, (nbBlocks - 1))));
+        InstantiateBlockPrefab(blockPrefab, worldPosition, blockRedimensionnement, color);
     }
 
     protected Vector3 ComputeTailleMaxBlock(Vector2 gridShape, List<Vector2> gridPositions) {
