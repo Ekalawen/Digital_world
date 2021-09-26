@@ -134,12 +134,11 @@ public class RewardManager : MonoBehaviour {
         Vector2 gridShape = ComputeGridShape(nbBlocks);
         List<Vector2> gridPositions = ComputeGridPositions(nbBlocks, gridShape);
         Vector3 tailleMaxBlock = ComputeTailleMaxBlock(gridShape, gridPositions);
-        Debug.Log($"TailleMaxBlock = {tailleMaxBlock}");
         for(int i = 0; i < nbBlocks; i++) {
-            GameObject blockPrefab = hm.GetBlocksPassedPrefabs()[i];
-            float blockRedimensionnement = GetBlockRedimensionnement(tailleMaxBlock, blockPrefab);
-            Vector3 worldPosition = GetBlockWorldPosition(gridPositions[i], blockPrefab, blockRedimensionnement);
-            InstantiateBlockPrefab(blockPrefab, worldPosition, blockRedimensionnement);
+            BlockPassed blockPassed = hm.GetBlocksPassedPrefabs()[i];
+            float blockRedimensionnement = GetBlockRedimensionnement(tailleMaxBlock, blockPassed.block);
+            Vector3 worldPosition = GetBlockWorldPosition(gridPositions[i], blockPassed.block, blockRedimensionnement);
+            InstantiateBlockPrefab(blockPassed, worldPosition, blockRedimensionnement);
         }
     }
 
@@ -176,10 +175,10 @@ public class RewardManager : MonoBehaviour {
         return worldPosition;
     }
 
-    protected void InstantiateBlockPrefab(GameObject blockPrefab, Vector3 worldPosition, float redimensionnement) {
-        Block block = Instantiate(blockPrefab, worldPosition, Quaternion.identity, parent: blocksFolder).GetComponent<Block>();
+    protected void InstantiateBlockPrefab(BlockPassed blockPassed, Vector3 worldPosition, float redimensionnement) {
+        Block block = Instantiate(blockPassed.block, worldPosition, Quaternion.identity, parent: blocksFolder).GetComponent<Block>();
         block.transform.localScale /= redimensionnement;
-        foreach (Cube cube in block.GetCubesNonInitialized()) {
+        foreach (Cube cube in block.GetCubesNonInitialized(blockPassed.localPosOfCubesToKeep, redimensionnement)) {
             cube.GetComponent<MeshRenderer>().material.SetColor("_Color", blocksColor);
         }
         AutoRotate rotator = block.gameObject.AddComponent<AutoRotate>();
@@ -192,7 +191,6 @@ public class RewardManager : MonoBehaviour {
         Vector3 sizeBlock = block.GetComponent<Block>().triggerZone.transform.localScale;
         float redimensionnement = Mathf.Max(sizeBlock.x / tailleMaxBlock.x, sizeBlock.y / tailleMaxBlock.y, sizeBlock.z / tailleMaxBlock.z);
         if (redimensionnement > 1) {
-            Debug.Log($"Block {block.name} redimentionné d'un facteur de {redimensionnement}");
             return redimensionnement;
         }
         return 1;

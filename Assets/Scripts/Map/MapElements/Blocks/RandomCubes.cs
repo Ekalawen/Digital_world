@@ -35,8 +35,9 @@ public class RandomCubes : MonoBehaviour {
             MathTools.Shuffle(cubes);
             List<Cube> chosen = cubes.Take(nbToChose).ToList();
             List<Cube> others = cubes.Skip(nbToChose).Take(cubes.Count - nbToChose).ToList();
-            foreach (Cube cube in others)
+            foreach (Cube cube in others) {
                 Destroy(cube.gameObject);
+            }
             return chosen;
         } else {
             List<RandomCubes> groups = GatherRandomGroups();
