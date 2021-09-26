@@ -79,21 +79,16 @@ public class Block : MonoBehaviour {
         }
     }
 
-    public List<Cube> GetCubesNonInitialized(List<Vector3> localPosOfCubesToKeep, float redimensionnement) {
+    public List<Cube> GetCubesNonInitialized() {
         List<Cube> cubes = new List<Cube>();
         Stack<Transform> transformsToVisit = new Stack<Transform>();
         transformsToVisit.Push(cubeFolder);
-        while(transformsToVisit.Count != 0) {
+        while (transformsToVisit.Count != 0) {
             Transform folder = transformsToVisit.Pop();
             foreach (Transform child in folder) {
                 Cube cube = child.gameObject.GetComponent<Cube>();
                 if (cube != null) {
-                    Vector3 localPos = (cube.transform.position - transform.position) * redimensionnement;
-                    if (localPosOfCubesToKeep.Any(p => MathTools.AlmostEqual(p, localPos))) {
-                        cubes.Add(cube);
-                    } else {
-                        Destroy(cube.gameObject);
-                    }
+                    cubes.Add(cube);
                 } else {
                     transformsToVisit.Push(child);
                 }
@@ -197,9 +192,5 @@ public class Block : MonoBehaviour {
     public void NotifyPlayerToPressShift() {
         gm.console.NotifyPlayerToPressShift();
         shouldNotifyToPressShift = false;
-    }
-
-    public List<Vector3> GetLocalPosOfCubesToKeep() {
-        return cubes.Select(c => c.transform.position - transform.position).ToList();
     }
 }
