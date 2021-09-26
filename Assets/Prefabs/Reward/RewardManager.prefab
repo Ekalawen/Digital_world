@@ -55,7 +55,8 @@ MonoBehaviour:
     type: 3}
   consolePrefab: {fileID: 1722120177189256, guid: 47ebd2c24c9973242ba0f62097702500,
     type: 3}
-  revealTime: 10
+  revealTimeAt10Blocks: 2.5
+  revealTimeAt100Blocks: 10
   revealCurve:
     serializedVersion: 2
     m_Curve:
@@ -93,59 +94,50 @@ MonoBehaviour:
   bloomProfile: {fileID: 0}
   gridRect: {x: 0, y: 0.15, z: 0, w: 0.2}
   blockRotationSpeed: 0.75
-  colorCurve:
+  globalColorCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 0.2
-      outSlope: 0.2
+      inSlope: 1
+      outSlope: 1
       tangentMode: 34
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.33333334
+      outWeight: 0
     - serializedVersion: 3
       time: 1
-      value: 0.2
-      inSlope: 0.2
-      outSlope: 0.2
+      value: 1
+      inSlope: 1
+      outSlope: 1
       tangentMode: 34
       weightedMode: 0
-      inWeight: 0.33333334
+      inWeight: 0
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  mainColorCurve:
+  insideBlockColorCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: 0.0022392273
+      time: 0
       value: 0
-      inSlope: 4.5100083
-      outSlope: 4.5100083
+      inSlope: 0.33259106
+      outSlope: 0.33259106
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.14845109
+      outWeight: 0.99776036
     - serializedVersion: 3
-      time: 0.15592884
-      value: 0.40115732
-      inSlope: 0.99778956
-      outSlope: 0.99778956
+      time: 1
+      value: 0.33
+      inSlope: 0.33378008
+      outSlope: 0.33378008
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.30723947
-      outWeight: 0.05033585
-    - serializedVersion: 3
-      time: 0.99890137
-      value: 0.9986
-      inSlope: 0.55912703
-      outSlope: 0.55912703
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.06206321
+      inWeight: 1
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2

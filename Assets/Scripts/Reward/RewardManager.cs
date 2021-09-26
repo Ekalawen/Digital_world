@@ -32,8 +32,8 @@ public class RewardManager : MonoBehaviour {
     public GameObject bloomProfile;
     public Vector4 gridRect;
     public float blockRotationSpeed = 3.0f;
-    public AnimationCurve colorCurve;
-    public AnimationCurve mainColorCurve;
+    public AnimationCurve globalColorCurve;
+    public AnimationCurve insideBlockColorCurve;
     public float bounceTime = 1.5f;
     public AnimationCurve bounceCurve;
 
@@ -139,32 +139,46 @@ public class RewardManager : MonoBehaviour {
         StartCoroutine(CInitializeInfiniteLevelMode());
     }
 
-    protected IEnumerator CInitializeInfiniteLevelMode() {
+    protected IEnumerator CInitializeInfiniteLevelMode()
+    {
         bloomProfile.SetActive(false);
         int nbBlocks = hm.GetBlocksPassedPrefabs().Count;
         Vector2 gridShape = ComputeGridShape(nbBlocks);
         List<Vector2> gridPositions = ComputeGridPositions(nbBlocks, gridShape);
         Vector3 tailleMaxBlock = ComputeTailleMaxBlock(gridShape, gridPositions);
-        Color pureColor = ColorManager.GetColor(ColorManager.RemoveSpecificColorFromThemes(hm.themes, ColorManager.Theme.BLANC));
+        Tuple<Color, Color> blockColors = GetBlocksMainColors();
         float revealTime = MathCurves.Linear(revealTimeAt10Blocks, revealTimeAt100Blocks, MathCurves.LinearReversedUnclamped(10, 100, nbBlocks));
         Timer timer = new Timer(revealTime);
-        Debug.Log($"RevealTime = {revealTime}");
         int indiceToReveal = 0;
-        while(indiceToReveal < nbBlocks) {
+        while (indiceToReveal < nbBlocks)
+        {
             float avancement = timer.GetAvancement();
-            if (revealCurve.Evaluate(avancement) >= (float)indiceToReveal / Mathf.Max(1, (nbBlocks - 1))) {
-                RevealBlock(nbBlocks, gridPositions, tailleMaxBlock, pureColor, indiceToReveal);
+            if (revealCurve.Evaluate(avancement) >= (float)indiceToReveal / Mathf.Max(1, (nbBlocks - 1)))
+            {
+                RevealBlock(nbBlocks, gridPositions, tailleMaxBlock, blockColors.Item1, blockColors.Item2, indiceToReveal);
                 indiceToReveal++;
             }
             yield return null;
         }
     }
 
-    protected void RevealBlock(int nbBlocks, List<Vector2> gridPositions, Vector3 tailleMaxBlock, Color pureColor, int indice) {
+    protected Tuple<Color, Color> GetBlocksMainColors() {
+        List<ColorManager.Theme> themes = ColorManager.RemoveSpecificColorFromThemes(hm.themes, ColorManager.Theme.BLANC);
+        ColorManager.Theme endTheme = MathTools.ChoseOne(themes);
+        ColorManager.Theme startTheme = ColorManager.Theme.BLANC;
+        themes = ColorManager.RemoveSpecificColorFromThemes(themes, endTheme);
+        if (themes.Count >= 1) {
+            startTheme = MathTools.ChoseOne(themes);
+        }
+        Tuple<Color, Color> colors = new Tuple<Color, Color>(ColorManager.GetColor(startTheme), ColorManager.GetColor(endTheme));
+        return colors;
+    }
+
+    protected void RevealBlock(int nbBlocks, List<Vector2> gridPositions, Vector3 tailleMaxBlock, Color startColor, Color endColor, int indice) {
         GameObject blockPrefab = hm.GetBlocksPassedPrefabs()[indice];
         float blockRedimensionnement = GetBlockRedimensionnement(tailleMaxBlock, blockPrefab);
         Vector3 worldPosition = GetBlockWorldPosition(gridPositions[indice], blockPrefab, blockRedimensionnement);
-        Color color = ColorManager.InterpolateColors(Color.white, pureColor, mainColorCurve.Evaluate((float)indice / Mathf.Max(1, (nbBlocks - 1))));
+        Color color = ColorManager.InterpolateColors(startColor, endColor, globalColorCurve.Evaluate((float)indice / Mathf.Max(1, (nbBlocks - 1))));
         InstantiateBlockPrefab(blockPrefab, worldPosition, blockRedimensionnement, color);
     }
 
@@ -209,7 +223,7 @@ public class RewardManager : MonoBehaviour {
         Vector2 distancesInterval = new Vector2(distances.Min(), distances.Max());
         foreach (Cube cube in cubes) {
             float distance = Vector3.Distance(cube.transform.position, block.triggerZone.transform.position);
-            float avancement = colorCurve.Evaluate(MathCurves.Remap(distance, distancesInterval, new Vector2(0, 1)));
+            float avancement = insideBlockColorCurve.Evaluate(MathCurves.Remap(distance, distancesInterval, new Vector2(0, 1)));
             cube.GetComponent<MeshRenderer>().material.SetColor("_Color", ColorManager.InterpolateColors(targetColor, Color.white, avancement));
         }
         AutoRotate rotator = block.gameObject.AddComponent<AutoRotate>();

@@ -212,6 +212,9 @@ public class ColorManager : MonoBehaviour {
         source.Initialize(GetColor(themes), Random.Range(porteeSourceRange[0], porteeSourceRange[1]));
         sourcesOctree.Add(go.GetComponent<ColorSource>());
     }
+    public static Color GetColor(ColorManager.Theme theme) {
+        return GetColor(new List<ColorManager.Theme>() { theme });
+    }
 
 	public static Color GetColor(List<ColorManager.Theme> currentThemes) {
 		Color c;
