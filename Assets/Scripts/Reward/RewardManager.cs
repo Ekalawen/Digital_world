@@ -33,6 +33,8 @@ public class RewardManager : MonoBehaviour {
     public float blockRotationSpeed = 3.0f;
     public AnimationCurve colorCurve;
     public AnimationCurve mainColorCurve;
+    public float bounceTime = 1.5f;
+    public AnimationCurve bounceCurve;
 
     [Header("Links")]
     public RewardStrings strings;
@@ -211,6 +213,18 @@ public class RewardManager : MonoBehaviour {
         rotator.vitesse = blockRotationSpeed;
         rotator.usePivot = true;
         rotator.pivot = block.triggerZone.transform.localPosition / redimensionnement;
+
+        StartCoroutine(MakeBlockBounce(block));
+    }
+
+    protected IEnumerator MakeBlockBounce(Block block) {
+        Timer timer = new Timer(bounceTime);
+        Vector3 initialSize = block.transform.localScale;
+        while(!timer.IsOver()) {
+            block.transform.localScale = initialSize * bounceCurve.Evaluate(timer.GetAvancement());
+            yield return null;
+        }
+        block.transform.localScale = initialSize;
     }
 
     protected float GetBlockRedimensionnement(Vector3 tailleMaxBlock, GameObject block) {
