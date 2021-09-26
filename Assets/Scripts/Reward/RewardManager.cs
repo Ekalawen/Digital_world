@@ -133,28 +133,69 @@ public class RewardManager : MonoBehaviour {
         int nbBlocks = hm.GetBlocksPassedPrefabs().Count;
         Vector2 gridShape = ComputeGridShape(nbBlocks);
         List<Vector2> gridPositions = ComputeGridPositions(nbBlocks, gridShape);
+        Vector3 tailleMaxBlock = ComputeTailleMaxBlock(gridShape, gridPositions);
+        Debug.Log($"TailleMaxBlock = {tailleMaxBlock}");
         for(int i = 0; i < nbBlocks; i++) {
             GameObject blockPrefab = hm.GetBlocksPassedPrefabs()[i];
-            Vector2 screenPosition = gridPositions[i];
-
-            Vector3 worldPosition = camera.cam.ScreenToWorldPoint(new Vector3(screenPosition.x, screenPosition.y, blocksDistance));
-            BlockTriggerZone triggerZone = blockPrefab.GetComponent<Block>().triggerZone;
-            worldPosition = worldPosition - triggerZone.transform.localPosition; // La position de la triggerZone est en son centre ! Theuh ! XD
-
-            InstantiateBlockPrefab(blockPrefab, worldPosition);
+            float blockRedimensionnement = GetBlockRedimensionnement(tailleMaxBlock, blockPrefab);
+            Vector3 worldPosition = GetBlockWorldPosition(gridPositions[i], blockPrefab, blockRedimensionnement);
+            InstantiateBlockPrefab(blockPrefab, worldPosition, blockRedimensionnement);
         }
     }
 
-    protected void InstantiateBlockPrefab(GameObject blockPrefab, Vector3 worldPosition) {
+    protected Vector3 ComputeTailleMaxBlock(Vector2 gridShape, List<Vector2> gridPositions) {
+        float tailleMaxLargeur;
+        float tailleMaxHauteur;
+        if(gridShape.x == 1) {
+            Vector2 gridPointLeft = new Vector2(gridRect.x * camera.cam.pixelWidth, 0);
+            Vector2 gridPointRight = new Vector2(gridRect.x * camera.cam.pixelWidth + (camera.cam.pixelWidth * (1 - gridRect.x - gridRect.z)), 0);
+            tailleMaxLargeur = DistanceBetweenGridPoints(gridPointLeft, gridPointRight);
+        } else {
+            tailleMaxLargeur = DistanceBetweenGridPoints(gridPositions[0], gridPositions[1]);
+        }
+        if(gridShape.y == 1) {
+            Vector2 gridPointHaut = new Vector2(gridRect.y * camera.cam.pixelHeight, 0);
+            Vector2 gridPointBas = new Vector2(gridRect.y * camera.cam.pixelHeight + (camera.cam.pixelHeight * (1 - gridRect.y - gridRect.w)), 0);
+            tailleMaxHauteur = DistanceBetweenGridPoints(gridPointHaut, gridPointBas);
+        } else {
+            tailleMaxHauteur = DistanceBetweenGridPoints(gridPositions[0], gridPositions[(int)gridShape.x]);
+        }
+        return new Vector3(tailleMaxLargeur, tailleMaxHauteur, tailleMaxLargeur);
+    }
+
+    protected float DistanceBetweenGridPoints(Vector2 gridPoint1, Vector2 gridPoint2) {
+        Vector3 p1WorldSpace = camera.cam.ScreenToWorldPoint(new Vector3(gridPoint1.x, gridPoint1.y, blocksDistance));
+        Vector3 p2WorldSpace = camera.cam.ScreenToWorldPoint(new Vector3(gridPoint2.x, gridPoint2.y, blocksDistance));
+        return Vector3.Distance(p1WorldSpace, p2WorldSpace);
+    }
+
+    private Vector3 GetBlockWorldPosition(Vector2 screenPosition, GameObject blockPrefab, float redimensionnement) {
+        Vector3 worldPosition = camera.cam.ScreenToWorldPoint(new Vector3(screenPosition.x, screenPosition.y, blocksDistance));
+        BlockTriggerZone triggerZone = blockPrefab.GetComponent<Block>().triggerZone;
+        worldPosition = worldPosition - triggerZone.transform.localPosition / redimensionnement; // La position de la triggerZone est en son centre ! Theuh ! XD
+        return worldPosition;
+    }
+
+    protected void InstantiateBlockPrefab(GameObject blockPrefab, Vector3 worldPosition, float redimensionnement) {
         Block block = Instantiate(blockPrefab, worldPosition, Quaternion.identity, parent: blocksFolder).GetComponent<Block>();
-        foreach (Cube cube in block.GetCubesNonInitialized())
-        {
+        block.transform.localScale /= redimensionnement;
+        foreach (Cube cube in block.GetCubesNonInitialized()) {
             cube.GetComponent<MeshRenderer>().material.SetColor("_Color", blocksColor);
         }
         AutoRotate rotator = block.gameObject.AddComponent<AutoRotate>();
         rotator.vitesse = blockRotationSpeed;
         rotator.usePivot = true;
-        rotator.pivot = block.triggerZone.transform.localPosition;
+        rotator.pivot = block.triggerZone.transform.localPosition / redimensionnement;
+    }
+
+    protected float GetBlockRedimensionnement(Vector3 tailleMaxBlock, GameObject block) {
+        Vector3 sizeBlock = block.GetComponent<Block>().triggerZone.transform.localScale;
+        float redimensionnement = Mathf.Max(sizeBlock.x / tailleMaxBlock.x, sizeBlock.y / tailleMaxBlock.y, sizeBlock.z / tailleMaxBlock.z);
+        if (redimensionnement > 1) {
+            Debug.Log($"Block {block.name} redimentionné d'un facteur de {redimensionnement}");
+            return redimensionnement;
+        }
+        return 1;
     }
 
     protected Vector2 ComputeGridShape(int nbBlocks) {
