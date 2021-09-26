@@ -25,7 +25,8 @@ public class RewardManager : MonoBehaviour {
     public GameObject consolePrefab; // On récupère la console !
 
     [Header("Parameters Infinite")]
-    public float revealTime = 5f;
+    public float revealTimeAt10Blocks = 2.5f;
+    public float revealTimeAt100Blocks = 10.0f;
     public AnimationCurve revealCurve;
     public float blocksDistance = 30;
     public GameObject bloomProfile;
@@ -145,7 +146,9 @@ public class RewardManager : MonoBehaviour {
         List<Vector2> gridPositions = ComputeGridPositions(nbBlocks, gridShape);
         Vector3 tailleMaxBlock = ComputeTailleMaxBlock(gridShape, gridPositions);
         Color pureColor = ColorManager.GetColor(ColorManager.RemoveSpecificColorFromThemes(hm.themes, ColorManager.Theme.BLANC));
+        float revealTime = MathCurves.Linear(revealTimeAt10Blocks, revealTimeAt100Blocks, MathCurves.LinearReversedUnclamped(10, 100, nbBlocks));
         Timer timer = new Timer(revealTime);
+        Debug.Log($"RevealTime = {revealTime}");
         int indiceToReveal = 0;
         while(indiceToReveal < nbBlocks) {
             float avancement = timer.GetAvancement();

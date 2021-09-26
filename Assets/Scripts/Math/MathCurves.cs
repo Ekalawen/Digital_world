@@ -9,7 +9,11 @@ public static class MathCurves {
     }
 
     public static float LinearReversed(float min, float max, float current) {
-        return Mathf.Clamp01((current - min) / (max - min));
+        return Mathf.Clamp01(LinearReversedUnclamped(min, max, current));
+    }
+
+    public static float LinearReversedUnclamped(float min, float max, float current) {
+        return (current - min) / (max - min);
     }
 
     public static float LinearRandom(float min, float max) {
