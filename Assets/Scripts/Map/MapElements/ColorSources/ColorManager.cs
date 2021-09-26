@@ -593,4 +593,26 @@ public class ColorManager : MonoBehaviour {
         float VR = MathCurves.Linear(VS, VC, avancement);
         return Color.HSVToRGB(HR, SR, VR);
     }
+
+    public static List<Theme> ReplaceSpecificColorFromThemes(List<Theme> themes, Theme source, Theme cible) {
+        if(source == cible) {
+            Debug.LogError($"La source ({source}) ne doit pas être égale à la cible ({cible}) dans ReplaceSpecificColorFromThemes ;)");
+            return themes;
+        }
+        while (themes.Contains(source)) {
+            themes.Remove(source);
+            themes.Add(cible);
+        }
+        return themes;
+    }
+
+    public static List<Theme> RemoveSpecificColorFromThemes(List<Theme> themes, Theme theme) {
+        while (themes.Contains(theme)) {
+            themes.Remove(theme);
+            if (themes.Count <= 0) {
+                themes.Add(GetRandomNonBrightTheme());
+            }
+        }
+        return themes;
+    }
 }

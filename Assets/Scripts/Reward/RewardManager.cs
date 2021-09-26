@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -24,11 +25,12 @@ public class RewardManager : MonoBehaviour {
     public GameObject consolePrefab; // On récupère la console !
 
     [Header("Parameters Infinite")]
-    public Color blocksColor;
     public float blocksDistance = 30;
     public GameObject bloomProfile;
     public Vector4 gridRect;
     public float blockRotationSpeed = 3.0f;
+    public AnimationCurve colorCurve;
+    public AnimationCurve mainColorCurve;
 
     [Header("Links")]
     public RewardStrings strings;
@@ -134,12 +136,13 @@ public class RewardManager : MonoBehaviour {
         Vector2 gridShape = ComputeGridShape(nbBlocks);
         List<Vector2> gridPositions = ComputeGridPositions(nbBlocks, gridShape);
         Vector3 tailleMaxBlock = ComputeTailleMaxBlock(gridShape, gridPositions);
-        Debug.Log($"TailleMaxBlock = {tailleMaxBlock}");
+        Color pureColor = ColorManager.GetColor(ColorManager.RemoveSpecificColorFromThemes(hm.themes, ColorManager.Theme.BLANC));
         for(int i = 0; i < nbBlocks; i++) {
             GameObject blockPrefab = hm.GetBlocksPassedPrefabs()[i];
             float blockRedimensionnement = GetBlockRedimensionnement(tailleMaxBlock, blockPrefab);
             Vector3 worldPosition = GetBlockWorldPosition(gridPositions[i], blockPrefab, blockRedimensionnement);
-            InstantiateBlockPrefab(blockPrefab, worldPosition, blockRedimensionnement);
+            Color color = ColorManager.InterpolateColors(Color.white, pureColor, mainColorCurve.Evaluate((float)i / Mathf.Max(1, (nbBlocks - 1))));
+            InstantiateBlockPrefab(blockPrefab, worldPosition, blockRedimensionnement, color);
         }
     }
 
@@ -176,11 +179,16 @@ public class RewardManager : MonoBehaviour {
         return worldPosition;
     }
 
-    protected void InstantiateBlockPrefab(GameObject blockPrefab, Vector3 worldPosition, float redimensionnement) {
+    protected void InstantiateBlockPrefab(GameObject blockPrefab, Vector3 worldPosition, float redimensionnement, Color targetColor) {
         Block block = Instantiate(blockPrefab, worldPosition, Quaternion.identity, parent: blocksFolder).GetComponent<Block>();
         block.transform.localScale /= redimensionnement;
-        foreach (Cube cube in block.GetCubesNonInitialized()) {
-            cube.GetComponent<MeshRenderer>().material.SetColor("_Color", blocksColor);
+        List<Cube> cubes = block.GetCubesNonInitialized();
+        List<float> distances = cubes.Select(c => Vector3.Distance(c.transform.position, block.triggerZone.transform.position)).ToList();
+        Vector2 distancesInterval = new Vector2(distances.Min(), distances.Max());
+        foreach (Cube cube in cubes) {
+            float distance = Vector3.Distance(cube.transform.position, block.triggerZone.transform.position);
+            float avancement = colorCurve.Evaluate(MathCurves.Remap(distance, distancesInterval, new Vector2(0, 1)));
+            cube.GetComponent<MeshRenderer>().material.SetColor("_Color", ColorManager.InterpolateColors(targetColor, Color.white, avancement));
         }
         AutoRotate rotator = block.gameObject.AddComponent<AutoRotate>();
         rotator.vitesse = blockRotationSpeed;
@@ -192,7 +200,6 @@ public class RewardManager : MonoBehaviour {
         Vector3 sizeBlock = block.GetComponent<Block>().triggerZone.transform.localScale;
         float redimensionnement = Mathf.Max(sizeBlock.x / tailleMaxBlock.x, sizeBlock.y / tailleMaxBlock.y, sizeBlock.z / tailleMaxBlock.z);
         if (redimensionnement > 1) {
-            Debug.Log($"Block {block.name} redimentionné d'un facteur de {redimensionnement}");
             return redimensionnement;
         }
         return 1;

@@ -55,11 +55,67 @@ MonoBehaviour:
     type: 3}
   consolePrefab: {fileID: 1722120177189256, guid: 47ebd2c24c9973242ba0f62097702500,
     type: 3}
-  blocksColor: {r: 1, g: 1, b: 1, a: 1}
   blocksDistance: 30
   bloomProfile: {fileID: 0}
   gridRect: {x: 0, y: 0.15, z: 0, w: 0.2}
   blockRotationSpeed: 0.75
+  colorCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0.2
+      outSlope: 0.2
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0.2
+      inSlope: 0.2
+      outSlope: 0.2
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  mainColorCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.0022392273
+      value: 0
+      inSlope: 4.5100083
+      outSlope: 4.5100083
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.14845109
+    - serializedVersion: 3
+      time: 0.15592884
+      value: 0.40115732
+      inSlope: 0.99778956
+      outSlope: 0.99778956
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.30723947
+      outWeight: 0.05033585
+    - serializedVersion: 3
+      time: 0.99890137
+      value: 0.9986
+      inSlope: 0.55912703
+      outSlope: 0.55912703
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.06206321
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   strings: {fileID: 0}
   regularCamera: {fileID: 0}
   infiniteCamera: {fileID: 0}
