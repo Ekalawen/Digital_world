@@ -277,6 +277,8 @@ public class RewardManager : MonoBehaviour {
         rotator.usePivot = true;
         rotator.pivot = block.triggerZone.transform.localPosition / redimensionnement;
 
+        UISoundManager.Instance.PlayBlockPassedClip();
+
         StartCoroutine(MakeBlockBounce(block));
     }
 

@@ -160,6 +160,9 @@ public class UISoundManager : MonoBehaviour {
     public void PlayNewBestScoreClickedClip() {
         PlayClipsOnSource(sounds.newBestScoreClickedClips);
     }
+    public void PlayBlockPassedClip() {
+        PlayClipsOnSource(sounds.blockPassedClips);
+    }
 
     public void StartMusic() {
         StartCoroutine(CStartMusic());
