@@ -92,13 +92,15 @@ public class HistoryManager : MonoBehaviour {
     }
 
     public void Update() {
-        EchantillonnerPositionPlayer();
-        EchantillonnerPositionsEnnemis();
-        EchantillonnerPositionsLumieres();
-        EchantillonnerPositionsItems();
+        if (gm != null) { // Not in Reward
+            EchantillonnerPositionPlayer();
+            EchantillonnerPositionsEnnemis();
+            EchantillonnerPositionsLumieres();
+            EchantillonnerPositionsItems();
 
-        if(echantillonnageTimer.IsOver())
-            echantillonnageTimer.Reset();
+            if (echantillonnageTimer.IsOver())
+                echantillonnageTimer.Reset();
+        }
     }
 
     protected void EchantillonnerPositionPlayer() {
