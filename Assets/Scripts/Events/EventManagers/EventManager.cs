@@ -414,6 +414,9 @@ public class EventManager : MonoBehaviour {
         if (reason != DeathReason.FALL_OUT)
             gm.FreezeTime();
 
+        if (gm.GetMapType() == MenuLevel.LevelType.INFINITE)
+            gm.GetInfiniteMap().RememberLastKillingBlock();
+
         gm.historyManager.SetDureeGame(gm.timerManager.GetRealGameTimer().GetElapsedTime());
 
         gm.player.FreezePouvoirs();

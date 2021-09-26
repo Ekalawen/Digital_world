@@ -5,6 +5,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class RewardManager : MonoBehaviour {
 
@@ -36,6 +37,7 @@ public class RewardManager : MonoBehaviour {
     public AnimationCurve insideBlockColorCurve;
     public float bounceTime = 1.5f;
     public AnimationCurve bounceCurve;
+    public RectTransform deathMarkRectTransform;
 
     [Header("Links")]
     public RewardStrings strings;
@@ -155,7 +157,7 @@ public class RewardManager : MonoBehaviour {
             float avancement = timer.GetAvancement();
             if (revealCurve.Evaluate(avancement) >= (float)indiceToReveal / Mathf.Max(1, (nbBlocks - 1)))
             {
-                RevealBlock(nbBlocks, gridPositions, tailleMaxBlock, blockColors.Item1, blockColors.Item2, indiceToReveal);
+                RevealBlock(nbBlocks, gridPositions, gridShape, tailleMaxBlock, blockColors.Item1, blockColors.Item2, indiceToReveal);
                 indiceToReveal++;
             }
             yield return null;
@@ -174,12 +176,41 @@ public class RewardManager : MonoBehaviour {
         return colors;
     }
 
-    protected void RevealBlock(int nbBlocks, List<Vector2> gridPositions, Vector3 tailleMaxBlock, Color startColor, Color endColor, int indice) {
+    protected void RevealBlock(int nbBlocks, List<Vector2> gridPositions, Vector2 gridShape, Vector3 tailleMaxBlock, Color startColor, Color endColor, int indice) {
         GameObject blockPrefab = hm.GetBlocksPassedPrefabs()[indice];
         float blockRedimensionnement = GetBlockRedimensionnement(tailleMaxBlock, blockPrefab);
-        Vector3 worldPosition = GetBlockWorldPosition(gridPositions[indice], blockPrefab, blockRedimensionnement);
+        Vector2 screenPosition = gridPositions[indice];
+        Vector3 worldPosition = GetBlockWorldPosition(screenPosition, blockPrefab, blockRedimensionnement);
         Color color = ColorManager.InterpolateColors(startColor, endColor, globalColorCurve.Evaluate((float)indice / Mathf.Max(1, (nbBlocks - 1))));
-        InstantiateBlockPrefab(blockPrefab, worldPosition, blockRedimensionnement, color);
+        bool isLastBlock = indice == nbBlocks - 1;
+        InstantiateBlockPrefab(blockPrefab, worldPosition, blockRedimensionnement, color, isLastBlock);
+        if(isLastBlock) {
+            InstantiateDeathMark(gridPositions, gridShape, screenPosition);
+        }
+    }
+
+    protected void InstantiateDeathMark(List<Vector2> gridPositions, Vector2 gridShape, Vector2 screenPosition) {
+        deathMarkRectTransform.gameObject.SetActive(true);
+        Vector2 localPoint;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(deathMarkRectTransform.parent.GetComponent<RectTransform>(), screenPosition, camera.cam, out localPoint);
+        deathMarkRectTransform.localPosition = localPoint;
+        Vector2 deathMarkSize = ComputeTailleDeathMark(gridShape, gridPositions);
+        float redimentionnement = Mathf.Min(deathMarkSize.x / deathMarkRectTransform.rect.width, deathMarkSize.y / deathMarkRectTransform.rect.height);
+        deathMarkRectTransform.localScale *= redimentionnement;
+        StartCoroutine(CRevealDeathMark(deathMarkRectTransform));
+    }
+
+    protected IEnumerator CRevealDeathMark(RectTransform deathMarkRectTransform) {
+        Vector3 initialSize = deathMarkRectTransform.localScale;
+        deathMarkRectTransform.localScale = Vector3.zero;
+        yield return new WaitForSeconds(bounceTime);
+        Timer timer = new Timer(bounceTime);
+        while(!timer.IsOver()) {
+            deathMarkRectTransform.localScale = initialSize * bounceCurve.Evaluate(timer.GetAvancement());
+            yield return null;
+        }
+        deathMarkRectTransform.localScale = initialSize;
+        deathMarkRectTransform.GetComponent<AutoAlphaer>().enabled = true;
     }
 
     protected Vector3 ComputeTailleMaxBlock(Vector2 gridShape, List<Vector2> gridPositions) {
@@ -202,6 +233,15 @@ public class RewardManager : MonoBehaviour {
         return new Vector3(tailleMaxLargeur, tailleMaxHauteur, tailleMaxLargeur);
     }
 
+    protected Vector2 ComputeTailleDeathMark(Vector2 gridShape, List<Vector2> gridPositions) {
+        if (gridShape.x >= 1 && gridShape.y >= 1) {
+            float tailleMaxLargeur = Vector2.Distance(gridPositions[0], gridPositions[1]);
+            float tailleMaxHauteur = Vector2.Distance(gridPositions[0], gridPositions[(int)gridShape.x]);
+            return new Vector2(tailleMaxLargeur, tailleMaxHauteur) / 2;
+        }
+        return Vector2.one * 50;
+    }
+
     protected float DistanceBetweenGridPoints(Vector2 gridPoint1, Vector2 gridPoint2) {
         Vector3 p1WorldSpace = camera.cam.ScreenToWorldPoint(new Vector3(gridPoint1.x, gridPoint1.y, blocksDistance));
         Vector3 p2WorldSpace = camera.cam.ScreenToWorldPoint(new Vector3(gridPoint2.x, gridPoint2.y, blocksDistance));
@@ -215,16 +255,22 @@ public class RewardManager : MonoBehaviour {
         return worldPosition;
     }
 
-    protected void InstantiateBlockPrefab(GameObject blockPrefab, Vector3 worldPosition, float redimensionnement, Color targetColor) {
+    protected void InstantiateBlockPrefab(GameObject blockPrefab, Vector3 worldPosition, float redimensionnement, Color targetColor, bool isLastBlock) {
         Block block = Instantiate(blockPrefab, worldPosition, Quaternion.identity, parent: blocksFolder).GetComponent<Block>();
         block.transform.localScale /= redimensionnement;
         List<Cube> cubes = block.GetCubesNonInitialized();
-        List<float> distances = cubes.Select(c => Vector3.Distance(c.transform.position, block.triggerZone.transform.position)).ToList();
-        Vector2 distancesInterval = new Vector2(distances.Min(), distances.Max());
-        foreach (Cube cube in cubes) {
-            float distance = Vector3.Distance(cube.transform.position, block.triggerZone.transform.position);
-            float avancement = insideBlockColorCurve.Evaluate(MathCurves.Remap(distance, distancesInterval, new Vector2(0, 1)));
-            cube.GetComponent<MeshRenderer>().material.SetColor("_Color", ColorManager.InterpolateColors(targetColor, Color.white, avancement));
+        if (!isLastBlock) {
+            List<float> distances = cubes.Select(c => Vector3.Distance(c.transform.position, block.triggerZone.transform.position)).ToList();
+            Vector2 distancesInterval = new Vector2(distances.Min(), distances.Max());
+            foreach (Cube cube in cubes) {
+                float distance = Vector3.Distance(cube.transform.position, block.triggerZone.transform.position);
+                float avancement = insideBlockColorCurve.Evaluate(MathCurves.Remap(distance, distancesInterval, new Vector2(0, 1)));
+                cube.GetComponent<MeshRenderer>().material.SetColor("_Color", ColorManager.InterpolateColors(targetColor, Color.white, avancement));
+            }
+        } else {
+            foreach (Cube cube in cubes) {
+                cube.GetComponent<MeshRenderer>().material.SetColor("_Color", Color.red);
+            }
         }
         AutoRotate rotator = block.gameObject.AddComponent<AutoRotate>();
         rotator.vitesse = blockRotationSpeed;

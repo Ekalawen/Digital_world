@@ -304,12 +304,6 @@ public class InfiniteMap : MapManager {
         }
     }
 
-    protected void RegisterPassedBlocksToHistory(int indiceCurrentBlock, int nbBlocksAdded) {
-        for(int i = Mathf.Max(indiceCurrentBlock, nbFirstBlocks); i < indiceCurrentBlock + nbBlocksAdded; i++) {
-            gm.historyManager.AddBlockPassed(blocks[i]);
-        }
-    }
-
     public void AddBlockRun(int nbBlocksToAdd) {
         nbBlocksRun += nbBlocksToAdd;
         RewardPlayerForNewBlock(nbBlocksToAdd);
@@ -433,5 +427,15 @@ public class InfiniteMap : MapManager {
             return true;
         }
         return false;
+    }
+
+    protected void RegisterPassedBlocksToHistory(int indiceCurrentBlock, int nbBlocksAdded) {
+        for(int i = Mathf.Max(indiceCurrentBlock, nbFirstBlocks); i < indiceCurrentBlock + nbBlocksAdded; i++) {
+            gm.historyManager.AddBlockPassed(blocks[i]);
+        }
+    }
+
+    public void RememberLastKillingBlock() {
+        RegisterPassedBlocksToHistory(indiceCurrentBlock, 1);
     }
 }
