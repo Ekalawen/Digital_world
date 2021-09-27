@@ -42,6 +42,14 @@ public class Block : MonoBehaviour {
         StartSwappingCubes();
     }
 
+    public void InitializeInReward() {
+        GatherCubesInReward();
+        foreach(Cube cube in cubes) {
+            cube.InitializeInReward();
+        }
+        StartSwappingCubesInReward();
+    }
+
     public void RegisterCubesToColorSources() {
         foreach (Cube cube in cubes)
             cube.RegisterCubeToColorSources();
@@ -79,8 +87,8 @@ public class Block : MonoBehaviour {
         }
     }
 
-    public List<Cube> GetCubesNonInitialized() {
-        List<Cube> cubes = new List<Cube>();
+    protected void GatherCubesInReward() {
+        cubes = new List<Cube>();
         foreach (Transform child in cubeFolder) {
             Cube cube = child.gameObject.GetComponent<Cube>();
             if (cube != null)
@@ -89,8 +97,13 @@ public class Block : MonoBehaviour {
             RandomCubes randomCubes = child.gameObject.GetComponent<RandomCubes>();
             if (randomCubes != null)
                 cubes.AddRange(randomCubes.GetChosenCubesAndDestroyOthers());
+
+            SwappyCubesHolderManager swappyCubesHolderManager = child.gameObject.GetComponent<SwappyCubesHolderManager>();
+            if (swappyCubesHolderManager != null) {
+                swappyCubesHolderManager.InitializeInReward(gatherCubesInChildren: true);
+                cubes.AddRange(swappyCubesHolderManager.GetCubes());
+            }
         }
-        return cubes;
     }
 
     protected void StartSwappingCubes() {
@@ -98,6 +111,16 @@ public class Block : MonoBehaviour {
             SwappyCubesHolderManager swappyCubesHolderManager = child.gameObject.GetComponent<SwappyCubesHolderManager>();
             if (swappyCubesHolderManager != null) {
                 swappyCubesHolderManager.SetCubesLinky(swappyCubesHolderManager.GetCurrentInterval(), useEnableState: false);
+                swappyCubesHolderManager.StartSwapping();
+            }
+        }
+    }
+
+    protected void StartSwappingCubesInReward() {
+        foreach (Transform child in cubeFolder) {
+            SwappyCubesHolderManager swappyCubesHolderManager = child.gameObject.GetComponent<SwappyCubesHolderManager>();
+            if (swappyCubesHolderManager != null) {
+                swappyCubesHolderManager.SetCubesLinkyInReward(swappyCubesHolderManager.GetCurrentInterval(), useEnableState: false);
                 swappyCubesHolderManager.StartSwapping();
             }
         }

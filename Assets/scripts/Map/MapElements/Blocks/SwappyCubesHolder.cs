@@ -23,6 +23,13 @@ public class SwappyCubesHolder : MonoBehaviour {
         }
     }
 
+    public virtual void InitializeInReward(SwappyCubesHolderManager manager, bool gatherCubesInChildren) {
+        this.manager = manager;
+        if (gatherCubesInChildren) {
+            cubes = GatherCubes();
+        }
+    }
+
     public void SetCubesLinky(int initialInterval, Texture2D linkyTexture, bool useEnableState = false) {
         if (gm.GetMapType() == MenuLevel.LevelType.INFINITE && gm.timerManager.HasGameStarted()) {
             StartCoroutine(CSetCubesLinkyForIR(initialInterval, linkyTexture, useEnableState));
@@ -34,6 +41,16 @@ public class SwappyCubesHolder : MonoBehaviour {
             if (!useEnableState) {
                 SetInitialVisibleState(initialInterval);
             }
+        }
+    }
+
+    public void SetCubesLinkyInReward(int initialInterval, Texture2D linkyTexture, bool useEnableState = false) {
+        foreach (Cube cube in cubes) {
+            cube.SetLinkyInReward(linkyTexture);
+            //cube.SetSwappy();
+        }
+        if (!useEnableState) {
+            SetInitialVisibleState(initialInterval);
         }
     }
 

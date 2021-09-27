@@ -14,6 +14,10 @@ public class SwappyCubesHolderIR : SwappyCubesHolder {
         base.Initialize(manager, gatherCubesInChildren);
         impactPoint = ComputeImpactPoint();
     }
+    public override void InitializeInReward(SwappyCubesHolderManager manager, bool gatherCubesInChildren) {
+        base.InitializeInReward(manager, gatherCubesInChildren);
+        impactPoint = ComputeImpactPoint();
+    }
 
     protected Vector3 ComputeImpactPoint() {
         Cube mainCube = cubes[0];

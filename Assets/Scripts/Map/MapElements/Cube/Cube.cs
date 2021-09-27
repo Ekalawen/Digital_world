@@ -38,6 +38,15 @@ public class Cube : MonoBehaviour {
         SetDissolveOnInitialization();
     }
 
+    public void InitializeInReward() {
+        SetName();
+        isStored = false;
+        InitializeMaterials();
+        if (startAsLinky) {
+            SetLinkyInReward();
+        }
+    }
+
     public void SetName() {
         name = $"{GetType().Name} {transform.position}";
     }
@@ -504,6 +513,16 @@ public class Cube : MonoBehaviour {
         }
     }
 
+    public void SetLinkyInReward(Texture2D linkyTexture = null) {
+        LinkyCubeComponent linkyCubeComponent = gameObject.AddComponent<LinkyCubeComponent>();
+        linkyCube = linkyCubeComponent;
+        linkyCube.InitializeInReward(this);
+        BothMaterialsSetFloat("_IsLinky", 1f);
+        if(linkyTexture != null) {
+            BothMaterialsSetTexture("_LinkyCubeTexture", linkyTexture);
+        }
+    }
+
     public void UnSetLinky() {
         BothMaterialsSetFloat("_IsLinky", 0f);
         Destroy(linkyCube);
@@ -557,7 +576,7 @@ public class Cube : MonoBehaviour {
         Collider collider = GetComponent<Collider>();
         collider.enabled = true;
         BothMaterialsSetFloat("_IsDisabled", 0.0f);
-        if(gm.player.DoubleCheckInteractWithCube(this)) {
+        if(gm != null && gm.player.DoubleCheckInteractWithCube(this)) { // gm != null for Reward x)
             InteractWithPlayer();
         }
     }

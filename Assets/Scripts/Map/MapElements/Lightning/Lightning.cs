@@ -41,7 +41,7 @@ public class Lightning : MonoBehaviour {
         AutoDestroyRayIn();
     }
 
-    public void InitializeWithoutGM(Vector3 start, Vector3 end, Transform parent, PivotType pivotType = PivotType.EXTREMITY) {
+    public void InitializeInReward(Vector3 start, Vector3 end, Transform parent, PivotType pivotType = PivotType.EXTREMITY) {
         transform.SetParent(parent);
         InitializeLightning(start, end, pivotType);
         AutoDestroyRayIn();

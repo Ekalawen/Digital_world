@@ -21,6 +21,12 @@ public class LinkyCubeComponent : MonoBehaviour {
         ChooseAnchor();
     }
 
+    public void InitializeInReward(Cube cube) {
+        this.cube = cube;
+        linkyVoisins = new List<Cube>();
+        ChooseAnchor();
+    }
+
     protected void RegisterToVoisins() {
         linkyVoisins = map.GetVoisinsPleinsAll(cube.transform.position).Select(pos => map.GetCubeAt(pos)).ToList();
         linkyVoisins = linkyVoisins.FindAll(c => c.IsLinky());

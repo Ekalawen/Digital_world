@@ -27,6 +27,15 @@ public class SwappyCubesHolderManager : MonoBehaviour {
         currentInterval = UnityEngine.Random.Range(startIntervalRange[0], startIntervalRange[1] + 1);
     }
 
+    public void InitializeInReward(bool gatherCubesInChildren) {
+        linkyTexture = Resources.Load<Texture2D>("linky_cube_circle");
+        holders = GatherHolders();
+        foreach(SwappyCubesHolder holder in holders) {
+            holder.InitializeInReward(this, gatherCubesInChildren);
+        }
+        currentInterval = UnityEngine.Random.Range(startIntervalRange[0], startIntervalRange[1] + 1);
+    }
+
     public void StartSwapping() {
         StartCoroutine(CStartSwapping());
     }
@@ -35,6 +44,14 @@ public class SwappyCubesHolderManager : MonoBehaviour {
         if (setLinky) {
             foreach (SwappyCubesHolder holder in holders) {
                 holder.SetCubesLinky(initialInterval, linkyTexture, useEnableState);
+            }
+        }
+    }
+
+    public void SetCubesLinkyInReward(int initialInterval, bool useEnableState = false) {
+        if (setLinky) {
+            foreach (SwappyCubesHolder holder in holders) {
+                holder.SetCubesLinkyInReward(initialInterval, linkyTexture, useEnableState);
             }
         }
     }
@@ -52,7 +69,7 @@ public class SwappyCubesHolderManager : MonoBehaviour {
     protected IEnumerator CStartSwapping() {
         Timer timer = new Timer(frequenceInterval, setOver: true);
 
-        while (!gm.eventManager.IsGameOver()) {
+        while (gm == null || !gm.eventManager.IsGameOver()) { // gm == null for Reward !
             if(timer.IsOver()) {
                 currentInterval = (currentInterval + 1) % nbIntervals;
                 NotifyHolderNewInterval(currentInterval);

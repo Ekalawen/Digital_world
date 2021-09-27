@@ -13,6 +13,11 @@ public class SwappyCubesHolderIRRandom : SwappyCubesHolderIR {
         InitIntervals();
     }
 
+    public override void InitializeInReward(SwappyCubesHolderManager manager, bool gatherCubesInChildren) {
+        base.InitializeInReward(manager, gatherCubesInChildren);
+        InitIntervals();
+    }
+
     public void InitIntervals() {
         if(nbDisableIndices + nbEnableIndices > manager.nbIntervals) {
             Debug.LogError($"Il ne peut pas y avoir plus d'indices que d'intervals dans un {name} ! :)");
