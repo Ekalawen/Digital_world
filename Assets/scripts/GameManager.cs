@@ -233,6 +233,11 @@ public class GameManager : MonoBehaviour {
         eventManager.QuitOrReload();
     }
 
+    public void QuitGameAfterSavingGameResult() {
+        SaveGameResultIfQuitBeforeEnding();
+        QuitterPartie();
+    }
+
     protected void CheckRestartGame() {
         if (inputManager.GetRestartGame()) {
             RestartGame();
@@ -286,7 +291,7 @@ public class GameManager : MonoBehaviour {
                 GoToSelectorScene();
             }
         } else { // MenuLevel.LevelType == INFINITE
-            if (eventManager.ShouldQuitOrReload() == EventManager.QuitType.QUIT) { // We did good
+            if (!IsPaused() && eventManager.ShouldQuitOrReload() == EventManager.QuitType.QUIT) { // We did good
                 GoToRewardScene();
             } else {
                 GoToSelectorScene();
