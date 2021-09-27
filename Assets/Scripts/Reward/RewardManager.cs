@@ -312,14 +312,13 @@ public class RewardManager : MonoBehaviour {
     protected Vector2 ComputeGridShape(int nbBlocks) {
         Vector2 columnsRows = Vector2.one;
         for(int i = 0; i <= nbBlocks; i++) {
-            if(columnsRows.x * columnsRows.y < nbBlocks) {
-                if(columnsRows.x == columnsRows.y) {
-                    columnsRows.x += 1;
-                } else {
-                    columnsRows.y += 1;
-                }
-            } else {
+            if (columnsRows.x * columnsRows.y >= nbBlocks) {
                 break;
+            }
+            if(columnsRows.x < columnsRows.y * 1.5f) {
+                columnsRows.x += 1;
+            } else {
+                columnsRows.y += 1;
             }
         }
         return columnsRows;
