@@ -81,7 +81,7 @@ public class InfiniteMap : MapManager {
         CreateFirstBlocks();
         cameraShakeInstance = CameraShaker.Instance.StartShake(0, 0, 0);
 
-        //StartCoroutine(AddFirstBlocksToHistory());
+        StartCoroutine(AddFirstBlocksToHistory());
     }
 
     protected IEnumerator AddFirstBlocksToHistory() {

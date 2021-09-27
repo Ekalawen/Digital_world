@@ -43,12 +43,19 @@ public class RewardManager : MonoBehaviour {
     public RewardStrings strings;
     public RegularRewardCamera regularCamera;
     public InfiniteStaticRewardCamera infiniteCamera;
+    public GameObject statsHolderRegular;
+    public GameObject statsHolderInfinite;
     public TMP_Text titleCompletedText;
-    public TMP_Text scoreText;
-    public TMP_Text bestScoreText;
-    public TMP_Text gameDurationText;
-    public TMP_Text accelerationText;
-    public TMP_Text replayDurationText;
+    public TMP_Text scoreTextRegular;
+    public TMP_Text bestScoreTextRegular;
+    public TMP_Text gameDurationTextRegular;
+    public TMP_Text accelerationTextRegular;
+    public TMP_Text replayDurationTextRegular;
+    public TMP_Text scoreTextInfinite;
+    public TMP_Text bestScoreTextInfinite;
+    public TMP_Text nbDifferentBlocksTextInfinite;
+    public TMP_Text nbSameBlockMaxTextInfinite;
+    public TMP_Text gameDurationTextInfinite;
     public RewardNewBestScoreButton newBestScoreButton;
     public RewardNewBestScoreButton firstTimeButton;
 
@@ -343,18 +350,56 @@ public class RewardManager : MonoBehaviour {
         Debug.Log("DureeGame = " + dureeGame + " DureeReward = " + dureeReward + " Acceleration = " + accelerationCoefficiant);
     }
 
-    protected void InitializeTitleAndStats() {
+    protected void InitializeTitleAndStats()
+    {
         titleCompletedText.text = strings.levelCompleted.GetLocalizedString(hm.levelNameVisual).Result;
         UIHelper.FitTextHorizontaly(titleCompletedText.text, titleCompletedText);
 
+        if (hm.GetMapType() == MenuLevel.LevelType.REGULAR) {
+            SetAllRegularStatsTexts();
+        } else { // INFINITE
+            SetAllInfiniteStatsTexts();
+        }
+    }
+
+    protected void SetAllInfiniteStatsTexts() {
+        statsHolderInfinite.SetActive(true);
+        statsHolderRegular.SetActive(false);
+
+        string score = hm.score.ToString("0");
+        string bestScore = PrefsManager.GetFloat(GetKeyFor(PrefsManager.BEST_SCORE_KEY), 0).ToString("0");
+        scoreTextInfinite.text = strings.score.GetLocalizedString(score).Result;
+        bestScoreTextInfinite.text = strings.bestScore.GetLocalizedString(bestScore).Result;
+
+        string gameLength = hm.GetDureeGame().ToString("0.00");
+        string nbDifferentBlocks = hm.GetBlocksPassedPrefabs().Select(b => b.name).Reverse().Skip(1).Distinct().ToList().Count.ToString("0");
+        string nbSameBlockMax = GetSameBlockMaxCount(hm.GetBlocksPassedPrefabs().Select(b => b).Reverse().Skip(1).ToList()).ToString("0");
+        gameDurationTextInfinite.text = strings.gameDuration.GetLocalizedString(gameLength).Result;
+        nbDifferentBlocksTextInfinite.text = strings.nbDifferentBlocks.GetLocalizedString(nbDifferentBlocks).Result;
+        nbSameBlockMaxTextInfinite.text = strings.nbSameBlockMax.GetLocalizedString(nbSameBlockMax).Result;
+    }
+
+    protected int GetSameBlockMaxCount(List<GameObject> blockPrefabs) {
+        Dictionary<string, int> values = new Dictionary<string, int>();
+        foreach(GameObject blockPrefab in blockPrefabs) {
+            if(values.ContainsKey(blockPrefab.name)) {
+                values[blockPrefab.name] += 1;
+            } else {
+                values[blockPrefab.name] = 1;
+            }
+        }
+        return values.Select(pair => pair.Value).Max();
+    }
+
+    protected void SetAllRegularStatsTexts() {
+        statsHolderRegular.SetActive(true);
+        statsHolderInfinite.SetActive(false);
         string score = hm.score.ToString("0.00");
         string bestScore = PrefsManager.GetFloat(GetKeyFor(PrefsManager.BEST_SCORE_KEY), 0).ToString("0.00");
-        scoreText.text = strings.score.GetLocalizedString(score).Result;
-        bestScoreText.text = strings.bestScore.GetLocalizedString(bestScore).Result;
+        scoreTextRegular.text = strings.score.GetLocalizedString(score).Result;
+        bestScoreTextRegular.text = strings.bestScore.GetLocalizedString(bestScore).Result;
 
-        if (hm.GetMapType() == MenuLevel.LevelType.REGULAR) {
-            SetAllReplayStatsTexts(currentReplayLength: 0.0f);
-        }
+        SetAllReplayStatsTexts(currentReplayLength: 0.0f);
     }
 
     protected void SetAllReplayStatsTexts(float currentReplayLength) {
@@ -362,9 +407,9 @@ public class RewardManager : MonoBehaviour {
         string replayLength = dureeReward.ToString("0.00");
         string currentReplayLengthText = currentReplayLength.ToString("0.00");
         string acceleration = ((1.0f / accelerationCoefficiant - 1) * 100).ToString("0.00");
-        gameDurationText.text = strings.gameDuration.GetLocalizedString(gameLength).Result;
-        accelerationText.text = strings.acceleration.GetLocalizedString(acceleration).Result;
-        replayDurationText.text = strings.replayDuration.GetLocalizedString($"{currentReplayLengthText}/{replayLength}").Result;
+        gameDurationTextRegular.text = strings.gameDuration.GetLocalizedString(gameLength).Result;
+        accelerationTextRegular.text = strings.acceleration.GetLocalizedString(acceleration).Result;
+        replayDurationTextRegular.text = strings.replayDuration.GetLocalizedString($"{currentReplayLengthText}/{replayLength}").Result;
     }
 
     protected void InitializeCamera() {

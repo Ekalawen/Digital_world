@@ -14,5 +14,6 @@ public class RewardStrings : ScriptableObject {
     public LocalizedString gameDuration;
     public LocalizedString replayDuration;
     public LocalizedString acceleration;
-
+    public LocalizedString nbDifferentBlocks;
+    public LocalizedString nbSameBlockMax;
 }
