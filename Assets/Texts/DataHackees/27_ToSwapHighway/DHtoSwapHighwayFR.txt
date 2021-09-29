@@ -29,10 +29,6 @@ Passe :
 <color=#GREY>// Ceci est un commentaire. Un commentaire n'a aucun effet sur le code. Il permet de donner des indications.</color>
 <color=#GREY>// L'ordre d'exécution du programme a été numéroté pour vous.</color>
 
-<color=#GREY>// Ces 2 lignes ne sont pas importantes à la compréhension du programme.</color>
-#include <iostream>
-using namespace std;
-
 <color=#GREY>// 4)</color>
 int calculerMdp(int k) {
     <color=#GREY>// 5)</color>
@@ -62,10 +58,6 @@ int main() {
 Passe :
 <color=#GREY>// Nous allons vous donner un peu plus d'informations.</color>
 
-<color=#GREY>// Ces 2 lignes ne sont toujours pas importantes à la compréhension du programme.</color>
-#include <iostream>
-using namespace std;
-
 <color=#GREY>// 4) La fonction calculerMdp possède un paramètre : k. Sa valeur est définie ailleurs dans le programme.</color>
 int calculerMdp(int k) {
     <color=#GREY>// 5) Le mot de passe commence à la valeur 0. Mais il va être modifié.</color>
@@ -75,7 +67,7 @@ int calculerMdp(int k) {
         <color=#GREY>// A chaque fois, on ajoute i * i au mot de passe où i prend les valeurs 1, puis 2, puis 3 etc ...</color>
         mdp = mdp + (i * i);
     }
-    <color=#GREY>// 11) Donc en gros, mdp = 0 + (1 * 1) + (2 * 2) + (3 * 3) ...</color>
+    <color=#GREY>// 11) Finalement, mdp = 0 + (1 * 1) + (2 * 2) + (3 * 3) ...</color>
     return mdp;
 }
 

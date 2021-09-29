@@ -29,10 +29,6 @@ Pass:
 <color=#GREY>// This is a comment. A comment has no effect on the code. It allows to give indications.</color>
 <color=#GREY>// The execution order of the program has been numbered for you.</color>
 
-<color=#GREY>// These 2 lines are not important for understanding the program. </color>
-#include <iostream>
-using namespace std;
-
 <color=#GREY>// 4)</color>
 int computePwd(int k) {
     <color=#GREY>// 5)</color>
@@ -62,10 +58,6 @@ int main() {
 Pass:
 <color=#GREY>// We will give you a little more information. </color>
 
-<color=#GREY>// These 2 lines are still not important for understanding the program. </color>
-#include <iostream>
-using namespace std;
-
 <color=#GREY>// 4) The computePwd function has one parameter: k. Its value is defined elsewhere in the program. </color>
 int computePwd(int k) {
     <color=#GREY>// 5) The password starts at the value 0. But it will be changed. </color>
@@ -75,7 +67,7 @@ int computePwd(int k) {
         <color=#GREY>// Each time, we add i * i to the password where i take the values 1, then 2, then 3 etc ... </color>
         pwd = pwd + (i * i);
     }
-    <color=#GREY>// 11) So basically, pwd = 0 + (1 * 1) + (2 * 2) + (3 * 3) ...</color>
+    <color=#GREY>// 11) Finally, pwd = 0 + (1 * 1) + (2 * 2) + (3 * 3) ...</color>
     return pwd;
 }
 
