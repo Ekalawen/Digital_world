@@ -16,9 +16,9 @@ Trace : %Trace%
 #FragmentTreshold= 2
 Passe : 
 Le <color=#BLUE><b>Palier n°2</b></color> de chaque <color=#YELLOW>Esclave</color> est un <color=#CYAN>Texte chiffré</color> nécessitant un <color=#CYAN>Masque</color> pour le déchiffrer et trouver une <color=#CYAN>Clé</color>.
-- <color=#YELLOW>Deuxième</color> : Complétez <color=#BLUE><b>Equilibrium</b></color> pour trouver son <color=#CYAN>Masque</color>.
-- <color=#YELLOW>Troisième</color> : Complétez <color=#BLUE><b>Second Runner</b></color> pour trouver son <color=#CYAN>Masque</color>.
-- <color=#YELLOW>Quatrième</color> : Complétez <color=#BLUE><b>Learn Intersection</b></color> pour trouver son <color=#CYAN>Masque</color>.
+- <color=#YELLOW>Deuxième</color> : Complétez tous les <color=#BLUE><b>Paliers</b></color> de <color=#BLUE>Equilibrium</color> pour trouver son <color=#CYAN>Masque</color>.
+- <color=#YELLOW>Troisième</color> : Complétez tous les <color=#BLUE><b>Paliers</b></color> de <color=#BLUE>Second Runner</color> pour trouver son <color=#CYAN>Masque</color>.
+- <color=#YELLOW>Quatrième</color> : Complétez tous les <color=#BLUE><b>Paliers</b></color> de <color=#BLUE>Learn Intersection</color> pour trouver son <color=#CYAN>Masque</color>.
 
 ###New Fragment###
 #FragmentTreshold= 3
@@ -31,10 +31,8 @@ Le <color=#BLUE><b>Palier n°3</b></color> de chaque <color=#YELLOW>Esclave</col
 ###New Fragment###
 #FragmentTreshold= 4
 Passe : 
-<color=#YELLOW>Deuxième</color> ==> <color=#YELLOW>Troisième</color> ==> <color=#YELLOW>Quatrième</color> ==> <color=#YELLOW>Deuxième</color>
-Les <color=#CYAN>Codes</color> de chacun des <color=#YELLOW>Esclaves</color> sont cycliques et servent à débloquer l'<color=#YELLOW>Esclave</color> suivant.
-Utilisez ces <color=#CYAN>Codes</color> en suivant l'exemple du <color=#BLUE><b>Palier n°4</b></color> de chaque <color=#YELLOW>Esclave</color> pour trouver son Passe.
-<color=#RED>Attention</color>, par mesure de sécurité et pour diminuer les chances d'intrusion, les <color=#CYAN>Clés</color> ne sont pas cycliques !
+Pour chaque <color=#YELLOW>Esclave</color>, son Passe est la juxtaposition de sa <color=#CYAN>Clé</color> puis de son <color=#CYAN>Code</color>.
+Passe = <color=#CYAN>Clé</color><color=#CYAN>Code</color>.
 
 ###New Fragment###
 #FragmentTreshold= 5

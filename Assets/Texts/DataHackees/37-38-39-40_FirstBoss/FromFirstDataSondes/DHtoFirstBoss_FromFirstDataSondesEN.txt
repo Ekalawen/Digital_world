@@ -16,9 +16,9 @@ Trace: %Trace%
 #FragmentTreshold= 2
 Pass: 
 The <color=#BLUE><b>Treshold n°2</b></color> of each <color=#YELLOW>Slave</color> is a <color=#CYAN>Cipher</color> text requiring a <color=#CYAN>Mask</color> to decrypt it and find a <color=#CYAN>Key</color>.
-- <color=#YELLOW>Second</color>: Complete <color=#BLUE></b>Equilibrium</b></color> to find its <color=#CYAN>Mask</color>.
-- <color=#YELLOW>Third</color>: Complete <color=#BLUE></b>Second Runner</b></color> to find its <color=#CYAN>Mask</color>.
-- <color=#YELLOW>Fourth</color>: Complete <color=#BLUE></b>Learn Intersection</b></color> to find its <color=#CYAN>Mask</color>.
+- <color=#YELLOW>Second</color>: Complete all <color=#BLUE><b>Tresholds</b></color> of <color=#BLUE></b>Equilibrium</b></color> to find its <color=#CYAN>Mask</color>.
+- <color=#YELLOW>Third</color>: Complete all <color=#BLUE><b>Tresholds</b></color> of <color=#BLUE></b>Second Runner</b></color> to find its <color=#CYAN>Mask</color>.
+- <color=#YELLOW>Fourth</color>: Complete all <color=#BLUE><b>Tresholds</b></color> of <color=#BLUE></b>Learn Intersection</b></color> to find its <color=#CYAN>Mask</color>.
 
 ###New Fragment###
 #FragmentTreshold= 3
@@ -31,10 +31,8 @@ The <color=#BLUE><b>Treshold n°3</b></color> of each <color=#YELLOW>Slave</colo
 ###New Fragment###
 #FragmentTreshold= 4
 Pass: 
-<color=#YELLOW>Second</color> ==> <color=#YELLOW>Third</color> ==> <color=#YELLOW>Fourth</color> ==> <color=#YELLOW>Second</color>
-The <color=#CYAN>Codes</color> of each of the <color=#YELLOW>Slaves</color> are cyclical and are used to unlock the next <color=#YELLOW>Slave</color>.
-Use these <color=#CYAN>Codes</color> by following the example of <color=#BLUE><b>Treshold n°4</b></color> for each <color=#YELLOW>Slave</color> to find their Pass.
-<color=#RED>Warning</color>, for security reasons and to reduce the chances of intrusion, the <color=#CYAN>Keys</color> are not cyclical!
+For each <color=#YELLOW>Slave</color>, its Pass is the juxtaposition of his <color=#CYAN>Key</color> then of his <color=#CYAN>Code</color>.
+Pass = <color=#CYAN>KeyCode</color>.
 
 ###New Fragment###
 #FragmentTreshold= 5
