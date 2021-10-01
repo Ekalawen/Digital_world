@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using EZCameraShake;
-using System.Diagnostics;
 
 public class InfiniteMap : MapManager {
 
@@ -50,11 +49,13 @@ public class InfiniteMap : MapManager {
 
     protected Transform blocksFolder;
     protected int indiceCurrentBlock = 0;
+    protected int indiceCurrentAllBlocks = 0;
     protected int nbBlocksRun;
     protected int nbBlocksDestroyed;
     protected int nbBlocksCreated = 0;
     protected List<BlockWeight> blockWeights;
     protected List<Block> blocks; // Les blocks vont des blocks en train de se faire détruire jusqu'à nbBlocksForwards blocks devant la position du joueur
+    protected List<Block> allBlocks; // Les allBlocks vont du premier block crée jusqu'au dernier block crée. Certains pourront donc être null après leurs destructions !
     protected Block lastlyDestroyedBlock = null;
     protected Timer destructionBlockTimer;
     protected Timer timerSinceLastBlock;
@@ -66,6 +67,7 @@ public class InfiniteMap : MapManager {
     protected override void InitializeSpecific()
     {
         blocks = new List<Block>();
+        allBlocks = new List<Block>();
         blocksFolder = new GameObject("Blocks").transform;
         blocksFolder.transform.SetParent(cubesFolder.transform);
         string nextTresholdSymbol = gm.goalManager.GetNextNotUnlockedTresholdSymbolFor(nbBlocksRun);
@@ -86,8 +88,8 @@ public class InfiniteMap : MapManager {
 
     protected IEnumerator AddFirstBlocksToHistory() {
         yield return new WaitForSeconds(0.1f);
-        for (int i = nbFirstBlocks; i < blocks.Count; i++) {
-            gm.historyManager.AddBlockPassed(blocks[i]);
+        for (int i = nbFirstBlocks; i < allBlocks.Count; i++) {
+            gm.historyManager.AddBlockPassed(allBlocks[i]);
         }
         gm.eventManager.LoseGame(EventManager.DeathReason.FALL_OUT);
     }
@@ -134,6 +136,7 @@ public class InfiniteMap : MapManager {
         nbBlocksCreated += 1;
 
         blocks.Add(newBlock);
+        allBlocks.Add(newBlock);
 
         AddBestScoreMarker(newBlock);
     }
@@ -287,7 +290,7 @@ public class InfiniteMap : MapManager {
             int nbBlocksAdded = indice - indiceCurrentBlock;
             AddBlockRun(nbBlocksAdded);
 
-            RegisterPassedBlocksToHistory(indiceCurrentBlock, nbBlocksAdded);
+            RegisterPassedBlocksToHistory(indiceCurrentAllBlocks, nbBlocksAdded);
 
             CreateNewBlocks(nbBlocksAdded);
 
@@ -296,6 +299,7 @@ public class InfiniteMap : MapManager {
             timerSinceLastBlock.Reset();
 
             indiceCurrentBlock = indice;
+            indiceCurrentAllBlocks += nbBlocksAdded;
 
             block.NotifyPlayerToPressShiftIfNeeded();
 
@@ -429,13 +433,14 @@ public class InfiniteMap : MapManager {
         return false;
     }
 
-    protected void RegisterPassedBlocksToHistory(int indiceCurrentBlock, int nbBlocksAdded) {
-        for(int i = Mathf.Max(indiceCurrentBlock, nbFirstBlocks); i < indiceCurrentBlock + nbBlocksAdded; i++) {
-            gm.historyManager.AddBlockPassed(blocks[i]);
+    protected void RegisterPassedBlocksToHistory(int indiceCurrentAllBlocks, int nbBlocksAdded) {
+        for(int i = Mathf.Max(indiceCurrentAllBlocks, nbFirstBlocks); i < indiceCurrentAllBlocks + nbBlocksAdded; i++) {
+            Debug.Log($"i = {i} blocks.Count = {allBlocks.Count}");
+            gm.historyManager.AddBlockPassed(allBlocks[i]);
         }
     }
 
     public void RememberLastKillingBlock() {
-        RegisterPassedBlocksToHistory(indiceCurrentBlock, 1);
+        RegisterPassedBlocksToHistory(indiceCurrentAllBlocks, 1);
     }
 }
