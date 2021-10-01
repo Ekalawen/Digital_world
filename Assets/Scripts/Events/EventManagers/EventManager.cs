@@ -36,6 +36,10 @@ public class EventManager : MonoBehaviour {
         FAR_FROM_POS,
         RANDOM_NOT_CLOSE_TO_PLAYER_AND_POS,
     }
+    public enum FinalLightSpawnMode {
+        FAR_FROM_PLAYER,
+        OPTIMALLY_SPACED_FROM_PLAYER,
+    }
     public enum EjectionType {
         FIX_TRESHOLD,
         LOWEST_CUBE_TRESHOLD,
@@ -65,7 +69,8 @@ public class EventManager : MonoBehaviour {
     public float proportionToKeep = 0.0f;
     public bool bNoEndgame = false;
 
-    [Header("Map Function On Create Final Light")]
+    [Header("Final Light")]
+    public FinalLightSpawnMode finalLightSpawnMode = FinalLightSpawnMode.FAR_FROM_PLAYER;
     public List<MapFunctionComponent> mapFunctionsOnCreateFinalLight;
 
     [Header("ScreenShake on Endgame")]
@@ -126,8 +131,6 @@ public class EventManager : MonoBehaviour {
         CheckPartiePerdu();
 
         CheckPlayerUsingArrowKeys();
-
-        TestCheatCode();
     }
 
     public RandomEvent AddRandomEvent(GameObject randomEventPrefab) {
@@ -200,8 +203,18 @@ public class EventManager : MonoBehaviour {
     }
 
     protected virtual Vector3 GetFinalLightPos() {
-        Vector3 posLumiere = map.GetFarRoundedLocation(gm.player.transform.position);
-        return posLumiere;
+        Vector3 posLumiere;
+        switch (finalLightSpawnMode) {
+            case FinalLightSpawnMode.FAR_FROM_PLAYER:
+                posLumiere = map.GetFarRoundedLocation(gm.player.transform.position);
+                return posLumiere;
+            case FinalLightSpawnMode.OPTIMALLY_SPACED_FROM_PLAYER:
+                List<Vector3> farFromPositions = new List<Vector3>() { gm.player.transform.position };
+                posLumiere = GetOptimalySpacedPositions.GetOneSpacedPosition(map, farFromPositions, 100, mode: GetOptimalySpacedPositions.Mode.MAX_MIN_DISTANCE);
+                return posLumiere;
+            default:
+                throw new Exception($"Valeur inconnu pour finalLightSpawnMode ({finalLightSpawnMode}) dans GetFinalLightPos() !");
+        }
     }
 
     protected void PlaySoundRate(Timer timerSoundRate, int nbCubesToDestroy, Vector3 barycentre) {
@@ -733,9 +746,6 @@ public class EventManager : MonoBehaviour {
         if(automaticallyQuitSceneCoroutine != null) {
             StopCoroutine(automaticallyQuitSceneCoroutine);
         }
-    }
-
-    protected void TestCheatCode() {
     }
 
     protected void CheckPlayerUsingArrowKeys() {

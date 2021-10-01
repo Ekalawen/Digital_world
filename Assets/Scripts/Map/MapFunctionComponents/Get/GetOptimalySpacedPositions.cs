@@ -8,19 +8,19 @@ public class GetOptimalySpacedPositions {
 
     public enum Mode { MAX_MIN_DISTANCE, MAX_AVERAGE_DISTANCE };
 
-    public static List<Vector3> GetSpacedPositions(MapManager map, int nbPositions, List<Vector3> farFromPositions, int nbTriesByPosition, Mode mode = Mode.MAX_MIN_DISTANCE) {
+    public static List<Vector3> GetSpacedPositions(MapManager map, int nbPositions, List<Vector3> farFromPositions, int nbTriesByPosition, Mode mode = Mode.MAX_MIN_DISTANCE, int offsetFromSides = 0) {
         List<Vector3> updatedFarPositions = farFromPositions ?? new List<Vector3>();
         List<Vector3> spacedPositions = new List<Vector3>();
         for(int i = 0; i < nbPositions; i++) {
-            Vector3 newPosition = GetOneSpacedPosition(map, updatedFarPositions, nbTriesByPosition, mode);
+            Vector3 newPosition = GetOneSpacedPosition(map, updatedFarPositions, nbTriesByPosition, mode, offsetFromSides);
             spacedPositions.Add(newPosition);
             updatedFarPositions.Add(newPosition);
         }
         return spacedPositions;
     }
 
-    public static Vector3 GetOneSpacedPosition(MapManager map, List<Vector3> farFromPositions, int nbTriesByPosition, Mode mode = Mode.MAX_MIN_DISTANCE) {
-        List<Vector3> positionsCandidates = Enumerable.Range(0, nbTriesByPosition).Select(i => map.GetFreeRoundedLocation()).ToList();
+    public static Vector3 GetOneSpacedPosition(MapManager map, List<Vector3> farFromPositions, int nbTriesByPosition, Mode mode = Mode.MAX_MIN_DISTANCE, int offsetFromSides = 0) {
+        List<Vector3> positionsCandidates = Enumerable.Range(0, nbTriesByPosition).Select(i => map.GetFreeRoundedLocation(offsetFromSides)).ToList();
         Vector3 bestPosition = GetMaxDistancePosition(farFromPositions, positionsCandidates, mode);
         return bestPosition;
     }
