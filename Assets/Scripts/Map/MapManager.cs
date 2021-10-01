@@ -1606,6 +1606,17 @@ public class MapManager : MonoBehaviour {
         }
     }
 
+    public Vector2Int GetBoundingBoxValuesAlongDirection(GravityManager.Direction direction) {
+        BoundingBox boundingBox = GetBoundingBox();
+        if(direction == GravityManager.Direction.DROITE || direction == GravityManager.Direction.GAUCHE) {
+            return new Vector2Int(boundingBox.xMin, boundingBox.xMax);
+        } else if (direction == GravityManager.Direction.BAS || direction == GravityManager.Direction.HAUT) {
+            return new Vector2Int(boundingBox.yMin, boundingBox.yMax);
+        } else {
+            return new Vector2Int(boundingBox.zMin, boundingBox.zMax);
+        }
+    }
+
     public bool IsInTranche(Vector3 pos, GravityManager.Direction fromDirection, int offset) {
         return GetTrancheIndice(pos, fromDirection) == offset;
     }

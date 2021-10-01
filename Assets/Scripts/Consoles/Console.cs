@@ -98,6 +98,7 @@ public class Console : MonoBehaviour {
     protected bool isConsoleVisible = true;
     protected UIVisibility uiVisibility = UIVisibility.ALL;
     protected UIVisibilitySaver uiVisibilitySaver = null;
+    protected Timer altitudeCritiqueTimer;
 
     public virtual void Initialize()
     {
@@ -114,6 +115,7 @@ public class Console : MonoBehaviour {
         eventManager = gm.eventManager;
         InitFrameRateCounter();
         arrowKeysTimer = new Timer(2, setOver: true);
+        altitudeCritiqueTimer = new Timer(3, setOver: true);
         HideDataCountDisplayerIfIR();
         DisplayOrNotConsole();
         ToggleUIVisibilityBasedOnSaver();
@@ -917,11 +919,12 @@ public class Console : MonoBehaviour {
 
     // Si le joueur est trop haut, on l'informe !
     public virtual void AltitudeCritique() {
-        if (!useAltitudeCritique)
+        if (!useAltitudeCritique || !altitudeCritiqueTimer.IsOver())
             return;
 		// On regarde si le joueur n'est pas trop haut en altitude
-		if (player.transform.position.y > map.tailleMap.y + 3) {
+		if (player.transform.position.y > map.GetBoundingBox().yMax + 4) {
 			AjouterMessage (strings.altitudeCritique, TypeText.GREEN_TEXT);
+            altitudeCritiqueTimer.Reset();
 		}
     }
 
