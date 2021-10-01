@@ -123,6 +123,6 @@ public abstract class Ennemi : Character {
     }
 
     public virtual Vector3 PopPosition(MapManager map) {
-        return map.GetFreeRoundedLocation();
+        return map.GetFreeRoundedLocationWithoutLumiere();
     }
 }

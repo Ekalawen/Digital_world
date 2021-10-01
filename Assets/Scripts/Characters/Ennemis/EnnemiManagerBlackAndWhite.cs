@@ -10,7 +10,7 @@ public class EnnemiManagerBlackAndWhite : EnnemiManager {
         BlackAndWhiteMap map = (BlackAndWhiteMap)gm.map;
         Vector3 pos;
         while (true) {
-            pos = map.GetFreeRoundedLocation();
+            pos = map.GetFreeRoundedLocationWithoutLumiere();
             if ((nextPopOnTop && map.IsInTopPart(pos))
              || (!nextPopOnTop && !map.IsInTopPart(pos)))
                 break;
