@@ -61,10 +61,11 @@ public class LumiereSwitchable : Lumiere {
     }
 
     protected override void NotifyConsoleLumiereCatpure() {
-        int nbLumieres = gm.map.GetLumieres().Count;
+        int nbLumieres = gm.map.GetLumieres().Count + gm.ennemiManager.GetNbDataSondeTriggers();
         if (capturedInSwitchingToOn)
             nbLumieres++;
         gm.console.AttraperLumiere(nbLumieres);
+        gm.console.UpdateLastLumiereAttrapee();
     }
 
     public LumiereSwitchableState GetState() {

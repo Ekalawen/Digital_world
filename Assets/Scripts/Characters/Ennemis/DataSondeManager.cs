@@ -54,4 +54,8 @@ public class DataSondeManager : MonoBehaviour {
     public void UnregisterDataSondeTrigger(OrbTrigger orbTrigger) {
         dataSondesTriggers.Remove(orbTrigger);
     }
+
+    public List<OrbTrigger> GetDataSondesTriggers() {
+        return dataSondesTriggers;
+    }
 }

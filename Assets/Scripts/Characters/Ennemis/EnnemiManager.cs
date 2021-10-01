@@ -157,4 +157,8 @@ public class EnnemiManager : MonoBehaviour {
             dataSoundManager.Initialize();
         }
     }
+
+    public int GetNbDataSondeTriggers() {
+        return dataSoundManager == null ? 0 : dataSoundManager.GetDataSondesTriggers().Count;
+    }
 }

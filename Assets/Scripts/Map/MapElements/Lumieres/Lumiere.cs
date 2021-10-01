@@ -169,7 +169,7 @@ public class Lumiere : MonoBehaviour {
     }
 
     protected virtual void NotifyConsoleLumiereCatpure() {
-        gm.console.AttraperLumiere(gm.map.GetLumieres().Count);
+        gm.console.AttraperLumiere(gm.map.GetLumieres().Count + gm.ennemiManager.GetNbDataSondeTriggers());
         gm.console.UpdateLastLumiereAttrapee();
     }
 
