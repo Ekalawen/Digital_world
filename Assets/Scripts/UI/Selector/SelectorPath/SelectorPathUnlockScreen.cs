@@ -310,7 +310,11 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         selectorManager.popup.InitTresholdText();
         ReplaceTresholdsWithGoalTresholds(selectorManager.popup, selectorPath.goalTresholds);
         AddNextPallierMessage(selectorManager.popup, currentTreshold: currentTreshold);
-        selectorManager.popup.Run(textTreshold: selectorManager.popup.GetMaxTreshold(), shouldInitTresholdText: false, replacements: selectorManager.DHReplacementStrings);
+        selectorManager.popup.Run(
+            textTreshold: selectorManager.popup.GetMaxTreshold(),
+            shouldInitTresholdText: false,
+            replacements: selectorManager.DHReplacementStrings,
+            imagesAtlas: selectorPath.imagesAtlas);
     }
 
     protected void ReplaceTresholdsWithGoalTresholds(TexteExplicatif texteExplicatif, GoalTresholds goalTresholds) {

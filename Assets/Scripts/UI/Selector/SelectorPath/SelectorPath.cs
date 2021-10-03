@@ -19,6 +19,7 @@ public class SelectorPath : MonoBehaviour {
     public LocalizedTextAsset donneesHackees;
     public GoalTresholds goalTresholds;
     public int nbTresholdsToSeeTraceHint = 1;
+    public TMPro.TMP_SpriteAsset imagesAtlas;
 
     [Header("Password")]
     public LocalizedString passwordPasse;

@@ -83,9 +83,13 @@ public class TexteExplicatif : MonoBehaviour {
         tresholdText = new TresholdText(textAsset);
     }
 
-    public void Run(int textTreshold = 0, bool shouldInitTresholdText = true, ReplacementStrings replacements = null) {
+    public void Run(int textTreshold = 0, bool shouldInitTresholdText = true, ReplacementStrings replacements = null, TMPro.TMP_SpriteAsset imagesAtlas = null) {
         SetColorTheme(currentTheme);
         InitColor();
+
+        if(imagesAtlas != null) {
+            mainText.spriteAsset = imagesAtlas;
+        }
 
         if (useTextAsset && shouldInitTresholdText) {
             InitTresholdText();
