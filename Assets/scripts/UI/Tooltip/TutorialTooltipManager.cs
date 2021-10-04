@@ -47,9 +47,13 @@ public class TutorialTooltipManager : MonoBehaviour {
     public GameObject tutorialTooltipReadDoc;
     public RectTransform tutorialTooltipReadDocTransform;
 
+    [Header("All Paths")]
+    public GameObject tutorialTooltipAllPaths;
+    public RectTransform tutorialTooltipAllPathsTransform;
+
     protected SelectorManager selectorManager;
     protected List<GameObject> prefabsAlreadyInstantiated;
-    protected List<Tuple<TutorialTooltip, int>> tutorialTooltipsPathWithIndice;
+    protected List<Tuple<TutorialTooltip, int>> tutorialTooltipsPathWithIndice; // Used to repop unclicked TutorialTooltip in SelectorPathUnlockScreens ! :)
 
     public void Initialize(SelectorManager selectorManager) {
         this.selectorManager = selectorManager;
@@ -113,10 +117,7 @@ public class TutorialTooltipManager : MonoBehaviour {
         }
         if (selectorManager.GetPathIndice(path) == 1) {
             if (!PrefsManager.GetBool(GetKey(tutorialTooltipRedoPreviousLevel), false)) {
-                TutorialTooltip tutorialTooltip = InstantiateTutorialTooltip(tutorialTooltipRedoPreviousLevel, tutorialTooltipRedoPreviousLevelTransform, parent: selectorManager.unlockScreen.transform);
-                if(tutorialTooltip != null) {
-                    tutorialTooltipsPathWithIndice.Add(new Tuple<TutorialTooltip, int>(tutorialTooltip, 1));
-                }
+                InstantiateTutorialTooltip(tutorialTooltipRedoPreviousLevel, tutorialTooltipRedoPreviousLevelTransform, parent: selectorManager.unlockScreen.transform);
             }
         }
     }
@@ -127,6 +128,14 @@ public class TutorialTooltipManager : MonoBehaviour {
                 TutorialTooltip tutorialTooltip = InstantiateTutorialTooltip(tutorialTooltipToNextLevel, tutorialTooltipToNextLevelTransform, parent: selectorManager.unlockScreen.transform);
                 if(tutorialTooltip != null) {
                     tutorialTooltipsPathWithIndice.Add(new Tuple<TutorialTooltip, int>(tutorialTooltip, 0));
+                }
+            }
+        }
+        if (path.endLevel.GetNameId() == "LearnEndEventScene") {
+            if (path.IsUnlocked() && !path.endLevel.IsAccessible() && !PrefsManager.GetBool(GetKey(tutorialTooltipAllPaths), false)) {
+                TutorialTooltip tutorialTooltip = InstantiateTutorialTooltip(tutorialTooltipAllPaths, tutorialTooltipAllPathsTransform, parent: selectorManager.unlockScreen.transform);
+                if(tutorialTooltip != null) {
+                    tutorialTooltipsPathWithIndice.Add(new Tuple<TutorialTooltip, int>(tutorialTooltip, selectorManager.GetPathIndice(path)));
                 }
             }
         }
