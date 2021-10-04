@@ -108,8 +108,8 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         cyclicDHButton.gameObject.SetActive(true);
         cyclicDHButton.onClick.RemoveAllListeners();
         cyclicDHButton.onClick.AddListener(path.OpenUnlockScreenInstant);
-        string startLevelName = path.startLevel.GetVisibleName();
-        string endLevelName = path.endLevel.GetVisibleName();
+        string startLevelName = UIHelper.SurroundWithColorWithoutB(path.startLevel.GetVisibleName(), UIHelper.GREEN);
+        string endLevelName = UIHelper.SurroundWithColorWithoutB(path.endLevel.GetVisibleName(), UIHelper.GREEN);
         cyclicDHButton.GetComponent<TooltipActivator>().localizedMessage.Arguments = new object[] { startLevelName, endLevelName };
     }
 

@@ -16,7 +16,7 @@ public class SelectorPathCadenasCollider : MonoBehaviour {
         selectorManager = SelectorManager.Instance;
         //tooltipActivator.localizedMessage = $"Data Hackées() du niveau {cadenas.selectorPath.endLevel.GetName()}";
         tooltipActivator.localizedMessage = dataHackeesOfLevelString;
-        tooltipActivator.localizedMessage.Arguments = new object[] { cadenas.selectorPath.endLevel.GetVisibleName() };
+        tooltipActivator.localizedMessage.Arguments = new object[] { UIHelper.SurroundWithColorWithoutB(cadenas.selectorPath.endLevel.GetVisibleName(), UIHelper.GREEN) };
     }
 
     public void OnMouseEnter() {
