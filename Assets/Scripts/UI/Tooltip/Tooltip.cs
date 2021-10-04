@@ -15,11 +15,13 @@ public class Tooltip : MonoBehaviour {
     public new Camera camera;
 
     protected float planeDistance;
+    protected Timer lastHideTime;
 
     public void Awake() {
         instance = this;
         gameObject.SetActive(false);
         planeDistance = FindObjectOfType<Canvas>().planeDistance;
+        lastHideTime = new Timer(setOver: true);
     }
 
     public void Update() {
@@ -50,7 +52,10 @@ public class Tooltip : MonoBehaviour {
         rectTransform.localPosition = clampedPos;
     }
 
-    protected void ShowProtected(string message) {
+    protected void ShowProtected(string message, float timeBeforeShowingUsed) {
+        if(lastHideTime.GetElapsedTime() < timeBeforeShowingUsed) {
+            return;
+        }
         text.SetText(message);
         background.sizeDelta = text.GetPreferredValues(message);
         SetPositionToMouse();
@@ -59,10 +64,11 @@ public class Tooltip : MonoBehaviour {
 
     protected void HideProtected() {
         gameObject.SetActive(false);
+        lastHideTime.Reset();
     }
 
-    public static void Show(string message) {
-        instance.ShowProtected(message);
+    public static void Show(string message, float timeBeforeShowingUsed) {
+        instance.ShowProtected(message, timeBeforeShowingUsed);
     }
 
     public static void Hide() {

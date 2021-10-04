@@ -21,9 +21,13 @@ public class TooltipActivator : MonoBehaviour,
         showingCoroutine = StartCoroutine(CShowInTime());
     }
 
-    protected IEnumerator CShowInTime() {
+    public void ShowImmediate() {
+        StartCoroutine(CShowInTime(showImmediate: true));
+    }
+
+    protected IEnumerator CShowInTime(bool showImmediate = false) {
         UnpausableTimer showingTimer = new UnpausableTimer(timeBeforeShowing);
-        while(!showingTimer.IsOver()) {
+        while(!showImmediate && !showingTimer.IsOver()) {
             yield return null;
         }
         if (localizedMessage != null) {
@@ -31,7 +35,7 @@ public class TooltipActivator : MonoBehaviour,
             yield return handle;
             string message = handle.Result;
             string parsedMessage = message.Replace("\\n", "\n");
-            Tooltip.Show(parsedMessage);
+            Tooltip.Show(parsedMessage, timeBeforeShowingUsed: timeBeforeShowing);
         } else {
             Debug.LogWarning($"{gameObject.name} possède un TooltipActivator avec un localizedMessage null !", gameObject);
         }
