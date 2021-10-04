@@ -475,6 +475,40 @@
     <Compile Include="Assets\Scripts\Map\MapElements\Generators\IGenerator.cs" />
     <Compile Include="Assets\Scripts\Map\MapFunctionComponents\Get\GetCubesHelper.cs" />
     <Compile Include="Assets\Materials\lwrp\Particules\Old\48 Particle Effect Pack\ShurikenEffectEditor\csShurikenEffectChanger.cs" />
+    <Compile Include="Assets\Scripts\UI\PopupMaxMinimizer.cs" />
+    <Compile Include="Assets\Imported\LeanTween\Examples\Scripts\PathSplineTrack.cs" />
+    <Compile Include="Assets\Imported\LeanTween\Framework\LeanTest.cs" />
+    <Compile Include="Assets\Imported\LeanTween\Examples\Scripts\GeneralAdvancedTechniques.cs" />
+    <Compile Include="Assets\Imported\LeanTween\Framework\LeanAudio.cs" />
+    <Compile Include="Assets\Imported\LeanTween\Framework\LTDescrOptional.cs" />
+    <Compile Include="Assets\Imported\LeanTween\Examples\Scripts\PathSpline.cs" />
+    <Compile Include="Assets\Imported\LeanTween\Framework\LeanTween.cs" />
+    <Compile Include="Assets\Imported\LeanTween\Examples\Archived\OldGUIExamplesCS.cs" />
+    <Compile Include="Assets\Imported\LeanTween\Examples\Scripts\GeneralEasingTypes.cs" />
+    <Compile Include="Assets\Imported\LeanTween\Examples\Scripts\GeneralSimpleUI.cs" />
+    <Compile Include="Assets\Imported\LeanTween\Examples\Scripts\PathSpline2d.cs" />
+    <Compile Include="Assets\Imported\LeanTween\Examples\Scripts\LogoCinematic.cs" />
+    <Compile Include="Assets\Imported\LeanTween\Examples\Scripts\GeneralCameraShake.cs" />
+    <Compile Include="Assets\Imported\LeanTween\Examples\Scripts\PathSplines.cs" />
+    <Compile Include="Assets\Imported\LeanTween\Examples\Archived\TestingRigidbodyCS.cs" />
+    <Compile Include="Assets\Imported\LeanTween\Examples\Scripts\GeneralBasic.cs" />
+    <Compile Include="Assets\Imported\LeanTween\Examples\Scripts\PathBezier2d.cs" />
+    <Compile Include="Assets\Imported\LeanTween\Examples\Scripts\GeneralEventsListeners.cs" />
+    <Compile Include="Assets\Imported\LeanTween\Examples\Scripts\Following.cs" />
+    <Compile Include="Assets\Imported\LeanTween\Examples\Scripts\GeneralSequencer.cs" />
+    <Compile Include="Assets\Imported\LeanTween\Examples\Scripts\TestingZLegacyExt.cs" />
+    <Compile Include="Assets\Imported\LeanTween\Framework\LeanSmooth.cs" />
+    <Compile Include="Assets\Imported\LeanTween\Examples\Scripts\TestingUnitTests.cs" />
+    <Compile Include="Assets\Imported\LeanTween\Examples\Archived\TestingPunch.cs" />
+    <Compile Include="Assets\Imported\LeanTween\Examples\Scripts\TestingZLegacy.cs" />
+    <Compile Include="Assets\Imported\LeanTween\Examples\Scripts\PathBezier.cs" />
+    <Compile Include="Assets\Imported\LeanTween\Framework\LTDescr.cs" />
+    <Compile Include="Assets\Imported\LeanTween\Framework\LTSeq.cs" />
+    <Compile Include="Assets\Imported\LeanTween\Examples\Scripts\PathSplinePerformance.cs" />
+    <Compile Include="Assets\Imported\LeanTween\Examples\Scripts\GeneralUISpace.cs" />
+    <Compile Include="Assets\Imported\LeanTween\Examples\Scripts\PathSplineEndless.cs" />
+    <Compile Include="Assets\Imported\LeanTween\Framework\LeanTweenExt.cs" />
+    <Compile Include="Assets\Imported\LeanTween\Examples\Scripts\GeneralBasics2d.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Texts\DataHackees\15-16_ToLearnIntersection\DHtoLearnIntersectionFromConstantDestructionFR.txt" />
@@ -506,6 +540,7 @@
     <None Include="Assets\Texts\DataHackees\25_ToFirstTracers\DHtoFirstTracersEN.txt" />
     <None Include="Assets\Texts\Archives\6_LearnEndEvent\ArchivesLearnEndEventEN.txt" />
     <None Include="Assets\Texts\ConseilsSummary.txt" />
+    <None Include="Assets\Imported\LeanTween\ReadMe.txt" />
     <None Include="Assets\Texts\DataHackees\ToLumiereProtection\DHtoLumiereProtectionFR.txt" />
     <None Include="Assets\Imported\TextMesh Pro\Resources\Shaders\TMP_Bitmap.shader" />
     <None Include="Assets\Texts\Archives\16_FurtiveGrid\ArchivesFurtiveGridFR.txt" />
@@ -527,6 +562,7 @@
     <None Include="Assets\Texts\DataHackees\1_ToFirstLevel\DHtoFirstLevelEN.txt" />
     <None Include="Assets\Texts\DataHackees\19-20-21_ToLearnPathfinding\DHtoLearnPathfindingFromFurtiveGridFR.txt" />
     <None Include="Assets\Texts\DataHackees\26_ToAlwaysReset\DHtoAlwaysResetEN.txt" />
+    <None Include="Assets\Imported\LeanTween\License.txt" />
     <None Include="Assets\Texts\Archives\16_FurtiveGrid\ArchivesFurtiveGridEN.txt" />
     <None Include="Assets\Texts\DataHackees\18_ToFurtiveGrid\DHtoFurtiveGridFR.txt" />
     <None Include="Assets\Texts\DataHackees\31_ClosingCaves\DHtoClosingCavesFR.txt" />
@@ -636,6 +672,7 @@
     <None Include="Assets\Texts\Archives\4_SecondRunner\ArchivesSecondRunnerEN.txt" />
     <None Include="Assets\Texts\Archives\25_OrbTriggerFactory\ArchivesOrbTriggerFactoryEN.txt" />
     <None Include="Assets\Texts\Archives\19_VerticalBounce\ArchivesVerticalBounceFR.txt" />
+    <None Include="Assets\Imported\LeanTween\Examples\Archived\2dUnlitWithFade.shader" />
     <None Include="Assets\Texts\Archives\33_DeadlyPurges\ArchivesDeadlyPurgesFR.txt" />
     <None Include="Assets\Texts\DataHackees\ToDenseCube\DHtoDenseCubeFR.txt" />
     <None Include="Assets\Texts\Archives\10_ParkourTraining\ArchivesParkourTrainingEN.txt" />
@@ -1476,6 +1513,33 @@
     </Reference>
     <Reference Include="Unity.SysrootPackage.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.SysrootPackage.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.2D.IK.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.2D.IK.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.2D.Animation.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.2D.Animation.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.2D.Animation.Runtime">
+      <HintPath>Library\ScriptAssemblies\Unity.2D.Animation.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.2D.Common.Runtime">
+      <HintPath>Library\ScriptAssemblies\Unity.2D.Common.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.InternalAPIEngineBridge.001">
+      <HintPath>Library\ScriptAssemblies\Unity.InternalAPIEngineBridge.001.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.2D.IK.Runtime">
+      <HintPath>Library\ScriptAssemblies\Unity.2D.IK.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.2D.Common.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.2D.Common.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.2D.Animation.Triangle.Runtime">
+      <HintPath>Library\ScriptAssemblies\Unity.2D.Animation.Triangle.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.InternalAPIEditorBridge.001">
+      <HintPath>Library\ScriptAssemblies\Unity.InternalAPIEditorBridge.001.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
