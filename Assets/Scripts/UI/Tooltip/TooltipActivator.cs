@@ -33,7 +33,7 @@ public class TooltipActivator : MonoBehaviour,
             string parsedMessage = message.Replace("\\n", "\n");
             Tooltip.Show(parsedMessage);
         } else {
-            Debug.LogWarning($"{gameObject.name} possède un TooltipActivator avec un localizedMessage null !");
+            Debug.LogWarning($"{gameObject.name} possède un TooltipActivator avec un localizedMessage null !", gameObject);
         }
     }
 

@@ -49,6 +49,8 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
     public GameObject fastUISystemPreviousPrefab;
     public RectTransform fastUISystemNextTransform;
     public RectTransform fastUISystemPreviousTransform;
+    public Button cyclicDHLeftButton;
+    public Button cyclicDHRightButton;
 
     protected SelectorManager selectorManager;
     [HideInInspector]
@@ -67,6 +69,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         FillTraceHint();
         HighlightDataHackees(shouldHighlightDataHackees);
         GenerateNextAndPreviousButtons();
+        InitializeCyclicDHButtons();
         cadenaAnimationFluctuator = new Fluctuator(this, GetCadenasRotation, SetCadenasRotation);
     }
 
@@ -83,6 +86,31 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         fastUISystemForward.Initialize(selectorPath, FastUISystem.DirectionType.FORWARD, FastUISystem.FromType.UNLOCK_SCREEN);
         FastUISystem fastUISystemBackward = Instantiate(fastUISystemPreviousPrefab, fastUISystemPreviousTransform).GetComponent<FastUISystem>();
         fastUISystemBackward.Initialize(selectorPath, FastUISystem.DirectionType.BACKWARD, FastUISystem.FromType.UNLOCK_SCREEN);
+    }
+
+    protected void InitializeCyclicDHButtons() {
+        SelectorLevel nextLevel = selectorPath.endLevel;
+        SelectorLevel previousLevel = selectorPath.startLevel;
+        List<SelectorPath> outPaths = selectorManager.GetOutPaths(previousLevel);
+        List<SelectorPath> inPaths = selectorManager.GetInPaths(nextLevel);
+        if(outPaths.Count > 1 || inPaths.Count > 1) {
+            List<SelectorPath> interestingPaths = Enumerable.Union(outPaths, inPaths).ToList();
+            int currentIndice = interestingPaths.FindIndex(p => p == selectorPath);
+            InitOneCyclicDHButton(cyclicDHRightButton, interestingPaths[(currentIndice + 1) % interestingPaths.Count]);
+            InitOneCyclicDHButton(cyclicDHLeftButton, interestingPaths[(currentIndice - 1 + interestingPaths.Count) % interestingPaths.Count]);
+        } else {
+            cyclicDHLeftButton.gameObject.SetActive(false);
+            cyclicDHRightButton.gameObject.SetActive(false);
+        }
+    }
+
+    protected void InitOneCyclicDHButton(Button cyclicDHButton, SelectorPath path) {
+        cyclicDHButton.gameObject.SetActive(true);
+        cyclicDHButton.onClick.RemoveAllListeners();
+        cyclicDHButton.onClick.AddListener(path.OpenUnlockScreenInstant);
+        string startLevelName = path.startLevel.GetVisibleName();
+        string endLevelName = path.endLevel.GetVisibleName();
+        cyclicDHButton.GetComponent<TooltipActivator>().localizedMessage.Arguments = new object[] { startLevelName, endLevelName };
     }
 
     protected void SetTitles() {

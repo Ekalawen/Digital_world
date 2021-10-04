@@ -138,6 +138,10 @@ public class SelectorPath : MonoBehaviour {
         OpenUnlockScreen();
     }
 
+    public void OpenUnlockScreenInstant() {
+        OpenUnlockScreen(instantDisplay: true);
+    }
+
     public void OpenUnlockScreen(bool instantDisplay = false) {
         unlockScreen.gameObject.SetActive(true);
         unlockScreen.Initialize(this, GetHighlitedState());
