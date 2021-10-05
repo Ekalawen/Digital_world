@@ -296,7 +296,7 @@ public class MenuOptions : MonoBehaviour {
         yield return handle;
         titleText.text = handle.Result;
         titleText.fontSize = titleTextFontSize;
-        UIHelper.FitTextHorizontaly(titleText.text, titleText);
+        UIHelper.FitTextHorizontally(titleText.text, titleText);
     }
 
     public void ChosePanelControles() {

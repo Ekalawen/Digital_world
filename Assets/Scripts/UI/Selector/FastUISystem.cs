@@ -90,7 +90,7 @@ public class FastUISystem : MonoBehaviour {
 
     protected void SetNameInRect(string levelName) {
         levelNameText.text = levelName;
-        UIHelper.FitTextHorizontaly(levelNameText.text, levelNameText);
+        UIHelper.FitTextHorizontally(levelNameText.text, levelNameText);
     }
 
     protected void SetTooltips(string levelName, DirectionType directionType) {

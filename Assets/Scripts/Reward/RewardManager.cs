@@ -353,7 +353,7 @@ public class RewardManager : MonoBehaviour {
     protected void InitializeTitleAndStats()
     {
         titleCompletedText.text = strings.levelCompleted.GetLocalizedString(hm.levelNameVisual).Result;
-        UIHelper.FitTextHorizontaly(titleCompletedText.text, titleCompletedText);
+        UIHelper.FitTextHorizontally(titleCompletedText.text, titleCompletedText);
 
         if (hm.GetMapType() == MenuLevel.LevelType.REGULAR) {
             SetAllRegularStatsTexts();

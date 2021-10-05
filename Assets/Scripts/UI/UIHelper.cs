@@ -67,27 +67,27 @@ public class UIHelper {
         return colorMapping;
     }
 
-    public static bool IsOverflowing(string content, Text text) {
+    public static bool IsOverflowing(Text text) {
         float preferedWidth = LayoutUtility.GetPreferredWidth(text.rectTransform);
         float maxWidth = text.GetComponent<RectTransform>().rect.width;
         return preferedWidth > maxWidth;
     }
 
-    public static void FitTextHorizontaly(string content, Text text) {
-        while (text.fontSize > 1 && IsOverflowing(content, text))
+    public static void FitTextHorizontally(string content, Text text) {
+        while (text.fontSize > 1 && IsOverflowing(text))
             text.fontSize -= 1;
     }
 
-    public static bool IsOverflowing(string content, TMPro.TMP_Text text) {
+    public static bool IsOverflowing(TMPro.TMP_Text text) {
         float preferedWidth = LayoutUtility.GetPreferredWidth(text.rectTransform);
         float maxWidth = text.GetComponent<RectTransform>().rect.width;
         //float maxWidth = text.GetComponent<RectTransform>().rect.width + text.margin.x + text.margin.z; // Je sais pas pourquoi c'est '+' ici x)
         return preferedWidth > maxWidth;
     }
 
-    public static void FitTextHorizontaly(string content, TMPro.TMP_Text text) {
+    public static void FitTextHorizontally(string content, TMPro.TMP_Text text) {
         //text.fontSize = text.fontSize * 2; // Pour être sur de ne pas rétrécir la font ! :)
-        while (text.fontSize > 1 && IsOverflowing(content, text))
+        while (text.fontSize > 1 && IsOverflowing(text))
             text.fontSize -= 1;
     }
 

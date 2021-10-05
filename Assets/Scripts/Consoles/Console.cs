@@ -70,6 +70,7 @@ public class Console : MonoBehaviour {
     public GameObject pauseMenu;
     public CounterDisplayer dataCountDisplayer;
     public FrameRateManager frameRateManager;
+    public GameObject deathAstuce;
 
 
     [HideInInspector]
@@ -801,6 +802,9 @@ public class Console : MonoBehaviour {
                 break;
         }
         DisplayEscapeButton();
+        if (gm.eventManager.ShouldQuitOrReload() == EventManager.QuitType.RELOAD) {
+            DisplayDeathAstuces();
+        }
 		StartCoroutine (SeMoquer());
 	}
 
@@ -1253,5 +1257,22 @@ public class Console : MonoBehaviour {
         if(uiVisibilitySaver != null) {
             SetUIVisibilityTo(uiVisibilitySaver.uIVisibility);
         }
+    }
+
+    public void DisplayDeathAstuces() {
+        StartCoroutine(CDisplayDeathAstuces());
+    }
+
+    public IEnumerator CDisplayDeathAstuces() {
+        deathAstuce.SetActive(true);
+        string conseilKey = gm.eventManager.GetKeyFor(PrefsManager.CONSEIL_INDICE_KEY);
+        int conseilIndice = PrefsManager.GetInt(conseilKey, 0);
+        PrefsManager.SetInt(conseilKey, (conseilIndice + 1) % conseils.Count);
+        LocalizedString conseil = conseils[conseilIndice];
+        AsyncOperationHandle<string> handle = conseil.GetLocalizedString();
+        yield return handle.Task;
+        TMP_Text text = deathAstuce.GetComponentInChildren<TMP_Text>();
+        text.text = text.text.Substring(0, text.text.Count() - 1) + " "; // Delete ending '\n'
+        text.text += handle.Result;
     }
 }

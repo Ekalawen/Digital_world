@@ -117,10 +117,10 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
     protected void SetTitles() {
         string startLevelName = selectorPath.startLevel.GetVisibleName();
         fromLevelTitle.text = startLevelName;
-        UIHelper.FitTextHorizontaly(startLevelName, fromLevelTitle);
+        UIHelper.FitTextHorizontally(startLevelName, fromLevelTitle);
         string endLevelName = selectorPath.endLevel.GetVisibleName();
         toLevelTitle.text = endLevelName;
-        UIHelper.FitTextHorizontaly(endLevelName, toLevelTitle);
+        UIHelper.FitTextHorizontally(endLevelName, toLevelTitle);
     }
 
     public void Submit() {
