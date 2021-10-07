@@ -133,8 +133,7 @@ public class Player : Character {
         personnage.GetComponentInChildren<Camera>().enabled = true;
 
         // On empêche la souris de sortir de l'écran !
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        MouseDisplayer.Instance.LockCursor();
 
         console = GameObject.FindObjectOfType<Console>();
 

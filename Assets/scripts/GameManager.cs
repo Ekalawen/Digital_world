@@ -178,7 +178,7 @@ public class GameManager : MonoBehaviour {
     public void Pause() {
         isPaused = true;
         Time.timeScale = 0.0f;
-        ShowCursor();
+        MouseDisplayer.Instance.ShowCursor();
         pointeur.gameObject.SetActive(false);
         console.OpenPauseMenu();
         soundManager.PauseSounds();
@@ -188,7 +188,7 @@ public class GameManager : MonoBehaviour {
     public void UnPause() {
         isPaused = false;
         Time.timeScale = 1.0f;
-        HideCursor();
+        MouseDisplayer.Instance.HideCursor();
         pointeur.gameObject.SetActive(true);
         Tooltip.Hide();
         console.ClosePauseMenu();
@@ -211,21 +211,11 @@ public class GameManager : MonoBehaviour {
     protected static void CheckCursorToggling() {
         if (Input.GetKeyDown(KeyCode.F1)) {
             if (Cursor.visible) {
-                HideCursor();
+                MouseDisplayer.Instance.HideTrueCursor();
             } else {
-                ShowCursor();
+                MouseDisplayer.Instance.ShowTrueCursor();
             }
         }
-    }
-
-    public static void ShowCursor() {
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-    }
-
-    public static void HideCursor() {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
     }
 
     public void QuitOrReloadGame() {
@@ -277,8 +267,7 @@ public class GameManager : MonoBehaviour {
         PrefsManager.SetString(PrefsManager.LAST_LEVEL_KEY, SceneManager.GetActiveScene().name);
         console.DestroyUIVisibilitySaver();
 
-        Cursor.lockState = CursorLockMode.None;
-		Cursor.visible = true;
+        MouseDisplayer.Instance.ShowCursor();
         Time.timeScale = 1.0f;
 
         if (SceneManager.GetActiveScene().name == "TutorialScene") {

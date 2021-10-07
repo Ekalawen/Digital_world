@@ -190,6 +190,14 @@ public class InputManager : MonoBehaviour {
         return Input.GetKeyDown(GetPouvoirLeftClickKeyCode());
     }
 
+    public bool GetMouseLeftClickDown() {
+        return Input.GetKeyDown(KeyCode.Mouse0);
+    }
+
+    public bool GetMouseLeftClickUp() {
+        return Input.GetKeyUp(KeyCode.Mouse0);
+    }
+
     public KeyCode GetPouvoirLeftClickKeyCode() {
         if (GetCurrentKeybindingType() != KeybindingType.CONTROLLER) {
             return KeyCode.Mouse0;

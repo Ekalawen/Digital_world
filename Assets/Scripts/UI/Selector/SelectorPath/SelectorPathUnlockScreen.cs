@@ -177,7 +177,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
                 GenerateNextAndPreviousButtons();
 
                 MenuManager.DISABLE_HOTKEYS = false;
-                GameManager.ShowCursor();
+                MouseDisplayer.Instance.ShowCursor();
                 RunPathUnlockedPopup();
 
                 StopAllParticles();
@@ -197,7 +197,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         selectorPath.endLevel?.InitializeObject();
         UISoundManager.Instance.PlayUnlockPathClip();
         MenuManager.DISABLE_HOTKEYS = true;
-        GameManager.HideCursor();
+        MouseDisplayer.Instance.HideCursor();
 
         SetFromTitleAccordingToLockState();
         StartUnlockPathParticles(fromLevelTitle.transform);
@@ -219,7 +219,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
 
         yield return new WaitForSeconds(dureeUnlockAnimationParticleSystem);
         MenuManager.DISABLE_HOTKEYS = false;
-        GameManager.ShowCursor();
+        MouseDisplayer.Instance.ShowCursor();
         RunPathUnlockedPopup();
     }
 
