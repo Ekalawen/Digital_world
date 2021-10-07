@@ -21,7 +21,8 @@ public class Tooltip : MonoBehaviour {
         instance = this;
         gameObject.SetActive(false);
         planeDistance = FindObjectOfType<Canvas>().planeDistance;
-        lastHideTime = new Timer(setOver: true);
+        lastHideTime = new UnpausableTimer();
+        lastHideTime.SetOver();
     }
 
     public void Update() {
