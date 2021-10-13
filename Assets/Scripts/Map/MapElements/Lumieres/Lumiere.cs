@@ -34,10 +34,16 @@ public class Lumiere : MonoBehaviour {
     [Header("Destruction")]
     public float dureeDestructionHigh = 3.0f;
     public float dureeDestructionLow = 1.0f;
+    public float dureeDestructionLowShrinkVoronoiSphere = 0.08f;
+    public float dureeDestructionLowVanishGlowingHeart = 1.35f;
+    public AnimationCurve destructionLowVanishGlowingHeartCurve;
 
     [Header("Vue")]
     public VisualEffect lumiereHighVfx;
     public GameObject lumiereLow;
+    public MeshRenderer lumiereLowVoronoiSphere;
+    public MeshRenderer lumiereLowGlowingHeart;
+    public VisualEffect lumiereLowVfx;
     public VisualEffect lumiereTrails;
     public GameObject pointLight;
 
@@ -119,7 +125,7 @@ public class Lumiere : MonoBehaviour {
     }
 
     private void AutoDestroy() {
-        Destroy(this.gameObject, dureeDestructionHigh);
+        Destroy(this.gameObject, lumiereQuality == LumiereQuality.HIGH ? dureeDestructionHigh : dureeDestructionLow);
         DestroyAnimation();
     }
 
@@ -148,16 +154,43 @@ public class Lumiere : MonoBehaviour {
     }
 
     protected void DestroyAnimationLow() {
-        StartCoroutine(CDestroyAnimationLow());
+        lumiereLowVfx.SendEvent("Stop");
+        StartCoroutine(CShrinkVoronoiSphereLow());
+        StartCoroutine(CVanishGlowingHeart());
     }
 
-    protected IEnumerator CDestroyAnimationLow() {
-        Timer timer = new Timer(dureeDestructionLow);
+    protected IEnumerator CShrinkVoronoiSphereLow() {
+        if (type != LumiereType.FINAL) { // Shrink Size
+            Timer timer = new Timer(dureeDestructionLowShrinkVoronoiSphere);
+            while (!timer.IsOver()) {
+                lumiereLowVoronoiSphere.transform.localScale = Vector3.one * (1.0f - timer.GetAvancement());
+                yield return null;
+            }
+            lumiereLowVoronoiSphere.transform.localScale = Vector3.zero;
+        } else { // Shrink Alpha
+            lumiereLowVoronoiSphere.material.SetFloat("_VoronoiRotationSpeed", 0.0f);
+            Timer timer = new Timer(dureeDestructionLow);
+            Vector2 initialTransparencyValues = lumiereLowVoronoiSphere.material.GetVector("_VoronoiTransparencyValues");
+            float initialProportion = lumiereLowVoronoiSphere.material.GetFloat("_VoronoiTransparencyProportion");
+            while (!timer.IsOver()) {
+                float avancement = timer.GetAvancement();
+                lumiereLowVoronoiSphere.material.SetVector("_VoronoiTransparencyValues", initialTransparencyValues * (1 - avancement));
+                lumiereLowVoronoiSphere.material.SetFloat("_VoronoiTransparencyProportion", MathCurves.Linear(initialProportion, 1.1f, avancement));
+                yield return null;
+            }
+            lumiereLowVoronoiSphere.material.SetVector("_VoronoiTransparencyValues", initialTransparencyValues * 0.0f);
+            lumiereLowVoronoiSphere.material.SetFloat("_VoronoiTransparencyProportion", 1.1f);
+        }
+    }
+
+    protected IEnumerator CVanishGlowingHeart() {
+        Timer timer = new Timer(dureeDestructionLowVanishGlowingHeart);
         while(!timer.IsOver()) {
-            lumiereLow.transform.localScale = Vector3.one * (1.0f - timer.GetAvancement());
+            float alpha = destructionLowVanishGlowingHeartCurve.Evaluate(timer.GetAvancement());
+            lumiereLowGlowingHeart.material.SetFloat("_Alpha", alpha);
             yield return null;
         }
-        lumiereLow.transform.localScale = Vector3.zero;
+        lumiereLowGlowingHeart.material.SetFloat("_Alpha", 0);
     }
 
     protected virtual void NotifyEventManagerLumiereCapture() {
@@ -184,6 +217,9 @@ public class Lumiere : MonoBehaviour {
         lumiereQuality = quality;
         lumiereHighVfx.gameObject.SetActive(quality == LumiereQuality.HIGH);
         lumiereLow.SetActive(quality == LumiereQuality.LOW);
+        if(quality == LumiereQuality.LOW) {
+            lumiereLowGlowingHeart.material = new Material(lumiereLowGlowingHeart.material);
+        }
     }
 
     public void SetInaccessible() {

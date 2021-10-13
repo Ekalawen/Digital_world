@@ -33,7 +33,7 @@ Transform:
   - {fileID: 4112407253792594}
   - {fileID: 7727291294073181121}
   - {fileID: 3501191294059104558}
-  - {fileID: 504739275352003915}
+  - {fileID: 7453096621691940155}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -77,9 +77,38 @@ MonoBehaviour:
   screenShakeMagnitude: 10
   screenShakeRoughness: 10
   dureeDestructionHigh: 3
-  dureeDestructionLow: 0.08
+  dureeDestructionLow: 2.7
+  dureeDestructionLowShrinkVoronoiSphere: 0.16
+  dureeDestructionLowVanishGlowingHeart: 1.8
+  destructionLowVanishGlowingHeartCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.075
+      inSlope: -0.075
+      outSlope: -0.075
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -0.075
+      outSlope: -0.075
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   lumiereHighVfx: {fileID: 8359929456749380389}
-  lumiereLow: {fileID: 6146230655318809766}
+  lumiereLow: {fileID: 1470013747212468597}
+  lumiereLowVoronoiSphere: {fileID: 9010247463833630643}
+  lumiereLowGlowingHeart: {fileID: 8653653029650340920}
+  lumiereLowVfx: {fileID: 1041607179229422993}
   lumiereTrails: {fileID: 206367807486691759}
   pointLight: {fileID: 1916073784755680}
 --- !u!1 &1916073784755680
@@ -190,6 +219,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_UsePipelineSettings: 1
   m_AdditionalLightsShadowResolutionTier: 0
+--- !u!1 &1470013747212468597
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7453096621691940155}
+  m_Layer: 2
+  m_Name: LumiereLow
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7453096621691940155
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1470013747212468597}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 504739275352003915}
+  - {fileID: 2612511558854351906}
+  - {fileID: 1572444314210802787}
+  m_Father: {fileID: 4185530448076710}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4606910040223488226
 GameObject:
   m_ObjectHideFlags: 0
@@ -219,8 +281,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 504739275352003915}
-  m_RootOrder: 1
+  m_Father: {fileID: 7453096621691940155}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!2083052967 &1041607179229422993
 VisualEffect:
@@ -393,7 +455,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3501191294059104558
 Transform:
   m_ObjectHideFlags: 0
@@ -666,7 +728,7 @@ VFXRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5248426257515953588}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -1038,12 +1100,12 @@ GameObject:
   - component: {fileID: 5812458792843536166}
   - component: {fileID: 9010247463833630643}
   m_Layer: 0
-  m_Name: LumiereLow
+  m_Name: VoronoiSphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &504739275352003915
 Transform:
   m_ObjectHideFlags: 0
@@ -1051,14 +1113,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6146230655318809766}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 2612511558854351906}
-  - {fileID: 1572444314210802787}
-  m_Father: {fileID: 4185530448076710}
-  m_RootOrder: 3
+  m_Children: []
+  m_Father: {fileID: 7453096621691940155}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &5812458792843536166
 MeshFilter:
@@ -1139,8 +1199,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_Children: []
-  m_Father: {fileID: 504739275352003915}
-  m_RootOrder: 0
+  m_Father: {fileID: 7453096621691940155}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &1304938233413859880
 MeshFilter:
