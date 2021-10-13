@@ -52,9 +52,13 @@ MonoBehaviour:
   screenShakeMagnitude: 10
   screenShakeRoughness: 10
   dureeDestructionHigh: 3
-  dureeDestructionLow: 1
+  dureeDestructionLow: 1.8
+  dureeDestructionLowShrinkVoronoiSphere: 0.5
   lumiereHighVfx: {fileID: 8256934114840631727}
-  lumiereLow: {fileID: 6041902634449405484}
+  lumiereLow: {fileID: 1365826461687356415}
+  lumiereLowVoronoiSphere: {fileID: 8905936487541157177}
+  lumiereLowGlowingHeart: {fileID: 9116721385080932018}
+  lumiereLowVfx: {fileID: 641308218198933275}
   lumiereTrails: {fileID: 310678236171096869}
   pointLight: {fileID: 474044475894898538}
 --- !u!1001 &473698577730656906
@@ -111,6 +115,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1041607179229422993, guid: fa0fb635edaf9904d8c2e5a0490c0215,
         type: 3}
+      propertyPath: m_PropertySheet.m_Vector4f.m_Array.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1041607179229422993, guid: fa0fb635edaf9904d8c2e5a0490c0215,
+        type: 3}
+      propertyPath: m_PropertySheet.m_Vector4f.m_Array.Array.data[5].m_Name
+      value: ExplosionColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1041607179229422993, guid: fa0fb635edaf9904d8c2e5a0490c0215,
+        type: 3}
       propertyPath: m_PropertySheet.m_Vector4f.m_Array.Array.data[1].m_Value.y
       value: 1.4980392
       objectReference: {fileID: 0}
@@ -152,6 +166,31 @@ PrefabInstance:
     - target: {fileID: 1041607179229422993, guid: fa0fb635edaf9904d8c2e5a0490c0215,
         type: 3}
       propertyPath: m_PropertySheet.m_Vector4f.m_Array.Array.data[4].m_Value.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1041607179229422993, guid: fa0fb635edaf9904d8c2e5a0490c0215,
+        type: 3}
+      propertyPath: m_PropertySheet.m_Vector4f.m_Array.Array.data[5].m_Value.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1041607179229422993, guid: fa0fb635edaf9904d8c2e5a0490c0215,
+        type: 3}
+      propertyPath: m_PropertySheet.m_Vector4f.m_Array.Array.data[5].m_Value.x
+      value: 2.0325046
+      objectReference: {fileID: 0}
+    - target: {fileID: 1041607179229422993, guid: fa0fb635edaf9904d8c2e5a0490c0215,
+        type: 3}
+      propertyPath: m_PropertySheet.m_Vector4f.m_Array.Array.data[5].m_Value.y
+      value: 2.0325046
+      objectReference: {fileID: 0}
+    - target: {fileID: 1041607179229422993, guid: fa0fb635edaf9904d8c2e5a0490c0215,
+        type: 3}
+      propertyPath: m_PropertySheet.m_Vector4f.m_Array.Array.data[5].m_Value.z
+      value: 2.0325046
+      objectReference: {fileID: 0}
+    - target: {fileID: 1041607179229422993, guid: fa0fb635edaf9904d8c2e5a0490c0215,
+        type: 3}
+      propertyPath: m_PropertySheet.m_Vector4f.m_Array.Array.data[5].m_Overridden
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6168667164722130366, guid: fa0fb635edaf9904d8c2e5a0490c0215,
@@ -289,6 +328,11 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[4]
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 9200149403278051761, guid: fa0fb635edaf9904d8c2e5a0490c0215,
+        type: 3}
+      propertyPath: m_Materials.Array.data[5]
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 9201094463843476422, guid: fa0fb635edaf9904d8c2e5a0490c0215,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -321,9 +365,27 @@ VisualEffect:
     type: 3}
   m_PrefabInstance: {fileID: 473698577730656906}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &6041902634449405484 stripped
+--- !u!1 &1365826461687356415 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 6146230655318809766, guid: fa0fb635edaf9904d8c2e5a0490c0215,
+  m_CorrespondingSourceObject: {fileID: 1470013747212468597, guid: fa0fb635edaf9904d8c2e5a0490c0215,
+    type: 3}
+  m_PrefabInstance: {fileID: 473698577730656906}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &8905936487541157177 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 9010247463833630643, guid: fa0fb635edaf9904d8c2e5a0490c0215,
+    type: 3}
+  m_PrefabInstance: {fileID: 473698577730656906}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &9116721385080932018 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 8653653029650340920, guid: fa0fb635edaf9904d8c2e5a0490c0215,
+    type: 3}
+  m_PrefabInstance: {fileID: 473698577730656906}
+  m_PrefabAsset: {fileID: 0}
+--- !u!2083052967 &641308218198933275 stripped
+VisualEffect:
+  m_CorrespondingSourceObject: {fileID: 1041607179229422993, guid: fa0fb635edaf9904d8c2e5a0490c0215,
     type: 3}
   m_PrefabInstance: {fileID: 473698577730656906}
   m_PrefabAsset: {fileID: 0}

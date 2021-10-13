@@ -38,6 +38,9 @@ public class LumiereSwitchable : Lumiere {
     protected void SetVue() {
         lumiereHighVfx = currentChild.lumiereHighVfx;
         lumiereLow = currentChild.lumiereLow;
+        lumiereLowVoronoiSphere = currentChild.lumiereLowVoronoiSphere;
+        lumiereLowGlowingHeart = currentChild.lumiereLowGlowingHeart;
+        lumiereLowVfx = currentChild.lumiereLowVfx;
         lumiereTrails = currentChild.lumiereTrails;
         pointLight = currentChild.pointLight;
     }

@@ -7,6 +7,9 @@ using UnityEngine.VFX;
 public class LumiereSwitchableChild : MonoBehaviour {
     public VisualEffect lumiereHighVfx;
     public GameObject lumiereLow;
+    public MeshRenderer lumiereLowVoronoiSphere;
+    public MeshRenderer lumiereLowGlowingHeart;
+    public VisualEffect lumiereLowVfx;
     public VisualEffect lumiereTrails;
     public GameObject pointLight;
 

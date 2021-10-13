@@ -31,13 +31,12 @@ public class EventManagerWhileTrue : EventManager {
                 StartEndGame();
                 isFirstStartEndGame = false;
             }
+        } else if (type == Lumiere.LumiereType.ALMOST_FINAL) {
+            nbLumieresFinalesAttrappees++;
+            StartCoroutine(CResetEndEvent());
         } else if (type == Lumiere.LumiereType.FINAL) {
             nbLumieresFinalesAttrappees++;
-            if(nbLumieresFinalesAttrappees == nbLumieresFinales) {
-                WinGame();
-            } else {
-                StartCoroutine(CResetEndEvent());
-            }
+            WinGame();
         }
     }
 

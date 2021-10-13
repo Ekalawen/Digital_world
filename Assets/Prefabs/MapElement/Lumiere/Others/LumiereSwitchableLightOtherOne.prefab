@@ -221,9 +221,13 @@ MonoBehaviour:
   screenShakeMagnitude: 10
   screenShakeRoughness: 10
   dureeDestructionHigh: 3
-  dureeDestructionLow: 0.08
+  dureeDestructionLow: 1.8
+  dureeDestructionLowShrinkVoronoiSphere: 0.5
   lumiereHighVfx: {fileID: 0}
   lumiereLow: {fileID: 0}
+  lumiereLowVoronoiSphere: {fileID: 0}
+  lumiereLowGlowingHeart: {fileID: 0}
+  lumiereLowVfx: {fileID: 0}
   lumiereTrails: {fileID: 0}
   pointLight: {fileID: 0}
   lumiereOnChild: {fileID: 6785525207845377342}
@@ -377,6 +381,11 @@ PrefabInstance:
     - target: {fileID: 96213018192817904, guid: 0258519c08be9604486acc2443a369fd,
         type: 3}
       propertyPath: m_Materials.Array.data[4]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 96213018192817904, guid: 0258519c08be9604486acc2443a369fd,
+        type: 3}
+      propertyPath: m_Materials.Array.data[5]
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 3126390960946105087, guid: 0258519c08be9604486acc2443a369fd,
@@ -569,6 +578,11 @@ PrefabInstance:
     - target: {fileID: 6838490795765231958, guid: e57b5c798c665064f983daa21b9f0578,
         type: 3}
       propertyPath: m_Materials.Array.data[4]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6838490795765231958, guid: e57b5c798c665064f983daa21b9f0578,
+        type: 3}
+      propertyPath: m_Materials.Array.data[5]
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 6843948251528321825, guid: e57b5c798c665064f983daa21b9f0578,
