@@ -35,8 +35,6 @@ public class Lumiere : MonoBehaviour {
     public float dureeDestructionHigh = 3.0f;
     public float dureeDestructionLow = 1.0f;
     public float dureeDestructionLowShrinkVoronoiSphere = 0.08f;
-    public float dureeDestructionLowVanishGlowingHeart = 1.35f;
-    public AnimationCurve destructionLowVanishGlowingHeartCurve;
 
     [Header("Vue")]
     public VisualEffect lumiereHighVfx;
@@ -154,9 +152,9 @@ public class Lumiere : MonoBehaviour {
     }
 
     protected void DestroyAnimationLow() {
-        lumiereLowVfx.SendEvent("Stop");
+        lumiereLowVfx.SendEvent("Capture");
+        lumiereLowGlowingHeart.enabled = false;
         StartCoroutine(CShrinkVoronoiSphereLow());
-        StartCoroutine(CVanishGlowingHeart());
     }
 
     protected IEnumerator CShrinkVoronoiSphereLow() {
@@ -181,16 +179,6 @@ public class Lumiere : MonoBehaviour {
             lumiereLowVoronoiSphere.material.SetVector("_VoronoiTransparencyValues", initialTransparencyValues * 0.0f);
             lumiereLowVoronoiSphere.material.SetFloat("_VoronoiTransparencyProportion", 1.1f);
         }
-    }
-
-    protected IEnumerator CVanishGlowingHeart() {
-        Timer timer = new Timer(dureeDestructionLowVanishGlowingHeart);
-        while(!timer.IsOver()) {
-            float alpha = destructionLowVanishGlowingHeartCurve.Evaluate(timer.GetAvancement());
-            lumiereLowGlowingHeart.material.SetFloat("_Alpha", alpha);
-            yield return null;
-        }
-        lumiereLowGlowingHeart.material.SetFloat("_Alpha", 0);
     }
 
     protected virtual void NotifyEventManagerLumiereCapture() {

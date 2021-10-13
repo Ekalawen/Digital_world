@@ -50,7 +50,6 @@ public class MouseDisplayer : MonoBehaviour {
     void Update() {
         UpdatePosition();
         UpdateState();
-        Debug.Log($"Cursor.visible = {Cursor.visible}");
     }
 
     protected void UpdateState() {

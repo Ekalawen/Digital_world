@@ -77,33 +77,8 @@ MonoBehaviour:
   screenShakeMagnitude: 10
   screenShakeRoughness: 10
   dureeDestructionHigh: 3
-  dureeDestructionLow: 2.7
-  dureeDestructionLowShrinkVoronoiSphere: 0.16
-  dureeDestructionLowVanishGlowingHeart: 1.8
-  destructionLowVanishGlowingHeartCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0.075
-      inSlope: -0.075
-      outSlope: -0.075
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: -0.075
-      outSlope: -0.075
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
+  dureeDestructionLow: 1.8
+  dureeDestructionLowShrinkVoronoiSphere: 0.5
   lumiereHighVfx: {fileID: 8359929456749380389}
   lumiereLow: {fileID: 1470013747212468597}
   lumiereLowVoronoiSphere: {fileID: 9010247463833630643}
@@ -304,7 +279,7 @@ VisualEffect:
       - m_Value: 1.6
         m_Name: GlowSize
         m_Overridden: 1
-      - m_Value: 0.75
+      - m_Value: 1.2
         m_Name: GlowRate
         m_Overridden: 1
       - m_Value: 30
@@ -313,7 +288,7 @@ VisualEffect:
       - m_Value: 0.9
         m_Name: ParticlesSpawnRadius
         m_Overridden: 1
-      - m_Value: 0.75
+      - m_Value: 1.2
         m_Name: FlareSpawnRate
         m_Overridden: 1
       - m_Value: 4.5
@@ -413,6 +388,7 @@ VFXRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
+  - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
