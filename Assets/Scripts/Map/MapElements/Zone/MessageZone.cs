@@ -75,12 +75,12 @@ public class MessageZone : IZone {
 
     protected IEnumerator CDisplayMessageImportant(LocalizedString localizedString, Console.TypeText typeTexte) {
         if (localizedString != null) {
-            AsyncOperationHandle<string> handle = localizedString.GetLocalizedString();
+            AsyncOperationHandle<string> handle = GetHandle(localizedString);
             yield return handle;
             string message = handle.Result;
             gm.console.AjouterMessageImportant(message, typeTexte, dureeImportantMessage, bAfficherInConsole: false);
         } else {
-            Debug.LogWarning($"{gameObject.name} possède un MessageZone avec un localizedMessage null !");
+            Debug.LogWarning($"{gameObject.name} possède un MessageZone avec un localizedMessage null !", gameObject);
         }
     }
 
@@ -90,12 +90,16 @@ public class MessageZone : IZone {
 
     protected IEnumerator CDisplayMessageInConsole(LocalizedString localizedString, Console.TypeText typeTexte) {
         if (localizedString != null) {
-            AsyncOperationHandle<string> handle = localizedString.GetLocalizedString();
+            AsyncOperationHandle<string> handle = GetHandle(localizedString);
             yield return handle;
             string message = handle.Result;
             gm.console.AjouterMessage(message, typeTexte);
         } else {
-            Debug.LogWarning($"{gameObject.name} possède un MessageZone avec un localizedMessage null !");
+            Debug.LogWarning($"{gameObject.name} possède un MessageZone avec un localizedMessage null !", gameObject);
         }
+    }
+
+    protected virtual AsyncOperationHandle<string> GetHandle(LocalizedString localizedString) {
+        return localizedString.GetLocalizedString();
     }
 }
