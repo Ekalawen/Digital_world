@@ -38,6 +38,10 @@ public static class FullscreenGameView {
         }
     }
 
+    public static bool IsFullScreen() {
+        return instance != null;
+    }
+
     public static void StartFullScreen() {
         if(instance != null) {
             return;

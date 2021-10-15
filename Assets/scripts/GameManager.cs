@@ -333,6 +333,7 @@ public class GameManager : MonoBehaviour {
 
     protected void StopFullScreen() {
 #if UNITY_EDITOR
+        openInFullScreen = FullscreenGameView.IsFullScreen();
         FullscreenGameView.StopFullScreen();
 #endif
     }

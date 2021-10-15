@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4967802568132008}
   - component: {fileID: 114265298467235390}
+  - component: {fileID: 4508143745074178349}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -43,6 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98f2874e3d5c44719b2837e799602ec9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  openInFullScreen: 0
   playerPrefab: {fileID: 1319112449682122, guid: c98cc8f4edcf67c46b0ca785448a4456,
     type: 3}
   consolePrefab: {fileID: 1722120177189256, guid: a3470cd3636e74fbc85b1bdaa9d01ad9,
@@ -96,3 +98,20 @@ MonoBehaviour:
   goalManager: {fileID: 0}
   managerFolder: {fileID: 0}
   partieDejaTerminee: 0
+  onInitilizationFinish:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &4508143745074178349
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1924877929756090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2976881806f6e4e4cbfd8a64c80fae07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  key: 102
+  startFullScreen: 0
