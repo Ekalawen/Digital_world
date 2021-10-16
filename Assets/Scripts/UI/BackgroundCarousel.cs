@@ -16,12 +16,13 @@ public class BackgroundCarousel : MonoBehaviour {
     public Image imageArriere;
 
     protected Fluctuator alphaFluctuator;
+    protected Coroutine coroutine;
 
     public void Start() {
         alphaFluctuator = new Fluctuator(this, GetAlphaTransition, SetAlphaTransition);
         imageAvant.sprite = GetFirstSprite();
         SetAlphaTransition(alphaOfAvant: 1.0f);
-        StartCoroutine(CStartSwapping());
+        coroutine = StartCoroutine(CStartSwapping());
     }
 
     protected IEnumerator CStartSwapping() {
@@ -72,5 +73,13 @@ public class BackgroundCarousel : MonoBehaviour {
             return sprites[0];
         }
         return MathTools.ChoseOne(sprites);
+    }
+
+    public void GoToBlack() {
+        if(coroutine != null) {
+            StopCoroutine(coroutine);
+        }
+        imageArriere.color = Color.black;
+        alphaFluctuator.GoTo(0.0f, transitionDuration);
     }
 }

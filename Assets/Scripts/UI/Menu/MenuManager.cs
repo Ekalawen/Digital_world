@@ -19,6 +19,7 @@ public class MenuManager : MonoBehaviour {
     public LoadingMenu loadingMenu;
     public MenuBackgroundBouncing menuBouncingBackground;
     public TexteExplicatif popup;
+    public BackgroundCarousel carousel;
 
     [Header("TutorielTexts")]
     public LocalizedString tutoriel;
@@ -100,9 +101,11 @@ public class MenuManager : MonoBehaviour {
         AsyncOperation loading = SceneManager.LoadSceneAsync("TutorialScene");
         loading.allowSceneActivation = false;
 
+        carousel.GoToBlack();
         loadingMenu.gameObject.SetActive(true);
         loadingMenu.InitializeWithTutoriel(loading);
         gameObject.SetActive(false);
+
     }
 
     public void OnOptionPress() {
