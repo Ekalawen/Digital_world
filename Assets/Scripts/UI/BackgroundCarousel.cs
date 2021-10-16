@@ -27,12 +27,18 @@ public class BackgroundCarousel : MonoBehaviour {
     protected IEnumerator CStartSwapping() {
         while(true) {
             yield return new WaitForSeconds(imageDuration);
-            imageArriere.sprite = GetRandomSprite();
+            imageArriere.sprite = isRandom ? GetRandomSprite() : GetNextSprite();
             SetAlphaOfArriere(1.0f);
             alphaFluctuator.GoTo(0.0f, transitionDuration);
             yield return new WaitForSeconds(transitionDuration);
             SwapImages();
         }
+    }
+
+    protected Sprite GetNextSprite() {
+        int spriteIndice = sprites.IndexOf(imageAvant.sprite);
+        int newIndice = (spriteIndice + 1) % sprites.Count;
+        return sprites[newIndice];
     }
 
     protected Sprite GetRandomSprite() {
