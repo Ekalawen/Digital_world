@@ -26,8 +26,8 @@ public class EyeButton : MonoBehaviour {
         SetEnableOnlyDisplay(true);
         PrefsManager.SetString(PrefsManager.EYE_MODE_KEY, EyeMode.PASSWORD.ToString());
 
-        otherEye.SetActive(true);
-        gameObject.SetActive(false);
+        otherEye.SetActive(mode != EyeMode.STANDARD);
+        gameObject.SetActive(mode == EyeMode.STANDARD);
     }
 
     public void SetStandardMode() {
@@ -37,8 +37,8 @@ public class EyeButton : MonoBehaviour {
         SetEnableOnlyDisplay(false);
         PrefsManager.SetString(PrefsManager.EYE_MODE_KEY, EyeMode.STANDARD.ToString());
 
-        otherEye.SetActive(true);
-        gameObject.SetActive(false);
+        otherEye.SetActive(mode != EyeMode.PASSWORD);
+        gameObject.SetActive(mode == EyeMode.PASSWORD);
     }
 
     protected void SetEnableOnlyDisplay(bool value) {
