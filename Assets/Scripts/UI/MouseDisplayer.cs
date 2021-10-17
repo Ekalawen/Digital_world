@@ -51,7 +51,7 @@ public class MouseDisplayer : MonoBehaviour {
         rotationFluctuator = new Fluctuator(this, GetRotation, SetRotation, useUnscaleTime: true);
     }
 
-    void Update() {
+    void LateUpdate() {
         UpdatePosition();
         UpdateState();
     }
@@ -120,6 +120,7 @@ public class MouseDisplayer : MonoBehaviour {
             screenPoint.z = planeDistance;
             localPoint = cam.ScreenToWorldPoint(screenPoint);
             rectTransform.position = localPoint;
+            //rectTransform.position = Quaternion.Inverse(cam.transform.rotation) * localPoint;
         } else {
             RectTransform screen = transform.parent.GetComponent<RectTransform>();
             Vector2 localPoint2D;
