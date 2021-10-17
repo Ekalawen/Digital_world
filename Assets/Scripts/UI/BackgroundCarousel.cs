@@ -12,17 +12,20 @@ public class BackgroundCarousel : MonoBehaviour {
     public bool isRandom = true;
     [ConditionalHide("isRandom")]
     public bool firstIsAlwaysTheSame = true;
+
     public Image imageAvant;
     public Image imageArriere;
 
     protected Fluctuator alphaFluctuator;
     protected Coroutine coroutine;
+    protected Color filtreColor;
 
     public void Start() {
         alphaFluctuator = new Fluctuator(this, GetAlphaTransition, SetAlphaTransition);
         imageAvant.sprite = GetFirstSprite();
         SetAlphaTransition(alphaOfAvant: 1.0f);
         coroutine = StartCoroutine(CStartSwapping());
+        filtreColor = imageArriere.color;
     }
 
     protected IEnumerator CStartSwapping() {
@@ -81,5 +84,15 @@ public class BackgroundCarousel : MonoBehaviour {
         }
         imageArriere.color = Color.black;
         alphaFluctuator.GoTo(0.0f, transitionDuration);
+    }
+
+    public void AddFiltre() {
+        imageAvant.color = filtreColor;
+        imageArriere.color = filtreColor;
+    }
+
+    public void RemoveFiltre() {
+        imageAvant.color = Color.white;
+        imageArriere.color = Color.white;
     }
 }

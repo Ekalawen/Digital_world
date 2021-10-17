@@ -20,6 +20,7 @@ public class MenuManager : MonoBehaviour {
     public MenuBackgroundBouncing menuBouncingBackground;
     public TexteExplicatif popup;
     public BackgroundCarousel carousel;
+    public GameObject uiSwapperButton;
 
     [Header("TutorielTexts")]
     public LocalizedString tutoriel;
@@ -111,9 +112,14 @@ public class MenuManager : MonoBehaviour {
     public void OnOptionPress() {
 		Debug.Log("On a appuyé sur Option !");
         menuOptions.Run();
+        uiSwapperButton.SetActive(false);
 	}
 
-	public void OnQuitterPress() {
+    public void OnEnable() {
+        uiSwapperButton.SetActive(true);
+    }
+
+    public void OnQuitterPress() {
 		Debug.Log("On a appuyé sur Quitter !");
 		QuitGame();
 	}
