@@ -13,6 +13,8 @@ public class MouseDisplayer : MonoBehaviour {
 
     public Image image;
     public float pixelSize = 48;
+    [ColorUsage(true, true)]
+    public Color clickedColor;
     public float clickedSpeed = 10.0f;
     public float clickedRotation = 15.0f;
     public float clickedRotationDuration = 0.1f;
@@ -23,6 +25,7 @@ public class MouseDisplayer : MonoBehaviour {
 
     protected State state = State.IDLE;
     protected InputManager inputManager;
+    protected Color idleColor;
     protected float idleSpeed;
     protected float planeDistance;
     protected Fluctuator rotationFluctuator;
@@ -42,6 +45,7 @@ public class MouseDisplayer : MonoBehaviour {
         }
         SetSize();
         inputManager = InputManager.Instance;
+        idleColor = image.material.GetColor("_EdgesColor");
         idleSpeed = image.material.GetVector("NoiseSpeed").y;
         planeDistance = GetComponentInParent<Canvas>().planeDistance;
         rotationFluctuator = new Fluctuator(this, GetRotation, SetRotation, useUnscaleTime: true);
@@ -67,6 +71,8 @@ public class MouseDisplayer : MonoBehaviour {
     protected void SetState(State newState) {
         state = newState;
         float speed = newState == State.IDLE ? idleSpeed : clickedSpeed;
+        Color color = newState == State.IDLE ? idleColor : clickedColor;
+        image.material.SetColor("_EdgesColor", color);
         image.material.SetVector("NoiseSpeed", new Vector2(0, speed));
         float angle = newState == State.IDLE ? 0 : clickedRotation;
         rotationFluctuator.GoTo(angle, clickedRotationDuration);
