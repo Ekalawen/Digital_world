@@ -534,6 +534,6 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
     }
 
     protected void HighlightDataHackees(bool state) {
-        donneesHackeesButton.GetComponent<ButtonHighlighter>().enabled = state;
+        donneesHackeesButton.transform.parent.GetComponent<ButtonHighlighter>().enabled = state;
     }
 }
