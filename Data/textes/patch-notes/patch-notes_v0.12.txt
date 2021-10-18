@@ -1,0 +1,98 @@
+@everyone Salut à vous, Runners ! Pour ce nouveau patch-notes, préparez-vous pour une grande nouvelle : Netrunner a maintenant un Trailer !!!
+Trailer : https://www.youtube.com/watch?v=kRtxL359uOo&ab_channel=TheNetrunnerAwaken1ng
+
+#Patch-notes Version 0.12 :
+
+Pour ceux dont le temps est précieux, voici un petit récapitulatif :
+- 2 nouveaux niveaux incroyables, l'un avec une mécanique de changement de gravité, et l'autre avec une mécanique ... mortelle !
+- Une refonte complète du design des Datas : elles sont plus jolies et plus optimisées !
+- Plein de nouvelles fonctionnalités ont été ajoutées à l'interface utilisateur : nouveau fond d'écran, nouveaux boutons raccourcis, un système d'Arcs, nouveau curseur de la souris et un nouveau logo n'en sont que quelques exemples !
+- Plein de petits ajustement d'équilibrage qui visent globalement à rendre l'expérience de jeu plus fluide :) Dont une réduction des cooldowns des pouvoirs après certains niveaux :)
+- Et on a maintenant un nouveau trailer ! Voir le lien ci-dessus !
+Et maintenant, pour les plus motivés, c'est parti pour les détails !
+
+
+# Nouveaux Niveaux
+- Gravity Road : il s'agit d'un Infinite Runner avec un nouveau type de Cube, les Gravity Cubes ! Lorsque vous touchez un Gravity Cube, vous inversez le sens de la gravité de façon à ce que celle-ci soit dirigée vers le Gravity Cube !
+- Deadly Purges : il s'agit d'un niveau Régulier avec une nouvelle mécanique, les Purges() ! Les Purges() sont des murs de Cubes de la Mort qui se déplacent sur tout le niveau au double de votre vitesse. Pour les esquiver, cachez-vous derrière un autre Cube qui arrêtera la Purge() !
+
+# Graphismes
+- Le design de toutes les Datas a été complétement refondu !!! Et il s'agit sans doute de la nouvelle la plus importante de ce patch ! :)
+- Je répète : le design de toutes les Datas a été complétement REFONDU !!! Ce qui résulte en un gain de performances réellement concret ! Pour ceux qui ont déjà joué, je vous conseille donc d'aller dans les options et de passer vos Datas en qualité "Basse" pour en profiter ! :)
+- Les Datas émettent à nouveau de la lumière à courte portée et peuvent donc à nouveau être repérées grâce à leurs réflexions lumineuses !
+- Les matériaux des Sondes sont maintenant opaques. Ce qui permet de meilleures performances et de nouveaux effets visuels lorsqu'elles traversent les Firewalls() !
+- Les trails des DatasAlmostFinales qui se trouvent à l'intérieur d'un Firewall() ont été désactivés pour ne pas intersecter le Firewall() de façon étrange.
+
+# Interface Utilisateur
+## Changements Majeurs
+- On a un nouveau logo ! :) Maintenant les bords du cube sont noirs ! Wahouu !! :D
+- Ajout d'un tout nouvel écran de récompense lors de la réussite d'un Infinite Runner !!!
+- Le Menu Principal a maintenant enfin un fond d'écran décent ! Il s'agit d'un carrousel aléatoire d'une cinquantaine de captures d'écran du jeu ! :)
+- Un bouton de Vue Panoramique a également été ajouté au Menu Principal pour pouvoir entièrement profiter de chaque fond d'écran :)
+- Le fond d'écran matriciel du Sélecteur de niveau change maintenant de couleur en fonction de l'Arc dans lequel le joueur se trouve.
+- Le premier Arc est vert, le second bleu, le troisième rouge, et celui qui est actuellement le dernier est noir et blanc.
+- Le curseur de la souris a maintenant un look personnalisé !
+- Il est maintenant possible d'accéder à la Doc() en jeu depuis le Menu de Pause.
+- Un nouveau bouton permet de maximiser et de minimiser les Popups pour les avoir en plein écran ! :)
+- Les Conseils sont maintenant affichés en bas de l'écran après une défaite.
+- Ajout de nouveaux boutons pour passer de Datas Hackées() aux autres Datas Hackées() menant ou provenant du même niveau.
+- L'effet de Bloom dans l'Interface Utilisateur a été réduit de moitié.
+- Le jeu est maintenant en français par défaut.
+
+## Changements Mineurs
+- Les Conseils sont maintenant affichés cycliquement, et donc par ordre d'importance, et non plus dans un ordre aléatoire.
+- Des Conseils sont maintenant affichés en cours de jeu pour les niveaux FirstSonde et Analyze.
+- Ajout de l'icône du niveau du FirstBoss.
+- Il est maintenant possible d'annuler l'animation de déverrouillage d'un Path() en appuyant sur n'importe quelle touche.
+- Le bouton de fin de partie des Infinite Runners affiche maintenant correctement "Continuer" ou "Recommencer" en fonction de votre victoire ou de votre défaite.
+- Ajout d'un TutorialTooltip pour conseiller d'utiliser la Doc() à partir du niveau 3.
+- Ajout d'un TutorialTooltip pour expliquer qu'il faut débloquer tous les Paths() menant à un niveau pour le déverrouiller.
+- Les messages d'altitude critique dans le Terminal ne floods plus le Terminal et s'adaptent maintenant quelle que soit la direction de la gravité.
+- Les noms des Dashs ont été revus pour que la puissance du Dash soit croissante en son nombre-suffixe. Par exemple, le Dash333 est plus puissant que le Dash150, lui-même plus puissant que le Dash75 qui est aussi plus puissant que le Dash15 ! :)
+- Les niveaux et les cadenas bouncent à nouveau lorsque l'on vient de les débloquer.
+- Un certain nombre de fautes d'orthographe ont été corrigées.
+- Les touches ZQSD/SHIFT/ESPACE ont été remappés différement pour se déplacer dans le Sélecteur de niveaux.
+- Les noms des niveaux dans les Tooltips sont maintenant mis en évidence avec une autre couleur.
+- Les Tooltips sont maintenant automatiquement cachés lorsque l'on clique sur un bouton.
+- Les boutons centraux des FastUI ont maintenant un son lorsque on clique ou passe la souris dessus.
+- Il est maintenant possible de fermer une Popup en appuyant sur ESCAPE/ENTREE/ESPACE.
+- Correction d'un bug où le bouton permettant de cacher/afficher le mot de passe ne fonctionnait pas la première fois que l'on cliquait dessus.
+- Les Astuces indiquant le nombre de caractères à ajouter/supprimer/remplacer lors d'une erreur de mot de passe ont été clarifiés :)
+- Lorsque l'on finit un niveau, il est maintenant affiché "HACK COMPLÉTÉ !!!" au lieu de "ON A RÉUSSI !!!". :)
+
+# Equilibrage
+- La quantité de Datas nécessaires pour débloquer chaque Palier des Datas Hackées() a été revu pour suivre une courbe linéaire plutôt qu'exponentielle. Il n'y a pas de quoi ;)
+- La totalité des énigmes des Datas Hackées() a été revue pour être simplifiée au maximum et éviter autant que possible les tâches répétitives. Netrunner reste un jeu de parkour avant tout :)
+- Un bloc possédant des BouncyCubes dans le niveau BrisableRoad a été revu pour pouvoir être toujours faisable même si raté à la première tentative.
+- Les Datas du tutoriel donnent maintenant +5 secondes au lieu de +10 secondes. Mais comme on a temps infini ... ce qui ne change pas grand chose, je vous l'accorde :)
+- Une Data du tutoriel a été déplacée pour être sûr que personne ne passe à côté.
+- La durée d'activation des Firewalls() des DataSondes a été réduite de 7 secondes à 6 secondes.
+- Les Datas du niveau Harmonium donnent maintenant +0.85 secondes au lieu de +0.80 secondes. Et ça fait une grosse différence ;)
+- Le niveau Harmonium possède maintenant plusieurs couleurs pour faciliter le repérage dans l'espace du joueur.
+- Les SondesSatellites du FirstBoss sont maintenant répartis équitablement sur chacune de ses trois orbites.
+- Le Générateur de Sondes du niveau FirstBoss génère maintenant les Sondes de manière plus espacés.
+- L'ordre de création des Générateurs du niveau FirstBoss a été changé pour mettre le Générateur de CubesBrisables en dernier.
+- Lors de l'acquisition du Dash333 au niveau FirstBoss, un message nous indique également le fonctionnement de ses 3 charges de 3 secondes.
+- Dans le niveau FirewallDance, les Firewalls() ne sont plus collés aux bords du niveau pour éviter de créer des trous involontaires dans le niveau.
+- En revanche, toujours dans le niveau FirewallDance, lors de la Destruction de la Matrice, tous les Firewalls() seront collés aux bords du niveau pour y créer volontairement des trous !
+- Ajout d'une Data dans le niveau CompressionMortelle et mise à jour des textes affichés à chaque Data pour expliquer plus clairement le fonctionnement de la Destruction de la Matrice !
+- Ajout de Conseils pour expliquer que les Sondes font perdre du temps si on les touche, et que les Datas en font gagner quand on les capture.
+
+# Gameplay
+- Les Data Furtives arrêtent maintenant de bouger lorsqu'on les capture.
+- De nouveaux CheatCodes ont été ajoutés : Mode d'Invincibilité et Mode Pouvoirs Infinis.
+- Correction d'un bug qui nous permettait de slider sur les Cubes de la Mort si on avait commencé à slider sur un autre Cube auparavant.
+- Les Infinites Runners seront maintenant automatiquement recommencés tant que l'on n'a pas franchi le premier Palier.
+- Le cooldown du Dash15 passe de 15s à 7.5s à partir du niveau LearnPathfinder et se renommera en Dash75 ! :)
+- Les ennemis ne peuvent plus apparaître sur une Data et réciproquement.
+
+# Refonte du Pathfinder()
+- Celui-ci permet maintenant d'également détecter les Firewalls().
+- Le chemin à un Firewall() est bleu pour le différencier du jaune pour les Datas, et du violet pour les objets (comme le Reset Temporel).
+- Lors de l'utilisation du Pathfinder(), un message s'affiche pour nous indiquer le nombre restant de Datas, de Firewalls() et d'objets.
+- Le cooldown de Pathfinder() passe maintenant à 5 secondes à partir du niveau du FirstBoss et se renommera en Pathfinder5() ! :)
+- Le nombre de Datas restantes prend maintenant en compte les Datas pas encore en jeu, tel que les Firewalls() ou les DataSondes.
+
+# Son
+- Les Data Finales font maintenant un son lorsqu'elles sont capturées.
+
