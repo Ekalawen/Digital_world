@@ -17,9 +17,19 @@ public class ItemManager : MonoBehaviour {
     public virtual void Initialize() {
         gm = GameManager.Instance;
         itemsFolder = new GameObject("Items");
-        items = new List<Item>();
 
+        GatherAlreadyExistingItems();
         GenerateItems();
+    }
+
+    protected void GatherAlreadyExistingItems() {
+        Item[] newItems = FindObjectsOfType<Item>();
+        items = new List<Item>();
+        foreach (Item itemPrefab in newItems) {
+            Item newItem = Instantiate(itemPrefab.gameObject, itemPrefab.transform.position, itemPrefab.transform.rotation, itemPrefab.transform.parent).GetComponent<Item>();
+            Register(newItem, itemPrefab.gameObject);
+            Destroy(itemPrefab.gameObject);
+        }
     }
 
     protected void GenerateItems() {
@@ -37,13 +47,11 @@ public class ItemManager : MonoBehaviour {
         return GenerateItemFromPrefab(itemPrefab, pos);
     }
 
-    public Item GenerateItemFromPrefab(GameObject itemPrefab, Vector3 pos) {
-        Item item = Instantiate(itemPrefab, pos, Quaternion.identity, itemsFolder.transform).GetComponent<Item>();
+    public Item GenerateItemFromPrefab(GameObject itemPrefab, Vector3 pos, Transform parent = null) {
+        Transform parentFolder = parent ?? itemsFolder.transform;
+        Item item = Instantiate(itemPrefab, pos, Quaternion.identity, parentFolder).GetComponent<Item>();
         item.SetPrefab(itemPrefab);
-        items.Add(item);
-
-        // Ca pour le moment c'est en standby ! :)
-        gm.historyManager.AddItemHistory(item, itemPrefab);
+        Register(item, itemPrefab);
 
         return item;
     }
@@ -107,5 +115,12 @@ public class ItemManager : MonoBehaviour {
 
     public bool RemoveOrbTrigger(OrbTrigger orbTrigger) {
         return orbTriggers.Remove(orbTrigger);
+    }
+
+    public void Register(Item item, GameObject itemPrefab) {
+        if(!items.Contains(item)) {
+            items.Add(item);
+            gm.historyManager.AddItemHistory(item, itemPrefab);
+        }
     }
 }

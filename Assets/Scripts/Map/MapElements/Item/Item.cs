@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public abstract class Item : MonoBehaviour {
 
@@ -40,6 +41,7 @@ public abstract class Item : MonoBehaviour {
     public virtual void Disappear() {
         gm.itemManager.RemoveItem(this);
         if (shouldRepop) {
+            Assert.IsNotNull(itemPrefab, "Can't instantiate a RepopItem if it didn't store its itemPrefab ! :)");
             gm.itemManager.PopItem(itemPrefab);
         }
         Destroy();
