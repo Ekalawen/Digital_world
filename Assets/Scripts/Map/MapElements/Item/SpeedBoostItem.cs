@@ -1,10 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.VFX;
+using System;
 
 public class SpeedBoostItem : Item {
+
+    [Header("Speed Boost")]
+    public SpeedMultiplier speedMultiplier;
+
     public override void OnTrigger(Collider hit) {
-        Debug.Log($"Boost de vitesse on !");
+        gm.player.speedMultiplierController.AddMultiplier(speedMultiplier);
     }
 }

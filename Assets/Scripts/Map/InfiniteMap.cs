@@ -435,7 +435,6 @@ public class InfiniteMap : MapManager {
 
     protected void RegisterPassedBlocksToHistory(int indiceCurrentAllBlocks, int nbBlocksAdded) {
         for(int i = Mathf.Max(indiceCurrentAllBlocks, nbFirstBlocks); i < indiceCurrentAllBlocks + nbBlocksAdded; i++) {
-            Debug.Log($"i = {i} blocks.Count = {allBlocks.Count}");
             gm.historyManager.AddBlockPassed(allBlocks[i]);
         }
     }

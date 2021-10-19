@@ -511,8 +511,13 @@ public class Player : Character {
                 }
             }
         }
-        move *= vitesseDeplacement;
+        move *= GetHorizontalVitesse();
         return move;
+    }
+
+    public float GetHorizontalVitesse() {
+        Debug.Log($"SpeedMultiplier = {GetSpeedMultiplier()}");
+        return vitesseDeplacement * GetSpeedMultiplier();
     }
 
     protected Vector3 ApplyGravity(Vector3 move) {
