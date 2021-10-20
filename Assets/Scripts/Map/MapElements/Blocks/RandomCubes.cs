@@ -22,9 +22,10 @@ public class RandomCubes : MonoBehaviour {
         List<RandomCubes> groups = new List<RandomCubes>();
         foreach (Transform child in transform) {
             RandomCubes group = child.gameObject.GetComponent<RandomCubes>();
-            group.gameObject.SetActive(true);
-            if (group != null)
+            if (group != null) {
+                group.gameObject.SetActive(true);
                 groups.Add(group);
+            }
         }
         return groups;
     }
