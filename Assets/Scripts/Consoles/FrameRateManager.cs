@@ -17,21 +17,27 @@ public class FrameRateManager : MonoBehaviour {
     protected List<float> deltaTimeList;
     protected Timer frameRateTimer;
 
+    protected List<float> speedCoefs;
+
     public void Initialize() {
         deltaTimeList = new List<float>();
+        speedCoefs = new List<float>();
         frameRateTimer = new Timer(0.1f, setOver: true);
         showFrameRate = PrefsManager.GetBool(PrefsManager.FPS_COUNTER_KEY, MenuOptions.defaultFpsCounter);
         SetVisibility(showFrameRate);
     }
 
     public void Tick() {
+        //PrintMeanSpeed();
         if (!showFrameRate)
             return;
-        if (frameRateTimer.IsOver()) {
+        if (frameRateTimer.IsOver())
+        {
             frameRateTimer.Reset();
             float deltaTime = Time.deltaTime;
             deltaTimeList.Add(deltaTime);
-            if (deltaTimeList.Count > 10) {
+            if (deltaTimeList.Count > 10)
+            {
                 deltaTimeList.RemoveAt(0);
             }
             float meanDeltaTime = deltaTimeList.Average();
@@ -39,6 +45,12 @@ public class FrameRateManager : MonoBehaviour {
             int ms = Mathf.RoundToInt(meanDeltaTime * 1000.0f);
             frameRateText.text = $"FPS : {fps} ({ms}ms)";
         }
+    }
+
+    protected void PrintMeanSpeed() {
+        speedCoefs.Add(GameManager.Instance.player.GetSpeedMultiplier());
+        float meanCoef = speedCoefs.Average();
+        Debug.Log($"Vitesse moyenne = {meanCoef}");
     }
 
     public void SetToAccordingConsolePosition(bool isConsoleDisplayed) {
