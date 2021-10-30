@@ -20,6 +20,9 @@ public abstract class Item : MonoBehaviour {
 
     protected virtual void Start() {
         gm = GameManager.Instance;
+        if (gm.timerManager.HasGameStarted()) {
+            gm.itemManager.Register(this, gameObject);
+        }
     }
 
 	protected virtual void OnTriggerEnter(Collider hit) {
@@ -31,6 +34,7 @@ public abstract class Item : MonoBehaviour {
             Disappear();
 		}
 	}
+
 
     protected void ScreenShakeOnCapture() {
         CameraShaker.Instance.ShakeOnce(screenShakeMagnitude, screenShakeRoughness, 0.1f, 0.1f);

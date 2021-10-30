@@ -1107,6 +1107,10 @@ public class MapManager : MonoBehaviour {
         return (float)(tailleMap.x - 1) * (tailleMap.y - 1) * (tailleMap.z - 1);
     }
 
+    public virtual float GetVolumeForPath() {
+        return GetVolume();
+    }
+
     public bool IsLumiereAt(Vector3 pos) {
         foreach(Lumiere lumiere in lumieres) {
             if (lumiere.transform.position == pos)
@@ -1163,7 +1167,7 @@ public class MapManager : MonoBehaviour {
         List<Node> opened = new List<Node>();
         opened.Add(new Node(start, 0, Vector3.Distance(start, end), null));
 
-        while(opened.Count > 0 && opened.Count + closed.Count <= GetVolume()) {
+        while(opened.Count > 0 && opened.Count + closed.Count <= GetVolumeForPath()) {
             Node current = opened.Last();
             opened.Remove(current);
 
@@ -1188,7 +1192,7 @@ public class MapManager : MonoBehaviour {
             closed.Add(current);
         }
 
-        Debug.Log("Path failed !!!!");
+        Debug.LogWarning("Path failed !!!!");
         return null;
     }
 

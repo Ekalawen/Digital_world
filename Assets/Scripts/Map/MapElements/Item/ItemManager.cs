@@ -57,14 +57,12 @@ public class ItemManager : MonoBehaviour {
     }
 
     public List<Item> GetItems() {
+        items = items.FindAll(i => i != null);
         return items;
     }
 
     public List<Vector3> GetItemsPositions() {
-        List<Vector3> positions = new List<Vector3>();
-        foreach (Item item in items)
-            positions.Add(item.transform.position);
-        return positions;
+        return GetItems().Select(i => i.transform.position).ToList();
     }
 
     public List<Item> GetItemsType(Type itemType) {

@@ -442,4 +442,8 @@ public class InfiniteMap : MapManager {
     public void RememberLastKillingBlock() {
         RegisterPassedBlocksToHistory(indiceCurrentAllBlocks, 1);
     }
+
+    public override float GetVolumeForPath() {
+        return 1000; // The limit where we will stop Path research :)
+    }
 }

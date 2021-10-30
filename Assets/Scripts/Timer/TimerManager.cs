@@ -235,7 +235,8 @@ public class TimerManager : MonoBehaviour {
     }
 
     public bool HasGameStarted() {
-        return gameTimer.GetElapsedTime() >= 0.1f;
+        //return gameTimer.GetElapsedTime() >= 0.1f; // Peut-être qu'il faudra revenir à cette version si jamais on a certains bugs d'initialization ^^
+        return gm.IsInitializationOver();
     }
 
     protected void ScreenShakeOnRemainingTime() {
