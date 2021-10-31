@@ -11,10 +11,9 @@ GameObject:
   - component: {fileID: 4901542301328802}
   - component: {fileID: 33170925705615058}
   - component: {fileID: 23523471878242714}
-  - component: {fileID: 8863728126743597988}
   - component: {fileID: 114528774782627616}
   - component: {fileID: -641334895464681557}
-  - component: {fileID: 143727705574006242}
+  - component: {fileID: 8160498098999404822}
   m_Layer: 0
   m_Name: SoulRobber
   m_TagString: Ennemi
@@ -31,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 1252573298759596}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -86,20 +85,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &8863728126743597988
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1252573298759596}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -6010557986296618396, guid: e8cd3eaa5006b1141b9891561b0d4e58, type: 3}
 --- !u!114 &114528774782627616
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -144,7 +129,7 @@ MonoBehaviour:
   distanceDeDetection: 10
   canAlwaysSeePlayer: 0
   spikesTimeOnDetectPlayer: 1
---- !u!143 &143727705574006242
+--- !u!143 &8160498098999404822
 CharacterController:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -155,10 +140,10 @@ CharacterController:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Height: 1
-  m_Radius: 0.5000002
+  m_Height: 4
+  m_Radius: 0.75
   m_SlopeLimit: 45
   m_StepOffset: 0.3
-  m_SkinWidth: 0.08
+  m_SkinWidth: 0.01
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
