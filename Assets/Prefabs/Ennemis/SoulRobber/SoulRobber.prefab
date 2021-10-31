@@ -125,6 +125,7 @@ MonoBehaviour:
   screenShakeDecreaseTime: 0.2
   rayPrefab: {fileID: 8725588450735506554, guid: 42bbcf64b34827d40a92122e225ad43d,
     type: 3}
+  durationToFullRay: 6
   speedDecreaseMultiplier:
     speedAdded: 1
     duration: 3
@@ -143,6 +144,8 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     affectHeight: 0
+  rayThicknessRange: {x: 0.1, y: 0.5}
+  rayDistorsionAmountRange: {x: 0.1, y: 0.5}
 --- !u!114 &6292381693725292560
 MonoBehaviour:
   m_ObjectHideFlags: 0

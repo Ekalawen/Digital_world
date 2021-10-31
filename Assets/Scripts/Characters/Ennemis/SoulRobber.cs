@@ -7,11 +7,17 @@ using static SoulRobberController;
 
 public class SoulRobber : Ennemi {
 
+    public static string VFX_RAY_THICKNESS = "Thickness";
+    public static string VFX_RAY_DISTORSION_AMOUNT = "DistorsionAmount";
+
     [Header("Ray")]
     public GameObject rayPrefab;
+    public float durationToFullRay = 6.0f; // Not really "full" ray, but take 100% of speed of the player (can go higher if the player has speed boosts ! :))
     public SpeedMultiplier speedDecreaseMultiplier;
 
     [Header("Ray Charging Animation")]
+    public Vector2 rayThicknessRange;
+    public Vector2 rayDistorsionAmountRange;
 
     [Header("Detection Animation")]
 
@@ -53,12 +59,18 @@ public class SoulRobber : Ennemi {
     protected IEnumerator CFirering() {
         ray = Instantiate(rayPrefab, parent: transform).GetComponent<Lightning>();
         ray.Initialize(transform.position, GetRayTargetPosition());
-        Timer timer = new Timer();
+        Timer timer = new Timer(durationToFullRay);
 
         while(true) {
             ray.SetPosition(transform.position, GetRayTargetPosition(), parentSize: transform.localScale.x);
+            UpdateRaySize(ray, timer.GetAvancement());
             yield return null;
         }
+    }
+
+    protected void UpdateRaySize(Lightning ray, float avancement) {
+        ray.vfx.SetFloat(VFX_RAY_THICKNESS, MathCurves.Linear(rayThicknessRange.x, rayThicknessRange.y, avancement));
+        ray.vfx.SetFloat(VFX_RAY_DISTORSION_AMOUNT, MathCurves.Linear(rayDistorsionAmountRange.x, rayDistorsionAmountRange.y, avancement));
     }
 
     protected Vector3 GetRayTargetPosition() {
