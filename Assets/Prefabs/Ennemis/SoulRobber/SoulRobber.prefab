@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 4901542301328802}
   - component: {fileID: 33170925705615058}
   - component: {fileID: 23523471878242714}
-  - component: {fileID: 114528774782627616}
-  - component: {fileID: -641334895464681557}
   - component: {fileID: 8160498098999404822}
+  - component: {fileID: 371482817792124335}
+  - component: {fileID: 6292381693725292560}
   m_Layer: 0
   m_Name: SoulRobber
   m_TagString: Ennemi
@@ -85,50 +85,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &114528774782627616
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1252573298759596}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1f243d8073c58410c950182cd53bc568, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  controller: {fileID: 0}
-  speedMultiplierController: {fileID: 0}
-  timeMalusOnHit: 5
-  timeBetweenTwoHits: 0.2
-  timeBetweenTwoHitsDamages: 1
-  screenShakeMagnitude: 5
-  screenShakeRoughness: 10
-  screenShakeDecreaseTime: 0.2
-  distancePoussee: 10
-  tempsPoussee: 0.5
-  spikesTimeOnHit: 0.5
-  pousseeStraightTreshold: 2
-  wavesSizeWaiting: 0
-  wavesSizeActive: 0.2
-  maxSpikesSize: 1
---- !u!114 &-641334895464681557
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1252573298759596}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b336ac2ac8c08194eab86d7d1f28cfda, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  vitesse: 0.3
-  tempsInactifDebutJeu: 3
-  distanceDeDetection: 10
-  canAlwaysSeePlayer: 0
-  spikesTimeOnDetectPlayer: 1
 --- !u!143 &8160498098999404822
 CharacterController:
   m_ObjectHideFlags: 0
@@ -147,3 +103,89 @@ CharacterController:
   m_SkinWidth: 0.01
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &371482817792124335
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1252573298759596}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa59695cd378d1541bf5126acc1cb8fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controller: {fileID: 0}
+  speedMultiplierController: {fileID: 0}
+  timeMalusOnHit: 5
+  timeBetweenTwoHits: 0.2
+  timeBetweenTwoHitsDamages: 1
+  screenShakeMagnitude: 5
+  screenShakeRoughness: 10
+  screenShakeDecreaseTime: 0.2
+  rayPrefab: {fileID: 8725588450735506554, guid: 42bbcf64b34827d40a92122e225ad43d,
+    type: 3}
+  speedDecreaseMultiplier:
+    speedAdded: 1
+    duration: 3
+    inDuration: 0.3
+    outDuration: 0.5
+    inCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    outCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    affectHeight: 0
+--- !u!114 &6292381693725292560
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1252573298759596}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4929a36941ef0e34eb24ab49d35d0c8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vitesse: 1
+  tempsInactifDebutJeu: 3
+  distanceDeDetection: 10
+  canAlwaysSeePlayer: 0
+  startFireringEvents:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 371482817792124335}
+        m_TargetAssemblyTypeName: SoulRobber, Assembly-CSharp
+        m_MethodName: StartFirering
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  stopFireringEvents:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 371482817792124335}
+        m_TargetAssemblyTypeName: SoulRobber, Assembly-CSharp
+        m_MethodName: StopFirering
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2

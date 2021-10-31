@@ -8,13 +8,13 @@ public abstract class Ennemi : Character {
 
     [Header("Hit times")]
     public float timeMalusOnHit = 5.0f; // Le temps que perd le joueur lorsqu'il se fait touché !
-    public float timeBetweenTwoHits = 1.0f;
+    public float timeBetweenTwoHits = 0.2f;
     public float timeBetweenTwoHitsDamages = 1.0f;
 
     [Header("Screen Shake")]
     public float screenShakeMagnitude = 5.0f;
-    public float screenShakeRoughness = 15.0f;
-    public float screenShakeDecreaseTime = 1.0f;
+    public float screenShakeRoughness = 10.0f;
+    public float screenShakeDecreaseTime = 0.2f;
 
 	protected GameManager gm;
 	protected Player player;
@@ -47,12 +47,15 @@ public abstract class Ennemi : Character {
 
     protected virtual void HitPlayer(bool useCustomTimeMalus = false, float customTimeMalus = 0.0f) {
         HitContinuousPlayerSpecific();
-        if(timerHit.IsOver()) {
+        if(timerHit.IsOver())
+        {
             timerHit.Reset();
 
             HitPlayerSpecific();
+            TriggerRedVignette();
             player.OnHit();
-            if (timerHitDamages.IsOver()) {
+            if (timerHitDamages.IsOver())
+            {
                 timerHitDamages.Reset();
                 float timeMalusToUse = useCustomTimeMalus ? customTimeMalus : timeMalusOnHit;
                 gm.timerManager.RemoveTime(timeMalusToUse, GetDeathReason());
@@ -61,6 +64,10 @@ public abstract class Ennemi : Character {
             PlayHitSound();
             ShakeScreen();
         }
+    }
+
+    protected void TriggerRedVignette() {
+        gm.postProcessManager.UpdateHitEffect();
     }
 
     public List<Vector3> GetAllOccupiedRoundedPositions() {

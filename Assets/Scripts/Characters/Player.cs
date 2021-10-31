@@ -28,6 +28,7 @@ public class Player : Character {
     [Header("Pouvoirs")]
     public GameObject pouvoirAPrefab; // Le pouvoir de la touche A (souvent la détection)
     public GameObject pouvoirEPrefab; // Le pouvoir de la touche E (souvent la localisation)
+
     public GameObject pouvoirLeftBoutonPrefab; // Le pouvoir du bouton gauche de la souris
     public GameObject pouvoirRightBoutonPrefab; // Le pouvoir du bouton droit de la souris
 

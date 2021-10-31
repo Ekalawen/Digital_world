@@ -51,7 +51,7 @@ public class TracerController : EnnemiController {
     }
 
     protected override void UpdateSpecific () {
-        SetCurrentEtat();
+        SetCurrentState();
 
         switch(state) {
             case TracerState.WAITING:
@@ -102,7 +102,7 @@ public class TracerController : EnnemiController {
         lastPosition = transform.position;
     }
 
-    protected void SetCurrentEtat() {
+    protected void SetCurrentState() {
         if(state == TracerState.WAITING) {
             if (IsPlayerVisible()) {
                 RushToPlayer();

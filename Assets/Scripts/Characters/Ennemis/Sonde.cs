@@ -60,9 +60,6 @@ public class Sonde : Ennemi {
 
     protected override void HitPlayerSpecific() {
         ActivateSpikes(spikesTimeOnHit);
-
-        // Effet de vignette rouge
-        gm.postProcessManager.UpdateHitEffect();
     }
 
     protected override void HitContinuousPlayerSpecific() {

@@ -5,7 +5,7 @@ using UnityEngine;
 public abstract class IController : MonoBehaviour {
 
     public float vitesse = 5.0f;
-    public float tempsInactifDebutJeu = 0.0f; // Le temps pendant lequel la sonde n'agira pas en début de partie
+    public float tempsInactifDebutJeu = 3.0f; // Le temps pendant lequel la sonde n'agira pas en début de partie
 
     protected GameManager gm;
 	protected CharacterController controller;

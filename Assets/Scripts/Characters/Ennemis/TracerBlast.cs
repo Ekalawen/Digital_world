@@ -13,8 +13,6 @@ public class TracerBlast : Ennemi {
     public static string SHADER_COLOR_CHANGE_COLOR_SOURCE = "_ColorChangeColorSource";
     public static string SHADER_COLOR_CANCELLED = "_ColorCancelled";
 
-    public enum TracerState { WAITING, RUSHING, EMITING };
-
     [Header("Blast")]
     public float blastTimeMalus = 10.0f;
     public float blastLoadDuree = 2.0f;
