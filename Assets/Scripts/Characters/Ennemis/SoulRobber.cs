@@ -16,6 +16,7 @@ public class SoulRobber : Ennemi {
     public SpeedMultiplier speedDecreaseMultiplier;
 
     [Header("Ray Charging Animation")]
+    public float timeAtMaxRayAnimation = 3.0f;
     public Vector2 rayThicknessRange;
     public Vector2 rayDistorsionAmountRange;
 
@@ -67,8 +68,10 @@ public class SoulRobber : Ennemi {
 
         while(true) {
             ray.SetPosition(transform.position, GetRayTargetPosition(), parentSize: transform.localScale.x);
-            currentMultiplier.speedAdded = - timer.GetAvancement();
-            UpdateRaySize(ray, timer.GetAvancement());
+            if (timer.GetAvancement() > 1) {
+                currentMultiplier.speedAdded = -timer.GetAvancement();
+            }
+            UpdateRaySize(ray, timer.GetElapsedTime() / timeAtMaxRayAnimation);
             yield return null;
         }
     }
