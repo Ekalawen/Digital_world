@@ -215,6 +215,14 @@ public static class MathTools
         //// Doit retourner TRUE;
     }
 
+    // The capsule is vertical !
+    public static bool CapsuleSphere(Vector3 capsuleCenter, float capsuleRadius, float capsuleHeight, Vector3 sphereCenter, float sphereRadius) {
+        float topOfCylinder = capsuleCenter.y + (capsuleHeight / 2 - capsuleRadius);
+        float bottomOfCylinder = capsuleCenter.y - (capsuleHeight / 2 - capsuleRadius);
+        Vector3 closestPointOfCylinder = new Vector3(capsuleCenter.x, Mathf.Clamp(sphereCenter.y, bottomOfCylinder, topOfCylinder), capsuleCenter.z);
+        return Vector3.Distance(closestPointOfCylinder, sphereCenter) <= capsuleRadius + sphereRadius;
+    }
+
     public static List<Vector3> GetAllNormals(Transform t) {
         return new List<Vector3>() {
             t.forward,

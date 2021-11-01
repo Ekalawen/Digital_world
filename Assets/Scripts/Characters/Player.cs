@@ -517,7 +517,7 @@ public class Player : Character {
     }
 
     public float GetHorizontalVitesse() {
-        Debug.Log($"SpeedMultiplier = {GetSpeedMultiplier()}");
+        //Debug.Log($"SpeedMultiplier = {GetSpeedMultiplier()}");
         return vitesseDeplacement * GetSpeedMultiplier();
     }
 

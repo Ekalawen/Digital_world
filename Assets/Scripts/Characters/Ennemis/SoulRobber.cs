@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.VFX;
 using static SoulRobberController;
@@ -22,6 +23,10 @@ public class SoulRobber : Ennemi {
 
     [Header("Detection Animation")]
 
+    [Header("Teleport")]
+    public float durationBeforeTeleportAway = 0.3f;
+    public int nbPositionsTestForTeleportAway = 100;
+
     protected SoulRobberController soulRobberController;
     protected EventManager.DeathReason currentDeathReason; // TO INIT !!
     protected Coroutine fireringCoroutine;
@@ -38,6 +43,17 @@ public class SoulRobber : Ennemi {
     }
 
     protected void TestForPlayerCollision() {
+        if(MathTools.CapsuleSphere(transform.position, GetRadius(), GetHeight(), player.transform.position, player.GetSizeRadius())) {
+            TeleportAway();
+        }
+    }
+
+    public float GetRadius() {
+        return controller.radius * transform.localScale.x;
+    }
+
+    public float GetHeight() {
+        return controller.height * transform.localScale.x;
     }
 
     protected void HitPlayerCustom(EventManager.DeathReason deathReason, float timeMalus) {
@@ -110,5 +126,42 @@ public class SoulRobber : Ennemi {
     }
 
     protected override void HitContinuousPlayerSpecific() {
+    }
+
+    public Vector3 TeleportAway() {
+        Vector3 bestPosition = GetBestPositionToTeleportAway();
+        transform.position = bestPosition;
+        return bestPosition;
+    }
+
+    public Vector3 GetBestPositionToTeleportAway() {
+        List<Tuple<Vector3, float>> positionsAndScores = new List<Tuple<Vector3, float>>();
+        Vector3 up = gm.gravityManager.Up();
+        float maxRangeSqr = soulRobberController.distanceDeDetection * soulRobberController.distanceDeDetection;
+        for (int i = 0; i < nbPositionsTestForTeleportAway; i++) {
+            Vector3 position = gm.map.GetFreeRoundedLocation();
+            float score;
+            if(gm.map.IsCubeAt(position + up)) {
+                score = 0;
+            } else {
+                position += up * 0.5f;
+                float sqrDistance = Vector3.SqrMagnitude(player.transform.position - transform.position);
+                score = sqrDistance;
+                if(sqrDistance < maxRangeSqr) {
+                    score /= 10;
+                }
+                if (!CanSeePlayerFrom(position)) {
+                    score /= 10;
+                }
+            }
+            positionsAndScores.Add(new Tuple<Vector3, float>(position, score));
+        }
+        return positionsAndScores.OrderBy(t => t.Item2).Last().Item1;
+    }
+
+    public bool CanSeePlayerFrom(Vector3 position) {
+        RaycastHit hit;
+        Ray ray = new Ray (position, player.transform.position - position);
+        return Physics.Raycast(ray, out hit, player.camera.farClipPlane) && hit.collider.name == "Joueur";
     }
 }

@@ -162,8 +162,11 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     affectHeight: 0
+  timeAtMaxRayAnimation: 3
   rayThicknessRange: {x: 0.1, y: 0.5}
   rayDistorsionAmountRange: {x: 0.1, y: 0.5}
+  durationBeforeTeleportAway: 0.3
+  nbPositionsTestForTeleportAway: 100
 --- !u!114 &6292381693725292560
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -176,7 +179,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4929a36941ef0e34eb24ab49d35d0c8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vitesse: 1
+  vitesse: 0
   tempsInactifDebutJeu: 3
   distanceDeDetection: 10
   canAlwaysSeePlayer: 0

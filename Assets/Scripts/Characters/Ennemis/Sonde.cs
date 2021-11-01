@@ -51,7 +51,7 @@ public class Sonde : Ennemi {
     public override void UpdateSpecific () {
 	}
 
-	// On vérifie si on a touché le joueur !!!
+    // Only works if the Sonde is moving !
 	void OnControllerColliderHit(ControllerColliderHit hit) {
 		if (hit.collider.name == "Joueur") {
             HitPlayer();

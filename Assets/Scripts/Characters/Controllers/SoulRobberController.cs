@@ -28,6 +28,8 @@ public class SoulRobberController : EnnemiController {
     protected override void UpdateSpecific () {
         SetCurrentState();
 
+        //MoveToTarget(player.transform.position);
+
         switch(state) {
             case SoulRobberState.WANDERING:
                 break;
