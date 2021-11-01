@@ -74,6 +74,11 @@ public class PostProcessManager : MonoBehaviour {
     public float lensDistorsionMaxValue = 0.4f;
     public float chromaticAberrationMaxValue = 0.2f;
 
+    [Header("SoulRobber Post Process")]
+    public Volume soulRobberVolume;
+    public float timeToBlackAndWhite = 0.5f;
+    public float timeFromBlackAndWhite = 0.5f;
+
     protected Coroutine gripCoroutine = null;
     protected Coroutine hitCoroutine = null;
     protected Coroutine wallPostProcessCoroutine = null;
@@ -90,6 +95,7 @@ public class PostProcessManager : MonoBehaviour {
     protected Vector2 screenSizeAtVfxDistance;
     protected Fluctuator wallLensDistorsionFluctuator;
     protected Fluctuator wallChromaticAberrationFluctuator;
+    protected Fluctuator soulRobberWeightFluctuator;
 
     public void Initialize() {
         gm = GameManager.Instance;
@@ -104,6 +110,7 @@ public class PostProcessManager : MonoBehaviour {
         InitJumpVfx();
         wallLensDistorsionFluctuator = new Fluctuator(this, GetLensDistorsionIntensity, SetLensDistorsionIntensity, wallPostProcessCurve);
         wallChromaticAberrationFluctuator = new Fluctuator(this, GetChromaticAberrationIntensity, SetChromaticAberrationIntensity, wallPostProcessCurve);
+        soulRobberWeightFluctuator = new Fluctuator(this, GetSoulRobberWeight, SetSoulRobberWeight);
 
         ResetSkyboxParameters();
         hitVolume.weight = 0;
@@ -190,6 +197,14 @@ public class PostProcessManager : MonoBehaviour {
         lensDistortion.intensity.Override(intensity);
     }
 
+    public void StartBlackAndWhiteEffect() {
+        soulRobberWeightFluctuator.GoTo(1.0f, timeToBlackAndWhite);
+    }
+
+    public void StopBlackAndWhiteEffect() {
+        soulRobberWeightFluctuator.GoTo(0.0f, timeFromBlackAndWhite);
+    }
+
     protected float GetChromaticAberrationIntensity() {
         ChromaticAberration chromaticAberration;
         wallPostProcessVolume.profile.TryGet<ChromaticAberration>(out chromaticAberration);
@@ -200,6 +215,14 @@ public class PostProcessManager : MonoBehaviour {
         ChromaticAberration chromaticAberration;
         wallPostProcessVolume.profile.TryGet<ChromaticAberration>(out chromaticAberration);
         chromaticAberration.intensity.Override(intensity);
+    }
+
+    protected float GetSoulRobberWeight() {
+        return soulRobberVolume.weight;
+    }
+
+    protected void SetSoulRobberWeight(float weight) {
+        soulRobberVolume.weight = weight;
     }
 
     protected void StopGripEffect() {

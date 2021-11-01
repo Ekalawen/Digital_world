@@ -67,9 +67,11 @@ public class SoulRobber : Ennemi {
         lightning.Initialize(transform.position, teleportPosition);
         gm.soundManager.PlayCatchSoulRobberClip(transform.position);
         ShakeScreen();
+
         yield return new WaitForSeconds(durationBeforeTeleportAway);
         transform.position = teleportPosition;
         controller.enabled = true;
+
         yield return new WaitForSeconds(durationBeforeTeleportAway);
         teleportAwayCoroutine = null;
         if (soulRobberController.IsPlayerVisible()) {
@@ -112,6 +114,9 @@ public class SoulRobber : Ennemi {
             ray.SetPosition(transform.position, GetRayTargetPosition(), parentSize: transform.localScale.x);
             if (timer.GetAvancement() > 1) {
                 currentMultiplier.speedAdded = -timer.GetAvancement();
+            }
+            if(player.GetSpeedMultiplier() == 0.0f) {
+                gm.postProcessManager.StartBlackAndWhiteEffect();
             }
             UpdateRaySize(ray, timer.GetElapsedTime() / timeAtMaxRayAnimation);
             yield return null;
