@@ -8,6 +8,8 @@ using static SoulRobberController;
 
 public class SoulRobber : Ennemi {
 
+    public static string SHADER_TELEPORT_STARTING_TIME = "_TeleportStartingTime";
+    public static string SHADER_TELEPORT_DURATION = "_TeleportDuration";
     public static string VFX_RAY_THICKNESS = "Thickness";
     public static string VFX_RAY_DISTORSION_AMOUNT = "DistorsionAmount";
 
@@ -38,6 +40,7 @@ public class SoulRobber : Ennemi {
     public override void Start() {
         base.Start();
         soulRobberController = GetComponent<SoulRobberController>();
+        StartTeleportAnimation(soulRobberController.tempsInactifDebutJeu);
     }
 
     public override void UpdateSpecific() {
@@ -58,14 +61,15 @@ public class SoulRobber : Ennemi {
         Vector3 teleportPosition = GetBestPositionToTeleportAway();
         controller.enabled = false;
         StopFirering();
+        StartTeleportAnimation(durationBeforeTeleportAway * 2);
         Lightning lightning = Instantiate(teleportPrevisualizationLightningPrefab).GetComponent<Lightning>();
         lightning.Initialize(transform.position, teleportPosition);
         gm.soundManager.PlayCatchSoulRobberClip(transform.position);
         ShakeScreen();
-        // DissolveAnnimation
         yield return new WaitForSeconds(durationBeforeTeleportAway);
-        controller.enabled = true;
         transform.position = teleportPosition;
+        controller.enabled = true;
+        yield return new WaitForSeconds(durationBeforeTeleportAway);
         if (soulRobberController.IsPlayerVisible()) {
             StartFirering();
         }
@@ -191,5 +195,10 @@ public class SoulRobber : Ennemi {
         RaycastHit hit;
         Ray ray = new Ray (position, player.transform.position - position);
         return Physics.Raycast(ray, out hit, player.camera.farClipPlane) && hit.collider.name == "Joueur";
+    }
+
+    protected void StartTeleportAnimation(float duration) {
+        GetComponent<Renderer>().material.SetFloat(SHADER_TELEPORT_STARTING_TIME, Time.time);
+        GetComponent<Renderer>().material.SetFloat(SHADER_TELEPORT_DURATION, duration);
     }
 }

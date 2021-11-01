@@ -45,6 +45,8 @@ MonoBehaviour:
   nbInitCubesRange: {x: 5, y: 10}
   makeSpaceArroundAtEndDistance: 3
   stayInMap: 0
+  chosingVoisinsMethodType: 0
+  coefChosingMethod: 2
 --- !u!114 &-1197502705410691619
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64,6 +66,10 @@ MonoBehaviour:
   areaSphereCenter: {x: 0, y: 0, z: 0}
   areaSphereRadius: 0
   cubeEnsembleType: 8
+  howToGetCubesInCubeEnsemble: 0
+  cubeEnsembleQuantity: 1
+  cubeEnsembleProportion: 0.5
+  nbCubesVoisins: 4
   modifiers: []
 --- !u!114 &1715291383750800896
 MonoBehaviour:
@@ -142,6 +148,10 @@ MonoBehaviour:
   areaSphereCenter: {x: 0, y: 0, z: 0}
   areaSphereRadius: 0
   cubeEnsembleType: 0
+  howToGetCubesInCubeEnsemble: 0
+  cubeEnsembleQuantity: 1
+  cubeEnsembleProportion: 0.5
+  nbCubesVoisins: 4
   modifiers:
   - {fileID: 8054390393348639513}
 --- !u!114 &6419547942300289100
@@ -228,22 +238,22 @@ PrefabInstance:
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: tailleMap.x
-      value: 14
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: tailleMap.y
-      value: 14
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: tailleMap.z
-      value: 14
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: nbLumieresInitial
-      value: 14
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
@@ -298,7 +308,7 @@ PrefabInstance:
     - target: {fileID: 3009060673421440820, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: m_Name
-      value: MapSondesOptimisation
+      value: MapSoulRobberEncounter
       objectReference: {fileID: 0}
     - target: {fileID: 3014360596586505460, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
