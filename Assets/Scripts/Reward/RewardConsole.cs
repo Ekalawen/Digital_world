@@ -39,7 +39,6 @@ public class RewardConsole : Console {
             timerRewardPlusDelay.Reset();
         }
     }
-
     protected override void RunTimedMessages() {
         for(int i = 0; i < timersMessages.Count; i++) {
             TimerMessage timerMessage = timersMessages[i];

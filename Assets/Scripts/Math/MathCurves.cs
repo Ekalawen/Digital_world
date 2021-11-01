@@ -8,6 +8,10 @@ public static class MathCurves {
         return min + (max - min) * avancement;
     }
 
+    public static float LinearClamped(float min, float max, float avancement) {
+        return Mathf.Clamp(Linear(min, max, avancement), min, max);
+    }
+
     public static float LinearReversed(float min, float max, float current) {
         return Mathf.Clamp01(LinearReversedUnclamped(min, max, current));
     }

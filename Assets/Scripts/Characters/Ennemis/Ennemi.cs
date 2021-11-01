@@ -39,9 +39,11 @@ public abstract class Ennemi : Character {
         }
 
         UpdateSpecific();
-
-        ApplyPoussees();
 	}
+
+    public virtual void FixedUpdate() {
+        ApplyPoussees();
+    }
 
     public abstract void UpdateSpecific();
 

@@ -219,7 +219,7 @@ public class Player : Character {
         }
     }
 
-    void Update ()
+    void FixedUpdate ()
     {
         // On met à jour la caméra
         UpdateCamera();
