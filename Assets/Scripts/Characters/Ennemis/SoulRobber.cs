@@ -80,7 +80,7 @@ public class SoulRobber : Ennemi {
         ray = Instantiate(rayPrefab, parent: transform).GetComponent<Lightning>();
         ray.Initialize(transform.position, GetRayTargetPosition());
         Timer timer = new Timer(durationToFullRay);
-        currentMultiplier = player.speedMultiplierController.AddMultiplier(speedDecreaseMultiplier);
+        currentMultiplier = player.speedMultiplierController.AddMultiplier(new SpeedMultiplier(speedDecreaseMultiplier));
 
         while(true) {
             ray.SetPosition(transform.position, GetRayTargetPosition(), parentSize: transform.localScale.x);

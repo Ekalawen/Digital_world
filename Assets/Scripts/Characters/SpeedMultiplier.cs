@@ -16,6 +16,16 @@ public class SpeedMultiplier {
     protected SpeedMultiplierController controller;
     protected Timer timer;
 
+    public SpeedMultiplier(SpeedMultiplier other) {
+        this.speedAdded = other.speedAdded;
+        this.duration = other.duration;
+        this.inDuration = other.inDuration;
+        this.outDuration = other.outDuration;
+        this.inCurve = other.inCurve;
+        this.outCurve = other.outCurve;
+        this.affectHeight = other.affectHeight;
+    }
+
     public void Initialize(SpeedMultiplierController controller) {
         this.controller = controller;
         timer = new Timer(GetTotalDuration());
