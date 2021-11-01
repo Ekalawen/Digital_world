@@ -20,6 +20,7 @@ public class SoundBankIngame : ScriptableObject {
     public AudioClipParams firstBossPresenceClips;
     public AudioClipParams firstBossDecreasingBall;
     public AudioClipParams firstBossIncreasingBall;
+    public AudioClipParams catchSoulRobber;
     public AudioClipParams detectionClips;
     public AudioClipParams dissimuleClips;
 

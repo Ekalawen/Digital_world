@@ -26,10 +26,12 @@ public class SoulRobber : Ennemi {
     [Header("Teleport")]
     public float durationBeforeTeleportAway = 0.3f;
     public int nbPositionsTestForTeleportAway = 100;
+    public GameObject teleportPrevisualizationLightningPrefab;
 
     protected SoulRobberController soulRobberController;
     protected EventManager.DeathReason currentDeathReason; // TO INIT !!
     protected Coroutine fireringCoroutine;
+    protected Coroutine teleportAwayCoroutine;
     protected Lightning ray;
     protected SpeedMultiplier currentMultiplier = null;
 
@@ -43,9 +45,31 @@ public class SoulRobber : Ennemi {
     }
 
     protected void TestForPlayerCollision() {
-        if(MathTools.CapsuleSphere(transform.position, GetRadius(), GetHeight(), player.transform.position, player.GetSizeRadius())) {
-            TeleportAway();
+        if (MathTools.CapsuleSphere(transform.position, GetRadius() * 1.1f, GetHeight(), player.transform.position, player.GetSizeRadius())) {
+            if (GetState() != SoulRobberState.ESCAPING) {
+                if (teleportAwayCoroutine == null) {
+                    teleportAwayCoroutine = StartCoroutine(CTeleportAway());
+                }
+            }
         }
+    }
+
+    protected IEnumerator CTeleportAway() {
+        Vector3 teleportPosition = GetBestPositionToTeleportAway();
+        controller.enabled = false;
+        StopFirering();
+        Lightning lightning = Instantiate(teleportPrevisualizationLightningPrefab).GetComponent<Lightning>();
+        lightning.Initialize(transform.position, teleportPosition);
+        gm.soundManager.PlayCatchSoulRobberClip(transform.position);
+        ShakeScreen();
+        // DissolveAnnimation
+        yield return new WaitForSeconds(durationBeforeTeleportAway);
+        controller.enabled = true;
+        transform.position = teleportPosition;
+        if (soulRobberController.IsPlayerVisible()) {
+            StartFirering();
+        }
+        teleportAwayCoroutine = null;
     }
 
     public float GetRadius() {
@@ -64,16 +88,10 @@ public class SoulRobber : Ennemi {
     }
 
     public void StartFirering() {
-        fireringCoroutine = StartCoroutine(CFirering());
-    }
-
-    public void StopFirering() {
         if(fireringCoroutine != null) {
-            StopCoroutine(fireringCoroutine);
-            DestroyRay();
-            player.speedMultiplierController.RemoveMultiplier(currentMultiplier);
-            currentMultiplier = null;
+            StopFirering();
         }
+        fireringCoroutine = StartCoroutine(CFirering());
     }
 
     protected IEnumerator CFirering() {
@@ -92,14 +110,14 @@ public class SoulRobber : Ennemi {
         }
     }
 
-    protected void UpdateRaySize(Lightning ray, float avancement) {
-        ray.vfx.SetFloat(VFX_RAY_THICKNESS, MathCurves.Linear(rayThicknessRange.x, rayThicknessRange.y, avancement));
-        ray.vfx.SetFloat(VFX_RAY_DISTORSION_AMOUNT, MathCurves.Linear(rayDistorsionAmountRange.x, rayDistorsionAmountRange.y, avancement));
-    }
-
-    protected Vector3 GetRayTargetPosition() {
-        Vector3 playerPos = player.transform.position;
-        return playerPos + gm.gravityManager.Down() * 0.3f + (transform.position - playerPos).normalized * 0.1f;
+    public void StopFirering() {
+        DestroyRay();
+        player.speedMultiplierController.RemoveMultiplier(currentMultiplier);
+        currentMultiplier = null;
+        if(fireringCoroutine != null) {
+            StopCoroutine(fireringCoroutine);
+            fireringCoroutine = null;
+        }
     }
 
     protected void DestroyRay() {
@@ -108,6 +126,16 @@ public class SoulRobber : Ennemi {
             Destroy(ray.gameObject, ray.refreshRate);
             ray = null;
         }
+    }
+
+    protected void UpdateRaySize(Lightning ray, float avancement) {
+        ray.vfx.SetFloat(VFX_RAY_THICKNESS, MathCurves.Linear(rayThicknessRange.x, rayThicknessRange.y, avancement));
+        ray.vfx.SetFloat(VFX_RAY_DISTORSION_AMOUNT, MathCurves.Linear(rayDistorsionAmountRange.x, rayDistorsionAmountRange.y, avancement));
+    }
+
+    protected Vector3 GetRayTargetPosition() {
+        Vector3 playerPos = player.transform.position;
+        return playerPos + gm.gravityManager.Down() * 0.3f + (transform.position - playerPos).normalized * 0.1f;
     }
 
     public override EventManager.DeathReason GetDeathReason() {

@@ -253,6 +253,10 @@ public class SoundManager : MonoBehaviour
     public void PlayGeneratorGeneratesClip(Vector3 pos) {
         PlayClipsOnSource(sounds.generatorGeneratesClips, pos);
     }
+    public void PlayCatchSoulRobberClip(Vector3 pos)
+    {
+        PlayClipsOnSource(sounds.catchSoulRobber, pos);
+    }
 
 
     protected AudioSource PlayClipsOnSource(

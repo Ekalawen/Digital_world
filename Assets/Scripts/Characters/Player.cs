@@ -708,9 +708,9 @@ public class Player : Character {
             return normalizedNormal;
         } else {
             if (box == null) {
-                Debug.LogError($"On est pas censé arriver ici pour le moment car tous les cubes sont des AxesAligned ! :) wallRotation = null");
+                //Debug.LogError($"On est pas censé arriver ici pour le moment car tous les cubes sont des AxesAligned ! :) wallRotation = null");
             } else {
-                Debug.LogError($"On est pas censé arriver ici pour le moment car tous les cubes sont des AxesAligned ! :) wallRotation = {box.transform.rotation}");
+                //Debug.LogError($"On est pas censé arriver ici pour le moment car tous les cubes sont des AxesAligned ! :) wallRotation = {box.transform.rotation}");
             }
             return hit.normal;
         }
