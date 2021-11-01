@@ -25,6 +25,7 @@ public class SoulRobber : Ennemi {
     protected EventManager.DeathReason currentDeathReason; // TO INIT !!
     protected Coroutine fireringCoroutine;
     protected Lightning ray;
+    protected SpeedMultiplier currentMultiplier = null;
 
     public override void Start() {
         base.Start();
@@ -53,6 +54,8 @@ public class SoulRobber : Ennemi {
         if(fireringCoroutine != null) {
             StopCoroutine(fireringCoroutine);
             DestroyRay();
+            player.speedMultiplierController.RemoveMultiplier(currentMultiplier);
+            currentMultiplier = null;
         }
     }
 
@@ -60,9 +63,11 @@ public class SoulRobber : Ennemi {
         ray = Instantiate(rayPrefab, parent: transform).GetComponent<Lightning>();
         ray.Initialize(transform.position, GetRayTargetPosition());
         Timer timer = new Timer(durationToFullRay);
+        currentMultiplier = player.speedMultiplierController.AddMultiplier(speedDecreaseMultiplier);
 
         while(true) {
             ray.SetPosition(transform.position, GetRayTargetPosition(), parentSize: transform.localScale.x);
+            currentMultiplier.speedAdded = - timer.GetAvancement();
             UpdateRaySize(ray, timer.GetAvancement());
             yield return null;
         }

@@ -15,10 +15,11 @@ public class SpeedMultiplierController : MonoBehaviour {
         speedMultipliers = new List<SpeedMultiplier>();
     }
 
-    public void AddMultiplier(SpeedMultiplier speedMultiplier) {
+    public SpeedMultiplier AddMultiplier(SpeedMultiplier speedMultiplier) {
         speedMultiplier.Initialize(this);
         speedMultipliers.Add(speedMultiplier);
         StartCoroutine(CUnregisterAtEnd(speedMultiplier));
+        return speedMultiplier;
     }
 
     protected IEnumerator CUnregisterAtEnd(SpeedMultiplier speedMultiplier) {
@@ -35,6 +36,6 @@ public class SpeedMultiplierController : MonoBehaviour {
         foreach(SpeedMultiplier speedMultiplier in speedMultipliers) {
             multiplier += speedMultiplier.GetMultiplier(); // On veut ajouter les vitesses, et pas les multiplier pour éviter des trucs débiles extrêmes :)
         }
-        return multiplier;
+        return Mathf.Max(multiplier, 0);
     }
 }
