@@ -51,6 +51,7 @@ public class Player : Character {
 	protected EtatPersonnage etat; // l'état du personnage
 	protected EtatPersonnage etatAvant; // l'état du personnage avant la frame
     protected bool isGrounded;
+    protected Vector3 fixedMove = Vector3.zero;
 
     protected Timer sautTimer;
 	protected Vector3 pointDebutSaut; // le point de départ du saut !
@@ -219,16 +220,15 @@ public class Player : Character {
         }
     }
 
-    void FixedUpdate ()
-    {
+    void Update() {
         // On met à jour la caméra
         UpdateCamera();
 
-        // Puis on met à jour la position du joueur
+        // Puis on calcul le mouvement du joueur
         UpdateMouvement();
 
-        // Update post process effects
-        UpdatePostProcessEffects();
+        // Update a post process effects
+        UpdatePostShiftEffect();
 
         // Pour détecter si le joueur a fait un grand saut
         DetecterGrandSaut(etatAvant);
@@ -237,15 +237,33 @@ public class Player : Character {
         TryUsePouvoirs();
     }
 
-    private void UpdatePostProcessEffects() {
+    void FixedUpdate () {
+        // Puis on met à jour la position du joueur
+        ApplyFinalMouvement();
+
+        // Update a post process effects
+        UpdatePostWallEffect();
+    }
+
+    protected void ApplyFinalMouvement() {
+        controller.Move(fixedMove);
+        fixedMove = Vector3.zero;
+    }
+
+    protected void UpdatePostShiftEffect() {
+        if (gm.IsPaused())
+            return;
+
+        // Add post process effect when we are pressing the shift key :)
+        gm.postProcessManager.UpdateShiftEffect();
+    }
+
+    protected void UpdatePostWallEffect() {
         if (gm.IsPaused())
             return;
 
         // Add post process effect when we are gripped to the wall
         gm.postProcessManager.UpdateWallEffect(etatAvant);
-
-        // Add post process effect when we are pressing the shift key :)
-        gm.postProcessManager.UpdateShiftEffect();
     }
 
     // Utilisé pour gérer la caméra
@@ -341,9 +359,11 @@ public class Player : Character {
 
         move = SlideBottomIfImportantSlope(move);
 
-        controller.Move(move * Time.deltaTime);
+        fixedMove += move * Time.deltaTime;
+        //controller.Move(move * Time.deltaTime);
 
-        ApplyPoussees();
+        fixedMove += ComputePoussees();
+        //ApplyPoussees();
     }
 
     protected Vector3 UpdateJumpMouvement(Vector3 move) {

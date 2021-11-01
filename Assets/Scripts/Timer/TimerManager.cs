@@ -32,6 +32,7 @@ public class TimerManager : MonoBehaviour {
 
     public void Initialize() {
 		name = "TimerManager";
+        Time.fixedDeltaTime = 1.0f / 120; // FixedUpdates are really small and are permorfed really fast, so we can do a lot of them ! (120 instead of 50 :))
         gm = FindObjectOfType<GameManager>();
         gameTimer = new Timer(initialTime);
         realGameTimer = new Timer();

@@ -11,11 +11,11 @@ public class PousseeFromTransform : Poussee {
         this.originTransform = originTransform;
     }
 
-    public override void ApplyPoussee(CharacterController controller) {
+    public override Vector3 ComputePoussee(CharacterController controller) {
         float dureeCourante = dureeTimer.GetNewAvancement() * duree;
         float distanceCourante = dureeCourante * vitesse;
         Vector3 directionCourante = (controller.transform.position - originTransform.transform.position).normalized;
-        controller.Move(directionCourante * distanceCourante);
+        return directionCourante * distanceCourante;
     }
 
 }

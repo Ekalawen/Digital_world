@@ -13,7 +13,7 @@ public class PousseeFromTransformWithTreshold : PousseeFromTransform {
         this.lastDirection = Vector3.zero;
     }
 
-    public override void ApplyPoussee(CharacterController controller) {
+    public override Vector3 ComputePoussee(CharacterController controller) {
         float dureeCourante = dureeTimer.GetNewAvancement() * duree;
         float distanceCourante = dureeCourante * vitesse;
         Vector3 directionCourante;
@@ -23,7 +23,7 @@ public class PousseeFromTransformWithTreshold : PousseeFromTransform {
         } else {
             directionCourante = lastDirection;
         }
-        controller.Move(directionCourante * distanceCourante);
+        return directionCourante * distanceCourante;
     }
 
 }

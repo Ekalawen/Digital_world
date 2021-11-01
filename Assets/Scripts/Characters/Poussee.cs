@@ -27,10 +27,14 @@ public class Poussee {
         return dureeTimer.IsOver();
     }
 
-    public virtual void ApplyPoussee(CharacterController controller) {
+    public void ApplyPoussee(CharacterController controller) {
+        controller.Move(ComputePoussee(controller));
+    }
+
+    public virtual Vector3 ComputePoussee(CharacterController controller) {
         float dureeCourante = dureeTimer.GetNewAvancement() * duree;
         float distanceCourante = dureeCourante * vitesse;
-        controller.Move(direction * distanceCourante);
+        return direction * distanceCourante;
     }
 
     public void Reset() {

@@ -41,6 +41,22 @@ public class Character : MonoBehaviour {
         }
     }
 
+    public virtual Vector3 ComputePoussees() {
+        for(int i = 0; i < poussees.Count; i++) {
+            if(poussees[i].IsOver()) {
+                poussees.RemoveAt(i);
+                i--;
+            }
+        }
+
+        Vector3 pousseeTotale = Vector3.zero;
+        for(int i = 0; i < poussees.Count; i++) {
+            Poussee poussee = poussees[i];
+            pousseeTotale += poussee.ComputePoussee(controller);
+        }
+        return pousseeTotale;
+    }
+
     protected void InitSpeedMultiplierController() {
         speedMultiplierController = GetComponent<SpeedMultiplierController>();
         if(speedMultiplierController == null) {
