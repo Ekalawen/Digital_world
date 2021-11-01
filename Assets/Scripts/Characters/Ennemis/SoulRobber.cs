@@ -48,11 +48,12 @@ public class SoulRobber : Ennemi {
     }
 
     protected void TestForPlayerCollision() {
-        if (MathTools.CapsuleSphere(transform.position, GetRadius() * 1.1f, GetHeight(), player.transform.position, player.GetSizeRadius())) {
+        if (controller.enabled && MathTools.CapsuleSphere(transform.position, GetRadius() * 1.1f, GetHeight(), player.transform.position, player.GetSizeRadius())) {
             if (GetState() != SoulRobberState.ESCAPING) {
-                if (teleportAwayCoroutine == null) {
-                    teleportAwayCoroutine = StartCoroutine(CTeleportAway());
+                if (teleportAwayCoroutine != null) {
+                    StopCoroutine(teleportAwayCoroutine);
                 }
+                teleportAwayCoroutine = StartCoroutine(CTeleportAway());
             }
         }
     }
@@ -70,10 +71,10 @@ public class SoulRobber : Ennemi {
         transform.position = teleportPosition;
         controller.enabled = true;
         yield return new WaitForSeconds(durationBeforeTeleportAway);
+        teleportAwayCoroutine = null;
         if (soulRobberController.IsPlayerVisible()) {
             StartFirering();
         }
-        teleportAwayCoroutine = null;
     }
 
     public float GetRadius() {
@@ -92,6 +93,9 @@ public class SoulRobber : Ennemi {
     }
 
     public void StartFirering() {
+        if(teleportAwayCoroutine != null) {
+            return;
+        }
         if(fireringCoroutine != null) {
             StopFirering();
         }
