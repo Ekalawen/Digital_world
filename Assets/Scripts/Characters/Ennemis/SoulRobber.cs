@@ -9,6 +9,8 @@ using static SoulRobberController;
 
 public class SoulRobber : Ennemi {
 
+    public enum TeleportMode { AWAY, ON_PLAYER };
+
     public static string SHADER_TELEPORT_STARTING_TIME = "_TeleportStartingTime";
     public static string SHADER_TELEPORT_DURATION = "_TeleportDuration";
     public static string VFX_RAY_THICKNESS = "Thickness";
@@ -65,7 +67,7 @@ public class SoulRobber : Ennemi {
     }
 
     protected void TestForPlayerCollision() {
-        if (controller.enabled && MathTools.CapsuleSphere(transform.position, GetRadius() * 1.1f, GetHeight(), player.transform.position, player.GetSizeRadius())) {
+        if (controller.enabled && MathTools.CapsuleSphere(transform.position, GetRadius() * 1.15f, GetHeight(), player.transform.position, player.GetSizeRadius())) {
             if (GetState() != SoulRobberState.ESCAPING) {
                 TeleportAway();
             }
@@ -76,30 +78,42 @@ public class SoulRobber : Ennemi {
         }
     }
 
-    protected void TeleportAway() {
+    public void TeleportAway() {
         if (teleportAwayCoroutine != null) {
             StopCoroutine(teleportAwayCoroutine);
         }
-        teleportAwayCoroutine = StartCoroutine(CTeleportAway());
+        teleportAwayCoroutine = StartCoroutine(CTeleport(TeleportMode.AWAY));
     }
 
-    protected IEnumerator CTeleportAway() {
-        Vector3 teleportPosition = GetBestPositionToTeleportAway();
+    public void TeleportOnPlayer() {
+        if (teleportAwayCoroutine != null) {
+            StopCoroutine(teleportAwayCoroutine);
+        }
+        teleportAwayCoroutine = StartCoroutine(CTeleport(TeleportMode.ON_PLAYER));
+    }
+
+    protected IEnumerator CTeleport(TeleportMode teleportMode) {
+        Vector3 teleportPosition = GetBestPositionToTeleportAway(teleportMode);
         controller.enabled = false;
         StopFirering();
         StartTeleportAnimation(durationBeforeTeleportAway * 2);
-        Lightning lightning = Instantiate(teleportPrevisualizationLightningPrefab).GetComponent<Lightning>();
-        lightning.Initialize(transform.position, teleportPosition);
-        gm.soundManager.PlayCatchSoulRobberClip(transform.position);
-        ShakeScreenOnTeleport();
+        if (teleportMode == TeleportMode.AWAY) {
+            gm.soundManager.PlayCatchSoulRobberClip(transform.position);
+            Lightning lightning = Instantiate(teleportPrevisualizationLightningPrefab).GetComponent<Lightning>();
+            lightning.Initialize(transform.position, teleportPosition);
+            ShakeScreenOnTeleport();
+        }
 
         yield return new WaitForSeconds(durationBeforeTeleportAway);
         transform.position = teleportPosition;
         controller.enabled = true;
+        if (teleportMode == TeleportMode.ON_PLAYER) {
+            gm.soundManager.PlayCatchSoulRobberClip(teleportPosition);
+        }
 
         yield return new WaitForSeconds(durationBeforeTeleportAway);
         teleportAwayCoroutine = null;
-        if (soulRobberController.IsPlayerVisible()) {
+        if (soulRobberController.IsPlayerVisible() && GetState() == SoulRobberState.FIRERING) {
             StartFirering();
         }
     }
@@ -269,10 +283,11 @@ public class SoulRobber : Ennemi {
     protected override void HitContinuousPlayerSpecific() {
     }
 
-    public Vector3 GetBestPositionToTeleportAway() {
+    public Vector3 GetBestPositionToTeleportAway(TeleportMode teleportMode) {
         List<Tuple<Vector3, float>> positionsAndScores = new List<Tuple<Vector3, float>>();
         Vector3 up = gm.gravityManager.Up();
         float maxRangeSqr = soulRobberController.distanceDeDetection * soulRobberController.distanceDeDetection;
+        float onPlayerMaxRangeSqr = (soulRobberController.distanceDeDetection / 2) * (soulRobberController.distanceDeDetection / 2);
         for (int i = 0; i < nbPositionsTestForTeleportAway; i++) {
             Vector3 position = gm.map.GetFreeRoundedLocation();
             float score;
@@ -282,8 +297,13 @@ public class SoulRobber : Ennemi {
                 position += up * 0.5f;
                 float sqrDistance = Vector3.SqrMagnitude(player.transform.position - transform.position);
                 score = sqrDistance;
-                if(sqrDistance < maxRangeSqr) {
+                if(sqrDistance > maxRangeSqr) {
                     score /= 10;
+                }
+                if(teleportMode == TeleportMode.ON_PLAYER) {
+                    if(sqrDistance > onPlayerMaxRangeSqr) {
+                        score /= 5;
+                    }
                 }
                 if (!CanSeePlayerFrom(position)) {
                     score /= 10;

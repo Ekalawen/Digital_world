@@ -10,31 +10,38 @@ public class SoulRobberController : EnnemiController {
     public enum SoulRobberState { WANDERING, FIRERING, ESCAPING }; // Don't forgot to teleport ! ;)
 
     [Header("Mouvement")]
+    public Vector2 wanderingTeleportWaitingTimeRange = new Vector2(5, 15);
     public RunAwayPlayerController runAwayController;
 
     [Header("Events")]
     public UnityEvent startFireringEvents;
     public UnityEvent stopFireringEvents;
-    public UnityEvent startEscaping;
-    public UnityEvent stopEscaping;
+    public UnityEvent startEscapingEvents;
+    public UnityEvent stopEscapingEvents;
+    public UnityEvent shouldTeleportEvents;
 
     protected Ennemi ennemi;
     protected SoulRobberState state;
+    protected Timer wanderingTeleportWaitingTimeTimer;
 
     public override void Start() {
         base.Start();
         ennemi = GetComponent<Ennemi>();
         runAwayController.enabled = false;
+        InitWanderingTimer();
         SetState(SoulRobberState.WANDERING);
     }
 
     protected override void UpdateSpecific () {
         SetCurrentState();
 
-        //MoveToTarget(player.transform.position);
-
         switch(state) {
             case SoulRobberState.WANDERING:
+                if(wanderingTeleportWaitingTimeTimer.IsOver()) {
+                    Debug.Log($"ElapsedTime = {wanderingTeleportWaitingTimeTimer.GetElapsedTime()}/{wanderingTeleportWaitingTimeTimer.GetDuree()}");
+                    shouldTeleportEvents.Invoke();
+                    InitWanderingTimer();
+                }
                 break;
             case SoulRobberState.FIRERING:
                 break;
@@ -64,14 +71,21 @@ public class SoulRobberController : EnnemiController {
         if (newState != SoulRobberState.FIRERING && oldState == SoulRobberState.FIRERING) {
             stopFireringEvents.Invoke();
         }
-        if(newState == SoulRobberState.ESCAPING && oldState != SoulRobberState.ESCAPING) {
-            startEscaping.Invoke();
-            runAwayController.enabled = true;
+        if(newState == SoulRobberState.WANDERING && oldState != SoulRobberState.WANDERING) {
+            InitWanderingTimer();
         }
         if(newState != SoulRobberState.ESCAPING && oldState == SoulRobberState.ESCAPING) {
-            stopEscaping.Invoke();
+            stopEscapingEvents.Invoke();
             runAwayController.enabled = false;
         }
+        if(newState == SoulRobberState.ESCAPING && oldState != SoulRobberState.ESCAPING) {
+            startEscapingEvents.Invoke();
+            runAwayController.enabled = true;
+        }
+    }
+
+    protected void InitWanderingTimer() {
+        wanderingTeleportWaitingTimeTimer = new Timer(UnityEngine.Random.Range(wanderingTeleportWaitingTimeRange.x, wanderingTeleportWaitingTimeRange.y));
     }
 
     public SoulRobberState GetState() {

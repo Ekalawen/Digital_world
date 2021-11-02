@@ -228,6 +228,7 @@ MonoBehaviour:
   tempsInactifDebutJeu: 3
   distanceDeDetection: 10
   canAlwaysSeePlayer: 0
+  wanderingTeleportWaitingTimeRange: {x: 10, y: 20}
   runAwayController: {fileID: 5855267422829544536}
   startFireringEvents:
     m_PersistentCalls:
@@ -259,7 +260,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  startEscaping:
+  startEscapingEvents:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 371482817792124335}
@@ -274,12 +275,27 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  stopEscaping:
+  stopEscapingEvents:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 371482817792124335}
         m_TargetAssemblyTypeName: SoulRobber, Assembly-CSharp
         m_MethodName: StopEscaping
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  shouldTeleportEvents:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 371482817792124335}
+        m_TargetAssemblyTypeName: SoulRobber, Assembly-CSharp
+        m_MethodName: TeleportOnPlayer
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
