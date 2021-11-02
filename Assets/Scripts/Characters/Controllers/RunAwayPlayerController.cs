@@ -97,6 +97,9 @@ public class RunAwayPlayerController : IController {
             if (Vector3.Distance(player.transform.position, pos) >= distanceToFleePlayer)
                 allFarAwayPositions.Add(pos);
         }
+        if(allFarAwayPositions.Count == 0) {
+            allFarAwayPositions = allEmptyLocations;
+        }
 
         Vector3 bestPos = allFarAwayPositions[0];
         float minDist = Vector3.Distance(bestPos, transform.position);

@@ -10,6 +10,7 @@ public class SoulRobberController : EnnemiController {
     public enum SoulRobberState { WANDERING, FIRERING, ESCAPING }; // Don't forgot to teleport ! ;)
 
     [Header("Mouvement")]
+    public RunAwayPlayerController runAwayController;
 
     [Header("Events")]
     public UnityEvent startFireringEvents;
@@ -17,11 +18,11 @@ public class SoulRobberController : EnnemiController {
 
     protected Ennemi ennemi;
     protected SoulRobberState state;
-    protected bool hasRobbedPlayer = false;
 
     public override void Start() {
         base.Start();
         ennemi = GetComponent<Ennemi>();
+        runAwayController.enabled = false;
         SetState(SoulRobberState.WANDERING);
     }
 
@@ -41,7 +42,7 @@ public class SoulRobberController : EnnemiController {
 	}
 
     protected void SetCurrentState() {
-        if(hasRobbedPlayer) {
+        if(SoulRobber.IsPlayerRobbed()) {
             SetState(SoulRobberState.ESCAPING);
         } else {
             if(IsPlayerVisible()) {
@@ -60,6 +61,12 @@ public class SoulRobberController : EnnemiController {
         }
         if (newState != SoulRobberState.FIRERING && oldState == SoulRobberState.FIRERING) {
             stopFireringEvents.Invoke();
+        }
+        if(newState == SoulRobberState.ESCAPING && oldState != SoulRobberState.ESCAPING) {
+            runAwayController.enabled = true;
+        }
+        if(newState != SoulRobberState.ESCAPING && oldState == SoulRobberState.ESCAPING) {
+            runAwayController.enabled = false;
         }
     }
 

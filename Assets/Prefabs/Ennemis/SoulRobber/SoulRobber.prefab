@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 8160498098999404822}
   - component: {fileID: 371482817792124335}
   - component: {fileID: 6292381693725292560}
+  - component: {fileID: 5855267422829544536}
   m_Layer: 29
   m_Name: SoulRobber
   m_TagString: Ennemi
@@ -172,6 +173,44 @@ MonoBehaviour:
   screenShakeTeleportMagnitude: 20
   screenShakeTeleportRoughness: 20
   screenShakeTeleportDuration: 0.3
+  robbModeYScale: 0.2
+  timeToChangeScale: 1
+  speedBoostOnRob:
+    speedAdded: 2
+    duration: 0.3
+    inDuration: 0
+    outDuration: 0.3
+    inCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    outCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    affectHeight: 0
 --- !u!114 &6292381693725292560
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -188,6 +227,7 @@ MonoBehaviour:
   tempsInactifDebutJeu: 3
   distanceDeDetection: 10
   canAlwaysSeePlayer: 0
+  runAwayController: {fileID: 5855267422829544536}
   startFireringEvents:
     m_PersistentCalls:
       m_Calls:
@@ -218,3 +258,21 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &5855267422829544536
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1252573298759596}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 357f1c9a8fb7efe468b77f15fa0e2e6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vitesse: 5
+  tempsInactifDebutJeu: 0
+  distanceToFleePlayer: 7
+  wanderingVitesse: 3
+  fleeingVitesse: 5
+  malusVerticalMouvement: 0.5

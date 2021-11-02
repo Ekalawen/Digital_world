@@ -27,6 +27,7 @@ public class EnnemiManager : MonoBehaviour {
         gm = GameManager.Instance;
         ennemisFolder = new GameObject("Ennemis");
         playerCaptureTimer = new Timer(playerCaptureTime);
+        SoulRobber.UnrobPlayer();
 
         // On récupère tous les ennemis qui pourraient déjà exister dans la map !
         GetAllAlreadyExistingEnnemis();
@@ -160,5 +161,15 @@ public class EnnemiManager : MonoBehaviour {
 
     public int GetNbDataSondeTriggers() {
         return dataSoundManager == null ? 0 : dataSoundManager.GetDataSondesTriggers().Count;
+    }
+
+    public List<T> GetEnnemisOfType<T>() where T : Ennemi {
+        List<T> ennemisOfType = new List<T>();
+        foreach(Ennemi ennemi in ennemis) {
+            if((T)ennemi != null) {
+                ennemisOfType.Add((T)ennemi);
+            }
+        }
+        return ennemisOfType;
     }
 }

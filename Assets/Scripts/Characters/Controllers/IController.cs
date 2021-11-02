@@ -10,11 +10,13 @@ public abstract class IController : MonoBehaviour {
     protected GameManager gm;
 	protected CharacterController controller;
 	protected new Rigidbody rigidbody;
+    protected Character character;
 
     public virtual void Start() {
         gm = GameManager.Instance;
-		controller = this.GetComponent<CharacterController> ();
+		controller = GetComponent<CharacterController> ();
         rigidbody = GetComponent<Rigidbody>();
+        character = GetComponent<Character>();
         if (controller == null && rigidbody == null)
             Debug.LogError("Il est nécessaire d'avoir un CharacterController OU un rigidbody avec un " + name + " !");
     }
@@ -38,6 +40,9 @@ public abstract class IController : MonoBehaviour {
 
     protected virtual Vector3 MoveToTarget(Vector3 target, bool useCustomVitesse = false, float customVitesse = 0.0f) {
         float vitesseToUse = useCustomVitesse ? customVitesse : vitesse;
+        if(character != null) {
+            vitesseToUse *= character.GetSpeedMultiplier();
+        }
         Vector3 direction = (target - transform.position).normalized;
         Vector3 finalMouvement = direction * vitesseToUse * Time.deltaTime;
 
@@ -51,7 +56,11 @@ public abstract class IController : MonoBehaviour {
     }
 
     protected Vector3 MoveWithMove(Vector3 move) {
-        move *= vitesse * Time.deltaTime;
+        float vitesseToUse = vitesse;
+        if(character != null) {
+            vitesseToUse *= character.GetSpeedMultiplier();
+        }
+        move *= vitesseToUse * Time.deltaTime;
         Move(move);
         return move;
     }

@@ -36,16 +36,25 @@ public class SoulRobber : Ennemi {
     public float screenShakeTeleportRoughness = 10.0f;
     public float screenShakeTeleportDuration = 0.2f;
 
+    [Header("Robbing Mode")]
+    public float robbModeYScale = 0.2f;
+    public float timeToChangeScale = 0.4f;
+    public SpeedMultiplier speedBoostOnRob;
+
     protected SoulRobberController soulRobberController;
     protected EventManager.DeathReason currentDeathReason; // TO INIT !!
     protected Coroutine fireringCoroutine;
     protected Coroutine teleportAwayCoroutine;
     protected Lightning ray;
     protected SpeedMultiplier currentMultiplier = null;
+    protected Fluctuator changeScaleFluctuator;
+    protected float initialYScale;
 
     public override void Start() {
         base.Start();
         soulRobberController = GetComponent<SoulRobberController>();
+        changeScaleFluctuator = new Fluctuator(this, GetYScale, SetYScale);
+        initialYScale = transform.localScale.y;
         StartTeleportAnimation(soulRobberController.tempsInactifDebutJeu);
     }
 
@@ -56,12 +65,20 @@ public class SoulRobber : Ennemi {
     protected void TestForPlayerCollision() {
         if (controller.enabled && MathTools.CapsuleSphere(transform.position, GetRadius() * 1.1f, GetHeight(), player.transform.position, player.GetSizeRadius())) {
             if (GetState() != SoulRobberState.ESCAPING) {
-                if (teleportAwayCoroutine != null) {
-                    StopCoroutine(teleportAwayCoroutine);
-                }
-                teleportAwayCoroutine = StartCoroutine(CTeleportAway());
+                TeleportAway();
+            }
+            else {
+                StartUnrobb();
+                TeleportAway();
             }
         }
+    }
+
+    protected void TeleportAway() {
+        if (teleportAwayCoroutine != null) {
+            StopCoroutine(teleportAwayCoroutine);
+        }
+        teleportAwayCoroutine = StartCoroutine(CTeleportAway());
     }
 
     protected IEnumerator CTeleportAway() {
@@ -131,28 +148,50 @@ public class SoulRobber : Ennemi {
                 currentMultiplier.speedAdded = -timer.GetAvancement();
             }
             if(!IsPlayerRobbed() && player.GetSpeedMultiplier() == 0.0f) {
-                RobPlayer();
-                StartRobbAnimation();
+                StartRobb();
             }
             UpdateRaySize(ray, timer.GetElapsedTime() / timeAtMaxRayAnimation);
             yield return null;
         }
     }
 
+    protected void StartRobb() {
+        // Désactiver les pouvoirs
+        RobPlayer();
+        speedMultiplierController.AddMultiplier(speedBoostOnRob);
+        StartRobbAnimation();
+    }
+
     protected void StartRobbAnimation() {
         gm.postProcessManager.StartBlackAndWhiteEffect();
         ShakeScreenOnRob();
         TriggerHitEffect();
+        changeScaleFluctuator.GoTo(robbModeYScale, timeToChangeScale);
         // Start Sound
         // Réduire le son de la musique
+        // Noircir l'écran petit à petit !
     }
 
-    protected static void RobPlayer() {
+    public static void RobPlayer() {
+        // Lancer le compte à rebours !
         isPlayerRobbed = true;
     }
 
-    protected static void UnrobPlayer() {
-        isPlayerRobbed = true;
+    protected void StartUnrobb() {
+        // Réactiver les pouvoirs
+        UnrobPlayer();
+        StartUnrobbAnimation();
+    }
+
+    protected void StartUnrobbAnimation() {
+        gm.postProcessManager.StopBlackAndWhiteEffect();
+        ShakeScreenOnRob();
+        TriggerHitEffect();
+        changeScaleFluctuator.GoTo(initialYScale, timeToChangeScale);
+    }
+
+    public static void UnrobPlayer() {
+        isPlayerRobbed = false;
     }
 
     public static bool IsPlayerRobbed() {
@@ -161,12 +200,16 @@ public class SoulRobber : Ennemi {
 
     public void StopFirering() {
         DestroyRay();
-        player.speedMultiplierController.RemoveMultiplier(currentMultiplier);
-        currentMultiplier = null;
-        if(fireringCoroutine != null) {
+        RemoveCurrentSpeedMultiplier();
+        if (fireringCoroutine != null) {
             StopCoroutine(fireringCoroutine);
             fireringCoroutine = null;
         }
+    }
+
+    protected void RemoveCurrentSpeedMultiplier() {
+        player.speedMultiplierController.RemoveMultiplier(currentMultiplier);
+        currentMultiplier = null;
     }
 
     protected void DestroyRay() {
@@ -205,12 +248,6 @@ public class SoulRobber : Ennemi {
     protected override void HitContinuousPlayerSpecific() {
     }
 
-    public Vector3 TeleportAway() {
-        Vector3 bestPosition = GetBestPositionToTeleportAway();
-        transform.position = bestPosition;
-        return bestPosition;
-    }
-
     public Vector3 GetBestPositionToTeleportAway() {
         List<Tuple<Vector3, float>> positionsAndScores = new List<Tuple<Vector3, float>>();
         Vector3 up = gm.gravityManager.Up();
@@ -245,5 +282,15 @@ public class SoulRobber : Ennemi {
     protected void StartTeleportAnimation(float duration) {
         GetComponent<Renderer>().material.SetFloat(SHADER_TELEPORT_STARTING_TIME, Time.time);
         GetComponent<Renderer>().material.SetFloat(SHADER_TELEPORT_DURATION, duration);
+    }
+
+    public float GetYScale() {
+        return transform.localScale.y;
+    }
+
+    public void SetYScale(float value) {
+        Vector3 scale = transform.localScale;
+        scale.y = value;
+        transform.localScale = scale;
     }
 }
