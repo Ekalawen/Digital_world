@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EZCameraShake;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,8 @@ public class SoulRobber : Ennemi {
     public static string SHADER_TELEPORT_DURATION = "_TeleportDuration";
     public static string VFX_RAY_THICKNESS = "Thickness";
     public static string VFX_RAY_DISTORSION_AMOUNT = "DistorsionAmount";
+
+    protected static bool isPlayerRobbed = false;
 
     [Header("Ray")]
     public GameObject rayPrefab;
@@ -29,6 +32,9 @@ public class SoulRobber : Ennemi {
     public float durationBeforeTeleportAway = 0.3f;
     public int nbPositionsTestForTeleportAway = 100;
     public GameObject teleportPrevisualizationLightningPrefab;
+    public float screenShakeTeleportMagnitude = 10.0f;
+    public float screenShakeTeleportRoughness = 10.0f;
+    public float screenShakeTeleportDuration = 0.2f;
 
     protected SoulRobberController soulRobberController;
     protected EventManager.DeathReason currentDeathReason; // TO INIT !!
@@ -66,7 +72,7 @@ public class SoulRobber : Ennemi {
         Lightning lightning = Instantiate(teleportPrevisualizationLightningPrefab).GetComponent<Lightning>();
         lightning.Initialize(transform.position, teleportPosition);
         gm.soundManager.PlayCatchSoulRobberClip(transform.position);
-        ShakeScreen();
+        ShakeScreenOnTeleport();
 
         yield return new WaitForSeconds(durationBeforeTeleportAway);
         transform.position = teleportPosition;
@@ -77,6 +83,15 @@ public class SoulRobber : Ennemi {
         if (soulRobberController.IsPlayerVisible()) {
             StartFirering();
         }
+    }
+
+    protected void ShakeScreenOnTeleport() {
+        CameraShaker cs = CameraShaker.Instance;
+        cs.ShakeOnce(screenShakeTeleportMagnitude, screenShakeTeleportRoughness, 0.1f, screenShakeTeleportDuration);
+    }
+
+    protected void ShakeScreenOnRob() {
+        ShakeScreen();
     }
 
     public float GetRadius() {
@@ -115,12 +130,33 @@ public class SoulRobber : Ennemi {
             if (timer.GetAvancement() > 1) {
                 currentMultiplier.speedAdded = -timer.GetAvancement();
             }
-            if(player.GetSpeedMultiplier() == 0.0f) {
-                gm.postProcessManager.StartBlackAndWhiteEffect();
+            if(!IsPlayerRobbed() && player.GetSpeedMultiplier() == 0.0f) {
+                RobPlayer();
+                StartRobbAnimation();
             }
             UpdateRaySize(ray, timer.GetElapsedTime() / timeAtMaxRayAnimation);
             yield return null;
         }
+    }
+
+    protected void StartRobbAnimation() {
+        gm.postProcessManager.StartBlackAndWhiteEffect();
+        ShakeScreenOnRob();
+        TriggerHitEffect();
+        // Start Sound
+        // Réduire le son de la musique
+    }
+
+    protected static void RobPlayer() {
+        isPlayerRobbed = true;
+    }
+
+    protected static void UnrobPlayer() {
+        isPlayerRobbed = true;
+    }
+
+    public static bool IsPlayerRobbed() {
+        return isPlayerRobbed;
     }
 
     public void StopFirering() {

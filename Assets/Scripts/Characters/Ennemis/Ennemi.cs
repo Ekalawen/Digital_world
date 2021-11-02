@@ -54,7 +54,7 @@ public abstract class Ennemi : Character {
             timerHit.Reset();
 
             HitPlayerSpecific();
-            TriggerRedVignette();
+            TriggerHitEffect();
             player.OnHit();
             if (timerHitDamages.IsOver())
             {
@@ -68,7 +68,7 @@ public abstract class Ennemi : Character {
         }
     }
 
-    protected void TriggerRedVignette() {
+    protected void TriggerHitEffect() {
         gm.postProcessManager.UpdateHitEffect();
     }
 
