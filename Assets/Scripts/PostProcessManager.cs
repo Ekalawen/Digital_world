@@ -15,6 +15,8 @@ public enum DissolveEffectType {
 
 public class PostProcessManager : MonoBehaviour {
 
+    public static string LAYER_NO_BLACK_AND_WHITE_POST_PROCESS = "NoBlackAndWhitePostProcessing";
+
     [Header("Grip")]
     public float changeTimeGrip = 0.075f;
     public float intensityGrip = 0.315f;
@@ -84,6 +86,7 @@ public class PostProcessManager : MonoBehaviour {
     protected Coroutine wallPostProcessCoroutine = null;
     protected GameManager gm;
     protected new Camera camera;
+    protected Camera noBlackAndWhiteCamera;
     protected VisualEffect dashVfx;
     protected VisualEffect shiftVfx;
     protected VisualEffect jumpVfx;
@@ -100,6 +103,7 @@ public class PostProcessManager : MonoBehaviour {
     public void Initialize() {
         gm = GameManager.Instance;
         camera = gm.player.camera;
+        noBlackAndWhiteCamera = gm.player.noBlackAndWhiteCamera;
         dashVfx = gm.player.dashVfx;
         shiftVfx = gm.player.shiftVfx;
         jumpVfx = gm.player.jumpVfx;
@@ -198,10 +202,14 @@ public class PostProcessManager : MonoBehaviour {
     }
 
     public void StartBlackAndWhiteEffect() {
+        noBlackAndWhiteCamera.gameObject.SetActive(true);
+        camera.cullingMask = camera.cullingMask & ~ (1 << LayerMask.NameToLayer(LAYER_NO_BLACK_AND_WHITE_POST_PROCESS)); // remove B&W layer
         soulRobberWeightFluctuator.GoTo(1.0f, timeToBlackAndWhite);
     }
 
     public void StopBlackAndWhiteEffect() {
+        noBlackAndWhiteCamera.gameObject.SetActive(false);
+        camera.cullingMask = camera.cullingMask | (1 << LayerMask.NameToLayer(LAYER_NO_BLACK_AND_WHITE_POST_PROCESS)); // add B&W layer
         soulRobberWeightFluctuator.GoTo(0.0f, timeFromBlackAndWhite);
     }
 

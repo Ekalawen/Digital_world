@@ -39,8 +39,9 @@ public class Player : Character {
     public VisualEffect wallVfx;
     public VisualEffect jumpVfx;
     public CameraShaker cameraShaker;
+    public Camera noBlackAndWhiteCamera;
 
-	[HideInInspector]
+    [HideInInspector]
 	public GameObject personnage;
 	[HideInInspector]
 	public Console console;

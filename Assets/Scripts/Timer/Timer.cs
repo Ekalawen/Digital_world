@@ -21,7 +21,7 @@ public class Timer {
     }
 
     public bool IsOver() {
-        return !stoped && GetTimeSinceLevelLoad() - debut > duree;
+        return !stoped && GetTimeSinceLevelLoad() - debut >= duree;
     }
 
     public void Reset() {
