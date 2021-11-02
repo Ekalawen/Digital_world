@@ -162,8 +162,9 @@ public class SoulRobber : Ennemi {
         changeScaleFluctuator.GoTo(robbModeYScale, timeToChangeScale);
     }
 
-    public void StartRobb()
-    {
+    public void StartRobb() {
+        if (gm.eventManager.IsGameOver())
+            return;
         RobPlayer();
         gm.postProcessManager.StartBlackAndWhiteEffect(durationRobBeforeKill);
         ShakeScreenOnRob();
