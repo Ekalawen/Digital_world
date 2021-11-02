@@ -546,7 +546,6 @@ public class EventManager : MonoBehaviour {
 
     private void StopEventsAndEndEvents() {
         StartUnrobbIfSoulRobbers();
-        //gm.postProcessManager.StopAllCoroutines();
         if (coroutineDeathCubesCreation != null)
             StopCoroutine(coroutineDeathCubesCreation);
         if (coroutineCubesDestructions != null)
@@ -555,7 +554,7 @@ public class EventManager : MonoBehaviour {
     }
 
     protected void StartUnrobbIfSoulRobbers() {
-        if (SoulRobber.IsPlayerRobbed()) {
+        if (SoulRobber.IsPlayerRobbed() && IsGameWin()) {
             SoulRobber soulRobber = gm.ennemiManager.GetEnnemisOfType<SoulRobber>().First();
             soulRobber.StartUnrobb();
         }
