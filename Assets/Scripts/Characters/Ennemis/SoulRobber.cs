@@ -13,6 +13,7 @@ public class SoulRobber : Ennemi {
 
     public static string SHADER_TELEPORT_STARTING_TIME = "_TeleportStartingTime";
     public static string SHADER_TELEPORT_DURATION = "_TeleportDuration";
+    public static string SHADER_ENTROPY_SOURCE = "_EntropySource";
     public static string VFX_RAY_THICKNESS = "Thickness";
     public static string VFX_RAY_DISTORSION_AMOUNT = "DistorsionAmount";
 
@@ -59,6 +60,7 @@ public class SoulRobber : Ennemi {
         soulRobberController = GetComponent<SoulRobberController>();
         changeScaleFluctuator = new Fluctuator(this, GetYScale, SetYScale);
         initialYScale = transform.localScale.y;
+        GetComponent<Renderer>().material.SetVector(SHADER_ENTROPY_SOURCE, transform.position);
         StartTeleportAnimation(soulRobberController.tempsInactifDebutJeu);
     }
 
