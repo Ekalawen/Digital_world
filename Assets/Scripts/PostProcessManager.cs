@@ -80,6 +80,8 @@ public class PostProcessManager : MonoBehaviour {
     public Volume soulRobberVolume;
     public float timeToBlackAndWhite = 0.5f;
     public float timeFromBlackAndWhite = 0.5f;
+    public AnimationCurve soulRobberBlackCurve;
+    public float soulRobberMinBlackValue = 0.1f;
 
     protected Coroutine gripCoroutine = null;
     protected Coroutine hitCoroutine = null;
@@ -99,6 +101,7 @@ public class PostProcessManager : MonoBehaviour {
     protected Fluctuator wallLensDistorsionFluctuator;
     protected Fluctuator wallChromaticAberrationFluctuator;
     protected Fluctuator soulRobberWeightFluctuator;
+    protected Fluctuator soulRobberBlackFluctuator;
 
     public void Initialize() {
         gm = GameManager.Instance;
@@ -115,6 +118,7 @@ public class PostProcessManager : MonoBehaviour {
         wallLensDistorsionFluctuator = new Fluctuator(this, GetLensDistorsionIntensity, SetLensDistorsionIntensity, wallPostProcessCurve);
         wallChromaticAberrationFluctuator = new Fluctuator(this, GetChromaticAberrationIntensity, SetChromaticAberrationIntensity, wallPostProcessCurve);
         soulRobberWeightFluctuator = new Fluctuator(this, GetSoulRobberWeight, SetSoulRobberWeight);
+        soulRobberBlackFluctuator = new Fluctuator(this, GetSoulRobberBlack, SetSoulRobberBlack);
 
         ResetSkyboxParameters();
         hitVolume.weight = 0;
@@ -201,16 +205,18 @@ public class PostProcessManager : MonoBehaviour {
         lensDistortion.intensity.Override(intensity);
     }
 
-    public void StartBlackAndWhiteEffect() {
+    public void StartBlackAndWhiteEffect(float blackDuration) {
         noBlackAndWhiteCamera.gameObject.SetActive(true);
         camera.cullingMask = camera.cullingMask & ~ (1 << LayerMask.NameToLayer(LAYER_NO_BLACK_AND_WHITE_POST_PROCESS)); // remove B&W layer
         soulRobberWeightFluctuator.GoTo(1.0f, timeToBlackAndWhite);
+        soulRobberBlackFluctuator.GoTo(soulRobberMinBlackValue, blackDuration, soulRobberBlackCurve);
     }
 
     public void StopBlackAndWhiteEffect() {
         noBlackAndWhiteCamera.gameObject.SetActive(false);
         camera.cullingMask = camera.cullingMask | (1 << LayerMask.NameToLayer(LAYER_NO_BLACK_AND_WHITE_POST_PROCESS)); // add B&W layer
         soulRobberWeightFluctuator.GoTo(0.0f, timeFromBlackAndWhite);
+        soulRobberBlackFluctuator.GoTo(1.0f, 0.0f);
     }
 
     protected float GetChromaticAberrationIntensity() {
@@ -231,6 +237,18 @@ public class PostProcessManager : MonoBehaviour {
 
     protected void SetSoulRobberWeight(float weight) {
         soulRobberVolume.weight = weight;
+    }
+
+    protected float GetSoulRobberBlack() {
+        ColorAdjustments colorAdjustments;
+        soulRobberVolume.profile.TryGet<ColorAdjustments>(out colorAdjustments);
+        return colorAdjustments.colorFilter.value.r;
+    }
+
+    protected void SetSoulRobberBlack(float grayValue) {
+        ColorAdjustments colorAdjustments;
+        soulRobberVolume.profile.TryGet<ColorAdjustments>(out colorAdjustments);
+        colorAdjustments.colorFilter.Override(new Color(grayValue, grayValue, grayValue));
     }
 
     protected void StopGripEffect() {

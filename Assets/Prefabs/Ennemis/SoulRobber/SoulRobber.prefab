@@ -126,11 +126,11 @@ MonoBehaviour:
   screenShakeDecreaseTime: 0.4
   rayPrefab: {fileID: 8725588450735506554, guid: 42bbcf64b34827d40a92122e225ad43d,
     type: 3}
-  durationToFullRay: 6
+  durationToFullRay: 7
   speedDecreaseMultiplier:
     speedAdded: -1
     duration: Infinity
-    inDuration: 6
+    inDuration: 7
     outDuration: 0
     inCurve:
       serializedVersion: 2
@@ -163,16 +163,17 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     affectHeight: 0
-  timeAtMaxRayAnimation: 3
+  timeAtMaxRayAnimation: 2.5
   rayThicknessRange: {x: 0.1, y: 0.5}
   rayDistorsionAmountRange: {x: 0.1, y: 0.5}
-  durationBeforeTeleportAway: 1
+  durationBeforeTeleportAway: 2
   nbPositionsTestForTeleportAway: 300
   teleportPrevisualizationLightningPrefab: {fileID: 8725588450735506554, guid: baa542786ee4fb343ba168ec2c0f8234,
     type: 3}
   screenShakeTeleportMagnitude: 20
   screenShakeTeleportRoughness: 20
   screenShakeTeleportDuration: 0.3
+  durationRobBeforeKill: 10
   robbModeYScale: 0.4
   timeToChangeScale: 1
   speedBoostOnRob:
@@ -304,5 +305,5 @@ MonoBehaviour:
   tempsInactifDebutJeu: 0
   distanceToFleePlayer: 7
   wanderingVitesse: 3
-  fleeingVitesse: 5
+  fleeingVitesse: 4
   malusVerticalMouvement: 0.5

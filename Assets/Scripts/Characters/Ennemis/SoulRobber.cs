@@ -37,6 +37,7 @@ public class SoulRobber : Ennemi {
     public float screenShakeTeleportDuration = 0.2f;
 
     [Header("Robbing Mode")]
+    public float durationRobBeforeKill = 7.0f;
     public float robbModeYScale = 0.2f;
     public float timeToChangeScale = 0.4f;
     public SpeedMultiplier speedBoostOnRob;
@@ -49,6 +50,7 @@ public class SoulRobber : Ennemi {
     protected SpeedMultiplier currentMultiplier = null;
     protected Fluctuator changeScaleFluctuator;
     protected float initialYScale;
+    protected Coroutine robbCountdownCoroutine;
 
     public override void Start() {
         base.Start();
@@ -160,20 +162,38 @@ public class SoulRobber : Ennemi {
         changeScaleFluctuator.GoTo(robbModeYScale, timeToChangeScale);
     }
 
-    public void StartRobb() {
+    public void StartRobb()
+    {
         RobPlayer();
-        // Désactiver les pouvoirs
-        gm.postProcessManager.StartBlackAndWhiteEffect();
+        gm.postProcessManager.StartBlackAndWhiteEffect(durationRobBeforeKill);
         ShakeScreenOnRob();
         TriggerHitEffect();
         // Start Sound
         // Réduire le son de la musique
-        // Lancer le compte à rebours !
+        StartCountdown();
         // Noircir l'écran petit à petit !
+    }
+
+    protected void StartCountdown() {
+        StopCountdown();
+        robbCountdownCoroutine = StartCoroutine(CRobbCountdown());
+    }
+
+    protected void StopCountdown() {
+        foreach(SoulRobber soulRobber in gm.ennemiManager.GetEnnemisOfType<SoulRobber>()) {
+            if (soulRobber.robbCountdownCoroutine != null) {
+                soulRobber.StopCoroutine(soulRobber.robbCountdownCoroutine);
+            }
+        }
     }
 
     public static void RobPlayer() {
         isPlayerRobbed = true;
+    }
+
+    protected IEnumerator CRobbCountdown() {
+        yield return new WaitForSeconds(durationRobBeforeKill);
+        gm.eventManager.LoseGame(EventManager.DeathReason.SOUL_ROBBER_ASPIRATION);
     }
 
     public void StopEscaping() {
@@ -182,10 +202,12 @@ public class SoulRobber : Ennemi {
 
     public void StartUnrobb() {
         UnrobPlayer();
-        // Réactiver les pouvoirs
         gm.postProcessManager.StopBlackAndWhiteEffect();
         ShakeScreenOnRob();
         TriggerHitEffect();
+        StopCountdown();
+        // Start Sound
+        // Réaugmenter le son de la musique
     }
 
     public static void UnrobPlayer() {

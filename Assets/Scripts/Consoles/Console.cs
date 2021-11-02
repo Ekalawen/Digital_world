@@ -800,6 +800,10 @@ public class Console : MonoBehaviour {
                 AjouterMessageImportant (strings.deathFirstBossHit2, Console.TypeText.RED_TEXT, timeDeathMessage);
                 AjouterMessageImportant (strings.deathFirstBossHit1, Console.TypeText.RED_TEXT, timeDeathMessage);
                 break;
+            case EventManager.DeathReason.SOUL_ROBBER_ASPIRATION:
+                AjouterMessageImportant (strings.deathSoulRobberAspiration2, Console.TypeText.RED_TEXT, timeDeathMessage);
+                AjouterMessageImportant (strings.deathSoulRobberAspiration1, Console.TypeText.RED_TEXT, timeDeathMessage);
+                break;
         }
         DisplayEscapeButton();
         if (gm.eventManager.ShouldQuitOrReload() == EventManager.QuitType.RELOAD) {

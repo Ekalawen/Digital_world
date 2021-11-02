@@ -22,6 +22,7 @@ public class EventManager : MonoBehaviour {
         TRACER_BLAST,
         FIRST_BOSS_HIT,
         FIRST_BOSS_BLAST,
+        SOUL_ROBBER_ASPIRATION,
     };
     public enum EndEventType {
         DEATH_CUBES,
@@ -544,11 +545,20 @@ public class EventManager : MonoBehaviour {
     }
 
     private void StopEventsAndEndEvents() {
+        StartUnrobbIfSoulRobbers();
+        //gm.postProcessManager.StopAllCoroutines();
         if (coroutineDeathCubesCreation != null)
             StopCoroutine(coroutineDeathCubesCreation);
         if (coroutineCubesDestructions != null)
             StopCoroutine(coroutineCubesDestructions);
         StopEventsAtEndOfFrame();
+    }
+
+    protected void StartUnrobbIfSoulRobbers() {
+        if (SoulRobber.IsPlayerRobbed()) {
+            SoulRobber soulRobber = gm.ennemiManager.GetEnnemisOfType<SoulRobber>().First();
+            soulRobber.StartUnrobb();
+        }
     }
 
     public void RememberGameResult(bool success) {

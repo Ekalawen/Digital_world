@@ -10,7 +10,7 @@ public class RunAwayPlayerController : IController {
     public float distanceToFleePlayer = 5.0f; // La distance à laquelle on commence à fuir !
     public float wanderingVitesse; // vitesse de déplacement de base
 	public float fleeingVitesse; // vitesse de lorsque l'on doit fuir !
-    public float malusVerticalMouvement = 0f; // On peut faire en sorte de moins utiliser les hauteurs
+    public float malusVerticalMouvement = 0f; // On peut faire en sorte de moins utiliser les hauteurs : les cases sont malusVerticalMouvement * hauteurMouvement plus loins !
     //public GameObject trailPrefab;
 
 	protected Player player;
@@ -102,21 +102,27 @@ public class RunAwayPlayerController : IController {
         }
 
         Vector3 bestPos = allFarAwayPositions[0];
-        float minDist = Vector3.Distance(bestPos, transform.position);
+        float minWeight = ComputeWeightForPosition(bestPos);
         foreach (Vector3 pos in allFarAwayPositions) {
             Vector3 direction = pos - transform.position;
             float dist = direction.magnitude;
-            float verticalMalus = Mathf.Abs(gm.gravityManager.GetHeightInMap(pos) - gm.gravityManager.GetHeightInMap(transform.position)) * malusVerticalMouvement;
-            if (dist + verticalMalus < minDist) {
+            float weight = ComputeWeightForPosition(pos);
+            if (weight < minWeight) {
                 RaycastHit hit;
                 Ray ray = new Ray(transform.position, direction);
                 if (!Physics.Raycast(ray, out hit, dist)) {
-                    minDist = dist;
+                    minWeight = dist;
                     bestPos = pos;
                 }
             }
         }
         return bestPos;
+    }
+
+    public float ComputeWeightForPosition(Vector3 position) {
+        float dist = Vector3.Distance(position, transform.position);
+        float verticalMalus = Mathf.Abs(gm.gravityManager.GetHeightInMap(position) - gm.gravityManager.GetHeightInMap(transform.position)) * malusVerticalMouvement;
+        return dist + verticalMalus;
     }
 
     protected Vector3 GetOtherObjectifWandering() {
