@@ -15,6 +15,8 @@ public class SoulRobberController : EnnemiController {
     [Header("Events")]
     public UnityEvent startFireringEvents;
     public UnityEvent stopFireringEvents;
+    public UnityEvent startEscaping;
+    public UnityEvent stopEscaping;
 
     protected Ennemi ennemi;
     protected SoulRobberState state;
@@ -63,9 +65,11 @@ public class SoulRobberController : EnnemiController {
             stopFireringEvents.Invoke();
         }
         if(newState == SoulRobberState.ESCAPING && oldState != SoulRobberState.ESCAPING) {
+            startEscaping.Invoke();
             runAwayController.enabled = true;
         }
         if(newState != SoulRobberState.ESCAPING && oldState == SoulRobberState.ESCAPING) {
+            stopEscaping.Invoke();
             runAwayController.enabled = false;
         }
     }

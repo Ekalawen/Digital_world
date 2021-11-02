@@ -155,39 +155,37 @@ public class SoulRobber : Ennemi {
         }
     }
 
-    protected void StartRobb() {
-        // Désactiver les pouvoirs
-        RobPlayer();
+    public void StartEscaping() {
         speedMultiplierController.AddMultiplier(speedBoostOnRob);
-        StartRobbAnimation();
+        changeScaleFluctuator.GoTo(robbModeYScale, timeToChangeScale);
     }
 
-    protected void StartRobbAnimation() {
+    public void StartRobb() {
+        RobPlayer();
+        // Désactiver les pouvoirs
         gm.postProcessManager.StartBlackAndWhiteEffect();
         ShakeScreenOnRob();
         TriggerHitEffect();
-        changeScaleFluctuator.GoTo(robbModeYScale, timeToChangeScale);
         // Start Sound
         // Réduire le son de la musique
+        // Lancer le compte à rebours !
         // Noircir l'écran petit à petit !
     }
 
     public static void RobPlayer() {
-        // Lancer le compte à rebours !
         isPlayerRobbed = true;
     }
 
-    protected void StartUnrobb() {
-        // Réactiver les pouvoirs
-        UnrobPlayer();
-        StartUnrobbAnimation();
+    public void StopEscaping() {
+        changeScaleFluctuator.GoTo(initialYScale, timeToChangeScale);
     }
 
-    protected void StartUnrobbAnimation() {
+    public void StartUnrobb() {
+        UnrobPlayer();
+        // Réactiver les pouvoirs
         gm.postProcessManager.StopBlackAndWhiteEffect();
         ShakeScreenOnRob();
         TriggerHitEffect();
-        changeScaleFluctuator.GoTo(initialYScale, timeToChangeScale);
     }
 
     public static void UnrobPlayer() {
