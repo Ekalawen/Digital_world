@@ -211,6 +211,7 @@ public class SoulRobber : Ennemi {
     protected IEnumerator CRobbCountdown() {
         yield return new WaitForSeconds(durationRobBeforeKill);
         gm.eventManager.LoseGame(EventManager.DeathReason.SOUL_ROBBER_ASPIRATION);
+        gm.postProcessManager.SetBlackAndWhiteEffectToBarelyVisible();
     }
 
     public void StopEscaping() {
