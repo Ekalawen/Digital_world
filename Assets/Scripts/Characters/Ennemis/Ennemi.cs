@@ -10,6 +10,7 @@ public abstract class Ennemi : Character {
     public float timeMalusOnHit = 5.0f; // Le temps que perd le joueur lorsqu'il se fait touché !
     public float timeBetweenTwoHits = 0.2f;
     public float timeBetweenTwoHitsDamages = 1.0f;
+    public GeoData geoDataHit;
 
     [Header("Screen Shake")]
     public float screenShakeMagnitude = 5.0f;
@@ -21,7 +22,7 @@ public abstract class Ennemi : Character {
     protected Timer timerHit;
     protected Timer timerHitDamages;
 
-	public override void Start () {
+    public override void Start () {
         base.Start();
         gm = GameManager.Instance;
         player = gm.player;
@@ -56,6 +57,7 @@ public abstract class Ennemi : Character {
             HitPlayerSpecific();
             TriggerHitEffect();
             player.OnHit();
+            player.geoSphere.AddGeoPoint(geoDataHit);
             if (timerHitDamages.IsOver())
             {
                 timerHitDamages.Reset();

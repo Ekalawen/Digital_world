@@ -40,6 +40,7 @@ public class Player : Character {
     public VisualEffect jumpVfx;
     public CameraShaker cameraShaker;
     public Camera noBlackAndWhiteCamera;
+    public GeoSphere geoSphere;
 
     [HideInInspector]
 	public GameObject personnage;
@@ -105,6 +106,7 @@ public class Player : Character {
         personnage.name = "Joueur";
         controller = personnage.GetComponent<CharacterController>();
         gm = GameManager.Instance;
+        geoSphere.Initialize();
         inputManager = InputManager.Instance;
         GetPlayerSensitivity();
         bSetUpRotation = true;

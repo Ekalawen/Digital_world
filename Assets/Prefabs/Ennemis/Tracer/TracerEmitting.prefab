@@ -132,15 +132,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 0}
+  speedMultiplierController: {fileID: 0}
   timeMalusOnHit: 1
   timeBetweenTwoHits: 0.2
   timeBetweenTwoHitsDamages: 0.2
+  geoDataHit:
+    color: {r: 47.937256, g: 1.0039216, b: 1.0039216, a: 1}
+    type: 1
+    duration: 1
+    targetObject: {fileID: 4155951620625606}
   screenShakeMagnitude: 5
   screenShakeRoughness: 15
+  screenShakeDecreaseTime: 0.2
   dureeEmiting: 4
   rangeEmiting: 5
   forceEmiting: 1
-  explosionParticlesPrefab: {fileID: 0}
   emissiveMaterial: {fileID: 2100000, guid: fa7194e0932922541894e11fdb036cc2, type: 2}
 --- !u!114 &2567549418447726992
 MonoBehaviour:
@@ -161,37 +167,21 @@ MonoBehaviour:
   dureePauseEntreNodes: 0.05
   goToPosJustBeforePlayer: 1
   doesPathAvoidCubes: 0
-  dureeEmitting: 4
-  startEmittingEvents:
+  dureeAttack: 4
+  startAttackEvents:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 114768374186490010}
-        m_TargetAssemblyTypeName: TracerEmitting, Assembly-CSharp
-        m_MethodName: StartEmiting
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  stopEmittingEvents:
+      m_Calls: []
+  stopAttackEvents:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 114768374186490010}
-        m_TargetAssemblyTypeName: TracerEmitting, Assembly-CSharp
-        m_MethodName: StopEmiting
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
+  waitingTimeOnDetect: 0.4
+  detectPlayerEvents:
+    m_PersistentCalls:
+      m_Calls: []
+  dureeCancel: 2
+  cancelAttackEvents:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &6524706361763154274
 MonoBehaviour:
   m_ObjectHideFlags: 0
