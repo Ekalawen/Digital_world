@@ -171,7 +171,7 @@ public class SoulRobber : Ennemi {
         }
     }
 
-    public void StartEscaping() {
+    public virtual void StartEscaping() {
         speedMultiplierController.AddMultiplier(speedBoostOnRob);
         changeScaleFluctuator.GoTo(robbModeYScale, timeToChangeScale);
         robbingGeoPoint = player.geoSphere.AddGeoPoint(robbingGeoData);
@@ -214,7 +214,7 @@ public class SoulRobber : Ennemi {
         gm.postProcessManager.SetBlackAndWhiteEffectToBarelyVisible();
     }
 
-    public void StopEscaping() {
+    public virtual void StopEscaping() {
         changeScaleFluctuator.GoTo(initialYScale, timeToChangeScale);
         if (robbingGeoPoint != null) {
             robbingGeoPoint.Stop();

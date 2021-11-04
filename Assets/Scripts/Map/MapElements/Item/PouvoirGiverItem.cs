@@ -10,8 +10,13 @@ public class PouvoirGiverItem : Item {
     public PouvoirBinding pouvoirBinding;
 
     public override void OnTrigger(Collider hit) {
+        GivePouvoir(gm, pouvoirPrefab, pouvoirBinding);
+    }
+
+    public static void GivePouvoir(GameManager gm, GameObject pouvoirPrefab, PouvoirBinding pouvoirBinding) {
         gm.player.SetPouvoir(pouvoirPrefab, pouvoirBinding);
         IPouvoir pouvoir = pouvoirPrefab.GetComponent<IPouvoir>();
         gm.console.CapturePouvoirGiverItem(pouvoir.nom, pouvoirBinding);
+        gm.pointeur.Initialize();
     }
 }

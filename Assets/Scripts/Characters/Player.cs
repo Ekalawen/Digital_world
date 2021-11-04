@@ -145,11 +145,6 @@ public class Player : Character {
         InitPouvoirs();
     }
 
-    internal void SetPouvoir(object pouvoirDash333Prefab, PouvoirGiverItem.PouvoirBinding pouvoirBinding)
-    {
-        throw new NotImplementedException();
-    }
-
     public void GetPlayerSensitivity() {
         sensibilite = PrefsManager.GetFloat(PrefsManager.MOUSE_SPEED_KEY, MenuOptions.defaultMouseSpeed);
     }
