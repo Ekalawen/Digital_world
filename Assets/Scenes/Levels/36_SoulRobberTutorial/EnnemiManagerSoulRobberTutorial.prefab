@@ -7,10 +7,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 8964305910077050636, guid: 5245853b69c624a4aa5a3d6136e5cd47,
+    - target: {fileID: 8964305910077050634, guid: 5245853b69c624a4aa5a3d6136e5cd47,
         type: 3}
-      propertyPath: m_Name
-      value: EnnemiManagerFirstSonde
+      propertyPath: m_RootOrder
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8964305910077050634, guid: 5245853b69c624a4aa5a3d6136e5cd47,
         type: 3}
@@ -29,6 +29,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8964305910077050634, guid: 5245853b69c624a4aa5a3d6136e5cd47,
         type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8964305910077050634, guid: 5245853b69c624a4aa5a3d6136e5cd47,
+        type: 3}
       propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
@@ -40,16 +45,6 @@ PrefabInstance:
     - target: {fileID: 8964305910077050634, guid: 5245853b69c624a4aa5a3d6136e5cd47,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8964305910077050634, guid: 5245853b69c624a4aa5a3d6136e5cd47,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8964305910077050634, guid: 5245853b69c624a4aa5a3d6136e5cd47,
-        type: 3}
-      propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8964305910077050634, guid: 5245853b69c624a4aa5a3d6136e5cd47,
@@ -69,31 +64,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8964305910077050635, guid: 5245853b69c624a4aa5a3d6136e5cd47,
         type: 3}
-      propertyPath: ennemisPrefabs.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 8964305910077050635, guid: 5245853b69c624a4aa5a3d6136e5cd47,
-        type: 3}
       propertyPath: nbEnnemis.Array.size
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8964305910077050635, guid: 5245853b69c624a4aa5a3d6136e5cd47,
         type: 3}
       propertyPath: nbEnnemis.Array.data[0]
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8964305910077050635, guid: 5245853b69c624a4aa5a3d6136e5cd47,
-        type: 3}
-      propertyPath: ennemisPrefabs.Array.data[1]
-      value: 
-      objectReference: {fileID: 7959482423994999332, guid: 8be1d943295434f4bb5463a003e189b6,
-        type: 3}
-    - target: {fileID: 8964305910077050635, guid: 5245853b69c624a4aa5a3d6136e5cd47,
-        type: 3}
-      propertyPath: ennemisPrefabs.Array.data[2]
-      value: 
-      objectReference: {fileID: 8240303152923931737, guid: 56827ebd6a75d7f4b8b7787c5b36d39e,
-        type: 3}
     - target: {fileID: 8964305910077050635, guid: 5245853b69c624a4aa5a3d6136e5cd47,
         type: 3}
       propertyPath: nbEnnemis.Array.data[1]
@@ -103,6 +81,34 @@ PrefabInstance:
         type: 3}
       propertyPath: nbEnnemis.Array.data[2]
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8964305910077050635, guid: 5245853b69c624a4aa5a3d6136e5cd47,
+        type: 3}
+      propertyPath: ennemisPrefabs.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8964305910077050635, guid: 5245853b69c624a4aa5a3d6136e5cd47,
+        type: 3}
+      propertyPath: ennemisPrefabs.Array.data[0]
+      value: 
+      objectReference: {fileID: 1252573298759596, guid: 1c70aaceaab0acf419227d5e1206d422,
+        type: 3}
+    - target: {fileID: 8964305910077050635, guid: 5245853b69c624a4aa5a3d6136e5cd47,
+        type: 3}
+      propertyPath: ennemisPrefabs.Array.data[1]
+      value: 
+      objectReference: {fileID: 1092124540126664, guid: dd5132e9c49f88444af0393c85142a25,
+        type: 3}
+    - target: {fileID: 8964305910077050635, guid: 5245853b69c624a4aa5a3d6136e5cd47,
+        type: 3}
+      propertyPath: ennemisPrefabs.Array.data[2]
+      value: 
+      objectReference: {fileID: 8240303152923931737, guid: 56827ebd6a75d7f4b8b7787c5b36d39e,
+        type: 3}
+    - target: {fileID: 8964305910077050636, guid: 5245853b69c624a4aa5a3d6136e5cd47,
+        type: 3}
+      propertyPath: m_Name
+      value: EnnemiManagerSoulRobberTutorial
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5245853b69c624a4aa5a3d6136e5cd47, type: 3}

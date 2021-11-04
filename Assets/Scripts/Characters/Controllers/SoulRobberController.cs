@@ -38,7 +38,6 @@ public class SoulRobberController : EnnemiController {
         switch(state) {
             case SoulRobberState.WANDERING:
                 if(wanderingTeleportWaitingTimeTimer.IsOver()) {
-                    Debug.Log($"ElapsedTime = {wanderingTeleportWaitingTimeTimer.GetElapsedTime()}/{wanderingTeleportWaitingTimeTimer.GetDuree()}");
                     shouldTeleportEvents.Invoke();
                     InitWanderingTimer();
                 }

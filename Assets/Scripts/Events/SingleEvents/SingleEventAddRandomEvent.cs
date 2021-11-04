@@ -10,7 +10,6 @@ public class SingleEventAddRandomEvent : SingleEvent {
 
     public override void TriggerSpecific() {
         RandomEvent newEvent = eventManager.AddRandomEvent(randomEventPrefab);
-        newEvent.Start();
         if (triggerRandomEventOnAdd) {
             newEvent.TriggerEvent();
         }

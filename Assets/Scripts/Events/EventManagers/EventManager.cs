@@ -137,6 +137,7 @@ public class EventManager : MonoBehaviour {
     public RandomEvent AddRandomEvent(GameObject randomEventPrefab) {
         RandomEvent randomEvent = Instantiate(randomEventPrefab, randomEventsFolder).GetComponent<RandomEvent>();
         randomEvents.Add(randomEvent);
+        randomEvent.Initialize();
         return randomEvent;
     }
 

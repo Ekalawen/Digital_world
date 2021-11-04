@@ -16,7 +16,7 @@ public abstract class RandomEvent : MonoBehaviour {
     protected float dureeCourante = 0.0f;
     protected GameManager gm;
 
-    public virtual void Start() {
+    public virtual void Initialize() {
         gm = GameManager.Instance;
         StartCoroutine(CStartEvents());
     }
@@ -24,7 +24,8 @@ public abstract class RandomEvent : MonoBehaviour {
     protected IEnumerator CStartEvents() {
         yield return new WaitForSeconds(startOffset);
         while (!gm.eventManager.IsGameOver()) {
-            yield return new WaitForSeconds(NextTime());
+            float nextTime = NextTime();
+            yield return new WaitForSeconds(nextTime);
             if(!bEventIsOn) {
                 TriggerEvent();
             }

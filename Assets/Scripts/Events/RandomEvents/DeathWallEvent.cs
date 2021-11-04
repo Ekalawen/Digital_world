@@ -16,8 +16,8 @@ public class DeathWallEvent : RandomEvent {
     protected MapManager map;
     protected List<MovingSpike> movingSpikes;
 
-    public override void Start() {
-        base.Start();
+    public override void Initialize() {
+        base.Initialize();
         map = gm.map;
         movingSpikes = new List<MovingSpike>();
         this.esperanceDuree = ComputeEsperanceDuree();
