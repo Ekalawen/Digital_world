@@ -53,7 +53,7 @@ public class SoulRobberController : EnnemiController {
         if(SoulRobber.IsPlayerRobbed()) {
             SetState(SoulRobberState.ESCAPING);
         } else {
-            if(IsPlayerVisible()) {
+            if(IsWaitingTimeOver() && IsPlayerVisible()) {
                 SetState(SoulRobberState.FIRERING);
             } else {
                 SetState(SoulRobberState.WANDERING);

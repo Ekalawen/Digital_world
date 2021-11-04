@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,27 +12,38 @@ public abstract class IController : MonoBehaviour {
 	protected CharacterController controller;
 	protected new Rigidbody rigidbody;
     protected Character character;
+    protected Timer waitingTimer;
 
     public virtual void Start() {
         gm = GameManager.Instance;
 		controller = GetComponent<CharacterController> ();
         rigidbody = GetComponent<Rigidbody>();
         character = GetComponent<Character>();
+        SetWaitingTime(tempsInactifDebutJeu);
         if (controller == null && rigidbody == null)
             Debug.LogError("Il est nécessaire d'avoir un CharacterController OU un rigidbody avec un " + name + " !");
     }
 
-	public virtual void Update () {
+	public virtual void Update ()
+    {
         // Si le temps est freeze, on ne fait rien
-        if(gm.IsTimeFreezed())
+        if (gm.IsTimeFreezed())
             return;
 
         // Si c'est encore trop tôt dans le jeu pour agir, on ne fait rien
-        if (Time.timeSinceLevelLoad < tempsInactifDebutJeu)
+        if (!IsWaitingTimeOver())
             return;
 
         UpdateSpecific();
-	}
+    }
+
+    public void SetWaitingTime(float waitingTime) {
+        waitingTimer = new Timer(waitingTime);
+    }
+
+    protected bool IsWaitingTimeOver() {
+        return waitingTimer.IsOver();
+    }
 
     protected abstract void UpdateSpecific();
 

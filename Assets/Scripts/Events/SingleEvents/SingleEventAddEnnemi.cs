@@ -13,6 +13,9 @@ public class SingleEventAddEnnemi : SingleEvent {
     [ConditionalHide("useRandomStartPosition", false)]
     public Vector3 customStartPosition;
 
+    [Header("Waiting Time")]
+    public bool shouldUseWaitingTime = false;
+
     protected GameObject ennemiPrefab;
 
     public override void Initialize() {
@@ -22,10 +25,17 @@ public class SingleEventAddEnnemi : SingleEvent {
 
     public override void TriggerSpecific() {
         for(int i = 0; i < nbEnnemisToAdd; i++) {
+            Ennemi ennemi;
             if(useRandomStartPosition) {
-                gm.ennemiManager.PopEnnemi(ennemiPrefab);
+                ennemi = gm.ennemiManager.PopEnnemi(ennemiPrefab);
             } else {
-                gm.ennemiManager.GenerateEnnemiFromPrefab(ennemiPrefab, customStartPosition);
+                ennemi = gm.ennemiManager.GenerateEnnemiFromPrefab(ennemiPrefab, customStartPosition);
+            }
+            if(!shouldUseWaitingTime) {
+                IController controller = ennemi.GetComponent<IController>();
+                if(controller != null) {
+                    controller.SetWaitingTime(0);
+                }
             }
         }
     }
