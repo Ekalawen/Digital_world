@@ -24,6 +24,7 @@ public class TracerBlast : Ennemi {
     public AnimationCurve blastLoadRotationCurve;
     public float blastLoadSoundOffset = 0.7f;
     public VisualEffect loadAndBlastVfx;
+    public GeoData loadingGeoData;
 
     [Header("Detection Animation")]
     public float detectionDureeRotation = 0.4f;
@@ -49,6 +50,7 @@ public class TracerBlast : Ennemi {
     protected AudioSource loadAndBlastSource = null;
     protected Coroutine onDetectPlayerCoroutine = null;
     protected EventManager.DeathReason currentDeathReason = EventManager.DeathReason.TRACER_HIT;
+    protected GeoPoint loadingGeoPoint = null;
 
     public override void Start() {
         base.Start();
@@ -117,6 +119,10 @@ public class TracerBlast : Ennemi {
     public void OnCancelBlast() {
         isCancelled = true;
         StopBlast();
+        if(loadingGeoPoint != null) {
+            loadingGeoPoint.Stop();
+            loadingGeoPoint = null;
+        }
         if(onDetectPlayerCoroutine != null) {
             StopCoroutine(onDetectPlayerCoroutine);
         }
@@ -139,6 +145,7 @@ public class TracerBlast : Ennemi {
         StartShaderColorChange(shaderMainColor, shaderLoadColor, blastLoadDuree);
         blastLoadRotationCoroutine = StartCoroutine(CRotation());
         loadAndBlastSource = gm.soundManager.PlayTracerBlastLoadClip(transform.position, blastLoadDuree + blastLoadSoundOffset);
+        loadingGeoPoint = player.geoSphere.AddGeoPoint(loadingGeoData);
     }
 
     protected void StartShaderColorChange(Color sourceColor, Color targetColor, float duration) {
@@ -173,6 +180,10 @@ public class TracerBlast : Ennemi {
         // Start blast animation
         EnnemiController ennemiController = GetComponent<EnnemiController>();
         StartShaderColorChange(shaderLoadColor, shaderMainColor, blastPousseeDuree);
+        if(loadingGeoPoint != null) {
+            loadingGeoPoint.Stop();
+            loadingGeoPoint = null;
+        }
         if(ennemiController != null && ennemiController.IsPlayerVisible() && !gm.eventManager.IsGameOver()) {
             HitPlayerCustom(EventManager.DeathReason.TRACER_BLAST, blastTimeMalus);
         }
