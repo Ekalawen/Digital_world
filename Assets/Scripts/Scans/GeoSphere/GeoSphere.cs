@@ -94,4 +94,12 @@ public class GeoSphere : MonoBehaviour {
     public Vector3 GetPlayerPosition() {
         return gm.player.transform.position;
     }
+
+    public void StopAllContinueGeoPoints() {
+        foreach(GeoPoint geoPoint in geoPoints) {
+            if(geoPoint.data.type == GeoData.GeoPointType.CONTINUE) {
+                geoPoint.Stop();
+            }
+        }
+    }
 }

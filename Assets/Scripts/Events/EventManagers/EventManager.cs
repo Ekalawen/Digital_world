@@ -435,6 +435,8 @@ public class EventManager : MonoBehaviour {
 
         gm.player.FreezePouvoirs();
 
+        gm.player.geoSphere.StopAllContinueGeoPoints();
+
         gm.console.LoseGame(reason);
 
         ScreenShakeOnLoseGame();
@@ -528,7 +530,10 @@ public class EventManager : MonoBehaviour {
         StopEventsAndEndEvents();
 
         gm.FreezeTime();
+
         gm.player.FreezePouvoirs();
+
+        gm.player.geoSphere.StopAllContinueGeoPoints();
 
         gm.historyManager.SetDureeGame(gm.timerManager.GetRealGameTimer().GetElapsedTime());
 
