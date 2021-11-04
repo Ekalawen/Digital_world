@@ -23,6 +23,7 @@ public class SoulRobber : Ennemi {
     public GameObject rayPrefab;
     public float durationToFullRay = 6.0f; // Not really "full" ray, but take 100% of speed of the player (can go higher if the player has speed boosts ! :))
     public SpeedMultiplier speedDecreaseMultiplier;
+    public GeoData rayGeoData;
 
     [Header("Ray Charging Animation")]
     public float timeAtMaxRayAnimation = 3.0f;
@@ -44,6 +45,7 @@ public class SoulRobber : Ennemi {
     public float robbModeYScale = 0.2f;
     public float timeToChangeScale = 0.4f;
     public SpeedMultiplier speedBoostOnRob;
+    public GeoData robbingGeoData;
 
     protected SoulRobberController soulRobberController;
     protected EventManager.DeathReason currentDeathReason; // TO INIT !!
@@ -54,6 +56,8 @@ public class SoulRobber : Ennemi {
     protected Fluctuator changeScaleFluctuator;
     protected float initialYScale;
     protected Coroutine robbCountdownCoroutine;
+    protected GeoPoint rayGeoPoint = null;
+    protected GeoPoint robbingGeoPoint = null;
 
     public override void Start() {
         base.Start();
@@ -137,13 +141,6 @@ public class SoulRobber : Ennemi {
         return controller.height * transform.localScale.x;
     }
 
-    protected void HitPlayerCustom(EventManager.DeathReason deathReason, float timeMalus) {
-        EventManager.DeathReason oldDeathReason = currentDeathReason;
-        currentDeathReason = deathReason;
-        HitPlayer(useCustomTimeMalus: true, customTimeMalus: timeMalus);
-        currentDeathReason = oldDeathReason;
-    }
-
     public void StartFirering() {
         if(teleportAwayCoroutine != null) {
             return;
@@ -159,6 +156,7 @@ public class SoulRobber : Ennemi {
         ray.Initialize(transform.position, GetRayTargetPosition());
         Timer timer = new Timer(durationToFullRay);
         currentMultiplier = player.speedMultiplierController.AddMultiplier(new SpeedMultiplier(speedDecreaseMultiplier));
+        rayGeoPoint = player.geoSphere.AddGeoPoint(rayGeoData);
 
         while(true) {
             ray.SetPosition(transform.position, GetRayTargetPosition(), parentSize: transform.localScale.x);
@@ -176,6 +174,7 @@ public class SoulRobber : Ennemi {
     public void StartEscaping() {
         speedMultiplierController.AddMultiplier(speedBoostOnRob);
         changeScaleFluctuator.GoTo(robbModeYScale, timeToChangeScale);
+        robbingGeoPoint = player.geoSphere.AddGeoPoint(robbingGeoData);
     }
 
     public void StartRobb() {
@@ -185,6 +184,7 @@ public class SoulRobber : Ennemi {
         gm.postProcessManager.StartBlackAndWhiteEffect(durationRobBeforeKill);
         ShakeScreenOnRob();
         TriggerHitEffect();
+        player.geoSphere.AddGeoPoint(geoDataHit);
         // Start Sound
         // Réduire le son de la musique
         StartCountdown();
@@ -216,6 +216,10 @@ public class SoulRobber : Ennemi {
 
     public void StopEscaping() {
         changeScaleFluctuator.GoTo(initialYScale, timeToChangeScale);
+        if (robbingGeoPoint != null) {
+            robbingGeoPoint.Stop();
+            robbingGeoPoint = null;
+        }
     }
 
     public void StartUnrobb() {
@@ -239,6 +243,10 @@ public class SoulRobber : Ennemi {
     public void StopFirering() {
         DestroyRay();
         RemoveCurrentSpeedMultiplier();
+        if(rayGeoPoint != null) {
+            rayGeoPoint.Stop();
+            rayGeoPoint = null;
+        }
         if (fireringCoroutine != null) {
             StopCoroutine(fireringCoroutine);
             fireringCoroutine = null;

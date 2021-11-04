@@ -39,7 +39,7 @@ public class GeoPoint : MonoBehaviour {
 
     protected void InitVfx() {
         vfx.SetVector4(VFX_COLOR, data.color);
-        vfx.SetFloat(VFX_DURATION, data.duration);
+        vfx.SetFloat(VFX_DURATION, data.GetDuration());
         if (data.type == GeoData.GeoPointType.IMPACT) {
             vfx.SetFloat(VFX_BURST_COUNT, vfx.GetFloat(VFX_SPAWN_RATE));
         }
@@ -53,7 +53,7 @@ public class GeoPoint : MonoBehaviour {
         }
     }
 
-    public void StopVfx() {
+    public void Stop() {
         vfx.SendEvent("Stop");
         StartCoroutine(CRemovePointIn(GetMaxParticleDuration()));
     }
