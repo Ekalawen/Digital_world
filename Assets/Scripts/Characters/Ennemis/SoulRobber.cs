@@ -99,7 +99,7 @@ public class SoulRobber : Ennemi {
     }
 
     protected IEnumerator CTeleport(TeleportMode teleportMode) {
-        Vector3 teleportPosition = GetBestPositionToTeleportAway(teleportMode);
+        Vector3 teleportPosition = GetBestPositionToTeleport(teleportMode);
         controller.enabled = false;
         StopFirering();
         StartTeleportAnimation(durationBeforeTeleportAway * 2);
@@ -294,11 +294,11 @@ public class SoulRobber : Ennemi {
     protected override void HitContinuousPlayerSpecific() {
     }
 
-    public Vector3 GetBestPositionToTeleportAway(TeleportMode teleportMode) {
+    public Vector3 GetBestPositionToTeleport(TeleportMode teleportMode) {
         List<Tuple<Vector3, float>> positionsAndScores = new List<Tuple<Vector3, float>>();
         Vector3 up = gm.gravityManager.Up();
         float maxRangeSqr = soulRobberController.distanceDeDetection * soulRobberController.distanceDeDetection;
-        float onPlayerMaxRangeSqr = (soulRobberController.distanceDeDetection / 2) * (soulRobberController.distanceDeDetection / 2);
+        float onPlayerMaxRangeSqr = maxRangeSqr / 4; // /2 deux fois c'est /4 ! :D
         for (int i = 0; i < nbPositionsTestForTeleportAway; i++) {
             Vector3 position = gm.map.GetFreeRoundedLocation();
             float score;
@@ -306,7 +306,7 @@ public class SoulRobber : Ennemi {
                 score = 0;
             } else {
                 position += up * 0.5f;
-                float sqrDistance = Vector3.SqrMagnitude(player.transform.position - transform.position);
+                float sqrDistance = Vector3.SqrMagnitude(player.transform.position - position);
                 score = sqrDistance;
                 if(sqrDistance > maxRangeSqr) {
                     score /= 10;

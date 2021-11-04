@@ -166,7 +166,7 @@ public class EnnemiManager : MonoBehaviour {
     public List<T> GetEnnemisOfType<T>() where T : Ennemi {
         List<T> ennemisOfType = new List<T>();
         foreach(Ennemi ennemi in ennemis) {
-            if((T)ennemi != null) {
+            if(ennemi.GetComponent<T>() != null) {
                 ennemisOfType.Add((T)ennemi);
             }
         }
