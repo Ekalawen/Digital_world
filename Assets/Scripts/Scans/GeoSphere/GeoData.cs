@@ -12,10 +12,18 @@ public class GeoData {
     public Color color;
     public GeoPointType type = GeoPointType.IMPACT;
     [Tooltip("Only for Impact")]
-    public float duration = 1.0f;
+    public float duration = 1.5f;
     public Transform targetObject = null;
 
     protected Vector3 targetPosition;
+
+    public GeoData(GeoData other) {
+        color = other.color;
+        type = other.type;
+        duration = other.duration;
+        targetObject = other.targetObject;
+        targetPosition = other.targetPosition;
+    }
 
     public Vector3 GetTargetAndSaveIt() {
         if(targetObject != null) {
