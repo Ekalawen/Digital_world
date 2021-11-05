@@ -66,7 +66,7 @@ public class SoulRobber : Ennemi {
         changeScaleFluctuator = new Fluctuator(this, GetYScale, SetYScale);
         initialYScale = transform.localScale.y;
         GetComponent<Renderer>().material.SetVector(SHADER_ENTROPY_SOURCE, transform.position);
-        StartTeleportAnimation(soulRobberController.tempsInactifDebutJeu);
+        StartTeleportAnimation(soulRobberController.tempsInactifDebutJeu, avancement: 0.5f);
     }
 
     public override void UpdateSpecific() {
@@ -333,8 +333,9 @@ public class SoulRobber : Ennemi {
         return Physics.Raycast(ray, out hit, player.camera.farClipPlane) && hit.collider.name == "Joueur";
     }
 
-    protected void StartTeleportAnimation(float duration) {
-        GetComponent<Renderer>().material.SetFloat(SHADER_TELEPORT_STARTING_TIME, Time.time);
+    protected void StartTeleportAnimation(float duration, float avancement = 0.0f) {
+        duration = duration / (1 - avancement);
+        GetComponent<Renderer>().material.SetFloat(SHADER_TELEPORT_STARTING_TIME, Time.time - duration * avancement);
         GetComponent<Renderer>().material.SetFloat(SHADER_TELEPORT_DURATION, duration);
     }
 
