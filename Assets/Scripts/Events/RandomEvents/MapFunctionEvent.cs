@@ -12,8 +12,13 @@ public class MapFunctionEvent : RandomEvent {
     public TimedLocalizedMessage startEventMessageImportant;
 
     protected override void StartEventConsoleMessage() {
-        gm.console.AjouterMessage(startEventMessage);
-        gm.console.AjouterMessageImportant(startEventMessageImportant, bAfficherInConsole: false);
+        if (!startEventMessage.localizedString.IsEmpty)
+        {
+            gm.console.AjouterMessage(startEventMessage);
+        }
+        if(!startEventMessageImportant.localizedString.IsEmpty) {
+            gm.console.AjouterMessageImportant(startEventMessageImportant, bAfficherInConsole: false);
+        }
     }
 
     protected override void StartEvent() {
