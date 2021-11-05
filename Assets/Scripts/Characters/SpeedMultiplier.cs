@@ -37,11 +37,11 @@ public class SpeedMultiplier {
 
     public float GetMultiplier() {
         float time = timer.GetElapsedTime();
-        if(time <= inDuration) {
+        if(time <= inDuration && inDuration > 0) {
             return inCurve.Evaluate(MathCurves.LinearReversed(0, inDuration, time)) * speedAdded;
-        } else if (time <= inDuration + duration) {
+        } else if (time <= inDuration + duration && duration > 0) {
             return speedAdded;
-        } else if (time <= GetTotalDuration()) {
+        } else if (time <= GetTotalDuration() && outDuration > 0) {
             return outCurve.Evaluate(MathCurves.LinearReversed(inDuration + duration, GetTotalDuration(), time)) * speedAdded;
         } else {
             return 0.0f;

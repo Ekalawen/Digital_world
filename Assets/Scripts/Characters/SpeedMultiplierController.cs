@@ -34,8 +34,15 @@ public class SpeedMultiplierController : MonoBehaviour {
     public float GetMultiplier() {
         float multiplier = 1.0f;
         foreach(SpeedMultiplier speedMultiplier in speedMultipliers) {
+            if(speedMultiplier.GetMultiplier() == float.NaN) {
+                Debug.Log("Ici !! (multiplier = Nan !)");
+            }
             multiplier += speedMultiplier.GetMultiplier(); // On veut ajouter les vitesses, et pas les multiplier pour éviter des trucs débiles extrêmes :)
         }
         return Mathf.Max(multiplier, 0);
+    }
+
+    public List<SpeedMultiplier> GetAllMultipliers() {
+        return speedMultipliers;
     }
 }

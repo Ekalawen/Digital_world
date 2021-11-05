@@ -68,4 +68,8 @@ public class Character : MonoBehaviour {
     public float GetSpeedMultiplier() {
         return speedMultiplierController.GetMultiplier();
     }
+
+    public SpeedMultiplier AddMultiplier(SpeedMultiplier speedMultiplier) {
+        return speedMultiplierController.AddMultiplier(speedMultiplier);
+    }
 }

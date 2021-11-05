@@ -46,6 +46,7 @@ public class SoulRobber : Ennemi {
     public float timeToChangeScale = 0.4f;
     public SpeedMultiplier speedBoostOnRob;
     public GeoData robbingGeoData;
+    public SpeedMultiplier playerSpeedBoostOnEndRobb;
 
     protected SoulRobberController soulRobberController;
     protected EventManager.DeathReason currentDeathReason; // TO INIT !!
@@ -155,7 +156,7 @@ public class SoulRobber : Ennemi {
         ray = Instantiate(rayPrefab, parent: transform).GetComponent<Lightning>();
         ray.Initialize(transform.position, GetRayTargetPosition());
         Timer timer = new Timer(durationToFullRay);
-        currentMultiplier = player.speedMultiplierController.AddMultiplier(new SpeedMultiplier(speedDecreaseMultiplier));
+        currentMultiplier = player.AddMultiplier(new SpeedMultiplier(speedDecreaseMultiplier));
         rayGeoPoint = player.geoSphere.AddGeoPoint(rayGeoData);
 
         while(true) {
@@ -172,7 +173,7 @@ public class SoulRobber : Ennemi {
     }
 
     public virtual void StartEscaping() {
-        speedMultiplierController.AddMultiplier(speedBoostOnRob);
+        AddMultiplier(speedBoostOnRob);
         changeScaleFluctuator.GoTo(robbModeYScale, timeToChangeScale);
         robbingGeoPoint = player.geoSphere.AddGeoPoint(robbingGeoData);
     }
@@ -228,6 +229,7 @@ public class SoulRobber : Ennemi {
         ShakeScreenOnRob();
         TriggerHitEffect();
         StopCountdown();
+        player.AddMultiplier(playerSpeedBoostOnEndRobb);
         // Start Sound
         // Réaugmenter le son de la musique
     }

@@ -9,6 +9,6 @@ public class SpeedBoostItem : Item {
     public SpeedMultiplier speedMultiplier;
 
     public override void OnTrigger(Collider hit) {
-        gm.player.speedMultiplierController.AddMultiplier(speedMultiplier);
+        gm.player.AddMultiplier(speedMultiplier);
     }
 }
