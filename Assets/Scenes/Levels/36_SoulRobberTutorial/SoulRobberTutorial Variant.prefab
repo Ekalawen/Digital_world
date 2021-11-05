@@ -123,10 +123,66 @@ MonoBehaviour:
     type: 0
     duration: 1
     targetObject: {fileID: 6519190716016666388}
+  playerSpeedBoostOnEndRobb:
+    speedAdded: 1
+    duration: 1.5
+    inDuration: 0
+    outDuration: 2.5
+    inCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    outCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    affectHeight: 0
   pouvoirPrefab: {fileID: 3719394210197205014, guid: 72ba1dd9fa2eebf449ca720d0c6cfe73,
     type: 3}
   pouvoirBinding: 2
-  matrixRegenerationEventPrefab: {fileID: 603832428504935423, guid: 327042445e3bb7c4882c3bb470e6976f,
+  matrixRegenerationEventPrefab: {fileID: 603832428504935423, guid: 2ac4490dcb740d24280ec0d6f34e08b7,
+    type: 3}
+  firstMatrixRegenerationEventPrefab: {fileID: 603832428504935423, guid: 327042445e3bb7c4882c3bb470e6976f,
     type: 3}
   soulRobbersRenfortsEventPrefab: {fileID: 603832428504935423, guid: e3d4b70e4b5285c40bb0abd420318d61,
     type: 3}

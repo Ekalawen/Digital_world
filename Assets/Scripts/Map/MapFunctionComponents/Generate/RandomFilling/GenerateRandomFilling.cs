@@ -14,6 +14,7 @@ public class GenerateRandomFilling : GenerateCubesMapFunction {
     public bool setDissolveTime = false;
     [ConditionalHide("setDissolveTime")]
     public float dissolveTime = 1.0f;
+    public int minNbBlocks = 0;
 
     public override void Activate() {
         GenerateRandomFillingCubes();
@@ -27,6 +28,10 @@ public class GenerateRandomFilling : GenerateCubesMapFunction {
         else
             farAwayPos = GetFarAwayPositions();
         List<Vector3> selectedPos = GaussianGenerator.SelectSomeProportionOfNaiveMethod<Vector3>(farAwayPos, proportionRandomFilling);
+        if(selectedPos.Count < minNbBlocks) {
+            farAwayPos.RemoveAll(p => selectedPos.Contains(p));
+            selectedPos.AddRange(GaussianGenerator.SelecteSomeNumberOf(farAwayPos, minNbBlocks - selectedPos.Count));
+        }
         foreach(Vector3 pos in selectedPos) {
             Vector3 finalPos = pos - Vector3.one * (int)Mathf.Floor(sizeCubeRandomFilling / 2.0f);
             FullBlock fb = new FullBlock(finalPos, Vector3Int.one * sizeCubeRandomFilling, cleanSpaceBeforeSpawning: false);

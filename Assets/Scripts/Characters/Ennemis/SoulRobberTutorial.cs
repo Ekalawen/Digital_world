@@ -14,6 +14,7 @@ public class SoulRobberTutorial : SoulRobber {
 
     [Header("Matrix Regeneration")]
     public GameObject matrixRegenerationEventPrefab;
+    public GameObject firstMatrixRegenerationEventPrefab;
 
     [Header("Renforts")]
     public GameObject soulRobbersRenfortsEventPrefab;
@@ -31,6 +32,8 @@ public class SoulRobberTutorial : SoulRobber {
             PouvoirGiverItem.GivePouvoir(gm, pouvoirPrefab, pouvoirBinding);
             gm.soundManager.PlayPouvoirAvailableClip();
             StartTimer();
+            gm.eventManager.StartSingleEvent(matrixRegenerationEventPrefab);
+            gm.eventManager.StartSingleEvent(firstMatrixRegenerationEventPrefab);
         }
     }
 
@@ -38,7 +41,6 @@ public class SoulRobberTutorial : SoulRobber {
         base.StopEscaping();
         if(!hasAlreadyStopEscaping) {
             hasAlreadyStopEscaping = true;
-            gm.eventManager.StartSingleEvent(matrixRegenerationEventPrefab);
             gm.eventManager.StartSingleEvent(soulRobbersRenfortsEventPrefab);
             gm.eventManager.StartSingleEvent(tracerRenfortEventPrefab);
         }
