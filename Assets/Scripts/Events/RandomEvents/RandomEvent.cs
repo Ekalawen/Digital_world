@@ -11,10 +11,14 @@ public abstract class RandomEvent : MonoBehaviour {
     public float varianceDuree = 0.0f;
     public float startOffset = 0.0f;
     public bool bPlayEndSound = true;
+    public bool triggerMaxNumberOfTimes = false;
+    [ConditionalHide("triggerMaxNumberOfTimes")]
+    public int nbMaxTriggers = 1;
 
     protected bool bEventIsOn = false;
     protected float dureeCourante = 0.0f;
     protected GameManager gm;
+    protected int nbTimesTriggered = 0;
 
     public virtual void Initialize() {
         gm = GameManager.Instance;
@@ -33,14 +37,14 @@ public abstract class RandomEvent : MonoBehaviour {
     }
 
     public void TriggerEvent() {
-        if (CanBeStarted())
-        {
+        if (CanBeStarted()) {
             bEventIsOn = true;
             dureeCourante = GaussianGenerator.Next(esperanceDuree, varianceDuree, 0.0f, 2 * esperanceDuree);
             StartEvent();
             PlayStartSound();
             StartEventConsoleMessage();
             StartCoroutine(CEndEvent());
+            nbTimesTriggered += 1;
         }
     }
 
@@ -61,7 +65,7 @@ public abstract class RandomEvent : MonoBehaviour {
     }
 
     public virtual bool CanBeStarted() {
-        return true;
+        return !triggerMaxNumberOfTimes || nbTimesTriggered < nbMaxTriggers;
     }
 
     protected abstract void StartEvent();

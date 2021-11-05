@@ -66,9 +66,10 @@ MonoBehaviour:
     timing: 0
     duree: 2
   ennemiIndice: 0
-  nbEnnemisToAdd: 2
+  nbEnnemisToAdd: 1
   useRandomStartPosition: 1
   customStartPosition: {x: 0, y: 0, z: 0}
+  shouldUseWaitingTime: 0
 --- !u!1 &603832428504935423
 GameObject:
   m_ObjectHideFlags: 0
@@ -181,10 +182,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c22d30c87b3b964ea1fbf0b731d02a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  esperanceApparition: 33
+  esperanceApparition: 20
   varianceApparition: 0
   esperanceDuree: 0
   varianceDuree: 0
   startOffset: 0
   bPlayEndSound: 0
+  triggerMaxNumberOfTimes: 1
+  nbMaxTriggers: 4
   singleEvent: {fileID: 5547814119743663096}

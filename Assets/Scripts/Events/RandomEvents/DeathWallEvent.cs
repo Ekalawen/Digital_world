@@ -108,10 +108,6 @@ public class DeathWallEvent : RandomEvent {
         movingSpikes.Clear();
     }
 
-    public override bool CanBeStarted() {
-        return true;
-    }
-
     protected override void StartEventConsoleMessage() {
     }
 
