@@ -29,7 +29,7 @@ public class SoulRobberController : EnnemiController {
         ennemi = GetComponent<Ennemi>();
         runAwayController.enabled = false;
         InitWanderingTimer();
-        SetState(SoulRobberState.WANDERING);
+        SetCurrentState();
     }
 
     protected override void UpdateSpecific () {
