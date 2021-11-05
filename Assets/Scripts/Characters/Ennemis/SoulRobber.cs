@@ -301,8 +301,17 @@ public class SoulRobber : Ennemi {
         Vector3 up = gm.gravityManager.Up();
         float maxRangeSqr = soulRobberController.distanceDeDetection * soulRobberController.distanceDeDetection;
         float onPlayerMaxRangeSqr = maxRangeSqr / 4; // /2 deux fois c'est /4 ! :D
+        Vector3 position;
         for (int i = 0; i < nbPositionsTestForTeleportAway; i++) {
-            Vector3 position = gm.map.GetFreeRoundedLocation();
+            if (teleportMode == TeleportMode.AWAY) {
+                position = gm.map.GetFreeRoundedLocation();
+            } else {
+                if(i < nbPositionsTestForTeleportAway / 2) {
+                    position = gm.map.GetFreeRoundedLocation();
+                } else {
+                    position = gm.map.GetRandomEmptyLocationInSphere(player.transform.position, soulRobberController.distanceDeDetection / 2);
+                }
+            }
             float score;
             if(gm.map.IsCubeAt(position + up)) {
                 score = 0;

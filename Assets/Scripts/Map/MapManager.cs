@@ -410,6 +410,25 @@ public class MapManager : MonoBehaviour {
         return emptyPositions;
     }
 
+    public Vector3 GetRandomEmptyLocationInSphere(Vector3 center, float radius) {
+        center = MathTools.Round(center);
+        int xMin = (int)Mathf.Ceil(center.x - radius);
+        int xMax = (int)Mathf.Floor(center.x + radius);
+        int yMin = (int)Mathf.Ceil(center.y - radius);
+        int yMax = (int)Mathf.Floor(center.y + radius);
+        int zMin = (int)Mathf.Ceil(center.z - radius);
+        int zMax = (int)Mathf.Floor(center.z + radius);
+        Vector3 pos = new Vector3(UnityEngine.Random.Range(xMin, xMax + 1), UnityEngine.Random.Range(yMin, yMax + 1), UnityEngine.Random.Range(zMin, zMax + 1));
+        float sqrRadius = radius * radius;
+        for(int k = 0; k < 1000; k++) {
+            if (!IsCubeAt(pos) && Vector3.SqrMagnitude(pos - center) <= sqrRadius) {
+                break;
+            }
+            pos = new Vector3(UnityEngine.Random.Range(xMin, xMax + 1), UnityEngine.Random.Range(yMin, yMax + 1), UnityEngine.Random.Range(zMin, zMax + 1));
+        }
+        return pos;
+    }
+
     public List<Cube> GetCubesAtLessThanCubeDistance(Vector3 center, int cubeDistance) {
         List<Cube> cubesInRange = GetCubesInBox(center, Vector3.one * cubeDistance);
         cubesInRange = cubesInRange.FindAll(c => MathTools.CubeDistance(c.transform.position, center) <= cubeDistance);
