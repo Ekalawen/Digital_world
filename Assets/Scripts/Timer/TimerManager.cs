@@ -23,6 +23,11 @@ public class TimerManager : MonoBehaviour {
     public float fontSizeBounceCoef = 1.2f;
     public CounterDisplayer timerDisplayer;
 
+    [Header("Win at 0")]
+    public bool winAt0 = false;
+    public bool cantLoseTime = false;
+    public bool reverseSkyboxColors = false;
+
 
     protected GameManager gm;
     protected Timer soundTimeOutTimer;
@@ -69,13 +74,18 @@ public class TimerManager : MonoBehaviour {
 
     public float GetAvancementOnRemainingTime() {
         float remainingTime = GetRemainingTime();
+        float value;
         if(remainingTime >= 20) {
-            return 1.0f;
+            value = 1.0f;
         } else if (remainingTime >= 10) {
-            return (remainingTime - 10) / 10;
+            value = (remainingTime - 10) / 10;
         } else {
-            return 0;
+            value = 0;
         }
+        if(reverseSkyboxColors) {
+            value = 1 - value;
+        }
+        return value;
     }
 
     public Color GetColorBasedOnRemainingTime(Color goodColor, Color badColor) {
@@ -107,6 +117,9 @@ public class TimerManager : MonoBehaviour {
             color = gm.postProcessManager.GetSkyboxHDRColor(color);
             RenderSettings.skybox.SetColor("_RectangleColor", color);
             float avancement = MathCurves.LinearReversed(5, 20, GetRemainingTime());
+            if(reverseSkyboxColors) {
+                avancement = 1 - avancement;
+            }
             float proportion = MathCurves.Linear(gm.postProcessManager.skyboxProportionRectanglesCriticalBound, gm.postProcessManager.skyboxProportionRectangles, avancement);
             RenderSettings.skybox.SetFloat("_ProportionRectangles", proportion);
         }
@@ -115,7 +128,11 @@ public class TimerManager : MonoBehaviour {
     public void TestLoseGame(EventManager.DeathReason reason) {
         if (GetRemainingTime() <= 0) {
             SetVisualGameTimer(0);
-            gm.eventManager.LoseGame(reason);
+            if (!winAt0) {
+                gm.eventManager.LoseGame(reason);
+            } else {
+                gm.eventManager.WinGame();
+            }
         }
     }
 
@@ -174,6 +191,10 @@ public class TimerManager : MonoBehaviour {
     public void AddTime(float time, bool showVolatileText = true) {
         if (gm.eventManager.IsGameOver())
             return;
+
+        if(cantLoseTime) {
+            time = Math.Max(0, time);
+        }
 
         gameTimer.AddDuree(time);
 

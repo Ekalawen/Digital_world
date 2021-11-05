@@ -19,6 +19,8 @@ public class SoulRobberTutorial : SoulRobber {
     public GameObject soulRobbersRenfortsEventPrefab;
     public GameObject tracerRenfortEventPrefab;
 
+    [Header("Time")]
+
     protected bool hasAlreadyStartEscaping = false;
     protected bool hasAlreadyStopEscaping = false;
 
@@ -28,6 +30,7 @@ public class SoulRobberTutorial : SoulRobber {
             hasAlreadyStartEscaping = true;
             PouvoirGiverItem.GivePouvoir(gm, pouvoirPrefab, pouvoirBinding);
             gm.soundManager.PlayPouvoirAvailableClip();
+            StartTimer();
         }
     }
 
@@ -38,7 +41,11 @@ public class SoulRobberTutorial : SoulRobber {
             gm.eventManager.StartSingleEvent(matrixRegenerationEventPrefab);
             gm.eventManager.StartSingleEvent(soulRobbersRenfortsEventPrefab);
             gm.eventManager.StartSingleEvent(tracerRenfortEventPrefab);
-            // Déclencher le Timer
         }
+    }
+
+    protected void StartTimer() {
+        gm.timerManager.isInfinitTime = false;
+        gm.timerManager.SetTime(gm.timerManager.initialTime, showVolatileText: false);
     }
 }
