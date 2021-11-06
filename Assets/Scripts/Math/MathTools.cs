@@ -220,7 +220,18 @@ public static class MathTools
         float topOfCylinder = capsuleCenter.y + (capsuleHeight / 2 - capsuleRadius);
         float bottomOfCylinder = capsuleCenter.y - (capsuleHeight / 2 - capsuleRadius);
         Vector3 closestPointOfCylinder = new Vector3(capsuleCenter.x, Mathf.Clamp(sphereCenter.y, bottomOfCylinder, topOfCylinder), capsuleCenter.z);
-        return Vector3.Distance(closestPointOfCylinder, sphereCenter) <= capsuleRadius + sphereRadius;
+        float distance = Vector3.Distance(closestPointOfCylinder, sphereCenter);
+        return distance <= capsuleRadius + sphereRadius;
+    }
+
+    // The cylinder is vertical !
+    public static bool CylinderSphere(Vector3 cylinderCenter, float cylinderRadius, float cylinderHeight, Vector3 sphereCenter, float sphereRadius) {
+        float topOfCylinder = cylinderCenter.y + cylinderHeight;
+        float bottomOfCylinder = cylinderCenter.y - cylinderHeight;
+        Vector3 closestPointOfCylinderInside = new Vector3(cylinderCenter.x, Mathf.Clamp(sphereCenter.y, bottomOfCylinder, topOfCylinder), cylinderCenter.z);
+        Vector3 closestPointOfCylinder = closestPointOfCylinderInside + Vector3.ProjectOnPlane(sphereCenter - cylinderCenter, Vector3.up).normalized * cylinderRadius;
+        float distance = Vector3.Distance(closestPointOfCylinder, sphereCenter);
+        return distance <= sphereRadius;
     }
 
     public static List<Vector3> GetAllNormals(Transform t) {

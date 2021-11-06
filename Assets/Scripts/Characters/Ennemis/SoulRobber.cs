@@ -74,7 +74,8 @@ public class SoulRobber : Ennemi {
     }
 
     protected void TestForPlayerCollision() {
-        if (controller.enabled && MathTools.CapsuleSphere(transform.position, GetRadius() * 1.15f, GetHeight(), player.transform.position, player.GetSizeRadius())) {
+        //if (controller.enabled && MathTools.CapsuleSphere(transform.position, GetRadius() * 1.15f, GetHeight(), player.transform.position, player.GetSizeRadius())) {
+        if (controller.enabled && MathTools.CylinderSphere(transform.position, GetRadius() * 1.05f, GetHeight(), player.transform.position, player.GetSizeRadius())) {
             if (GetState() != SoulRobberState.ESCAPING) {
                 TeleportAway();
             }
