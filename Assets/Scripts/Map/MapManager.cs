@@ -163,6 +163,8 @@ public class MapManager : MonoBehaviour {
     public Cube AddCube(Vector3 pos, Cube.CubeType cubeType, Quaternion quaternion = new Quaternion(), Transform parent = null) {
         if (IsCubeAt(pos) || IsLumiereAt(pos) || gm.itemManager.IsItemAt(pos)) // Si il y a déjà un cube ou une lumière à cette position, on ne fait rien !
             return null;
+        if(gm.IsInitializationOver() && gm.ennemiManager.IsEnnemiAt(pos)) // Only after initialization because ennemiManager is not up yet at initialization ! :)
+            return null;
         Transform newParent = parent ?? cubesFolder.transform;
         Cube cube = TryGetCubeFromPool(cubeType);
         if (cube != null) {

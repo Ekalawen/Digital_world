@@ -74,15 +74,20 @@ public abstract class Ennemi : Character {
         gm.postProcessManager.UpdateHitEffect();
     }
 
-    public List<Vector3> GetAllOccupiedRoundedPositions() {
-        Vector3 pos = MathTools.Round(transform.position);
+    public virtual Vector3Int GetRoundedSize() {
         int nbOnX = Mathf.CeilToInt(transform.localScale.x) - 1;
         int nbOnY = Mathf.CeilToInt(transform.localScale.y) - 1;
         int nbOnZ = Mathf.CeilToInt(transform.localScale.z) - 1;
+        return new Vector3Int(nbOnX, nbOnY, nbOnZ);
+    }
+
+    public List<Vector3> GetAllOccupiedRoundedPositions() {
+        Vector3 pos = MathTools.Round(transform.position);
+        Vector3Int nbOnAxes = GetRoundedSize();
         List<Vector3> occupiedPositions = new List<Vector3>();
-        for(int i = -nbOnX; i <= nbOnX; i++) {
-            for(int j = -nbOnY; j <= nbOnY; j++) {
-                for(int k = -nbOnZ; k <= nbOnZ; k++) {
+        for(int i = -nbOnAxes.x; i <= nbOnAxes.x; i++) {
+            for(int j = -nbOnAxes.y; j <= nbOnAxes.y; j++) {
+                for(int k = -nbOnAxes.z; k <= nbOnAxes.z; k++) {
                     occupiedPositions.Add(pos + new Vector3(i, j, k));
                 }
             }

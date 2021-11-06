@@ -361,7 +361,7 @@ public class SoulRobber : Ennemi {
 
     public override Vector3 PopPosition(MapManager map) {
         Vector3 pos = map.GetFreeRoundedLocationWithoutLumiere();
-        Vector3 up = gm.gravityManager.Up();
+        Vector3 up = map.gm.gravityManager.Up();
         for(int k = 0; k < 1000; k++) {
             if(!map.IsCubeAt(pos + up) && !map.IsLumiereAt(pos + up)) {
                 pos += up * 0.5f;
@@ -370,5 +370,12 @@ public class SoulRobber : Ennemi {
             pos = map.GetFreeRoundedLocationWithoutLumiere();
         }
         return pos;
+    }
+
+    public override Vector3Int GetRoundedSize() {
+        int nbOnX = 1;
+        int nbOnY = 2;
+        int nbOnZ = 1;
+        return new Vector3Int(nbOnX, nbOnY, nbOnZ);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class EnnemiManager : MonoBehaviour {
@@ -60,11 +61,7 @@ public class EnnemiManager : MonoBehaviour {
     }
 
     public List<Vector3> GetAllRoundedPositionsOccupiedByEnnemis() {
-        List<Vector3> res = new List<Vector3>();
-        foreach(Ennemi ennemi in ennemis) {
-            res.AddRange(ennemi.GetAllOccupiedRoundedPositions());
-        }
-        return res;
+        return ennemis.SelectMany(e => e.GetAllOccupiedRoundedPositions()).ToList();
     }
 
     public bool IsPlayerFollowed() {
@@ -171,5 +168,9 @@ public class EnnemiManager : MonoBehaviour {
             }
         }
         return ennemisOfType;
+    }
+
+    public bool IsEnnemiAt(Vector3 pos) {
+        return GetAllRoundedPositionsOccupiedByEnnemis().Contains(MathTools.Round(pos));
     }
 }
