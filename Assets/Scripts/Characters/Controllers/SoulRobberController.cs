@@ -66,6 +66,9 @@ public class SoulRobberController : EnnemiController {
         state = newState;
         if (newState == SoulRobberState.FIRERING && oldState != SoulRobberState.FIRERING) {
             startFireringEvents.Invoke();
+            if(oldState == SoulRobberState.WANDERING) {
+                DetectPlayer();
+            }
         }
         if (newState != SoulRobberState.FIRERING && oldState == SoulRobberState.FIRERING) {
             stopFireringEvents.Invoke();
@@ -81,6 +84,10 @@ public class SoulRobberController : EnnemiController {
             startEscapingEvents.Invoke();
             runAwayController.enabled = true;
         }
+    }
+
+    protected void DetectPlayer() {
+        gm.soundManager.PlayDetectionClip(transform.position, transform);
     }
 
     protected void InitWanderingTimer() {
