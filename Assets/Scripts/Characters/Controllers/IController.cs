@@ -13,12 +13,14 @@ public abstract class IController : MonoBehaviour {
 	protected new Rigidbody rigidbody;
     protected Character character;
     protected Timer waitingTimer;
+    protected Vector3 lastPosition;
 
     public virtual void Start() {
         gm = GameManager.Instance;
 		controller = GetComponent<CharacterController> ();
         rigidbody = GetComponent<Rigidbody>();
         character = GetComponent<Character>();
+        lastPosition = transform.position;
         SetWaitingTime(tempsInactifDebutJeu);
         if (controller == null && rigidbody == null)
             Debug.LogError("Il est nécessaire d'avoir un CharacterController OU un rigidbody avec un " + name + " !");
@@ -78,6 +80,7 @@ public abstract class IController : MonoBehaviour {
     }
 
     protected Vector3 Move(Vector3 mouvement) {
+        lastPosition = transform.position;
         if (controller != null) {
             if (controller.enabled) {
                 controller.Move(mouvement);
@@ -93,5 +96,10 @@ public abstract class IController : MonoBehaviour {
             }
         }
         return mouvement;
+    }
+
+    public bool HasMoveSinceLastFrame() {
+        bool hasMove = !MathTools.AlmostEqual(transform.position, lastPosition);
+        return hasMove;
     }
 }

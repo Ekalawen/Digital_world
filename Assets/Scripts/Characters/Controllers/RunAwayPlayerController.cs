@@ -11,7 +11,7 @@ public class RunAwayPlayerController : IController {
     public float wanderingVitesse; // vitesse de déplacement de base
 	public float fleeingVitesse; // vitesse de lorsque l'on doit fuir !
     public float malusVerticalMouvement = 0f; // On peut faire en sorte de moins utiliser les hauteurs : les cases sont malusVerticalMouvement * hauteurMouvement plus loins !
-    //public GameObject trailPrefab;
+    public float minDistanceToObjectives = 0.1f;
 
 	protected Player player;
     protected Etat etat;
@@ -29,41 +29,28 @@ public class RunAwayPlayerController : IController {
     protected override void UpdateSpecific() {
         UpdateEtat();
 
-        // Tant que le joueur n'est pas trop proche, on erre
         switch (etat) {
             case Etat.WANDERING:
                 // On cherche un point où aller
-                if(Vector3.Distance(posObjectifWandering, transform.position) <= 0.1f) {
+                if(Vector3.Distance(posObjectifWandering, transform.position) <= minDistanceToObjectives
+                || !HasMoveSinceLastFrame()) {
                     // On est arrivé, il faut trouver un autre point !
                     posObjectifWandering = GetOtherObjectifWandering();
                 }
 
-                //GameObject tr = Instantiate(trailPrefab, transform.position, Quaternion.identity) as GameObject;
-                //tr.GetComponent<Trail>().SetTarget(posObjectifWandering);
-
-                // Puis on y va
                 MoveToTarget(posObjectifWandering, useCustomVitesse: true, wanderingVitesse);
-                //Vector3 direction = (posObjectifWandering - transform.position).normalized;
-                //Vector3 finalMouvement = direction * wanderingVitesse * Time.deltaTime;
-                //controller.Move(finalMouvement);
                 break;
 
             case Etat.FLEEING:
                 // On cherche à aller le plus loin possible et le plus vite possible d'une zone d'attraction du joueur
-                if(Vector3.Distance(posObjectifFleeing, transform.position) <= 0.1f
-                || IsInPlayerAttractionZone()) {
+                if(Vector3.Distance(posObjectifFleeing, transform.position) <= minDistanceToObjectives
+                || !HasMoveSinceLastFrame()) {
+                //|| IsInPlayerAttractionZone()) {
                     // On est arrivé, il faut trouver un autre point !
                     posObjectifFleeing = GetOtherObjectifFleeing();
                 }
 
-                //GameObject trf = Instantiate(trailPrefab, transform.position, Quaternion.identity) as GameObject;
-                //trf.GetComponent<Trail>().SetTarget(posObjectifFleeing);
-
-                // Puis on y va
                 MoveToTarget(posObjectifFleeing, useCustomVitesse: true, fleeingVitesse);
-                //Vector3 directionVisible = (posObjectifFleeing - transform.position).normalized;
-                //Vector3 finalMouvementVisible = directionVisible * fleeingVitesse * Time.deltaTime;
-                //controller.Move(finalMouvementVisible);
                 break;
         }
     }
@@ -75,13 +62,13 @@ public class RunAwayPlayerController : IController {
     protected Etat UpdateEtat() {
         if(IsInPlayerAttractionZone()) {
             if (etat != Etat.FLEEING) {
-                posObjectifFleeing = transform.position;
+                posObjectifFleeing = GetOtherObjectifFleeing();
             }
             etat = Etat.FLEEING;
             return Etat.FLEEING;
         } else {
             if (etat != Etat.WANDERING) {
-                posObjectifWandering = transform.position;
+                posObjectifWandering = GetOtherObjectifWandering();
             }
             etat = Etat.WANDERING;
             return Etat.WANDERING;
@@ -92,11 +79,7 @@ public class RunAwayPlayerController : IController {
         List<Vector3> allEmptyLocations = gm.map.GetAllEmptyPositions();
 
         // On ne conserve que celles qui sont plus loin que la distance d'attraction !
-        List<Vector3> allFarAwayPositions = new List<Vector3>();
-        foreach(Vector3 pos in allEmptyLocations) {
-            if (Vector3.Distance(player.transform.position, pos) >= distanceToFleePlayer)
-                allFarAwayPositions.Add(pos);
-        }
+        List<Vector3> allFarAwayPositions = allEmptyLocations.FindAll(p => Vector3.Distance(player.transform.position, p) >= distanceToFleePlayer);
         if(allFarAwayPositions.Count == 0) {
             allFarAwayPositions = allEmptyLocations;
         }
