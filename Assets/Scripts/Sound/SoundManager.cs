@@ -139,7 +139,7 @@ public class SoundManager : MonoBehaviour
     }
     public void PlayDissimuleClip()
     {
-        PlayClipsOnSource(sounds.dissimuleClips);
+        PlayClipsOnSource(sounds.dissimuleClips, acceleration: 1.2f);
     }
     public AudioSource PlayEmissionTracerClip(Vector3 pos, Transform parent)
     {
@@ -263,7 +263,8 @@ public class SoundManager : MonoBehaviour
         AudioClipParams audioClipParams,
         Vector3 pos = new Vector3(),
         Transform parent = null,
-        float duration = -1.0f)
+        float duration = -1.0f,
+        float acceleration = 1.0f)
     {
 
         // On get la source
@@ -311,9 +312,10 @@ public class SoundManager : MonoBehaviour
         }
         else
         {
-            float acceleration = clip.length / duration;
-            source.pitch *= acceleration;
+            float accel = clip.length / duration;
+            source.pitch *= accel;
         }
+        source.pitch *= acceleration;
 
         // On set le spatial blend !
         source.spatialBlend = audioClipParams.spatialBlend;
