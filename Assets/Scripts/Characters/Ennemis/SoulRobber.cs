@@ -29,6 +29,8 @@ public class SoulRobber : Ennemi {
     public float timeAtMaxRayAnimation = 3.0f;
     public Vector2 rayThicknessRange;
     public Vector2 rayDistorsionAmountRange;
+    public float screenShakeRayMagnitude = 2.0f;
+    public float screenShakeRayRoughness = 2.0f;
 
     [Header("Ray Start point Animation")]
     public VisualEffect rayStartPointVfx;
@@ -60,6 +62,7 @@ public class SoulRobber : Ennemi {
     protected Coroutine robbCountdownCoroutine;
     protected GeoPoint rayGeoPoint = null;
     protected GeoPoint robbingGeoPoint = null;
+    protected CameraShakeInstance rayCameraShakeInstance = null;
 
     public override void Start() {
         base.Start();
@@ -161,6 +164,7 @@ public class SoulRobber : Ennemi {
         currentMultiplier = player.AddMultiplier(new SpeedMultiplier(speedDecreaseMultiplier));
         rayGeoPoint = player.geoSphere.AddGeoPoint(rayGeoData);
         rayStartPointVfx.SendEvent("Start");
+        rayCameraShakeInstance = CameraShaker.Instance.StartShake(screenShakeRayMagnitude, screenShakeRayRoughness, 0.1f);
 
         while(true) {
             ray.SetPosition(transform.position, GetRayTargetPosition(), parentSize: transform.localScale.x);
@@ -255,6 +259,10 @@ public class SoulRobber : Ennemi {
         if (fireringCoroutine != null) {
             StopCoroutine(fireringCoroutine);
             fireringCoroutine = null;
+        }
+        if(rayCameraShakeInstance != null) {
+            rayCameraShakeInstance.StartFadeOut(0.1f);
+            rayCameraShakeInstance = null;
         }
     }
 
