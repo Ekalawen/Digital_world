@@ -30,7 +30,6 @@ public class SoulRobberTutorial : SoulRobber {
         if(!hasAlreadyStartEscaping) {
             hasAlreadyStartEscaping = true;
             PouvoirGiverItem.GivePouvoir(gm, pouvoirPrefab, pouvoirBinding);
-            gm.soundManager.PlayPouvoirAvailableClip();
             StartTimer();
             gm.eventManager.StartSingleEvent(matrixRegenerationEventPrefab);
             gm.eventManager.StartSingleEvent(firstMatrixRegenerationEventPrefab);

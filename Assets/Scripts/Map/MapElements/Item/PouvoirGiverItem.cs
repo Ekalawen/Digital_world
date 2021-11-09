@@ -15,8 +15,11 @@ public class PouvoirGiverItem : Item {
 
     public static void GivePouvoir(GameManager gm, GameObject pouvoirPrefab, PouvoirBinding pouvoirBinding) {
         gm.player.SetPouvoir(pouvoirPrefab, pouvoirBinding);
-        IPouvoir pouvoir = pouvoirPrefab.GetComponent<IPouvoir>();
-        gm.console.CapturePouvoirGiverItem(pouvoir.nom, pouvoirBinding);
-        gm.pointeur.Initialize();
+        if(pouvoirPrefab != null) {
+            IPouvoir pouvoir = pouvoirPrefab.GetComponent<IPouvoir>();
+            gm.console.CapturePouvoirGiverItem(pouvoir.nom, pouvoirBinding);
+            gm.soundManager.PlayGetItemClip(gm.player.transform.position);
+            gm.pointeur.Initialize();
+        }
     }
 }

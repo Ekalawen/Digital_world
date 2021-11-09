@@ -12,6 +12,7 @@ public class CheatCode {
 
 public class CheatCodeManager : MonoBehaviour {
 
+    [Header("Cheat Codes")]
     public List<KeyCode> winCode;
     public List<KeyCode> loseCode;
     public List<KeyCode> plus10Code;
@@ -28,6 +29,10 @@ public class CheatCodeManager : MonoBehaviour {
     public List<KeyCode> invincibilityCode;
     public List<KeyCode> hideConsoleCode;
     public List<KeyCode> disableEnnemisCode;
+    public List<KeyCode> gainDash333Code;
+
+    [Header("Links")]
+    public GameObject dash333Prefab;
 
     protected GameManager gm;
     protected List<CheatCode> cheatCodes;
@@ -157,6 +162,12 @@ public class CheatCodeManager : MonoBehaviour {
         disableEnnemisCheatCode.code = disableEnnemisCode;
         disableEnnemisCheatCode.action = gm.ennemiManager.SwapDisableEnnemis;
         cheatCodes.Add(disableEnnemisCheatCode);
+
+        // Gain Dash333 CheatCode
+        CheatCode gainDash333CheatCode = new CheatCode();
+        gainDash333CheatCode.code = gainDash333Code;
+        gainDash333CheatCode.action = SwapGiveDash333;
+        cheatCodes.Add(gainDash333CheatCode);
     }
 
     public void Update() {
@@ -171,6 +182,15 @@ public class CheatCodeManager : MonoBehaviour {
             } else if (Input.anyKeyDown) {
                 cheatCode.state = 0;
             }
+        }
+    }
+
+    protected void SwapGiveDash333() {
+        if(gm.player.GetPouvoirLeftClick() == null || gm.player.GetPouvoirLeftClick().nom.GetLocalizedString().Result != dash333Prefab.GetComponent<IPouvoir>().nom.GetLocalizedString().Result) {
+            PouvoirGiverItem.GivePouvoir(gm, dash333Prefab, PouvoirGiverItem.PouvoirBinding.LEFT_CLICK);
+        } else {
+            Debug.Log($"On met le pouvoir à null !");
+            PouvoirGiverItem.GivePouvoir(gm, gm.player.pouvoirLeftBoutonPrefab, PouvoirGiverItem.PouvoirBinding.LEFT_CLICK);
         }
     }
 }
