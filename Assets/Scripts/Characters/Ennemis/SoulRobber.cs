@@ -30,7 +30,8 @@ public class SoulRobber : Ennemi {
     public Vector2 rayThicknessRange;
     public Vector2 rayDistorsionAmountRange;
 
-    [Header("Detection Animation")]
+    [Header("Ray Start point Animation")]
+    public VisualEffect rayStartPointVfx;
 
     [Header("Teleport")]
     public float durationBeforeTeleportAway = 0.3f;
@@ -159,6 +160,7 @@ public class SoulRobber : Ennemi {
         Timer timer = new Timer(durationToFullRay);
         currentMultiplier = player.AddMultiplier(new SpeedMultiplier(speedDecreaseMultiplier));
         rayGeoPoint = player.geoSphere.AddGeoPoint(rayGeoData);
+        rayStartPointVfx.SendEvent("Start");
 
         while(true) {
             ray.SetPosition(transform.position, GetRayTargetPosition(), parentSize: transform.localScale.x);
@@ -262,6 +264,7 @@ public class SoulRobber : Ennemi {
     }
 
     protected void DestroyRay() {
+        rayStartPointVfx.SendEvent("Stop");
         if (ray != null) {
             ray.StopRefreshing();
             Destroy(ray.gameObject, ray.refreshRate);
