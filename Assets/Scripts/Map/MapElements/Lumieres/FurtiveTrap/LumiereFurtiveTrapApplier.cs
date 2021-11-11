@@ -63,9 +63,7 @@ public class LumiereFurtiveTrapApplier : MonoBehaviour {
         List<Vector3> allCorners = gm.map.GetAllInsidedCorners();
         allCorners.Add(gm.map.GetCenter());
         foreach (Vector3 corner in allCorners) {
-            Ennemi ennemi = gm.ennemiManager.GenerateEnnemiFromPrefab(ennemiToGeneratePrefab, corner);
-            IController ennemiController = ennemi.GetComponent<IController>();
-            ennemiController.tempsInactifDebutJeu = Time.timeSinceLevelLoad + timeBeforeEnnemisActivation;
+            gm.ennemiManager.GenerateEnnemiFromPrefab(ennemiToGeneratePrefab, corner, timeBeforeEnnemisActivation);
         }
     }
 

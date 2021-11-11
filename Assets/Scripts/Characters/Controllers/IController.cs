@@ -40,6 +40,7 @@ public abstract class IController : MonoBehaviour {
     }
 
     public void SetWaitingTime(float waitingTime) {
+        tempsInactifDebutJeu = waitingTime;
         waitingTimer = new Timer(waitingTime);
     }
 

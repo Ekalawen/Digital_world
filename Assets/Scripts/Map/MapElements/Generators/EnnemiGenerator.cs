@@ -12,6 +12,11 @@ public class EnnemiGenerator : IGenerator {
     public bool destroyEnnemisOnDestruction = true;
     public GameObject ennemiLightningLinkPrefab;
 
+    [Header("Waiting Time")]
+    public bool useCustomWaitingTime = true;
+    [ConditionalHide("useCustomWaitingTime")]
+    public float customWaitingTime = 1.0f;
+
     protected List<Ennemi> ennemisCreated = new List<Ennemi>();
 
     protected override void GenerateOneSpecific(Vector3 position) {
@@ -20,7 +25,8 @@ public class EnnemiGenerator : IGenerator {
             if (cube != null) {
                 cube.Explode();
             }
-            Ennemi ennemi = gm.ennemiManager.GenerateEnnemiFromPrefab(ennemiPrefab, position);
+            float waitingTime = useCustomWaitingTime ? customWaitingTime : -1;
+            Ennemi ennemi = gm.ennemiManager.GenerateEnnemiFromPrefab(ennemiPrefab, position, waitingTime);
             SetupEnnemi(ennemi);
         }
     }

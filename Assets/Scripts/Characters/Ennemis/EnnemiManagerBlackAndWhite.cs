@@ -6,7 +6,7 @@ using UnityEngine;
 public class EnnemiManagerBlackAndWhite : EnnemiManager {
     protected bool nextPopOnTop = true;
 
-    public override Ennemi PopEnnemi(GameObject ennemiPrefab) {
+    public override Ennemi PopEnnemi(GameObject ennemiPrefab, float startWaitingTime = -1) {
         BlackAndWhiteMap map = (BlackAndWhiteMap)gm.map;
         Vector3 pos;
         while (true) {
@@ -16,6 +16,6 @@ public class EnnemiManagerBlackAndWhite : EnnemiManager {
                 break;
         }
         nextPopOnTop = !nextPopOnTop;
-        return GenerateEnnemiFromPrefab(ennemiPrefab, pos);
+        return GenerateEnnemiFromPrefab(ennemiPrefab, pos, startWaitingTime);
     }
 }

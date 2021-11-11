@@ -90,10 +90,11 @@ public class EnnemiManager : MonoBehaviour {
         }
     }
 
-    public Ennemi GenerateEnnemiFromPrefab(GameObject ennemiPrefab, Vector3 pos) {
+    public Ennemi GenerateEnnemiFromPrefab(GameObject ennemiPrefab, Vector3 pos, float startWaitingTime = -1) {
         Ennemi ennemi = Instantiate(ennemiPrefab, pos, Quaternion.identity, ennemisFolder.transform).GetComponent<Ennemi>();
 
-        RegisterAlreadyExistingEnnemi(ennemi);
+        ennemi = RegisterAlreadyExistingEnnemi(ennemi);
+        ennemi.SetStartWaitingTime(startWaitingTime);
 
         return ennemi;
     }
@@ -104,9 +105,9 @@ public class EnnemiManager : MonoBehaviour {
         return ennemi;
     }
 
-    public virtual Ennemi PopEnnemi(GameObject ennemiPrefab) {
+    public virtual Ennemi PopEnnemi(GameObject ennemiPrefab, float startWaitingTime = -1) {
         Vector3 pos = ennemiPrefab.GetComponent<Ennemi>().PopPosition(gm.map);
-        return GenerateEnnemiFromPrefab(ennemiPrefab, pos);
+        return GenerateEnnemiFromPrefab(ennemiPrefab, pos, startWaitingTime);
     }
 
     public void RemoveEnnemi(Ennemi ennemi) {

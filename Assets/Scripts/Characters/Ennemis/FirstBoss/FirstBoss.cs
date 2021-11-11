@@ -94,7 +94,7 @@ public class FirstBoss : Sonde {
     protected IEnumerator CAttackInDelay(Vector3 direction) {
         yield return new WaitForSeconds(attackDelay);
         Vector3 spawnPosition = transform.position + direction * (transform.localScale[0] / 2.0f + 0.55f);
-        Ennemi attack = gm.ennemiManager.GenerateEnnemiFromPrefab(attacksPrefab, spawnPosition);
+        Ennemi attack = gm.ennemiManager.GenerateEnnemiFromPrefab(attacksPrefab, spawnPosition, startWaitingTime: 0);
         GoToDirectionController projectile = attack.GetComponent<GoToDirectionController>();
         projectile.direction = direction;
     }

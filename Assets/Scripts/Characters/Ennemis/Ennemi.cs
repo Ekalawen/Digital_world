@@ -102,6 +102,13 @@ public abstract class Ennemi : Character {
         cs.ShakeOnce(screenShakeMagnitude, screenShakeRoughness, 0.1f, screenShakeDecreaseTime);
     }
 
+    public void SetStartWaitingTime(float startWaitingTime) {
+        if (startWaitingTime != -1) {
+            IController iController = GetComponent<IController>();
+            iController.SetWaitingTime(startWaitingTime);
+        }
+    }
+
     public virtual void DisplayHitMessage(EventManager.DeathReason deathReason) {
         // Et on affiche un message dans la console !
         if (!gm.eventManager.IsGameOver()) {
