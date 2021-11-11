@@ -33,7 +33,6 @@ public class TracerController : EnnemiController {
     protected Timer timerNodePause;
 
     protected bool bIsStuck = false;
-    protected Vector3 lastPosition;
     protected Timer timerStuck;
     protected float dureeMaxStuck = 0.1f;
     protected Coroutine stopAttackCoroutine = null;
@@ -87,19 +86,35 @@ public class TracerController : EnnemiController {
 	}
 
     protected void TryUnStuck() {
-        if(transform.position == lastPosition) {
+        if(!HasMoveSinceLastFrame()) {
             if (!bIsStuck) {
                 timerStuck.Reset();
                 bIsStuck = true;
             }
             if(bIsStuck && timerStuck.IsOver()) {
-                ComputePath(path.Last()); // On va au même endroit que précédemment !
+                if (!doesPathAvoidCubes) { // Boss
+                    if (Vector3.Distance(transform.position, path.Last()) <= transform.localScale.x * 1.33f) {
+                        ComputeUnstuckingPath(player.transform.position);
+                    } else {
+                        ComputeUnstuckingPath(path.Last()); // On va au même endroit que précédemment, mais avec un petit détour aléatoire entre temps ! :)
+                    }
+                } else { // Tracers
+                    ComputePath(path.Last()); // On va au même endroit que précédemment // Faut garder ça pour les Tracers !
+                }
                 bIsStuck = false;
             }
         } else {
             bIsStuck = false;
         }
-        lastPosition = transform.position;
+    }
+
+    protected void ComputeUnstuckingPath(Vector3 finalGoal) {
+        Vector3 temporaryGoal = transform.position + UnityEngine.Random.rotationUniform * (Vector3.right * 3.0f);
+        List<Vector3> startingPath = RealComputePath(transform.position, temporaryGoal);
+        List<Vector3> endingPath = RealComputePath(temporaryGoal, finalGoal);
+        startingPath.AddRange(endingPath);
+        startingPath.RemoveAt(0);
+        path = startingPath;
     }
 
     protected void SetCurrentState() {
@@ -116,17 +131,12 @@ public class TracerController : EnnemiController {
     }
 
     protected virtual void ComputePath(Vector3 end) {
-        Vector3 start = MathTools.Round(transform.position);
-        end = MathTools.Round(end);
-        List<Vector3> posToDodge = gm.ennemiManager.GetAllRoundedPositionsOccupiedByEnnemis();
-        List<Vector3> myPositions = ennemi.GetAllOccupiedRoundedPositions();
-        posToDodge = posToDodge.FindAll(p => !myPositions.Contains(p));
-        posToDodge.Remove(end);
-        if (doesPathAvoidCubes) {
-            path = gm.map.GetPath(start, end, posToDodge, bIsRandom: true, useNotInMapVoisins: true);
-        } else {
-            path = gm.map.GetPath(start, end, posToDodge, bIsRandom: true, useNotInMapVoisins: true, collideWithCubes: false);
-        }
+        ComputePath(transform.position, end);
+    }
+
+
+    protected virtual void ComputePath(Vector3 start, Vector3 end) {
+        path = RealComputePath(start, end);
 
         if (path == null) {
             SetState(TracerState.ATTACKING);
@@ -136,6 +146,28 @@ public class TracerController : EnnemiController {
             }
             PosVisualisator.DrawPath(path, Color.blue);
         }
+    }
+
+    private List<Vector3> RealComputePath(Vector3 start, Vector3 end) {
+        start = MathTools.Round(start);
+        end = MathTools.Round(end);
+        List<Vector3> posToDodge = ComputePosToDodge(end);
+        List<Vector3> path;
+        if (doesPathAvoidCubes) {
+            path = gm.map.GetPath(start, end, posToDodge, bIsRandom: true, useNotInMapVoisins: true);
+        } else {
+            path = gm.map.GetPath(start, end, posToDodge, bIsRandom: true, useNotInMapVoisins: true, collideWithCubes: false);
+        }
+
+        return path;
+    }
+
+    protected List<Vector3> ComputePosToDodge(Vector3 end) {
+        List<Vector3> posToDodge = gm.ennemiManager.GetAllRoundedPositionsOccupiedByEnnemis();
+        List<Vector3> myPositions = ennemi.GetAllOccupiedRoundedPositions();
+        posToDodge = posToDodge.FindAll(p => !myPositions.Contains(p));
+        posToDodge.Remove(end);
+        return posToDodge;
     }
 
     protected void SetState(TracerState newState) {

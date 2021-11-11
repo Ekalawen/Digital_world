@@ -71,7 +71,9 @@ public class FirstBoss : Sonde {
         satellites = new List<Sonde>(GetComponentsInChildren<Sonde>());
         satellites.Remove(this);
         SetSatellitesActivation(false);
-        GoToPhase1();
+        //GoToPhase1();
+        GoToPhase3();
+        GoToPhase4();
     }
 
     public override void UpdateSpecific () {
