@@ -12,9 +12,11 @@ public class DeathWallEvent : RandomEvent {
     public float delayCoef = 0.02f;
     public float delayRandPercentage = 0.01f;
     public PositionsMode positionMode = PositionsMode.MAP_SIZE;
+    public GeoData geoData;
 
     protected MapManager map;
     protected List<MovingSpike> movingSpikes;
+    protected float creationDuration;
 
     public override void Initialize() {
         base.Initialize();
@@ -30,11 +32,13 @@ public class DeathWallEvent : RandomEvent {
         bool useBoundingBox = positionMode != PositionsMode.MAP_SIZE;
         foreach (Vector3 startingPosition in startingPositions) {
             MovingSpike movingSpike = Instantiate(movingSpikePrefab, parent: transform).GetComponent<MovingSpike>();
+            creationDuration = movingSpike.previsualizationTime + movingSpike.dissolveTime;
             float previsualizationDelay = Vector3.Distance(leadingPosition, startingPosition) * delayCoef;
             previsualizationDelay = Mathf.Max(0, MathTools.RandArround(previsualizationDelay, delayRandPercentage));
             movingSpike.Initialize(startingPosition, mainDirection, previsualizationDelay, shouldDisplayPrevisualization: true, useBoundingBox);
             movingSpikes.Add(movingSpike);
         }
+        AddGeoPoints(startingPositions);
     }
 
     protected List<Vector3> GetAllStartingPositions(Vector3 direction) {
@@ -127,6 +131,35 @@ public class DeathWallEvent : RandomEvent {
             Mathf.Max(boundingBox.width, boundingBox.height, boundingBox.depth) : Mathf.Max(map.tailleMap.x, map.tailleMap.y, map.tailleMap.z);
         float movingTime = maxTailleMap / movingSpike.speed;
         return movingSpike.previsualizationTime + movingSpike.dissolveTime + movingTime + movingSpike.decomposeTime;
+    }
+
+    protected void AddGeoPoints(List<Vector3> startingPositions) {
+        List<Vector3> projectedPositions = startingPositions.Select(p => p).ToList();
+        float xMin = projectedPositions.Select(p => p.x).Min();
+        float xMax = projectedPositions.Select(p => p.x).Max();
+        float yMin = projectedPositions.Select(p => p.y).Min();
+        float yMax = projectedPositions.Select(p => p.y).Max();
+        float zMin = projectedPositions.Select(p => p.z).Min();
+        float zMax = projectedPositions.Select(p => p.z).Max();
+        List<Vector3> cornerPositions = new List<Vector3>() {
+            new Vector3(xMin, yMin, zMin),
+            new Vector3(xMin, yMin, zMax),
+            new Vector3(xMin, yMax, zMin),
+            new Vector3(xMin, yMax, zMax),
+            new Vector3(xMax, yMin, zMin),
+            new Vector3(xMax, yMin, zMax),
+            new Vector3(xMax, yMax, zMin),
+            new Vector3(xMax, yMax, zMax),
+        };
+        cornerPositions = MathTools.RemoveDoublons(cornerPositions);
+        Vector3 centerPosition = cornerPositions.Aggregate(Vector3.zero, (sum, next) => sum + next) / cornerPositions.Count;
+        List<Vector3> allPositions = cornerPositions.Append(centerPosition).ToList();
+        foreach(Vector3 position in allPositions) {
+            GeoData newGeoData = new GeoData(geoData);
+            newGeoData.SetTargetPosition(position);
+            newGeoData.duration = creationDuration;
+            gm.player.geoSphere.AddGeoPoint(newGeoData);
+        }
     }
 }
 
