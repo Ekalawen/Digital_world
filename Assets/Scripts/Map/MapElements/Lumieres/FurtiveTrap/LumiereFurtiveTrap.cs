@@ -8,10 +8,12 @@ public class LumiereFurtiveTrap : LumiereFurtive {
     [Header("Ennemis générés")]
     public GameObject ennemiToGeneratePrefab;
     public float timeBeforeEnnemisActivation = 3.0f;
+    public GeoData geoDataToEnnemi;
 
     [Header("Lumières générées")]
     public GameObject lumiereGeneratedPrefab;
     public int nbLumieresToGenerate = 1;
+    public GeoData geoDataToLumiere;
 
     [Header("Pouvoir donné")]
     public GameObject pouvoirDashPrefab;
@@ -30,9 +32,11 @@ public class LumiereFurtiveTrap : LumiereFurtive {
         LumiereFurtiveTrapApplier applier = new GameObject("FurtiveTrapApplier").AddComponent<LumiereFurtiveTrapApplier>();
         applier.ApplyTrap(
             ennemiToGeneratePrefab,
+            geoDataToEnnemi,
             timeBeforeEnnemisActivation,
             lumiereGeneratedPrefab,
             nbLumieresToGenerate,
+            geoDataToLumiere,
             pouvoirDashPrefab,
             pouvoirBinding);
     }

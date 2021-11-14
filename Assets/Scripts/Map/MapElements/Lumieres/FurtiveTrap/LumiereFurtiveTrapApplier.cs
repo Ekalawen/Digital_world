@@ -5,26 +5,32 @@ using UnityEngine;
 
 public class LumiereFurtiveTrapApplier : MonoBehaviour {
 
-
     protected GameManager gm;
     protected GameObject ennemiToGeneratePrefab;
+    protected GeoData geoDataToEnnemi;
     protected float timeBeforeEnnemisActivation = 3.0f;
     protected GameObject lumiereGeneratedPrefab;
     protected int nbLumieresToGenerate = 1;
+    protected GeoData geoDataToLumiere;
     protected GameObject pouvoirDashPrefab;
     protected PouvoirGiverItem.PouvoirBinding pouvoirBinding;
 
     public void ApplyTrap(
         GameObject ennemiToGeneratePrefab,
+        GeoData geoDataToEnnemi,
         float timeBeforeEnnemisActivation,
         GameObject lumiereGeneratedPrefab,
         int nbLumieresToGenerate,
+        GeoData geoDataToLumiere,
         GameObject pouvoirDashPrefab,
-        PouvoirGiverItem.PouvoirBinding pouvoirBinding) {
+        PouvoirGiverItem.PouvoirBinding pouvoirBinding)
+    {
         this.ennemiToGeneratePrefab = ennemiToGeneratePrefab;
+        this.geoDataToEnnemi = geoDataToEnnemi;
         this.timeBeforeEnnemisActivation = timeBeforeEnnemisActivation;
         this.lumiereGeneratedPrefab = lumiereGeneratedPrefab;
         this.nbLumieresToGenerate = nbLumieresToGenerate;
+        this.geoDataToLumiere = geoDataToLumiere;
         this.pouvoirDashPrefab = pouvoirDashPrefab;
         this.pouvoirBinding = pouvoirBinding;
         gm = GameManager.Instance;
@@ -63,14 +69,22 @@ public class LumiereFurtiveTrapApplier : MonoBehaviour {
         List<Vector3> allCorners = gm.map.GetAllInsidedCorners();
         allCorners.Add(gm.map.GetCenter());
         foreach (Vector3 corner in allCorners) {
-            gm.ennemiManager.GenerateEnnemiFromPrefab(ennemiToGeneratePrefab, corner, timeBeforeEnnemisActivation);
+            Ennemi ennemi = gm.ennemiManager.GenerateEnnemiFromPrefab(ennemiToGeneratePrefab, corner, timeBeforeEnnemisActivation);
+            AddGeoPoint(geoDataToEnnemi, ennemi.transform);
         }
     }
 
     protected void PopLumieres() {
         for (int i = 0; i < nbLumieresToGenerate; i++) {
             Vector3 posLumiere = gm.map.GetFarRoundedLocation(gm.player.transform.position);
-            gm.map.CreateLumiere(posLumiere, Lumiere.LumiereType.SPECIAL);
+            Lumiere lumiere = gm.map.CreateLumiere(posLumiere, Lumiere.LumiereType.SPECIAL);
+            AddGeoPoint(geoDataToLumiere, lumiere.transform);
         }
+    }
+
+    protected void AddGeoPoint(GeoData geoData, Transform target) {
+        GeoData newGeoData = new GeoData(geoData);
+        newGeoData.targetObject = target;
+        gm.player.geoSphere.AddGeoPoint(newGeoData);
     }
 }
