@@ -50,6 +50,7 @@ public class MapManager : MonoBehaviour {
     protected Octree<Cube> nonRegularOctree; // Toutes les autres positions (non-entières ou en-dehors de la map)
     [HideInInspector] public List<MapElement> mapElements;
     [HideInInspector] public List<DynamicCubeEnsemble> dynamicCubeEnsembles;
+
     [HideInInspector]
     protected List<Lumiere> lumieres;
     [HideInInspector]
@@ -1392,15 +1393,19 @@ public class MapManager : MonoBehaviour {
     }
 
     public List<Vector3> GetAllInsidedCorners() {
+        return GetAllCorners(offset: 1);
+    }
+
+    public List<Vector3> GetAllCorners(int offset = 0) {
         List<Vector3> corners = new List<Vector3>();
-        corners.Add(new Vector3(1, 1, 1));
-        corners.Add(new Vector3(tailleMap.x - 1, 1, 1));
-        corners.Add(new Vector3(1, tailleMap.y - 1, 1));
-        corners.Add(new Vector3(1, 1, tailleMap.z - 1));
-        corners.Add(new Vector3(tailleMap.x - 1, tailleMap.y - 1, 1));
-        corners.Add(new Vector3(tailleMap.x - 1, 1, tailleMap.z - 1));
-        corners.Add(new Vector3(1, tailleMap.y - 1, tailleMap.z - 1));
-        corners.Add(new Vector3(tailleMap.x - 1, tailleMap.y - 1, tailleMap.z - 1));
+        corners.Add(new Vector3(offset, offset, offset));
+        corners.Add(new Vector3(tailleMap.x - offset, offset, offset));
+        corners.Add(new Vector3(offset, tailleMap.y - offset, offset));
+        corners.Add(new Vector3(offset, offset, tailleMap.z - offset));
+        corners.Add(new Vector3(tailleMap.x - offset, tailleMap.y - offset, offset));
+        corners.Add(new Vector3(tailleMap.x - offset, offset, tailleMap.z - offset));
+        corners.Add(new Vector3(offset, tailleMap.y - offset, tailleMap.z - offset));
+        corners.Add(new Vector3(tailleMap.x - offset, tailleMap.y - offset, tailleMap.z - offset));
         return corners;
     }
 
@@ -1676,5 +1681,18 @@ public class MapManager : MonoBehaviour {
 
     public void RegisterSwappyCubesHolderManager(SwappyCubesHolderManager swappyCubesHolderManager) {
         swappyCubesHolderManagers.Add(swappyCubesHolderManager);
+    }
+
+    public List<Vector3> GetAllWallsMiddles() {
+        Vector3 center = GetCenter();
+        List<Vector3> middles = new List<Vector3>() {
+            center + Vector3.right * tailleMap.x / 2,
+            center + Vector3.left * tailleMap.x / 2,
+            center + Vector3.up * tailleMap.y / 2,
+            center + Vector3.down * tailleMap.y / 2,
+            center + Vector3.forward * tailleMap.z / 2,
+            center + Vector3.back * tailleMap.z / 2,
+        };
+        return middles;
     }
 }
