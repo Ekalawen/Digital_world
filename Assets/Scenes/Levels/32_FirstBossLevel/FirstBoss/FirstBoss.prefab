@@ -115,9 +115,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 0}
+  speedMultiplierController: {fileID: 0}
   timeMalusOnHit: 10
   timeBetweenTwoHits: 0.2
   timeBetweenTwoHitsDamages: 0.3
+  geoDataHit:
+    color: {r: 0, g: 0, b: 0, a: 0}
+    type: 0
+    duration: 0
+    targetObject: {fileID: 0}
   screenShakeMagnitude: 5
   screenShakeRoughness: 15
   screenShakeDecreaseTime: 1
@@ -177,6 +183,11 @@ MonoBehaviour:
     type: 3}
   lightningToDataPrefab: {fileID: 8725588450735506554, guid: 9585ab86ac8f77741ba6cf6c706d5c7b,
     type: 3}
+  geoDataToGenerator:
+    color: {r: 1.254902, g: 1.254902, b: 47.937256, a: 1}
+    type: 1
+    duration: 0
+    targetObject: {fileID: 0}
   pouvoirLocalisationPrefab: {fileID: 5780963728283393190, guid: 919d46ae132443549a091e47fdd85c47,
     type: 3}
   generatorPhase2Prefabs:

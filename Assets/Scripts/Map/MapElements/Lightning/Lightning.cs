@@ -29,6 +29,11 @@ public class Lightning : MonoBehaviour {
     public float timeAtMaxWidth = 0.3f;
     public VisualEffect vfx;
 
+    [Header("GeoPoint")]
+    public bool shouldDisplayGeoPoint = false;
+    [ConditionalHide("shouldDisplayGeoPoint")]
+    public GeoData geoData;
+
     protected GameManager gm;
     protected Vector3 start;
     protected Vector3 end;
@@ -39,6 +44,7 @@ public class Lightning : MonoBehaviour {
         SetGmAndParent();
         InitializeLightning(start, end, pivotType);
         AutoDestroyRayIn();
+        AddGeoPoint();
     }
 
     public void InitializeInReward(Vector3 start, Vector3 end, Transform parent, PivotType pivotType = PivotType.EXTREMITY) {
@@ -128,6 +134,14 @@ public class Lightning : MonoBehaviour {
     public void StopRefreshing() {
         if(refreshCoroutine != null) {
             StopCoroutine(refreshCoroutine);
+        }
+    }
+    public void AddGeoPoint() {
+        if(shouldDisplayGeoPoint) {
+            GeoData newGeoData = new GeoData(geoData);
+            newGeoData.SetTargetPosition(end);
+            newGeoData.duration = GetTotalDuration();
+            gm.player.geoSphere.AddGeoPoint(newGeoData);
         }
     }
 }

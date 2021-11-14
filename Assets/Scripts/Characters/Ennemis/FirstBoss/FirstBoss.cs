@@ -42,6 +42,7 @@ public class FirstBoss : Sonde {
     public int nbLumieres = 15;
     public GameObject lightningToItemPrefab;
     public GameObject lightningToDataPrefab;
+    public GeoData geoDataToGenerator;
     public GameObject pouvoirLocalisationPrefab;
     public List<GameObject> generatorPhase2Prefabs;
     public List<GameObject> generatorPhase3Prefabs;
@@ -155,9 +156,10 @@ public class FirstBoss : Sonde {
         GenerateLightningTo(resetTemporel.transform.position, lightningToItemPrefab);
     }
 
-    protected void GenerateLightningTo(Vector3 position, GameObject lightningPrefab) {
+    protected Lightning GenerateLightningTo(Vector3 position, GameObject lightningPrefab) {
         Lightning lightning = Instantiate(lightningPrefab, position, Quaternion.identity).GetComponent<Lightning>();
         lightning.Initialize(transform.position, position, Lightning.PivotType.EXTREMITY);
+        return lightning;
     }
 
     protected void RemovePouvoirs() {
@@ -207,9 +209,17 @@ public class FirstBoss : Sonde {
             Vector3 pos = optimalySpacedPositions[i];
             IGenerator generator = Instantiate(generatorPrefab, pos, Quaternion.identity, parent: gm.map.zonesFolder).GetComponent<IGenerator>();
             generator.Initialize();
-            GenerateLightningTo(generator.transform.position, generator.lightningPrefab);
+            Lightning lightning = GenerateLightningTo(generator.transform.position, generator.lightningPrefab);
+            AddGeoPointToGenerator(generator.transform.position, lightning.GetTotalDuration());
             yield return new WaitForSeconds(timeBetweenDropGenerators);
         }
+    }
+
+    protected void AddGeoPointToGenerator(Vector3 position, float duration) {
+        GeoData newGeoData = new GeoData(geoDataToGenerator);
+        newGeoData.SetTargetPosition(position);
+        newGeoData.duration = duration;
+        player.geoSphere.AddGeoPoint(newGeoData);
     }
 
     public void CollectGeneratorsOfPhase2() {
