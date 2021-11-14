@@ -35,6 +35,7 @@ Les Sondes ont une portée de détection maximum.
 Si tu restes trop au même endroit, les Sondes vont s'y accumuler et ce sera pire !
 Pour grimper dans un coin, vous n'avez pas besoin de vous en éloigner à chaque saut. Restez-y collé.
 Les niveaux sont optimisés pour limiter le nombre de culs-de-sacs et donc de se faire encercler par des Sondes !
+La Géosphère en bas au milieu de l'écran vous indique la position des Sondes vous ayant attaqués.
 
 7_LearnEndEvent
 La Doc() vous permet de comprendre le fonctionnement de chaque nouvelle mécanique.
@@ -71,7 +72,7 @@ Vous pouvez grimper dans les coins de dos !
 
 11_ParkourTraining
 Les Datas transparentes ne peuvent pas être capturés. Pour le moment.
-La prochaine Data accessible sera la plus proche de la Data d'avant et sera pointé par un éclair jaune.
+La prochaine Data accessible sera la plus proche de la Data d'avant et sera pointé par un éclair jaune et la Géosphère.
 Essayez d'anticiper quelle sera la prochaine Data à l'avance pour gagner du temps !
 La prochaine Data peut se trouver juste au-dessus ou en-dessous de vous !
 Courir le long des murs est souvent une bonne idée pour gagner de la hauteur.
@@ -147,8 +148,9 @@ Votre nouveau pouvoir, PathFinder(), vous montre le chemin à la Data la plus pr
 PathFinder() a 10 secondes de cooldown, utilisez-le au bon moment.
 PathFinder() ne vous permet pas de localiser la Sortie.
 PathFinder() peut partir dans votre dos, regardez bien autour de vous !
+PathFinder() active également la Géosphère vers la Data la plus proche.
 Votre Dash15 a été amélioré en Dash75 avec 7.5s de cooldown !
-La prochaine Data accessible sera la plus éloignée de la Data d'avant et sera pointé par un éclair bleu.
+La prochaine Data accessible sera la plus éloignée de la Data d'avant et sera pointé par un éclair bleu et la Géosphère.
 Les niveaux sont optimisés pour que chaque chemin ait toujours un début et une fin : vous pouvez rentrer par n'importe où, vous avez la certitude de pouvoir ressortir de l'autre côté !
 
 19_BounceHighway
@@ -178,6 +180,7 @@ Le Blast vous touche quelque soit la distance si vous êtes en ligne de vue du T
 Si vous ne voyez pas le centre du Tracer au moment du Blast alors celui-ci ne vous touchera pas !
 Vous pouvez interrompre un Tracer pendant 6 secondes en lui sautant dessus !
 Il vaut parfois mieux attendre caché que vos cooldown remontent et que les Tracers se soient calmés avant de repartir !
+La Géosphère vous indique la position des Tracers lorsqu'ils chargent un Blast.
 
 23_AlwaysReset
 Attraper un Reset Temporel remonte votre temps à son maximum !
@@ -231,6 +234,7 @@ Pour rester proche des Firewalls(), dansez autour, calez-vous dans les coins, gl
 Les Firewalls() s'aggrandissent un peu lorsque vous rentrez dedans, et diminuent quand vous en sortez.
 Les Cubes au centre des Firewalls() sont des LinkyCubes, donc ils se déclenchent les uns les autres.
 Vous pouvez attirer les Sondes au loin pour hacker un Firewall() plus facilement.
+Pendant que vous hackez un Firewall(), un éclair jaune et la Géosphère indiquent sa position.
 END-EVENT : Firewall : Endommagé
 END-EVENT : Firewall : Ébréché
 END-EVENT : F1r3wall : Fissuré
@@ -248,7 +252,7 @@ Le FirstBoss possède au moins 3 Phases que vous débloquerez en restant proche 
 À la Phase 2, vous débloquerez le Dash333 qui possède 3 charges qui se rechargent en 3 secondes !
 Vous pouvez voir combien de charges du Dash333 il vous reste à la forme de votre réticule.
 N'oubliez pas qu'utiliser un Dash réinitialise votre temps d'accrochage au mur !
-Au début de chaque Phase, un Reset Temporel apparaîtra.
+Au début de chaque Phase, un Reset Temporel apparaîtra, indiqué par un éclair violet et la Géosphère.
 Essayez de garder vos Resets Temporels aussi longtemps que possible pour gagner du temps.
 Les Generators créent des éléments de terrain en permanence. Restez-en proche pour les hacker.
 Chaque Generator possède sa propre durée de hack. Certains sont plus courts que d'autres, mais sont aussi plus dangereux.
@@ -270,6 +274,7 @@ Les éclairs de prévisualisation vous montrent exactement où passera chacun de
 Les éclairs de prévisualisation arrivent 2.5 secondes avant la Purge(), qui se déplacera 2 fois plus vite que vous !
 À l'intérieur de la Cave, vous serez bien protégé des Purges(), quelles que soient leurs directions.
 Il est aussi possible d'éviter une Purge() en allant aux extrémités de la carte.
+La Géosphère vous indique d'où viendra chaque Purge().
 
 35_InfiniteSpeed
 Attraper un Nanoboost double votre vitesse pendant 1.5 secondes avant de décroître en 2.5 secondes.
