@@ -12,6 +12,7 @@ public class AllumeLumiere : MonoBehaviour {
     public bool shouldThrowLightningToNewLumiere = true;
     [ConditionalHide("shouldThrowLightningToNewLumiere")]
     public GameObject lightningPrefab;
+    public GeoData geoData;
 
     protected GameManager gm;
     protected MapManager map;
@@ -21,9 +22,11 @@ public class AllumeLumiere : MonoBehaviour {
         map = gm.map;
     }
 
-    public void AllumeOneLumiere(Vector3 position) {
+    public void AllumeOneLumiere(Vector3 position)
+    {
         List<Lumiere> lumieres = map.GetLumieres();
-        foreach (Lumiere lumiere in lumieres) {
+        foreach (Lumiere lumiere in lumieres)
+        {
             LumiereSwitchable ls = (LumiereSwitchable)lumiere;
             ls.SetState(LumiereSwitchable.LumiereSwitchableState.OFF);
         }
@@ -34,14 +37,25 @@ public class AllumeLumiere : MonoBehaviour {
         chosenOneSwitchable.SetState(LumiereSwitchable.LumiereSwitchableState.ON);
         chosenOneSwitchable.TriggerLightExplosion();
 
-        ThrowLightning(position, chosenOneSwitchable.transform.position);
+        Lightning lightning = ThrowLightning(position, chosenOneSwitchable.transform.position);
+        AddGeoPoint(chosenOneSwitchable.transform.position, lightning);
     }
 
-    protected void ThrowLightning(Vector3 from, Vector3 to) {
+    public void AddGeoPoint(Vector3 targetPosition, Lightning lightning) {
+        // On va volontairement ne pas créer de copie de la geoData pour qu'il ne puisse y en avoir qu'une seule de ce type à la fois !
+        float duration = lightning != null ? lightning.GetTotalDuration() : geoData.duration;
+        geoData.duration = duration;
+        geoData.SetTargetPosition(targetPosition);
+        gm.player.geoSphere.AddGeoPoint(geoData);
+    }
+
+    protected Lightning ThrowLightning(Vector3 from, Vector3 to) {
         if (shouldThrowLightningToNewLumiere) {
             Lightning lightning = Instantiate(lightningPrefab, from, Quaternion.identity).GetComponent<Lightning>();
             lightning.Initialize(from, to);
+            return lightning;
         }
+        return null;
     }
 
     private Lumiere GetChosenOne(Vector3 position) {

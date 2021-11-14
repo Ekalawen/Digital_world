@@ -69,11 +69,19 @@ public class Lightning : MonoBehaviour {
 
     protected void AutoDestroyRayIn() {
         if(lightningMode == LightningMode.RAY) {
-            float distance = (end - start).magnitude;
-            float durationToArriving = distance / vitesse;
-            float lifetime = durationAfterArriving + durationToArriving;
-            Destroy(gameObject, lifetime);
+            Destroy(gameObject, GetTotalDuration());
         }
+    }
+
+    public float GetTotalDuration() {
+        float lifetime = GetDurationToArriving() + durationAfterArriving;
+        return lifetime;
+    }
+
+    public float GetDurationToArriving() {
+        float distance = (end - start).magnitude;
+        float durationToArriving = distance / vitesse;
+        return durationToArriving;
     }
 
     public void SetDurees(float dureeAvantConnection, float distance, float dureeApresConnection) {
