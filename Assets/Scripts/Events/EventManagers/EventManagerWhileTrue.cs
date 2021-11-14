@@ -54,6 +54,7 @@ public class EventManagerWhileTrue : EventManager {
 
     protected virtual IEnumerator CRestoreOriginalMap() {
         int nbCubesToDestroyByFrame = 15;  // Equivalent à 10ms sur mon ordi :)
+        deathCubes = deathCubes.FindAll(dc => dc != null); // Quick fix sale ! Il y avait 3 DC sur 1100 qui étaient null dans OrbTriggerFactory quand j'ai fais ça mais je ne sais pas pourquoi !
         deathCubes = deathCubes.OrderBy(dc => Vector3.SqrMagnitude(dc.transform.position - gm.player.transform.position)).ToList();
         int nbCubesDestroyed = 0;
         foreach(Cube cube in deathCubes) {

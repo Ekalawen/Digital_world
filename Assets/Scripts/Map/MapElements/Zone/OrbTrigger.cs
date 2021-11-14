@@ -24,6 +24,9 @@ public class OrbTrigger : IZone {
     public GameObject lightningLinkPrefab;
     public float dureeDestructionLightningLink = 0.3f;
 
+    [Header("GeoData")]
+    public GeoData geoData;
+
     [Header("OtherParams")]
     public bool shouldPopCubeInCenter = false;
     public bool autoDestroyOnActivate = false;
@@ -35,6 +38,7 @@ public class OrbTrigger : IZone {
     protected Coroutine coroutineResizing = null;
     protected bool isDestroying = false;
     protected Lightning lightning;
+    protected GeoPoint geoPoint;
 
     public void Initialize(float rayon, float durationToActivate) {
         base.Initialize();
@@ -80,6 +84,7 @@ public class OrbTrigger : IZone {
             coroutineOnEnter = StartCoroutine(COnEnter(other));
             ResizeOverTime(rayon + additionnalRayonOnEnter, dureeAdjustRayon);
             InstantiateLightningLink();
+            AddGeoPoint();
         }
     }
 
@@ -140,6 +145,18 @@ public class OrbTrigger : IZone {
         lightning.Initialize(inFrontOfPlayerPosition, transform.position, Lightning.PivotType.EXTREMITY);
     }
 
+    protected void AddGeoPoint() {
+        geoPoint = gm.player.geoSphere.AddGeoPoint(geoData);
+    }
+
+    protected void RemoveGeoPoint() {
+        if(geoPoint != null) {
+            geoPoint.Stop();
+            geoPoint = null;
+        }
+    }
+
+
     public void CallAllEvents() {
         events.Invoke();
         gm.soundManager.PlayOrbTriggerActivationClip(transform.position);
@@ -156,6 +173,7 @@ public class OrbTrigger : IZone {
             if (coroutineOnEnter != null) {
                 StopCoroutine(coroutineOnEnter);
             }
+            RemoveGeoPoint();
 
             gm.soundManager.PlayTimeZoneButtonOutClip(transform.position);
             ResizeOverTime(rayon, dureeAdjustRayon);

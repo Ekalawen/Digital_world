@@ -808,7 +808,6 @@ public class Player : Character {
     }
 
     protected void Jump(EtatPersonnage from) {
-        Debug.Log($"Jump()");
         etat = EtatPersonnage.EN_SAUT;
         sautTimer = new Timer(GetDureeTotaleSaut());
         sautTimer.AdvanceTimerBy(Time.deltaTime);// Car on sait qu'on applique le jump tout de suite ! Comme ça on gagne une frame !
