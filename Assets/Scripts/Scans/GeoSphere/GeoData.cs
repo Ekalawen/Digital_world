@@ -40,4 +40,8 @@ public class GeoData {
     public void SetTargetPosition(Vector3 target) {
         targetPosition = target;
     }
+
+    public Vector3 GetTargetPosition() {
+        return targetPosition;
+    }
 }

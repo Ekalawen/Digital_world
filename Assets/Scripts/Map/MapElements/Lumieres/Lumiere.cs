@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.VFX;
 
@@ -49,9 +50,11 @@ public class Lumiere : MonoBehaviour {
     protected bool isCaptured = false;
     protected LumiereQuality lumiereQuality;
     protected bool isAccessible = true;
+    protected UnityEvent<Lumiere> onCapture;
 
     protected virtual void Start () {
         gm = GameManager.Instance;
+        onCapture = new UnityEvent<Lumiere>();
         SetName();
         SetLumiereQuality((LumiereQuality)PrefsManager.GetInt(PrefsManager.DATA_QUALITY_KEY, (int)MenuOptions.defaultLumiereQuality));
 	}
@@ -71,6 +74,8 @@ public class Lumiere : MonoBehaviour {
             return;
         }
         isCaptured = true;
+
+        onCapture.Invoke(this);
 
         gm.map.RemoveLumiere(this);
 
@@ -220,5 +225,9 @@ public class Lumiere : MonoBehaviour {
 
     public bool IsAccessible() {
         return isAccessible;
+    }
+
+    public void RegisterOnCapture(UnityAction<Lumiere> call) {
+        onCapture.AddListener(call);
     }
 }
