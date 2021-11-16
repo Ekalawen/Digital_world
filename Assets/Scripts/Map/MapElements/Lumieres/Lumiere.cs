@@ -50,11 +50,10 @@ public class Lumiere : MonoBehaviour {
     protected bool isCaptured = false;
     protected LumiereQuality lumiereQuality;
     protected bool isAccessible = true;
-    protected UnityEvent<Lumiere> onCapture;
+    protected UnityEvent<Lumiere> onCapture = new UnityEvent<Lumiere>();
 
     protected virtual void Start () {
         gm = GameManager.Instance;
-        onCapture = new UnityEvent<Lumiere>();
         SetName();
         SetLumiereQuality((LumiereQuality)PrefsManager.GetInt(PrefsManager.DATA_QUALITY_KEY, (int)MenuOptions.defaultLumiereQuality));
 	}
