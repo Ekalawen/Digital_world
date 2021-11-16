@@ -4,6 +4,34 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+public class PathfinderData {
+    public List<Vector3> positions;
+    public bool shouldDetect;
+    public GameObject orbesPathPrefab;
+    public float orbeStartOffset;
+    public Color pathColor;
+    public GeoData geoData;
+    public int distanceMinToEnd;
+    public int stringIndice;
+    public bool haveFoundSomething;
+
+    public PathfinderData(List<Vector3> positions, bool shouldDetect, GameObject orbesPathPrefab, Color pathColor, GeoData geoData, int distanceMinToEnd, int stringIndice) {
+        this.positions = positions;
+        this.shouldDetect = shouldDetect;
+        this.orbesPathPrefab = orbesPathPrefab;
+        this.pathColor = pathColor;
+        this.geoData = geoData;
+        this.distanceMinToEnd = distanceMinToEnd;
+        this.stringIndice = stringIndice;
+        this.haveFoundSomething = false;
+    }
+
+    public float ComputeOrbeStartOffset(int nbPathfinders, int nbPathfindersBefore) {
+        orbeStartOffset = (float)nbPathfindersBefore / nbPathfinders;
+        return orbeStartOffset;
+    }
+}
+
 public class PouvoirPathfinder : IPouvoir {
 
     public static int NB_SPHERES_BY_NODES = 4;
@@ -27,46 +55,141 @@ public class PouvoirPathfinder : IPouvoir {
     public GeoData orbGeoData;
 
     protected override bool UsePouvoir() {
-        List<Vector3> lumieresPositions = GetAllLumieresPositions();
-        List<Vector3> itemsPositions = GetAllItemsPositions();
-        List<Vector3> orbTriggersPositions = GetAllOrbTriggersPositions();
+        List<PathfinderData> pathfinderDatas = GetAllPathfinderDatas();
 
-        int nbObjectifs = lumieresPositions.Count + itemsPositions.Count + orbTriggersPositions.Count;
-        if (!player.CanUseLocalisation() || nbObjectifs == 0) {
-            if (gm.map.GetLumieresFinalesAndAlmostFinales().Count == 0) {
-                gm.console.FailPathfinderUnauthorized();
-            } else {
-                gm.console.FailPathfinderInEndEvent();
-            }
-            gm.soundManager.PlayFailActionClip();
+        int nbObjectifs = pathfinderDatas.Select(data => data.positions.Count).Sum();
+        if(!player.CanUseLocalisation() || nbObjectifs == 0) {
+            AlertCantUseLocalisation();
             return false;
         }
 
-        float nbPathsToDraw = ((detectLumieres && lumieresPositions.Count > 0) ? 1 : 0)
-                          + ((detectItems && itemsPositions.Count > 0) ? 1 : 0)
-                          + ((detectOrbTriggers && orbTriggersPositions.Count > 0) ? 1 : 0);
-        float lumiereOrbeStartOffset = 0;
-        float itemOrbeStartOffset = ((detectLumieres && lumieresPositions.Count > 0) ? 1 : 0) / nbPathsToDraw;
-        float orbTriggerOrbeStartOffset = (((detectLumieres && lumieresPositions.Count > 0) ? 1 : 0) + ((detectItems && itemsPositions.Count > 0) ? 1 : 0)) / nbPathsToDraw;
-        bool haveFoundLumiere = detectLumieres && DrawPathToPositions(lumieresPositions, lumierePathColor, lumiereOrbesPathPrefab, lumiereOrbeStartOffset, distanceMinToEnd: 0, geoData: lumiereGeoData);
-        bool haveFoundItem = detectItems && DrawPathToPositions(itemsPositions, itemPathColor, itemsOrbesPathPrefab, itemOrbeStartOffset, distanceMinToEnd: 0, geoData: itemGeoData);
-        bool haveFoundOrbTrigger = detectOrbTriggers && DrawPathToPositions(orbTriggersPositions, orbTriggerPathColor, orbTriggerPathPrefab, orbTriggerOrbeStartOffset, distanceMinToEnd: 2, geoData: orbGeoData);
+        bool haveFoundSomething = false;
+        foreach(PathfinderData pathfinderData in pathfinderDatas) {
+            pathfinderData.haveFoundSomething = DrawPathToPositions(pathfinderData);
+            haveFoundSomething = pathfinderData.haveFoundSomething || haveFoundSomething;
+        }
 
-        if (!haveFoundLumiere && !haveFoundItem && !haveFoundOrbTrigger) {
-            gm.console.FailPathfinderObjectifInateignable();
-            gm.soundManager.PlayFailActionClip();
+        if(!haveFoundSomething) {
+            AlertNothingFound();
             return false;
-        } else { // On a au moins trouvé quelque chose
-            gm.console.SummarizePathfinder(new List<bool>() { haveFoundLumiere, haveFoundItem, haveFoundOrbTrigger },
-                new List<int>() { lumieresPositions.Count, itemsPositions.Count, orbTriggersPositions.Count });
+        }
+        else { // On a au moins trouvé quelque chose
+            gm.console.SummarizePathfinder(pathfinderDatas);
         }
 
         return true;
+
+        //List<Vector3> lumieresPositions = GetAllLumieresPositions();
+        //List<Vector3> itemsPositions = GetAllItemsPositions();
+        //List<Vector3> orbTriggersPositions = GetAllOrbTriggersPositions();
+
+        //int nbObjectifs = lumieresPositions.Count + itemsPositions.Count + orbTriggersPositions.Count;
+        //if (!player.CanUseLocalisation() || nbObjectifs == 0) {
+        //    if (gm.map.GetLumieresFinalesAndAlmostFinales().Count == 0) {
+        //        gm.console.FailPathfinderUnauthorized();
+        //    } else {
+        //        gm.console.FailPathfinderInEndEvent();
+        //    }
+        //    gm.soundManager.PlayFailActionClip();
+        //    return false;
+        //}
+
+        //float nbPathsToDraw = ((detectLumieres && lumieresPositions.Count > 0) ? 1 : 0)
+        //                  + ((detectItems && itemsPositions.Count > 0) ? 1 : 0)
+        //                  + ((detectOrbTriggers && orbTriggersPositions.Count > 0) ? 1 : 0);
+        //float lumiereOrbeStartOffset = 0;
+        //float itemOrbeStartOffset = ((detectLumieres && lumieresPositions.Count > 0) ? 1 : 0) / nbPathsToDraw;
+        //float orbTriggerOrbeStartOffset = (((detectLumieres && lumieresPositions.Count > 0) ? 1 : 0) + ((detectItems && itemsPositions.Count > 0) ? 1 : 0)) / nbPathsToDraw;
+
+        //bool haveFoundLumiere = detectLumieres && DrawPathToPositions(lumieresPositions, lumierePathColor, lumiereOrbesPathPrefab, lumiereOrbeStartOffset, distanceMinToEnd: 0, geoData: lumiereGeoData);
+        //bool haveFoundItem = detectItems && DrawPathToPositions(itemsPositions, itemPathColor, itemsOrbesPathPrefab, itemOrbeStartOffset, distanceMinToEnd: 0, geoData: itemGeoData);
+        //bool haveFoundOrbTrigger = detectOrbTriggers && DrawPathToPositions(orbTriggersPositions, orbTriggerPathColor, orbTriggerPathPrefab, orbTriggerOrbeStartOffset, distanceMinToEnd: 2, geoData: orbGeoData);
+
+        //if (!haveFoundLumiere && !haveFoundItem && !haveFoundOrbTrigger) {
+        //    gm.console.FailPathfinderObjectifInateignable();
+        //    gm.soundManager.PlayFailActionClip();
+        //    return false;
+        //} else { // On a au moins trouvé quelque chose
+        //    gm.console.SummarizePathfinder(new List<bool>() { haveFoundLumiere, haveFoundItem, haveFoundOrbTrigger },
+        //        new List<int>() { lumieresPositions.Count, itemsPositions.Count, orbTriggersPositions.Count });
+        //}
+
+        //return true;
     }
 
-    protected bool DrawPathToPositions(List<Vector3> positions, Color pathColor, GameObject orbePrefab, float orbeStartOffset, float distanceMinToEnd, GeoData geoData) {
+    private void AlertNothingFound()
+    {
+        gm.console.FailPathfinderObjectifInateignable();
+        gm.soundManager.PlayFailActionClip();
+    }
+
+    protected void AlertCantUseLocalisation() {
+        if (gm.map.GetLumieresFinalesAndAlmostFinales().Count == 0) {
+            gm.console.FailPathfinderUnauthorized();
+        } else {
+            gm.console.FailPathfinderInEndEvent();
+        }
+        gm.soundManager.PlayFailActionClip();
+    }
+
+    protected List<PathfinderData> GetAllPathfinderDatas() {
+        List<PathfinderData> pathfinderDatas = new List<PathfinderData>();
+        pathfinderDatas.Add(new PathfinderData(
+            positions: GetAllLumieresPositions(),
+            shouldDetect: detectLumieres,
+            orbesPathPrefab: lumiereOrbesPathPrefab,
+            pathColor: lumierePathColor,
+            geoData: lumiereGeoData,
+            distanceMinToEnd: 0,
+            stringIndice: 0
+        ));
+        Dictionary<Item.Type, List<Item>> itemsByType = GetItemsByTypes();
+        foreach(KeyValuePair<Item.Type, List<Item>> pair in itemsByType) {
+            GeoData newItemGeoData = new GeoData(itemGeoData);
+            newItemGeoData.color = pair.Value[0].geoSphereColor;
+            pathfinderDatas.Add(new PathfinderData(
+                positions: pair.Value.Select(i => i.transform.position).ToList(),
+                shouldDetect: detectItems,
+                orbesPathPrefab: itemsOrbesPathPrefab,
+                pathColor: pair.Value[0].pathColor,
+                geoData: newItemGeoData,
+                distanceMinToEnd: 0,
+                stringIndice: 1
+            ));
+        }
+        pathfinderDatas.Add(new PathfinderData(
+            positions: GetAllOrbTriggersPositions(),
+            shouldDetect: detectOrbTriggers,
+            orbesPathPrefab: orbTriggerPathPrefab,
+            pathColor: orbTriggerPathColor,
+            geoData: orbGeoData,
+            distanceMinToEnd: 2,
+            stringIndice: 2
+        ));
+
+        pathfinderDatas = pathfinderDatas.FindAll(data => data.positions.Count > 0 && data.shouldDetect);
+
+        for(int i = 0; i < pathfinderDatas.Count; i++) {
+            pathfinderDatas[i].ComputeOrbeStartOffset(pathfinderDatas.Count, i);
+        }
+        return pathfinderDatas;
+    }
+
+    protected Dictionary<Item.Type, List<Item>> GetItemsByTypes() {
+        Dictionary<Item.Type, List<Item>> itemsByType = new Dictionary<Item.Type, List<Item>>();
+        foreach(Item item in gm.itemManager.GetItems()) {
+            if(itemsByType.ContainsKey(item.type)) {
+                itemsByType[item.type].Add(item);
+            } else {
+                itemsByType[item.type] = new List<Item>() { item };
+            }
+        }
+        return itemsByType;
+    }
+
+    protected bool DrawPathToPositions(PathfinderData pathfinderData) {
         try {
-            Vector3 nearestPosition = DrawPathToNearestPosition(positions, pathColor, orbePrefab, orbeStartOffset, distanceMinToEnd, geoData);
+            Vector3 nearestPosition = DrawPathToNearestPosition(pathfinderData);
 
             gm.console.RunPathfinder(nearestPosition);
 
@@ -80,15 +203,15 @@ public class PouvoirPathfinder : IPouvoir {
         }
     }
 
-    private Vector3 DrawPathToNearestPosition(List<Vector3> positions, Color pathColor, GameObject orbePrefab, float orbeStartOffset, float distanceMinToEnd, GeoData geoData) {
+    private Vector3 DrawPathToNearestPosition(PathfinderData pathfinderData) {
         //Vector3 nearestPosition = positions.OrderBy(p => Vector3.Distance(p, player.transform.position)).First();
         //List<Vector3> posToDodge = GetPosToDodge();
         //List<Vector3> shortestPath = GetPathForPosition(nearestPosition, posToDodge);
         List<List<Vector3>> pathsToPositions = new List<List<Vector3>>();
         List<Vector3> posToDodge = GetNonRegularCubesToDodge();
-        positions = positions.OrderBy(p => Vector3.Distance(p, player.transform.position)).Take(3).ToList();
+        List<Vector3> positions = pathfinderData.positions.OrderBy(p => Vector3.Distance(p, player.transform.position)).Take(3).ToList();
         foreach (Vector3 pos in positions) {
-            List<Vector3> pathToPosition = GetPathForPosition(pos, posToDodge, distanceMinToEnd);
+            List<Vector3> pathToPosition = GetPathForPosition(pos, posToDodge, pathfinderData.distanceMinToEnd);
             pathsToPositions.Add(pathToPosition);
         }
         List<List<Vector3>> notNullPaths = pathsToPositions.FindAll(p => p != null);
@@ -97,17 +220,17 @@ public class PouvoirPathfinder : IPouvoir {
         List<Vector3> shortestPath = notNullPaths.OrderBy(p => p.Count).First();
         Vector3 nearestPosition = positions[pathsToPositions.IndexOf(shortestPath)];
 
-        DrawPathToPosition(nearestPosition, shortestPath, pathColor, orbePrefab, orbeStartOffset, geoData);
+        DrawPathToPosition(nearestPosition, shortestPath, pathfinderData);
         return nearestPosition;
     }
 
-    protected void DrawPathToPosition(Vector3 position, List<Vector3> path, Color pathColor, GameObject orbePrefab, float orbeStartOffset, GeoData pathGeoData) {
+    protected void DrawPathToPosition(Vector3 position, List<Vector3> path, PathfinderData pathfinderData) {
         if (path != null) {
-            GeoData geoData = new GeoData(pathGeoData);
+            GeoData geoData = new GeoData(pathfinderData.geoData);
             geoData.SetTargetPosition(position);
             geoData.duration = ComputeDuration(path);
             player.geoSphere.AddGeoPoint(geoData);
-            StartCoroutine(DrawPath(path, pathColor, orbePrefab, orbeStartOffset));
+            StartCoroutine(DrawPath(path, pathfinderData));
         } else {
             Debug.Log("Objectif inaccessible en " + position + " !");
         }
@@ -172,24 +295,24 @@ public class PouvoirPathfinder : IPouvoir {
         return gm.itemManager.GetAllOrbTriggers().Select(o => o.transform.position).ToList();
     }
 
-    protected IEnumerator DrawPath(List<Vector3> path, Color pathColor, GameObject orbePrefab, float orbeStartOffset) {
+    protected IEnumerator DrawPath(List<Vector3> path, PathfinderData pathfinderData) {
         for(int i = 0; i < path.Count - 1; i++) {
             Vector3 current = path[i];
             Vector3 next = path[i + 1];
             for(int j = 0; j < NB_SPHERES_BY_NODES; j++) {
                 Vector3 direction = next - current;
                 Vector3 pos = current + direction / NB_SPHERES_BY_NODES * (j + 1);
-                GameObject go = Instantiate(orbePrefab, pos, Quaternion.identity);
+                GameObject go = Instantiate(pathfinderData.orbesPathPrefab, pos, Quaternion.identity);
                 Color color = gm.colorManager.GetColorForPosition(go.transform.position);
                 color = Color.white - color;
                 Material material = go.GetComponent<MeshRenderer>().material;
                 material.color = color;
                 material.SetColor("_EmissionColor", color);
                 AutoColorBouncer colorBouncer = go.GetComponent<AutoColorBouncer>();
-                colorBouncer.colorToBounceTo = pathColor;
-                colorBouncer.startingTime = colorBouncer.intervalTime * orbeStartOffset;
+                colorBouncer.colorToBounceTo = pathfinderData.pathColor;
+                colorBouncer.startingTime = colorBouncer.intervalTime * pathfinderData.orbeStartOffset;
                 AutoBouncer bouncer = go.GetComponent<AutoBouncer>();
-                bouncer.startingTime = bouncer.intervalTime * orbeStartOffset;
+                bouncer.startingTime = bouncer.intervalTime * pathfinderData.orbeStartOffset;
                 Destroy(go, dureePath);
                 yield return new WaitForSeconds(1.0f / vitessePath);
             }

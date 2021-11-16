@@ -880,11 +880,23 @@ public class Console : MonoBehaviour {
         AjouterMessage (ls, Console.TypeText.BLUE_TEXT);
 	}
 
-	public void SummarizePathfinder(List<bool> hasFound, List<int> nbFound) {
-        for(int i = hasFound.Count - 1; i >= 0; i--) {
-            if(hasFound[i]) {
+	//public void SummarizePathfinder(List<bool> hasFound, List<int> nbFound) {
+ //       for(int i = hasFound.Count - 1; i >= 0; i--) {
+ //           if(hasFound[i]) {
+ //               LocalizedString ls = strings.summarizePathfinder[i];
+ //               ls.Arguments = new object[] { nbFound[i] };
+ //               AjouterMessageImportant(ls, TypeText.BLUE_TEXT, 2.0f);
+ //           }
+ //       }
+	//}
+
+	public void SummarizePathfinder(List<PathfinderData> pathfinderDatas) {
+        for(int i = 2; i >= 0; i--) {
+            List<PathfinderData> currentDatas = pathfinderDatas.FindAll(d => d.stringIndice == i && d.haveFoundSomething);
+            if(currentDatas.Count > 0) {
                 LocalizedString ls = strings.summarizePathfinder[i];
-                ls.Arguments = new object[] { nbFound[i] };
+                int nbFound = currentDatas.Select(d => d.positions.Count).Sum();
+                ls.Arguments = new object[] { nbFound };
                 AjouterMessageImportant(ls, TypeText.BLUE_TEXT, 2.0f);
             }
         }

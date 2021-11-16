@@ -7,12 +7,23 @@ using UnityEngine.Assertions;
 
 public abstract class Item : MonoBehaviour {
 
+    public enum Type { TIME_RESET, NANOBOOST, POWER_GIVER, GRAVITY };
+
+    [Header("Type")]
+    public Type type;
+
     [Header("Repop")]
     public bool shouldRepop = false;
 
     [Header("ScreenShake")]
     public float screenShakeMagnitude = 10;
     public float screenShakeRoughness = 10;
+
+    [Header("Colors")]
+    [ColorUsage(true, true)]
+    public Color pathColor;
+    [ColorUsage(true, true)]
+    public Color geoSphereColor;
 
     protected GameManager gm;
     protected GameObject itemPrefab;

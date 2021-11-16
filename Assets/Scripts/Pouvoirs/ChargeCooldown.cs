@@ -84,8 +84,10 @@ public class ChargeCooldown : Cooldown {
         base.SetCooldownDuration(duration, keepRemainingTime);
         if(duration == 0.0f) {
             currentCharges = maxCharges;
-            StopCoroutine(chargingCoroutine);
-            chargingCoroutine = null;
+            if (chargingCoroutine != null) {
+                StopCoroutine(chargingCoroutine);
+                chargingCoroutine = null;
+            }
         }
     }
 }
