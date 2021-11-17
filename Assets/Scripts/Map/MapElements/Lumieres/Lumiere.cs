@@ -55,7 +55,8 @@ public class Lumiere : MonoBehaviour {
     protected virtual void Start () {
         gm = GameManager.Instance;
         SetName();
-        SetLumiereQuality((LumiereQuality)PrefsManager.GetInt(PrefsManager.DATA_QUALITY_KEY, (int)MenuOptions.defaultLumiereQuality));
+        //SetLumiereQuality((LumiereQuality)PrefsManager.GetInt(PrefsManager.DATA_QUALITY_KEY, (int)MenuOptions.defaultLumiereQuality));
+        SetLumiereQuality(LumiereQuality.LOW);
 	}
 
     public void SetName() {
