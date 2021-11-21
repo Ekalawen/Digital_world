@@ -36,6 +36,7 @@ public class SelectorManager : MonoBehaviour {
     public TutorialTooltipManager tutorialTooltipManager;
 
     [Header("Parameters")]
+    public bool isDemo = false;
     public float dureeFading = 0.5f;
 
     protected List<SelectorLevel> levels;

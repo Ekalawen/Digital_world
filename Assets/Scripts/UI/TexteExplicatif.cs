@@ -257,7 +257,7 @@ public class TexteExplicatif : MonoBehaviour {
                 break;
             case Theme.NEGATIF:
                 materialExternalTerminal = materialExternalTerminalNegatif;
-                materialInternalTerminal = materialExternalTerminalNegatif;
+                materialInternalTerminal = materialInternalTerminalNegatif;
                 materialButton = materialButtonNegatif;
                 break;
             case Theme.NEUTRAL:

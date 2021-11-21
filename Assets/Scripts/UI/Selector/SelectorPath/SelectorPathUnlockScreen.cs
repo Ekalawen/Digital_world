@@ -123,23 +123,37 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         UIHelper.FitTextHorizontally(endLevelName, toLevelTitle);
     }
 
-    public void Submit() {
+    public void Submit()
+    {
         if (!selectorManager.HasSelectorPathUnlockScreenOpen())
             return;
-        if (input.text == selectorPath.GetPassword() || input.text == MenuLevel.SUPER_CHEATED_PASSWORD) {
+        if (IsGoodPassword(input.text)) {
             if (selectorPath.IsUnlocked()) {
                 SubmitGoodUnlocked();
             } else {
                 SubmitGoodLocked();
             }
         } else {
-            if (selectorPath.IsUnlocked()) {
-                SubmitFalseUnlocked();
-            } else {
-                SubmitFalseLocked();
+            if (!CanUnlockInDemo()) {
+                SubmitDemoDenied();
+            }
+            else {
+                if (selectorPath.IsUnlocked()) {
+                    SubmitFalseUnlocked();
+                } else {
+                    SubmitFalseLocked();
+                }
             }
         }
         RememberNumberOfSubmits();
+    }
+
+    protected bool IsGoodPassword(string password) {
+        return (password == selectorPath.GetPassword() || password == MenuLevel.SUPER_CHEATED_PASSWORD) && CanUnlockInDemo();
+    }
+
+    protected bool CanUnlockInDemo() {
+        return !selectorManager.isDemo || selectorPath.canUnlockInDemo;
     }
 
     protected void RememberNumberOfSubmits() {
@@ -300,6 +314,14 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
             mainText: selectorManager.strings.pathFalseUnlockedTexte.GetLocalizedString(password).Result,
             theme: TexteExplicatif.Theme.NEUTRAL);
         selectorManager.popup.AddReplacement(password, UIHelper.SurroundWithColor(password, UIHelper.GREEN));
+        selectorManager.popup.Run();
+    }
+
+    protected void SubmitDemoDenied() {
+        selectorManager.popup.Initialize(
+            title: selectorManager.strings.pathDemoDeniedTitre.GetLocalizedString().Result,
+            mainText: selectorManager.strings.pathDemoDeniedTexte.LoadAssetAsync().Result.text,
+            theme: TexteExplicatif.Theme.NEUTRAL);
         selectorManager.popup.Run();
     }
 

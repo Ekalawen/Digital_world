@@ -20,6 +20,7 @@ public class SelectorPath : MonoBehaviour {
     public GoalTresholds goalTresholds;
     public int nbTresholdsToSeeTraceHint = 1;
     public TMPro.TMP_SpriteAsset imagesAtlas;
+    public bool canUnlockInDemo = false;
 
     [Header("Password")]
     public LocalizedString passwordPasse;

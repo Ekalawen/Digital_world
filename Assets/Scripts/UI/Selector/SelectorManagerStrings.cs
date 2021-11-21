@@ -59,6 +59,8 @@ public class SelectorManagerStrings : ScriptableObject {
 
     public LocalizedString endBetaTitre;
     public LocalizedTextAsset endBetaTexte;
+    public LocalizedString pathDemoDeniedTitre;
+    public LocalizedTextAsset pathDemoDeniedTexte;
 
     public LocalizedString controllerPlugInTitle;
     public LocalizedString controllerPlugInTexte;
