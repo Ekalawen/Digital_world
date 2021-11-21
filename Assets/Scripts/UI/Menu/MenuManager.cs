@@ -21,6 +21,7 @@ public class MenuManager : MonoBehaviour {
     public TexteExplicatif popup;
     public BackgroundCarousel carousel;
     public GameObject uiSwapperButton;
+    public SelectorManager selectorManager;
 
     [Header("TutorielTexts")]
     public MenuManagerStrings strings;
@@ -28,14 +29,11 @@ public class MenuManager : MonoBehaviour {
     public LocalizedString tutorielRecommandeTitre;
     public LocalizedString tutorielRecommandeTexte;
 
-    protected SelectorManager selectorManager;
-
     void Awake() {
         if (!_instance) { _instance = this; }
     }
 
     private void Start() {
-        selectorManager = SelectorManager.Instance;
         SetSavedLocale();
         menuBouncingBackground.Initialize();
         SetRandomBackgroundIfNeeded();
@@ -196,5 +194,9 @@ public class MenuManager : MonoBehaviour {
 
     protected void StartMenuMusic() {
         UISoundManager.Instance.StartMusic();
+    }
+
+    public bool IsDemo() {
+        return selectorManager.isDemo;
     }
 }

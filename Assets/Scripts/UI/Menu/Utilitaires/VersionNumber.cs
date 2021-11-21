@@ -9,5 +9,8 @@ public class VersionNumber : MonoBehaviour {
 
     public void Start() {
         text.text = $"v{Application.version}";
+        if(MenuManager.Instance.IsDemo()) {
+            text.text += ".demo";
+        }
     }
 }

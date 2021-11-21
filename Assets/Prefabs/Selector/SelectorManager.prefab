@@ -46,7 +46,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelsFolder: {fileID: 0}
   pathsFolder: {fileID: 0}
-  camera: {fileID: 0}
+  baseCamera: {fileID: 0}
+  overlayCamera: {fileID: 0}
+  screen: {fileID: 0}
   background: {fileID: 0}
   loadingMenu: {fileID: 0}
   unlockScreen: {fileID: 0}
@@ -60,6 +62,7 @@ MonoBehaviour:
     type: 2}
   introductionRunner: {fileID: 8504838730164283862}
   tutorialTooltipManager: {fileID: 0}
+  isDemo: 1
   dureeFading: 0.5
   onDisplayLevel:
     m_PersistentCalls:
