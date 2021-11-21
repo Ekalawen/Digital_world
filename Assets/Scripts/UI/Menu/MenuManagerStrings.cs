@@ -10,4 +10,11 @@ public class MenuManagerStrings : ScriptableObject {
     public LocalizedString resetSavesYesButtonTooltip;
     public LocalizedString resetSavesNoButton;
     public LocalizedString resetSavesNoButtonTooltip;
+
+    public LocalizedString quitGameTitle;
+    public LocalizedString quitGameTexte;
+    public LocalizedString quitGameYesButton;
+    public LocalizedString quitGameYesButtonTooltip;
+    public LocalizedString quitGameNoButton;
+    public LocalizedString quitGameNoButtonTooltip;
 }

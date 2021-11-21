@@ -121,11 +121,14 @@ public class MenuManager : MonoBehaviour {
     }
 
     public void OnQuitterPress() {
-		Debug.Log("On a appuyé sur Quitter !");
-		QuitGame();
+        popup.RunPopup(strings.quitGameTitle, strings.quitGameTexte, TexteExplicatif.Theme.NEGATIF);
+        popup.RemoveDoneButton();
+        popup.AddButton(strings.quitGameNoButton, strings.quitGameNoButtonTooltip, TexteExplicatif.Theme.NEGATIF, null);
+        popup.AddButton(strings.quitGameYesButton, strings.quitGameYesButtonTooltip, TexteExplicatif.Theme.POSITIF, QuitGame);
 	}
 
 	public void QuitGame() {
+		Debug.Log("On a appuyé sur Quitter !");
 		#if UNITY_EDITOR
 			// Application.Quit() does not work in the editor so
 			UnityEditor.EditorApplication.isPlaying = false;
