@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Localization;
 using UnityEngine.UI;
 
@@ -56,6 +58,7 @@ public class TexteExplicatif : MonoBehaviour {
     protected Material materialExternalTerminal;
     protected Material materialButton;
     protected Fluctuator animationFluctuator;
+    protected List<Button> addedButtons = new List<Button>();
 
     public void Start() {
         selectorManager = SelectorManager.Instance;
@@ -116,6 +119,20 @@ public class TexteExplicatif : MonoBehaviour {
 
         StartRevealingCharacters();
         StartAnimation();
+    }
+
+    public void AddButton(LocalizedString text, LocalizedString tooltipText, Theme buttonTheme, UnityAction buttonAction, int siblingIndex = 0) {
+        Button addedButton = Instantiate(doneButton, parent: doneButton.transform.parent).GetComponent<Button>();
+        addedButton.transform.SetSiblingIndex(siblingIndex);
+        addedButton.GetComponent<Image>().material = GetButtonMaterialForTheme(buttonTheme);
+        addedButton.GetComponent<UpdateUnscaledTime>().Start();
+        addedButton.GetComponentInChildren<TMP_Text>().text = text.GetLocalizedString().Result;
+        addedButton.GetComponent<TooltipActivator>().localizedMessage = tooltipText;
+        doneButton.transform.parent.GetComponent<Image>().enabled = true;
+        if (buttonAction != null) {
+            addedButton.onClick.AddListener(buttonAction);
+        }
+        addedButtons.Add(addedButton);
     }
 
     public float GetPopupScale() {
@@ -189,10 +206,18 @@ public class TexteExplicatif : MonoBehaviour {
         firstFrame = false;
     }
 
-    public void Disable()
-    {
+    public void Disable() {
         EndAnimation();
+        RemoveAddedButtons();
         StartCoroutine(CDisableIn());
+    }
+
+    protected void RemoveAddedButtons() {
+        foreach(Button button in addedButtons) {
+            Destroy(button.gameObject);
+        }
+        doneButton.transform.parent.GetComponent<Image>().enabled = false;
+        addedButtons.Clear();
     }
 
     protected IEnumerator CDisableIn() {
@@ -253,20 +278,31 @@ public class TexteExplicatif : MonoBehaviour {
             case Theme.POSITIF:
                 materialExternalTerminal = materialExternalTerminalPositif;
                 materialInternalTerminal = materialInternalTerminalPositif;
-                materialButton = materialButtonPositif;
                 break;
             case Theme.NEGATIF:
                 materialExternalTerminal = materialExternalTerminalNegatif;
                 materialInternalTerminal = materialInternalTerminalNegatif;
-                materialButton = materialButtonNegatif;
                 break;
             case Theme.NEUTRAL:
                 materialExternalTerminal = materialExternalTerminalNeutral;
                 materialInternalTerminal = materialInternalTerminalNeutral;
-                materialButton = materialButtonNeutral;
                 break;
             default:
                 break;
+        }
+        materialButton = GetButtonMaterialForTheme(theme);
+    }
+
+    public Material GetButtonMaterialForTheme(Theme theme) {
+        switch (theme) {
+            case Theme.POSITIF:
+                return materialButtonPositif;
+            case Theme.NEGATIF:
+                return materialButtonNegatif;
+            case Theme.NEUTRAL:
+                return materialButtonNeutral;
+            default:
+                return materialButtonPositif;
         }
     }
 

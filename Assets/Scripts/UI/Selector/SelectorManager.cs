@@ -496,4 +496,9 @@ public class SelectorManager : MonoBehaviour {
         string texteString = strings.controllerPlugOutTexte.GetLocalizedString(keybindingName).Result;
         RunPopup(strings.controllerPlugOutTitle.GetLocalizedString().Result, texteString, TexteExplicatif.Theme.NEUTRAL);
     }
+
+    public static void WishlistOnSteam() {
+        Debug.Log($"Wishlist on Steam ! :)");
+        Application.OpenURL("https://store.steampowered.com/app/1734990");
+    }
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Localization;
 using UnityEngine.UI;
 
@@ -323,6 +324,11 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
             mainText: selectorManager.strings.pathDemoDeniedTexte.LoadAssetAsync().Result.text,
             theme: TexteExplicatif.Theme.NEUTRAL);
         selectorManager.popup.Run();
+        selectorManager.popup.AddButton(
+            text: selectorManager.strings.buttonWishlistOnSteam,
+            tooltipText: selectorManager.strings.buttonWishlistOnSteamTooltip,
+            buttonTheme: TexteExplicatif.Theme.POSITIF,
+            buttonAction: new UnityAction(SelectorManager.WishlistOnSteam));
     }
 
     public void SubmitIfEnter() {
