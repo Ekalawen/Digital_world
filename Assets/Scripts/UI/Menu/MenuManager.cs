@@ -23,6 +23,7 @@ public class MenuManager : MonoBehaviour {
     public GameObject uiSwapperButton;
 
     [Header("TutorielTexts")]
+    public MenuManagerStrings strings;
     public LocalizedString tutoriel;
     public LocalizedString tutorielRecommandeTitre;
     public LocalizedString tutorielRecommandeTexte;
@@ -154,6 +155,22 @@ public class MenuManager : MonoBehaviour {
     public void RunPopup(string title, string text, TexteExplicatif.Theme theme, bool cleanReplacements = true) {
         popup.Initialize(title: title, mainText: text, theme: theme, cleanReplacements: cleanReplacements);
         popup.Run();
+    }
+
+    public void RunPopup(LocalizedString title, LocalizedString text, TexteExplicatif.Theme theme, bool cleanReplacements = true) {
+        StartCoroutine(CRunPopup(title, text, theme, cleanReplacements));
+    }
+
+    public IEnumerator CRunPopup(LocalizedString title, LocalizedString text, TexteExplicatif.Theme theme, bool cleanReplacements = true) {
+        AsyncOperationHandle<string> handleTitle = title.GetLocalizedString();
+        yield return handleTitle;
+        string titleString = handleTitle.Result; // Car les AsyncOperationHandle doivent être utilisé l'un après l'autre ! x)
+
+        AsyncOperationHandle<string> handleText = text.GetLocalizedString();
+        yield return handleText;
+        string textString = handleText.Result;
+
+        RunPopup(titleString, textString, theme, cleanReplacements);
     }
 
     protected void SetSavedLocale() {

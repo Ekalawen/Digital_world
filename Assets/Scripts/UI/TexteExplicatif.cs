@@ -8,6 +8,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Localization;
+using UnityEngine.Localization.Components;
+using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.UI;
 
 public class TexteExplicatif : MonoBehaviour {
@@ -82,6 +84,28 @@ public class TexteExplicatif : MonoBehaviour {
         animationFluctuator = new Fluctuator(this, GetPopupScale, SetPopupScale, useUnscaleTime: isInGame);
     }
 
+    public void RunPopup(string title, string text, TexteExplicatif.Theme theme, bool cleanReplacements = true) {
+        Initialize(title: title, mainText: text, theme: theme, cleanReplacements: cleanReplacements);
+        Run();
+    }
+
+    public void RunPopup(LocalizedString title, LocalizedString text, TexteExplicatif.Theme theme, bool cleanReplacements = true) {
+        StartCoroutine(CRunPopup(title, text, theme, cleanReplacements));
+    }
+
+    public IEnumerator CRunPopup(LocalizedString title, LocalizedString text, TexteExplicatif.Theme theme, bool cleanReplacements = true) {
+        AsyncOperationHandle<string> handleTitle = title.GetLocalizedString();
+        yield return handleTitle;
+        string titleString = handleTitle.Result; // Car les AsyncOperationHandle doivent être utilisé l'un après l'autre ! x)
+
+        AsyncOperationHandle<string> handleText = text.GetLocalizedString();
+        yield return handleText;
+        string textString = handleText.Result;
+
+        RunPopup(titleString, textString, theme, cleanReplacements);
+    }
+
+
     public void InitTresholdText() {
         tresholdText = new TresholdText(textAsset);
     }
@@ -121,18 +145,38 @@ public class TexteExplicatif : MonoBehaviour {
         StartAnimation();
     }
 
-    public void AddButton(LocalizedString text, LocalizedString tooltipText, Theme buttonTheme, UnityAction buttonAction, int siblingIndex = 0) {
+    public void AddButton(LocalizedString text, LocalizedString tooltipText, Theme theme, UnityAction action, int siblingIndex = 0) {
         Button addedButton = Instantiate(doneButton, parent: doneButton.transform.parent).GetComponent<Button>();
         addedButton.transform.SetSiblingIndex(siblingIndex);
-        addedButton.GetComponent<Image>().material = GetButtonMaterialForTheme(buttonTheme);
+        addedButton.gameObject.SetActive(true);
+        addedButton.GetComponent<Image>().material = GetButtonMaterialForTheme(theme);
         addedButton.GetComponent<UpdateUnscaledTime>().Start();
-        addedButton.GetComponentInChildren<TMP_Text>().text = text.GetLocalizedString().Result;
+        addedButton.GetComponentInChildren<LocalizeStringEvent>().StringReference = text;
         addedButton.GetComponent<TooltipActivator>().localizedMessage = tooltipText;
-        doneButton.transform.parent.GetComponent<Image>().enabled = true;
-        if (buttonAction != null) {
-            addedButton.onClick.AddListener(buttonAction);
+        if (action != null) {
+            addedButton.onClick.AddListener(action);
         }
         addedButtons.Add(addedButton);
+    }
+
+    public void EnableButtonsBlackBackground() {
+        doneButton.transform.parent.GetComponent<Image>().enabled = true;
+    }
+
+    // Attention, n'ajoute pas d'action sur le doneButton ! Si on le fait il faudra aussi penser à l'enlever mais ça je vois pas trop comment faire pour le moment :)
+    public void AddActionOnStartAndEnd(UnityAction onStartPopup, UnityAction onEndPopup) {
+        onStartPopup.Invoke();
+        foreach(Button button in addedButtons) {
+            button.onClick.AddListener(onEndPopup);
+        }
+    }
+
+    public void RemoveDoneButton() {
+        doneButton.gameObject.SetActive(false);
+    }
+
+    public void ResetDoneButton() {
+        doneButton.gameObject.SetActive(true);
     }
 
     public float GetPopupScale() {
@@ -208,7 +252,6 @@ public class TexteExplicatif : MonoBehaviour {
 
     public void Disable() {
         EndAnimation();
-        RemoveAddedButtons();
         StartCoroutine(CDisableIn());
     }
 
@@ -225,6 +268,8 @@ public class TexteExplicatif : MonoBehaviour {
             yield return new WaitForSecondsRealtime(dureeCloseAnimation);
         else
             yield return new WaitForSeconds(dureeCloseAnimation);
+        RemoveAddedButtons();
+        ResetDoneButton();
         EnableHotkeysNextFrame();
         content.SetActive(false);
     }

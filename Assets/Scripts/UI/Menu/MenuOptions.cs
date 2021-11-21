@@ -59,6 +59,7 @@ public class MenuOptions : MonoBehaviour {
     [Header("OtherLinks")]
     public GameObject resetButton;
     public GameObject panelLanguageButton;
+    public GameObject returnButton;
 
     [Header("Titles")]
     public TMP_Text titleText;
@@ -243,16 +244,43 @@ public class MenuOptions : MonoBehaviour {
         PrefsManager.SetInt(PrefsManager.LAST_LEVEL_KEY, indiceLevel);
     }
 
+    public void ReinitialiserSauvegardesPopup() {
+        MenuManager menu = MenuManager.Instance;
+        menu.popup.RunPopup(menu.strings.resetSavesTitle, menu.strings.resetSavesTexte, TexteExplicatif.Theme.NEGATIF);
+        menu.popup.RemoveDoneButton();
+        menu.popup.AddButton(menu.strings.resetSavesNoButton, menu.strings.resetSavesNoButtonTooltip, TexteExplicatif.Theme.NEGATIF, null);
+        menu.popup.AddButton(menu.strings.resetSavesYesButton, menu.strings.resetSavesYesButtonTooltip, TexteExplicatif.Theme.POSITIF, ReinitialiserSauvegardes);
+        menu.popup.AddActionOnStartAndEnd(DisableReturnButtonIn, EnableReturnButtonIn);
+    }
+
+    public void DisableReturnButtonIn() {
+        StartCoroutine(CDisableReturnButtonIn());
+    }
+
+    protected IEnumerator CDisableReturnButtonIn() {
+        yield return new WaitForSeconds(MenuManager.Instance.popup.dureeOpenAnimation);
+        returnButton.SetActive(false);
+    }
+
+    public void EnableReturnButtonIn() {
+        StartCoroutine(CEnableReturnButtonIn());
+    }
+
+    protected IEnumerator CEnableReturnButtonIn() {
+        yield return new WaitForSeconds(MenuManager.Instance.popup.dureeCloseAnimation);
+        returnButton.SetActive(true);
+    }
+
     public void ReinitialiserSauvegardes() {
         PrefsManager.DeleteAll();
-        OnMusicVolumeChange(MenuOptions.defaultMusicVolume);
-        OnSoundVolumeChange(MenuOptions.defaultSoundVolume);
-        OnMouseSpeedChange(MenuOptions.defaultMouseSpeed);
-        OnWallDistorsionActivationPress(MenuOptions.defaultWallDistorsionActivation);
-        OnWallWarpActivationPress(MenuOptions.defaultWallWarpActivation);
-        OnConseilOnStartPress(MenuOptions.defaultConseilOnStart);
-        OnFpsCounterPress(MenuOptions.defaultFpsCounter);
-        OnDisplayConsolePress(MenuOptions.defaultDisplayConsole);
+        OnMusicVolumeChange(defaultMusicVolume);
+        OnSoundVolumeChange(defaultSoundVolume);
+        OnMouseSpeedChange(defaultMouseSpeed);
+        OnWallDistorsionActivationPress(defaultWallDistorsionActivation);
+        OnWallWarpActivationPress(defaultWallWarpActivation);
+        OnConseilOnStartPress(defaultConseilOnStart);
+        OnFpsCounterPress(defaultFpsCounter);
+        OnDisplayConsolePress(defaultDisplayConsole);
         int index = LocalizationSettings.AvailableLocales.Locales.IndexOf(LocalizationSettings.SelectedLocale);
         PrefsManager.SetInt(PrefsManager.LOCALE_INDEX_KEY, index);
         PrefsManager.Save();

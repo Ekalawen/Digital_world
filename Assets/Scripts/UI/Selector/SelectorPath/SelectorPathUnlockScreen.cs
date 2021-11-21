@@ -327,8 +327,9 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         selectorManager.popup.AddButton(
             text: selectorManager.strings.buttonWishlistOnSteam,
             tooltipText: selectorManager.strings.buttonWishlistOnSteamTooltip,
-            buttonTheme: TexteExplicatif.Theme.POSITIF,
-            buttonAction: new UnityAction(SelectorManager.WishlistOnSteam));
+            theme: TexteExplicatif.Theme.POSITIF,
+            action: new UnityAction(SelectorManager.WishlistOnSteam));
+        selectorManager.popup.EnableButtonsBlackBackground();
     }
 
     public void SubmitIfEnter() {
