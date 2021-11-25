@@ -103,7 +103,7 @@ public class EventManager : MonoBehaviour {
     protected Transform singleEventsFolder;
     protected bool shouldAutomaticallyQuitScene = true;
     protected Coroutine automaticallyQuitSceneCoroutine = null;
-    protected List<object> elementsToBeDoneBeforeStartEndGame;
+    protected List<object> elementsToBeDoneBeforeStartEndGame = new List<object>();
 
     public virtual void Initialize() {
         name = "EventManager";
@@ -111,7 +111,6 @@ public class EventManager : MonoBehaviour {
         map = gm.map;
         randomEventsFolder = new GameObject("RandomEvents").transform;
         singleEventsFolder = new GameObject("SingleEvents").transform;
-        elementsToBeDoneBeforeStartEndGame = new List<object>();
         PreFillPoolIfDeathCubesEndEvent();
 
         AddRandomEventsAndStartSingleEvents();

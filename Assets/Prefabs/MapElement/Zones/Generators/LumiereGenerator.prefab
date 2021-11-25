@@ -45,8 +45,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7e2b505975cbce4ba1ed29482bfc209, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frequenceActivation: 0.25
-  activationRange: 7
+  frequenceActivation: 2
+  firstActivationRandom: 1
+  activationRange: 8
   frequenceRecomputePositions: 5
   choseType: 1
   getCubesHelper: {fileID: 0}
@@ -56,6 +57,7 @@ MonoBehaviour:
     type: 3}
   orbTrigger: {fileID: 9219331088902830557}
   lumiereType: 0
+  maxNbLumieres: 30
 --- !u!114 &3520024592993807552
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -149,7 +151,7 @@ PrefabInstance:
     - target: {fileID: 8412133455549387673, guid: cd6b2b721ba4af24e9ee25db5af032e2,
         type: 3}
       propertyPath: rayon
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8412133455549387673, guid: cd6b2b721ba4af24e9ee25db5af032e2,
         type: 3}
@@ -169,7 +171,7 @@ PrefabInstance:
     - target: {fileID: 8412133455549387673, guid: cd6b2b721ba4af24e9ee25db5af032e2,
         type: 3}
       propertyPath: durationToActivate
-      value: 5
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 8412133455549387673, guid: cd6b2b721ba4af24e9ee25db5af032e2,
         type: 3}
@@ -179,8 +181,18 @@ PrefabInstance:
         type: 3}
     - target: {fileID: 8412133455549387673, guid: cd6b2b721ba4af24e9ee25db5af032e2,
         type: 3}
+      propertyPath: shouldPopCubeInCenter
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8412133455549387673, guid: cd6b2b721ba4af24e9ee25db5af032e2,
+        type: 3}
       propertyPath: additionnalRayonOnEnter
-      value: 7
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8412133455549387673, guid: cd6b2b721ba4af24e9ee25db5af032e2,
+        type: 3}
+      propertyPath: dureeAdjustRayonOnDecrease
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8412133455549387673, guid: cd6b2b721ba4af24e9ee25db5af032e2,
         type: 3}

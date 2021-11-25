@@ -10,6 +10,7 @@ public abstract class IGenerator : MonoBehaviour {
 
     [Header("Parameters")]
     public float frequenceActivation = 0.25f;
+    public bool firstActivationRandom = false;
     public float activationRange = 7.0f;
     public float frequenceRecomputePositions = 5.0f;
     public ChoseType choseType;
@@ -35,6 +36,9 @@ public abstract class IGenerator : MonoBehaviour {
         gm = GameManager.Instance;
         map = gm.map;
         generateTimer = new Timer(frequenceActivation, setOver: true);
+        if (firstActivationRandom) {
+            generateTimer.SetElapsedTime(UnityEngine.Random.Range(0, frequenceActivation));
+        }
         recomputeTimer = new Timer(MathTools.RandArround(frequenceRecomputePositions, 0.1f));
         orbTrigger.Initialize(orbTrigger.rayon, orbTrigger.durationToActivate);
         ComputePrecomputedPositions();

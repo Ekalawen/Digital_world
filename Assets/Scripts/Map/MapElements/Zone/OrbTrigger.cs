@@ -15,7 +15,8 @@ public class OrbTrigger : IZone {
     [Header("Resizing durations")]
     public float dureeConstruction = 1.0f;
     public float dureeDestruction = 1.0f;
-    public float dureeAdjustRayon = 0.3f;
+    public float dureeAdjustRayonOnIncrease = 0.3f;
+    public float dureeAdjustRayonOnDecrease = 0.3f;
 
     [Header("Events")]
     public UnityEvent events; // C'est déjà une liste !
@@ -82,7 +83,7 @@ public class OrbTrigger : IZone {
                 StopCoroutine(coroutineOnEnter);
             }
             coroutineOnEnter = StartCoroutine(COnEnter(other));
-            ResizeOverTime(rayon + additionnalRayonOnEnter, dureeAdjustRayon);
+            ResizeOverTime(rayon + additionnalRayonOnEnter, dureeAdjustRayonOnIncrease);
             InstantiateLightningLink();
             AddGeoPoint();
         }
@@ -176,7 +177,7 @@ public class OrbTrigger : IZone {
             RemoveGeoPoint();
 
             gm.soundManager.PlayTimeZoneButtonOutClip(transform.position);
-            ResizeOverTime(rayon, dureeAdjustRayon);
+            ResizeOverTime(rayon, dureeAdjustRayonOnDecrease);
             DestroyLightning();
         }
     }

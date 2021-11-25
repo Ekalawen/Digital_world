@@ -6,6 +6,9 @@ public class GenerateGenerators : MapFunctionComponent {
 
     public List<GameObject> generatorPrefabs;
     public List<int> nbGenerators;
+    public GetEmptyPositionsHelper getEmptyPositionsHelper;
+
+    protected List<Vector3> emptyPossiblePositions = null;
 
     public override void Activate() {
         for(int i = 0; i < generatorPrefabs.Count; i++) {
@@ -22,6 +25,15 @@ public class GenerateGenerators : MapFunctionComponent {
     }
 
     protected Vector3 ComputePosition() {
-        return map.GetFreeRoundedLocationWithoutLumiere();
+        if (getEmptyPositionsHelper == null) {
+            return map.GetFreeRoundedLocationWithoutLumiere();
+        } else {
+            if(emptyPossiblePositions == null || emptyPossiblePositions.Count <= 0) {
+                emptyPossiblePositions = getEmptyPositionsHelper.Get();
+            }
+            Vector3 chosenOne = MathTools.ChoseOne(emptyPossiblePositions);
+            emptyPossiblePositions.Remove(chosenOne);
+            return chosenOne;
+        }
     }
 }
