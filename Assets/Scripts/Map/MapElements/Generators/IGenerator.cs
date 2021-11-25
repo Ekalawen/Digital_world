@@ -17,6 +17,7 @@ public abstract class IGenerator : MonoBehaviour {
     public GetCubesHelper getCubesHelper;
     [ConditionalHide("choseType", ChoseType.GET_EMPTY)]
     public GetEmptyPositionsHelper getEmptyPositionsHelper;
+    public bool randomizePositions = false;
 
     [Header("Lightning")]
     public GameObject lightningPrefab;
@@ -42,13 +43,18 @@ public abstract class IGenerator : MonoBehaviour {
     protected void ComputePrecomputedPositions() {
         List<Vector3> positions;
         if (choseType == ChoseType.GET_CUBES) {
-            positions = getCubesHelper.Get().Select(c => c.transform.position).OrderByDescending(p => PositionScore(p)).ToList();
+            positions = getCubesHelper.Get().Select(c => c.transform.position).ToList();
         } else {
-            positions = getEmptyPositionsHelper.Get().OrderByDescending(p => PositionScore(p)).ToList();
+            positions = getEmptyPositionsHelper.Get();
         }
         float activationRangeSqr = activationRange * activationRange;
         positions = positions.FindAll(p => Vector3.SqrMagnitude(p - transform.position) <= activationRangeSqr);
         positions = positions.FindAll(p => IsValidPosition(p));
+        if (!randomizePositions) {
+            positions = positions.OrderByDescending(p => PositionScore(p)).ToList();
+        } else {
+            MathTools.Shuffle(positions);
+        }
         precomputedPositions = new Stack<Vector3>(positions);
     }
 
