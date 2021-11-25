@@ -15,6 +15,7 @@ public class PlaceBouncyCubesOnVerticalSpaces : GenerateCubesMapFunction {
     public int hauteurEntreCubes = 4;
     public int hauteurFreeFromBounceCubesAbove = 6;
     public int offsetFromSides = 0;
+    public bool removeAllCubesAbove = false;
 
     protected List<Cube> bouncyCubesPlaced = new List<Cube>();
 
@@ -30,14 +31,16 @@ public class PlaceBouncyCubesOnVerticalSpaces : GenerateCubesMapFunction {
 
         bouncyCubesPlaced = RemoveBouncyCubesAboveOthers(bouncyCubesPlaced);
 
+        RemoveCubesAboveBouncyCubes(bouncyCubesPlaced);
+
         Debug.Log($"{bouncyCubesPlaced.Count} BoucyCubes ajoutés !");
     }
 
     public List<Cube> PlaceBouncyCubesIn(CubeInt mergedEmptyCube) {
         Transform cubesFolder = new GameObject("PlaceBouncyCubesOnVerticalSpaces").transform;
         cubesFolder.SetParent(map.cubesFolder.transform);
-        int nbHauteurs = mergedEmptyCube.height / hauteurEntreCubes;
-        RectInt tranche = mergedEmptyCube.GetTranche();
+        int nbHauteurs = Mathf.Max(mergedEmptyCube.height / hauteurEntreCubes, 1);
+        //RectInt tranche = mergedEmptyCube.GetTranche();
         int nbCubesParTranches = mergedEmptyCube.areaTranche / nbCubesByAreaTranche + 1;
         List<Vector2Int> positionsTaken = new List<Vector2Int>();
         List<Cube> cubesAdded = new List<Cube>();
@@ -48,6 +51,8 @@ public class PlaceBouncyCubesOnVerticalSpaces : GenerateCubesMapFunction {
                 if (newCube != null) {
                     positionsTaken.Add(new Vector2Int(pos.x, pos.z));
                     cubesAdded.Add(newCube);
+                } else {
+                    Debug.Log($"Fail to create bouncy cube at position {pos}");
                 }
             }
         }
@@ -71,6 +76,7 @@ public class PlaceBouncyCubesOnVerticalSpaces : GenerateCubesMapFunction {
     }
 
     protected void DisplayEmptySpaces(List<CubeInt> emptyCubes) {
+        Debug.Log($"Il y a {emptyCubes.Count} emptyCubes !");
         foreach (CubeInt cube in emptyCubes) {
             List<ColorManager.Theme> theme = new List<ColorManager.Theme>() { ColorManager.GetRandomTheme() };
             PosVisualisator.DrawCube(cube, ColorManager.GetColor(theme));
@@ -95,5 +101,20 @@ public class PlaceBouncyCubesOnVerticalSpaces : GenerateCubesMapFunction {
             }
         }
         return cubes;
+    }
+
+    protected void RemoveCubesAboveBouncyCubes(List<Cube> bouncyCubes) {
+        if (!removeAllCubesAbove)
+            return;
+        foreach(Cube bouncyCube in bouncyCubes) {
+            float halfHeight = (float)hauteurFreeFromBounceCubesAbove / 2;
+            Vector3 center = bouncyCube.transform.position + Vector3.up * halfHeight;
+            Vector3 halfExtents = new Vector3(0.5f, halfHeight - 0.5f, 0.5f);
+            List<Cube> aboveCubes = map.GetCubesInBox(center, halfExtents);
+            foreach(Cube aboveCube in aboveCubes) {
+                Debug.Log($"Remove {aboveCube} à car il était au-dessus de {bouncyCube}");
+                map.DeleteCube(aboveCube);
+            }
+        }
     }
 }

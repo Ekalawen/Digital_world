@@ -92,11 +92,14 @@ public class GetMaxEmptySpacesLocations {
                 for (int j = i + 1; j < mergedSpaces.Count; j++) {
                     CubeInt bigCube = mergedSpaces[i];
                     CubeInt smallCube = mergedSpaces[j];
-                    CubeInt mergedCube = bigCube.Union(smallCube);
-                    if((float)bigCube.area / mergedCube.area >= commonPercentageToMerge || (float)smallCube.area / mergedCube.area >= commonPercentageToMerge) {
-                        mergedSpaces[i] = mergedCube;
-                        mergedSpaces.RemoveAt(j);
-                        hasBeenModified = true;
+                    if(bigCube.Overlaps(smallCube)) {
+                        CubeInt intersectCube = bigCube.Intersect(smallCube);
+                        if((float)intersectCube.area / bigCube.area >= commonPercentageToMerge && (float)intersectCube.area / smallCube.area >= commonPercentageToMerge) {
+                            CubeInt mergedCube = bigCube.Union(smallCube);
+                            mergedSpaces[i] = mergedCube;
+                            mergedSpaces.RemoveAt(j);
+                            hasBeenModified = true;
+                        }
                     }
                 }
             }
