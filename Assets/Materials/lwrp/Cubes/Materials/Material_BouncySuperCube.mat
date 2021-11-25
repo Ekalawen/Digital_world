@@ -7,11 +7,11 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Material_BouncyCube_Opaque
-  m_Shader: {fileID: -6465566751694194690, guid: bf25afdbbf0e0c140a5192a1896c436a,
+  m_Name: Material_BouncySuperCube
+  m_Shader: {fileID: -6465566751694194690, guid: 77a3b25d9e1c3c64d9326f13520c44a4,
     type: 3}
   m_ShaderKeywords: 
-  m_LightmapFlags: 4
+  m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -42,28 +42,47 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - DissolveThickness: 0.015
     - _BouncePeriode: 0.5
     - _BounceSpeedColorPower: 1.5
     - _BounceSpeedSizePower: 1.5
-    - _ImpactPropagationSpeed: 27.496698
-    - _ImpactTime: 21.648645
+    - _BrisableNoiseScale: 100
+    - _DecomposeNoiseScale: 100
+    - _DecomposeOffsetBlack: 0.1
+    - _DecomposeStartingTime: 999999
+    - _DecomposeTime: 1
+    - _DisabledAlpha: 0.2
+    - _DissolveNoiseScale: 2
+    - _DissolveStartingTime: 0
+    - _DissolveTime: 3
+    - _ImpactPropagationSpeed: 1
+    - _ImpactTime: 0
     - _IsDisabled: 0
     - _IsImpacting: 0
     - _IsLinky: 0
     - _LinkyCubeColorFrequence: 2
     - _LinkyCubeColorPower: 12
-    - _LinkyCubeTimeFixedOffset: 758.3773
+    - _LinkyCubeTimeFixedOffset: 0
     - _LinkyCubeTimeOffsetCoef: 0.1
     - _Metallic: 0
+    - _OffsetBlack: 0.1
+    - _PlayerProximityCoef: 0.037
     - _Smoothness: 0.5
     m_Colors:
-    - TextureColor: {r: 0, g: 0, b: 0, a: 0}
+    - TextureColor: {r: 0, g: 1, b: 1, a: 1}
     - _BounceColor: {r: 0, g: 1, b: 1, a: 1}
+    - _BrisableColor: {r: 1, g: 1, b: 1, a: 1}
+    - _BrisableIntensityCoefs: {r: 0, g: 0.1, b: 0, a: 0}
+    - _BrisableTilling: {r: 8, g: 8, b: 0, a: 0}
     - _Color: {r: 0, g: 0, b: 0, a: 1}
+    - _DecomposeColor: {r: 0, g: 0, b: 0, a: 0}
+    - _DecomposeTilling: {r: 10, g: 10, b: 0, a: 0}
+    - _DissolveColor: {r: 0, g: 1, b: 1, a: 1}
     - _ImpactColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _ImpactColorDisabled: {r: 0.8, g: 0.8, b: 0.8, a: 1}
     - _ImpactPoint: {r: 0, g: 0, b: 0, a: 0}
-    - _LinkyCubeAnchor: {r: -15.874488, g: 7.371465, b: 19.678331, a: 0}
+    - _LinkyCubeAnchor: {r: 0, g: 0, b: 0, a: 0}
     - _LinkyCubeColor1: {r: 0.4, g: 0.39607844, b: 0.40784314, a: 1}
     - _LinkyCubeColor2: {r: 0, g: 0.9019608, b: 0.9019608, a: 1}
+    - _PlayerPosition: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
