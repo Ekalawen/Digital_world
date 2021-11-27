@@ -38,6 +38,7 @@ public class SelectorManager : MonoBehaviour {
     [Header("Parameters")]
     public bool isDemo = false;
     public float dureeFading = 0.5f;
+    public Vector3 compressionFactor = Vector3.one;
 
     protected List<SelectorLevel> levels;
     protected List<SelectorPath> paths;
@@ -68,8 +69,8 @@ public class SelectorManager : MonoBehaviour {
         onUnlockPath = new UnityEvent<SelectorPath>();
         onOpenDHPath = new UnityEvent<SelectorPath>();
         onNextLevelFrompath = new UnityEvent<SelectorPath>();
-        GatherPaths();
         GatherLevels();
+        GatherPaths();
         //background.Initialize();
         //background.SetParameters(0, 0, 0, new List<ColorManager.Theme>() { ColorManager.Theme.ROUGE });
         background.gameObject.SetActive(false);
@@ -135,6 +136,9 @@ public class SelectorManager : MonoBehaviour {
             if (level != null) {
                 levels.Add(level);
             }
+        }
+        foreach(SelectorLevel level in levels) {
+            level.transform.position = MathTools.VecMul(level.transform.position, compressionFactor);
         }
     }
 
