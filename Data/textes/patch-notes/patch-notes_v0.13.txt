@@ -1,0 +1,71 @@
+@everyone Hey Runner ! Bienvenu dans ce patch-notes 0.13 !
+
+#Patch-notes Version 0.13 :
+
+Petit récapitulatif des points essentiels :
+- Création d'une Démo accessible gratuitement sur Steam !
+- 3 nouveaux niveaux ! L'un qui vous fera aller plus vite que la lumière, un autre qui tentera de vous détruire dans l'ombre, et le dernier qui vous demandera de gérer 4 mécaniques en simultané !
+- Ajout de la Géosphère, un mécanisme de géolocalisation en temps réel nouvelle génération !
+Allez, voyons tout cela plus en détail !
+
+
+# Publication d'une Démo
+La première Démo du jeu est disponible gratuitement directement sur Steam !
+La Démo est absolument identique au jeu complet mais s'arrêtera après le niveau DashTraining, ce qui correspond environ a entre 1 et 2 heures de jeu.
+N'hésitez pas à en faire profiter vos amis qui ne sont pas encore sur Discord ;)
+Lien de la Démo : https://store.steampowered.com/app/1734990
+
+# Nouveaux Niveaux
+## Niveau Infinite Nanoboosts
+Dans ce niveau de type Infinite Runner, chaque Bloc contient un Nanoboost, un objet attrapable qui doublera votre vitesse de déplacement pendant 4 secondes !
+Garderez-vous le contrôle ? Oui parce que bien entendu, la vitesse de la Déconnexion sera adaptée en conséquence ... !
+
+## Niveau Prison de l'Âme
+Dans ce niveau de type Régulier, vous découvrirez le troisième type d'ennemi du jeu, le Voleur d'Âme !
+Il s'agit d'un prisme immobile doté d'une faculté de téléportation qui utilise un rayon pour drainer votre vitesse de déplacement jusqu'à vous immobiliser complètement ... Auquel cas vous entrerez dans le mortel mode du Sursis !
+Une fois dans le mode Sursis tout apparaitra en noir et blanc et vous n'aurez que 10 secondes pour attraper un Voleur d'Âme sous peine de défaite immédiate ! (C'est quand même douloureux de perdre son âme !)
+
+## Niveau Arène de l'Âme
+Dans ce niveau de type Régulier, vous devrez attraper des Datas Switchables protégées par une multitude de Voleurs d'Âme.
+Voici la liste des choses que vous aurez à gérer dans ce niveau :
+- Les Datas Switchable.
+- Le temps et un Reset Temporel de 35 secondes.
+- Les ennemis (Voleurs d'Âmes et SondesV2).
+- Les Nanoboosts qui vous permettront d'avoir assez de vitesse pour passer outre les Voleurs d'Âme.
+Heureusement votre Pathfinder() et la Géosphère vous permettent de savoir à tous moments où se trouve ce que vous recherchez vraiment !
+Spoiler : c'est actuellement mon niveau favori ;)
+
+# Graphismes
+- Suppression de l'option de la qualité des Data. Étant donné que les Datas V2 étaient à la fois plus esthétiques et plus performantes que les Datas V1, il n'est maintenant plus possible de choisir les Datas V1.
+
+# Gameplay
+- Nouveau CheatCode pour pouvoir gagner le Dash333 dans n'importe quel niveau.
+
+# Ajout de la Géosphère
+La Géosphère est une petite sphère de votre interface graphique en jeu qui vous permet de localiser en temps réel de nombreux événements !
+À l'image de la fonctionnalité de détection des impacts de balle dans les jeux de FPS classiques, la Géosphère fonctionne similairement mais avec une localisation en 3D et persistante dans le temps malgré les rotations de votre personnage.
+Liste de tous les événements que la Géosphère localise actuellement :
+- Détection des impacts ennemis (Sondes et Tracers).
+- Détection des Voleurs d'Âme en train de vous viser avec leur rayon.
+- Détection de tous les Voleurs d'Âme en mode Sursis.
+- Détection des Tracers en train de charger un Blast.
+- Détection de la prochaine Data accessible lorsque les Datas ne sont attrapables que une par une.
+- Détection des Datas oubliées dans le tutoriel.
+- Détection des objectifs du Pathfinder() lorsque celui-ci est utilisé (en plus du chemin habituel du Pathfinder()).
+- Détection de l'apparition d'un nouvel objet sur la carte.
+- Détection de la provenance des Purges().
+- Détection des Firewalls() que vous êtes en train de hacker.
+Les conseils de la Doc() ont donc été adaptés en conséquence pour mentionner la Géosphère.
+
+# Equilibrage
+- Correction d'un bug qui pouvait désactiver le FirstBoss dans sa quatrième phase.
+- La couleur du Pathfinder s'adapte maintenant à la couleur de l'objet qu'il cherche (violet pour les Resets Temporels, cyan pour les Nanoboosts).
+
+# UI
+- Ajout d'une fenêtre de confirmation avant de réinitialiser les sauvegardes du jeu.
+- Ajout d'une fenêtre de confirmation avant de quitter le jeu.
+
+# Son
+- Changement du son de dissimulation qui était pénible à l'oreille quand il apparaissait de multiple fois d'affilé.
+- Suppression d'une musique du jeu qui n'était pas libre de droit.
+
