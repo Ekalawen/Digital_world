@@ -60,7 +60,6 @@ public class MenuLevel : MonoBehaviour {
     public SelectorManager selectorManager;
     public MenuBackgroundBouncing menuBouncingBackground;
     public TMP_Text textLevelName;
-    public InputField inputFieldNext;
     public Button backButton;
     public Button playButton;
 
@@ -81,8 +80,6 @@ public class MenuLevel : MonoBehaviour {
         //DisplayPopupUnlockLevel();
         //DisplayPopupUnlockNewTreshold();
 
-        string key = GetNameId() + PrefsManager.CURRENT_INPUT_FIELD_KEY;
-        inputFieldNext.text = PrefsManager.GetString(key, "");
         //UIHelper.FitTextHorizontaly(textLevelName.text, textLevelName); // No need, margins are enought ! :)
 
         MakeBouncePlayButton();
@@ -136,12 +133,6 @@ public class MenuLevel : MonoBehaviour {
             || Input.GetKeyDown(KeyCode.Space)) {
                 Play();
             }
-            if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D)) {
-                Next();
-            }
-            if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.Q)) {
-                Previous();
-            }
             if (Input.GetKeyDown(KeyCode.Escape)) {
                 Back();
             }
@@ -151,30 +142,6 @@ public class MenuLevel : MonoBehaviour {
     public void Play() {
         menuLevelSelector?.Play(levelSceneName);
         selectorManager?.Play(levelSceneName);
-    }
-
-    public void Next() {
-        if (inputFieldNext.text == GetPassword()) {
-            menuLevelSelector?.Next();
-            selectorManager?.Next();
-        } else if (inputFieldNext.text == SUPER_CHEATED_PASSWORD) {
-            menuLevelSelector?.Next();
-            selectorManager?.Next();
-        //} else {
-        //    texteExplicatifPasswdError.Run();
-        }
-    }
-
-    public void NextIfEnter() {
-        if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return))
-            Next();
-        else
-            texteArchivesLink.EnableHotkeysNextFrame();
-    }
-
-    public void Previous() {
-        menuLevelSelector?.Previous();
-        selectorManager?.Previous();
     }
 
     public void Back() {
@@ -194,13 +161,6 @@ public class MenuLevel : MonoBehaviour {
             yield return null;
         // Replacements are done in the Initialisation ! :)
         texteArchivesLink.Run();
-    }
-
-    public void SaveNextInputField() {
-        if (inputFieldNext.text == GetPassword() || inputFieldNext.text == SUPER_CHEATED_PASSWORD) {
-            string key = GetNameId() + PrefsManager.CURRENT_INPUT_FIELD_KEY;
-            PrefsManager.SetString(key, inputFieldNext.text);
-        }
     }
 
     protected void SetScores() {

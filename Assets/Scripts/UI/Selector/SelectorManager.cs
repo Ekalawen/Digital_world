@@ -71,7 +71,6 @@ public class SelectorManager : MonoBehaviour {
         onOpenDHPath = new UnityEvent<SelectorPath>();
         onNextLevelFrompath = new UnityEvent<SelectorPath>();
         verticalMenuHandler.Initialize();
-        verticalMenuHandler.Open();
         GatherLevels();
         GatherPaths();
         //background.Initialize();
@@ -164,7 +163,9 @@ public class SelectorManager : MonoBehaviour {
         SaveLastLevel();
         //PlayerPrefs.SetString(MenuLevel.LEVEL_NAME_ID_KEY, menuLevel.GetNameId());
 
-        FadeOut(menuLevel.gameObject, dureeFading);
+        verticalMenuHandler.Close();
+        menuLevel.gameObject.SetActive(false);
+        //FadeOut(menuLevel.gameObject, dureeFading);
         FadeInLoadingMenu(loading, menuLevel);
     }
 
@@ -277,14 +278,17 @@ public class SelectorManager : MonoBehaviour {
         selectorLevel.menuLevel.Initialize(); // menuLevel.Initialize() doit être après DisplayInitialPopup() pour que l'on sache si il faut highliter les fastUI ou pas :)
         background.gameObject.SetActive(true);
         onDisplayLevel.Invoke(selectorLevel);
-        if (instantDisplay) {
-            currentSelectorLevel.menuLevel.gameObject.SetActive(true);
-            currentSelectorLevel.menuLevel.gameObject.GetComponent<CanvasGroup>().alpha = 1.0f;
-            background.gameObject.SetActive(true);
-        } else {
-            FadeIn(currentSelectorLevel.menuLevel.gameObject, dureeFading);
-            FadeIn(background.gameObject, dureeFading);
-        }
+        //if (instantDisplay) {
+        //    currentSelectorLevel.menuLevel.gameObject.SetActive(true);
+        //    currentSelectorLevel.menuLevel.gameObject.GetComponent<CanvasGroup>().alpha = 1.0f;
+        //    background.gameObject.SetActive(true);
+        //} else {
+        //    FadeIn(currentSelectorLevel.menuLevel.gameObject, dureeFading);
+        //    FadeIn(background.gameObject, dureeFading);
+        //}
+        currentSelectorLevel.menuLevel.gameObject.SetActive(true);
+        background.gameObject.SetActive(true);
+        verticalMenuHandler.Open(instantOpen: instantDisplay);
     }
 
     public bool HasSelectorLevelOpen() {
@@ -310,8 +314,20 @@ public class SelectorManager : MonoBehaviour {
         if (!HasSelectorLevelOpen())
             return;
         hasLevelOpen = false;
-        FadeOut(currentSelectorLevel.menuLevel.gameObject, dureeFading);
-        FadeOut(background.gameObject, dureeFading);
+        verticalMenuHandler.Close();
+        DisableIn(currentSelectorLevel.menuLevel.gameObject, verticalMenuHandler.closeTime);
+        DisableIn(background.gameObject, verticalMenuHandler.closeTime);
+        //FadeOut(currentSelectorLevel.menuLevel.gameObject, dureeFading);
+        //FadeOut(background.gameObject, dureeFading);
+    }
+
+    protected void DisableIn(GameObject go, float duration) {
+        StartCoroutine(CDisableIn(go, duration));
+    }
+
+    protected IEnumerator CDisableIn(GameObject go, float duration) {
+        yield return new WaitForSeconds(duration);
+        go.SetActive(false);
     }
 
     public void BackToSelectorForFastUI() {

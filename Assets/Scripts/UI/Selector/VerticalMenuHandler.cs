@@ -31,6 +31,7 @@ public class VerticalMenuHandler : MonoBehaviour {
 
     public void Initialize() {
         verticalMenuPercentageFluctuator = new Fluctuator(this, GetVerticalMenuPercentage, SetVerticalMenuPercentage);
+        Close();
     }
 
     public float GetVerticalMenuPercentage() {
@@ -43,14 +44,14 @@ public class VerticalMenuHandler : MonoBehaviour {
         verticalMenuLayout.preferredWidth = pixelValue;
     }
 
-    public void Open() {
+    public void Open(bool instantOpen = false) {
         isOpen = true;
-        verticalMenuPercentageFluctuator.GoTo(openPercentage, openTime, openCurve);
+        verticalMenuPercentageFluctuator.GoTo(openPercentage, instantOpen ? 0 : openTime, openCurve);
     }
 
-    public void Close() {
+    public void Close(bool instantClose = false) {
         isOpen = false;
-        verticalMenuPercentageFluctuator.GoTo(0, closeTime, closeCurve);
+        verticalMenuPercentageFluctuator.GoTo(0, instantClose ? 0 : closeTime, closeCurve);
     }
 
     public bool IsOpen() {
