@@ -83,7 +83,7 @@ public class MenuLevel : MonoBehaviour {
         //UIHelper.FitTextHorizontaly(textLevelName.text, textLevelName); // No need, margins are enought ! :)
 
         MakeBouncePlayButton();
-        GenerateNextAndPreviousButtons();
+        //GenerateNextAndPreviousButtons(); // We don't need it now with the VerticalMenu ! :)
         SetLevelName();
     }
 
