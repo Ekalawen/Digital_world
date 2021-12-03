@@ -49,10 +49,12 @@ public class SelectorCameraController : MonoBehaviour {
     }
 
     protected void MoveByDragging() {
-        if (selectorManager.HasSelectorLevelOpen()
-         || selectorManager.PopupIsEnabled()
-         || selectorManager.HasSelectorPathUnlockScreenOpen())
+        //if (selectorManager.HasSelectorLevelOpen()
+        // || selectorManager.PopupIsEnabled()
+        // || selectorManager.HasSelectorPathUnlockScreenOpen())
+        if (selectorManager.PopupIsEnabled()) {
             return;
+        }
 
         Vector3 speeds = ComputeSpeedOnAxis();
 
