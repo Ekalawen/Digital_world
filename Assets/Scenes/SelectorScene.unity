@@ -582,7 +582,7 @@ GameObject:
   - component: {fileID: 36808355}
   - component: {fileID: 36808357}
   m_Layer: 5
-  m_Name: Menu
+  m_Name: VerticalMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7210,7 +7210,7 @@ PrefabInstance:
     - target: {fileID: 8873532978506072134, guid: 9579a19b4969a4c40ac35edf2adfef2e,
         type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 8873532978506072134, guid: 9579a19b4969a4c40ac35edf2adfef2e,
         type: 3}
@@ -12038,9 +12038,9 @@ RectTransform:
   - {fileID: 48195224}
   - {fileID: 662188022}
   - {fileID: 19930653}
+  - {fileID: 695712617}
   - {fileID: 228537038}
   - {fileID: 1236831811}
-  - {fileID: 695712617}
   - {fileID: 160287124}
   m_Father: {fileID: 199321218}
   m_RootOrder: 0
@@ -20107,72 +20107,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f5dfef9efb5d854f9c5aca338f0692e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &2046586954
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2046586955}
-  - component: {fileID: 2046586956}
-  m_Layer: 0
-  m_Name: SelectorSkyboxColorUpdater
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2046586955
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2046586954}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 3396177535156565759}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2046586956
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2046586954}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa5fcba4e48eaba45b99d3c4bc24b158, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tresholdThickness: 5
-  arcDelimiters:
-  - rectanglesColor: {r: 0, g: 0.101960786, b: 0, a: 1}
-    backgroundColor: {r: 0, g: 0, b: 0, a: 1}
-    proportionRectangles: 0.4
-    scrollSpeed: {x: 3, y: 20}
-    maxLevelDelimiter: {fileID: 537005269}
-  - rectanglesColor: {r: 0, g: 0, b: 0.25, a: 1}
-    backgroundColor: {r: 0, g: 0, b: 0, a: 1}
-    proportionRectangles: 0.475
-    scrollSpeed: {x: 3, y: 20}
-    maxLevelDelimiter: {fileID: 1710762021}
-  - rectanglesColor: {r: 0.12, g: 0, b: 0, a: 1}
-    backgroundColor: {r: 0, g: 0, b: 0, a: 1}
-    proportionRectangles: 0.55
-    scrollSpeed: {x: 3, y: 20}
-    maxLevelDelimiter: {fileID: 1672815571}
-  - rectanglesColor: {r: 0.25, g: 0.25, b: 0.25, a: 1}
-    backgroundColor: {r: 0, g: 0, b: 0, a: 1}
-    proportionRectangles: 0.4
-    scrollSpeed: {x: -6, y: -40}
-    maxLevelDelimiter: {fileID: 1397336864}
-  selectorManager: {fileID: 78100085}
 --- !u!1001 &2052879710
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22536,6 +22470,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1568796885588666867, guid: 05984be892311994e968884a39b96d7e,
+        type: 3}
+      propertyPath: canvasScaler
+      value: 
+      objectReference: {fileID: 199321216}
+    - target: {fileID: 1568796885588666867, guid: 05984be892311994e968884a39b96d7e,
+        type: 3}
+      propertyPath: verticalMenuLayout
+      value: 
+      objectReference: {fileID: 36808357}
     - target: {fileID: 3396177535230050442, guid: 05984be892311994e968884a39b96d7e,
         type: 3}
       propertyPath: m_RootOrder
@@ -22638,6 +22582,11 @@ PrefabInstance:
       objectReference: {fileID: 611502946}
     - target: {fileID: 3396177535230050443, guid: 05984be892311994e968884a39b96d7e,
         type: 3}
+      propertyPath: verticalMenu
+      value: 
+      objectReference: {fileID: 36808354}
+    - target: {fileID: 3396177535230050443, guid: 05984be892311994e968884a39b96d7e,
+        type: 3}
       propertyPath: overlayCamera
       value: 
       objectReference: {fileID: 1726971889}
@@ -22671,14 +22620,28 @@ PrefabInstance:
       propertyPath: m_Name
       value: SelectorManager
       objectReference: {fileID: 0}
+    - target: {fileID: 6642735954034596003, guid: 05984be892311994e968884a39b96d7e,
+        type: 3}
+      propertyPath: arcDelimiters.Array.data[0].maxLevelDelimiter
+      value: 
+      objectReference: {fileID: 537005269}
+    - target: {fileID: 6642735954034596003, guid: 05984be892311994e968884a39b96d7e,
+        type: 3}
+      propertyPath: arcDelimiters.Array.data[1].maxLevelDelimiter
+      value: 
+      objectReference: {fileID: 1710762021}
+    - target: {fileID: 6642735954034596003, guid: 05984be892311994e968884a39b96d7e,
+        type: 3}
+      propertyPath: arcDelimiters.Array.data[2].maxLevelDelimiter
+      value: 
+      objectReference: {fileID: 1672815571}
+    - target: {fileID: 6642735954034596003, guid: 05984be892311994e968884a39b96d7e,
+        type: 3}
+      propertyPath: arcDelimiters.Array.data[3].maxLevelDelimiter
+      value: 
+      objectReference: {fileID: 1397336864}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 05984be892311994e968884a39b96d7e, type: 3}
---- !u!4 &3396177535156565759 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3396177535230050442, guid: 05984be892311994e968884a39b96d7e,
-    type: 3}
-  m_PrefabInstance: {fileID: 3396177535156565758}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3786582945335329614
 PrefabInstance:
   m_ObjectHideFlags: 0

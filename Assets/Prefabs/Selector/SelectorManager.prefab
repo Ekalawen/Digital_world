@@ -28,7 +28,9 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 4870328431079249213}
+  - {fileID: 6557811446425564500}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -62,8 +64,10 @@ MonoBehaviour:
     type: 2}
   introductionRunner: {fileID: 8504838730164283862}
   tutorialTooltipManager: {fileID: 0}
+  verticalMenuHandler: {fileID: 1568796885588666867}
   isDemo: 0
   dureeFading: 0.5
+  compressionFactor: {x: 1, y: 1, z: 1}
   onDisplayLevel:
     m_PersistentCalls:
       m_Calls: []
@@ -105,3 +109,174 @@ MonoBehaviour:
       m_KeyId: 360495423488
       m_Key: 
     m_FallbackState: 0
+--- !u!1 &4242920457706566498
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4870328431079249213}
+  - component: {fileID: 6642735954034596003}
+  m_Layer: 0
+  m_Name: SelectorSkyboxColorUpdater
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4870328431079249213
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4242920457706566498}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 3396177535230050442}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6642735954034596003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4242920457706566498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa5fcba4e48eaba45b99d3c4bc24b158, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tresholdThickness: 5
+  arcDelimiters:
+  - rectanglesColor: {r: 0, g: 0.101960786, b: 0, a: 1}
+    backgroundColor: {r: 0, g: 0, b: 0, a: 1}
+    proportionRectangles: 0.4
+    scrollSpeed: {x: 3, y: 20}
+    maxLevelDelimiter: {fileID: 0}
+  - rectanglesColor: {r: 0, g: 0, b: 0.25, a: 1}
+    backgroundColor: {r: 0, g: 0, b: 0, a: 1}
+    proportionRectangles: 0.475
+    scrollSpeed: {x: 3, y: 20}
+    maxLevelDelimiter: {fileID: 0}
+  - rectanglesColor: {r: 0.12, g: 0, b: 0, a: 1}
+    backgroundColor: {r: 0, g: 0, b: 0, a: 1}
+    proportionRectangles: 0.55
+    scrollSpeed: {x: 3, y: 20}
+    maxLevelDelimiter: {fileID: 0}
+  - rectanglesColor: {r: 0.25, g: 0.25, b: 0.25, a: 1}
+    backgroundColor: {r: 0, g: 0, b: 0, a: 1}
+    proportionRectangles: 0.4
+    scrollSpeed: {x: -6, y: -40}
+    maxLevelDelimiter: {fileID: 0}
+  selectorManager: {fileID: 3396177535230050443}
+--- !u!1 &7102158033955517722
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6557811446425564500}
+  - component: {fileID: 1568796885588666867}
+  m_Layer: 0
+  m_Name: VerticalMenuHandler
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6557811446425564500
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7102158033955517722}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 3396177535230050442}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1568796885588666867
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7102158033955517722}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c13d9b3c24bfc5458ebdb046fc33164, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  openPercentage: 0.25
+  verticalMenuLayout: {fileID: 0}
+  canvasScaler: {fileID: 0}
+  openTime: 0.4
+  closeTime: 0.2
+  openCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.8094994
+      value: 1.2006066
+      inSlope: 0.26843798
+      outSlope: 0.26843798
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.6716549
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0.40526354
+      outSlope: 0.40526354
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 1
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  closeCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4

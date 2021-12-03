@@ -29,10 +29,8 @@ public class SelectorLevelObjectTitle : MonoBehaviour {
     }
 
     protected void UpdateBackgroundScaleAndEnable() {
-        //float cameraDistance = Vector3.Distance(SelectorManager.Instance.baseCamera.transform.position, transform.position);
         Vector3 cameraPosition = SelectorManager.Instance.baseCamera.transform.position;
         float cameraDistanceToCenter = Vector3.Distance(Vector3.ProjectOnPlane(cameraPosition, Vector3.up), Vector3.zero);
-        Debug.Log($"CameraDistanceToCenter = {cameraDistanceToCenter}");
         if(cameraDistanceToCenter > disableTreshold) {
             background.gameObject.SetActive(false);
         } else {

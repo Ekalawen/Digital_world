@@ -34,6 +34,7 @@ public class SelectorManager : MonoBehaviour {
     public ReplacementStrings DHReplacementStrings;
     public SelectorLevelRunIntroduction introductionRunner;
     public TutorialTooltipManager tutorialTooltipManager;
+    public VerticalMenuHandler verticalMenuHandler;
 
     [Header("Parameters")]
     public bool isDemo = false;
@@ -69,6 +70,8 @@ public class SelectorManager : MonoBehaviour {
         onUnlockPath = new UnityEvent<SelectorPath>();
         onOpenDHPath = new UnityEvent<SelectorPath>();
         onNextLevelFrompath = new UnityEvent<SelectorPath>();
+        verticalMenuHandler.Initialize();
+        verticalMenuHandler.Open();
         GatherLevels();
         GatherPaths();
         //background.Initialize();
