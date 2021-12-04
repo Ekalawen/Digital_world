@@ -83,7 +83,7 @@ public class MenuLevel : MonoBehaviour {
         //UIHelper.FitTextHorizontaly(textLevelName.text, textLevelName); // No need, margins are enought ! :)
 
         MakeBouncePlayButton();
-        //GenerateNextAndPreviousButtons(); // We don't need it now with the VerticalMenu ! :)
+        GenerateNextAndPreviousButtons(); // We don't need it now with the VerticalMenu ! :)
         SetLevelName();
     }
 
@@ -109,6 +109,7 @@ public class MenuLevel : MonoBehaviour {
             FastUISystem fastUISystem = Instantiate(fastUISystemNextPrefab, pos, rotation, fastUISystemNextTransform).GetComponent<FastUISystem>();
             fastUISystem.Initialize(nextPath, FastUISystem.DirectionType.FORWARD, FastUISystem.FromType.LEVEL);
         }
+        fastUISystemNextTransform.gameObject.SetActive(nextPaths.Count > 0);
         for (int i = 0; i < previousPaths.Count; i++) {
             SelectorPath previousPath = previousPaths[i];
             float heightOffset = ComputeHeightOffset();
@@ -117,6 +118,7 @@ public class MenuLevel : MonoBehaviour {
             FastUISystem fastUISystem = Instantiate(fastUISystemPreviousPrefab, pos, rotation, fastUISystemPreviousTransform).GetComponent<FastUISystem>();
             fastUISystem.Initialize(previousPath, FastUISystem.DirectionType.BACKWARD, FastUISystem.FromType.LEVEL);
         }
+        fastUISystemPreviousTransform.gameObject.SetActive(previousPaths.Count > 0);
     }
 
     protected float ComputeHeightOffset() {
