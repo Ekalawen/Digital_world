@@ -124,22 +124,23 @@ public class FastUISystem : MonoBehaviour {
     }
 
     public void OnLevelButtonClick() {
-        if (fromType == FromType.LEVEL) {
-            if (selectorManager.IsLevelAccessible(level)) {
-                selectorManager.BackToSelectorForFastUI();
-                selectorManager.PlaceCameraInFrontOfInterestTransform(level.objectLevel.transform);
-            }
-            selectorManager.TryDisplayLevel(level, instantDisplay: true);
-        } else { // UnlockScreen
-            if (selectorManager.IsLevelAccessible(level)) {
-                path.CloseUnlockScreenForFastUI();
-                selectorManager.PlaceCameraInFrontOfInterestTransform(level.objectLevel.transform);
-                if (directionType == DirectionType.FORWARD) {
-                    selectorManager.onNextLevelFrompath.Invoke(path);
-                }
-            }
-            selectorManager.TryDisplayLevel(level, instantDisplay: true);
-        }
+        selectorManager.BackAndDisplayLevel(level, instantDisplay: false);
+        //if (fromType == FromType.LEVEL) {
+        //    if (selectorManager.IsLevelAccessible(level)) {
+        //        selectorManager.BackToSelectorForFastUI();
+        //        selectorManager.PlaceCameraInFrontOfInterestTransform(level.objectLevel.transform);
+        //    }
+        //    selectorManager.TryDisplayLevel(level, instantDisplay: true);
+        //} else { // UnlockScreen
+        //    if (selectorManager.IsLevelAccessible(level)) {
+        //        path.CloseUnlockScreenForFastUI();
+        //        selectorManager.PlaceCameraInFrontOfInterestTransform(level.objectLevel.transform);
+        //        if (directionType == DirectionType.FORWARD) {
+        //            selectorManager.onNextLevelFrompath.Invoke(path);
+        //        }
+        //    }
+        //    selectorManager.TryDisplayLevel(level, instantDisplay: true);
+        //}
     }
 
     public void OnUnlockScreenButtonClick() {
