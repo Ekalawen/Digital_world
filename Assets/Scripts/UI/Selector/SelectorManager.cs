@@ -47,6 +47,7 @@ public class SelectorManager : MonoBehaviour {
     protected bool hasLevelOpen = false;
     protected bool hasUnlockScreenOpen = false;
     protected Dictionary<GameObject, Coroutine> fadingObjects;
+    protected Coroutine backAndDisplayLevelCoroutine;
 
     [HideInInspector]
     public UnityEvent<SelectorLevel> onDisplayLevel;
@@ -241,7 +242,15 @@ public class SelectorManager : MonoBehaviour {
 
     public void TryDisplayLevel(SelectorLevel selectorLevel, bool instantDisplay = false) {
         if(IsLevelAccessible(selectorLevel)) {
-            DisplayLevel(selectorLevel, instantDisplay);
+            if (HasSelectorLevelOpen()) {
+                if (GetCurrentLevel() == selectorLevel) {
+                    return;
+                } else {
+                    BackAndDisplayLevel(selectorLevel, instantDisplay);
+                }
+            } else {
+                DisplayLevel(selectorLevel, instantDisplay);
+            }
         } else {
             string dataHackeesTitre = strings.dataHackees.GetLocalizedString().Result;
             popup.AddReplacement(dataHackeesTitre, UIHelper.SurroundWithColor(dataHackeesTitre, UIHelper.ORANGE));
@@ -310,13 +319,37 @@ public class SelectorManager : MonoBehaviour {
         }
     }
 
-    public void BackToSelector() {
+    public void BackAndDisplayLevel(SelectorLevel selectorLevel, bool instantDisplay) {
+        StopBackAndDisplayLevelCoroutine();
+        backAndDisplayLevelCoroutine = StartCoroutine(CBackAndDisplayLevel(selectorLevel, instantDisplay));
+    }
+    
+    protected void StopBackAndDisplayLevelCoroutine() {
+        if(backAndDisplayLevelCoroutine != null) {
+            StopCoroutine(backAndDisplayLevelCoroutine);
+        }
+    }
+
+    public IEnumerator CBackAndDisplayLevel(SelectorLevel selectorLevel, bool instantDisplay) {
+        BackToSelector();
+        hasLevelOpen = true; // Usefull while we are closing the VerticalMenu
+        currentSelectorLevel = selectorLevel; // Same
+        yield return new WaitForSeconds(verticalMenuHandler.closeTime);
+        DisplayLevel(selectorLevel, instantDisplay);
+    }
+
+    public void BackToSelector(bool instantBack = false) {
         if (!HasSelectorLevelOpen())
             return;
         hasLevelOpen = false;
-        verticalMenuHandler.Close();
-        DisableIn(currentSelectorLevel.menuLevel.gameObject, verticalMenuHandler.closeTime);
-        DisableIn(background.gameObject, verticalMenuHandler.closeTime);
+        verticalMenuHandler.Close(instantClose: instantBack);
+        if(instantBack) {
+            currentSelectorLevel.menuLevel.gameObject.SetActive(false);
+            background.gameObject.SetActive(false);
+        } else {
+            DisableIn(currentSelectorLevel.menuLevel.gameObject, verticalMenuHandler.closeTime);
+            DisableIn(background.gameObject, verticalMenuHandler.closeTime);
+        }
         //FadeOut(currentSelectorLevel.menuLevel.gameObject, dureeFading);
         //FadeOut(background.gameObject, dureeFading);
     }

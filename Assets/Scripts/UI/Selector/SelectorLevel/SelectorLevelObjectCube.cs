@@ -55,17 +55,12 @@ public class SelectorLevelObjectCube : MonoBehaviour {
             hasClickedDown = false;
             if (IsCubeClickable()) {
                 objectLevel.level.OnMouseDown();
-                tooltipActivator.Hide();
-                SetMaterial(focus: false);
-                objectLevel.title.SetUnfocused();
             }
         }
     }
 
     private bool IsCubeClickable() {
-        return !selectorManager.PopupIsEnabled()
-            && !selectorManager.HasSelectorLevelOpen()
-            && !selectorManager.HasSelectorPathUnlockScreenOpen();
+        return !selectorManager.PopupIsEnabled();
     }
 
     public void SetMaterial(bool focus) {

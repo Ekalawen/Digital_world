@@ -41,8 +41,8 @@ public class SelectorLevel : MonoBehaviour {
     }
 
     public void OnMouseDown() {
-        if (!selectorManager.HasSelectorLevelOpen())
-            selectorManager.TryDisplayLevel(this);
+        //if (!selectorManager.HasSelectorLevelOpen())
+        selectorManager.TryDisplayLevel(this);
     }
 
     public bool IsSucceeded() {
