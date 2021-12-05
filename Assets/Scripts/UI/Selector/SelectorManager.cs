@@ -381,8 +381,8 @@ public class SelectorManager : MonoBehaviour {
     }
 
     public void Return() {
-        if (HasSelectorLevelOpen())
-            return;
+        //if (HasSelectorLevelOpen())
+        //    return;
         PrefsManager.SetBool(PrefsManager.SHOULD_SET_RANDOM_BACKGROUND_KEY, true);
         SceneManager.LoadScene("MenuScene");
     }
