@@ -144,6 +144,17 @@ public class SelectorPath : MonoBehaviour {
     }
 
     public void OpenUnlockScreen(bool instantDisplay = false) {
+        if (selectorManager.HasVerticalMenuOpen()) {
+            if(selectorManager.HasUnlockScreenOpen() && selectorManager.GetCurrentPath() == this) {
+                return;
+            }
+            selectorManager.BackAndDisplayUnlockScreen(this, instantDisplay);
+        } else {
+            ReallyOpenUnlockScreen(instantDisplay);
+        }
+    }
+
+    protected void ReallyOpenUnlockScreen(bool instantDisplay = false) {
         unlockScreen.gameObject.SetActive(true);
         unlockScreen.Initialize(this, GetHighlitedState());
         //if (!instantDisplay) {
@@ -155,8 +166,10 @@ public class SelectorPath : MonoBehaviour {
         //    unlockScreen.gameObject.SetActive(true);
         //    unlockScreen.gameObject.GetComponent<CanvasGroup>().alpha = 1.0f;
         //}
+        selectorManager.background.gameObject.SetActive(true);
+        unlockScreen.gameObject.SetActive(true);
         selectorManager.verticalMenuHandler.Open(instantOpen: instantDisplay);
-        selectorManager.SetSelectorPathUnlockScreenOpenness(true, this);
+        selectorManager.SetCurrentUnlockScreen(true, this);
     }
 
     public void CloseUnlockScreen(bool instantDisplay = false) {
@@ -170,6 +183,8 @@ public class SelectorPath : MonoBehaviour {
         //    unlockScreen.gameObject.SetActive(false);
         //    unlockScreen.gameObject.GetComponent<CanvasGroup>().alpha = 0.0f;
         //}
+        selectorManager.DisableIn(selectorManager.background.gameObject, selectorManager.verticalMenuHandler.closeTime);
+        selectorManager.DisableIn(unlockScreen.gameObject, selectorManager.verticalMenuHandler.closeTime);
         selectorManager.verticalMenuHandler.Close(instantClose: instantDisplay);
         StartCoroutine(CDisableScreenOpennessNextFrame());
     }
@@ -182,7 +197,7 @@ public class SelectorPath : MonoBehaviour {
 
     protected IEnumerator CDisableScreenOpennessNextFrame() {
         yield return null;
-        selectorManager.SetSelectorPathUnlockScreenOpenness(false, this);
+        selectorManager.SetCurrentUnlockScreen(false, this);
     }
 
     public string GetPassword() {

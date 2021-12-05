@@ -126,7 +126,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
 
     public void Submit()
     {
-        if (!selectorManager.HasSelectorPathUnlockScreenOpen())
+        if (!selectorManager.HasUnlockScreenOpen())
             return;
         if (IsGoodPassword(input.text)) {
             if (selectorPath.IsUnlocked()) {
@@ -338,7 +338,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
     }
 
     public void OpenDonneesHackees() {
-        if (!selectorManager.HasSelectorPathUnlockScreenOpen())
+        if (!selectorManager.HasUnlockScreenOpen())
             return;
         int currentTreshold = GetCurrentTreshold();
         OpenDonneesHackeesWithCurrentTreshold(currentTreshold);
@@ -478,7 +478,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
     }
 
     public void Return() {
-        if (!selectorManager.HasSelectorPathUnlockScreenOpen())
+        if (!selectorManager.HasUnlockScreenOpen())
             return;
         selectorPath.CloseUnlockScreen();
     }

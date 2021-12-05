@@ -308,8 +308,21 @@ public class SelectorCameraController : MonoBehaviour {
         PlaceCameraInFrontOfInterestTransform(selectorManager.GetCurrentLevel().transform);
     }
 
+    public void PlaceCameraInFrontOfPath(SelectorPath path) {
+        PlaceCameraInFrontOfInterestPoint(path.cadena.transform.position);
+    }
+
     public void PlaceCameraInFrontOfInterestTransform(Transform t) {
-        PlaceCameraInFrontOfInterestPoint(t.position, t.forward);
+        Vector3 forward = IsOnCentralAxe(t.position) ? GetForwardToCamera(t.position) : t.forward;
+        PlaceCameraInFrontOfInterestPoint(t.position, forward);
+    }
+
+    private Vector3 GetForwardToCamera(Vector3 pos) {
+        return Vector3.ProjectOnPlane(transform.position - pos, Vector3.up).normalized;
+    }
+
+    public bool IsOnCentralAxe(Vector3 pos) {
+        return Vector3.Distance(Vector3.zero, Vector3.ProjectOnPlane(pos, Vector3.up)) == 0;
     }
 
     public void PlaceCameraInFrontOfInterestPoint(Vector3 point) {
@@ -324,10 +337,12 @@ public class SelectorCameraController : MonoBehaviour {
         //transform.LookAt(interestPos, Vector3.up);
     }
 
-    protected static Vector3 GetForwardFromCenterProjection(Vector3 interestPos) {
+    protected Vector3 GetForwardFromCenterProjection(Vector3 interestPos) {
         Vector3 forward;
-        if (interestPos.x == 0.0f && interestPos.z == 0.0f) {
-            forward = Vector3.forward;
+        if (interestPos.y < 50 && !IsOnCentralAxe(interestPos)) { // Les cadenas relous !!
+            forward = Vector3.back;
+        } else if (IsOnCentralAxe(interestPos)) {
+            forward = GetForwardToCamera(interestPos);
         } else {
             Vector3 projection = Vector3.Project(interestPos, Vector3.up);
             Vector3 orthoToCenter = interestPos - projection;

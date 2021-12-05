@@ -44,10 +44,11 @@ public class SelectorManager : MonoBehaviour {
     protected List<SelectorLevel> levels;
     protected List<SelectorPath> paths;
     protected SelectorLevel currentSelectorLevel;
+    protected SelectorPath currentSelectorPath = null;
     protected bool hasLevelOpen = false;
     protected bool hasUnlockScreenOpen = false;
     protected Dictionary<GameObject, Coroutine> fadingObjects;
-    protected Coroutine backAndDisplayLevelCoroutine;
+    protected Coroutine backAndDisplayCoroutine;
     protected SelectorCameraController cameraController;
 
     [HideInInspector]
@@ -103,7 +104,7 @@ public class SelectorManager : MonoBehaviour {
     }
 
     public void Update() {
-        if (!HasSelectorLevelOpen() && !HasSelectorPathUnlockScreenOpen()) {
+        if (!HasSelectorLevelOpen() && !HasUnlockScreenOpen()) {
             if (Input.GetKeyDown(KeyCode.Escape)) {
                 Return();
             }
@@ -145,6 +146,10 @@ public class SelectorManager : MonoBehaviour {
         foreach(SelectorLevel level in levels) {
             level.transform.position = MathTools.VecMul(level.transform.position, compressionFactor);
         }
+    }
+
+    public SelectorPath GetCurrentPath() {
+        return currentSelectorPath;
     }
 
     protected void InitializeLevels() {
@@ -244,8 +249,8 @@ public class SelectorManager : MonoBehaviour {
 
     public void TryDisplayLevel(SelectorLevel selectorLevel, bool instantDisplay = false) {
         if(IsLevelAccessible(selectorLevel)) {
-            if (HasSelectorLevelOpen()) {
-                if (GetCurrentLevel() == selectorLevel) {
+            if(HasVerticalMenuOpen()) {
+                if (HasSelectorLevelOpen() && GetCurrentLevel() == selectorLevel) {
                     return;
                 } else {
                     BackAndDisplayLevel(selectorLevel, instantDisplay);
@@ -303,6 +308,10 @@ public class SelectorManager : MonoBehaviour {
         verticalMenuHandler.Open(instantOpen: instantDisplay);
     }
 
+    public bool HasVerticalMenuOpen() {
+        return verticalMenuHandler.IsOpen();
+    }
+
     public bool HasSelectorLevelOpen() {
         return hasLevelOpen;
     }
@@ -311,25 +320,31 @@ public class SelectorManager : MonoBehaviour {
         return hasLevelOpen && currentSelectorLevel == selectorLevel;
     }
 
-    public bool HasSelectorPathUnlockScreenOpen() {
+    public bool HasUnlockScreenOpen() {
         return hasUnlockScreenOpen;
     }
 
-    public void SetSelectorPathUnlockScreenOpenness(bool value, SelectorPath path) {
+    public void SetCurrentUnlockScreen(bool value, SelectorPath path) {
         hasUnlockScreenOpen = value;
+        currentSelectorPath = path;
         if(value) {
             onDisplayPath.Invoke(path);
         }
     }
 
     public void BackAndDisplayLevel(SelectorLevel selectorLevel, bool instantDisplay) {
-        StopBackAndDisplayLevelCoroutine();
-        backAndDisplayLevelCoroutine = StartCoroutine(CBackAndDisplayLevel(selectorLevel, instantDisplay));
+        StopBackAndDisplayCoroutine();
+        backAndDisplayCoroutine = StartCoroutine(CBackAndDisplayLevel(selectorLevel, instantDisplay));
+    }
+
+    public void BackAndDisplayUnlockScreen(SelectorPath selectorPath, bool instantDisplay) {
+        StopBackAndDisplayCoroutine();
+        backAndDisplayCoroutine = StartCoroutine(CBackAndDisplayUnlockScreen(selectorPath, instantDisplay));
     }
     
-    protected void StopBackAndDisplayLevelCoroutine() {
-        if(backAndDisplayLevelCoroutine != null) {
-            StopCoroutine(backAndDisplayLevelCoroutine);
+    protected void StopBackAndDisplayCoroutine() {
+        if(backAndDisplayCoroutine != null) {
+            StopCoroutine(backAndDisplayCoroutine);
         }
     }
 
@@ -337,32 +352,43 @@ public class SelectorManager : MonoBehaviour {
         BackToSelector();
         hasLevelOpen = true; // Usefull while we are closing the VerticalMenu
         currentSelectorLevel = selectorLevel; // Same
+        SetCurrentUnlockScreen(false, null);
         cameraController.PlaceCameraInFrontOfCurrentLevel();
         yield return new WaitForSeconds(verticalMenuHandler.closeTime);
         DisplayLevel(selectorLevel, instantDisplay);
     }
 
+    public IEnumerator CBackAndDisplayUnlockScreen(SelectorPath selectorPath, bool instantDisplay) {
+        BackToSelector();
+        hasLevelOpen = false; // Usefull while we are closing the VerticalMenu
+        SetCurrentUnlockScreen(true, selectorPath);
+        cameraController.PlaceCameraInFrontOfPath(selectorPath);
+        yield return new WaitForSeconds(verticalMenuHandler.closeTime);
+        selectorPath.OpenUnlockScreen(instantDisplay);
+    }
+
     public void BackToSelector(bool instantBack = false) {
-        if (!HasSelectorLevelOpen())
+        if (!HasSelectorLevelOpen() && !HasUnlockScreenOpen())
             return;
-        hasLevelOpen = false;
-        verticalMenuHandler.Close(instantClose: instantBack);
         if(instantBack) {
             currentSelectorLevel.menuLevel.gameObject.SetActive(false);
             background.gameObject.SetActive(false);
+            unlockScreen.gameObject.SetActive(false);
         } else {
             DisableIn(currentSelectorLevel.menuLevel.gameObject, verticalMenuHandler.closeTime);
             DisableIn(background.gameObject, verticalMenuHandler.closeTime);
+            DisableIn(unlockScreen.gameObject, verticalMenuHandler.closeTime);
         }
-        //FadeOut(currentSelectorLevel.menuLevel.gameObject, dureeFading);
-        //FadeOut(background.gameObject, dureeFading);
+        hasLevelOpen = false;
+        SetCurrentUnlockScreen(false, null);
+        verticalMenuHandler.Close(instantClose: instantBack);
     }
 
-    protected void DisableIn(GameObject go, float duration) {
+    public void DisableIn(GameObject go, float duration) {
         StartCoroutine(CDisableIn(go, duration));
     }
 
-    protected IEnumerator CDisableIn(GameObject go, float duration) {
+    public IEnumerator CDisableIn(GameObject go, float duration) {
         yield return new WaitForSeconds(duration);
         go.SetActive(false);
     }
