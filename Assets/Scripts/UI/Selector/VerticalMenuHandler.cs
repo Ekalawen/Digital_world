@@ -31,7 +31,7 @@ public class VerticalMenuHandler : MonoBehaviour {
 
     public void Initialize() {
         verticalMenuPercentageFluctuator = new Fluctuator(this, GetVerticalMenuPercentage, SetVerticalMenuPercentage);
-        Close();
+        Close(instantClose: true);
     }
 
     public float GetVerticalMenuPercentage() {
