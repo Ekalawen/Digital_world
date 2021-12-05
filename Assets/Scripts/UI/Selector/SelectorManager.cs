@@ -48,6 +48,7 @@ public class SelectorManager : MonoBehaviour {
     protected bool hasUnlockScreenOpen = false;
     protected Dictionary<GameObject, Coroutine> fadingObjects;
     protected Coroutine backAndDisplayLevelCoroutine;
+    protected SelectorCameraController cameraController;
 
     [HideInInspector]
     public UnityEvent<SelectorLevel> onDisplayLevel;
@@ -71,6 +72,7 @@ public class SelectorManager : MonoBehaviour {
         onUnlockPath = new UnityEvent<SelectorPath>();
         onOpenDHPath = new UnityEvent<SelectorPath>();
         onNextLevelFrompath = new UnityEvent<SelectorPath>();
+        cameraController = baseCamera.transform.parent.GetComponent<SelectorCameraController>();
         verticalMenuHandler.Initialize();
         GatherLevels();
         GatherPaths();
@@ -78,7 +80,7 @@ public class SelectorManager : MonoBehaviour {
         //background.SetParameters(0, 0, 0, new List<ColorManager.Theme>() { ColorManager.Theme.ROUGE });
         background.gameObject.SetActive(false);
         SetCurrentLevelBasedOnLastSavedLevel();
-        PlaceCameraInFrontOfCurrentLevel();
+        cameraController.PlaceCameraInFrontOfCurrentLevel();
         StartMenuMusic();
         if (!LocalizationSettings.InitializationOperation.IsDone) {
             yield return LocalizationSettings.InitializationOperation;
@@ -250,6 +252,7 @@ public class SelectorManager : MonoBehaviour {
                 }
             } else {
                 DisplayLevel(selectorLevel, instantDisplay);
+                cameraController.PlaceCameraInFrontOfCurrentLevel();
             }
         } else {
             string dataHackeesTitre = strings.dataHackees.GetLocalizedString().Result;
@@ -334,6 +337,7 @@ public class SelectorManager : MonoBehaviour {
         BackToSelector();
         hasLevelOpen = true; // Usefull while we are closing the VerticalMenu
         currentSelectorLevel = selectorLevel; // Same
+        cameraController.PlaceCameraInFrontOfCurrentLevel();
         yield return new WaitForSeconds(verticalMenuHandler.closeTime);
         DisplayLevel(selectorLevel, instantDisplay);
     }
@@ -393,39 +397,6 @@ public class SelectorManager : MonoBehaviour {
 
     public int GetPathIndice(SelectorPath path) {
         return paths.FindIndex(p => p == path);
-    }
-
-    public void PlaceCameraInFrontOfCurrentLevel() {
-        PlaceCameraInFrontOfInterestTransform(currentSelectorLevel.transform);
-    }
-
-    public void PlaceCameraInFrontOfInterestTransform(Transform t) {
-        PlaceCameraInFrontOfInterestPoint(t.position, t.forward);
-    }
-
-    public void PlaceCameraInFrontOfInterestPoint(Vector3 point) {
-        Vector3 forward = GetForwardFromCenterProjection(point);
-        PlaceCameraInFrontOfInterestPoint(point, forward);
-    }
-
-    protected void PlaceCameraInFrontOfInterestPoint(Vector3 interestPos, Vector3 interestForward) {
-        SelectorCameraController cameraController = baseCamera.transform.parent.GetComponent<SelectorCameraController>();
-        Vector3 posToGoTo = interestPos + interestForward * cameraController.GetIdealDistanceFromLevel();
-        cameraController.PlaceAt(posToGoTo);
-        cameraController.transform.LookAt(interestPos, Vector3.up);
-    }
-
-    protected static Vector3 GetForwardFromCenterProjection(Vector3 interestPos) {
-        Vector3 forward;
-        if (interestPos.x == 0.0f && interestPos.z == 0.0f) {
-            forward = Vector3.forward;
-        } else {
-            Vector3 projection = Vector3.Project(interestPos, Vector3.up);
-            Vector3 orthoToCenter = interestPos - projection;
-            forward = orthoToCenter.normalized;
-        }
-
-        return forward;
     }
 
     protected void DisplayCurrentLevel() {
@@ -556,5 +527,9 @@ public class SelectorManager : MonoBehaviour {
     public static void WishlistOnSteam() {
         Debug.Log($"Wishlist on Steam ! :)");
         Application.OpenURL("https://store.steampowered.com/app/1734990");
+    }
+
+    public SelectorCameraController GetCameraController() {
+        return cameraController;
     }
 }

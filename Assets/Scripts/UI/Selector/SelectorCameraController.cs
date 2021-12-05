@@ -22,6 +22,10 @@ public class SelectorCameraController : MonoBehaviour {
     public Vector2 elasticitySphereCoefficiant;
     public float idealDistanceFromLevel = 20f;
 
+    [Header("AutoMove")]
+    public float autoMoveDuration = 0.7f;
+    public AnimationCurve autoMoveCurve;
+
     [Header("Links")]
     public SelectorManager selectorManager;
     public CharacterController controller;
@@ -31,6 +35,7 @@ public class SelectorCameraController : MonoBehaviour {
     protected Timer lastIsMovingTimer;
     protected Coroutine rotationCoroutine = null;
     protected Coroutine lookAtCentralProjectionCoroutine = null;
+    protected Coroutine autoMoveCoroutine = null;
     protected float oldMouseSpeedX = 0;
     protected float oldMouseSpeedY = 0;
     protected Timer timeSincePressedLeftClick;
@@ -52,7 +57,8 @@ public class SelectorCameraController : MonoBehaviour {
         //if (selectorManager.HasSelectorLevelOpen()
         // || selectorManager.PopupIsEnabled()
         // || selectorManager.HasSelectorPathUnlockScreenOpen())
-        if (selectorManager.PopupIsEnabled()) {
+        if (selectorManager.PopupIsEnabled()
+         || autoMoveCoroutine != null) {
             return;
         }
 
@@ -170,6 +176,9 @@ public class SelectorCameraController : MonoBehaviour {
     }
 
     protected void ApplyElasticitySphere() {
+        if (autoMoveCoroutine != null)
+            return;
+
         Vector3 closest = GetClosestInterestPoint(transform.position);
         float distance = Vector3.Distance(closest, transform.position);
         Vector3 direction = (closest - transform.position).normalized;
@@ -294,4 +303,78 @@ public class SelectorCameraController : MonoBehaviour {
         Vector3 centralPoint = GetCentralProjection();
         transform.LookAt(centralPoint, Vector3.up);
     }
+
+    public void PlaceCameraInFrontOfCurrentLevel() {
+        PlaceCameraInFrontOfInterestTransform(selectorManager.GetCurrentLevel().transform);
+    }
+
+    public void PlaceCameraInFrontOfInterestTransform(Transform t) {
+        PlaceCameraInFrontOfInterestPoint(t.position, t.forward);
+    }
+
+    public void PlaceCameraInFrontOfInterestPoint(Vector3 point) {
+        Vector3 forward = GetForwardFromCenterProjection(point);
+        PlaceCameraInFrontOfInterestPoint(point, forward);
+    }
+
+    protected void PlaceCameraInFrontOfInterestPoint(Vector3 interestPos, Vector3 interestForward) {
+        Vector3 posToGoTo = interestPos + interestForward * GetIdealDistanceFromLevel();
+        AutoMove(posToGoTo, autoMoveDuration);
+        //PlaceAt(posToGoTo);
+        //transform.LookAt(interestPos, Vector3.up);
+    }
+
+    protected static Vector3 GetForwardFromCenterProjection(Vector3 interestPos) {
+        Vector3 forward;
+        if (interestPos.x == 0.0f && interestPos.z == 0.0f) {
+            forward = Vector3.forward;
+        } else {
+            Vector3 projection = Vector3.Project(interestPos, Vector3.up);
+            Vector3 orthoToCenter = interestPos - projection;
+            forward = orthoToCenter.normalized;
+        }
+
+        return forward;
+    }
+
+    protected void AutoMove(Vector3 target, float duration) {
+        if(autoMoveCoroutine != null) {
+            StopCoroutine(autoMoveCoroutine);
+        }
+        autoMoveCoroutine = StartCoroutine(CAutoMove(target, duration));
+    }
+
+    protected IEnumerator CAutoMove(Vector3 target, float duration) {
+        Vector3 source = transform.position;
+        Timer timer = new Timer(duration);
+        while(!timer.IsOver()) {
+            float avancement = autoMoveCurve.Evaluate(timer.GetAvancement());
+            transform.position = Vector3.Lerp(source, target, avancement);
+            yield return null;
+        }
+        transform.position = Vector3.Lerp(source, target, 1.0f);
+        autoMoveCoroutine = null;
+    }
+
+    //protected Vector3 LerpCircular(Vector3 source, Vector3 target, float avancement) {
+    //    // En plus si il faut la fonction est pas parfaite ^^'
+    //    float height = MathCurves.Linear(source.y, target.y, avancement);
+    //    Vector3 sourceProjected = Vector3.ProjectOnPlane(source, Vector3.up);
+    //    Vector3 targetProjected = Vector3.ProjectOnPlane(target, Vector3.up);
+    //    float sourceDistance = Vector3.Distance(Vector3.zero, sourceProjected);
+    //    float targetDistance = Vector3.Distance(Vector3.zero, targetProjected);
+    //    float distance = MathCurves.Linear(sourceDistance, targetDistance, avancement);
+    //    float sourceAngle = Vector3.Angle(Vector3.right, sourceProjected);
+    //    float targetAngle = Vector3.Angle(Vector3.right, targetProjected);
+    //    if(Mathf.Abs(sourceAngle - targetAngle) > 180) {
+    //        if(sourceAngle > targetAngle) {
+    //            sourceAngle -= 360;
+    //        } else {
+    //            targetAngle -= 360;
+    //        }
+    //    }
+    //    float angle = MathCurves.Linear(sourceAngle, targetAngle, avancement);
+    //    Vector3 res =  Quaternion.Euler(0, angle, 0) * new Vector3(distance, height, 0);
+    //    return res;
+    //}
 }
