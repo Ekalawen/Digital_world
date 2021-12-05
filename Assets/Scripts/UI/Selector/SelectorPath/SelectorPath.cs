@@ -150,6 +150,7 @@ public class SelectorPath : MonoBehaviour {
             }
             selectorManager.BackAndDisplayUnlockScreen(this, instantDisplay);
         } else {
+            selectorManager.GetCameraController().PlaceCameraInFrontOfPath(this);
             ReallyOpenUnlockScreen(instantDisplay);
         }
     }
