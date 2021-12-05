@@ -146,29 +146,31 @@ public class SelectorPath : MonoBehaviour {
     public void OpenUnlockScreen(bool instantDisplay = false) {
         unlockScreen.gameObject.SetActive(true);
         unlockScreen.Initialize(this, GetHighlitedState());
-        if (!instantDisplay) {
-            selectorManager.FadeIn(selectorManager.background.gameObject, selectorManager.dureeFading);
-            selectorManager.FadeIn(unlockScreen.gameObject, selectorManager.dureeFading);
-        } else {
-            selectorManager.background.gameObject.SetActive(true);
-            selectorManager.background.gameObject.GetComponent<CanvasGroup>().alpha = 1.0f;
-            unlockScreen.gameObject.SetActive(true);
-            unlockScreen.gameObject.GetComponent<CanvasGroup>().alpha = 1.0f;
-        }
+        //if (!instantDisplay) {
+        //    selectorManager.FadeIn(selectorManager.background.gameObject, selectorManager.dureeFading);
+        //    selectorManager.FadeIn(unlockScreen.gameObject, selectorManager.dureeFading);
+        //} else {
+        //    selectorManager.background.gameObject.SetActive(true);
+        //    selectorManager.background.gameObject.GetComponent<CanvasGroup>().alpha = 1.0f;
+        //    unlockScreen.gameObject.SetActive(true);
+        //    unlockScreen.gameObject.GetComponent<CanvasGroup>().alpha = 1.0f;
+        //}
+        selectorManager.verticalMenuHandler.Open(instantOpen: instantDisplay);
         selectorManager.SetSelectorPathUnlockScreenOpenness(true, this);
     }
 
     public void CloseUnlockScreen(bool instantDisplay = false) {
         unlockScreen.DestroyAllParticles();
-        if (!instantDisplay) {
-            selectorManager.FadeOut(selectorManager.background.gameObject, selectorManager.dureeFading);
-            selectorManager.FadeOut(unlockScreen.gameObject, selectorManager.dureeFading);
-        } else {
-            selectorManager.background.gameObject.SetActive(false);
-            selectorManager.background.gameObject.GetComponent<CanvasGroup>().alpha = 0.0f;
-            unlockScreen.gameObject.SetActive(false);
-            unlockScreen.gameObject.GetComponent<CanvasGroup>().alpha = 0.0f;
-        }
+        //if (!instantDisplay) {
+        //    selectorManager.FadeOut(selectorManager.background.gameObject, selectorManager.dureeFading);
+        //    selectorManager.FadeOut(unlockScreen.gameObject, selectorManager.dureeFading);
+        //} else {
+        //    selectorManager.background.gameObject.SetActive(false);
+        //    selectorManager.background.gameObject.GetComponent<CanvasGroup>().alpha = 0.0f;
+        //    unlockScreen.gameObject.SetActive(false);
+        //    unlockScreen.gameObject.GetComponent<CanvasGroup>().alpha = 0.0f;
+        //}
+        selectorManager.verticalMenuHandler.Close(instantClose: instantDisplay);
         StartCoroutine(CDisableScreenOpennessNextFrame());
     }
 

@@ -43,16 +43,18 @@ public class SelectorPathCadenasCollider : MonoBehaviour {
             hasClickedDown = false;
             if (IsCadenasClickable()) {
                 cadenas.selectorPath.OnCadenaClicked();
-                cadenas.SetUnfocused();
-                tooltipActivator.Hide();
+                //cadenas.SetUnfocused();
+                //tooltipActivator.Hide();
             }
         }
     }
 
-    private bool IsCadenasClickable()
-    {
-        return !selectorManager.PopupIsEnabled()
-            && !selectorManager.HasSelectorLevelOpen()
-            && !selectorManager.HasSelectorPathUnlockScreenOpen();
+    private bool IsCadenasClickable() {
+        return !selectorManager.PopupIsEnabled();
+            //&& !selectorManager.HasSelectorLevelOpen()
+            //&& !selectorManager.HasSelectorPathUnlockScreenOpen();
+        //return !selectorManager.PopupIsEnabled()
+        //    && !selectorManager.HasSelectorLevelOpen()
+        //    && !selectorManager.HasSelectorPathUnlockScreenOpen();
     }
 }
