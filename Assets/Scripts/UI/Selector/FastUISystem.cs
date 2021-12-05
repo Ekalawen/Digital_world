@@ -144,9 +144,10 @@ public class FastUISystem : MonoBehaviour {
     }
 
     public void OnUnlockScreenButtonClick() {
-        selectorManager.BackToSelectorForFastUI();
-        path.OpenUnlockScreen(instantDisplay: true);
-        selectorManager.GetCameraController().PlaceCameraInFrontOfInterestPoint(path.cadena.transform.position);
+        selectorManager.BackAndDisplayUnlockScreen(path, instantDisplay: false);
+        //selectorManager.BackToSelectorForFastUI();
+        //path.OpenUnlockScreen(instantDisplay: true);
+        //selectorManager.GetCameraController().PlaceCameraInFrontOfInterestPoint(path.cadena.transform.position);
     }
 
     protected SelectorLevel GetLevel(SelectorPath path, DirectionType directionType) {
