@@ -70,20 +70,16 @@ public class MenuLevel : MonoBehaviour {
     protected bool texteArchivesLinkIsReady = false;
 
     public void Initialize() {
-        //menuBouncingBackground.SetParameters(probaSource, distanceSource, decroissanceSource, themes);
         SetScores();
 
         MenuManager.DISABLE_HOTKEYS = false;
-        InitTexteExplicatifArchives();
 
         /// This is now done in SelectorLevel !
         //DisplayPopupUnlockLevel();
         //DisplayPopupUnlockNewTreshold();
 
-        //UIHelper.FitTextHorizontaly(textLevelName.text, textLevelName); // No need, margins are enought ! :)
-
         MakeBouncePlayButton();
-        GenerateNextAndPreviousButtons(); // We don't need it now with the VerticalMenu ! :)
+        GenerateNextAndPreviousButtons();
         SetLevelName();
     }
 
@@ -159,10 +155,15 @@ public class MenuLevel : MonoBehaviour {
     }
 
     protected IEnumerator COpenArchives() {
-        while (!texteArchivesLinkIsReady)
-            yield return null;
-        // Replacements are done in the Initialisation ! :)
-        texteArchivesLink.Run();
+        AsyncOperationHandle<TextAsset> textAssetHandle = archivesTextAsset.LoadAssetAsync();
+        yield return textAssetHandle;
+        TextAsset textAsset = textAssetHandle.Result;
+        selectorManager.popup.Initialize(useTextAsset: true, textAsset: textAsset);
+        foreach(Tuple<string, string> replacement in UIHelper.GetReplacementList(selectorManager.archivesReplacementStrings)) {
+            selectorManager.popup.AddReplacement(replacement.Item1, replacement.Item2);
+        }
+        selectorManager.popup.titleTextTarget.text = selectorManager.strings.archivesTitle.GetLocalizedString().Result;
+        selectorManager.popup.Run();
     }
 
     protected void SetScores() {
@@ -348,22 +349,6 @@ public class MenuLevel : MonoBehaviour {
 
     public static string SurroundWithBlueColor(Match match) {
         return UIHelper.SurroundWithColor(match.Value, UIHelper.BLUE);
-    }
-
-    protected void InitTexteExplicatifArchives() {
-        StartCoroutine(CInitTextesExplicatifs());
-    }
-
-    protected IEnumerator CInitTextesExplicatifs() {
-        texteArchivesLink.Initialize(useTextAsset: true);
-        AsyncOperationHandle<TextAsset> handle = archivesTextAsset.LoadAssetAsync();
-        yield return handle;
-        texteArchivesLink.textAsset = handle.Result;
-        foreach(Tuple<string, string> replacement in UIHelper.GetReplacementList(selectorManager.archivesReplacementStrings)) {
-            texteArchivesLink.AddReplacement(replacement.Item1, replacement.Item2);
-        }
-        texteArchivesLink.titleTextTarget.text = selectorManager.strings.archivesTitle.GetLocalizedString().Result;
-        texteArchivesLinkIsReady = true;
     }
 
     public bool HasJustWin() {
