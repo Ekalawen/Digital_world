@@ -13,6 +13,7 @@ public class Tooltip : MonoBehaviour {
     public RectTransform background;
     public TMPro.TMP_Text text;
     public new Camera camera;
+    public RectTransform screen;
 
     protected float planeDistance;
     protected Timer lastHideTime;
@@ -30,7 +31,6 @@ public class Tooltip : MonoBehaviour {
     }
 
     protected void SetPositionToMouse() {
-        RectTransform screen = transform.parent.GetComponent<RectTransform>();
         RectTransform rectTransform = GetComponent<RectTransform>();
         if (useOverlay) {
             Vector2 localPoint2D;
