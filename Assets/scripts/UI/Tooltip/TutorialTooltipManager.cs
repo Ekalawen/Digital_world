@@ -79,12 +79,15 @@ public class TutorialTooltipManager : MonoBehaviour {
     protected void DisplayLevelTutorialTooltips(SelectorLevel level) {
         if (selectorManager.GetLevelIndice(level) == 0) {
             if (level.IsSucceeded() && !PrefsManager.GetBool(GetKey(tutorialTooltipToDH), false)) {
-                InstantiateTutorialTooltip(tutorialTooltipToDH, tutorialTooltipToDHTransform, parent: level.menuLevel.transform);
+                RectTransform rectToTrack = level.menuLevel.fastUISystemNextTransform;
+                InstantiateTutorialTooltip(tutorialTooltipToDH, tutorialTooltipToDHTransform, parent: level.menuLevel.transform, rectToTrack: rectToTrack);
+                //InstantiateTutorialTooltip(tutorialTooltipToDH, tutorialTooltipToDHTransform);
             }
         }
         if(level.GetNameId() == "FirstSondeScene") {
             if(!PrefsManager.GetBool(GetKey(tutorialTooltipReadDoc), false)) {
-                InstantiateTutorialTooltip(tutorialTooltipReadDoc, tutorialTooltipReadDocTransform, parent: level.menuLevel.transform);
+                RectTransform rectToTrack = level.menuLevel.docButton.GetComponent<RectTransform>();
+                InstantiateTutorialTooltip(tutorialTooltipReadDoc, tutorialTooltipReadDocTransform, parent: level.menuLevel.transform, rectToTrack: rectToTrack);
             }
         }
     }
@@ -93,7 +96,8 @@ public class TutorialTooltipManager : MonoBehaviour {
         int pathIndice = selectorManager.GetPathIndice(path);
         if (pathIndice == 0) {
             if (!PrefsManager.GetBool(GetKey(tutorialTooltipOpenDH), false)) {
-                TutorialTooltip tutorialTooltip = InstantiateTutorialTooltip(tutorialTooltipOpenDH, tutorialTooltipOpenDHTransform, parent: selectorManager.unlockScreen.transform);
+                RectTransform rectToTrack = selectorManager.unlockScreen.donneesHackeesButton.GetComponent<RectTransform>();
+                TutorialTooltip tutorialTooltip = InstantiateTutorialTooltip(tutorialTooltipOpenDH, tutorialTooltipOpenDHTransform, parent: selectorManager.unlockScreen.transform, rectToTrack: rectToTrack);
                 if(tutorialTooltip != null) {
                     tutorialTooltipsPathWithIndice.Add(new Tuple<TutorialTooltip, int>(tutorialTooltip, 0));
                 }
@@ -109,7 +113,8 @@ public class TutorialTooltipManager : MonoBehaviour {
     protected void DisplayPathOnOpenDHTutorialTooltips(SelectorPath path) {
         if (selectorManager.GetPathIndice(path) == 0) {
             if (!PrefsManager.GetBool(GetKey(tutorialTooltipHacker), false)) {
-                TutorialTooltip tutorialTooltip = InstantiateTutorialTooltip(tutorialTooltipHacker, tutorialTooltipHackerTransform, parent: selectorManager.unlockScreen.transform);
+                RectTransform rectToTrack = selectorManager.unlockScreen.input.GetComponent<RectTransform>();
+                TutorialTooltip tutorialTooltip = InstantiateTutorialTooltip(tutorialTooltipHacker, tutorialTooltipHackerTransform, parent: selectorManager.unlockScreen.transform, rectToTrack: rectToTrack);
                 if(tutorialTooltip != null) {
                     tutorialTooltipsPathWithIndice.Add(new Tuple<TutorialTooltip, int>(tutorialTooltip, 0));
                 }
@@ -117,7 +122,8 @@ public class TutorialTooltipManager : MonoBehaviour {
         }
         if (selectorManager.GetPathIndice(path) == 1) {
             if (!PrefsManager.GetBool(GetKey(tutorialTooltipRedoPreviousLevel), false)) {
-                InstantiateTutorialTooltip(tutorialTooltipRedoPreviousLevel, tutorialTooltipRedoPreviousLevelTransform, parent: selectorManager.unlockScreen.transform);
+                RectTransform rectToTrack = selectorManager.unlockScreen.fastUISystemPreviousTransform;
+                InstantiateTutorialTooltip(tutorialTooltipRedoPreviousLevel, tutorialTooltipRedoPreviousLevelTransform, parent: selectorManager.unlockScreen.transform, rectToTrack: rectToTrack);
             }
         }
     }
@@ -125,7 +131,8 @@ public class TutorialTooltipManager : MonoBehaviour {
     protected void DisplayPathOnUnlockTutorialTooltips(SelectorPath path) {
         if (selectorManager.GetPathIndice(path) == 0) {
             if (path.IsUnlocked() && !PrefsManager.GetBool(GetKey(tutorialTooltipToNextLevel), false)) {
-                TutorialTooltip tutorialTooltip = InstantiateTutorialTooltip(tutorialTooltipToNextLevel, tutorialTooltipToNextLevelTransform, parent: selectorManager.unlockScreen.transform);
+                RectTransform rectToTrack = selectorManager.unlockScreen.fastUISystemNextTransform;
+                TutorialTooltip tutorialTooltip = InstantiateTutorialTooltip(tutorialTooltipToNextLevel, tutorialTooltipToNextLevelTransform, parent: selectorManager.unlockScreen.transform, rectToTrack: rectToTrack);
                 if(tutorialTooltip != null) {
                     tutorialTooltipsPathWithIndice.Add(new Tuple<TutorialTooltip, int>(tutorialTooltip, 0));
                 }
@@ -141,7 +148,7 @@ public class TutorialTooltipManager : MonoBehaviour {
         }
     }
 
-    protected TutorialTooltip InstantiateTutorialTooltip(GameObject tutorialTooltipPrefab, Transform transform, Transform parent = null) {
+    protected TutorialTooltip InstantiateTutorialTooltip(GameObject tutorialTooltipPrefab, Transform transform, Transform parent = null, RectTransform rectToTrack = null) {
         if (prefabsAlreadyInstantiated.Contains(tutorialTooltipPrefab))
             return null;
         prefabsAlreadyInstantiated.Add(tutorialTooltipPrefab);
@@ -149,9 +156,9 @@ public class TutorialTooltipManager : MonoBehaviour {
         Quaternion rotation = Quaternion.LookRotation(transform.forward);
         TutorialTooltip tutorialTooltip = Instantiate(tutorialTooltipPrefab, pos, rotation, transform).GetComponent<TutorialTooltip>();
         if (parent != null) {
-            transform.parent = parent;
+            transform.SetParent(parent, worldPositionStays: true);
         }
-        tutorialTooltip.Initialize(this);
+        tutorialTooltip.Initialize(this, rectToTrack);
         return tutorialTooltip;
     }
 

@@ -15,14 +15,27 @@ public class TutorialTooltip : MonoBehaviour {
     public float dureeAnimation = 0.5f;
     public TMP_Text textField;
     public RectTransform background;
+    public TutorialTooltipFlechePosition ttFlechePosition;
 
     protected TutorialTooltipManager tutorialTooltipManager;
+    protected RectTransform rectToTrack = null;
 
-    public void Initialize(TutorialTooltipManager tutorialTooltipManager) {
+    public void Initialize(TutorialTooltipManager tutorialTooltipManager, RectTransform rectToTrack = null) {
         this.tutorialTooltipManager = tutorialTooltipManager;
+        this.rectToTrack = rectToTrack;
+        SetFlechePosition();
         SetText();
         LocalizationSettings.SelectedLocaleChanged += SetText;
         StartAnimation();
+    }
+
+    protected void SetFlechePosition() {
+        if(ttFlechePosition != null
+        && ttFlechePosition.flecheTrackingType == TutorialTooltipFlechePosition.FlecheTrackingType.RECT_TRANSFORM
+        && rectToTrack != null) {
+            ttFlechePosition.rectTransformToTrack = rectToTrack;
+            ttFlechePosition.Start();
+        }
     }
 
     private void OnDestroy() {

@@ -361,10 +361,12 @@ public class SelectorManager : MonoBehaviour {
     public IEnumerator CBackAndDisplayUnlockScreen(SelectorPath selectorPath, bool instantDisplay) {
         BackToSelector();
         hasLevelOpen = false; // Usefull while we are closing the VerticalMenu
-        SetCurrentUnlockScreen(true, selectorPath);
+        hasUnlockScreenOpen = true;
+        currentSelectorPath = selectorPath;
         cameraController.PlaceCameraInFrontOfPath(selectorPath);
         yield return new WaitForSeconds(verticalMenuHandler.closeTime);
         selectorPath.OpenUnlockScreen(instantDisplay);
+        SetCurrentUnlockScreen(true, selectorPath);
     }
 
     public void BackToSelector(bool instantBack = false) {

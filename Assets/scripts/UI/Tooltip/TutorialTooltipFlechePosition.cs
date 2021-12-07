@@ -14,31 +14,66 @@ public class TutorialTooltipFlechePosition : MonoBehaviour {
     public enum FlecheTrackingType {
         LEVEL,
         CADENAS,
+        RECT_TRANSFORM,
     };
 
     public RectTransform background;
     public FlecheTrackingType flecheTrackingType;
+    [ConditionalHide("!flecheTrackingType", FlecheTrackingType.RECT_TRANSFORM)]
+    public bool useSpecificIndice = false;
+    [ConditionalHide("useSpecificIndice")]
+    public int specificIndice = 0;
+    [ConditionalHide("flecheTrackingType", FlecheTrackingType.RECT_TRANSFORM)]
+    public RectTransform rectTransformToTrack;
     public float coefAvancement = 0.5f;
 
     protected RectTransform screen;
     protected SelectorManager selectorManager;
     protected List<Vector3> interestPoints;
+    protected Canvas canvas;
 
     public void Start() {
         selectorManager = SelectorManager.Instance;
+        canvas = GetComponentInParent<Canvas>();
         screen = selectorManager.screen;
         ComputeInterestPoints();
     }
 
     protected void ComputeInterestPoints() {
         if(flecheTrackingType == FlecheTrackingType.LEVEL) {
-            interestPoints = selectorManager.GetLevels().Select(l => l.objectLevel.transform.position).ToList();
-        } else {
-            interestPoints = selectorManager.GetPaths().Select(p => p.cadena.transform.position).ToList();
+            List<SelectorLevel> levels = selectorManager.GetLevels();
+            if(useSpecificIndice) {
+                levels = levels.FindAll(l => selectorManager.GetLevelIndice(l) == specificIndice);
+            }
+            interestPoints = levels.Select(l => l.objectLevel.transform.position).ToList();
+        } else if(flecheTrackingType == FlecheTrackingType.CADENAS) {
+            List<SelectorPath> paths = selectorManager.GetPaths();
+            if(useSpecificIndice) {
+                paths = paths.FindAll(p => selectorManager.GetPathIndice(p) == specificIndice);
+            }
+            interestPoints = paths.Select(p => p.cadena.transform.position).ToList();
         }
     }
 
     public void Update() {
+        if (flecheTrackingType != FlecheTrackingType.RECT_TRANSFORM) {
+            UpdateFlechePositionForWorldMode();
+        } else {
+            UpdateFlechePositionForCanvasMode();
+        }
+    }
+
+    protected void UpdateFlechePositionForCanvasMode() {
+        Vector3 interestPoint = canvas.transform.InverseTransformPoint(rectTransformToTrack.transform.position);
+        Vector3 backgroundCenter = canvas.transform.InverseTransformPoint(background.transform.position);
+        Vector3 middlePoint = Vector3.Lerp(backgroundCenter, interestPoint, coefAvancement);
+        transform.position = canvas.transform.TransformPoint(middlePoint);
+
+        float angle = Vector3.SignedAngle(Vector3.right, interestPoint - middlePoint, Vector3.forward);
+        transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, angle);
+    }
+
+    protected void UpdateFlechePositionForWorldMode() {
         List<Vector2> interestPointsProjected = ComputeInterestPointsProjected();
         RectTransform rect = GetComponent<RectTransform>();
         Vector2 backgroundCenter = background.GetComponent<RectTransform>().anchoredPosition;

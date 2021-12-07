@@ -62,6 +62,7 @@ public class MenuLevel : MonoBehaviour {
     public TMP_Text textLevelName;
     public Button backButton;
     public Button playButton;
+    public Button docButton;
 
     [HideInInspector]
     public MenuLevelSelector menuLevelSelector;
