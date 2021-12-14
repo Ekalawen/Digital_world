@@ -20,6 +20,9 @@ public class UpdateUnscaledTime : MonoBehaviour {
     }
 
     public void Update() {
+        if(material == null) {
+            Debug.Log($"Material = null ici !", this);
+        }
         material.SetFloat("_UnscaledTime", Time.unscaledTime);
     }
 }
