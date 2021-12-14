@@ -32,7 +32,10 @@ public class SelectorPath : MonoBehaviour {
     public float timeBetweenTrails = 0.3f;
     public Gradient trailColorUnlocked;
     public Gradient trailColorLocked;
+    public Gradient lineColorUnlocked;
+    public Gradient lineColorLocked;
     public GameObject trailPrefab;
+    public GameObject linePrefab;
 
     [Header("Links")]
     public SelectorPathCadenas cadena;
@@ -48,6 +51,7 @@ public class SelectorPath : MonoBehaviour {
         trailTimer = new Timer(timeBetweenTrails);
         LinkAllPoints();
         InitializeCadena();
+        InitializeLine();
     }
 
     protected void InitializeCadena() {
@@ -98,6 +102,19 @@ public class SelectorPath : MonoBehaviour {
             trailTimer.Reset();
         }
     }
+
+    protected void InitializeLine() {
+        if(pathPoints.Count < 2) {
+            Debug.LogWarning("Un SelectorPath ne contient pas assez de pathPoints !");
+            return;
+        }
+
+        LineRenderer line = Instantiate(linePrefab, parent: transform).GetComponent<LineRenderer>();
+        line.positionCount = pathPoints.Count;
+        line.SetPositions(pathPoints.ToArray());
+        line.colorGradient = IsUnlocked() ? lineColorUnlocked : lineColorLocked;
+    }
+
 
     public TextAsset GetDataHackeesTextAsset() {
         AsyncOperationHandle<TextAsset> handle = donneesHackees.LoadAssetAsync();
