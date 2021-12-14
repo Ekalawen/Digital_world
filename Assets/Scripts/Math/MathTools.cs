@@ -363,4 +363,22 @@ public static class MathTools
         HashSet<Vector3> set = new HashSet<Vector3>(vector);
         return new List<Vector3>(set);
     }
+
+    public static Gradient LerpGradients(Gradient g1, Gradient g2, float avancement) {
+        Assert.AreEqual(g1.colorKeys.Length, g2.colorKeys.Length);
+        Assert.AreEqual(g1.alphaKeys.Length, g2.alphaKeys.Length);
+        GradientColorKey[] colorKeys = new GradientColorKey[g1.colorKeys.Length];
+        GradientAlphaKey[] alphaKeys = new GradientAlphaKey[g1.alphaKeys.Length];
+        for(int i = 0; i < colorKeys.Length; i++) {
+            colorKeys[i].color = Color.Lerp(g1.colorKeys[i].color, g2.colorKeys[i].color, avancement);
+            colorKeys[i].time = Mathf.Lerp(g1.colorKeys[i].time, g2.colorKeys[i].time, avancement);
+        }
+        for(int i = 0; i < alphaKeys.Length; i++) {
+            alphaKeys[i].alpha = Mathf.Lerp(g1.alphaKeys[i].alpha, g2.alphaKeys[i].alpha, avancement);
+            alphaKeys[i].time = Mathf.Lerp(g1.alphaKeys[i].time, g2.alphaKeys[i].time, avancement);
+        }
+        Gradient res = new Gradient();
+        res.SetKeys(colorKeys, alphaKeys);
+        return res;
+    }
 }

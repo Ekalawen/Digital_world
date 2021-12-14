@@ -44,11 +44,15 @@ public class SelectorPath : MonoBehaviour {
     protected Timer trailTimer;
     protected List<Vector3> pathPoints;
     protected SelectorPathUnlockScreen unlockScreen;
+    protected LineRenderer line;
+    protected Fluctuator lineColorFluctuator;
+    protected float lineColorAvancement;
 
     public void Initialize(SelectorPathUnlockScreen unlockScreen) {
         selectorManager = SelectorManager.Instance;
         this.unlockScreen = unlockScreen;
         trailTimer = new Timer(timeBetweenTrails);
+        lineColorFluctuator = new Fluctuator(this, GetLineColor, SetLineColor);
         LinkAllPoints();
         InitializeCadena();
         InitializeLine();
@@ -103,18 +107,28 @@ public class SelectorPath : MonoBehaviour {
         }
     }
 
-    protected void InitializeLine() {
-        if(pathPoints.Count < 2) {
+    protected void InitializeLine()
+    {
+        if (pathPoints.Count < 2)
+        {
             Debug.LogWarning("Un SelectorPath ne contient pas assez de pathPoints !");
             return;
         }
 
-        LineRenderer line = Instantiate(linePrefab, parent: transform).GetComponent<LineRenderer>();
+        line = Instantiate(linePrefab, parent: transform).GetComponent<LineRenderer>();
         line.positionCount = pathPoints.Count;
         line.SetPositions(pathPoints.ToArray());
-        line.colorGradient = IsUnlocked() ? lineColorUnlocked : lineColorLocked;
+        SetLineColor(IsUnlocked() ? 1 : 0);
     }
 
+    protected void SetLineColor(float avancement) {
+        line.colorGradient = MathTools.LerpGradients(lineColorLocked, lineColorUnlocked, avancement);
+        lineColorAvancement = avancement;
+    }
+
+    protected float GetLineColor() {
+        return lineColorAvancement;
+    }
 
     public TextAsset GetDataHackeesTextAsset() {
         AsyncOperationHandle<TextAsset> handle = donneesHackees.LoadAssetAsync();
@@ -267,6 +281,7 @@ public class SelectorPath : MonoBehaviour {
     public void UnlockPath() {
         string key = name + PrefsManager.IS_UNLOCKED_PATH_KEY;
         PrefsManager.SetBool(key, true);
+        lineColorFluctuator.GoTo(1.0f, unlockScreen.dureeUnlockAnimation);
     }
 
     public string GetVisibleName() {
