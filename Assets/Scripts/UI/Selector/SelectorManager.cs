@@ -26,6 +26,7 @@ public class SelectorManager : MonoBehaviour {
     public MenuBackgroundBouncing background;
     public LoadingMenu loadingMenu;
     public SelectorPathUnlockScreen unlockScreen;
+    public Transform collidersFolder;
 
     public TexteExplicatif popup;
     public SelectorManagerStrings strings;
@@ -66,7 +67,8 @@ public class SelectorManager : MonoBehaviour {
         if (!_instance) { _instance = this; }
     }
 
-    public IEnumerator Start() {
+    public IEnumerator Start()
+    {
         fadingObjects = new Dictionary<GameObject, Coroutine>();
         onDisplayLevel = new UnityEvent<SelectorLevel>();
         onDisplayPath = new UnityEvent<SelectorPath>();
@@ -76,6 +78,7 @@ public class SelectorManager : MonoBehaviour {
         cameraController = baseCamera.transform.parent.GetComponent<SelectorCameraController>();
         verticalMenuHandler.Initialize();
         GatherLevels();
+        ApplyCompressionFactor();
         GatherPaths();
         //background.Initialize();
         //background.SetParameters(0, 0, 0, new List<ColorManager.Theme>() { ColorManager.Theme.ROUGE });
@@ -83,7 +86,8 @@ public class SelectorManager : MonoBehaviour {
         SetCurrentLevelBasedOnLastSavedLevel();
         cameraController.PlaceCameraInFrontOfCurrentLevel();
         StartMenuMusic();
-        if (!LocalizationSettings.InitializationOperation.IsDone) {
+        if (!LocalizationSettings.InitializationOperation.IsDone)
+        {
             yield return LocalizationSettings.InitializationOperation;
         }
         InitializePaths();
@@ -142,9 +146,6 @@ public class SelectorManager : MonoBehaviour {
             if (level != null) {
                 levels.Add(level);
             }
-        }
-        foreach(SelectorLevel level in levels) {
-            level.transform.position = MathTools.VecMul(level.transform.position, compressionFactor);
         }
     }
 
@@ -559,5 +560,18 @@ public class SelectorManager : MonoBehaviour {
 
     public SelectorCameraController GetCameraController() {
         return cameraController;
+    }
+
+    protected void ApplyCompressionFactor() {
+        foreach (SelectorLevel level in levels) {
+            level.transform.position = MathTools.VecMul(level.transform.position, compressionFactor);
+        }
+        foreach (Transform collider in collidersFolder) {
+            CapsuleCollider capsule = collider.GetComponent<CapsuleCollider>();
+            capsule.height *= compressionFactor.y;
+            Vector3 position = capsule.transform.position;
+            position.y *= compressionFactor.y;
+            capsule.transform.position = position;
+        }
     }
 }
