@@ -80,7 +80,7 @@ public class MenuLevel : MonoBehaviour {
         //DisplayPopupUnlockNewTreshold();
 
         MakeBouncePlayButton();
-        GenerateNextAndPreviousButtons();
+        //GenerateNextAndPreviousButtons();
         SetLevelName();
     }
 
