@@ -291,7 +291,7 @@ public class SelectorManager : MonoBehaviour {
         currentSelectorLevel = selectorLevel;
         hasLevelOpen = true;
         selectorLevel.menuLevel.gameObject.SetActive(true);
-        selectorLevel.DisplayInitialPopup();
+        selectorLevel.DisplayInitialPopupIn(verticalMenuHandler.openTime);
         selectorLevel.menuLevel.Initialize(); // menuLevel.Initialize() doit être après DisplayInitialPopup() pour que l'on sache si il faut highliter les fastUI ou pas :)
         background.gameObject.SetActive(true);
         onDisplayLevel.Invoke(selectorLevel);

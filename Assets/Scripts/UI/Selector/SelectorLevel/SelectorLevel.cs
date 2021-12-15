@@ -265,4 +265,13 @@ public class SelectorLevel : MonoBehaviour {
         List<int> maxTresholds = paths.Select(p => p.GetMaxTreshold()).ToList();
         return maxTresholds.Max();
     }
+
+    public void DisplayInitialPopupIn(float time) {
+        StartCoroutine(CDisplayInitialPopupIn(time));
+    }
+
+    protected IEnumerator CDisplayInitialPopupIn(float time) {
+        yield return new WaitForSeconds(time);
+        DisplayInitialPopup();
+    }
 }
