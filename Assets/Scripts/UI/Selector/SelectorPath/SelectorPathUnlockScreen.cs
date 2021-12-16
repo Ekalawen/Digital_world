@@ -64,7 +64,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         this.selectorManager = SelectorManager.Instance;
         this.selectorPath = selectorPath;
         //SetBackgroundAccordingToLockState();
-        SetCadenasAndArrowAndTitlesAccordingToLockState();
+        //SetCadenasAndArrowAndTitlesAccordingToLockState();
         SetTitles();
         FillInputWithPasswordIfAlreayDiscovered();
         FillTraceHint();
@@ -497,8 +497,8 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         }
     }
 
-    protected void SetCadenasAndArrowAndTitlesAccordingToLockState()
-    { SetArrowAccordingToLockState();
+    protected void SetCadenasAndArrowAndTitlesAccordingToLockState() {
+        SetArrowAccordingToLockState();
         SetCadenasAccordingToLockState();
         SetFromTitleAccordingToLockState();
         SetToTitleAccordingToLockState();
