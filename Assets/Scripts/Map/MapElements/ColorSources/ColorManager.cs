@@ -16,6 +16,12 @@ public struct SavedColor {
 
 public class ColorManager : MonoBehaviour {
 
+    public enum MainColor {
+        RED,
+        GREEN,
+        BLUE,
+    }
+
 	public enum Theme {
         ROUGE,  // Ne pas changer l'ordre de l'énumération, sinon ça change les prefabs !
         ORANGE,
@@ -617,5 +623,28 @@ public class ColorManager : MonoBehaviour {
             }
         }
         return themes;
+    }
+
+    public static Color GetMainColor(MainColor color) {
+        switch (color) {
+            case MainColor.RED:
+                return Color.red;
+            case MainColor.GREEN:
+                return Color.green;
+            case MainColor.BLUE:
+                return Color.blue;
+            default:
+                throw new System.Exception($"MainColor unkown {color} :o");
+        }
+    }
+
+    public static Color GetMainRed() {
+        return GetMainColor(MainColor.RED);
+    }
+    public static Color GetMainGreen() {
+        return GetMainColor(MainColor.GREEN);
+    }
+    public static Color GetMainBlue() {
+        return GetMainColor(MainColor.BLUE);
     }
 }

@@ -60,6 +60,9 @@ public class MenuLevel : MonoBehaviour {
     public SelectorManager selectorManager;
     public MenuBackgroundBouncing menuBouncingBackground;
     public TMP_Text textLevelName;
+    public TMP_FontAsset fontLevelNameUnlocked;
+    public TMP_FontAsset fontLevelNameLocked;
+    public Image levelNameLine;
     public Button backButton;
     public Button playButton;
     public Button docButton;
@@ -398,6 +401,15 @@ public class MenuLevel : MonoBehaviour {
         }
     }
 
+    public bool IsFinished() {
+        List<SelectorLevel> nextLevels = selectorManager.GetOutPaths(GetSelectorLevel()).Select(p => p.endLevel).ToList();
+        return nextLevels.All(nl => nl.IsAccessible());
+    }
+
+    public SelectorLevel GetSelectorLevel() {
+        return selectorManager.GetLevelFromMenuLevel(this);
+    }
+
     public void HighlightBackButton(bool state) {
         string key = GetNameId() + PrefsManager.IS_LEVEL_HIGHLIGHTED_KEY;
         PrefsManager.SetBool(key, state);
@@ -427,6 +439,13 @@ public class MenuLevel : MonoBehaviour {
 
     protected void SetLevelName() {
         textLevelName.text = GetVisibleName();
+        if(IsFinished()) {
+            textLevelName.font = fontLevelNameUnlocked;
+            levelNameLine.color = ColorManager.GetMainGreen();
+        } else {
+            textLevelName.font = fontLevelNameLocked;
+            levelNameLine.color = ColorManager.GetMainRed();
+        }
     }
 
     public LevelType GetLevelType() {

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Localization;
@@ -22,6 +23,8 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
     public TMPro.TMP_Text traceHintText;
     public GameObject traceHintContainer;
     public SelectorPathArrow arrow;
+    public Image topLine;
+    public Image bottomLine;
 
     [Header("Background Unlocked theme")]
     public float probaBackgroundUnlocked;
@@ -29,6 +32,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
     public int distanceBackgroundUnlocked;
     public List<ColorManager.Theme> themesBackgroundUnlocked;
     public Material materialTitleUnlocked;
+    public TMP_FontAsset fontTitleUnlocked;
 
     [Header("Background Locked theme")]
     public float probaBackgroundLocked;
@@ -36,6 +40,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
     public int distanceBackgroundLocked;
     public List<ColorManager.Theme> themesBackgroundLocked;
     public Material materialTitleLocked;
+    public TMP_FontAsset fontTitleLocked;
 
     [Header("Unlock Animation")]
     public float dureeUnlockAnimation = 1.3f;
@@ -64,8 +69,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         this.selectorManager = SelectorManager.Instance;
         this.selectorPath = selectorPath;
         //SetBackgroundAccordingToLockState();
-        //SetCadenasAndArrowAndTitlesAccordingToLockState();
-        SetTitles();
+        SetCadenasAndArrowAndTitlesAccordingToLockState();
         FillInputWithPasswordIfAlreayDiscovered();
         FillTraceHint();
         HighlightDataHackees(shouldHighlightDataHackees);
@@ -119,6 +123,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         string startLevelName = selectorPath.startLevel.GetVisibleName();
         fromLevelTitle.text = startLevelName;
         UIHelper.FitTextHorizontally(startLevelName, fromLevelTitle);
+
         string endLevelName = selectorPath.endLevel.GetVisibleName();
         toLevelTitle.text = endLevelName;
         UIHelper.FitTextHorizontally(endLevelName, toLevelTitle);
@@ -500,27 +505,28 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
     protected void SetCadenasAndArrowAndTitlesAccordingToLockState() {
         SetArrowAccordingToLockState();
         SetCadenasAccordingToLockState();
+        SetTitles();
         SetFromTitleAccordingToLockState();
         SetToTitleAccordingToLockState();
     }
 
     private void SetToTitleAccordingToLockState() {
         if (selectorPath.IsUnlocked()) {
-            toLevelTitle.transform.parent.GetComponent<Image>().material = materialTitleUnlocked;
-            toLevelTitle.transform.parent.GetComponent<UpdateUnscaledTime>().Start();
+            toLevelTitle.font = fontTitleUnlocked;
+            topLine.color = ColorManager.GetMainGreen();
         } else {
-            toLevelTitle.transform.parent.GetComponent<Image>().material = materialTitleLocked;
-            toLevelTitle.transform.parent.GetComponent<UpdateUnscaledTime>().Start();
+            toLevelTitle.font = fontTitleLocked;
+            topLine.color = ColorManager.GetMainRed();
         }
     }
 
     private void SetFromTitleAccordingToLockState() {
         if (selectorPath.IsUnlocked()) {
-            fromLevelTitle.transform.parent.GetComponent<Image>().material = materialTitleUnlocked;
-            fromLevelTitle.transform.parent.GetComponent<UpdateUnscaledTime>().Start();
+            fromLevelTitle.font = fontTitleUnlocked;
+            bottomLine.color = ColorManager.GetMainGreen();
         } else {
-            fromLevelTitle.transform.parent.GetComponent<Image>().material = materialTitleLocked;
-            fromLevelTitle.transform.parent.GetComponent<UpdateUnscaledTime>().Start();
+            fromLevelTitle.font = fontTitleLocked;
+            bottomLine.color = ColorManager.GetMainRed();
         }
     }
 
