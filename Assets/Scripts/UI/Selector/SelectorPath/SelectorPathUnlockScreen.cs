@@ -203,6 +203,9 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
                 StopAllParticles();
                 cadenaAnimationFluctuator.GoTo(0, 0.1f);
                 UISoundManager.Instance.AccelerateUnlockPathClip(unlockAnimationCancelSoundAcceleration);
+
+                selectorPath.endLevel.objectLevel.cube.SetMaterial(focus: false);
+                selectorPath.endLevel?.InitializeObject();
                 break;
             }
         }
@@ -212,9 +215,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         selectorPath.UnlockPath();
         selectorManager.onUnlockPath.Invoke(selectorPath); // Not in UnlockPath because we don't want to trigger this with cheats !
         //SetBackgroundAccordingToLockState();
-        selectorPath.endLevel.objectLevel.cube.SetMaterial(focus: false);
         selectorPath.startLevel?.InitializeObject();
-        selectorPath.endLevel?.InitializeObject();
         UISoundManager.Instance.PlayUnlockPathClip();
         MenuManager.DISABLE_HOTKEYS = true;
         MouseDisplayer.Instance.HideCursor();
@@ -234,8 +235,14 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         StartUnlockPathParticles(toLevelTitle.transform);
 
         yield return new WaitForSeconds(dureeUnlockAnimation / 3);
-        StartUnlockPathParticles(fastUISystemNextTransform);
+        Vector3 endLevelWorldPosition = selectorPath.endLevel.objectLevel.cube.transform.position;
+        Vector3 screenPoint = selectorManager.overlayCamera.WorldToScreenPoint(endLevelWorldPosition);
+        Vector2 rectanglePoint;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(GetComponent<RectTransform>(), screenPoint, selectorManager.overlayCamera, out rectanglePoint);
+        StartUnlockPathParticles(transform, rectanglePoint);
         GenerateNextAndPreviousButtons();
+        selectorPath.endLevel.objectLevel.cube.SetMaterial(focus: false);
+        selectorPath.endLevel?.InitializeObject();
 
         yield return new WaitForSeconds(dureeUnlockAnimationParticleSystem);
         MenuManager.DISABLE_HOTKEYS = false;
@@ -258,6 +265,22 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
     protected IEnumerator CStartUnlockPathParticles(Transform parent, float delay) {
         yield return new WaitForSeconds(delay);
         GameObject go = Instantiate(particlesUnlockAnimationPrefab, parent: parent);
+        particlesToDestroy.Add(go);
+        yield return new WaitForSeconds(dureeUnlockAnimationParticleSystem);
+        if (go != null) {
+            particlesToDestroy.Remove(go);
+            Destroy(go);
+        }
+    }
+
+    protected void StartUnlockPathParticles(Transform parent, Vector2 position, float delay = 0) {
+        StartCoroutine(CStartUnlockPathParticles(parent, position, delay));
+    }
+
+    protected IEnumerator CStartUnlockPathParticles(Transform parent, Vector2 position, float delay) {
+        yield return new WaitForSeconds(delay);
+        GameObject go = Instantiate(particlesUnlockAnimationPrefab, parent: parent);
+        go.GetComponent<RectTransform>().anchoredPosition = position;
         particlesToDestroy.Add(go);
         yield return new WaitForSeconds(dureeUnlockAnimationParticleSystem);
         if (go != null) {
