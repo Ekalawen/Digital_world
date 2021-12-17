@@ -64,7 +64,7 @@ public class SelectorCameraController : MonoBehaviour {
 
         Vector3 speeds = ComputeSpeedOnAxis();
 
-        LookAtCentralProjectionIfNeeded(speeds.x);
+        //LookAtCentralProjectionIfNeeded(speeds.x);
 
         Vector3 move = Move(speeds);
 
@@ -301,7 +301,37 @@ public class SelectorCameraController : MonoBehaviour {
 
     protected void LookAtCentralProjection() {
         Vector3 centralPoint = GetCentralProjection();
+        centralPoint = OffsetCentralPointHorizontaly(centralPoint);
         transform.LookAt(centralPoint, Vector3.up);
+    }
+
+    protected Vector3 OffsetCentralPointHorizontaly(Vector3 centralPoint) {
+        //Vector3 currentPosition = transform.position;
+        //currentPosition.y = centralPoint.y;
+        Vector3 res = centralPoint - transform.position;
+        float angle = ComputeHorizontalOffsetAngle();
+        res = Quaternion.Euler(0, angle, 0) * res;
+        return res + transform.position;
+    }
+
+    protected float ComputeHorizontalOffsetAngle() {
+        float hFOV = GetHorizontalFieldOfView();
+        // angle = 0 ==> Centré
+        // angle = hFOV / 2 ==> A gauche
+        // Jeter un coup d'oeil à mon cailler bleu et le joli dessin ! :D
+        float menuPercentage = selectorManager.verticalMenuHandler.GetVerticalMenuPercentage(); // m in % (bad unit)
+        float nearClipPlane = selectorManager.baseCamera.nearClipPlane; // h
+        float halfHorizontalLength = nearClipPlane * Mathf.Tan((hFOV / 2) * Mathf.Deg2Rad); // l
+        float menuLength = (halfHorizontalLength * 2) * menuPercentage; // m
+        float angle = Mathf.Atan(menuLength / (2 * nearClipPlane)) * Mathf.Rad2Deg;
+        return angle;
+    }
+
+    protected float GetHorizontalFieldOfView() {
+        float radAngle = selectorManager.baseCamera.fieldOfView * Mathf.Deg2Rad;
+        float radHFOV = 2 * Mathf.Atan(Mathf.Tan(radAngle / 2) * selectorManager.baseCamera.aspect);
+        float hFOV = radHFOV * Mathf.Rad2Deg;
+        return hFOV;
     }
 
     public void PlaceCameraInFrontOfCurrentLevel() {
