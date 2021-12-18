@@ -15,6 +15,8 @@ GameObject:
   - component: {fileID: 1270847453524086881}
   - component: {fileID: 1824891662954079005}
   - component: {fileID: 5286070927466933792}
+  - component: {fileID: 6211308495453346132}
+  - component: {fileID: 7111959644545769985}
   m_Layer: 5
   m_Name: SelectorLevelCube
   m_TagString: Untagged
@@ -154,3 +156,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 101b089c210da9e4e9cd77d3d8b4f330, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6211308495453346132
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6893895824624143791}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 467f212db7f5f884392cf6744fedcc7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  intervalTime: 0.5
+  timeToBounceSize: 0.066
+  inBounceTime: 0
+  timeToNormalSize: 0.334
+  startingTime: 0
+  bounceSize: 1.45
+--- !u!114 &7111959644545769985
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6893895824624143791}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbd415a19dcac79448965bbe22a15aea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  localizedMessage:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+  timeBeforeShowing: 0.4
