@@ -179,9 +179,11 @@ public class SelectorPath : MonoBehaviour {
             if(selectorManager.HasUnlockScreenOpen() && selectorManager.GetCurrentPath() == this) {
                 return;
             }
+            selectorManager.selectorTarget.GoTo(cadena.transform.position, selectorManager.selectorTarget.GetMovingTime());
             selectorManager.BackAndDisplayUnlockScreen(this, instantDisplay);
         } else {
             selectorManager.GetCameraController().PlaceCameraInFrontOfPath(this);
+            selectorManager.selectorTarget.GoTo(cadena.transform.position, selectorManager.selectorTarget.GetInTime());
             ReallyOpenUnlockScreen(instantDisplay);
         }
     }
@@ -219,6 +221,7 @@ public class SelectorPath : MonoBehaviour {
         selectorManager.DisableIn(unlockScreen.gameObject, selectorManager.verticalMenuHandler.closeTime);
         selectorManager.verticalMenuHandler.Close(instantClose: instantDisplay);
         StartCoroutine(CDisableScreenOpennessNextFrame());
+        selectorManager.selectorTarget.Shrink(selectorManager.selectorTarget.GetOutTime());
     }
 
     public void CloseUnlockScreenForFastUI() {

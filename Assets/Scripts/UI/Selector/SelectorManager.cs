@@ -36,6 +36,7 @@ public class SelectorManager : MonoBehaviour {
     public SelectorLevelRunIntroduction introductionRunner;
     public TutorialTooltipManager tutorialTooltipManager;
     public VerticalMenuHandler verticalMenuHandler;
+    public SelectorTarget selectorTarget;
 
     [Header("Parameters")]
     public bool isDemo = false;
@@ -77,6 +78,7 @@ public class SelectorManager : MonoBehaviour {
         onNextLevelFrompath = new UnityEvent<SelectorPath>();
         cameraController = baseCamera.transform.parent.GetComponent<SelectorCameraController>();
         verticalMenuHandler.Initialize();
+        selectorTarget.Initialize();
         GatherLevels();
         ApplyCompressionFactor();
         GatherPaths();
@@ -259,6 +261,7 @@ public class SelectorManager : MonoBehaviour {
             } else {
                 DisplayLevel(selectorLevel, instantDisplay);
                 cameraController.PlaceCameraInFrontOfCurrentLevel();
+                selectorTarget.GoTo(selectorLevel.transform.position, selectorTarget.GetInTime());
             }
         } else {
             string dataHackeesTitre = strings.dataHackees.GetLocalizedString().Result;
@@ -350,17 +353,18 @@ public class SelectorManager : MonoBehaviour {
     }
 
     public IEnumerator CBackAndDisplayLevel(SelectorLevel selectorLevel, bool instantDisplay) {
-        BackToSelector();
+        BackToSelector(willReopen: true);
         hasLevelOpen = true; // Usefull while we are closing the VerticalMenu
         currentSelectorLevel = selectorLevel; // Same
         SetCurrentUnlockScreen(false, null);
         cameraController.PlaceCameraInFrontOfCurrentLevel();
+        selectorTarget.GoTo(selectorLevel.transform.position, selectorTarget.GetMovingTime());
         yield return new WaitForSeconds(verticalMenuHandler.closeTime);
         DisplayLevel(selectorLevel, instantDisplay);
     }
 
     public IEnumerator CBackAndDisplayUnlockScreen(SelectorPath selectorPath, bool instantDisplay) {
-        BackToSelector();
+        BackToSelector(willReopen: true);
         hasLevelOpen = false; // Usefull while we are closing the VerticalMenu
         hasUnlockScreenOpen = true;
         currentSelectorPath = selectorPath;
@@ -370,7 +374,7 @@ public class SelectorManager : MonoBehaviour {
         SetCurrentUnlockScreen(true, selectorPath);
     }
 
-    public void BackToSelector(bool instantBack = false) {
+    public void BackToSelector(bool instantBack = false, bool willReopen = false) {
         if (!HasSelectorLevelOpen() && !HasUnlockScreenOpen())
             return;
         if(instantBack) {
@@ -385,6 +389,9 @@ public class SelectorManager : MonoBehaviour {
         hasLevelOpen = false;
         SetCurrentUnlockScreen(false, null);
         verticalMenuHandler.Close(instantClose: instantBack);
+        if (!willReopen) {
+            selectorTarget.Shrink(selectorTarget.GetOutTime());
+        }
     }
 
     public void DisableIn(GameObject go, float duration) {
