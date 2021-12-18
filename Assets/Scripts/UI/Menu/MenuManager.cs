@@ -6,6 +6,7 @@ using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MenuManager : MonoBehaviour {
 
@@ -22,6 +23,8 @@ public class MenuManager : MonoBehaviour {
     public BackgroundCarousel carousel;
     public GameObject uiSwapperButton;
     public SelectorManager selectorManager;
+    public Button buttonPlay;
+    public Button buttonTutorial;
 
     [Header("TutorielTexts")]
     public MenuManagerStrings strings;
@@ -38,6 +41,7 @@ public class MenuManager : MonoBehaviour {
         menuBouncingBackground.Initialize();
         SetRandomBackgroundIfNeeded();
         StartMenuMusic();
+        SwapPlayAndTutorialMaterialsIfFirstRun();
     }
 
     void Update() {
@@ -64,7 +68,7 @@ public class MenuManager : MonoBehaviour {
     }
 
     protected bool HaveThinkAboutTutorial() {
-        return PrefsManager.HasKey(PrefsManager.HAVE_THINK_ABOUT_TUTORIAL_KEY);
+        return PrefsManager.GetBool(PrefsManager.HAVE_THINK_ABOUT_TUTORIAL_KEY, false);
     }
 
     protected void AdvicePlayTutorial() {
@@ -198,5 +202,13 @@ public class MenuManager : MonoBehaviour {
 
     public bool IsDemo() {
         return selectorManager.isDemo;
+    }
+
+    protected void SwapPlayAndTutorialMaterialsIfFirstRun() {
+        if(!HaveThinkAboutTutorial()) {
+            Material tmpMaterial = buttonPlay.GetComponent<Image>().material;
+            buttonPlay.GetComponent<Image>().material = buttonTutorial.GetComponent<Image>().material;
+            buttonTutorial.GetComponent<Image>().material = tmpMaterial;
+        }
     }
 }
