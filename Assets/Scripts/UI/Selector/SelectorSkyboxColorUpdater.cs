@@ -27,6 +27,10 @@ public class SelectorSkyboxColorUpdater : MonoBehaviour {
     public List<ArcDelimiter> arcDelimiters;
     public SelectorManager selectorManager;
 
+    public void Start() {
+        RenderSettings.skybox = new Material(RenderSettings.skybox);
+    }
+
     public void Update() {
         UpdateSkyboxColor();
     }
