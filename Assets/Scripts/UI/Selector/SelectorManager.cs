@@ -441,6 +441,7 @@ public class SelectorManager : MonoBehaviour {
         SelectorLevel currentLevel = GetLastLevelSaved();
         if (currentLevel != null) {
             DisplayLevel(currentLevel, instantDisplay: true);
+            selectorTarget.GoTo(currentLevel.transform.position, selectorTarget.GetInTime());
         }
     }
 
