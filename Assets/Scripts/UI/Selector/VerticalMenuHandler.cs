@@ -28,13 +28,22 @@ public class VerticalMenuHandler : MonoBehaviour {
 
     protected Fluctuator verticalMenuPercentageFluctuator;
     protected bool isOpen = false;
+    protected Timer fixPercentageTimer;
+    protected float oldPercentage;
 
     public void Initialize() {
-        verticalMenuPercentageFluctuator = new Fluctuator(this, GetVerticalMenuPercentage, SetVerticalMenuPercentage);
+        fixPercentageTimer = new Timer(setOver: true);
+        verticalMenuPercentageFluctuator = new Fluctuator(this, RealGetVerticalMenuPercentage, SetVerticalMenuPercentage);
         Close(instantClose: true);
     }
 
     public float GetVerticalMenuPercentage() {
+        if(fixPercentageTimer.IsOver()) {
+            return RealGetVerticalMenuPercentage();
+        }
+        return oldPercentage;
+    }
+    protected float RealGetVerticalMenuPercentage() {
         float verticalMenuWidth = verticalMenuLayout.preferredWidth;
         return verticalMenuWidth / canvasScaler.referenceResolution.x;
     }
@@ -56,5 +65,12 @@ public class VerticalMenuHandler : MonoBehaviour {
 
     public bool IsOpen() {
         return isOpen;
+    }
+
+    public void FixPercentageValueFor(float duration) {
+        if (duration > fixPercentageTimer.GetRemainingTime()) {
+            oldPercentage = RealGetVerticalMenuPercentage();
+            fixPercentageTimer = new Timer(duration);
+        }
     }
 }

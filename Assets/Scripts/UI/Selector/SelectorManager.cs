@@ -174,8 +174,8 @@ public class SelectorManager : MonoBehaviour {
         SaveLastLevel();
         //PlayerPrefs.SetString(MenuLevel.LEVEL_NAME_ID_KEY, menuLevel.GetNameId());
 
-        verticalMenuHandler.Close();
-        menuLevel.gameObject.SetActive(false);
+        //verticalMenuHandler.Close();
+        //menuLevel.gameObject.SetActive(false);
         //FadeOut(menuLevel.gameObject, dureeFading);
         FadeInLoadingMenu(loading, menuLevel);
     }
@@ -388,10 +388,12 @@ public class SelectorManager : MonoBehaviour {
         }
         hasLevelOpen = false;
         SetCurrentUnlockScreen(false, null);
-        verticalMenuHandler.Close(instantClose: instantBack);
         if (!willReopen) {
             selectorTarget.Shrink(selectorTarget.GetOutTime());
+        } else {
+            verticalMenuHandler.FixPercentageValueFor(verticalMenuHandler.closeTime + verticalMenuHandler.openTime);
         }
+        verticalMenuHandler.Close(instantClose: instantBack);
     }
 
     public void DisableIn(GameObject go, float duration) {
