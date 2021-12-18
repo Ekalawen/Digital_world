@@ -33,6 +33,7 @@ public class SelectorLevelObjectCube : MonoBehaviour {
             SetMaterial(focus: true);
             objectLevel.title.SetFocused();
             tooltipActivator.Show();
+            UISoundManager.Instance.PlayHoverButtonClip();
         }
     }
 
@@ -53,6 +54,7 @@ public class SelectorLevelObjectCube : MonoBehaviour {
     public void OnMouseUp() {
         if (hasClickedDown) {
             hasClickedDown = false;
+            UISoundManager.Instance.PlayClickedButtonClip();
             if (IsCubeClickable()) {
                 objectLevel.level.OnMouseDown();
                 SetMaterial(focus: false);

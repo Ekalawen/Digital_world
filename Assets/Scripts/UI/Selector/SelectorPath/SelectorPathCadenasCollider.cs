@@ -23,6 +23,7 @@ public class SelectorPathCadenasCollider : MonoBehaviour {
         if (IsCadenasClickable()) {
             cadenas.SetFocused();
             tooltipActivator.Show();
+            UISoundManager.Instance.PlayHoverButtonClip();
         }
     }
 
@@ -41,6 +42,7 @@ public class SelectorPathCadenasCollider : MonoBehaviour {
     public void OnMouseUp() {
         if (hasClickedDown) {
             hasClickedDown = false;
+            UISoundManager.Instance.PlayClickedButtonClip();
             if (IsCadenasClickable()) {
                 cadenas.selectorPath.OnCadenaClicked();
                 //cadenas.SetUnfocused();
