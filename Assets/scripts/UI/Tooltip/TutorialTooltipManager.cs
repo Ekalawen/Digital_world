@@ -79,9 +79,7 @@ public class TutorialTooltipManager : MonoBehaviour {
     protected void DisplayLevelTutorialTooltips(SelectorLevel level) {
         if (selectorManager.GetLevelIndice(level) == 0) {
             if (level.IsSucceeded() && !PrefsManager.GetBool(GetKey(tutorialTooltipToDH), false)) {
-                RectTransform rectToTrack = level.menuLevel.fastUISystemNextTransform;
-                InstantiateTutorialTooltip(tutorialTooltipToDH, tutorialTooltipToDHTransform, parent: level.menuLevel.transform, rectToTrack: rectToTrack);
-                //InstantiateTutorialTooltip(tutorialTooltipToDH, tutorialTooltipToDHTransform);
+                InstantiateTutorialTooltip(tutorialTooltipToDH, tutorialTooltipToDHTransform, parent: level.menuLevel.transform);
             }
         }
         if(level.GetNameId() == "FirstSondeScene") {
@@ -122,8 +120,7 @@ public class TutorialTooltipManager : MonoBehaviour {
         }
         if (selectorManager.GetPathIndice(path) == 1) {
             if (!PrefsManager.GetBool(GetKey(tutorialTooltipRedoPreviousLevel), false)) {
-                RectTransform rectToTrack = selectorManager.unlockScreen.fastUISystemPreviousTransform;
-                InstantiateTutorialTooltip(tutorialTooltipRedoPreviousLevel, tutorialTooltipRedoPreviousLevelTransform, parent: selectorManager.unlockScreen.transform, rectToTrack: rectToTrack);
+                InstantiateTutorialTooltip(tutorialTooltipRedoPreviousLevel, tutorialTooltipRedoPreviousLevelTransform, parent: selectorManager.unlockScreen.transform);
             }
         }
     }
@@ -131,8 +128,7 @@ public class TutorialTooltipManager : MonoBehaviour {
     protected void DisplayPathOnUnlockTutorialTooltips(SelectorPath path) {
         if (selectorManager.GetPathIndice(path) == 0) {
             if (path.IsUnlocked() && !PrefsManager.GetBool(GetKey(tutorialTooltipToNextLevel), false)) {
-                RectTransform rectToTrack = selectorManager.unlockScreen.fastUISystemNextTransform;
-                TutorialTooltip tutorialTooltip = InstantiateTutorialTooltip(tutorialTooltipToNextLevel, tutorialTooltipToNextLevelTransform, parent: selectorManager.unlockScreen.transform, rectToTrack: rectToTrack);
+                TutorialTooltip tutorialTooltip = InstantiateTutorialTooltip(tutorialTooltipToNextLevel, tutorialTooltipToNextLevelTransform, parent: selectorManager.unlockScreen.transform);
                 if(tutorialTooltip != null) {
                     tutorialTooltipsPathWithIndice.Add(new Tuple<TutorialTooltip, int>(tutorialTooltip, 0));
                 }
