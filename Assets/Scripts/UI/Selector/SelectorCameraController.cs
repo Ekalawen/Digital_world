@@ -92,22 +92,33 @@ public class SelectorCameraController : MonoBehaviour {
     }
 
     protected Vector3 ComputeSpeedOnAxis() {
-        Vector3 speed = InputManager.Instance.GetCameraSelectorMouvement();
+        Vector3 speed = !IsInInputField() ? InputManager.Instance.GetCameraSelectorMouvement() : Vector3.zero;
         float speedX = speed.x * speedKeyboard.x;
         float speedY = speed.y * speedKeyboard.y;
         float speedZ = speed.z * speedKeyboard.z;
         if (Input.GetMouseButton(0)) {
-            float mouseSpeedX = -Input.GetAxis("Mouse_X") * (1 - mouseSmoothing) + oldMouseSpeedX * mouseSmoothing;
-            float mouseSpeedY = -Input.GetAxis("Mouse_Y") * (1 - mouseSmoothing) + oldMouseSpeedY * mouseSmoothing;
-            oldMouseSpeedX = mouseSpeedX;
-            oldMouseSpeedY = mouseSpeedY;
-            speedX += mouseSpeedX * speedMouse.x;
-            speedY += mouseSpeedY * speedMouse.y;
+            if (timeSincePressedLeftClick.GetElapsedTime() > delayLeftClickRotation/* && !MouseIsInVerticalMenu()*/) {
+                float mouseSpeedX = -Input.GetAxis("Mouse_X") * (1 - mouseSmoothing) + oldMouseSpeedX * mouseSmoothing;
+                float mouseSpeedY = -Input.GetAxis("Mouse_Y") * (1 - mouseSmoothing) + oldMouseSpeedY * mouseSmoothing;
+                oldMouseSpeedX = mouseSpeedX;
+                oldMouseSpeedY = mouseSpeedY;
+                speedX += mouseSpeedX * speedMouse.x;
+                speedY += mouseSpeedY * speedMouse.y;
+            }
         } else {
             timeSincePressedLeftClick.Reset();
         }
         speedZ += Input.GetAxis("Mouse ScrollWheel") * speedMouse.z;
         return new Vector3(speedX, speedY, speedZ);
+    }
+
+    protected bool IsInInputField() {
+        return selectorManager.HasUnlockScreenOpen() && selectorManager.unlockScreen.IsInInput();
+    }
+
+    public bool MouseIsInVerticalMenu() {
+        RectTransform verticalMenu = selectorManager.verticalMenuHandler.verticalMenuLayout.GetComponent<RectTransform>();
+        return RectTransformUtility.RectangleContainsScreenPoint(verticalMenu, Input.mousePosition, selectorManager.overlayCamera);
     }
 
     protected void LookAtCentralProjectionIfNeeded(float speedX) {

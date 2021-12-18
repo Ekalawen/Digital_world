@@ -131,8 +131,7 @@ public class MenuLevel : MonoBehaviour {
         // Si on appui sur Echap on quitte
         if (!MenuManager.DISABLE_HOTKEYS) {
             if (Input.GetKeyDown(KeyCode.Return)
-            || Input.GetKeyDown(KeyCode.KeypadEnter)
-            || Input.GetKeyDown(KeyCode.Space)) {
+            || Input.GetKeyDown(KeyCode.KeypadEnter)) {
                 Play();
             }
             if (Input.GetKeyDown(KeyCode.Escape)) {
