@@ -66,6 +66,14 @@ public class GoalManager : MonoBehaviour {
         return GetAllTresholds().First();
     }
 
+    public int GetLastTreshold() {
+        return GetAllTresholds().Last();
+    }
+
+    public int GetLastTresholdNotInfinite() {
+        return GetAllTresholds().FindAll(v => v < int.MaxValue).Last();
+    }
+
     public string GetNextTresholdSymbolFor(int dataCount) {
         int nextTreshold = GetNextTresholdFor(dataCount);
         return nextTreshold == int.MaxValue ? "∞" : nextTreshold.ToString();

@@ -53,6 +53,6 @@ public class SoundBankIngame : ScriptableObject {
     public AudioClipParams victoryClips;
     public AudioClipParams defeatClips;
 
-    public AudioClipParams normalMusics;
+    public AudioClipParams levelMusics;
     public AudioClipParams endGameMusics;
 }

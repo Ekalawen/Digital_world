@@ -2,30 +2,33 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class SoundManager : MonoBehaviour
 {
 
     public SoundBankIngame sounds;
+    public List<AudioClipParams> levelMusics;
 
     protected Transform globalSoundsFolder;
     protected List<AudioSource> availableSources;
     protected List<AudioSource> usedSources;
     protected List<AudioSource> pausedSources;
-    protected AudioSource normalMusicSource;
+    protected AudioSource levelMusicSource;
+    protected AudioClipParams levelMusic;
     protected float musicVolume;
     protected float soundVolume;
+    protected GameManager gm;
 
-    public void Initialize()
-    {
+    public void Initialize() {
+        gm = GameManager.Instance;
         GetAudioVolumes();
         StopUIMusic();
         globalSoundsFolder = new GameObject("Sounds").transform;
         availableSources = new List<AudioSource>();
         usedSources = new List<AudioSource>();
         pausedSources = new List<AudioSource>();
-        normalMusicSource = PlayClipsOnSource(sounds.normalMusics);
-        usedSources.Remove(normalMusicSource);
+        StartLevelMusic();
     }
 
     public void GetAudioVolumes()
@@ -42,8 +45,8 @@ public class SoundManager : MonoBehaviour
             float sourceRelativeVolume = source.GetComponent<AudioClipParamsHolder>().clipParams.relativeVolume;
             source.volume = sourceRelativeVolume * soundVolume * AudioClipParams.BASE_VOLUME;
         }
-        float musicSourceRelativeVolume = normalMusicSource.GetComponent<AudioClipParamsHolder>().clipParams.relativeVolume;
-        normalMusicSource.volume = musicSourceRelativeVolume * musicVolume * AudioClipParams.BASE_VOLUME;
+        float musicSourceRelativeVolume = levelMusicSource.GetComponent<AudioClipParamsHolder>().clipParams.relativeVolume;
+        levelMusicSource.volume = musicSourceRelativeVolume * musicVolume * AudioClipParams.BASE_VOLUME;
     }
 
     public AudioSource GetAvailableSource()
@@ -182,11 +185,6 @@ public class SoundManager : MonoBehaviour
     {
         PlayClipsOnSource(sounds.getItemClips, pos);
     }
-    public void PlayEndGameMusic()
-    {
-        normalMusicSource.Stop();
-        PlayClipsOnSource(sounds.endGameMusics);
-    }
     public void PlayJumpEventStunClip()
     {
         PlayClipsOnSource(sounds.jumpEventStunClips);
@@ -264,11 +262,14 @@ public class SoundManager : MonoBehaviour
         Vector3 pos = new Vector3(),
         Transform parent = null,
         float duration = -1.0f,
-        float acceleration = 1.0f)
+        float acceleration = 1.0f,
+        AudioSource sourceToUse = null,
+        int clipIndice = -1,
+        float avancementTime = -1)
     {
 
         // On get la source
-        AudioSource source = GetAvailableSource();
+        AudioSource source = sourceToUse ?? GetAvailableSource();
         if(source == null) {
             Debug.Log($"SOURCE NUL OMG !!! XD");
         }
@@ -289,9 +290,13 @@ public class SoundManager : MonoBehaviour
         source.transform.SetParent((parent == null) ? globalSoundsFolder : parent);
 
         // On get le bon clip
-        AudioClip clip = audioClipParams.clips[UnityEngine.Random.Range(0, audioClipParams.clips.Count)];
+        AudioClip clip = clipIndice == -1 ? MathTools.ChoseOne(audioClipParams.clips) : audioClipParams.clips[clipIndice];
         source.clip = clip;
         source.GetComponent<AudioClipParamsHolder>().clipParams = audioClipParams;
+
+        if(avancementTime != -1) {
+            source.time = avancementTime;
+        }
 
         // On vérifie si c'est reverse ou pas
         if (audioClipParams.bReverse)
@@ -354,5 +359,37 @@ public class SoundManager : MonoBehaviour
             usedSources.Add(source);
         }
         pausedSources.Clear();
+    }
+
+    protected void StartLevelMusic() {
+        Assert.AreNotEqual(levelMusics.Count, 0);
+        levelMusic = MathTools.ChoseOne(levelMusics);
+        levelMusicSource = PlayClipsOnSource(levelMusic, clipIndice: 0);
+        usedSources.Remove(levelMusicSource);
+    }
+
+    public int GetNbLevelMusicVariations() {
+        return levelMusic.clips.Count;
+    }
+
+    public int GetCurrentLevelMusicVariationIndice() {
+        return levelMusic.clips.IndexOf(levelMusicSource.clip);
+    }
+
+    public void UpdateLevelMusicVariation(int newAvancement, int avancementTotal) {
+        if (gm.eventManager.IsEndGameStarted())
+            return;
+        int nbVariations = GetNbLevelMusicVariations();
+        float sizeVariation = (float)avancementTotal / (float)nbVariations;
+        int newVariationIndice = Mathf.Min(Mathf.FloorToInt(newAvancement / sizeVariation), nbVariations - 1);
+        int currentVariationIndice = GetCurrentLevelMusicVariationIndice();
+        if(newVariationIndice > currentVariationIndice && newAvancement < avancementTotal) {
+            float avancementTime = levelMusicSource.time;
+            PlayClipsOnSource(levelMusic, sourceToUse: levelMusicSource, clipIndice: newVariationIndice, avancementTime: avancementTime);
+        }
+    }
+
+    public void PlayEndGameMusic() {
+        PlayClipsOnSource(sounds.endGameMusics, sourceToUse: levelMusicSource);
     }
 }

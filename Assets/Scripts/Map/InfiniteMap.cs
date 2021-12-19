@@ -305,6 +305,8 @@ public class InfiniteMap : MapManager {
 
             if(GetNonStartNbBlocksRun() >= nbBlocksStartCubeDestruction)
                 StartBlocksDestruction();
+
+            gm.soundManager.UpdateLevelMusicVariation(GetNonStartNbBlocksRun(), gm.goalManager.GetLastTresholdNotInfinite());
         }
     }
 

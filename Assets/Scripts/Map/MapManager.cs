@@ -53,8 +53,10 @@ public class MapManager : MonoBehaviour {
 
     [HideInInspector]
     protected List<Lumiere> lumieres;
+    protected int maxNbLumieres;
     [HideInInspector]
     public Transform mapFolder, cubesFolder, lumieresFolder, zonesFolder, cubesPoolsFolder, lightningsFolder, particlesFolder;
+
     protected Cube.CubeType currentCubeTypeUsed = Cube.CubeType.NORMAL;
     [HideInInspector]
     public GameManager gm;
@@ -85,6 +87,7 @@ public class MapManager : MonoBehaviour {
         mapElements = new List<MapElement>();
         dynamicCubeEnsembles = new List<DynamicCubeEnsemble>();
         lumieres = new List<Lumiere>();
+        maxNbLumieres = nbLumieresInitial;
         boundingBox = new BoundingBox(Vector3Int.zero, new Vector3Int(tailleMap.x, tailleMap.y, tailleMap.z));
         cubesRegular = new Cube[tailleMap.x + 1, tailleMap.y + 1, tailleMap.z + 1];
         for (int i = 0; i <= tailleMap.x; i++)
@@ -470,6 +473,7 @@ public class MapManager : MonoBehaviour {
 
     public Lumiere RegisterAlreadyExistingLumiere(Lumiere lumiere) {
         lumieres.Add(lumiere);
+        maxNbLumieres = Mathf.Max(lumieres.Count, nbLumieresInitial);
         gm.historyManager.AddLumiereHistory(lumiere, lumiere.rewardLumierePrefab);
         return lumiere;
     }
@@ -1694,5 +1698,9 @@ public class MapManager : MonoBehaviour {
             center + Vector3.back * tailleMap.z / 2,
         };
         return middles;
+    }
+
+    public int GetMaxNbLumieres() {
+        return maxNbLumieres;
     }
 }

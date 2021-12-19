@@ -69,8 +69,10 @@ public class Lumiere : MonoBehaviour {
 		}
 	}
 
-    protected void Captured() {
-        if (IsCaptured()) {
+    protected void Captured()
+    {
+        if (IsCaptured())
+        {
             return;
         }
         isCaptured = true;
@@ -89,11 +91,18 @@ public class Lumiere : MonoBehaviour {
 
         NotifyConsoleLumiereCatpure();
 
-        gm.soundManager.PlayGetLumiereClip(transform.position);
+        NotifySoundManager();
 
         ScreenShakeOnLumiereCapture();
 
         gm.timerManager.AddTime(timeBonus);
+    }
+
+    protected void NotifySoundManager() {
+        gm.soundManager.PlayGetLumiereClip(transform.position);
+        int nbDataTotal = gm.map.GetMaxNbLumieres();
+        int nbDataRestantes = gm.map.GetLumieres().Count;
+        gm.soundManager.UpdateLevelMusicVariation(nbDataTotal - nbDataRestantes, nbDataTotal);
     }
 
     public void DeactivateTrails() {
