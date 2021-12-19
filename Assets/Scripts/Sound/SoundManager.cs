@@ -8,6 +8,8 @@ public class SoundManager : MonoBehaviour
 {
 
     public SoundBankIngame sounds;
+    public float variationTransitionDuration = 0.3f;
+    public float endGameTransitionDuration = 0.15f;
     public List<AudioClipParams> levelMusics;
 
     protected Transform globalSoundsFolder;
@@ -15,6 +17,7 @@ public class SoundManager : MonoBehaviour
     protected List<AudioSource> usedSources;
     protected List<AudioSource> pausedSources;
     protected AudioSource levelMusicSource;
+    protected AudioSource finishingLevelMusicSource;
     protected AudioClipParams levelMusic;
     protected float musicVolume;
     protected float soundVolume;
@@ -384,12 +387,60 @@ public class SoundManager : MonoBehaviour
         int newVariationIndice = Mathf.Min(Mathf.FloorToInt(newAvancement / sizeVariation), nbVariations - 1);
         int currentVariationIndice = GetCurrentLevelMusicVariationIndice();
         if(newVariationIndice > currentVariationIndice && newAvancement < avancementTotal) {
-            float avancementTime = levelMusicSource.time;
-            PlayClipsOnSource(levelMusic, sourceToUse: levelMusicSource, clipIndice: newVariationIndice, avancementTime: avancementTime);
+            PlayNewLevelMusicVariation(newVariationIndice);
         }
     }
 
+    protected void PlayNewLevelMusicVariation(int variationIndice) {
+        float avancementTime = levelMusicSource.time;
+        finishingLevelMusicSource = levelMusicSource;
+        levelMusicSource = GetAvailableSource();
+        usedSources.Remove(levelMusicSource);
+        PlayClipsOnSource(levelMusic, sourceToUse: levelMusicSource, clipIndice: variationIndice, avancementTime: avancementTime);
+        FadeOutSource(finishingLevelMusicSource, variationTransitionDuration);
+        FadeInSource(levelMusicSource, variationTransitionDuration);
+    }
+
+    protected void FadeOutSource(AudioSource source, float duration) {
+        StartCoroutine(CFadeOutSource(source, duration));
+    }
+
+    protected IEnumerator CFadeOutSource(AudioSource source, float duration) {
+        float maxVolume = source.volume;
+        Timer timer = new Timer(duration);
+        while(!timer.IsOver()) {
+            float newVolume = maxVolume * (1 - timer.GetAvancement());
+            source.volume = newVolume;
+            yield return null;
+        }
+        source.volume = 0.0f;
+        source.Stop();
+        if (!availableSources.Contains(source)) {
+            availableSources.Add(source);
+        }
+    }
+
+    protected void FadeInSource(AudioSource source, float duration) {
+        StartCoroutine(CFadeInSource(source, duration));
+    }
+
+    protected IEnumerator CFadeInSource(AudioSource source, float duration) {
+        float maxVolume = source.volume;
+        Timer timer = new Timer(duration);
+        while(!timer.IsOver()) {
+            float newVolume = maxVolume * timer.GetAvancement();
+            source.volume = newVolume;
+            yield return null;
+        }
+        source.volume = maxVolume;
+    }
+
     public void PlayEndGameMusic() {
+        finishingLevelMusicSource = levelMusicSource;
+        levelMusicSource = GetAvailableSource();
+        usedSources.Remove(levelMusicSource);
         PlayClipsOnSource(sounds.endGameMusics, sourceToUse: levelMusicSource);
+        FadeOutSource(finishingLevelMusicSource, endGameTransitionDuration);
+        FadeInSource(levelMusicSource, endGameTransitionDuration);
     }
 }
