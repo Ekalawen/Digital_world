@@ -25,6 +25,7 @@ public class UIHelper {
         PURE_RED,
         PURE_GREEN,
         PURE_BLUE,
+        LINUX_CONSOLE,
     }
 
     public static string RED = "#ff0000ff";
@@ -43,6 +44,7 @@ public class UIHelper {
     public static string PURE_RED = "#ff0000ff";
     public static string PURE_GREEN = "#00ff00ff";
     public static string PURE_BLUE = "#0000ffff";
+    public static string LINUX_CONSOLE = "#591146"; // Originallement c'est #2F0925FF
 
 
     public static List<Tuple<string, string>> GetColorMapping() {
@@ -63,6 +65,7 @@ public class UIHelper {
             new Tuple<string, string>("#PURE_GREEN", PURE_GREEN),
             new Tuple<string, string>("#PURE_GREEN", PURE_GREEN),
             new Tuple<string, string>("#PURE_BLUE", PURE_BLUE),
+            new Tuple<string, string>("#LINUX_CONSOLE", LINUX_CONSOLE),
         };
         return colorMapping;
     }
@@ -151,6 +154,7 @@ public class UIHelper {
             case UIColor.PURE_RED: return PURE_RED;
             case UIColor.PURE_GREEN: return PURE_GREEN;
             case UIColor.PURE_BLUE: return PURE_BLUE;
+            case UIColor.LINUX_CONSOLE: return LINUX_CONSOLE;
             default: return MAGENTA;
         }
     }
