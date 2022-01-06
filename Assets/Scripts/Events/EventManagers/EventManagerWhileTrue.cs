@@ -10,6 +10,7 @@ public class EventManagerWhileTrue : EventManager {
 
     public int nbLumieresFinales = 10;
     public float decomposeTime = 1.0f;
+    public LocalizedString messageAutoDestructionEnclanchee;
     public List<LocalizedString> messagesAChaqueLumiere;
 
     protected int nbLumieresFinalesAttrappees = 0;
@@ -19,7 +20,7 @@ public class EventManagerWhileTrue : EventManager {
     protected override void StartEndGame() {
         base.StartEndGame();
         if (isFirstStartEndGame) {
-            gm.console.WhileTrueEndEventAutoDestructionEnclenche();
+            gm.console.WhileTrueEndEventAutoDestructionEnclanchee(messageAutoDestructionEnclanchee);
         }
     }
 

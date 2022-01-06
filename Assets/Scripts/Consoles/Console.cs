@@ -33,6 +33,7 @@ public class Console : MonoBehaviour {
     public List<TimedMessage> timedMessages;
     public ConsoleStrings strings;
     public LocalizedString customInitMessage = null;
+    public LocalizedString customWinMessage = null;
 
     [Header("OnLumiereCapturedMessages")]
     public List<int> nbLumieresTriggers;
@@ -715,7 +716,10 @@ public class Console : MonoBehaviour {
 	public void WinGame() {
 		AjouterMessage (strings.winGameConsole1, Console.TypeText.RED_TEXT);
 		AjouterMessage (strings.winGameConsole2, Console.TypeText.RED_TEXT);
-		AjouterMessageImportant (strings.winGameImportant, Console.TypeText.BLUE_TEXT, 5);
+        if (!customWinMessage.IsEmpty) {
+            AjouterMessageImportant(customWinMessage, Console.TypeText.BLUE_TEXT, 5);
+        }
+        AjouterMessageImportant(strings.winGameImportant, Console.TypeText.BLUE_TEXT, 5);
         DisplayEscapeButton();
 		StartCoroutine (Recompenser ());
 	}
@@ -1076,8 +1080,12 @@ public class Console : MonoBehaviour {
         AjouterMessageImportant(strings.rewardNewInfinitereshold, argument, TypeText.GREEN_TEXT, 3, bAfficherInConsole: true);
     }
 
-    public void WhileTrueEndEventAutoDestructionEnclenche() {
-        AjouterMessageImportant(strings.autoDestructionEnclenchee, Console.TypeText.RED_TEXT, 2.0f);
+    public void WhileTrueEndEventAutoDestructionEnclanchee(LocalizedString localizedString) {
+        if (localizedString.IsEmpty) {
+            AjouterMessageImportant(strings.autoDestructionEnclenchee, Console.TypeText.RED_TEXT, 2.0f);
+        } else {
+            AjouterMessageImportant(localizedString, Console.TypeText.RED_TEXT, 2.0f);
+        }
     }
 
     // Lorsque l'on commence à détruire les blocks dans l'infinite runner :)
