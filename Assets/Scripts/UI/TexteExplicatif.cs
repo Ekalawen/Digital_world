@@ -205,13 +205,21 @@ public class TexteExplicatif : MonoBehaviour {
         mainText.maxVisibleCharacters = 0;
         float timerDuration = (float)nbCharacters / nbCharactersPrintedBySeconds;
         Timer timer = isInGame ? new UnpausableTimer(timerDuration) : new Timer(timerDuration);
+        ScrollRect sr = mainText.transform.parent.GetComponent<ScrollRect>();
+        bool hasScroll = false;
         while (!timer.IsOver()) {
             int nbCharactersVisibles = (int)(nbCharacters * timer.GetAvancement());
             mainText.maxVisibleCharacters = nbCharactersVisibles;
-            ScrollRect sr = mainText.transform.parent.GetComponent<ScrollRect>();
-            sr.verticalScrollbar.value = 1;
-            if(Input.anyKey || Input.mouseScrollDelta != Vector2.zero) {
-                break;
+            if(Input.anyKey) {
+                float currentAvancement = timer.GetAvancement();
+                timer.SetDuree(timer.GetDuree() / 5);
+                timer.SetAvancement(currentAvancement);
+            }
+            if(Input.mouseScrollDelta != Vector2.zero) {
+                hasScroll = true;
+            }
+            if(!hasScroll) {
+                sr.verticalScrollbar.value = 1;
             }
             yield return null;
         }

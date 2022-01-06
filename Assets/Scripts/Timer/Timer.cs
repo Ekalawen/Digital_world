@@ -44,6 +44,10 @@ public class Timer {
         return newAvancement;
     }
 
+    public void SetAvancement(float newAvancement) {
+        SetElapsedTime(GetDuree() * newAvancement);
+    }
+
     public float GetElapsedTime() {
         return GetTimeSinceLevelLoad() - debut;
     }
