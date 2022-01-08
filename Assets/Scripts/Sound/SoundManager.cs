@@ -9,6 +9,7 @@ public class SoundManager : MonoBehaviour
 
     public SoundBankIngame sounds;
     public float variationTransitionDuration = 0.3f;
+    public float variationTransitionOffset = 0.03f;
     public float endGameTransitionDuration = 0.15f;
     public List<AudioClipParams> levelMusics;
 
@@ -258,7 +259,9 @@ public class SoundManager : MonoBehaviour
     {
         PlayClipsOnSource(sounds.catchSoulRobber, pos);
     }
-
+    public void PlayTransitionSoundClip() {
+        PlayClipsOnSource(sounds.transitionSoundsClips);
+    }
 
     protected AudioSource PlayClipsOnSource(
         AudioClipParams audioClipParams,
@@ -297,10 +300,6 @@ public class SoundManager : MonoBehaviour
         source.clip = clip;
         source.GetComponent<AudioClipParamsHolder>().clipParams = audioClipParams;
 
-        if(avancementTime != -1) {
-            source.time = avancementTime;
-        }
-
         // On vérifie si c'est reverse ou pas
         if (audioClipParams.bReverse)
         {
@@ -311,6 +310,10 @@ public class SoundManager : MonoBehaviour
         {
             source.timeSamples = 0;
             source.pitch = 1;
+        }
+
+        if(avancementTime != -1) {
+            source.time = avancementTime;
         }
 
         // On ajuste le pitch pour matcher avec la duration si celle-ci est spécifiée ! :)
@@ -397,15 +400,17 @@ public class SoundManager : MonoBehaviour
         levelMusicSource = GetAvailableSource();
         usedSources.Remove(levelMusicSource);
         PlayClipsOnSource(levelMusic, sourceToUse: levelMusicSource, clipIndice: variationIndice, avancementTime: avancementTime);
-        FadeOutSource(finishingLevelMusicSource, variationTransitionDuration);
-        FadeInSource(levelMusicSource, variationTransitionDuration);
+        PlayTransitionSoundClip();
+        FadeOutSourceIn(finishingLevelMusicSource, variationTransitionDuration, variationTransitionOffset);
+        FadeInSourceIn(levelMusicSource, variationTransitionDuration, variationTransitionOffset);
     }
 
-    protected void FadeOutSource(AudioSource source, float duration) {
-        StartCoroutine(CFadeOutSource(source, duration));
+    protected void FadeOutSourceIn(AudioSource source, float duration, float waitDuration = 0) {
+        StartCoroutine(CFadeOutSource(source, duration, waitDuration));
     }
 
-    protected IEnumerator CFadeOutSource(AudioSource source, float duration) {
+    protected IEnumerator CFadeOutSource(AudioSource source, float duration, float waitDuration) {
+        yield return new WaitForSeconds(waitDuration);
         float maxVolume = source.volume;
         Timer timer = new Timer(duration);
         while(!timer.IsOver()) {
@@ -420,11 +425,12 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    protected void FadeInSource(AudioSource source, float duration) {
-        StartCoroutine(CFadeInSource(source, duration));
+    protected void FadeInSourceIn(AudioSource source, float duration, float waitDuration = 0) {
+        StartCoroutine(CFadeInSource(source, duration, waitDuration));
     }
 
-    protected IEnumerator CFadeInSource(AudioSource source, float duration) {
+    protected IEnumerator CFadeInSource(AudioSource source, float duration, float waitDuration) {
+        yield return new WaitForSeconds(waitDuration);
         float maxVolume = source.volume;
         Timer timer = new Timer(duration);
         while(!timer.IsOver()) {
@@ -440,7 +446,7 @@ public class SoundManager : MonoBehaviour
         levelMusicSource = GetAvailableSource();
         usedSources.Remove(levelMusicSource);
         PlayClipsOnSource(sounds.endGameMusics, sourceToUse: levelMusicSource);
-        FadeOutSource(finishingLevelMusicSource, endGameTransitionDuration);
-        FadeInSource(levelMusicSource, endGameTransitionDuration);
+        FadeOutSourceIn(finishingLevelMusicSource, endGameTransitionDuration);
+        FadeInSourceIn(levelMusicSource, endGameTransitionDuration);
     }
 }

@@ -55,4 +55,5 @@ public class SoundBankIngame : ScriptableObject {
 
     public AudioClipParams levelMusics;
     public AudioClipParams endGameMusics;
+    public AudioClipParams transitionSoundsClips;
 }
