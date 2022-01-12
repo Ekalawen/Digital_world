@@ -56,72 +56,116 @@ MonoBehaviour:
   dureeDestructionCubesDestruction: 2
   proportionToKeep: 0
   bNoEndgame: 0
+  finalLightSpawnMode: 0
   mapFunctionsOnCreateFinalLight: []
   screenShakeMagnitude: 2
   screenShakeRoughness: 15
   dureeScreenShake: 3
-  randomEventsPrefabs: []
+  eventsPrefabs: []
   nbLumieresTriggers: 
   nbLumieresSingleEvents: []
   quitSceneTime: 7
   reloadSceneTime: 7
   nbLumieresFinales: 10
   decomposeTime: 1
+  messageAutoDestructionEnclanchee:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
   messagesAChaqueLumiere:
-  - m_TableReference:
-      m_TableCollectionName: GUID:ca68cd80ed439e849817e90afd077d38
-    m_TableEntryReference:
-      m_KeyId: 1595105583104
-      m_Key: 
-    m_FallbackState: 0
-  - m_TableReference:
-      m_TableCollectionName: GUID:ca68cd80ed439e849817e90afd077d38
-    m_TableEntryReference:
-      m_KeyId: 1633860952064
-      m_Key: 
-    m_FallbackState: 0
-  - m_TableReference:
-      m_TableCollectionName: GUID:ca68cd80ed439e849817e90afd077d38
-    m_TableEntryReference:
-      m_KeyId: 1639162552320
-      m_Key: 
-    m_FallbackState: 0
-  - m_TableReference:
-      m_TableCollectionName: GUID:ca68cd80ed439e849817e90afd077d38
-    m_TableEntryReference:
-      m_KeyId: 1646305452032
-      m_Key: 
-    m_FallbackState: 0
-  - m_TableReference:
-      m_TableCollectionName: GUID:ca68cd80ed439e849817e90afd077d38
-    m_TableEntryReference:
-      m_KeyId: 1659454595072
-      m_Key: 
-    m_FallbackState: 0
-  - m_TableReference:
-      m_TableCollectionName: GUID:ca68cd80ed439e849817e90afd077d38
-    m_TableEntryReference:
-      m_KeyId: 1670783410176
-      m_Key: 
-    m_FallbackState: 0
-  - m_TableReference:
-      m_TableCollectionName: GUID:ca68cd80ed439e849817e90afd077d38
-    m_TableEntryReference:
-      m_KeyId: 1686130368512
-      m_Key: 
-    m_FallbackState: 0
-  - m_TableReference:
-      m_TableCollectionName: GUID:ca68cd80ed439e849817e90afd077d38
-    m_TableEntryReference:
-      m_KeyId: 1782133792768
-      m_Key: 
-    m_FallbackState: 0
-  - m_TableReference:
-      m_TableCollectionName: GUID:ca68cd80ed439e849817e90afd077d38
-    m_TableEntryReference:
-      m_KeyId: 1794351800320
-      m_Key: 
-    m_FallbackState: 0
+  - localizedString:
+      m_TableReference:
+        m_TableCollectionName: GUID:ca68cd80ed439e849817e90afd077d38
+      m_TableEntryReference:
+        m_KeyId: 1595105583104
+        m_Key: 
+      m_FallbackState: 0
+    type: 2
+    timing: 0
+    duree: 2
+  - localizedString:
+      m_TableReference:
+        m_TableCollectionName: GUID:ca68cd80ed439e849817e90afd077d38
+      m_TableEntryReference:
+        m_KeyId: 1633860952064
+        m_Key: 
+      m_FallbackState: 0
+    type: 2
+    timing: 0
+    duree: 2
+  - localizedString:
+      m_TableReference:
+        m_TableCollectionName: GUID:ca68cd80ed439e849817e90afd077d38
+      m_TableEntryReference:
+        m_KeyId: 1639162552320
+        m_Key: 
+      m_FallbackState: 0
+    type: 2
+    timing: 0
+    duree: 2
+  - localizedString:
+      m_TableReference:
+        m_TableCollectionName: GUID:ca68cd80ed439e849817e90afd077d38
+      m_TableEntryReference:
+        m_KeyId: 1646305452032
+        m_Key: 
+      m_FallbackState: 0
+    type: 2
+    timing: 0
+    duree: 2
+  - localizedString:
+      m_TableReference:
+        m_TableCollectionName: GUID:ca68cd80ed439e849817e90afd077d38
+      m_TableEntryReference:
+        m_KeyId: 1659454595072
+        m_Key: 
+      m_FallbackState: 0
+    type: 2
+    timing: 0
+    duree: 2
+  - localizedString:
+      m_TableReference:
+        m_TableCollectionName: GUID:ca68cd80ed439e849817e90afd077d38
+      m_TableEntryReference:
+        m_KeyId: 1670783410176
+        m_Key: 
+      m_FallbackState: 0
+    type: 2
+    timing: 0
+    duree: 2
+  - localizedString:
+      m_TableReference:
+        m_TableCollectionName: GUID:ca68cd80ed439e849817e90afd077d38
+      m_TableEntryReference:
+        m_KeyId: 1686130368512
+        m_Key: 
+      m_FallbackState: 0
+    type: 2
+    timing: 0
+    duree: 2
+  - localizedString:
+      m_TableReference:
+        m_TableCollectionName: GUID:ca68cd80ed439e849817e90afd077d38
+      m_TableEntryReference:
+        m_KeyId: 1782133792768
+        m_Key: 
+      m_FallbackState: 0
+    type: 2
+    timing: 0
+    duree: 2
+  - localizedString:
+      m_TableReference:
+        m_TableCollectionName: GUID:ca68cd80ed439e849817e90afd077d38
+      m_TableEntryReference:
+        m_KeyId: 1794351800320
+        m_Key: 
+      m_FallbackState: 0
+    type: 2
+    timing: 0
+    duree: 2
 --- !u!1001 &2004253452606249415
 PrefabInstance:
   m_ObjectHideFlags: 0
