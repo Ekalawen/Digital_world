@@ -26,6 +26,12 @@ public class UIHelper {
         PURE_GREEN,
         PURE_BLUE,
         LINUX_CONSOLE,
+        EMA_COLOR,
+        MORGENSOUL_COLOR,
+        V1P3R_COLOR,
+        CONTRASTE01_COLOR,
+        WOLFV0RE_COLOR,
+        PAINBRINGER_COLOR,
     }
 
     public static string RED = "#ff0000ff";
@@ -45,6 +51,12 @@ public class UIHelper {
     public static string PURE_GREEN = "#00ff00ff";
     public static string PURE_BLUE = "#0000ffff";
     public static string LINUX_CONSOLE = "#591146"; // Originallement c'est #2F0925FF
+    public static string EMA_COLOR = "#00ff00ff";
+    public static string MORGENSOUL_COLOR = "#00ffffff";
+    public static string V1P3R_COLOR = "#6033ffff";
+    public static string CONTRASTE01_COLOR = "#8fe1ffff";
+    public static string WOLFV0RE_COLOR = "#201cffff";
+    public static string PAINBRINGER_COLOR = "#c90000ff";
 
 
     public static List<Tuple<string, string>> GetColorMapping() {
@@ -66,6 +78,12 @@ public class UIHelper {
             new Tuple<string, string>("#PURE_GREEN", PURE_GREEN),
             new Tuple<string, string>("#PURE_BLUE", PURE_BLUE),
             new Tuple<string, string>("#LINUX_CONSOLE", LINUX_CONSOLE),
+            new Tuple<string, string>("#EMA_COLOR", EMA_COLOR),
+            new Tuple<string, string>("#MORGENSOUL_COLOR", MORGENSOUL_COLOR),
+            new Tuple<string, string>("#CONTRASTE01_COLOR", CONTRASTE01_COLOR),
+            new Tuple<string, string>("#V1P3R_COLOR", V1P3R_COLOR),
+            new Tuple<string, string>("#WOLFV0RE_COLOR", WOLFV0RE_COLOR),
+            new Tuple<string, string>("#PAINBRINGER_COLOR", PAINBRINGER_COLOR),
         };
         return colorMapping;
     }
@@ -155,6 +173,12 @@ public class UIHelper {
             case UIColor.PURE_GREEN: return PURE_GREEN;
             case UIColor.PURE_BLUE: return PURE_BLUE;
             case UIColor.LINUX_CONSOLE: return LINUX_CONSOLE;
+            case UIColor.EMA_COLOR: return EMA_COLOR;
+            case UIColor.MORGENSOUL_COLOR: return MORGENSOUL_COLOR;
+            case UIColor.CONTRASTE01_COLOR: return CONTRASTE01_COLOR;
+            case UIColor.V1P3R_COLOR: return V1P3R_COLOR;
+            case UIColor.WOLFV0RE_COLOR: return WOLFV0RE_COLOR;
+            case UIColor.PAINBRINGER_COLOR: return PAINBRINGER_COLOR;
             default: return MAGENTA;
         }
     }
