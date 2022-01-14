@@ -11,6 +11,8 @@ public class TimerManager : MonoBehaviour {
     [Header("Time")]
     public bool isInfinitTime = false;
     public float initialTime = 40.0f;
+    public List<float> timePhaseScalesIR = new List<float>() { 1.0f, 1.2f, 1.4f };
+    public List<float> timePhaseScalesRegular = new List<float>() { 1.0f, 1.1f, 1.2f };
 
     [Header("ScreenShake on remaining time")]
     public float timeToStartScreenShake = 5;
@@ -43,6 +45,7 @@ public class TimerManager : MonoBehaviour {
         realGameTimer = new Timer();
         soundTimeOutTimer = new Timer(1.0f);
         cameraShakeInstance = CameraShaker.Instance.StartShake(0, 0, 0);
+        GoToPhase(0);
     }
 
     private void Update() {
@@ -279,5 +282,10 @@ public class TimerManager : MonoBehaviour {
     
     public Timer GetRealGameTimer() {
         return realGameTimer;
+    }
+
+    public void GoToPhase(int variationIndice) {
+        Time.timeScale = gm.IsIR() ? timePhaseScalesIR[variationIndice] : timePhaseScalesRegular[variationIndice];
+        Debug.Log($"TimeScale = {Time.timeScale}");
     }
 }

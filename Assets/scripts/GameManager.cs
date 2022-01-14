@@ -337,5 +337,14 @@ public class GameManager : MonoBehaviour {
         FullscreenGameView.StopFullScreen();
 #endif
     }
+
+    public bool IsRegular() {
+        return GetMapType() == MenuLevel.LevelType.REGULAR;
+    }
+
+    public bool IsIR() {
+        return GetMapType() == MenuLevel.LevelType.INFINITE;
+    }
 }
+
 

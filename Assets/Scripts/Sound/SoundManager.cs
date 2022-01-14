@@ -403,6 +403,8 @@ public class SoundManager : MonoBehaviour
         PlayTransitionSoundClip();
         FadeOutSourceIn(finishingLevelMusicSource, variationTransitionDuration, variationTransitionOffset);
         FadeInSourceIn(levelMusicSource, variationTransitionDuration, variationTransitionOffset);
+
+        gm.timerManager.GoToPhase(variationIndice);
     }
 
     protected void FadeOutSourceIn(AudioSource source, float duration, float waitDuration = 0) {
