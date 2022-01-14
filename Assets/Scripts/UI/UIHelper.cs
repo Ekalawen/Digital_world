@@ -32,6 +32,7 @@ public class UIHelper {
         CONTRASTE01_COLOR,
         WOLFV0RE_COLOR,
         PAINBRINGER_COLOR,
+        WILLWATCHER_COLOR,
     }
 
     public static string RED = "#ff0000ff";
@@ -57,6 +58,7 @@ public class UIHelper {
     public static string CONTRASTE01_COLOR = "#8fe1ffff";
     public static string WOLFV0RE_COLOR = "#201cffff";
     public static string PAINBRINGER_COLOR = "#c90000ff";
+    public static string WILLWATCHER_COLOR = "#fa161aff";
 
 
     public static List<Tuple<string, string>> GetColorMapping() {
@@ -84,6 +86,7 @@ public class UIHelper {
             new Tuple<string, string>("#V1P3R_COLOR", V1P3R_COLOR),
             new Tuple<string, string>("#WOLFV0RE_COLOR", WOLFV0RE_COLOR),
             new Tuple<string, string>("#PAINBRINGER_COLOR", PAINBRINGER_COLOR),
+            new Tuple<string, string>("#WILLWATCHER_COLOR", WILLWATCHER_COLOR),
         };
         return colorMapping;
     }
@@ -179,6 +182,7 @@ public class UIHelper {
             case UIColor.V1P3R_COLOR: return V1P3R_COLOR;
             case UIColor.WOLFV0RE_COLOR: return WOLFV0RE_COLOR;
             case UIColor.PAINBRINGER_COLOR: return PAINBRINGER_COLOR;
+            case UIColor.WILLWATCHER_COLOR: return WILLWATCHER_COLOR;
             default: return MAGENTA;
         }
     }
