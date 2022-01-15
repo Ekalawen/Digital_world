@@ -102,7 +102,7 @@ public class Lumiere : MonoBehaviour {
         gm.soundManager.PlayGetLumiereClip(transform.position);
         int nbDataTotal = gm.map.GetMaxNbLumieres();
         int nbDataRestantes = gm.map.GetLumieres().Count;
-        gm.soundManager.UpdateLevelMusicVariation(nbDataTotal - nbDataRestantes, nbDataTotal);
+        gm.timerManager.TryUpdatePhase(nbDataTotal - nbDataRestantes, nbDataTotal);
     }
 
     public void DeactivateTrails() {

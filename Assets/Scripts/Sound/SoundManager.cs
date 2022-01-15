@@ -374,37 +374,21 @@ public class SoundManager : MonoBehaviour
         usedSources.Remove(levelMusicSource);
     }
 
-    public int GetNbLevelMusicVariations() {
-        return levelMusic.clips.Count;
-    }
+    public void PlayNewLevelMusicVariation(int variationIndice) {
+        PlayTransitionSoundClip();
 
-    public int GetCurrentLevelMusicVariationIndice() {
-        return levelMusic.clips.IndexOf(levelMusicSource.clip);
-    }
-
-    public void UpdateLevelMusicVariation(int newAvancement, int avancementTotal) {
-        if (gm.eventManager.IsEndGameStarted())
+        int newVariationIndice = Mathf.Min(variationIndice, levelMusic.clips.Count);
+        int currentVariationIndice = levelMusic.clips.IndexOf(levelMusicSource.clip);
+        if (newVariationIndice == currentVariationIndice) {
             return;
-        int nbVariations = GetNbLevelMusicVariations();
-        float sizeVariation = (float)avancementTotal / (float)nbVariations;
-        int newVariationIndice = Mathf.Min(Mathf.FloorToInt(newAvancement / sizeVariation), nbVariations - 1);
-        int currentVariationIndice = GetCurrentLevelMusicVariationIndice();
-        if(newVariationIndice > currentVariationIndice && newAvancement < avancementTotal) {
-            PlayNewLevelMusicVariation(newVariationIndice);
         }
-    }
-
-    protected void PlayNewLevelMusicVariation(int variationIndice) {
         float avancementTime = levelMusicSource.time;
         finishingLevelMusicSource = levelMusicSource;
         levelMusicSource = GetAvailableSource();
         usedSources.Remove(levelMusicSource);
-        PlayClipsOnSource(levelMusic, sourceToUse: levelMusicSource, clipIndice: variationIndice, avancementTime: avancementTime);
-        PlayTransitionSoundClip();
+        PlayClipsOnSource(levelMusic, sourceToUse: levelMusicSource, clipIndice: newVariationIndice, avancementTime: avancementTime);
         FadeOutSourceIn(finishingLevelMusicSource, variationTransitionDuration, variationTransitionOffset);
         FadeInSourceIn(levelMusicSource, variationTransitionDuration, variationTransitionOffset);
-
-        gm.timerManager.GoToPhase(variationIndice);
     }
 
     protected void FadeOutSourceIn(AudioSource source, float duration, float waitDuration = 0) {

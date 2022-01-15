@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class TimerManager : MonoBehaviour {
 
@@ -11,8 +12,13 @@ public class TimerManager : MonoBehaviour {
     [Header("Time")]
     public bool isInfinitTime = false;
     public float initialTime = 40.0f;
-    public List<float> timePhaseScalesIR = new List<float>() { 1.0f, 1.2f, 1.4f };
-    public List<float> timePhaseScalesRegular = new List<float>() { 1.0f, 1.1f, 1.2f };
+
+    [Header("Phases Time Scale")]
+    public List<float> timePhaseScalesIR = new List<float>() { 1.0f, 1.15f, 1.3225f };
+    public List<float> timePhaseScalesRegular = new List<float>() { 1.0f, 1.1f, 1.21f };
+    public bool useCustomTimePhaseScales = false;
+    [ConditionalHide("useCustomTimePhaseScales")]
+    public List<float> timePhaseScalesCustom = new List<float>() { 1.0f, 1.0f, 1.0f };
 
     [Header("ScreenShake on remaining time")]
     public float timeToStartScreenShake = 5;
@@ -36,6 +42,8 @@ public class TimerManager : MonoBehaviour {
     protected Timer gameTimer; // Celui-ci est réinitialisé quand on prend un TimeResetItem !
     protected Timer realGameTimer; // On ne peut pas réinitialiser celui-ci !
     protected CameraShakeInstance cameraShakeInstance;
+    protected List<float> usedTimePhaseScales;
+    protected int currentPhaseIndice = 0;
 
     public void Initialize() {
 		name = "TimerManager";
@@ -45,6 +53,7 @@ public class TimerManager : MonoBehaviour {
         realGameTimer = new Timer();
         soundTimeOutTimer = new Timer(1.0f);
         cameraShakeInstance = CameraShaker.Instance.StartShake(0, 0, 0);
+        Assert.AreEqual(GetNbPhases(), 3);
         GoToPhase(0);
     }
 
@@ -165,7 +174,6 @@ public class TimerManager : MonoBehaviour {
             return seconds + "." + deciseconds.ToString("D1");
     }
 
-
     protected void PlayTimeOutSound() {
         if(GetRemainingTime() <= 10.0f) {
             if (GetRemainingTime() <= 1.6f) {
@@ -284,8 +292,43 @@ public class TimerManager : MonoBehaviour {
         return realGameTimer;
     }
 
-    public void GoToPhase(int variationIndice) {
-        Time.timeScale = gm.IsIR() ? timePhaseScalesIR[variationIndice] : timePhaseScalesRegular[variationIndice];
-        Debug.Log($"TimeScale = {Time.timeScale}");
+    public void GoToPhase(int phaseIndice) {
+        currentPhaseIndice = phaseIndice;
+        Time.timeScale = GetTimePhaseScales()[phaseIndice];
+        if (gm.IsInitializationOver()) {
+            gm.soundManager.PlayNewLevelMusicVariation(phaseIndice);
+        }
     }
+
+    public int GetNbPhases() {
+        return GetTimePhaseScales().Count;
+    }
+
+    public List<float> GetTimePhaseScales() {
+        if (usedTimePhaseScales == null) {
+            usedTimePhaseScales = useCustomTimePhaseScales ? timePhaseScalesCustom : (gm.IsIR() ? timePhaseScalesIR : timePhaseScalesRegular);
+        }
+        return usedTimePhaseScales;
+    }
+
+    public void TryUpdatePhase(int newAvancement, int avancementTotal)
+    {
+        if (gm.eventManager.IsEndGameStarted())
+            return;
+        int nbPhases = GetNbPhases();
+        float sizePhase = (float)avancementTotal / (float)nbPhases;
+        int newPhaseIndice = Mathf.Min(Mathf.FloorToInt(newAvancement / sizePhase), nbPhases - 1);
+        TryGoToPhase(newPhaseIndice);
+    }
+
+    public void TryGoToPhase(int newPhaseIndice) {
+        if (newPhaseIndice > currentPhaseIndice/* && newAvancement < avancementTotal*/) {
+            GoToPhase(newPhaseIndice);
+        }
+    }
+
+    public void TryGoToEndPhase() {
+        TryGoToPhase(GetNbPhases() - 1);
+    }
+
 }

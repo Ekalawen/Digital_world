@@ -185,6 +185,8 @@ public class EventManager : MonoBehaviour {
 
         gm.player.FreezeLocalisation();
 
+        gm.timerManager.TryGoToEndPhase();
+
         // On lance la création des blocks de la mort !
         if (endGameType == EndEventType.DEATH_CUBES || endGameType == EndEventType.HALF_DEATH_CUBES) {
             coroutineDeathCubesCreation = StartCoroutine(FillMapWithDeathCubes(finalLight.transform.position));
