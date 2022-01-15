@@ -168,8 +168,7 @@ public class SoundManager : MonoBehaviour
     {
         PlayClipsOnSource(sounds.tracerHitClips, pos, parent);
     }
-    public AudioSource PlayTracerBlastLoadClip(Vector3 pos, float duration)
-    {
+    public AudioSource PlayTracerBlastLoadClip(Vector3 pos, float duration) {
         return PlayClipsOnSource(sounds.tracerBlastLoadClips, pos, null, duration);
     }
     public void PlayDecreasingBallFirstBoss(Vector3 pos, float duration)
@@ -317,13 +316,11 @@ public class SoundManager : MonoBehaviour
         }
 
         // On ajuste le pitch pour matcher avec la duration si celle-ci est spécifiée ! :)
-        if (duration == -1)
-        {
+        if (duration == -1) {
             source.pitch = source.pitch / Mathf.Abs(source.pitch); // Normalize à 1
-        }
-        else
-        {
-            float accel = clip.length / duration;
+        } else {
+            float scaledDuration = duration / Time.timeScale;
+            float accel = clip.length / scaledDuration;
             source.pitch *= accel;
         }
         source.pitch *= acceleration;
