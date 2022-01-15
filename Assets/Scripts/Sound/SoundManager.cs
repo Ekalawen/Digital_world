@@ -379,7 +379,7 @@ public class SoundManager : MonoBehaviour
 
         int newVariationIndice = Mathf.Min(variationIndice, levelMusic.clips.Count);
         int currentVariationIndice = levelMusic.clips.IndexOf(levelMusicSource.clip);
-        if (newVariationIndice == currentVariationIndice) {
+        if (newVariationIndice == currentVariationIndice || gm.eventManager.IsEndGameStarted()) {
             return;
         }
         float avancementTime = levelMusicSource.time;

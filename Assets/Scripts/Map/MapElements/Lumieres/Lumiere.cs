@@ -93,16 +93,20 @@ public class Lumiere : MonoBehaviour {
 
         NotifySoundManager();
 
-        ScreenShakeOnLumiereCapture();
+        NotifyTimerManager();
 
-        gm.timerManager.AddTime(timeBonus);
+        ScreenShakeOnLumiereCapture();
     }
 
     protected void NotifySoundManager() {
         gm.soundManager.PlayGetLumiereClip(transform.position);
+    }
+
+    protected void NotifyTimerManager() {
         int nbDataTotal = gm.map.GetMaxNbLumieres();
-        int nbDataRestantes = gm.map.GetLumieres().Count;
+        int nbDataRestantes = gm.map.GetNbLumieresAndLumieresAlmostFinalesRestantes();
         gm.timerManager.TryUpdatePhase(nbDataTotal - nbDataRestantes, nbDataTotal);
+        gm.timerManager.AddTime(timeBonus);
     }
 
     public void DeactivateTrails() {

@@ -24,6 +24,10 @@ public class EventManagerWhileTrue : EventManager {
         }
     }
 
+    protected override void TryGoToEndPhaseOfTimerManager() {
+        // Nothing
+    }
+
     public override void OnLumiereCaptured(Lumiere.LumiereType type) {
         if (type == Lumiere.LumiereType.NORMAL) {
             int nbLumieres = map.GetLumieres().Count;
@@ -32,10 +36,12 @@ public class EventManagerWhileTrue : EventManager {
                 StartEndGame();
                 isFirstStartEndGame = false;
             }
-        } else if (type == Lumiere.LumiereType.ALMOST_FINAL) {
+        } else if (type == Lumiere.LumiereType.ALMOST_FINAL)
+        {
             nbLumieresFinalesAttrappees++;
             StartCoroutine(CResetEndEvent());
-        } else if (type == Lumiere.LumiereType.FINAL) {
+        }
+        else if (type == Lumiere.LumiereType.FINAL) {
             nbLumieresFinalesAttrappees++;
             WinGame();
         }
@@ -77,5 +83,13 @@ public class EventManagerWhileTrue : EventManager {
         } else {
             return base.CreateFinalLight(Lumiere.LumiereType.ALMOST_FINAL);
         }
+    }
+
+    public override int GetNbLumieresAlmostFinales() {
+        return nbLumieresFinales - 1;
+    }
+
+    public override int GetNbLumieresAlmostFinalesRestantes() {
+        return Mathf.Max(0, GetNbLumieresAlmostFinales() - nbLumieresFinalesAttrappees);
     }
 }

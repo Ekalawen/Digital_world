@@ -185,14 +185,21 @@ public class EventManager : MonoBehaviour {
 
         gm.player.FreezeLocalisation();
 
-        gm.timerManager.TryGoToEndPhase();
+        TryGoToEndPhaseOfTimerManager();
 
         // On lance la création des blocks de la mort !
-        if (endGameType == EndEventType.DEATH_CUBES || endGameType == EndEventType.HALF_DEATH_CUBES) {
+        if (endGameType == EndEventType.DEATH_CUBES || endGameType == EndEventType.HALF_DEATH_CUBES)
+        {
             coroutineDeathCubesCreation = StartCoroutine(FillMapWithDeathCubes(finalLight.transform.position));
-        } else if (endGameType == EndEventType.CUBES_DESTRUCTIONS || endGameType == EndEventType.CUBES_DESTRUCTIONS_PARTIAL) {
+        }
+        else if (endGameType == EndEventType.CUBES_DESTRUCTIONS || endGameType == EndEventType.CUBES_DESTRUCTIONS_PARTIAL)
+        {
             coroutineCubesDestructions = StartCoroutine(DestroyAllCubesProgressively(finalLight.transform.position));
         }
+    }
+
+    protected virtual void TryGoToEndPhaseOfTimerManager() {
+        gm.timerManager.TryGoToEndPhase();
     }
 
     protected virtual Lumiere CreateFinalLight(Lumiere.LumiereType lumiereType = Lumiere.LumiereType.FINAL) {
@@ -824,5 +831,13 @@ public class EventManager : MonoBehaviour {
     
     public bool NoMoreElementsToBeDoneBeforeEndGame() {
         return elementsToBeDoneBeforeStartEndGame.Count == 0;
+    }
+
+    public virtual int GetNbLumieresAlmostFinales() {
+        return 0;
+    }
+
+    public virtual int GetNbLumieresAlmostFinalesRestantes() {
+        return 0;
     }
 }

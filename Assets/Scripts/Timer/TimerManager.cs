@@ -292,7 +292,7 @@ public class TimerManager : MonoBehaviour {
         return realGameTimer;
     }
 
-    public void GoToPhase(int phaseIndice) {
+    protected void GoToPhase(int phaseIndice) {
         currentPhaseIndice = phaseIndice;
         Time.timeScale = GetTimePhaseScales()[phaseIndice];
         if (gm.IsInitializationOver()) {
@@ -311,10 +311,7 @@ public class TimerManager : MonoBehaviour {
         return usedTimePhaseScales;
     }
 
-    public void TryUpdatePhase(int newAvancement, int avancementTotal)
-    {
-        if (gm.eventManager.IsEndGameStarted())
-            return;
+    public void TryUpdatePhase(int newAvancement, int avancementTotal) {
         int nbPhases = GetNbPhases();
         float sizePhase = (float)avancementTotal / (float)nbPhases;
         int newPhaseIndice = Mathf.Min(Mathf.FloorToInt(newAvancement / sizePhase), nbPhases - 1);

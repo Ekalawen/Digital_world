@@ -87,7 +87,7 @@ public class MapManager : MonoBehaviour {
         mapElements = new List<MapElement>();
         dynamicCubeEnsembles = new List<DynamicCubeEnsemble>();
         lumieres = new List<Lumiere>();
-        maxNbLumieres = nbLumieresInitial;
+        maxNbLumieres = nbLumieresInitial + gm.eventManager.GetNbLumieresAlmostFinales();
         boundingBox = new BoundingBox(Vector3Int.zero, new Vector3Int(tailleMap.x, tailleMap.y, tailleMap.z));
         cubesRegular = new Cube[tailleMap.x + 1, tailleMap.y + 1, tailleMap.z + 1];
         for (int i = 0; i <= tailleMap.x; i++)
@@ -473,7 +473,7 @@ public class MapManager : MonoBehaviour {
 
     public Lumiere RegisterAlreadyExistingLumiere(Lumiere lumiere) {
         lumieres.Add(lumiere);
-        maxNbLumieres = Mathf.Max(lumieres.Count, nbLumieresInitial);
+        maxNbLumieres = Mathf.Max(lumieres.Count, nbLumieresInitial) + gm.eventManager.GetNbLumieresAlmostFinales();
         gm.historyManager.AddLumiereHistory(lumiere, lumiere.rewardLumierePrefab);
         return lumiere;
     }
@@ -1431,6 +1431,14 @@ public class MapManager : MonoBehaviour {
 
     public List<Lumiere> GetLumieres() {
         return lumieres;
+    }
+
+    public int GetNbLumieresAndLumieresAlmostFinalesRestantes() {
+        if (!gm.eventManager.IsEndGameStarted()) {
+            return GetLumieres().Count + gm.eventManager.GetNbLumieresAlmostFinales();
+        } else {
+            return gm.eventManager.GetNbLumieresAlmostFinalesRestantes();
+        }
     }
 
     public List<Lumiere> GetLumieresFinalesAndAlmostFinales() {
