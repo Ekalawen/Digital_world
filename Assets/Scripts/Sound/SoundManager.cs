@@ -377,7 +377,7 @@ public class SoundManager : MonoBehaviour
     public void PlayNewLevelMusicVariation(int variationIndice) {
         PlayTransitionSoundClip();
 
-        int newVariationIndice = Mathf.Min(variationIndice, levelMusic.clips.Count);
+        int newVariationIndice = Mathf.Min(variationIndice, levelMusic.clips.Count - 1);
         int currentVariationIndice = levelMusic.clips.IndexOf(levelMusicSource.clip);
         if (newVariationIndice == currentVariationIndice || gm.eventManager.IsEndGameStarted()) {
             return;
