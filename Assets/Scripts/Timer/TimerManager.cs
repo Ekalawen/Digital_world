@@ -295,7 +295,6 @@ public class TimerManager : MonoBehaviour {
     protected void GoToPhase(int phaseIndice) {
         currentPhaseIndice = phaseIndice;
         Time.timeScale = GetTimePhaseScales()[phaseIndice];
-        Debug.Log($"TimeScale = {Time.timeScale}");
         if (gm.IsInitializationOver()) {
             gm.soundManager.PlayNewLevelMusicVariation(phaseIndice);
         }
@@ -316,7 +315,7 @@ public class TimerManager : MonoBehaviour {
         int nbPhases = GetNbPhases();
         float sizePhase = (float)avancementTotal / (float)nbPhases;
         int newPhaseIndice = Mathf.Min(Mathf.FloorToInt(newAvancement / sizePhase), nbPhases - 1);
-        Debug.Log($"newAvancement = {newAvancement} avancementTotal = {avancementTotal} currentPhaseIndice = {currentPhaseIndice} newPhaseIndice = {newPhaseIndice}");
+        //Debug.Log($"newAvancement = {newAvancement} avancementTotal = {avancementTotal} currentPhaseIndice = {currentPhaseIndice} newPhaseIndice = {newPhaseIndice}");
         TryGoToPhase(newPhaseIndice);
     }
 

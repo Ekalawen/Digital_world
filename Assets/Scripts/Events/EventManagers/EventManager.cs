@@ -464,9 +464,9 @@ public class EventManager : MonoBehaviour {
     public void QuitOrReloadInSeconds() {
         QuitType quitType = ShouldQuitOrReload();
         if(quitType == QuitType.QUIT) {
-            QuitSceneInseconds(quitSceneTime);
+            QuitSceneInseconds(quitSceneTime * Time.timeScale);
         } else {
-            ReloadSceneInSeconds(reloadSceneTime);
+            ReloadSceneInSeconds(reloadSceneTime * Time.timeScale);
         }
     }
 
