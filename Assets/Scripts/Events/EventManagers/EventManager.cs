@@ -454,6 +454,8 @@ public class EventManager : MonoBehaviour {
 
         gm.timerManager.StopScreenShake();
 
+        gm.postProcessManager.StopTimeScaleVfx();
+
         QuitOrReloadInSeconds();
     }
 
@@ -552,6 +554,8 @@ public class EventManager : MonoBehaviour {
         gm.soundManager.PlayVictoryClip();
 
         gm.timerManager.StopScreenShake();
+
+        gm.postProcessManager.StopTimeScaleVfx();
 
         RememberGameResult(success: true);
 

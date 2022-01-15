@@ -68,6 +68,10 @@ public class PostProcessManager : MonoBehaviour {
     public float jumpVFXOffsetPercentageOfScreenPrimary = 0.9f;
     public float jumpVFXOffsetPercentageOfScreenSecondary = 0.9f;
 
+    [Header("TimeScale VFX")]
+    public List<float> timeScaleVFXspawnRateByPhases = new List<float>() { 0, 40, 80 };
+    public Vector2 timeScaleVFXOffsetPercentageOfScreen = new Vector2(0.75f, 0.75f);
+
     [Header("Wall Post Process")]
     public AnimationCurve wallPostProcessCurve;
     public float timeToMaxWallPostProcess = 0.4f;
@@ -95,6 +99,7 @@ public class PostProcessManager : MonoBehaviour {
     protected VisualEffect shiftVfx;
     protected VisualEffect jumpVfx;
     protected VisualEffect wallVfx;
+    protected VisualEffect timeScaleVfx;
     protected InputManager inputManager;
     protected float lastFrameWallVfxAngle = 0;
     protected float lastFrameWallVfxHorizontalAngle = 0;
@@ -113,10 +118,12 @@ public class PostProcessManager : MonoBehaviour {
         shiftVfx = gm.player.shiftVfx;
         jumpVfx = gm.player.jumpVfx;
         wallVfx = gm.player.wallVfx;
+        timeScaleVfx = gm.player.timeScaleVfx;
         inputManager = InputManager.Instance;
         InitScreenSizeAtVfxDistance();
         InitShiftVfx();
         InitJumpVfx();
+        InitTimeScaleVfx();
         wallLensDistorsionFluctuator = new Fluctuator(this, GetLensDistorsionIntensity, SetLensDistorsionIntensity, wallPostProcessCurve);
         wallChromaticAberrationFluctuator = new Fluctuator(this, GetChromaticAberrationIntensity, SetChromaticAberrationIntensity, wallPostProcessCurve);
         soulRobberWeightFluctuator = new Fluctuator(this, GetSoulRobberWeight, SetSoulRobberWeight);
@@ -435,6 +442,26 @@ public class PostProcessManager : MonoBehaviour {
         jumpVfx.SetFloat("ScreenOffsetPrimary", screenSizeAtVfxDistance.x * jumpVFXOffsetPercentageOfScreenPrimary);
         jumpVfx.SetFloat("ScreenOffsetSecondary", screenSizeAtVfxDistance.x * jumpVFXOffsetPercentageOfScreenSecondary);
         jumpVfx.SetFloat("ScreenOffsetSecondaryVertical", - screenSizeAtVfxDistance.y);
+    }
+
+    protected void InitTimeScaleVfx() {
+        float horizontalOffset = screenSizeAtVfxDistance.x * timeScaleVFXOffsetPercentageOfScreen.x;
+        float contraction = screenSizeAtVfxDistance.y * timeScaleVFXOffsetPercentageOfScreen.y / horizontalOffset;
+        timeScaleVfx.SetFloat("ElipseContraction", contraction);
+        timeScaleVfx.SetFloat("RadialOffset", horizontalOffset);
+        SetTimeScaleVfxPhase(0);
+    }
+
+    public void SetTimeScaleVfxPhase(int phaseIndice) {
+        float spawnRate = timeScaleVFXspawnRateByPhases[phaseIndice];
+        timeScaleVfx.SetFloat("PrimarySpawnRate", spawnRate);
+        if (spawnRate > 0) {
+            timeScaleVfx.SendEvent("Start");
+        }
+    }
+
+    public void StopTimeScaleVfx() {
+        timeScaleVfx.SendEvent("Stop");
     }
 
     public void StartJumpEffect() {

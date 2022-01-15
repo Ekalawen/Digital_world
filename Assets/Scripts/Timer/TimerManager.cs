@@ -297,6 +297,7 @@ public class TimerManager : MonoBehaviour {
         Time.timeScale = GetTimePhaseScales()[phaseIndice];
         if (gm.IsInitializationOver()) {
             gm.soundManager.PlayNewLevelMusicVariation(phaseIndice);
+            gm.postProcessManager.SetTimeScaleVfxPhase(phaseIndice);
         }
     }
 

@@ -38,6 +38,7 @@ public class Player : Character {
     public VisualEffect shiftVfx;
     public VisualEffect wallVfx;
     public VisualEffect jumpVfx;
+    public VisualEffect timeScaleVfx;
     public CameraShaker cameraShaker;
     public Camera noBlackAndWhiteCamera;
     public GeoSphere geoSphere;
