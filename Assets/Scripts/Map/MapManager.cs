@@ -87,7 +87,6 @@ public class MapManager : MonoBehaviour {
         mapElements = new List<MapElement>();
         dynamicCubeEnsembles = new List<DynamicCubeEnsemble>();
         lumieres = new List<Lumiere>();
-        maxNbLumieres = nbLumieresInitial + gm.eventManager.GetNbLumieresAlmostFinales();
         boundingBox = new BoundingBox(Vector3Int.zero, new Vector3Int(tailleMap.x, tailleMap.y, tailleMap.z));
         cubesRegular = new Cube[tailleMap.x + 1, tailleMap.y + 1, tailleMap.z + 1];
         for (int i = 0; i <= tailleMap.x; i++)
@@ -106,6 +105,7 @@ public class MapManager : MonoBehaviour {
 
         // On rajoute les fonctions customs des components !
         ApplyAllMapFunctionsComponents();
+        maxNbLumieres = nbLumieresInitial + gm.eventManager.GetNbLumieresAlmostFinales();
 
         // Puis on affiche les proportions de cubes régular et non-regular pour vérifier que tout va bien :)
         PrintCubesNumbers();
