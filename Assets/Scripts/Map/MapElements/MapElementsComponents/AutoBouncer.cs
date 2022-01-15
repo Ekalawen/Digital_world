@@ -52,7 +52,7 @@ public class AutoBouncer : MonoBehaviour {
     }
 
     private void SetScale(float avancement) {
-        transform.localScale = Vector3.one * MathCurves.Linear(1, bounceSize, avancement);
+        transform.localScale = Vector3.one * MathCurves.Linear(startScale.x, startScale.x * bounceSize, avancement);
         //transform.localScale = startScale * (1 + (bounceSize - 1) * avancement);
     }
 
