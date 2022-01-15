@@ -19,6 +19,11 @@ MonoBehaviour:
   areaSphereCenter: {x: 0, y: 0, z: 0}
   areaSphereRadius: 0
   cubeEnsembleType: 0
+  howToGetCubesInCubeEnsemble: 0
+  cubeEnsembleQuantity: 1
+  cubeEnsembleProportion: 0.5
+  nbCubesVoisins: 4
+  modifiers: []
 --- !u!114 &2426427078743108081
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -57,7 +62,7 @@ MonoBehaviour:
   dontCollideWithOthersCaves: 0
   distanceWithOthersCaves: 0
   preserveMapBordure: 1
-  nbLumieresPerCaves: 1
+  nbLumieresPerCaves: 0
   offsetLumieresFromCenter: 0
   caveOffsetFromSidesXZandY: {x: 1, y: 1}
   useCaveFixedOffset: 0

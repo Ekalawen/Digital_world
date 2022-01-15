@@ -295,6 +295,7 @@ public class TimerManager : MonoBehaviour {
     protected void GoToPhase(int phaseIndice) {
         currentPhaseIndice = phaseIndice;
         Time.timeScale = GetTimePhaseScales()[phaseIndice];
+        Debug.Log($"TimeScale = {Time.timeScale}");
         if (gm.IsInitializationOver()) {
             gm.soundManager.PlayNewLevelMusicVariation(phaseIndice);
         }
