@@ -13,11 +13,11 @@ public class TimerManager : MonoBehaviour {
     public bool isInfinitTime = false;
     public float initialTime = 40.0f;
 
-    [Header("Phases Time Scale")]
+    [Header("Phases")]
+    public bool shouldAutomaticallySwapPhases = true;
     public List<float> timePhaseScalesIR = new List<float>() { 1.0f, 1.15f, 1.3225f };
     public List<float> timePhaseScalesRegular = new List<float>() { 1.0f, 1.1f, 1.21f };
     public bool useCustomTimePhaseScales = false;
-    [ConditionalHide("useCustomTimePhaseScales")]
     public List<float> timePhaseScalesCustom = new List<float>() { 1.0f, 1.0f, 1.0f };
 
     [Header("ScreenShake on remaining time")]
@@ -268,7 +268,6 @@ public class TimerManager : MonoBehaviour {
     }
 
     public bool HasGameStarted() {
-        //return gameTimer.GetElapsedTime() >= 0.1f; // Peut-être qu'il faudra revenir à cette version si jamais on a certains bugs d'initialization ^^
         return gm.IsInitializationOver();
     }
 
@@ -321,7 +320,7 @@ public class TimerManager : MonoBehaviour {
     }
 
     public void TryGoToPhase(int newPhaseIndice) {
-        if (newPhaseIndice > currentPhaseIndice/* && newAvancement < avancementTotal*/) {
+        if (newPhaseIndice > currentPhaseIndice && shouldAutomaticallySwapPhases) {
             GoToPhase(newPhaseIndice);
         }
     }
