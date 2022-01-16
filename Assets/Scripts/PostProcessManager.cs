@@ -110,6 +110,7 @@ public class PostProcessManager : MonoBehaviour {
     protected Fluctuator soulRobberWeightFluctuator;
     protected Fluctuator soulRobberBlackFluctuator;
     protected bool timeScaleVfxIsRunning = false;
+    protected bool timeScaleEffectActivation;
 
     public void Initialize() {
         gm = GameManager.Instance;
@@ -446,6 +447,7 @@ public class PostProcessManager : MonoBehaviour {
     }
 
     protected void InitTimeScaleVfx() {
+        timeScaleEffectActivation = PrefsManager.GetBool(PrefsManager.TIME_SCALE_EFFECT_KEY, MenuOptions.defaultTimeScaleEffectActivation);
         float horizontalOffset = screenSizeAtVfxDistance.x * timeScaleVFXOffsetPercentageOfScreen.x;
         float contraction = screenSizeAtVfxDistance.y * timeScaleVFXOffsetPercentageOfScreen.y / horizontalOffset;
         timeScaleVfx.SetFloat("ElipseContraction", contraction);
@@ -455,6 +457,9 @@ public class PostProcessManager : MonoBehaviour {
 
     public void SetTimeScaleVfxPhase(int phaseIndice) {
         float spawnRate = timeScaleVFXspawnRateByPhases[phaseIndice];
+        if(!timeScaleEffectActivation) {
+            spawnRate = 0;
+        }
         timeScaleVfx.SetFloat("PrimarySpawnRate", spawnRate);
         if (spawnRate > 0 && !timeScaleVfxIsRunning) {
             timeScaleVfx.SendEvent("Start");
@@ -477,11 +482,17 @@ public class PostProcessManager : MonoBehaviour {
     }
 
     public void UpdateTimeScaleVfx(bool hasMove) {
-        Debug.Log($"hasMove = {hasMove}");
         if(!hasMove) {
             SetTimeScaleVfxPhase(0);
         } else {
             SetTimeScaleVfxPhase(gm.timerManager.GetCurrentPhaseIndice());
+        }
+    }
+
+    public void SetTimeScaleEffectActivation(bool state) {
+        if(timeScaleEffectActivation != state) {
+            UpdateTimeScaleVfx(gm.player.HasMoveSinceLastFrame());
+            timeScaleEffectActivation = state;
         }
     }
 }

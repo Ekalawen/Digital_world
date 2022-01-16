@@ -25,6 +25,7 @@ public class MenuOptions : MonoBehaviour {
     public static bool defaultWallDistorsionActivation = true;
     public static bool defaultWallWarpActivation = true;
     public static bool defaultShiftWarpActivation = true;
+    public static bool defaultTimeScaleEffectActivation = true;
     public static bool defaultConseilOnStart = false;
     public static bool defaultFpsCounter = false;
     public static bool defaultDisplayConsole = false;
@@ -52,6 +53,7 @@ public class MenuOptions : MonoBehaviour {
     public Toggle toggleWallWarp;
     public Toggle toggleWallDistorsion;
     public Toggle toggleShiftWarp;
+    public Toggle toggleTimeScaleEffect;
     public Toggle conseilOnStartToggle;
     public Toggle fpsCounterToggle;
     public Toggle displayConsoleToggle;
@@ -93,6 +95,7 @@ public class MenuOptions : MonoBehaviour {
         OnWallWarpActivationPress(PrefsManager.GetBool(PrefsManager.WALL_WARP_KEY, defaultWallWarpActivation));
         OnWallDistorsionActivationPress(PrefsManager.GetBool(PrefsManager.WALL_DISTORSION_KEY, defaultWallDistorsionActivation));
         OnShiftWarpActivationPress(PrefsManager.GetBool(PrefsManager.SHIFT_WARP_KEY, defaultShiftWarpActivation));
+        OnTimeScaleEffectActivationPress(PrefsManager.GetBool(PrefsManager.TIME_SCALE_EFFECT_KEY, defaultTimeScaleEffectActivation));
         OnConseilOnStartPress(PrefsManager.GetBool(PrefsManager.ADVICE_ON_START_KEY, defaultConseilOnStart));
         OnFpsCounterPress(PrefsManager.GetBool(PrefsManager.FPS_COUNTER_KEY, defaultFpsCounter));
         OnDisplayConsolePress(PrefsManager.GetBool(PrefsManager.DISPLAY_CONSOLE_KEY, defaultDisplayConsole));
@@ -216,6 +219,14 @@ public class MenuOptions : MonoBehaviour {
         toggleShiftWarp.isOn = active;
         if(isInGame && !active) {
             gm.postProcessManager.StopShiftVfx();
+        }
+    }
+
+    public void OnTimeScaleEffectActivationPress(bool active) {
+        PrefsManager.SetBool(PrefsManager.TIME_SCALE_EFFECT_KEY, active);
+        toggleTimeScaleEffect.isOn = active;
+        if(isInGame) {
+            gm.postProcessManager.SetTimeScaleEffectActivation(active);
         }
     }
 
