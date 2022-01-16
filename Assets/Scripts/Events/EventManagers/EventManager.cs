@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 public class EventManager : MonoBehaviour {
@@ -104,6 +105,8 @@ public class EventManager : MonoBehaviour {
     protected bool shouldAutomaticallyQuitScene = true;
     protected Coroutine automaticallyQuitSceneCoroutine = null;
     protected List<object> elementsToBeDoneBeforeStartEndGame = new List<object>();
+    [HideInInspector]
+    public UnityEvent onStartEndGame;
 
     public virtual void Initialize() {
         name = "EventManager";
@@ -111,6 +114,7 @@ public class EventManager : MonoBehaviour {
         map = gm.map;
         randomEventsFolder = new GameObject("RandomEvents").transform;
         singleEventsFolder = new GameObject("SingleEvents").transform;
+        onStartEndGame = new UnityEvent();
         PreFillPoolIfDeathCubesEndEvent();
 
         AddRandomEventsAndStartSingleEvents();
@@ -196,6 +200,8 @@ public class EventManager : MonoBehaviour {
         {
             coroutineCubesDestructions = StartCoroutine(DestroyAllCubesProgressively(finalLight.transform.position));
         }
+
+        onStartEndGame.Invoke();
     }
 
     protected virtual void TryGoToEndPhaseOfTimerManager() {
@@ -309,7 +315,9 @@ public class EventManager : MonoBehaviour {
                 cube = map.AddCube(pos, Cube.CubeType.DEATH);
             else {
                 cube = map.AddCube(pos, Cube.CubeType.NORMAL);
-                cube.RegisterCubeToColorSources();
+                if (cube != null) {
+                    cube.RegisterCubeToColorSources();
+                }
             }
         }
         return cube;

@@ -43,6 +43,8 @@ public class LumiereFurtiveTrapApplier : MonoBehaviour {
         float firstWaitingTime = 2.0f;
         gm.timerManager.isInfinitTime = false;
         gm.timerManager.SetTime(gm.timerManager.initialTime, showVolatileText: false);
+        gm.timerManager.CustomGoToPhase(1);
+        gm.eventManager.onStartEndGame.AddListener(gm.timerManager.CustomGoToEndPhase);
         GiveBackDash();
         gm.console.AjouterMessageImportant(gm.console.strings.analyzeTrapWait, Console.TypeText.BLUE_TEXT, firstWaitingTime);
         yield return new WaitForSeconds(firstWaitingTime);

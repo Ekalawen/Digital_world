@@ -20,6 +20,10 @@ public class SoulRobberTutorial : SoulRobber {
     public GameObject soulRobbersRenfortsEventPrefab;
     public GameObject tracerRenfortEventPrefab;
 
+    [Header("PhaseSwap")]
+    public GameObject goToPhase1EventPrefab;
+    public GameObject goToPhase2EventPrefab;
+
     [Header("Time")]
 
     protected bool hasAlreadyStartEscaping = false;
@@ -33,6 +37,8 @@ public class SoulRobberTutorial : SoulRobber {
             StartTimer();
             gm.eventManager.StartSingleEvent(matrixRegenerationEventPrefab);
             gm.eventManager.StartSingleEvent(firstMatrixRegenerationEventPrefab);
+            gm.eventManager.StartSingleEvent(goToPhase1EventPrefab);
+            gm.eventManager.StartSingleEvent(goToPhase2EventPrefab);
         }
     }
 

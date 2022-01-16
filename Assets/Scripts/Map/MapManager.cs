@@ -473,7 +473,9 @@ public class MapManager : MonoBehaviour {
 
     public Lumiere RegisterAlreadyExistingLumiere(Lumiere lumiere) {
         lumieres.Add(lumiere);
-        maxNbLumieres = Mathf.Max(lumieres.Count, nbLumieresInitial) + gm.eventManager.GetNbLumieresAlmostFinales();
+        if (gm.ennemiManager.GetInitialNbDataSondeTriggers() <= 0) { // C'est pas hyper hyper sexy ça x)
+            maxNbLumieres = Mathf.Max(lumieres.Count, nbLumieresInitial) + gm.eventManager.GetNbLumieresAlmostFinales();
+        }
         gm.historyManager.AddLumiereHistory(lumiere, lumiere.rewardLumierePrefab);
         return lumiere;
     }

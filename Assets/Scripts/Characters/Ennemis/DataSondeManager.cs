@@ -12,11 +12,13 @@ public class DataSondeManager : MonoBehaviour {
 
     protected GameManager gm;
     protected List<OrbTrigger> dataSondesTriggers;
+    protected int initialNbDataSondesTriggers;
 
     public void Initialize() {
         gm = GameManager.Instance;
         List<RegisterToDataSoundManager> toRegister = FindObjectsOfType<RegisterToDataSoundManager>().ToList();
         dataSondesTriggers = toRegister.Select(r => r.orbTrigger).ToList();
+        initialNbDataSondesTriggers = dataSondesTriggers.Count;
         ActivateOnlyOneDataSonde();
     }
 
@@ -57,5 +59,9 @@ public class DataSondeManager : MonoBehaviour {
 
     public List<OrbTrigger> GetDataSondesTriggers() {
         return dataSondesTriggers;
+    }
+
+    public int GetInitialDataSondesTriggersNb() {
+        return initialNbDataSondesTriggers;
     }
 }

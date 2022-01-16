@@ -161,6 +161,10 @@ public class EnnemiManager : MonoBehaviour {
         return dataSoundManager == null ? 0 : dataSoundManager.GetDataSondesTriggers().Count;
     }
 
+    public int GetInitialNbDataSondeTriggers() {
+        return dataSoundManager == null ? 0 : dataSoundManager.GetInitialDataSondesTriggersNb();
+    }
+
     public List<T> GetEnnemisOfType<T>() where T : Ennemi {
         List<T> ennemisOfType = new List<T>();
         foreach(Ennemi ennemi in ennemis) {

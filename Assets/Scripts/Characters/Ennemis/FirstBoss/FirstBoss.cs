@@ -283,6 +283,7 @@ public class FirstBoss : Sonde {
         UpdateConsoleMessage(phaseIndice: 3);
         AddTimeItem(3);
         yield return StartCoroutine(CExplosionAttackNormale());
+        gm.timerManager.CustomGoToPhase(1);
         yield return StartCoroutine(CDropGenerators(generatorPhase3Prefabs));
         SetSatellitesActivation(true);
         UpdateAttackRate(phaseIndice: 3);
@@ -302,6 +303,7 @@ public class FirstBoss : Sonde {
         UpdateAttackRate(phaseIndice: 4);
         UpdateRandomEvent(phaseIndice: 4);
         SwapControllers();
+        gm.timerManager.CustomGoToPhase(2);
     }
 
     protected void SwapControllers() {

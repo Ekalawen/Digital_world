@@ -103,8 +103,9 @@ public class Lumiere : MonoBehaviour {
     }
 
     protected void NotifyTimerManager() {
-        int nbDataTotal = gm.map.GetMaxNbLumieres();
-        int nbDataRestantes = gm.map.GetNbLumieresAndLumieresAlmostFinalesRestantes();
+        int nbDataTotal = gm.map.GetMaxNbLumieres() + gm.ennemiManager.GetInitialNbDataSondeTriggers();
+        int nbDataRestantes = gm.map.GetNbLumieresAndLumieresAlmostFinalesRestantes() + gm.ennemiManager.GetNbDataSondeTriggers();
+        Debug.Log($"initialDataSondes = {gm.ennemiManager.GetInitialNbDataSondeTriggers()} currentDataSondes = {gm.ennemiManager.GetNbDataSondeTriggers()} dataTotal = {nbDataTotal} dataRestantes = {nbDataRestantes}");
         gm.timerManager.TryUpdatePhase(nbDataTotal - nbDataRestantes, nbDataTotal);
         gm.timerManager.AddTime(timeBonus);
     }

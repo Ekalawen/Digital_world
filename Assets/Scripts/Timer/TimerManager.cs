@@ -329,6 +329,16 @@ public class TimerManager : MonoBehaviour {
         TryGoToPhase(GetNbPhases() - 1);
     }
 
+    public void CustomGoToPhase(int newPhaseIndice) {
+        if (newPhaseIndice > currentPhaseIndice) {
+            GoToPhase(newPhaseIndice);
+        }
+    }
+
+    public void CustomGoToEndPhase() {
+        CustomGoToPhase(GetNbPhases() - 1);
+    }
+
     public int GetCurrentPhaseIndice() {
         return currentPhaseIndice;
     }
