@@ -9,6 +9,7 @@ public class AllumeLumiere : MonoBehaviour {
     public enum AllumageType { PROCHE, ELOIGNE }
 
     public AllumageType type = AllumageType.PROCHE;
+    public float tresholdLightExplosion = 2.0f;
     public bool shouldThrowLightningToNewLumiere = true;
     [ConditionalHide("shouldThrowLightningToNewLumiere")]
     public GameObject lightningPrefab;
@@ -35,7 +36,9 @@ public class AllumeLumiere : MonoBehaviour {
         Lumiere chosenOne = GetChosenOne(position);
         LumiereSwitchable chosenOneSwitchable = (LumiereSwitchable)chosenOne;
         chosenOneSwitchable.SetState(LumiereSwitchable.LumiereSwitchableState.ON);
-        chosenOneSwitchable.TriggerLightExplosion();
+        if (Vector3.Distance(chosenOneSwitchable.transform.position, gm.player.transform.position) >= tresholdLightExplosion) {
+            chosenOneSwitchable.TriggerLightExplosion();
+        }
 
         Lightning lightning = ThrowLightning(position, chosenOneSwitchable.transform.position);
         AddGeoPoint(chosenOneSwitchable.transform.position, lightning);
