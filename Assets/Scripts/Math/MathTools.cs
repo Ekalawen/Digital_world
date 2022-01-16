@@ -381,4 +381,9 @@ public static class MathTools
         res.SetKeys(colorKeys, alphaKeys);
         return res;
     }
+
+    internal static bool AlmostEqual(Vector3 position, object lastPosition)
+    {
+        throw new NotImplementedException();
+    }
 }

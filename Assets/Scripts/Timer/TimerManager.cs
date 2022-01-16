@@ -330,4 +330,7 @@ public class TimerManager : MonoBehaviour {
         TryGoToPhase(GetNbPhases() - 1);
     }
 
+    public int GetCurrentPhaseIndice() {
+        return currentPhaseIndice;
+    }
 }

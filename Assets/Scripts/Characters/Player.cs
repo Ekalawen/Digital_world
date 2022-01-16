@@ -55,6 +55,7 @@ public class Player : Character {
 	protected EtatPersonnage etatAvant; // l'état du personnage avant la frame
     protected bool isGrounded;
     protected Vector3 fixedMove = Vector3.zero;
+    protected Vector3 lastPosition;
 
     protected Timer sautTimer;
 	protected Vector3 pointDebutSaut; // le point de départ du saut !
@@ -95,7 +96,6 @@ public class Player : Character {
     protected GameManager gm;
     protected InputManager inputManager;
 
-
     public override void Start() {
         base.Start();
     }
@@ -123,6 +123,7 @@ public class Player : Character {
         cameraShakerInitialHeight = cameraShaker.RestPositionOffset.y;
 
         transform.position = position;
+        lastPosition = transform.position;
 
         // On regarde là où on nous dit de regarder
         Vector3 up = gm.gravityManager.Up();
@@ -242,9 +243,11 @@ public class Player : Character {
 
         // Update a post process effects
         UpdatePostWallEffect();
+        UpdatePostTimeScaleEffect();
     }
 
     protected void ApplyFinalMouvement() {
+        lastPosition = transform.position;
         controller.Move(fixedMove);
         fixedMove = Vector3.zero;
     }
@@ -263,6 +266,13 @@ public class Player : Character {
 
         // Add post process effect when we are gripped to the wall
         gm.postProcessManager.UpdateWallEffect(etatAvant);
+    }
+
+    protected void UpdatePostTimeScaleEffect() {
+        if (gm.IsPaused() || gm.eventManager.IsGameOver())
+            return;
+
+        gm.postProcessManager.UpdateTimeScaleVfx(HasMoveSinceLastFrame());
     }
 
     // Utilisé pour gérer la caméra
@@ -1064,5 +1074,14 @@ public class Player : Character {
         } else {
             SetInvincible();
         }
+    }
+
+    public bool HasMoveSinceLastFrame() {
+        List<TimedVector3> history = gm.historyManager.GetPlayerHistory().positions;
+        if(history.Count == 0) {
+            return false;
+        }
+        bool hasMove = !MathTools.AlmostEqual(history.Last().position, transform.position);
+        return hasMove;
     }
 }

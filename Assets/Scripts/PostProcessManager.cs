@@ -109,6 +109,7 @@ public class PostProcessManager : MonoBehaviour {
     protected Fluctuator wallChromaticAberrationFluctuator;
     protected Fluctuator soulRobberWeightFluctuator;
     protected Fluctuator soulRobberBlackFluctuator;
+    protected bool timeScaleVfxIsRunning = false;
 
     public void Initialize() {
         gm = GameManager.Instance;
@@ -455,18 +456,32 @@ public class PostProcessManager : MonoBehaviour {
     public void SetTimeScaleVfxPhase(int phaseIndice) {
         float spawnRate = timeScaleVFXspawnRateByPhases[phaseIndice];
         timeScaleVfx.SetFloat("PrimarySpawnRate", spawnRate);
-        if (spawnRate > 0) {
+        if (spawnRate > 0 && !timeScaleVfxIsRunning) {
             timeScaleVfx.SendEvent("Start");
+            timeScaleVfxIsRunning = true;
+        }
+        if(spawnRate == 0) {
+            timeScaleVfxIsRunning = false;
         }
     }
 
     public void StopTimeScaleVfx() {
         timeScaleVfx.SendEvent("Stop");
+        timeScaleVfxIsRunning = false;
     }
 
     public void StartJumpEffect() {
         if (PrefsManager.GetBool(PrefsManager.JUMP_WARP_KEY, MenuOptions.defaultJumpWarpActivation)) {
             jumpVfx.SendEvent("JumpStart");
+        }
+    }
+
+    public void UpdateTimeScaleVfx(bool hasMove) {
+        Debug.Log($"hasMove = {hasMove}");
+        if(!hasMove) {
+            SetTimeScaleVfxPhase(0);
+        } else {
+            SetTimeScaleVfxPhase(gm.timerManager.GetCurrentPhaseIndice());
         }
     }
 }
