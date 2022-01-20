@@ -23,6 +23,7 @@ public class CheatCodeManager : MonoBehaviour {
     public List<KeyCode> minus1000Code;
     public List<KeyCode> plus10DataCount;
     public List<KeyCode> plus100DataCount;
+    public List<KeyCode> swapPhasesCode;
     public List<KeyCode> startEndEventCode;
     public List<KeyCode> gravityZeroCode;
     public List<KeyCode> cooldownsZeroCode;
@@ -126,6 +127,12 @@ public class CheatCodeManager : MonoBehaviour {
             plus100DataCountCheatCode.action = gm.eventManager.Add100DataCount;
             cheatCodes.Add(plus100DataCountCheatCode);
         }
+
+        // Swap Phases
+        CheatCode swapPhasesCheatCode = new CheatCode();
+        swapPhasesCheatCode.code = swapPhasesCode;
+        swapPhasesCheatCode.action = gm.timerManager.ForceSwapPhases;
+        cheatCodes.Add(swapPhasesCheatCode);
 
         // Start End Event
         CheatCode startEndEventCheatCode = new CheatCode();

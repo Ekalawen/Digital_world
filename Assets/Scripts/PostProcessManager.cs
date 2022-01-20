@@ -111,6 +111,7 @@ public class PostProcessManager : MonoBehaviour {
     protected Fluctuator soulRobberBlackFluctuator;
     protected bool timeScaleVfxIsRunning = false;
     protected bool timeScaleEffectActivation;
+    protected bool alwaysHasMoveForTimeScaleVfx = false;
 
     public void Initialize() {
         gm = GameManager.Instance;
@@ -481,8 +482,12 @@ public class PostProcessManager : MonoBehaviour {
         }
     }
 
+    public void SetAlwaysHasMoveForTimeScaleVfx() {
+        alwaysHasMoveForTimeScaleVfx = true;
+    }
+
     public void UpdateTimeScaleVfx(bool hasMove) {
-        if(!hasMove) {
+        if(!alwaysHasMoveForTimeScaleVfx && !hasMove) {
             SetTimeScaleVfxPhase(0);
         } else {
             SetTimeScaleVfxPhase(gm.timerManager.GetCurrentPhaseIndice());

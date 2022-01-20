@@ -342,4 +342,10 @@ public class TimerManager : MonoBehaviour {
     public int GetCurrentPhaseIndice() {
         return currentPhaseIndice;
     }
+
+    public void ForceSwapPhases() {
+        int nextPhaseIndice = (currentPhaseIndice + 1) % GetNbPhases();
+        GoToPhase(nextPhaseIndice);
+        gm.postProcessManager.SetAlwaysHasMoveForTimeScaleVfx();
+    }
 }
