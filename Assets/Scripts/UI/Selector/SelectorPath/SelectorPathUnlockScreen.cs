@@ -74,7 +74,8 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         FillTraceHint();
         HighlightDataHackees(shouldHighlightDataHackees);
         GenerateNextAndPreviousButtons();
-        InitializeCyclicDHButtons();
+        //InitializeCyclicDHButtons();
+        HideCyclicDHButtons();
         cadenaAnimationFluctuator = new Fluctuator(this, GetCadenasRotation, SetCadenasRotation);
     }
 
@@ -104,9 +105,13 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
             InitOneCyclicDHButton(cyclicDHRightButton, interestingPaths[(currentIndice + 1) % interestingPaths.Count]);
             InitOneCyclicDHButton(cyclicDHLeftButton, interestingPaths[(currentIndice - 1 + interestingPaths.Count) % interestingPaths.Count]);
         } else {
-            cyclicDHLeftButton.gameObject.SetActive(false);
-            cyclicDHRightButton.gameObject.SetActive(false);
+            HideCyclicDHButtons();
         }
+    }
+
+    protected void HideCyclicDHButtons() {
+        cyclicDHLeftButton.gameObject.SetActive(false);
+        cyclicDHRightButton.gameObject.SetActive(false);
     }
 
     protected void InitOneCyclicDHButton(Button cyclicDHButton, SelectorPath path) {
