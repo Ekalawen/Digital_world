@@ -55,7 +55,8 @@ public class UIHelper {
     public static string LINUX_CONSOLE = "#591146"; // Originallement c'est #2F0925FF
     public static string EMA_COLOR = "#00ff00ff";
     public static string MORGENSOUL_COLOR = "#00ffffff";
-    public static string V1P3R_COLOR = "#6033ffff";
+    //public static string V1P3R_COLOR = "#6033ffff"; // Old
+    public static string V1P3R_COLOR = "#6559ffff";
     public static string CONTRASTE01_COLOR = "#8fe1ffff";
     public static string WOLFV0RE_COLOR = "#201cffff";
     public static string PAINBRINGER_COLOR = "#c90000ff";
