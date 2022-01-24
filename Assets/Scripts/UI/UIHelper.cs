@@ -75,6 +75,7 @@ public class UIHelper {
             new Tuple<string, string>("#BLACK", BLACK),
             new Tuple<string, string>("#ORANGE", ORANGE),
             new Tuple<string, string>("#YELLOW", YELLOW),
+            new Tuple<string, string>("#MAGENTA", MAGENTA),
             new Tuple<string, string>("#VIOLET", VIOLET),
             new Tuple<string, string>("#GREY", GREY),
             new Tuple<string, string>("#PURE_RED", PURE_RED),
