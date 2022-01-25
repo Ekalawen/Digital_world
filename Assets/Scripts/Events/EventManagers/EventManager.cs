@@ -25,6 +25,7 @@ public class EventManager : MonoBehaviour {
         FIRST_BOSS_BLAST,
         SOUL_ROBBER_ASPIRATION,
     };
+
     public enum EndEventType {
         DEATH_CUBES,
         HALF_DEATH_CUBES,
@@ -155,6 +156,30 @@ public class EventManager : MonoBehaviour {
         randomEvents.Remove(randomEvent);
         if(randomEvent != null)
             Destroy(randomEvent.gameObject);
+    }
+
+    public void RemoveEventOfIndice(int eventIndice) {
+        RemoveEventsOfIndices(new List<int>() { eventIndice });
+    }
+
+    public void RemoveEventsOfIndices(List<int> eventIndices) {
+        List<RandomEvent> randomEvents = GetRandomEvents().Select(e => e).ToList();
+        List<int> indices = eventIndices.FindAll(i => i < randomEvents.Count);
+        List<RandomEvent> eventsToRemove = indices.Select(i => randomEvents[i]).ToList();
+        foreach(RandomEvent eventToRemove in eventsToRemove) {
+            RemoveEvent(eventToRemove);
+        }
+    }
+
+    public void RemoveAllEvents() {
+        List<RandomEvent> eventsToRemove = GetRandomEvents().Select(e => e).ToList();
+        foreach(RandomEvent eventToRemove in eventsToRemove) {
+            RemoveEvent(eventToRemove);
+        }
+    }
+
+    public List<RandomEvent> GetRandomEvents() {
+        return randomEvents;
     }
 
     public virtual void OnLumiereCaptured(Lumiere.LumiereType type) {

@@ -46,6 +46,8 @@ public class JumpEvent : RandomEvent {
     protected IEnumerator JumpEffect() {
         InstantiateLightningBox();
         yield return new WaitForSeconds(delaisAvantJump - dureeFadeInFlash);
+        // There is now collisions when making 2 jumps succeed each other because of the previsualisation of 2s whish is > than the dureeFadeIn + dureeFadeOut !
+        // But if they are 2 RandomJumpsEvent at the same time, it could collide and break intensity ! :)
         gm.colorManager.MakeLightIntensityBounce(intensityFlash, dureeFadeInFlash, dureeFadeOutFlash);
         yield return new WaitForSeconds(dureeFadeInFlash);
         if(gm.player.GetEtat() != Player.EtatPersonnage.EN_CHUTE
