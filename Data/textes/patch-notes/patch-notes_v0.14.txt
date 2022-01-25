@@ -1,0 +1,76 @@
+@everyone Bienvenu dans cette mise à jour importante du jeu, la version 0.14 !
+
+#Patch-notes Version 0.14 :
+
+Les points importants pour résumer : 
+1) Refonte complète des musiques du jeu par un professionnel !
+2) Une toute nouvelle narration digne de Matrix (au moins) !
+3) La refonte de l'Interface Utilisateur du sélecteur de niveau pour que tout soit encore plus simple !
+4) Une toute nouvelle mécanique pour accélérer la vitesse du jeu dans tous les niveaux !
+5) Et quelques autres fonctionnalités !
+Allez, voyons tout cela plus en détail !
+
+# Musiques
+Toutes les musiques du jeu ont été refaites !
+- 3 nouvelles musiques de jeu. Chacune avec 3 variations. Une variation simple, une variation modérée, et une version élaborée.
+- 1 nouvelle musique de fin de niveau.
+- 1 nouvelle musique de Boss.
+- 1 nouvelle musique pour le menu.
+
+# Gameplay
+Ajout du principe de Phase pour tous les niveaux !
+Lorsque vous arriverez au tiers ou au deux tiers de chaque niveau ... vous changerez de Phase !
+Il y a 3 Phases à chaque niveau.
+Lorsque vous changerez de Phase, voici tout ce qui se passera :
+1) La musique s'adaptera et accélérera !
+2) Le temps accélérera de 15% !
+	2.1) Ce qui veut dire que vous irez 15% plus vite !
+	2.2) Et que vos pouvoirs se rechargeront 15% plus vite également !
+	2.2) Mais vos ennemis également iront 15% plus vite !
+	2.2) Tout comme l'écoulement du temps qu'il vous reste pour finir le niveau !
+	2.2) Bref. *Tout* ira 15% plus vite !
+3) Un joli effet visuel accompagnera ce nouvel afflux d'adrénaline !
+
+# Nouveau Niveau : Data Prolifération
+Un nouveau niveau qui crée des Datas en continue a été rajouté !
+
+# Narration
+- 32 nouveaux textes ont été écrits. Un pour chaque niveau jusqu'au niveau du FirstBoss (renommé en Le Switchkeeper) ! TRENTE-DEUX !!! C'était long. Mais ils sont bien, alors ça valait le coup ! :)
+- Les titres de tous les niveaux ont été revus pour être plus immersifs et coller à la narration. Le tout sans perdre la description du gameplay de chaque niveau.
+- Le personnage principal a été renommé Ema Etlover. Par rapport à Cilliannelle Crittefigiée avant. Il faut avouer que c'est quand même mieux ! (Et plus court !)
+
+# Equilibrage
+- La difficulté du niveau Learn Jump (renommé en Jump de Bienvenue) a été augmentée pour représenter qu'il s'agit d'un niveau de Boss. La fréquence des Jumps augmente maintenant à chaque Phase de 4.5s à 3.0s puis à 1.5s.
+- La difficulté du niveau Learn Pathfinding (renommé en Pathfinder vers l'exile) a été augmentée pour représenter qu'il s'agit d'un niveau de Boss. La fréquence de tous les événements a été augmentée de 20%. La durée du niveau a été réduite de 100s à 80s. Une Sonde a été rajouté pour passer de 3 à 4.
+- Les passages les plus compliqués du tutoriel ont été facilités pour s'assurer que personne ... n'abandonne le tutoriel.
+- La durée des Destructions des Matrices à la fin des niveaux a été ajustée en fonction de l'Arc narratif dans lequel ce niveau se trouve. Avant toutes les durées valaient 25s. Maintenant elles valent 25s pour l'Arc 1, 25s pour l'Arc 2, 20s pour l'Arc 3, 17.5s pour l'Arc 4 et 15s pour l'Arc 5.
+- Un Palier caché à 100 Blocs a été ajouté au niveau The Fall (renommé en Descente de Turing). Lisez les Archives() du niveau Swap Highway (renommé en Sas Alternatifs) pour comprendre comment y accéder.
+- La vitesse du Boss en Phase 4 du niveau FirstBoss (renommé en Le Switchkeeper) a été réduite de 17% pour compenser l'accélération des Phases.
+- Les Datas Switchables ne font plus d'explosion lumineuse si vous êtes assez proche. Pour éviter de vous surcharger d'information.
+- Le Bloc vous demandant de vous accrocher à 3 cubes de hauteur dans les 3 premiers Infinite Runners est maintenant plus intuitif.
+- Certains cubes du Bloc vous demandant de faire un Back Jump dans le niveau Dash Training (renommé en Dash : Intégration) ont été supprimés pour éviter qu'il soit trop facile de le contourner.
+
+# UI
+## Arbre des niveaux
+- Tous les menus de l'Arbre des niveaux se déroulent maintenant dans un panneau vertical sur la droite de l'écran. Permettant de toujours avoir l'Arbre des niveaux en vue à gauche.
+- Ajout de transitions douces et continues de la caméra lorsque vous passez d'un niveau à l'autre dans l'Arbre des niveaux.
+- Maintenant si quelque chose attire votre oeil, c'est qu'il est important. (Cliquez dessus !) L'importance visuelle de tous les éléments de l'UI ont été adaptés dans ce but.
+	- Le bouton Jouer() a été énormément grossi pour que vous ayez vraiment envie de cliquer dessus !
+	- Les titres des niveaux sont plus gros et plus visibles et s'adaptent à la distance de la caméra. Parce que c'est important de savoir où vous êtes.
+	- Réduction de la pollution visuelle des éléments visuels.
+	- Réduction de la saturation de la skybox de l'Arbre des niveaux pour mettre en évidence les éléments interactifs.
+	- Les Path() lumineux d'un niveau à l'autre sont moins dynamiques et attirent moins le regard.
+	- Les cubes des niveaux tournent moins vite. Toujours dans le même but.
+	- Le bouton Return() a été diminué et mis en bas à gauche. Restez dans le jeu. Pour toujours. Voilà. Merci.
+	- Réduction de l'importance des boutons Doc() et Archives().
+	- La taille verticale de l'Arbre des niveaux a été réduite de 15%.
+- Changement des raccourcis clavier pour bouger dans l'Arbre des niveaux pour être plus intuitifs.
+
+## UI en général
+- L'écran de chargement a été revu avec la même philosophie que l'Arbre des niveaux.
+- Fix d'un bug où l'image de fond du Menu principal ne prenait parfois pas tout l'écran.
+- Fix d'un bug où les niveaux et cadenas mis en évidence dans l'Arbre des niveaux pouvaient grossir à l'infini.
+
+# Datas Hackées()
+- Une nouvelle Data Hackée() colorée a été rajoutée entre le niveau Full Swap Polycubes (renommé en Souvenirs Alternatifs) et le niveau La Danse du Firewall (renommé en La Danse du Firewall :o).
+
