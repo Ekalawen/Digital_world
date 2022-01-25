@@ -38,6 +38,8 @@ MonoBehaviour:
   nbEnnemisToAdd: 1
   useRandomStartPosition: 1
   customStartPosition: {x: 0, y: 0, z: 0}
+  shouldUseCustomWaitingTime: 0
+  customWaitingTime: 1
 --- !u!114 &5581899263313263607
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -76,6 +78,8 @@ MonoBehaviour:
   nbEnnemisToAdd: 2
   useRandomStartPosition: 1
   customStartPosition: {x: 0, y: 0, z: 0}
+  shouldUseCustomWaitingTime: 0
+  customWaitingTime: 1
 --- !u!1001 &2004253452606249415
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -130,6 +134,11 @@ PrefabInstance:
     - target: {fileID: 4331339866297836, guid: 4ad9af6763aeb45c8962c1fadb06c2eb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114622475871070300, guid: 4ad9af6763aeb45c8962c1fadb06c2eb,
+        type: 3}
+      propertyPath: endGameDuration
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 114622475871070300, guid: 4ad9af6763aeb45c8962c1fadb06c2eb,
         type: 3}
