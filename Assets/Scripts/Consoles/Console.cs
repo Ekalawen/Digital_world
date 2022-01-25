@@ -899,7 +899,7 @@ public class Console : MonoBehaviour {
             List<PathfinderData> currentDatas = pathfinderDatas.FindAll(d => d.stringIndice == i && d.haveFoundSomething);
             if(currentDatas.Count > 0) {
                 LocalizedString ls = strings.summarizePathfinder[i];
-                int nbFound = currentDatas.Select(d => d.positions.Count).Sum();
+                int nbFound = currentDatas.Select(d => d.nbPositionsTheoretical).Sum();
                 ls.Arguments = new object[] { nbFound };
                 AjouterMessageImportant(ls, TypeText.BLUE_TEXT, 2.0f);
             }

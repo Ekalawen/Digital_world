@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class PathfinderData {
     public List<Vector3> positions;
+    public int nbPositionsTheoretical;
     public bool shouldDetect;
     public GameObject orbesPathPrefab;
     public float orbeStartOffset;
@@ -15,8 +16,9 @@ public class PathfinderData {
     public int stringIndice;
     public bool haveFoundSomething;
 
-    public PathfinderData(List<Vector3> positions, bool shouldDetect, GameObject orbesPathPrefab, Color pathColor, GeoData geoData, int distanceMinToEnd, int stringIndice) {
+    public PathfinderData(List<Vector3> positions, int nbPositionsTheoretical, bool shouldDetect, GameObject orbesPathPrefab, Color pathColor, GeoData geoData, int distanceMinToEnd, int stringIndice) {
         this.positions = positions;
+        this.nbPositionsTheoretical = nbPositionsTheoretical;
         this.shouldDetect = shouldDetect;
         this.orbesPathPrefab = orbesPathPrefab;
         this.pathColor = pathColor;
@@ -136,6 +138,7 @@ public class PouvoirPathfinder : IPouvoir {
         List<PathfinderData> pathfinderDatas = new List<PathfinderData>();
         pathfinderDatas.Add(new PathfinderData(
             positions: GetAllLumieresPositions(),
+            nbPositionsTheoretical: gm.map.GetLumieres().Count,
             shouldDetect: detectLumieres,
             orbesPathPrefab: lumiereOrbesPathPrefab,
             pathColor: lumierePathColor,
@@ -147,8 +150,10 @@ public class PouvoirPathfinder : IPouvoir {
         foreach(KeyValuePair<Item.Type, List<Item>> pair in itemsByType) {
             GeoData newItemGeoData = new GeoData(itemGeoData);
             newItemGeoData.color = pair.Value[0].geoSphereColor;
+            List<Vector3> positions = pair.Value.Select(i => i.transform.position).ToList();
             pathfinderDatas.Add(new PathfinderData(
-                positions: pair.Value.Select(i => i.transform.position).ToList(),
+                positions: positions,
+                nbPositionsTheoretical: positions.Count,
                 shouldDetect: detectItems,
                 orbesPathPrefab: itemsOrbesPathPrefab,
                 pathColor: pair.Value[0].pathColor,
@@ -159,6 +164,7 @@ public class PouvoirPathfinder : IPouvoir {
         }
         pathfinderDatas.Add(new PathfinderData(
             positions: GetAllOrbTriggersPositions(),
+            nbPositionsTheoretical: GetAllOrbTriggersPositions().Count,
             shouldDetect: detectOrbTriggers,
             orbesPathPrefab: orbTriggerPathPrefab,
             pathColor: orbTriggerPathColor,
