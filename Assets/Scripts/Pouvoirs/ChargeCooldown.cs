@@ -37,10 +37,19 @@ public class ChargeCooldown : Cooldown {
         cooldownTimer.Reset();
         yield return new WaitForSeconds(cooldown);
         chargingCoroutine = null;
-        currentCharges++;
-        pouvoir.GetPouvoirDisplay().FlashPouvoirAvailable();
         if(currentCharges < maxCharges) {
-            StartCharging();
+            currentCharges++;
+            pouvoir.GetPouvoirDisplay().FlashPouvoirAvailable();
+            if(currentCharges < maxCharges) {
+                StartCharging();
+            }
+        }
+    }
+
+    public void GainCharge() {
+        if(currentCharges < maxCharges) {
+            currentCharges++;
+            pouvoir.GetPouvoirDisplay().FlashPouvoirAvailable();
         }
     }
 

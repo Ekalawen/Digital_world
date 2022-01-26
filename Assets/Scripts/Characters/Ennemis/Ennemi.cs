@@ -71,17 +71,16 @@ public abstract class Ennemi : Character {
         }
     }
 
-    public void HitByPlayer() {
+    public void HitByPlayerPowerDash(PouvoirPowerDash powerDash) {
         // Sound
         // Ralentir le temps
-        ApplyHitByPlayerPoussee();
+        ApplyHitByPlayerPowerDashPoussee(powerDash);
     }
 
-    protected void ApplyHitByPlayerPoussee() {
+    protected void ApplyHitByPlayerPowerDashPoussee(PouvoirPowerDash powerDash) {
         if (currentPousseeByPlayer != null && !currentPousseeByPlayer.IsOver()) {
             currentPousseeByPlayer.Stop();
         }
-        PouvoirPowerDash powerDash = player.GetPouvoirLeftClick() as PouvoirPowerDash;
         Vector3 direction = (transform.position - player.transform.position).normalized;
         if(powerDash.GetCurrentPoussee() != null) {
             direction = (direction + powerDash.GetCurrentPoussee().direction.normalized).normalized;

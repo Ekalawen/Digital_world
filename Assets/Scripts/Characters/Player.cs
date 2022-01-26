@@ -713,12 +713,16 @@ public class Player : Character {
     protected void HitEnnemiIfPowerDashing(ControllerColliderHit hit) {
         Sonde sonde = hit.gameObject.GetComponent<Sonde>();
         if (sonde != null) {
-            sonde.HitByPlayer();
+            GetPowerDash().HitEnnemy(sonde);
         }
         TracerBlast tracer = hit.gameObject.GetComponent<TracerBlast>();
         if (tracer != null) {
-            tracer.HitByPlayer();
+            GetPowerDash().HitEnnemy(tracer);
         }
+    }
+
+    public PouvoirPowerDash GetPowerDash() {
+        return GetPouvoirLeftClick() as PouvoirPowerDash;
     }
 
     protected bool IsOnInternalSideOfMur(Vector3 pointOfMur, Vector3 murNormal) {
