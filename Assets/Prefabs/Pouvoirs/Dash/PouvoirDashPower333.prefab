@@ -1,0 +1,149 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4163231161296423190
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4163231161296423184}
+  - component: {fileID: 3180988593393699577}
+  - component: {fileID: 1828283517873384555}
+  m_Layer: 0
+  m_Name: PouvoirDashPower333
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4163231161296423184
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4163231161296423190}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3180988593393699577
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4163231161296423190}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 079704687ac04c142a1ea91894bb1c35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nom:
+    m_TableReference:
+      m_TableCollectionName: GUID:bdcfcf5557c4ec14ea653537ddc22373
+    m_TableEntryReference:
+      m_KeyId: 131543375776292864
+      m_Key: 
+    m_FallbackState: 0
+  description:
+    m_TableReference:
+      m_TableCollectionName: GUID:bdcfcf5557c4ec14ea653537ddc22373
+    m_TableEntryReference:
+      m_KeyId: 131543400908562432
+      m_Key: 
+    m_FallbackState: 0
+  sprite: {fileID: 21300000, guid: 8321a310c1bb0a2478763c1de1b24b09, type: 3}
+  pouvoirType: 0
+  timerMalus: 0
+  timerMalusTimeProportional: 0
+  timerMalusTimeProportion: 0.33333334
+  activationAudioClips:
+    relativeVolume: 1
+    spatialBlend: 0
+    bReverse: 0
+    bIsMusic: 0
+    bLoop: 0
+    clips:
+    - {fileID: 8300000, guid: cf021a4f86a9d914d8d565647e196479, type: 3}
+  distance: 3
+  duree: 0.15
+  removeGravityTresholdAngle: 15
+  dureePowerDahsing: 0.3
+  dureePoussee: 0.5
+  distancePoussee: 10
+  speedMultiplierStun:
+    speedAdded: -1
+    duration: 3
+    inDuration: 0
+    outDuration: 1
+    inCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    outCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    affectHeight: 0
+--- !u!114 &1828283517873384555
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4163231161296423190}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e62c882dcfb81a84da8465b26794783b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cooldown: 3
+  maxCharges: 3
+  dontStartFull: 0
+  startCharges: 0

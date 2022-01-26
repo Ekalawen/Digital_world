@@ -21,6 +21,7 @@ public abstract class Ennemi : Character {
 	protected Player player;
     protected Timer timerHit;
     protected Timer timerHitDamages;
+    protected Poussee currentPousseeByPlayer = null;
 
     public override void Start () {
         base.Start();
@@ -68,6 +69,26 @@ public abstract class Ennemi : Character {
             PlayHitSound();
             ShakeScreen();
         }
+    }
+
+    public void HitByPlayer() {
+        // Sound
+        // Ralentir le temps
+        ApplyHitByPlayerPoussee();
+    }
+
+    protected void ApplyHitByPlayerPoussee() {
+        if (currentPousseeByPlayer != null && !currentPousseeByPlayer.IsOver()) {
+            currentPousseeByPlayer.Stop();
+        }
+        PouvoirPowerDash powerDash = player.GetPouvoirLeftClick() as PouvoirPowerDash;
+        Vector3 direction = (transform.position - player.transform.position).normalized;
+        if(powerDash.GetCurrentPoussee() != null) {
+            direction = (direction + powerDash.GetCurrentPoussee().direction.normalized).normalized;
+        }
+        currentPousseeByPlayer = new Poussee(direction, powerDash.dureePoussee, powerDash.distancePoussee);
+        AddPoussee(currentPousseeByPlayer);
+        speedMultiplierController.AddMultiplier(new SpeedMultiplier(powerDash.speedMultiplierStun));
     }
 
     protected void TriggerHitEffect() {

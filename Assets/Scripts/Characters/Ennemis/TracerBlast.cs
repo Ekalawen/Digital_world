@@ -68,16 +68,20 @@ public class TracerBlast : Ennemi {
     }
 
     protected void TestForPlayerCollision() {
-        if(MathTools.OBBSphere(transform.position, transform.localScale / 2.0f, transform.rotation, player.transform.position, player.GetSizeRadius() + 0.05f)) {
-            if(!isCancelled) {
-                if(tracerController != null && IsPlayerComingFromTop()) {
+        if (CollideWithPlayer()) {
+            if (!isCancelled) {
+                if (tracerController != null && IsPlayerComingFromTop()) {
                     tracerController.TryCancelAttack();
-                } else if (timerContactHit.IsOver()) {
+                } else if (timerContactHit.IsOver() && !player.IsPowerDashing()) {
                     HitPlayerCustom(EventManager.DeathReason.TRACER_HIT, timeMalusOnHit);
                     timerContactHit.Reset();
                 }
             }
         }
+    }
+
+    protected bool CollideWithPlayer() {
+        return MathTools.OBBSphere(transform.position, transform.localScale / 2.0f, transform.rotation, player.transform.position, player.GetSizeRadius() + 0.05f);
     }
 
     protected void HitPlayerCustom(EventManager.DeathReason deathReason, float timeMalus) {

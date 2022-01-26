@@ -54,7 +54,9 @@ public class Sonde : Ennemi {
     // Only works if the Sonde is moving !
 	void OnControllerColliderHit(ControllerColliderHit hit) {
 		if (hit.collider.name == "Joueur") {
-            HitPlayer();
+            if (!player.IsPowerDashing()) {
+                HitPlayer();
+            }
 		}
 	}
 

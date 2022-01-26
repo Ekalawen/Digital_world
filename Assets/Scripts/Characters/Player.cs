@@ -17,7 +17,7 @@ public class Player : Character {
 
     [Header("Deplacements")]
 	public float vitesseDeplacement; // la vitesse de déplacement horizontale
-	public float hauteurCulminanteSaut; // la hauteur culminante du saut
+    public float hauteurCulminanteSaut; // la hauteur culminante du saut
     public float dureeAscensionSaut;
     public float dureeHorizontalSaut;
 	public float dureeMur; // le temps que l'on peut rester accroché au mur
@@ -81,6 +81,7 @@ public class Player : Character {
     protected bool isGravityEffectRemoved = false;
     protected Timer gravityEffectRemovedForTimer = null;
     protected Coroutine gravityEffectRemovedForCoroutine = null;
+    protected Timer isPowerDashingTimer = null;
     protected float cameraShakerInitialHeight;
 
     protected IPouvoir pouvoirA; // Le pouvoir de la touche A (souvent la détection)
@@ -679,26 +680,44 @@ public class Player : Character {
     {
         //// Si on a touché un cube spécial, on fait une action !
         Cube cube = hit.gameObject.GetComponent<Cube>();
-        if (cube != null && DoubleCheckInteractWithCube(cube)) {
+        if (cube != null && DoubleCheckInteractWithCube(cube))
+        {
             cube.InteractWithPlayer();
         }
 
         // On regarde si le personnage s'accroche à un mur !
         // Pour ça il doit être dans les airs !
         // Et il ne doit PAS être en train d'appuyer sur SHIFT
-        if (CanGrip(cube)) {
+        if (CanGrip(cube))
+        {
             // Si on vient d'un mur, on vérifie que la normale du mur précédent est suffisamment différente de la normale actuelle !
             Vector3 wallNormal = GetWallNormalFromHit(hit);
-            if (CanGripToWall(wallNormal)) {
+            if (CanGripToWall(wallNormal))
+            {
                 // Si la normale est au moins un peu à l'horizontale !
                 Vector3 up = gm.gravityManager.Up();
                 Vector3 nProject = Vector3.ProjectOnPlane(wallNormal, up);
-                if (nProject != Vector3.zero && Mathf.Abs(Vector3.Angle(wallNormal, nProject)) < slideLimit) {
-                    if (!IsOnInternalSideOfMur(hit.point, wallNormal)) {
+                if (nProject != Vector3.zero && Mathf.Abs(Vector3.Angle(wallNormal, nProject)) < slideLimit)
+                {
+                    if (!IsOnInternalSideOfMur(hit.point, wallNormal))
+                    {
                         GripOn(hit, wallNormal);
                     }
                 }
             }
+        }
+
+        HitEnnemiIfPowerDashing(hit);
+    }
+
+    protected void HitEnnemiIfPowerDashing(ControllerColliderHit hit) {
+        Sonde sonde = hit.gameObject.GetComponent<Sonde>();
+        if (sonde != null) {
+            sonde.HitByPlayer();
+        }
+        TracerBlast tracer = hit.gameObject.GetComponent<TracerBlast>();
+        if (tracer != null) {
+            tracer.HitByPlayer();
         }
     }
 
@@ -1083,5 +1102,13 @@ public class Player : Character {
         }
         bool hasMove = !MathTools.AlmostEqual(history.Last().position, transform.position);
         return hasMove;
+    }
+
+    public void SetPowerDashingFor(float duree) {
+        isPowerDashingTimer = new Timer(duree);
+    }
+
+    public bool IsPowerDashing() {
+        return isPowerDashingTimer != null && !isPowerDashingTimer.IsOver();
     }
 }

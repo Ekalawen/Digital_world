@@ -9,10 +9,12 @@ public class PouvoirDash : IPouvoir {
     public float duree = 0.15f;
     public float removeGravityTresholdAngle = 15.0f;
 
+    protected Poussee currentPoussee = null;
+
     protected override bool UsePouvoir() {
         Vector3 direction = player.camera.transform.forward;
-        Poussee poussee = new Poussee(direction, duree, distance);
-        player.AddPoussee(poussee);
+        currentPoussee = new Poussee(direction, duree, distance);
+        player.AddPoussee(currentPoussee);
         player.ResetGrip();
         RemoveGravityEffect(direction);
         gm.postProcessManager.StartDashVfx(duree);
@@ -24,5 +26,9 @@ public class PouvoirDash : IPouvoir {
         if (90 - angle <= removeGravityTresholdAngle) {
             player.RemoveGravityEffectFor(duree);
         }
+    }
+
+    public Poussee GetCurrentPoussee() {
+        return currentPoussee;
     }
 }
