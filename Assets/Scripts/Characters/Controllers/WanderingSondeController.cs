@@ -84,7 +84,8 @@ public class WanderingSondeController : SondeController {
     }
 
     private void Wander() {
-        Vector3 move = MoveToTarget(wanderingDestination);
+        float currentVitesse = vitesse * wanderingSpeedCoef;
+        Vector3 move = MoveToTarget(wanderingDestination, useCustomVitesse: true, customVitesse: currentVitesse);
 
         // Si le mouvement est trop petit ou que l'on arrive plus à bouger, c'est que l'on est arrivé
         if (timerBeforeNextDestination.IsOver()) {
