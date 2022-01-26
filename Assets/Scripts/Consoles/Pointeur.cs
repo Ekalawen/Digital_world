@@ -22,11 +22,8 @@ public class Pointeur : MonoBehaviour {
     public float auMurScale = 5;
 
     [Header("Textures")]
-    public Texture2D textureFull;
-    public Texture2D texture3Dashs;
-    public Texture2D texture2Dashs;
-    public Texture2D texture1Dashs;
-    public Texture2D texture0Dashs;
+    public Texture2D dashDefaultTexture;
+    public List<Texture2D> textureByDashCharges;
 
     protected GameManager gm;
     protected ChargeCooldown tripleDashChargeCooldown = null;
@@ -71,7 +68,7 @@ public class Pointeur : MonoBehaviour {
             tripleDashChargeCooldown = dash.GetCooldown() as ChargeCooldown;
         }
         if (dash == null || tripleDashChargeCooldown == null) {
-            SetTexture(textureFull);
+            SetTexture(dashDefaultTexture);
         }
     }
 
@@ -81,25 +78,12 @@ public class Pointeur : MonoBehaviour {
     }
 
     protected void UpdateTexture() {
-        if(tripleDashChargeCooldown != null) {
-            switch (tripleDashChargeCooldown.GetCurrentCharges()) {
-                case 0:
-                    SetTexture(texture0Dashs);
-                    break;
-                case 1:
-                    SetTexture(texture1Dashs);
-                    break;
-                case 2:
-                    SetTexture(texture2Dashs);
-                    break;
-                case 3:
-                    SetTexture(texture3Dashs);
-                    break;
-                default:
-                    SetTexture(textureFull);
-                    break;
-            }
+        if(tripleDashChargeCooldown == null) {
+            return;
         }
+        int nbCharges = Mathf.Min(tripleDashChargeCooldown.GetCurrentCharges(), textureByDashCharges.Count - 1);
+        Texture2D textureToUse = textureByDashCharges[nbCharges];
+        SetTexture(textureToUse);
     }
 
     protected Color GetFinalColorAuMur() {

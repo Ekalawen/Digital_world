@@ -53,6 +53,11 @@ public class ChargeCooldown : Cooldown {
         }
     }
 
+    public void GainChargeOverMax() {
+        currentCharges++;
+        pouvoir.GetPouvoirDisplay().FlashPouvoirAvailable();
+    }
+
     public override bool IsAvailable() {
         return currentCharges > 0;
     }

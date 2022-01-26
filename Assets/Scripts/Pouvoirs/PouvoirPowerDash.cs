@@ -34,8 +34,10 @@ public class PouvoirPowerDash : PouvoirDash {
 
     public bool HitEnnemy(Ennemi ennemi) {
         if(CanHitEnnemy(ennemi)) {
-            GainChargeIfFirstHit();
+            GainCharge();
             ennemisAlreadyHitten.Add(ennemi);
+            gm.soundManager.PlayPowerDashImpactClip();
+            // Ralentir le temps
             ennemi.HitByPlayerPowerDash(this);
             StartImpactVfx(ennemi.transform.position);
             return true;
@@ -50,9 +52,9 @@ public class PouvoirPowerDash : PouvoirDash {
         Destroy(vfx.gameObject, vfx.GetVector2("ExplosionLifetime").y);
     }
 
-    protected void GainChargeIfFirstHit() {
-        if(ennemisAlreadyHitten.Count == 0 && chargeCooldown != null) {
-            chargeCooldown.GainCharge();
+    protected void GainCharge() {
+        if(chargeCooldown != null) {
+            chargeCooldown.GainChargeOverMax();
         }
     }
 

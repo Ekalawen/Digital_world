@@ -215,6 +215,9 @@ public class SoundManager : MonoBehaviour
     public void PlayGainDash333() {
         PlayClipsOnSource(sounds.gainDash333);
     }
+    public void PlayPowerDashImpactClip() {
+        PlayClipsOnSource(sounds.powerDashImpact);
+    }
     public void PlayPouvoirAvailableClip()
     {
         PlayClipsOnSource(sounds.pouvoirAvailableClips);

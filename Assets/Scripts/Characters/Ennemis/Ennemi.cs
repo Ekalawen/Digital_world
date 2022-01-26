@@ -72,12 +72,6 @@ public abstract class Ennemi : Character {
     }
 
     public void HitByPlayerPowerDash(PouvoirPowerDash powerDash) {
-        // Sound
-        // Ralentir le temps
-        ApplyHitByPlayerPowerDashPoussee(powerDash);
-    }
-
-    protected void ApplyHitByPlayerPowerDashPoussee(PouvoirPowerDash powerDash) {
         if (currentPousseeByPlayer != null && !currentPousseeByPlayer.IsOver()) {
             currentPousseeByPlayer.Stop();
         }
