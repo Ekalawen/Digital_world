@@ -711,13 +711,15 @@ public class Player : Character {
     }
 
     protected void HitEnnemiIfPowerDashing(ControllerColliderHit hit) {
-        Sonde sonde = hit.gameObject.GetComponent<Sonde>();
-        if (sonde != null) {
-            GetPowerDash().HitEnnemy(sonde);
-        }
-        TracerBlast tracer = hit.gameObject.GetComponent<TracerBlast>();
-        if (tracer != null) {
-            GetPowerDash().HitEnnemy(tracer);
+        if (IsPowerDashing()) {
+            Sonde sonde = hit.gameObject.GetComponent<Sonde>();
+            if (sonde != null) {
+                GetPowerDash().HitEnnemy(sonde);
+            }
+            TracerBlast tracer = hit.gameObject.GetComponent<TracerBlast>();
+            if (tracer != null) {
+                GetPowerDash().HitEnnemy(tracer);
+            }
         }
     }
 
