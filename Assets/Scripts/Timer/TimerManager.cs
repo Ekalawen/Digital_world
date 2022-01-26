@@ -34,6 +34,7 @@ public class TimerManager : MonoBehaviour {
     [Header("Win at 0")]
     public bool winAt0 = false;
     public bool cantLoseTime = false;
+    public bool gainTimeInsteadOfLosingTime = false;
     public bool reverseSkyboxColors = false;
 
 
@@ -54,6 +55,7 @@ public class TimerManager : MonoBehaviour {
         soundTimeOutTimer = new Timer(1.0f);
         cameraShakeInstance = CameraShaker.Instance.StartShake(0, 0, 0);
         Assert.AreEqual(GetNbPhases(), 3);
+        Assert.IsFalse(cantLoseTime && gainTimeInsteadOfLosingTime);
         GoToPhase(0);
     }
 
@@ -205,6 +207,9 @@ public class TimerManager : MonoBehaviour {
 
         if(cantLoseTime) {
             time = Math.Max(0, time);
+        }
+        if(gainTimeInsteadOfLosingTime && time < 0) {
+            time = -time;
         }
 
         gameTimer.AddDuree(time);
