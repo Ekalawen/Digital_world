@@ -18,6 +18,7 @@ public class Player : Character {
     [Header("Deplacements")]
 	public float vitesseDeplacement; // la vitesse de déplacement horizontale
     public float hauteurCulminanteSaut; // la hauteur culminante du saut
+
     public float dureeAscensionSaut;
     public float dureeHorizontalSaut;
 	public float dureeMur; // le temps que l'on peut rester accroché au mur

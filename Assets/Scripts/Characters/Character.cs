@@ -19,7 +19,8 @@ public class Character : MonoBehaviour {
         InitSpeedMultiplierController();
     }
 
-    public void AddPoussee(Poussee poussee) {
+    public void AddPoussee(Poussee poussee, bool isNegative = false) {
+        poussee.isNegative = isNegative;
         poussees.Add(poussee);
     }
 
@@ -71,5 +72,16 @@ public class Character : MonoBehaviour {
 
     public SpeedMultiplier AddMultiplier(SpeedMultiplier speedMultiplier) {
         return speedMultiplierController.AddMultiplier(speedMultiplier);
+    }
+
+    public void RemoveAllNegativePoussees() {
+        List<Poussee> allNegativePoussees = poussees.FindAll(p => p.isNegative);
+        foreach(Poussee poussee in allNegativePoussees) {
+            RemovePoussees(poussee);
+        }
+    }
+
+    public bool RemovePoussees(Poussee poussee) {
+        return poussees.Remove(poussee);
     }
 }

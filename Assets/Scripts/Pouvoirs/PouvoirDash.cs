@@ -15,9 +15,11 @@ public class PouvoirDash : IPouvoir {
         Vector3 direction = player.camera.transform.forward;
         currentPoussee = new Poussee(direction, duree, distance);
         player.AddPoussee(currentPoussee);
+        player.RemoveAllNegativePoussees();
         player.ResetGrip();
         RemoveGravityEffect(direction);
         gm.postProcessManager.StartDashVfx(duree);
+        gm.timerManager.timeMultiplierController.RemoveAllEnnemisMultipliers();
         return true;
     }
 

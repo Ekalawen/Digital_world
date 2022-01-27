@@ -72,7 +72,7 @@ public class Sonde : Ennemi {
             pousseeCurrent.Stop();
         }
         pousseeCurrent = new PousseeFromTransformWithTreshold(transform, tempsPoussee, distancePoussee, pousseeStraightTreshold);
-        player.AddPoussee(pousseeCurrent);
+        player.AddPoussee(pousseeCurrent, isNegative: true);
         player.ResetGrip(); // Pour que le joueur puisse à nouveau s'accrocher aux murs !
     }
 

@@ -195,7 +195,7 @@ public class TracerBlast : Ennemi {
     protected override void HitPlayerSpecific() {
         Vector3 direction = player.transform.position - transform.position;
         Poussee poussee = new Poussee(direction, blastPousseeDuree, blastPousseeDistance);
-        player.AddPoussee(poussee);
+        player.AddPoussee(poussee, isNegative: true);
         player.ResetGrip();
         gm.postProcessManager.UpdateHitEffect();
     }

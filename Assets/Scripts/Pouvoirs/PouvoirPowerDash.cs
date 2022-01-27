@@ -39,7 +39,7 @@ public class PouvoirPowerDash : PouvoirDash {
             GainCharge();
             ennemisAlreadyHitten.Add(ennemi);
             gm.soundManager.PlayPowerDashImpactClip();
-            // Ralentir le temps
+            player.ResetGrip();
             ennemi.HitByPlayerPowerDash(this);
             StartImpactVfx(ennemi.transform.position);
             ApplyTimeMultiplier();

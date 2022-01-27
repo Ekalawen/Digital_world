@@ -6,6 +6,7 @@ public class Poussee {
     public Vector3 direction;
     public float duree;
     public float distance;
+    public bool isNegative = false;
 
     protected float vitesse;
     protected Timer dureeTimer;

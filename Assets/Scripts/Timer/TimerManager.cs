@@ -101,7 +101,7 @@ public class TimerManager : MonoBehaviour {
         if(currentEnnemiImpactMultiplier != null) {
             timeMultiplierController.RemoveMultiplier(currentEnnemiImpactMultiplier);
         }
-        currentEnnemiImpactMultiplier = timeMultiplierController.AddMultiplier(timeMultiplier);
+        currentEnnemiImpactMultiplier = timeMultiplierController.AddMultiplier(timeMultiplier, isEnnemiMultiplier: true);
         return currentEnnemiImpactMultiplier;
     }
 

@@ -97,7 +97,7 @@ public class TracerEmitting : Ennemi {
             if (pousseeEmiting == null) {
                 float dureeRestante = dureeEmiting - (Time.timeSinceLevelLoad - debutEmiting);
                 pousseeEmiting = Poussee.CreatePoussee(direction, dureeRestante, forceEmiting);
-                player.AddPoussee(pousseeEmiting);
+                player.AddPoussee(pousseeEmiting, isNegative: true);
             } else {
                 pousseeEmiting.Redirect(direction);
             }
