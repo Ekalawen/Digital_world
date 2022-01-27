@@ -16,9 +16,11 @@ public class PouvoirPowerDash : PouvoirDash {
     public GameObject impactVfxPrefab;
     public float coefFakeImpactPosition = 0.5f;
     public GameObject lightningPrefab;
+    public TimeMultiplier impactTimeMultiplier;
 
     protected List<Ennemi> ennemisAlreadyHitten = new List<Ennemi>();
     protected ChargeCooldown chargeCooldown;
+    protected TimeMultiplier currentTimeMultiplier = null;
 
     public override void Initialize() {
         base.Initialize();
@@ -40,6 +42,7 @@ public class PouvoirPowerDash : PouvoirDash {
             // Ralentir le temps
             ennemi.HitByPlayerPowerDash(this);
             StartImpactVfx(ennemi.transform.position);
+            ApplyTimeMultiplier();
             return true;
         }
         return false;
@@ -60,5 +63,12 @@ public class PouvoirPowerDash : PouvoirDash {
 
     public bool CanHitEnnemy(Ennemi ennemi) {
         return !ennemisAlreadyHitten.Contains(ennemi);
+    }
+
+    protected void ApplyTimeMultiplier() {
+        if(currentTimeMultiplier != null) {
+            gm.timerManager.timeMultiplierController.RemoveMultiplier(currentTimeMultiplier);
+        }
+        currentTimeMultiplier = gm.timerManager.AddTimeMultiplier(new TimeMultiplier(impactTimeMultiplier));
     }
 }

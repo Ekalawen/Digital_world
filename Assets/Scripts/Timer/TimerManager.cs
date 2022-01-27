@@ -92,8 +92,8 @@ public class TimerManager : MonoBehaviour {
         return timeMultiplierController.GetMultiplier();
     }
 
-    public void AddTimeMultiplier(TimeMultiplier timeMultiplier) {
-        timeMultiplierController.AddMultiplier(timeMultiplier);
+    public TimeMultiplier AddTimeMultiplier(TimeMultiplier timeMultiplier) {
+        return timeMultiplierController.AddMultiplier(timeMultiplier);
     }
 
     private void HideGameTimer() {
