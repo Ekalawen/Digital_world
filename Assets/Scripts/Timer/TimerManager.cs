@@ -50,6 +50,7 @@ public class TimerManager : MonoBehaviour {
     protected CameraShakeInstance cameraShakeInstance;
     protected List<float> usedTimePhaseScales;
     protected int currentPhaseIndice = 0;
+    protected TimeMultiplier currentEnnemiImpactMultiplier = null;
 
     public void Initialize() {
 		name = "TimerManager";
@@ -94,6 +95,14 @@ public class TimerManager : MonoBehaviour {
 
     public TimeMultiplier AddTimeMultiplier(TimeMultiplier timeMultiplier) {
         return timeMultiplierController.AddMultiplier(timeMultiplier);
+    }
+
+    public TimeMultiplier AddTimeMultiplierForEnnemiImpact(TimeMultiplier timeMultiplier) {
+        if(currentEnnemiImpactMultiplier != null) {
+            timeMultiplierController.RemoveMultiplier(currentEnnemiImpactMultiplier);
+        }
+        currentEnnemiImpactMultiplier = timeMultiplierController.AddMultiplier(timeMultiplier);
+        return currentEnnemiImpactMultiplier;
     }
 
     private void HideGameTimer() {

@@ -63,7 +63,7 @@ public class Sonde : Ennemi {
 
     protected override void HitPlayerSpecific() {
         ActivateSpikes(spikesTimeOnHit);
-        gm.timerManager.AddTimeMultiplier(pousseeTimeMultiplier);
+        gm.timerManager.AddTimeMultiplierForEnnemiImpact(pousseeTimeMultiplier);
     }
 
     protected override void HitContinuousPlayerSpecific() {
