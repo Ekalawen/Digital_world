@@ -18,6 +18,7 @@ public class TracerBlast : Ennemi {
     public float blastLoadDuree = 2.0f;
     public float blastPousseeDuree = 0.3f;
     public float blastPousseeDistance = 10f;
+    public TimeMultiplier blastTimeMultiplier;
 
     [Header("Load Animation")]
     public float blastLoadMaxRotation = 10f;
@@ -192,10 +193,12 @@ public class TracerBlast : Ennemi {
             HitPlayerCustom(EventManager.DeathReason.TRACER_BLAST, blastTimeMalus);
         }
     }
+
     protected override void HitPlayerSpecific() {
         Vector3 direction = player.transform.position - transform.position;
         Poussee poussee = new Poussee(direction, blastPousseeDuree, blastPousseeDistance);
         player.AddPoussee(poussee, isNegative: true);
+        gm.timerManager.AddTimeMultiplierForEnnemiImpact(blastTimeMultiplier);
         player.ResetGrip();
         gm.postProcessManager.UpdateHitEffect();
     }

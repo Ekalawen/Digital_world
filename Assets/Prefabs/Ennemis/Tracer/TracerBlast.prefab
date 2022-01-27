@@ -147,6 +147,51 @@ MonoBehaviour:
   blastLoadDuree: 4
   blastPousseeDuree: 0.3
   blastPousseeDistance: 10
+  blastTimeMultiplier:
+    type: 1
+    timeVariation: 0.03
+    totalRealDuration: 0.3
+    inDurationPercentage: 0
+    outDurationPercentage: 1
+    inCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    outCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: -2.0518475
+        outSlope: -2.0518475
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0.075191475
+      - serializedVersion: 3
+        time: 0.4170018
+        value: 0.35427436
+        inSlope: -1.1122506
+        outSlope: -1.1122506
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
   blastLoadMaxRotation: 12.5
   blastLoadRotationCurve:
     serializedVersion: 2
