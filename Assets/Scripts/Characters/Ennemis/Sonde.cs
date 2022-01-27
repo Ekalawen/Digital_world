@@ -10,6 +10,7 @@ public class Sonde : Ennemi {
 	public float tempsPoussee; // Le temps pendant lequel le personnage est poussé !
     public float spikesTimeOnHit = 0.3f;
     public float pousseeStraightTreshold = 2.0f;
+    public TimeMultiplier pousseeTimeMultiplier;
 
     [Header("Shader")]
     public float wavesSizeWaiting = 0.0f;
@@ -20,7 +21,7 @@ public class Sonde : Ennemi {
     protected Coroutine spikesSizeCoroutine = null;
     protected Material material;
 
-	public override void Start ()
+    public override void Start ()
     {
         base.Start();
         // Initialisation
@@ -62,6 +63,7 @@ public class Sonde : Ennemi {
 
     protected override void HitPlayerSpecific() {
         ActivateSpikes(spikesTimeOnHit);
+        gm.timerManager.AddTimeMultiplier(pousseeTimeMultiplier);
     }
 
     protected override void HitContinuousPlayerSpecific() {

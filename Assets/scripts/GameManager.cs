@@ -187,7 +187,7 @@ public class GameManager : MonoBehaviour {
 
     public void UnPause() {
         isPaused = false;
-        Time.timeScale = 1.0f;
+        timerManager.UpdateTimeScaleToCurrentPhase();
         MouseDisplayer.Instance.HideCursor();
         pointeur.gameObject.SetActive(true);
         Tooltip.Hide();

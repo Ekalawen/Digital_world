@@ -7,6 +7,8 @@ using UnityEngine.Assertions;
 
 public class TimerManager : MonoBehaviour {
 
+    public static float FIXED_DELTA_TIME = 1f / 120f;
+
     public AnimationCurve curve = new AnimationCurve();
 
     [Header("Time")]
@@ -37,6 +39,9 @@ public class TimerManager : MonoBehaviour {
     public bool gainTimeInsteadOfLosingTime = false;
     public bool reverseSkyboxColors = false;
 
+    [Header("Links")]
+    public TimeMultiplierController timeMultiplierController;
+
 
     protected GameManager gm;
     protected Timer soundTimeOutTimer;
@@ -48,8 +53,9 @@ public class TimerManager : MonoBehaviour {
 
     public void Initialize() {
 		name = "TimerManager";
-        Time.fixedDeltaTime = 1.0f / 120; // FixedUpdates are really small and are permorfed really fast, so we can do a lot of them ! (120 instead of 50 :))
+        Time.fixedDeltaTime = FIXED_DELTA_TIME; // FixedUpdates are really small and are permorfed really fast, so we can do a lot of them ! (120 instead of 50 :))
         gm = FindObjectOfType<GameManager>();
+        timeMultiplierController.Initialize(this);
         gameTimer = new Timer(initialTime);
         realGameTimer = new Timer();
         soundTimeOutTimer = new Timer(1.0f);
@@ -60,7 +66,7 @@ public class TimerManager : MonoBehaviour {
     }
 
     private void Update() {
-        if (gm.eventManager.IsGameOver())
+        if (gm.eventManager.IsGameOver() || gm.IsPaused())
             return;
 
         if (shouldDisplayGameTimer)
@@ -68,8 +74,26 @@ public class TimerManager : MonoBehaviour {
         else
             HideGameTimer();
 
+        UpdateTimeScaleSpeed(currentPhaseIndice);
         ScreenShakeOnRemainingTime();
         UpdateSkyboxColorBasedOnRemainingTime();
+    }
+
+    public void UpdateTimeScaleToCurrentPhase() {
+        UpdateTimeScaleSpeed(currentPhaseIndice);
+    }
+
+    protected void UpdateTimeScaleSpeed(int phaseIndice) {
+        Time.timeScale = GetTimePhaseScales()[phaseIndice] * timeMultiplierController.GetMultiplier();
+        Time.fixedDeltaTime = FIXED_DELTA_TIME * Time.timeScale;
+    }
+
+    public float GetTimeMultiplier() {
+        return timeMultiplierController.GetMultiplier();
+    }
+
+    public void AddTimeMultiplier(TimeMultiplier timeMultiplier) {
+        timeMultiplierController.AddMultiplier(timeMultiplier);
     }
 
     private void HideGameTimer() {
@@ -298,7 +322,7 @@ public class TimerManager : MonoBehaviour {
 
     protected void GoToPhase(int phaseIndice) {
         currentPhaseIndice = phaseIndice;
-        Time.timeScale = GetTimePhaseScales()[phaseIndice];
+        UpdateTimeScaleSpeed(phaseIndice);
         if (gm.IsInitializationOver()) {
             gm.soundManager.PlayNewLevelMusicVariation(phaseIndice);
             gm.postProcessManager.SetTimeScaleVfxPhase(phaseIndice);

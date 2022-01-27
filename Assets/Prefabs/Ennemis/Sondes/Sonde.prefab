@@ -128,6 +128,69 @@ MonoBehaviour:
   tempsPoussee: 0.5
   spikesTimeOnHit: 0.5
   pousseeStraightTreshold: 2
+  pousseeTimeMultiplier:
+    type: 1
+    timeVariation: 0.1
+    totalRealDuration: 0.5
+    inDurationPercentage: 0
+    outDurationPercentage: 1
+    inCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    outCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: -2.0518475
+        outSlope: -2.0518475
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0.075191475
+      - serializedVersion: 3
+        time: 0.4170018
+        value: 0.35427436
+        inSlope: -1.1122506
+        outSlope: -1.1122506
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
   wavesSizeWaiting: 0
   wavesSizeActive: 0.2
   maxSpikesSize: 1

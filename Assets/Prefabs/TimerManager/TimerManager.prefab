@@ -110,6 +110,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7155348433410753502}
   - component: {fileID: 7155348433410753501}
+  - component: {fileID: 5871969742987185694}
   m_Layer: 0
   m_Name: TimerManager
   m_TagString: Untagged
@@ -175,7 +176,22 @@ MonoBehaviour:
   timerDisplayer: {fileID: 2656039322595605922}
   winAt0: 0
   cantLoseTime: 0
+  gainTimeInsteadOfLosingTime: 0
   reverseSkyboxColors: 0
+  timeMultiplierController: {fileID: 5871969742987185694}
+--- !u!114 &5871969742987185694
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7155348433410753500}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3964c571fbbd0a4ba0a77179596dbba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeMultipliers: []
 --- !u!1001 &1766555984302488423
 PrefabInstance:
   m_ObjectHideFlags: 0
