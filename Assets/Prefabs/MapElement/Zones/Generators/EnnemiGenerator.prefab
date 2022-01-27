@@ -46,11 +46,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   frequenceActivation: 2
+  firstActivationRandom: 0
   activationRange: 2
   frequenceRecomputePositions: 5
   choseType: 1
   getCubesHelper: {fileID: 0}
   getEmptyPositionsHelper: {fileID: 1118714730375862096}
+  randomizePositions: 0
   lightningPrefab: {fileID: 8725588450735506554, guid: f19400e69a5f00143942de1fb6b2f8b4,
     type: 3}
   orbTrigger: {fileID: 9219331088902830557}
@@ -185,6 +187,11 @@ PrefabInstance:
         type: 3}
       propertyPath: additionnalRayonOnEnter
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8412133455549387673, guid: cd6b2b721ba4af24e9ee25db5af032e2,
+        type: 3}
+      propertyPath: dureeAdjustRayonOnDecrease
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8412133455549387673, guid: cd6b2b721ba4af24e9ee25db5af032e2,
         type: 3}

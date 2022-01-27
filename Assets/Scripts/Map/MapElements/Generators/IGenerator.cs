@@ -32,7 +32,7 @@ public abstract class IGenerator : MonoBehaviour {
     protected Timer generateTimer;
     protected Timer recomputeTimer;
 
-    public void Initialize() {
+    public virtual void Initialize() {
         gm = GameManager.Instance;
         map = gm.map;
         generateTimer = new Timer(frequenceActivation, setOver: true);

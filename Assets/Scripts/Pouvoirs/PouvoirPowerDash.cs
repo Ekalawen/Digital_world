@@ -21,6 +21,7 @@ public class PouvoirPowerDash : PouvoirDash {
     protected List<Ennemi> ennemisAlreadyHitten = new List<Ennemi>();
     protected ChargeCooldown chargeCooldown;
     protected TimeMultiplier currentTimeMultiplier = null;
+    protected bool hasAlreadyGainChargeForBrisableCube = false;
 
     public override void Initialize() {
         base.Initialize();
@@ -30,6 +31,7 @@ public class PouvoirPowerDash : PouvoirDash {
     protected override bool UsePouvoir() {
         bool returnValue = base.UsePouvoir();
         ennemisAlreadyHitten.Clear();
+        hasAlreadyGainChargeForBrisableCube = false;
         player.SetPowerDashingFor(dureePowerDahsing);
         return returnValue;
     }
@@ -48,8 +50,22 @@ public class PouvoirPowerDash : PouvoirDash {
         return false;
     }
 
-    protected void StartImpactVfx(Vector3 position) {
-        Vector3 fakeImpactPosition = position + GetCurrentPoussee().direction * GetCurrentPoussee().distance * coefFakeImpactPosition;
+    public void HitBrisableCube(Cube cube) {
+        if (!hasAlreadyGainChargeForBrisableCube) {
+            GainCharge();
+            hasAlreadyGainChargeForBrisableCube = true;
+        }
+        player.ResetGrip();
+        gm.soundManager.PlayPowerDashImpactClip();
+        StartImpactVfx(cube.transform.position, dontFakePosition: true);
+        ApplyTimeMultiplier();
+    }
+
+    protected void StartImpactVfx(Vector3 position, bool dontFakePosition = false) {
+        Vector3 fakeImpactPosition = position;
+        if (!dontFakePosition) {
+            fakeImpactPosition = position + GetCurrentPoussee().direction * GetCurrentPoussee().distance * coefFakeImpactPosition;
+        }
         VisualEffect vfx = Instantiate(impactVfxPrefab, fakeImpactPosition, Quaternion.identity, parent: gm.map.particlesFolder).GetComponent<VisualEffect>();
         vfx.SendEvent("Explode");
         Destroy(vfx.gameObject, vfx.GetVector2("ExplosionLifetime").y);

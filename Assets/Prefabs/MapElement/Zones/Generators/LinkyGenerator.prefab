@@ -9,10 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4963224914880968689}
-  - component: {fileID: 4963224914880968686}
+  - component: {fileID: 7176293444697028531}
   - component: {fileID: 3390147263197962974}
   m_Layer: 0
-  m_Name: CubeGenerator
+  m_Name: LinkyGenerator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33,7 +33,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4963224914880968686
+--- !u!114 &7176293444697028531
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -42,10 +42,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 4963224914880968687}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eebdbf6943869554fb51ae4f85fd5d7d, type: 3}
+  m_Script: {fileID: 11500000, guid: b72c157343338b54b8b0bf73d7cc2794, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frequenceActivation: 0.25
+  frequenceActivation: 0.125
   firstActivationRandom: 0
   activationRange: 7
   frequenceRecomputePositions: 5
@@ -56,10 +56,7 @@ MonoBehaviour:
   lightningPrefab: {fileID: 8725588450735506554, guid: f19400e69a5f00143942de1fb6b2f8b4,
     type: 3}
   orbTrigger: {fileID: 9219331088902830557}
-  cubeType: 4
-  setLinky: 2
-  dissolveEffectDuration: 0.1
-  decomposeCubesOnDestruction: 0
+  setLinky: 1
 --- !u!114 &3390147263197962974
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -189,6 +186,11 @@ PrefabInstance:
         type: 3}
     - target: {fileID: 8412133455549387673, guid: cd6b2b721ba4af24e9ee25db5af032e2,
         type: 3}
+      propertyPath: shouldPopCubeInCenter
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8412133455549387673, guid: cd6b2b721ba4af24e9ee25db5af032e2,
+        type: 3}
       propertyPath: additionnalRayonOnEnter
       value: 6.5
       objectReference: {fileID: 0}
@@ -211,7 +213,7 @@ PrefabInstance:
         type: 3}
       propertyPath: events.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 4963224914880968686}
+      objectReference: {fileID: 7176293444697028531}
     - target: {fileID: 8412133455549387673, guid: cd6b2b721ba4af24e9ee25db5af032e2,
         type: 3}
       propertyPath: events.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
