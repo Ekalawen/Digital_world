@@ -87,6 +87,7 @@ public class TimerManager : MonoBehaviour {
     protected void UpdateTimeScaleSpeed(int phaseIndice) {
         Time.timeScale = GetTimePhaseScales()[phaseIndice] * timeMultiplierController.GetMultiplier();
         Time.fixedDeltaTime = FIXED_DELTA_TIME * Time.timeScale;
+        //Debug.Log($"Time.timeScale = {Time.timeScale}");
     }
 
     public float GetTimeMultiplier() {
