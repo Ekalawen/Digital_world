@@ -375,6 +375,34 @@ public class MapManager : MonoBehaviour {
         return cubes;
     }
 
+    public List<Vector3> GetEmptyPositionsInSphere(Vector3 center, float radius) {
+        List<Vector3> positions = new List<Vector3>();
+        int xMin = (int)Mathf.Floor(center.x - radius);
+        int xMax = (int)Mathf.Ceil(center.x + radius);
+        int yMin = (int)Mathf.Floor(center.y - radius);
+        int yMax = (int)Mathf.Ceil(center.y + radius);
+        int zMin = (int)Mathf.Floor(center.z - radius);
+        int zMax = (int)Mathf.Ceil(center.z + radius);
+        for (int i = xMin; i <= xMax; i++) {
+            for (int j = yMin; j <= yMax; j++) {
+                for (int k = zMin; k <= zMax; k++) {
+                    Vector3 pos = new Vector3(i, j, k);
+                    if (Vector3.Distance(pos, center) <= radius) {
+                        if (!IsCubeAt(pos)) {
+                            positions.Add(pos);
+                        }
+                    }
+                }
+            }
+        }
+
+        return positions;
+    }
+
+    public Vector3 GetEmptyPositionInSphere(Vector3 center, float radius) {
+        return MathTools.ChoseOne(GetEmptyPositionsInSphere(center, radius));
+    }
+
     public List<Cube> GetCubesInBox(Vector3 center, Vector3 halfExtents) {
         List<Cube> cubes = new List<Cube>();
         int xMin = (int)Mathf.Ceil(center.x - halfExtents.x);
@@ -1712,5 +1740,25 @@ public class MapManager : MonoBehaviour {
 
     public int GetMaxNbLumieres() {
         return maxNbLumieres;
+    }
+
+    public Vector3 GetEmptyPositionInPlayerSight(Vector2 minMaxRange) {
+        Vector3 pos = Vector3.zero;
+        List<Vector3> possiblePos = GetEmptyPositionsInSphere(gm.player.transform.position, minMaxRange.y);
+        while (possiblePos.Count > 0) {
+            pos = MathTools.ChoseOne(possiblePos);
+            possiblePos.Remove(pos);
+            if(CanSeePlayerFrom(pos, minMaxRange.y) && Vector3.Distance(gm.player.transform.position, pos) >= minMaxRange.x) {
+                return pos;
+            }
+        }
+        Debug.LogError($"On a pas trouvé de position libre en ligne de vue du joueur !");
+        return pos;
+    }
+
+    protected bool CanSeePlayerFrom(Vector3 position, float maxRange) {
+        RaycastHit hit;
+        Ray ray = new Ray (position, gm.player.transform.position - position);
+        return Physics.Raycast(ray, out hit, maxRange) && hit.collider.name == "Joueur";
     }
 }
