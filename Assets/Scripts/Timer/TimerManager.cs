@@ -9,8 +9,6 @@ public class TimerManager : MonoBehaviour {
 
     public static float FIXED_DELTA_TIME = 1f / 120f;
 
-    public AnimationCurve curve = new AnimationCurve();
-
     [Header("Time")]
     public bool isInfinitTime = false;
     public float initialTime = 40.0f;

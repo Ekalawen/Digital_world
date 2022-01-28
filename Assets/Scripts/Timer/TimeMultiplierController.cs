@@ -26,6 +26,7 @@ public class TimeMultiplierController : MonoBehaviour {
         else
             ennemiTimeMultipliers.Add(timeMultiplier);
         StartCoroutine(CUnregisterAtEnd(timeMultiplier));
+        timerManager.UpdateTimeScaleToCurrentPhase(); // Pour que ce soit pris en compte tout de suite, et avec un peu de chance ça arrivera une frame plus tôt, ce qui permettra aux TimeMultipliers avec un "petit temps" de quand même être visible même sur des frames longues ! ==> Et ça a marché !!! <3
         return timeMultiplier;
     }
 

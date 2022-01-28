@@ -16,8 +16,8 @@ public class BrisableCube : NonBlackCube {
 
     public override void InteractWithPlayer() {
         if(gm.player.IsPowerDashing()) {
-            gm.player.GetPowerDash().HitBrisableCube(this);
             Explode();
+            gm.player.GetPowerDash().HitBrisableCube(this);
         } else if (!IsDecomposing() || GetDureeDecomposeRemaining() > dureeBeforeDestruction) {
             Decompose(dureeBeforeDestruction);
         }
