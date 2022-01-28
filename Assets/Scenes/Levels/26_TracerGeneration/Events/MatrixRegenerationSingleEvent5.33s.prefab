@@ -45,6 +45,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d1572eb3ce0d994aae325f7fb5a0a09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  messageConsole:
+    localizedString:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+    type: 2
+    timing: 0
+    duree: 2
+  messageImportant:
+    localizedString:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+    type: 2
+    timing: 0
+    duree: 2
   delay: 5.33
   singleEvent: {fileID: 2447811680177942979}
 --- !u!114 &2447811680177942979
@@ -59,30 +81,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c36a26b61b9fdf4ea8b85edebd1cb40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  messageConsole:
+    localizedString:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+    type: 2
+    timing: 0
+    duree: 2
+  messageImportant:
+    localizedString:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+    type: 2
+    timing: 0
+    duree: 2
   mapFunctions:
   - {fileID: 6042345023095975041}
-  startEventMessage:
-    localizedString:
-      m_TableReference:
-        m_TableCollectionName: 
-      m_TableEntryReference:
-        m_KeyId: 0
-        m_Key: 
-      m_FallbackState: 0
-    type: 0
-    timing: 0
-    duree: 2
-  startEventMessageImportant:
-    localizedString:
-      m_TableReference:
-        m_TableCollectionName: 
-      m_TableEntryReference:
-        m_KeyId: 0
-        m_Key: 
-      m_FallbackState: 0
-    type: 0
-    timing: 0
-    duree: 2
 --- !u!114 &6042345023095975041
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -96,8 +118,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cubeType: 0
+  typeZoneToFill: 1
   minDistanceRandomFilling: 0
-  useAllEmptyPositionsInstead: 1
+  getEmptyPositionsHelper: {fileID: 0}
   proportionRandomFilling: 0.002
   sizeCubeRandomFilling: 2
   registerToColorSources: 0
+  setDissolveTime: 0
+  dissolveTime: 1
+  minNbBlocks: 0

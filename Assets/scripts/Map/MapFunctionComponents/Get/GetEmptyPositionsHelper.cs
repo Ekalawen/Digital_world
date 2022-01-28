@@ -12,18 +12,30 @@ public class GetEmptyPositionsHelper : MonoBehaviour {
         IN_PASSAGES,
         OPTIMALY_SPACED,
         CENTER,
+        IN_BOX_AREA,
+        IN_SPHERE_AREA,
+        UNION,
     };
 
     public HowToGetPositions howToGetPositions = HowToGetPositions.ALL;
     [ConditionalHide("howToGetPositions", HowToGetPositions.WITH_N_CUBES_VOISINS)]
     public int nbCubesVoisins = 4;
-    public List<GetHelperModifier> modifiers;
     [ConditionalHide("howToGetPositions", HowToGetPositions.OPTIMALY_SPACED)]
     public int optimalySpacedNbPositions;
     [ConditionalHide("howToGetPositions", HowToGetPositions.OPTIMALY_SPACED)]
     public int optimalySpacedNbTriesByPosition;
     [ConditionalHide("howToGetPositions", HowToGetPositions.OPTIMALY_SPACED)]
     public GetOptimalySpacedPositions.Mode optimalySpacedMode;
+    [ConditionalHide("howToGetPositions", HowToGetPositions.IN_BOX_AREA)]
+    public Vector3 areaBoxCenter = Vector3.zero;
+    [ConditionalHide("howToGetPositions", HowToGetPositions.IN_BOX_AREA)]
+    public Vector3 areaBoxHalfExtents = Vector3.zero;
+    [ConditionalHide("howToGetPositions", HowToGetPositions.IN_SPHERE_AREA)]
+    public Vector3 areaSphereCenter = Vector3.zero;
+    [ConditionalHide("howToGetPositions", HowToGetPositions.IN_SPHERE_AREA)]
+    public float areaSphereRadius = 0f;
+    public List<GetHelperModifier> modifiers;
+    public List<GetEmptyPositionsHelper> unionGetters;
 
     protected MapManager map;
 
@@ -53,6 +65,12 @@ public class GetEmptyPositionsHelper : MonoBehaviour {
                 return GetOptimalySpaced();
             case HowToGetPositions.CENTER:
                 return GetCenterPosition();
+            case HowToGetPositions.IN_BOX_AREA:
+                return GetInBoxArea();
+            case HowToGetPositions.IN_SPHERE_AREA:
+                return GetInSphereArea();
+            case HowToGetPositions.UNION:
+                return GetUnion();
             default:
                 return null;
         }
@@ -90,5 +108,21 @@ public class GetEmptyPositionsHelper : MonoBehaviour {
 
     protected List<Vector3> GetCenterPosition() {
         return new List<Vector3>() { transform.position };
+    }
+
+    protected List<Vector3> GetInSphereArea() {
+        return map.GetEmptyPositionsInSphere(areaSphereCenter, areaSphereRadius);
+    }
+
+    protected List<Vector3> GetInBoxArea() {
+        return map.GetEmptyLocationsInBox(areaBoxCenter, areaBoxHalfExtents);
+    }
+
+    protected List<Vector3> GetUnion() {
+        List<Vector3> res = new List<Vector3>();
+        foreach(GetEmptyPositionsHelper getter in unionGetters) {
+            res.AddRange(getter.Get());
+        }
+        return res;
     }
 }
