@@ -10,6 +10,7 @@ public class GenerateSwappyCubesOnExistingCubes : MapFunctionComponent {
     public float frequenceInterval = 1.5f;
     public int nbIntervals = 2;
     public Vector2Int startIntervalRange = new Vector2Int(0, 1);
+    public bool useRandomStartIntervalForHolders = true;
     public bool setLinky = true;
     public float previsualisationDuration = 1f;
     public float timeBeforeStartSwapping = 3.0f;
@@ -39,7 +40,7 @@ public class GenerateSwappyCubesOnExistingCubes : MapFunctionComponent {
             holderFolder.transform.SetParent(swappyManagerFolder.transform);
             SwappyCubesHolder swappyCubesHolder = holderFolder.AddComponent<SwappyCubesHolder>();
             swappyCubesHolder.previsualisationDuration = previsualisationDuration;
-            int startInterval = UnityEngine.Random.Range(0, nbIntervals);
+            int startInterval = useRandomStartIntervalForHolders ? UnityEngine.Random.Range(0, nbIntervals) : 0;
             swappyCubesHolder.intervalToEnable = new List<int>() { startInterval };
             swappyCubesHolder.intervalToDisable = new List<int>() { (startInterval + nbIntervals / 2) % nbIntervals };
             swappyCubesHolders.Add(swappyCubesHolder);
