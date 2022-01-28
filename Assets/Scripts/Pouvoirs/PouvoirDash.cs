@@ -11,16 +11,21 @@ public class PouvoirDash : IPouvoir {
 
     protected Poussee currentPoussee = null;
 
-    protected override bool UsePouvoir() {
+    protected override bool UsePouvoir()
+    {
         Vector3 direction = player.camera.transform.forward;
         currentPoussee = new Poussee(direction, duree, distance);
         player.AddPoussee(currentPoussee);
         player.RemoveAllNegativePoussees();
         player.ResetGrip();
         RemoveGravityEffect(direction);
-        gm.postProcessManager.StartDashVfx(duree);
+        StartVfx();
         gm.timerManager.timeMultiplierController.RemoveAllEnnemisMultipliers();
         return true;
+    }
+
+    protected virtual void StartVfx() {
+        gm.postProcessManager.StartDashVfx(duree);
     }
 
     protected void RemoveGravityEffect(Vector3 direction) {

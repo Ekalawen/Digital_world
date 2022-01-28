@@ -87,4 +87,8 @@ public class PouvoirPowerDash : PouvoirDash {
         }
         currentTimeMultiplier = gm.timerManager.AddTimeMultiplier(new TimeMultiplier(impactTimeMultiplier));
     }
+
+    protected override void StartVfx() {
+        gm.postProcessManager.StartPowerDashVfx(duree);
+    }
 }

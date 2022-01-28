@@ -36,6 +36,7 @@ public class Player : Character {
     [Header("Camera")]
 	public new Camera camera; // La camera du joueur !
     public VisualEffect dashVfx;
+    public VisualEffect powerDashVfx;
     public VisualEffect shiftVfx;
     public VisualEffect wallVfx;
     public VisualEffect jumpVfx;
