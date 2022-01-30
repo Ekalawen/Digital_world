@@ -89,6 +89,7 @@ public class PouvoirGripDash : IPouvoir {
         }
         previsualizationObject.SetActive(true);
         previsualizationObject.transform.position = currentHittedCube.transform.position;
+        previsualizationObject.transform.LookAt(previsualizationObject.transform.position + gm.gravityManager.Forward(), gm.gravityManager.Up());
         float alphaValue = previsualizationAlphaCurve.Evaluate(avancement);
         Material material = previsualizationObject.GetComponent<Renderer>().material;
         material.SetFloat("_Alpha", alphaValue);
