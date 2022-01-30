@@ -44,6 +44,15 @@ public class Timer {
         return newAvancement;
     }
 
+    public float GetNewAvancementUpTo1() {
+        float totalAvancement = GetAvancement();
+        float newAvancement = GetNewAvancement();
+        if(totalAvancement > 1) {
+            newAvancement = Mathf.Max(0, newAvancement - (totalAvancement - 1));
+        }
+        return newAvancement;
+    }
+
     public void SetAvancement(float newAvancement) {
         SetElapsedTime(GetDuree() * newAvancement);
     }

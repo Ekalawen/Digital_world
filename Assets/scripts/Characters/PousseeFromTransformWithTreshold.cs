@@ -14,7 +14,7 @@ public class PousseeFromTransformWithTreshold : PousseeFromTransform {
     }
 
     public override Vector3 ComputePoussee(CharacterController controller) {
-        float dureeCourante = dureeTimer.GetNewAvancement() * duree;
+        float dureeCourante = dureeTimer.GetNewAvancementUpTo1() * duree;
         float distanceCourante = dureeCourante * vitesse;
         Vector3 directionCourante;
         if (Vector3.Distance(controller.transform.position, originTransform.transform.position) <= tresholdStraight) {

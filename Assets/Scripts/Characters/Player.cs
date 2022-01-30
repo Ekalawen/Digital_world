@@ -997,7 +997,7 @@ public class Player : Character {
         isGravityEffectRemoved = true;
     }
 
-    public void UnremoveGravityEffect() {
+    public void RestoreGravityEffect() {
         isGravityEffectRemoved = false;
     }
 
@@ -1018,12 +1018,16 @@ public class Player : Character {
         RemoveGravityEffect();
         gravityEffectRemovedForTimer = new Timer(duree);
         yield return new WaitForSeconds(duree);
-        UnremoveGravityEffect();
+        RestoreGravityEffect();
     }
 
     public void Stun() {
         bIsStun = true;
         FreezePouvoirs(true);
+    }
+
+    public void StunAndKeepPouvoirs() {
+        bIsStun = true;
     }
 
     public void UnStun() {

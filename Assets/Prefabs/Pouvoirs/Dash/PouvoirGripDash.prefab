@@ -1,0 +1,126 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4353353324722950712
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4353353324722950693}
+  - component: {fileID: 4353353324722950714}
+  - component: {fileID: 4353353324722950715}
+  m_Layer: 0
+  m_Name: PouvoirGripDash
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4353353324722950693
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4353353324722950712}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4353353324722950714
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4353353324722950712}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3389c54713137e45acc8dc3a1da2989, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nom:
+    m_TableReference:
+      m_TableCollectionName: GUID:bdcfcf5557c4ec14ea653537ddc22373
+    m_TableEntryReference:
+      m_KeyId: 133025270580711424
+      m_Key: 
+    m_FallbackState: 0
+  description:
+    m_TableReference:
+      m_TableCollectionName: GUID:bdcfcf5557c4ec14ea653537ddc22373
+    m_TableEntryReference:
+      m_KeyId: 133025319721177088
+      m_Key: 
+    m_FallbackState: 0
+  sprite: {fileID: 0}
+  pouvoirType: 0
+  timerMalus: 0
+  timerMalusTimeProportional: 0
+  timerMalusTimeProportion: 0.33333334
+  activationAudioClips:
+    relativeVolume: 1
+    spatialBlend: 0
+    bReverse: 0
+    bIsMusic: 0
+    bLoop: 0
+    clips:
+    - {fileID: 8300000, guid: cf021a4f86a9d914d8d565647e196479, type: 3}
+  dashSpeed: 50
+  dashDurationAdjustment: 0.2
+  dashSlowmotion:
+    type: 0
+    timeVariation: 0
+    totalRealDuration: 0
+    inDurationPercentage: 0
+    outDurationPercentage: 0
+    inCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    outCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  maxTargetingDistance: 50
+  maxTargetingDuration: 1
+  targetingSlowmotion:
+    type: 0
+    timeVariation: 0
+    totalRealDuration: 0
+    inDurationPercentage: 0
+    outDurationPercentage: 0
+    inCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    outCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+--- !u!114 &4353353324722950715
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4353353324722950712}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f03f4255da793cf41aa6b059bf4599eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cooldown: 1

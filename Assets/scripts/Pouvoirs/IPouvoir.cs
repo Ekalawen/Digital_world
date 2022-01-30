@@ -51,23 +51,31 @@ public abstract class IPouvoir : MonoBehaviour {
     public void TryUsePouvoir(KeyCode binding) {
         this.binding = binding;
         if(IsEnabled() && IsAvailable()) {
-            if(UsePouvoir()) {
-                cooldown.Use();
-                ApplyTimerMalus();
-                gm.soundManager.PlayActivationPouvoirClip((activationAudioClips.clips.Count > 0) ? activationAudioClips : null);
-            } else {
-                gm.soundManager.PlayDeniedPouvoirClip();
-            }
+            ApplyUsePouvoir();
         } else {
             gm.soundManager.PlayDeniedPouvoirClip();
         }
+    }
+
+    protected virtual void ApplyUsePouvoir() {
+        if (UsePouvoir()) {
+            ApplyUsePouvoirConsequences();
+        } else {
+            gm.soundManager.PlayDeniedPouvoirClip();
+        }
+    }
+
+    protected void ApplyUsePouvoirConsequences() {
+        cooldown.Use();
+        ApplyTimerMalus();
+        gm.soundManager.PlayActivationPouvoirClip((activationAudioClips.clips.Count > 0) ? activationAudioClips : null);
     }
 
     public bool IsEnabled() {
         return pouvoirEnabled && !pouvoirFreezed;
     }
 
-    public bool IsAvailable() {
+    public virtual bool IsAvailable() {
         return cooldown.IsAvailable();
     }
 

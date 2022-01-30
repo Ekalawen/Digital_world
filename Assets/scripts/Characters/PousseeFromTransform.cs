@@ -12,7 +12,7 @@ public class PousseeFromTransform : Poussee {
     }
 
     public override Vector3 ComputePoussee(CharacterController controller) {
-        float dureeCourante = dureeTimer.GetNewAvancement() * duree;
+        float dureeCourante = dureeTimer.GetNewAvancementUpTo1() * duree;
         float distanceCourante = dureeCourante * vitesse;
         Vector3 directionCourante = (controller.transform.position - originTransform.transform.position).normalized;
         return directionCourante * distanceCourante;

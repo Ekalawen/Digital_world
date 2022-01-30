@@ -216,6 +216,14 @@ public class InputManager : MonoBehaviour {
         return KeyCode.JoystickButton1;
     }
 
+    public bool GetKeyDown(KeyCode binding) {
+        return Input.GetKeyDown(binding);
+    }
+
+    public bool GetKeyUp(KeyCode binding) {
+        return Input.GetKeyUp(binding);
+    }
+
     public Vector3 GetHorizontalMouvement() {
         switch (GetCurrentKeybindingType()) {
             case KeybindingType.AZERTY:

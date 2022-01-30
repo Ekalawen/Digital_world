@@ -339,6 +339,10 @@ public static class MathTools
         return point == Vector3.ProjectOnPlane(point - planePoint, planeNormal) + planePoint;
     }
 
+    public static bool IsNormalHorizontal(Vector3 normal, GravityManager gravityManager) {
+        return MathTools.IsInPlane(normal, Vector3.zero, gravityManager.Up());
+    }
+
     public static Vector3 VecAbs(Vector3 v) {
         return new Vector3(Mathf.Abs(v.x), Mathf.Abs(v.y), Mathf.Abs(v.z));
     }

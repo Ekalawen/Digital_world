@@ -24,7 +24,7 @@ public class Poussee {
         return new Poussee(direction, duree, puissance * duree);
     }
 
-    public bool IsOver() {
+    public virtual bool IsOver() {
         return dureeTimer.IsOver();
     }
 
@@ -33,7 +33,7 @@ public class Poussee {
     }
 
     public virtual Vector3 ComputePoussee(CharacterController controller) {
-        float dureeCourante = dureeTimer.GetNewAvancement() * duree;
+        float dureeCourante = dureeTimer.GetNewAvancementUpTo1() * duree;
         float distanceCourante = dureeCourante * vitesse;
         return direction * distanceCourante;
     }
