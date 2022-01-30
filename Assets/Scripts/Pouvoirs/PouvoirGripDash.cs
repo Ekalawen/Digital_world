@@ -63,7 +63,7 @@ public class PouvoirGripDash : IPouvoir {
     }
 
     protected override bool UsePouvoir() {
-        Vector3 finalTarget = ComputeTargetFromCube(currentHittedCube);
+        Vector3 finalTarget = ComputeTargetFromCube(currentHittedCube, currentHit);
         float distance = (finalTarget - player.transform.position).magnitude;
         RegisterComputedDurationAccordingToDistance(distance);
         currentPoussee = new PousseePrecise(finalTarget, player.transform.position, dashDurationAdjustment, dashSpeed, callback: RestorePlayerMouvementEarlier);
@@ -124,30 +124,39 @@ public class PouvoirGripDash : IPouvoir {
         RestoreGravityEarlier();
     }
 
-    protected Vector3 ComputeTargetFromCube(Cube cube) {
-        Vector3 direction = -player.camera.transform.forward;
+    protected Vector3 ComputeTargetFromCube(Cube cube, RaycastHit hit) {
+        Vector3 direction = (hit.point - cube.transform.position).normalized;
         Vector3 closestNormal = MathTools.GetClosestToNormals(cube.transform, direction);
+        Vector3 aboveCube = cube.transform.position + gm.gravityManager.Up();
+        Vector3 aboveTarget = JustAboveCube(cube);
         if (MathTools.IsNormalHorizontal(closestNormal, gm.gravityManager)) {
-            Vector3 aboveCube = cube.transform.position + gm.gravityManager.Up();
-            if(!gm.map.IsCubeAt(aboveCube)) {
-                Debug.Log($"Horizontal (above)");
-                return cube.transform.position + gm.gravityManager.Up() * 0.75f;
+            if (!gm.map.IsCubeAt(aboveCube) && WontBeBlockByCube(aboveTarget)) {
+                return aboveTarget;
             }
-            Debug.Log($"Horizontal (side)");
-            return cube.transform.position;
+            return JustNextToCube(cube, closestNormal);
         } else if (closestNormal == gm.gravityManager.Down()) {
-            Debug.Log($"Vers le haut");
-            Vector3 aboveCube = cube.transform.position + gm.gravityManager.Up();
-            if(!gm.map.IsCubeAt(aboveCube)) {
-                Debug.Log($"Up (above)");
-                return cube.transform.position + gm.gravityManager.Up() * 0.75f;
+            if(!gm.map.IsCubeAt(aboveCube) && WontBeBlockByCube(aboveTarget)) {
+                return aboveTarget;
             }
-            Debug.Log($"Up (side)");
-            return cube.transform.position;
+            return JustNextToCube(cube, closestNormal);
         } else {
-            Debug.Log($"Vers le bas");
-            return cube.transform.position;
+            return aboveTarget;
         }
+    }
+
+    protected bool WontBeBlockByCube(Vector3 aboveTarget) {
+        // 27° because arctan(1/2) = 27° et c'est l'angle entre le aboveCubePoint et le point en bas en diagonale
+        float angle = Vector3.Angle(gm.gravityManager.Up(), (aboveTarget - player.transform.position));
+        Debug.Log($"angle = {angle}");
+        return angle >= 27f;
+    }
+
+    protected Vector3 JustNextToCube(Cube cube, Vector3 normal) {
+        return cube.transform.position + normal * 0.75f;
+    }
+
+    protected Vector3 JustAboveCube(Cube cube) {
+        return JustNextToCube(cube, gm.gravityManager.Up());
     }
 
     protected virtual void StartVfx() {
@@ -159,7 +168,7 @@ public class PouvoirGripDash : IPouvoir {
     }
 
     protected bool CanGripDash() {
-        Ray ray = new Ray(player.transform.position, player.camera.transform.forward);
+        Ray ray = new Ray(player.camera.transform.position, player.camera.transform.forward);
         Physics.Raycast(ray, out currentHit, maxTargetingDistance);
         if(currentHit.collider == null) {
             return false;

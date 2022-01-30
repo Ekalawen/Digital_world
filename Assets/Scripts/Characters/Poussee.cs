@@ -28,7 +28,7 @@ public class Poussee {
         return dureeTimer.IsOver();
     }
 
-    public void ApplyPoussee(CharacterController controller) {
+    public virtual void ApplyPoussee(CharacterController controller) {
         controller.Move(ComputePoussee(controller));
     }
 
