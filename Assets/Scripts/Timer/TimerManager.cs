@@ -96,6 +96,10 @@ public class TimerManager : MonoBehaviour {
         return timeMultiplierController.AddMultiplier(timeMultiplier);
     }
 
+    public bool RemoveTimeMultiplier(TimeMultiplier timeMultiplier) {
+        return timeMultiplierController.RemoveMultiplier(timeMultiplier);
+    }
+
     public TimeMultiplier AddTimeMultiplierForEnnemiImpact(TimeMultiplier timeMultiplier) {
         if(currentEnnemiImpactMultiplier != null) {
             timeMultiplierController.RemoveMultiplier(currentEnnemiImpactMultiplier);

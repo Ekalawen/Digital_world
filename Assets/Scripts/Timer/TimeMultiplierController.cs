@@ -35,9 +35,8 @@ public class TimeMultiplierController : MonoBehaviour {
         RemoveMultiplier(timeMultiplier);
     }
 
-    public void RemoveMultiplier(TimeMultiplier timeMultiplier) {
-        timeMultipliers.Remove(timeMultiplier);
-        ennemiTimeMultipliers.Remove(timeMultiplier);
+    public bool RemoveMultiplier(TimeMultiplier timeMultiplier) {
+        return timeMultipliers.Remove(timeMultiplier) || ennemiTimeMultipliers.Remove(timeMultiplier);
     }
 
     public float GetMultiplier() {

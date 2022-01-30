@@ -14,13 +14,16 @@ public class PouvoirGripDash : IPouvoir {
     public float maxTargetingDistance = 15.0f;
     public float maxTargetingDuration = 1.0f;
     public TimeMultiplier targetingSlowmotion;
+    public GameObject previsualizationCubePrefab;
+    public AnimationCurve previsualizationAlphaCurve;
 
     protected RaycastHit currentHit;
     protected Cube currentHittedCube;
     protected Poussee currentPoussee = null;
     protected Coroutine targetingCoroutine = null;
     protected Coroutine unStunCoroutine = null;
-    private Coroutine restoreGravityCoroutine = null;
+    protected Coroutine restoreGravityCoroutine = null;
+    protected TimeMultiplier currentTimeMultiplier = null;
     protected float computedDuration = 0;
 
     public override bool IsAvailable() {
@@ -31,16 +34,23 @@ public class PouvoirGripDash : IPouvoir {
         targetingCoroutine = StartCoroutine(CTargeting());
     }
 
-    protected IEnumerator CTargeting() {
+    protected IEnumerator CTargeting()
+    {
         Timer timer = new Timer(maxTargetingDuration);
         GameObject previsualizationObject = CreatePrevisualization();
-        while(!timer.IsOver()) {
-            UpdatePrevisualization(previsualizationObject);
-            if(InputManager.Instance.GetKeyUp(binding)) {
-                if (CanGripDash()) {
+        AddTargetingMultiplier();
+        while (!timer.IsOver()) {
+            bool canGripDash = CanGripDash();
+            UpdatePrevisualization(previsualizationObject, timer.GetAvancement());
+            if (InputManager.Instance.GetKeyUp(binding))
+            {
+                if (canGripDash)
+                {
                     UsePouvoir();
                     ApplyUsePouvoirConsequences();
-                } else {
+                }
+                else
+                {
                     gm.soundManager.PlayDeniedPouvoirClip();
                 }
                 break;
@@ -48,18 +58,43 @@ public class PouvoirGripDash : IPouvoir {
             yield return null;
         }
         DestroyPrevisualization(previsualizationObject);
+        RemoveTargetingMultiplier();
         // Faudra se débrouiller pour mettre un cooldown de 1s (ou plus) ici ! :)
         targetingCoroutine = null;
     }
 
-    protected GameObject CreatePrevisualization() {
-        return null;
+    protected void AddTargetingMultiplier() {
+        RemoveTargetingMultiplier();
+        currentTimeMultiplier = gm.timerManager.AddTimeMultiplier(targetingSlowmotion);
     }
 
-    protected void UpdatePrevisualization(GameObject previsualizationObject) {
+    protected void RemoveTargetingMultiplier() {
+        if (currentTimeMultiplier != null) {
+            gm.timerManager.RemoveTimeMultiplier(currentTimeMultiplier);
+            currentTimeMultiplier = null;
+        }
+    }
+
+    protected GameObject CreatePrevisualization() {
+        GameObject previsualizationCube = Instantiate(previsualizationCubePrefab, parent: gm.map.particlesFolder);
+        return previsualizationCube;
+    }
+
+    protected void UpdatePrevisualization(GameObject previsualizationObject, float avancement) {
+        if(currentHittedCube == null) {
+            previsualizationObject.SetActive(false);
+            return;
+        }
+        previsualizationObject.SetActive(true);
+        previsualizationObject.transform.position = currentHittedCube.transform.position;
+        float alphaValue = previsualizationAlphaCurve.Evaluate(avancement);
+        previsualizationObject.GetComponent<Renderer>().material.SetFloat("_Alpha", alphaValue);
     }
 
     protected void DestroyPrevisualization(GameObject previsualizationObject) {
+        if(previsualizationObject != null) {
+            Destroy(previsualizationObject);
+        }
     }
 
     protected override bool UsePouvoir() {
@@ -171,6 +206,7 @@ public class PouvoirGripDash : IPouvoir {
         Ray ray = new Ray(player.camera.transform.position, player.camera.transform.forward);
         Physics.Raycast(ray, out currentHit, maxTargetingDistance);
         if(currentHit.collider == null) {
+            currentHittedCube = null;
             return false;
         }
         currentHittedCube = currentHit.collider.gameObject.GetComponent<Cube>();

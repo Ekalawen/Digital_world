@@ -11,6 +11,7 @@ public class TimeMultiplier {
     public VariationType type = VariationType.MULTIPLY;
     public float timeVariation = 1.0f;
     public float totalRealDuration = 3.0f;
+    public bool useRealTimeDuration = false;
     public float inDurationPercentage = 0.1f;
     public float outDurationPercentage = 0.2f;
     public AnimationCurve inCurve;
@@ -30,7 +31,7 @@ public class TimeMultiplier {
 
     public void Initialize(TimeMultiplierController controller) {
         this.controller = controller;
-        timer = new Timer(GetTotalDuration());
+        timer = useRealTimeDuration ? new UnpausableTimer(GetTotalDuration()) : new Timer(GetTotalDuration());
     }
 
     public float GetTotalDuration() {

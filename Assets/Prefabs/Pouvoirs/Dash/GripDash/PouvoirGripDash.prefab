@@ -77,6 +77,7 @@ MonoBehaviour:
     type: 0
     timeVariation: 0
     totalRealDuration: 0
+    useRealTimeDuration: 0
     inDurationPercentage: 0
     outDurationPercentage: 0
     inCurve:
@@ -92,11 +93,12 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   maxTargetingDistance: 50
-  maxTargetingDuration: 1
+  maxTargetingDuration: 0.375
   targetingSlowmotion:
-    type: 0
-    timeVariation: 0
-    totalRealDuration: 0
+    type: 1
+    timeVariation: 0.125
+    totalRealDuration: 0.375
+    useRealTimeDuration: 0
     inDurationPercentage: 0
     outDurationPercentage: 0
     inCurve:
@@ -107,10 +109,54 @@ MonoBehaviour:
       m_RotationOrder: 4
     outCurve:
       serializedVersion: 2
-      m_Curve: []
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
+  previsualizationCubePrefab: {fileID: 1586838666760998, guid: d0b71722864547748ac130f5bcb24454,
+    type: 3}
+  previsualizationAlphaCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -2.493508
+      outSlope: -2.493508
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.030476937
+    - serializedVersion: 3
+      time: 0.4073268
+      value: 0.3967951
+      inSlope: -1.2150776
+      outSlope: -1.2150776
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!114 &4353353324722950715
 MonoBehaviour:
   m_ObjectHideFlags: 0
