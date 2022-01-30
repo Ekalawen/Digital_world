@@ -25,6 +25,7 @@ public class PouvoirGripDash : IPouvoir {
     protected Coroutine restoreGravityCoroutine = null;
     protected TimeMultiplier currentTimeMultiplier = null;
     protected float computedDuration = 0;
+    protected bool useVerticalArrow = true;
 
     public override bool IsAvailable() {
         return base.IsAvailable() && targetingCoroutine == null;
@@ -41,6 +42,7 @@ public class PouvoirGripDash : IPouvoir {
         AddTargetingMultiplier();
         while (!timer.IsOver()) {
             bool canGripDash = CanGripDash();
+            ComputeTargetFromCube(currentHittedCube, currentHit);
             UpdatePrevisualization(previsualizationObject, timer.GetAvancement());
             if (InputManager.Instance.GetKeyUp(binding))
             {
@@ -88,7 +90,10 @@ public class PouvoirGripDash : IPouvoir {
         previsualizationObject.SetActive(true);
         previsualizationObject.transform.position = currentHittedCube.transform.position;
         float alphaValue = previsualizationAlphaCurve.Evaluate(avancement);
-        previsualizationObject.GetComponent<Renderer>().material.SetFloat("_Alpha", alphaValue);
+        Material material = previsualizationObject.GetComponent<Renderer>().material;
+        material.SetFloat("_Alpha", alphaValue);
+        material.SetFloat("_UseVerticalArrow", useVerticalArrow ? 1 : 0);
+        material.SetVector("_UpVector", gm.gravityManager.Up());
     }
 
     protected void DestroyPrevisualization(GameObject previsualizationObject) {
@@ -160,21 +165,29 @@ public class PouvoirGripDash : IPouvoir {
     }
 
     protected Vector3 ComputeTargetFromCube(Cube cube, RaycastHit hit) {
+        if (hit.collider == null || cube == null) {
+            return Vector3.zero;
+        }
         Vector3 direction = (hit.point - cube.transform.position).normalized;
         Vector3 closestNormal = MathTools.GetClosestToNormals(cube.transform, direction);
         Vector3 aboveCube = cube.transform.position + gm.gravityManager.Up();
         Vector3 aboveTarget = JustAboveCube(cube);
-        if (MathTools.IsNormalHorizontal(closestNormal, gm.gravityManager)) {
+        if (MathTools.IsNormalHorizontal(closestNormal, gm.gravityManager)) { // Targeting sides
             if (!gm.map.IsCubeAt(aboveCube) && WontBeBlockByCube(aboveTarget)) {
+                useVerticalArrow = true;
                 return aboveTarget;
             }
+            useVerticalArrow = false;
             return JustNextToCube(cube, closestNormal);
-        } else if (closestNormal == gm.gravityManager.Down()) {
+        } else if (closestNormal == gm.gravityManager.Down()) { // Targeting from bottom
             if(!gm.map.IsCubeAt(aboveCube) && WontBeBlockByCube(aboveTarget)) {
+                useVerticalArrow = true;
                 return aboveTarget;
             }
+            useVerticalArrow = false;
             return JustNextToCube(cube, closestNormal);
-        } else {
+        } else { // Targeting from top
+            useVerticalArrow = true;
             return aboveTarget;
         }
     }
@@ -182,7 +195,6 @@ public class PouvoirGripDash : IPouvoir {
     protected bool WontBeBlockByCube(Vector3 aboveTarget) {
         // 27° because arctan(1/2) = 27° et c'est l'angle entre le aboveCubePoint et le point en bas en diagonale
         float angle = Vector3.Angle(gm.gravityManager.Up(), (aboveTarget - player.transform.position));
-        Debug.Log($"angle = {angle}");
         return angle >= 27f;
     }
 

@@ -20,6 +20,10 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - VerticalArrow:
+        m_Texture: {fileID: 2800000, guid: ab17743d980755c42baaca567ad707b1, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _ColorTexture:
         m_Texture: {fileID: 2800000, guid: 4a7ec72e21dea7349a039c0c8879dcb4, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -38,9 +42,13 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - ArrowColorCoef: 0.55
+    - ArrowSpeed: 10
     - _Alpha: 1
     - _Metallic: 0
     - _Smoothness: 0.5
+    - _UseVerticalArrow: 1
     m_Colors:
-    - _Color: {r: 0, g: 255.99997, b: 255.99997, a: 1}
+    - _Color: {r: 0, g: 63.999992, b: 63.999992, a: 1}
+    - _UpVector: {r: 0, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []
