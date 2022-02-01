@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4353353324722950693}
   - component: {fileID: 4353353324722950714}
-  - component: {fileID: 4353353324722950715}
+  - component: {fileID: 6701970310657017598}
   m_Layer: 0
   m_Name: PouvoirGripDash
   m_TagString: Untagged
@@ -157,7 +157,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &4353353324722950715
+  rechargeTimeAfterFailedTargeting: 1
+--- !u!114 &6701970310657017598
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -166,7 +167,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 4353353324722950712}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f03f4255da793cf41aa6b059bf4599eb, type: 3}
+  m_Script: {fileID: 11500000, guid: 0f543d1a087782b4cb70c193007cb067, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cooldown: 1
+  cooldown: 42
+  maxCharges: 1
+  dontStartFull: 0
+  startCharges: 0

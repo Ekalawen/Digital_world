@@ -16,6 +16,7 @@ public class PouvoirGripDash : IPouvoir {
     public TimeMultiplier targetingSlowmotion;
     public GameObject previsualizationCubePrefab;
     public AnimationCurve previsualizationAlphaCurve;
+    public float rechargeTimeAfterFailedTargeting = 1.0f;
 
     protected RaycastHit currentHit;
     protected Cube currentHittedCube;
@@ -27,11 +28,17 @@ public class PouvoirGripDash : IPouvoir {
     protected float computedDuration = 0;
     protected bool useVerticalArrow = true;
     protected AudioClipParams reversedClip;
+    protected NoAutomaticRechargeCooldown cooldownCustom;
 
     public override void Initialize() {
         base.Initialize();
         reversedClip = new AudioClipParams(activationAudioClips);
         reversedClip.bReverse = true;
+        cooldownCustom = GetComponent<NoAutomaticRechargeCooldown>();
+        PouvoirPowerDash powerDash = player.GetPowerDash();
+        if(powerDash != null) {
+            powerDash.RegisterOnHit(cooldownCustom.GainCharge);
+        }
     }
 
     public override bool IsAvailable() {
@@ -68,9 +75,10 @@ public class PouvoirGripDash : IPouvoir {
             }
             yield return null;
         }
-        if (timer.IsOver())
-        {
+        if (timer.IsOver()) {
             gm.soundManager.PlayDeniedPouvoirClip();
+            cooldownCustom.Use();
+            cooldownCustom.GainChargeIn(rechargeTimeAfterFailedTargeting);
         }
         DestroyPrevisualization(previsualizationObject);
         RemoveTargetingMultiplier();

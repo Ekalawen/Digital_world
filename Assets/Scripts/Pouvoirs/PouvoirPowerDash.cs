@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.VFX;
 
 public class PouvoirPowerDash : PouvoirDash {
@@ -22,10 +23,12 @@ public class PouvoirPowerDash : PouvoirDash {
     protected ChargeCooldown chargeCooldown;
     protected TimeMultiplier currentTimeMultiplier = null;
     protected bool hasAlreadyGainChargeForBrisableCube = false;
+    protected UnityEvent onHit;
 
     public override void Initialize() {
         base.Initialize();
         chargeCooldown = GetComponent<ChargeCooldown>();
+        onHit = new UnityEvent();
     }
 
     protected override bool UsePouvoir() {
@@ -45,6 +48,7 @@ public class PouvoirPowerDash : PouvoirDash {
             ennemi.HitByPlayerPowerDash(this);
             StartImpactVfx(ennemi.transform.position);
             ApplyTimeMultiplier();
+            onHit.Invoke();
             return true;
         }
         return false;
@@ -53,6 +57,7 @@ public class PouvoirPowerDash : PouvoirDash {
     public void HitBrisableCube(Cube cube) {
         if (!hasAlreadyGainChargeForBrisableCube) {
             GainCharge();
+            onHit.Invoke();
             hasAlreadyGainChargeForBrisableCube = true;
         }
         player.ResetGrip();
@@ -90,5 +95,9 @@ public class PouvoirPowerDash : PouvoirDash {
 
     protected override void StartVfx() {
         gm.postProcessManager.StartPowerDashVfx(duree);
+    }
+
+    public void RegisterOnHit(UnityAction callback) {
+        onHit.AddListener(callback);
     }
 }

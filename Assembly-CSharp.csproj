@@ -160,7 +160,7 @@
     <Compile Include="Assets\Scripts\Events\SingleEvents\SingleEventTriggerMultipleSingleEvents.cs" />
     <Compile Include="Assets\Scripts\UI\Menu\Utilitaires\UpdateUnscaledTime.cs" />
     <Compile Include="Assets\Imported\TextMesh Pro\Examples &amp; Extras\Scripts\TMPro_InstructionOverlay.cs" />
-    <Compile Include="Assets\Scripts\Pouvoirs\ChargeCooldown.cs" />
+    <Compile Include="Assets\Scripts\Pouvoirs\Cooldowns\ChargeCooldown.cs" />
     <Compile Include="Assets\Scripts\UI\Selector\SelectorManager.cs" />
     <Compile Include="Assets\Scripts\UI\Tooltip\Tooltip.cs" />
     <Compile Include="Assets\Scripts\UI\Selector\ReplacementStrings.cs" />
@@ -242,6 +242,7 @@
     <Compile Include="Assets\Scripts\UI\Selector\SelectorLevel\SelectorLevelRunIntroduction.cs" />
     <Compile Include="Assets\Scripts\Map\MapFunctionComponents\Generate\GenerateSpikesEverywhere.cs" />
     <Compile Include="Assets\Imported\LeanTween\Examples\Scripts\GeneralAdvancedTechniques.cs" />
+    <Compile Include="Assets\Scripts\Pouvoirs\PouvoirGripDash.cs" />
     <Compile Include="Assets\Imported\LeanTween\Examples\Scripts\GeneralBasics2d.cs" />
     <Compile Include="Assets\Scripts\Autres\FullscreenGameView.cs" />
     <Compile Include="Assets\Scripts\Characters\PousseeFromTransform.cs" />
@@ -373,7 +374,7 @@
     <Compile Include="Assets\Materials\lwrp\Particules\Old\48 Particle Effect Pack\Script\csParticleEffectPackLightControl.cs" />
     <Compile Include="Assets\Scripts\Map\MapElements\MapElementsComponents\AutoActivator.cs" />
     <Compile Include="Assets\Imported\LeanTween\Examples\Scripts\PathSplines.cs" />
-    <Compile Include="Assets\Scripts\Pouvoirs\Cooldown.cs" />
+    <Compile Include="Assets\Scripts\Pouvoirs\Cooldowns\Cooldown.cs" />
     <Compile Include="Assets\Scripts\Events\RandomEvents\JumpEventAlertTracers.cs" />
     <Compile Include="Assets\Imported\LeanTween\Examples\Scripts\GeneralEventsListeners.cs" />
     <Compile Include="Assets\Scripts\Timer\TimeMultiplierController.cs" />
@@ -401,6 +402,7 @@
     <Compile Include="Assets\Scripts\Map\MapElements\Item\GravityInverseItem.cs" />
     <Compile Include="Assets\Scripts\Map\MapFunctionComponents\SetLinkyCubes.cs" />
     <Compile Include="Assets\Scripts\UI\Menu\Backgrounds\BackgroundStarter.cs" />
+    <Compile Include="Assets\Scripts\Pouvoirs\Cooldowns\NoAutomaticRechargeCooldown.cs" />
     <Compile Include="Assets\Scripts\Map\MapFunctionComponents\Generate\Caves\GenerateCaves.cs" />
     <Compile Include="Assets\Scripts\Characters\Controllers\SoulRobberController.cs" />
     <Compile Include="Assets\Imported\EZ Camera Shake\Demo\ShakeDemo.cs" />
@@ -463,6 +465,7 @@
     <Compile Include="Assets\Scripts\Map\MapElements\MapElementsComponents\RotationColorimetrique.cs" />
     <Compile Include="Assets\Scripts\Characters\Controllers\Flock\Behavior\FlockBehaviorAvoidance.cs" />
     <Compile Include="Assets\Scripts\Events\RandomEvents\DeathWallEvent.cs" />
+    <Compile Include="Assets\Scripts\Characters\PousseePrecise.cs" />
     <Compile Include="Assets\Scripts\Map\MapFunctionComponents\Lumieres\DataSondes\AddLumiereDataSonde.cs" />
     <Compile Include="Assets\Imported\LeanTween\Examples\Scripts\PathSpline.cs" />
     <Compile Include="Assets\Imported\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark03.cs" />
@@ -542,8 +545,6 @@
     <Compile Include="Assets\Scripts\UI\Menu\Utilitaires\VersionNumber.cs" />
     <Compile Include="Assets\Textures\UI\Pointeurs\CursorsAndCrosshairs\CursorChanger.cs" />
     <Compile Include="Assets\Scripts\Map\MapFunctionComponents\Get\GetCubesHelper.cs" />
-    <Compile Include="Assets\Scripts\Pouvoirs\PouvoirGripDash.cs" />
-    <Compile Include="Assets\Scripts\Characters\PousseePrecise.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Texts\DataHackees\15-16_ToLearnIntersection\DHtoLearnIntersectionFromConstantDestructionFR.txt" />

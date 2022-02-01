@@ -27,7 +27,7 @@ public class ChargeCooldown : Cooldown {
         StartCharging();
     }
 
-    protected void StartCharging() {
+    protected virtual void StartCharging() {
         if(chargingCoroutine == null) {
             chargingCoroutine = StartCoroutine(CStartChargingCoroutine());
         }
