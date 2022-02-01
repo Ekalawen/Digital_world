@@ -245,7 +245,7 @@ public class PouvoirGripDash : IPouvoir {
     }
 
     protected virtual void StartVfx() {
-        //gm.postProcessManager.StartDashVfx(duree);
+        gm.postProcessManager.StartGripDashVfx(computedDuration);
     }
 
     public Poussee GetCurrentPoussee() {

@@ -97,6 +97,7 @@ public class PostProcessManager : MonoBehaviour {
     protected Camera noBlackAndWhiteCamera;
     protected VisualEffect dashVfx;
     protected VisualEffect powerDashVfx;
+    protected VisualEffect gripDashVfx;
     protected VisualEffect shiftVfx;
     protected VisualEffect jumpVfx;
     protected VisualEffect wallVfx;
@@ -120,6 +121,7 @@ public class PostProcessManager : MonoBehaviour {
         noBlackAndWhiteCamera = gm.player.noBlackAndWhiteCamera;
         dashVfx = gm.player.dashVfx;
         powerDashVfx = gm.player.powerDashVfx;
+        gripDashVfx = gm.player.gripDashVfx;
         shiftVfx = gm.player.shiftVfx;
         jumpVfx = gm.player.jumpVfx;
         wallVfx = gm.player.wallVfx;
@@ -425,6 +427,11 @@ public class PostProcessManager : MonoBehaviour {
     public void StartPowerDashVfx(float duree) {
         powerDashVfx.SetFloat("Duration", duree);
         powerDashVfx.SendEvent("Dash");
+    }
+
+    public void StartGripDashVfx(float duree) {
+        gripDashVfx.SetFloat("Duration", duree);
+        gripDashVfx.SendEvent("Dash");
     }
 
     public void StartShiftVfx() {

@@ -37,6 +37,7 @@ public class Player : Character {
 	public new Camera camera; // La camera du joueur !
     public VisualEffect dashVfx;
     public VisualEffect powerDashVfx;
+    public VisualEffect gripDashVfx;
     public VisualEffect shiftVfx;
     public VisualEffect wallVfx;
     public VisualEffect jumpVfx;
