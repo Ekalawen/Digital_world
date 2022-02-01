@@ -143,9 +143,10 @@ public class PouvoirGripDash : IPouvoir {
         Vector3 finalTarget = ComputeTargetFromCube(currentHittedCube, currentHit);
         float distance = (finalTarget - player.transform.position).magnitude;
         RegisterComputedDurationAccordingToDistance(distance);
+        //player.RemoveAllNegativePoussees();
+        player.RemoveAllPoussees(); // Also regular Dashses !
         currentPoussee = new PousseePrecise(finalTarget, player.transform.position, dashDurationAdjustment, dashSpeed, callback: RestorePlayerMouvementEarlier);
         player.AddPoussee(currentPoussee);
-        player.RemoveAllNegativePoussees();
         player.ResetGrip();
         RemoveGravityEffectForDashDuration();
         StunForDashDuration();
