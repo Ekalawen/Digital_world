@@ -8,6 +8,7 @@ public class Pointeur : MonoBehaviour {
 
     public RawImage auMurPointeur;
     public RawImage auSolPointeur;
+    public RawImage gripDashPointeur;
 
     [Header("Couleurs")]
     public Color auSolColor;
@@ -27,37 +28,51 @@ public class Pointeur : MonoBehaviour {
 
     protected GameManager gm;
     protected ChargeCooldown tripleDashChargeCooldown = null;
+    protected NoAutomaticRechargeCooldown gripDashCooldown = null;
 
     public void Initialize() {
         gm = GameManager.Instance;
         auSolPointeur.color = auSolColor;
         auSolPointeur.rectTransform.sizeDelta = Vector2.one * auSolScale;
+        gripDashPointeur.color = auSolColor;
+        gripDashPointeur.rectTransform.sizeDelta = Vector2.one * auSolScale;
 
         InitTexture();
     }
 
     void Update() {
         SetColorAndSize();
-        UpdateTexture();
+        UpdateTripleDashImage();
+        UpdateGripDashImage();
     }
 
     protected void SetColorAndSize() {
         switch (gm.player.GetEtat()) {
             case Player.EtatPersonnage.AU_SOL:
                 auMurPointeur.color = auSolColor;
+                gripDashPointeur.color = auSolColor;
                 auMurPointeur.rectTransform.sizeDelta = Vector2.one * auSolScale;
+                gripDashPointeur.rectTransform.sizeDelta = Vector2.one * auSolScale;
                 break;
             case Player.EtatPersonnage.EN_SAUT:
                 auMurPointeur.color = enSautColor;
+                gripDashPointeur.color = enSautColor;
                 auMurPointeur.rectTransform.sizeDelta = Vector2.one * enSautScale;
+                gripDashPointeur.rectTransform.sizeDelta = Vector2.one * enSautScale;
                 break;
             case Player.EtatPersonnage.EN_CHUTE:
                 auMurPointeur.color = enChuteColor;
+                gripDashPointeur.color = enChuteColor;
                 auMurPointeur.rectTransform.sizeDelta = Vector2.one * enChuteScale;
+                gripDashPointeur.rectTransform.sizeDelta = Vector2.one * enChuteScale;
                 break;
             case Player.EtatPersonnage.AU_MUR:
-                auMurPointeur.color = GetFinalColorAuMur();
-                auMurPointeur.rectTransform.sizeDelta = Vector2.one * GetFinalScaleAuMur();
+                Color color = GetFinalColorAuMur();
+                auMurPointeur.color = color;
+                gripDashPointeur.color = color;
+                float scale = GetFinalScaleAuMur();
+                auMurPointeur.rectTransform.sizeDelta = Vector2.one * scale;
+                gripDashPointeur.rectTransform.sizeDelta = Vector2.one * scale;
                 break;
         }
     }
@@ -70,6 +85,13 @@ public class Pointeur : MonoBehaviour {
         if (dash == null || tripleDashChargeCooldown == null) {
             SetTexture(dashDefaultTexture);
         }
+
+        IPouvoir gripDash = gm.player.GetPouvoirRightClick();
+        if (gripDash != null) {
+            gripDashCooldown = gripDash.GetCooldown() as NoAutomaticRechargeCooldown;
+        } else {
+            gripDashPointeur.gameObject.SetActive(false);
+        }
     }
 
     protected void SetTexture(Texture2D texture) {
@@ -77,13 +99,20 @@ public class Pointeur : MonoBehaviour {
         auSolPointeur.texture = texture;
     }
 
-    protected void UpdateTexture() {
+    protected void UpdateTripleDashImage() {
         if(tripleDashChargeCooldown == null) {
             return;
         }
         int nbCharges = Mathf.Min(tripleDashChargeCooldown.GetCurrentCharges(), textureByDashCharges.Count - 1);
         Texture2D textureToUse = textureByDashCharges[nbCharges];
         SetTexture(textureToUse);
+    }
+
+    protected void UpdateGripDashImage() {
+        if(gripDashCooldown == null) {
+            return;
+        }
+        gripDashPointeur.gameObject.SetActive(gripDashCooldown.GetCurrentCharges() > 0);
     }
 
     protected Color GetFinalColorAuMur() {
@@ -94,5 +123,15 @@ public class Pointeur : MonoBehaviour {
     protected float GetFinalScaleAuMur() {
         float avancement = gm.player.GetDureeRestanteMur() / gm.player.dureeMur;
         return MathCurves.Linear(auSolScale, auMurScale, avancement);
+    }
+
+    public void DisableMainPointeur() {
+        auSolPointeur.gameObject.SetActive(false);
+        auMurPointeur.gameObject.SetActive(false);
+    }
+
+    public void EnableMainPointeur() {
+        auSolPointeur.gameObject.SetActive(true);
+        auMurPointeur.gameObject.SetActive(true);
     }
 }

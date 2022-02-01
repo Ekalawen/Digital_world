@@ -55,6 +55,7 @@ public class PouvoirGripDash : IPouvoir {
         GameObject previsualizationObject = CreatePrevisualization();
         AddTargetingMultiplier();
         PlayReversedActivationClip();
+        gm.pointeur.DisableMainPointeur();
         while (!timer.IsOver())
         {
             bool canGripDash = CanGripDash();
@@ -69,21 +70,31 @@ public class PouvoirGripDash : IPouvoir {
                 }
                 else
                 {
-                    gm.soundManager.PlayDeniedPouvoirClip();
+                    FailUse();
                 }
                 break;
             }
             yield return null;
         }
         if (timer.IsOver()) {
-            gm.soundManager.PlayDeniedPouvoirClip();
-            cooldownCustom.Use();
-            cooldownCustom.GainChargeIn(rechargeTimeAfterFailedTargeting);
+            FailUse();
         }
+        gm.pointeur.EnableMainPointeur();
         DestroyPrevisualization(previsualizationObject);
         RemoveTargetingMultiplier();
         // Faudra se débrouiller pour mettre un cooldown de 1s (ou plus) ici ! :)
         targetingCoroutine = null;
+    }
+
+    protected void FailUse() {
+        gm.soundManager.PlayDeniedPouvoirClip();
+        PenaliseCooldown();
+    }
+
+    private void PenaliseCooldown()
+    {
+        cooldownCustom.Use();
+        cooldownCustom.GainChargeIn(rechargeTimeAfterFailedTargeting);
     }
 
     protected void PlayReversedActivationClip() {
