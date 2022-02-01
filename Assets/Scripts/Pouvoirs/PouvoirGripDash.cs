@@ -26,6 +26,13 @@ public class PouvoirGripDash : IPouvoir {
     protected TimeMultiplier currentTimeMultiplier = null;
     protected float computedDuration = 0;
     protected bool useVerticalArrow = true;
+    protected AudioClipParams reversedClip;
+
+    public override void Initialize() {
+        base.Initialize();
+        reversedClip = new AudioClipParams(activationAudioClips);
+        reversedClip.bReverse = true;
+    }
 
     public override bool IsAvailable() {
         return base.IsAvailable() && targetingCoroutine == null;
@@ -40,7 +47,9 @@ public class PouvoirGripDash : IPouvoir {
         Timer timer = new Timer(maxTargetingDuration);
         GameObject previsualizationObject = CreatePrevisualization();
         AddTargetingMultiplier();
-        while (!timer.IsOver()) {
+        PlayReversedActivationClip();
+        while (!timer.IsOver())
+        {
             bool canGripDash = CanGripDash();
             ComputeTargetFromCube(currentHittedCube, currentHit);
             UpdatePrevisualization(previsualizationObject, timer.GetAvancement());
@@ -59,10 +68,18 @@ public class PouvoirGripDash : IPouvoir {
             }
             yield return null;
         }
+        if (timer.IsOver())
+        {
+            gm.soundManager.PlayDeniedPouvoirClip();
+        }
         DestroyPrevisualization(previsualizationObject);
         RemoveTargetingMultiplier();
         // Faudra se débrouiller pour mettre un cooldown de 1s (ou plus) ici ! :)
         targetingCoroutine = null;
+    }
+
+    protected void PlayReversedActivationClip() {
+        gm.soundManager.PlayActivationPouvoirReversedClip(reversedClip);
     }
 
     protected void AddTargetingMultiplier() {

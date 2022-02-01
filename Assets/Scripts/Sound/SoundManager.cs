@@ -200,9 +200,13 @@ public class SoundManager : MonoBehaviour
     {
         PlayClipsOnSource(sounds.intersectionEventClips, pos: position, duration: duration, parent: parent);
     }
-    public void PlayActivationPouvoirClip(AudioClipParams audioClip = null)
-    {
-        PlayClipsOnSource((audioClip == null) ? sounds.activationPouvoirClips : audioClip);
+    public void PlayActivationPouvoirClip(AudioClipParams audioClip = null) {
+        AudioClipParams clip = (audioClip == null) ? sounds.activationPouvoirClips : audioClip;
+        PlayClipsOnSource(clip);
+    }
+    public void PlayActivationPouvoirReversedClip(AudioClipParams audioClip = null) {
+        AudioClipParams clip = (audioClip == null) ? sounds.activationPouvoirClips : audioClip;
+        PlayClipsOnSource(clip);
     }
     public void PlayDeniedPouvoirClip()
     {

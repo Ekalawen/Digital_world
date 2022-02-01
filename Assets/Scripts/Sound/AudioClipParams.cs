@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [Serializable]
@@ -16,4 +17,13 @@ public class AudioClipParams {
     public bool bIsMusic = false;
     public bool bLoop = false;
     public List<AudioClip> clips;
+
+    public AudioClipParams(AudioClipParams other) {
+        this.relativeVolume = other.relativeVolume;
+        this.spatialBlend = other.spatialBlend;
+        this.bReverse = other.bReverse;
+        this.bIsMusic = other.bIsMusic;
+        this.bLoop = other.bLoop;
+        this.clips = other.clips.Select(c => c).ToList();
+    }
 }
