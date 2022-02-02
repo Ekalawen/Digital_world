@@ -1,0 +1,79 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3598810245422845605
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3598810245422845607}
+  - component: {fileID: 3598810245422845606}
+  m_Layer: 0
+  m_Name: AddSondesEvent_BipartiteWorld
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3598810245422845607
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3598810245422845605}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3598810245422845606
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3598810245422845605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 295866546c04dc34b996356327458965, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  messageConsole:
+    localizedString:
+      m_TableReference:
+        m_TableCollectionName: GUID:0589e7d3c8829a243a3f17f1b80e6301
+      m_TableEntryReference:
+        m_KeyId: 135057021607940096
+        m_Key: 
+      m_FallbackState: 0
+    type: 1
+    timing: 0
+    duree: 2
+  messageImportant:
+    localizedString:
+      m_TableReference:
+        m_TableCollectionName: GUID:0589e7d3c8829a243a3f17f1b80e6301
+      m_TableEntryReference:
+        m_KeyId: 135057021607940096
+        m_Key: 
+      m_FallbackState: 0
+    type: 1
+    timing: 0
+    duree: 2
+  ennemiIndice: 2
+  nbEnnemisToAdd: 5
+  geoDataGenerateEnnemi:
+    color: {r: 47.937256, g: 1.0039216, b: 1.0039216, a: 1}
+    type: 1
+    duration: 1
+    targetObject: {fileID: 0}
+  startPositionType: 0
+  customStartPosition: {x: 0, y: 0, z: 0}
+  lineOfSightRange: {x: 3, y: 5}
+  shouldUseCustomWaitingTime: 1
+  customWaitingTime: 3
