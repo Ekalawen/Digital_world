@@ -15,8 +15,19 @@ public class PathfinderData {
     public int distanceMinToEnd;
     public int stringIndice;
     public bool haveFoundSomething;
+    public bool useReversedPathTechnique;
 
-    public PathfinderData(List<Vector3> positions, int nbPositionsTheoretical, bool shouldDetect, GameObject orbesPathPrefab, Color pathColor, GeoData geoData, int distanceMinToEnd, int stringIndice) {
+    public PathfinderData(
+        List<Vector3> positions,
+        int nbPositionsTheoretical,
+        bool shouldDetect,
+        GameObject orbesPathPrefab,
+        Color pathColor,
+        GeoData geoData,
+        int distanceMinToEnd,
+        int stringIndice,
+        bool useReversedPathTechnique) {
+
         this.positions = positions;
         this.nbPositionsTheoretical = nbPositionsTheoretical;
         this.shouldDetect = shouldDetect;
@@ -26,6 +37,7 @@ public class PathfinderData {
         this.distanceMinToEnd = distanceMinToEnd;
         this.stringIndice = stringIndice;
         this.haveFoundSomething = false;
+        this.useReversedPathTechnique = useReversedPathTechnique;
     }
 
     public float ComputeOrbeStartOffset(int nbPathfinders, int nbPathfindersBefore) {
@@ -80,43 +92,6 @@ public class PouvoirPathfinder : IPouvoir {
         }
 
         return true;
-
-        //List<Vector3> lumieresPositions = GetAllLumieresPositions();
-        //List<Vector3> itemsPositions = GetAllItemsPositions();
-        //List<Vector3> orbTriggersPositions = GetAllOrbTriggersPositions();
-
-        //int nbObjectifs = lumieresPositions.Count + itemsPositions.Count + orbTriggersPositions.Count;
-        //if (!player.CanUseLocalisation() || nbObjectifs == 0) {
-        //    if (gm.map.GetLumieresFinalesAndAlmostFinales().Count == 0) {
-        //        gm.console.FailPathfinderUnauthorized();
-        //    } else {
-        //        gm.console.FailPathfinderInEndEvent();
-        //    }
-        //    gm.soundManager.PlayFailActionClip();
-        //    return false;
-        //}
-
-        //float nbPathsToDraw = ((detectLumieres && lumieresPositions.Count > 0) ? 1 : 0)
-        //                  + ((detectItems && itemsPositions.Count > 0) ? 1 : 0)
-        //                  + ((detectOrbTriggers && orbTriggersPositions.Count > 0) ? 1 : 0);
-        //float lumiereOrbeStartOffset = 0;
-        //float itemOrbeStartOffset = ((detectLumieres && lumieresPositions.Count > 0) ? 1 : 0) / nbPathsToDraw;
-        //float orbTriggerOrbeStartOffset = (((detectLumieres && lumieresPositions.Count > 0) ? 1 : 0) + ((detectItems && itemsPositions.Count > 0) ? 1 : 0)) / nbPathsToDraw;
-
-        //bool haveFoundLumiere = detectLumieres && DrawPathToPositions(lumieresPositions, lumierePathColor, lumiereOrbesPathPrefab, lumiereOrbeStartOffset, distanceMinToEnd: 0, geoData: lumiereGeoData);
-        //bool haveFoundItem = detectItems && DrawPathToPositions(itemsPositions, itemPathColor, itemsOrbesPathPrefab, itemOrbeStartOffset, distanceMinToEnd: 0, geoData: itemGeoData);
-        //bool haveFoundOrbTrigger = detectOrbTriggers && DrawPathToPositions(orbTriggersPositions, orbTriggerPathColor, orbTriggerPathPrefab, orbTriggerOrbeStartOffset, distanceMinToEnd: 2, geoData: orbGeoData);
-
-        //if (!haveFoundLumiere && !haveFoundItem && !haveFoundOrbTrigger) {
-        //    gm.console.FailPathfinderObjectifInateignable();
-        //    gm.soundManager.PlayFailActionClip();
-        //    return false;
-        //} else { // On a au moins trouvé quelque chose
-        //    gm.console.SummarizePathfinder(new List<bool>() { haveFoundLumiere, haveFoundItem, haveFoundOrbTrigger },
-        //        new List<int>() { lumieresPositions.Count, itemsPositions.Count, orbTriggersPositions.Count });
-        //}
-
-        //return true;
     }
 
     private void AlertNothingFound()
@@ -135,6 +110,7 @@ public class PouvoirPathfinder : IPouvoir {
     }
 
     protected List<PathfinderData> GetAllPathfinderDatas() {
+        // Datas
         List<PathfinderData> pathfinderDatas = new List<PathfinderData>();
         pathfinderDatas.Add(new PathfinderData(
             positions: GetAllLumieresPositions(),
@@ -144,8 +120,10 @@ public class PouvoirPathfinder : IPouvoir {
             pathColor: lumierePathColor,
             geoData: lumiereGeoData,
             distanceMinToEnd: 0,
-            stringIndice: 0
+            stringIndice: 0,
+            useReversedPathTechnique: true
         ));
+        // Items
         Dictionary<Item.Type, List<Item>> itemsByType = GetItemsByTypes();
         foreach(KeyValuePair<Item.Type, List<Item>> pair in itemsByType) {
             GeoData newItemGeoData = new GeoData(itemGeoData);
@@ -159,9 +137,11 @@ public class PouvoirPathfinder : IPouvoir {
                 pathColor: pair.Value[0].pathColor,
                 geoData: newItemGeoData,
                 distanceMinToEnd: 0,
-                stringIndice: 1
+                stringIndice: 1,
+                useReversedPathTechnique: true
             ));
         }
+        // OrbTriggers
         pathfinderDatas.Add(new PathfinderData(
             positions: GetAllOrbTriggersPositions(),
             nbPositionsTheoretical: GetAllOrbTriggersPositions().Count,
@@ -170,7 +150,8 @@ public class PouvoirPathfinder : IPouvoir {
             pathColor: orbTriggerPathColor,
             geoData: orbGeoData,
             distanceMinToEnd: 2,
-            stringIndice: 2
+            stringIndice: 2,
+            useReversedPathTechnique: false
         ));
 
         pathfinderDatas = pathfinderDatas.FindAll(data => data.positions.Count > 0 && data.shouldDetect);
@@ -217,7 +198,7 @@ public class PouvoirPathfinder : IPouvoir {
         List<Vector3> posToDodge = GetNonRegularCubesToDodge();
         List<Vector3> positions = pathfinderData.positions.OrderBy(p => Vector3.Distance(p, player.transform.position)).Take(3).ToList();
         foreach (Vector3 pos in positions) {
-            List<Vector3> pathToPosition = GetPathForPosition(pos, posToDodge, pathfinderData.distanceMinToEnd);
+            List<Vector3> pathToPosition = GetPathForPosition(pos, posToDodge, pathfinderData);
             pathsToPositions.Add(pathToPosition);
         }
         List<List<Vector3>> notNullPaths = pathsToPositions.FindAll(p => p != null);
@@ -246,16 +227,20 @@ public class PouvoirPathfinder : IPouvoir {
         return (1.0f / vitessePath) * NB_SPHERES_BY_NODES * path.Count + dureePath;
     }
 
-    protected List<Vector3> GetPathForPosition(Vector3 position, List<Vector3> posToDodge, float distanceMinToEnd) {
+    protected List<Vector3> GetPathForPosition(Vector3 position, List<Vector3> posToDodge, PathfinderData pathfinderData) {
         List<Vector3> path = gm.map.GetPath(
-            start: player.transform.position,
-            end: position,
+            // On inverse le Pathfinder pour éviter les cas où une data est enfermé dans une protection !
+            start: pathfinderData.useReversedPathTechnique ? position : player.transform.position,
+            end: pathfinderData.useReversedPathTechnique ? player.transform.position : position,
             posToDodge: posToDodge,
             bIsRandom: true,
             useNotInMapVoisins: true,
             ignoreSwappyCubes: true,
-            distanceMinToEnd: distanceMinToEnd);
-        if(distanceMinToEnd > 0 && path != null && path.Last() != position) {
+            distanceMinToEnd: pathfinderData.distanceMinToEnd);
+        if (path != null && pathfinderData.useReversedPathTechnique) { // Et on inverse l'inversion ! :)
+            path.Reverse();
+        }
+        if(pathfinderData.distanceMinToEnd > 0 && path != null && path.Last() != position) {
             List<Vector3> complementaryPath = gm.map.GetPath(
                 start: path.Last(),
                 end: position,
