@@ -14,6 +14,7 @@ public class GenerateProtectionArroundLumieres : GenerateCubesMapFunction {
     public bool destroyAlreadyExistingCubes = true;
     public bool destroyAlreadyExistingCubesInMapBordures = false;
     public bool setLinky = true;
+    public bool setLumiereInaccessible = false;
 
     public override void Activate() {
         int nbLumieres = map.GetLumieres().Count;
@@ -39,6 +40,15 @@ public class GenerateProtectionArroundLumieres : GenerateCubesMapFunction {
             }
         }
         ProtectSpecific(lumiere, couronne);
+        SetLumiereInaccessible(lumiere, couronne);
+    }
+
+    protected void SetLumiereInaccessible(Lumiere lumiere, MapContainer couronne) {
+        if (!setLumiereInaccessible) {
+            return;
+        }
+        lumiere.SetInaccessible();
+        couronne.onDeleteCube.AddListener(lumiere.SetAccessibleForLumiereProtection);
     }
 
     protected virtual void ProtectSpecific(Lumiere lumiere, MapContainer couronne) {

@@ -237,6 +237,16 @@ public class Lumiere : MonoBehaviour {
         isAccessible = true;
     }
 
+    public void SetAccessibleForLumiereProtection(Cube cubeOfProtection) {
+        float cubeDistance = MathTools.CubeDistance(transform.position, cubeOfProtection.transform.position);
+        if(cubeDistance == 1) {
+            Vector3 direction = (cubeOfProtection.transform.position - transform.position).normalized;
+            if (!gm.map.IsCubeAt(transform.position + 2 * direction)) {
+                SetAccessible();
+            }
+        }
+    }
+
     public bool IsAccessible() {
         return isAccessible;
     }
