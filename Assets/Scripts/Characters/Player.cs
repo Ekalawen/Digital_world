@@ -679,13 +679,13 @@ public class Player : Character {
         MajHauteurMaxSaut();
 	}
 
-    void OnControllerColliderHit(ControllerColliderHit hit)
-    {
-        //// Si on a touché un cube spécial, on fait une action !
+    void OnControllerColliderHit(ControllerColliderHit hit) {
         Cube cube = hit.gameObject.GetComponent<Cube>();
-        if (cube != null && DoubleCheckInteractWithCube(cube))
-        {
+        //// Si on a touché un cube spécial, on fait une action !
+        //if (cube != null && DoubleCheckInteractWithCube(cube)) { // Pourquoi j'avais mis ce doublecheck déjà ? :/
+        if (cube != null) {
             cube.InteractWithPlayer();
+            cube = gm.map.GetCubeAt(cube.transform.position); // Car on veut s'assurer que l'on n'a pas détruit le cube entre temps ! (avec le PowerDash et un cube brisable !)
         }
 
         // On regarde si le personnage s'accroche à un mur !
@@ -757,7 +757,8 @@ public class Player : Character {
         // AU_MUR pour pouvoir s'accrocher à un mur depuis un autre mur ! :)
         return (etat == EtatPersonnage.EN_SAUT || etat == EtatPersonnage.EN_CHUTE || etat == EtatPersonnage.AU_MUR)
             && !inputManager.GetShift()
-            && (cube == null || cube.gameObject.GetComponent<BouncyCube>() == null); // On ne veut pas s'accrocher sur les bouncy cubes ! :)
+            && cube != null
+            && cube.gameObject.GetComponent<BouncyCube>() == null; // On ne veut pas s'accrocher sur les bouncy cubes ! :)
     }
 
     protected bool CanGripToWall(Vector3 wallNormal) {
@@ -767,7 +768,9 @@ public class Player : Character {
     }
 
     public static bool AreWallsNormalsDifferent(Vector3 normalMur1, Vector3 normalMur2) {
-        return Vector3.Angle(normalMur1, normalMur2) > 10;
+        return normalMur1 == Vector3.zero
+            || normalMur2 == Vector3.zero
+            || Vector3.Angle(normalMur1, normalMur2) > 10;
     }
 
     protected void GripOn(ControllerColliderHit hit, Vector3 wallNormal) {
@@ -789,10 +792,6 @@ public class Player : Character {
         } else {
             dureeMurTimer.SetRemainingTime(dureeMurRestante);
         }
-        Cube cube = hit.gameObject.GetComponent<Cube>();
-        if(cube != null) {
-            cube.InteractWithPlayer();
-        }
         if(previousEtat != EtatPersonnage.AU_MUR) {
             timerLastTimeNotAuMur.Reset();
         }
@@ -800,6 +799,12 @@ public class Player : Character {
         // Pour pouvoir s'accrocher à un autre mur depuis ce mur-ci !
         origineSaut = EtatPersonnage.AU_MUR;
         normaleOrigineSaut = normaleMur;
+
+        // Important que ceci soit après car quand on appel InteractWithPlayer on peut appeler ResetGrip grâce au PowerDashHit !
+        Cube cube = hit.gameObject.GetComponent<Cube>();
+        if(cube != null) {
+            cube.InteractWithPlayer();
+        }
 
         //if (etat != previousEtat)
         //    gm.soundManager.PlayGripClip(transform.position);
