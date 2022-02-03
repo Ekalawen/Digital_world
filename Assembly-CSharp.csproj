@@ -8,7 +8,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <ProjectGuid>{3398C053-4D2D-7FCF-95CE-5BD8D9E12726}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -53,7 +54,8 @@
     <UnityVersion>2021.1.11f1</UnityVersion>
   </PropertyGroup>
   <PropertyGroup>
-    <CodeAnalysisRuleSet></CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>
+    </CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio Tools for Unity\16.0\Analyzers\Microsoft.Unity.Analyzers.dll" />
@@ -1652,6 +1654,36 @@
       <Project>{82EAB667-2FE7-7327-F72E-E7E2C88D6A73}</Project>
       <Name>Unity.VisualEffectGraph.Runtime</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Texts\OneOfs\IntroductionNew\Introduction_NewEN.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Texts\Archives\01_FirstInfiniteRunner\ArchivesFirstInfiniteRunner_NewEN.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Texts\Archives\02_FirstLevel\ArchiveFirstLevel_NewEN.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Texts\Archives\03_FirstSonde\ArchivesFirstSonde_NewEN.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Texts\Archives\04_SecondRunner\ArchivesSecondRunner_NewEN.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Texts\Archives\05_DiscoverOfSondes\ArchivesDiscoverOfSondes_NewEN.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Texts\Archives\06_LearnEndEvent\ArchivesLearnEndEvent_NewEN.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Texts\Archives\07_TheFall\ArchivesTheFall_NewEN.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Texts\Archives\08_DashTraining\ArchivesDashTraining_NewEN.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Texts\Archives\09_LearnJump\ArchivesLearnJump_NewEN.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
