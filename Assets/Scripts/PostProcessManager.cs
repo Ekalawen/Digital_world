@@ -114,6 +114,7 @@ public class PostProcessManager : MonoBehaviour {
     protected bool timeScaleVfxIsRunning = false;
     protected bool timeScaleEffectActivation;
     protected bool alwaysHasMoveForTimeScaleVfx = false;
+    protected bool isWallVfxOn = false;
 
     public void Initialize() {
         gm = GameManager.Instance;
@@ -169,11 +170,11 @@ public class PostProcessManager : MonoBehaviour {
         //return color * Mathf.Pow(2, skyboxRectangleColorIntensity);
     }
 
-    public void UpdateWallEffect(Player.EtatPersonnage previousState) {
+    public void UpdateWallEffect() {
         Player.EtatPersonnage etat = gm.player.GetEtat();
-        if(previousState != Player.EtatPersonnage.AU_MUR && etat == Player.EtatPersonnage.AU_MUR) {
+        if(!isWallVfxOn && etat == Player.EtatPersonnage.AU_MUR) {
             StartWallEffect();
-        } else if (previousState == Player.EtatPersonnage.AU_MUR && etat != Player.EtatPersonnage.AU_MUR) {
+        } else if (isWallVfxOn && etat != Player.EtatPersonnage.AU_MUR) {
             StopWallEffect();
         }
         if (etat == Player.EtatPersonnage.AU_MUR) {
@@ -182,6 +183,7 @@ public class PostProcessManager : MonoBehaviour {
     }
 
     public void StopWallEffect() {
+        isWallVfxOn = false;
         if (PrefsManager.GetBool(PrefsManager.WALL_WARP_KEY, MenuOptions.defaultWallWarpActivation)) {
             StopWallVfx();
         }
@@ -196,6 +198,7 @@ public class PostProcessManager : MonoBehaviour {
     }
 
     public void StartWallEffect() {
+        isWallVfxOn = true;
         if (PrefsManager.GetBool(PrefsManager.WALL_WARP_KEY, MenuOptions.defaultWallWarpActivation)) {
             StartWallVfx();
         }

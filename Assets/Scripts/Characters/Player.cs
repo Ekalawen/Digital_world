@@ -269,7 +269,7 @@ public class Player : Character {
             return;
 
         // Add post process effect when we are gripped to the wall
-        gm.postProcessManager.UpdateWallEffect(etatAvant);
+        gm.postProcessManager.UpdateWallEffect();
     }
 
     protected void UpdatePostTimeScaleEffect() {
