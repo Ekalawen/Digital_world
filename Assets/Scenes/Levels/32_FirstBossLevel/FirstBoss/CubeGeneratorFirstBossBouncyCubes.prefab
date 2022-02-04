@@ -30,11 +30,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   howToGetPositions: 0
   nbCubesVoisins: 4
-  modifiers:
-  - {fileID: 6181397775363931333}
   optimalySpacedNbPositions: 0
   optimalySpacedNbTriesByPosition: 0
   optimalySpacedMode: 0
+  areaBoxCenter: {x: 0, y: 0, z: 0}
+  areaBoxHalfExtents: {x: 0, y: 0, z: 0}
+  areaSphereCenter: {x: 0, y: 0, z: 0}
+  areaSphereRadius: 0
+  modifiers:
+  - {fileID: 6181397775363931333}
+  unionGetters: []
 --- !u!114 &5687046449973407301
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -69,6 +74,11 @@ PrefabInstance:
         type: 3}
       propertyPath: cubeType
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4963224914880968686, guid: 71ed08f666e8c9441946793de60bd977,
+        type: 3}
+      propertyPath: setLinky
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4963224914880968686, guid: 71ed08f666e8c9441946793de60bd977,
         type: 3}

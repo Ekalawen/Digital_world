@@ -53,7 +53,9 @@ public class CubeGenerator : IGenerator {
 
     protected void SetupNewCube(Cube newCube, bool linkyState) {
         cubesCreated.Add(newCube);
-        newCube.StartDissolveEffect(dissolveEffectDuration);
+        if (newCube != null) {
+            newCube.StartDissolveEffect(dissolveEffectDuration);
+        }
         if(newCube != null && linkyState) {
             newCube.SetLinky();
         }
