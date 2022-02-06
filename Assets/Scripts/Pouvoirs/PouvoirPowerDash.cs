@@ -58,12 +58,12 @@ public class PouvoirPowerDash : PouvoirDash {
         if (!hasAlreadyGainChargeForBrisableCube) {
             GainCharge();
             onHit.Invoke();
+            ApplyTimeMultiplier();
             hasAlreadyGainChargeForBrisableCube = true;
         }
         player.ResetGrip();
         gm.soundManager.PlayPowerDashImpactClip();
         StartImpactVfx(cube.transform.position, dontFakePosition: true);
-        ApplyTimeMultiplier();
     }
 
     protected void StartImpactVfx(Vector3 position, bool dontFakePosition = false) {

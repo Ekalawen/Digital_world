@@ -35,9 +35,23 @@ public class VoidCube : NonBlackCube {
     public override void InteractWithPlayer() {
         float time = Time.time;
         float decomposeStartingTime = transparentMaterial.GetFloat("_DecomposeStartingTime");
-        if (time < decomposeStartingTime && !gm.player.IsInvincible() && !gm.eventManager.IsGameOver()) {
+        if (gm.player.IsPowerDashing()) {
+            PowerDashVoidExplosion();
+            gm.player.GetPowerDash().HitBrisableCube(this);
+        } else if (time < decomposeStartingTime && !gm.player.IsInvincible() && !gm.eventManager.IsGameOver()) {
             VoidExplosion();
         }
+    }
+
+    public void PowerDashVoidExplosion() {
+        if(hasVoidExploded) {
+            return;
+        }
+        hasVoidExploded = true;
+        DestroyAllNearByCubes();
+        gm.timerManager.AddTimeMultiplierForEnnemiImpact(slowmotion);
+        gm.soundManager.PlayVoidCubeExplosionClip(transform.position);
+        ShakeScreen();
     }
 
     public void VoidExplosion() {
