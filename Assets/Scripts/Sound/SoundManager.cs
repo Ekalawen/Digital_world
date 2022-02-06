@@ -256,7 +256,7 @@ public class SoundManager : MonoBehaviour
     }
     public void PlayVoidCubeExplosionClip(Vector3 pos)
     {
-        PlayClipsOnSource(sounds.bombCubeExplosionClips, pos);
+        PlayClipsOnSource(sounds.voidCubeExplosionClips, pos);
     }
     public void PlayGravityChangeClip()
     {

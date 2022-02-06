@@ -48,7 +48,7 @@ public class SoundBankIngame : ScriptableObject {
     public AudioClipParams generatorGeneratesClips;
 
     public AudioClipParams bounceClips;
-    public AudioClipParams bombCubeExplosionClips;
+    public AudioClipParams voidCubeExplosionClips;
     public AudioClipParams gravityChangeClips;
 
     public AudioClipParams rewardBestScoreClips;

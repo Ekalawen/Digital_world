@@ -878,11 +878,11 @@ public class EventManager : MonoBehaviour {
         return 0;
     }
 
-    public void ApplyExplosionOfVoidCube(BombCube bombCube) {
+    public void ApplyExplosionOfVoidCube(VoidCube bombCube) {
         StartCoroutine(CApplyExplosionOfBombCube(bombCube));
     }
 
-    protected IEnumerator CApplyExplosionOfBombCube(BombCube bombCube) {
+    protected IEnumerator CApplyExplosionOfBombCube(VoidCube bombCube) {
         float explosionRange = bombCube.explosionRange; // Need to remember this because the bombCube is gonna be null soon!
         Vector3 bombCubePosition = bombCube.transform.position;
         float decompositionDuration = bombCube.explosionDecompositionDuration;
