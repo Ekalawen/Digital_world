@@ -877,4 +877,33 @@ public class EventManager : MonoBehaviour {
     public virtual int GetNbLumieresAlmostFinalesRestantes() {
         return 0;
     }
+
+    public void ApplyExplosionOfBombCube(BombCube bombCube) {
+        StartCoroutine(CApplyExplosionOfBombCube(bombCube));
+    }
+
+    protected IEnumerator CApplyExplosionOfBombCube(BombCube bombCube) {
+        float explosionRange = bombCube.explosionRange; // Need to remember this because the bombCube is gonna be null soon!
+        Vector3 bombCubePosition = bombCube.transform.position;
+        float decompositionDuration = bombCube.explosionDecompositionDuration;
+
+        List<Cube> nearByCubes = gm.map.GetCubesInSphere(bombCubePosition, explosionRange);
+        Timer timer = new Timer(bombCube.explosionDuration);
+        while(!timer.IsOver()) {
+            nearByCubes = nearByCubes.FindAll(c => c != null);
+            float maxRange = explosionRange * timer.GetAvancement();
+            float maxRangeSqr = maxRange * maxRange;
+            foreach (Cube otherCube in nearByCubes) {
+                if (Vector3.SqrMagnitude(bombCubePosition - otherCube.transform.position) <= maxRangeSqr) {
+                    otherCube.Decompose(decompositionDuration);
+                }
+            }
+            yield return null;
+        }
+        nearByCubes = nearByCubes.FindAll(c => c != null);
+        foreach(Cube otherCube in nearByCubes) {
+            otherCube.Decompose(decompositionDuration);
+        }
+    }
+
 }

@@ -8,6 +8,8 @@ public class BombCube : NonBlackCube {
 
     [Header("Explosion")]
     public float explosionRange = 5.0f;
+    public float explosionDuration = 0.1f;
+    public float explosionDecompositionDuration = 0.1f;
     public float pousseeDistance = 10.0f;
     public float pousseeDuree = 0.5f;
     public TimeMultiplier slowmotion;
@@ -15,6 +17,8 @@ public class BombCube : NonBlackCube {
     public float screenShakeRoughness;
     public float screenShakeDecreaseTime;
     public GeoData geoDataImpact;
+
+    protected bool hasBombExplode = false;
 
     public override void Initialize() {
         base.Initialize();
@@ -31,12 +35,16 @@ public class BombCube : NonBlackCube {
     public override void InteractWithPlayer() {
         float time = Time.time;
         float decomposeStartingTime = transparentMaterial.GetFloat("_DecomposeStartingTime");
-        if (time < decomposeStartingTime && !gm.player.IsInvincible() && gm.eventManager.IsGameOver()) {
+        if (time < decomposeStartingTime && !gm.player.IsInvincible() && !gm.eventManager.IsGameOver()) {
             BombExplosion();
         }
     }
 
     public void BombExplosion() {
+        if(hasBombExplode) {
+            return;
+        }
+        hasBombExplode = true;
         DestroyAllNearByCubes();
         DivideTime();
         AddPoussee();
@@ -61,10 +69,7 @@ public class BombCube : NonBlackCube {
     }
 
     protected void DestroyAllNearByCubes() {
-        List<Cube> nearByCubes = gm.map.GetCubesInSphere(transform.position, explosionRange);
-        foreach(Cube cube in nearByCubes) {
-            cube.Explode();
-        }
+        gm.eventManager.ApplyExplosionOfBombCube(this); // Here because it will destroy itselfs and won't be able to finish the Coroutine!
     }
 
     protected void ShakeScreen() {
