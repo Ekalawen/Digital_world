@@ -878,7 +878,7 @@ public class EventManager : MonoBehaviour {
         return 0;
     }
 
-    public void ApplyExplosionOfBombCube(BombCube bombCube) {
+    public void ApplyExplosionOfVoidCube(BombCube bombCube) {
         StartCoroutine(CApplyExplosionOfBombCube(bombCube));
     }
 

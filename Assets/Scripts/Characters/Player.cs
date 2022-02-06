@@ -496,7 +496,7 @@ public class Player : Character {
     }
 
     protected bool CanSlideOnThisCube(Cube cube) {
-        return (cube.type != Cube.CubeType.DEATH && cube.type != Cube.CubeType.BOMB)
+        return (cube.type != Cube.CubeType.DEATH && cube.type != Cube.CubeType.VOID)
             || cube.IsDecomposing();
     }
 

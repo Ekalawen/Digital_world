@@ -18,7 +18,7 @@ public class BombCube : NonBlackCube {
     public float screenShakeDecreaseTime;
     public GeoData geoDataImpact;
 
-    protected bool hasBombExplode = false;
+    protected bool hasVoidExploded = false;
 
     public override void Initialize() {
         base.Initialize();
@@ -36,20 +36,20 @@ public class BombCube : NonBlackCube {
         float time = Time.time;
         float decomposeStartingTime = transparentMaterial.GetFloat("_DecomposeStartingTime");
         if (time < decomposeStartingTime && !gm.player.IsInvincible() && !gm.eventManager.IsGameOver()) {
-            BombExplosion();
+            VoidExplosion();
         }
     }
 
-    public void BombExplosion() {
-        if(hasBombExplode) {
+    public void VoidExplosion() {
+        if(hasVoidExploded) {
             return;
         }
-        hasBombExplode = true;
+        hasVoidExploded = true;
         DestroyAllNearByCubes();
         DivideTime();
         AddPoussee();
         gm.timerManager.AddTimeMultiplierForEnnemiImpact(slowmotion);
-        gm.soundManager.PlayBombCubeExplosionClip(transform.position);
+        gm.soundManager.PlayVoidCubeExplosionClip(transform.position);
         gm.postProcessManager.UpdateHitEffect();
         ShakeScreen();
         AddGeoPointOfImpact();
@@ -69,7 +69,7 @@ public class BombCube : NonBlackCube {
     }
 
     protected void DestroyAllNearByCubes() {
-        gm.eventManager.ApplyExplosionOfBombCube(this); // Here because it will destroy itselfs and won't be able to finish the Coroutine!
+        gm.eventManager.ApplyExplosionOfVoidCube(this); // Here because it will destroy itselfs and won't be able to finish the Coroutine!
     }
 
     protected void ShakeScreen() {
