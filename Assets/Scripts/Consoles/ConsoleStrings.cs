@@ -146,6 +146,8 @@ public class ConsoleStrings : ScriptableObject
     public LocalizedString timeResetImportant;
     public LocalizedString timeResetConsole;
 
+    public LocalizedString divideTimeBy2;
+
     public LocalizedString controllerPlugIn;
     public LocalizedString controllerPlugOut;
 

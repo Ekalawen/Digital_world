@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class TimerManager : MonoBehaviour {
 
@@ -279,13 +280,15 @@ public class TimerManager : MonoBehaviour {
         RemoveTime(1000, EventManager.DeathReason.TIME_OUT);
     }
 
-    public void RemoveTime(float timeToRemove, EventManager.DeathReason reason) {
-        AddTime(-timeToRemove);
+    public void RemoveTime(float timeToRemove, EventManager.DeathReason reason, bool showVolatileText = true) {
+        AddTime(-timeToRemove, showVolatileText);
         TestLoseGame(reason);
     }
 
     public void DivideTimeBy(float timeDivider, EventManager.DeathReason reason) {
-        RemoveTime(GetRemainingTime() / timeDivider, reason);
+        float time = GetRemainingTime() / timeDivider;
+        RemoveTime(time, reason, showVolatileText: false);
+        ShowVolatileTextOnDivideTimeBy2(-time);
     }
 
     public void SetTime(float settedTime, bool showVolatileText = true) {
@@ -297,10 +300,31 @@ public class TimerManager : MonoBehaviour {
     }
 
     protected void ShowVolatileTextOnAddTime(float time) {
+        string volatileText = GetVolatileStringForTime(time);
+        Color volatileColor = GetVolatileColorForTime(time);
+        timerDisplayer.AddVolatileText(volatileText, volatileColor);
+    }
+
+    public Color GetVolatileColorForTime(float time) {
+        return (time >= 0 ? gm.console.allyColor : gm.console.ennemiColor);
+    }
+
+    public string GetVolatileStringForTime(float time) {
         int secondes = time >= 0 ? Mathf.FloorToInt(time) : Mathf.CeilToInt(time);
         int centiseconds = Mathf.Abs(Mathf.FloorToInt((time - secondes) * 100));
         string volatileText = (time >= 0 ? "+" : "") + secondes + ":" + centiseconds.ToString("D2");
-        Color volatileColor = (time >= 0 ? gm.console.allyColor : gm.console.ennemiColor);
+        return volatileText;
+    }
+
+    public void ShowVolatileTextOnDivideTimeBy2(float time) {
+        StartCoroutine(CShowVolatileTextOnDivideTimeBy2(time));
+    }
+
+    protected IEnumerator CShowVolatileTextOnDivideTimeBy2(float time) {
+        AsyncOperationHandle<string> handle = gm.console.strings.divideTimeBy2.GetLocalizedString(time);
+        yield return handle;
+        string volatileText = handle.Result;
+        Color volatileColor = GetVolatileColorForTime(time);
         timerDisplayer.AddVolatileText(volatileText, volatileColor);
     }
 
