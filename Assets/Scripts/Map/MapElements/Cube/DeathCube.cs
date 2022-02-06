@@ -11,9 +11,8 @@ public class DeathCube : NonBlackCube {
 
     protected virtual void CheckPlayerCollisionOnStart() {
         GameManager gm = GameManager.Instance;
-        Vector3 playerPos = gm.player.transform.position;
         if (gm.player.DoubleCheckInteractWithCube(this)) {
-            KillPlayer();
+            InteractWithPlayer();
         }
     }
 

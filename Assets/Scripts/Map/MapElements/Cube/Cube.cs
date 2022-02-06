@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Cube : MonoBehaviour {
 
-    public enum CubeType { NORMAL, DEATH, INDESTRUCTIBLE, SPECIAL, BRISABLE, BOUNCY, TRANSPARENT, GRAVITY };
+    public enum CubeType { NORMAL, DEATH, INDESTRUCTIBLE, SPECIAL, BRISABLE, BOUNCY, TRANSPARENT, GRAVITY, BOMB };
 
     public CubeType type;
     public bool bIsDestructible = true;

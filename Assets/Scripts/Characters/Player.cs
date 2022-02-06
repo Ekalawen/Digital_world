@@ -496,7 +496,8 @@ public class Player : Character {
     }
 
     protected bool CanSlideOnThisCube(Cube cube) {
-        return cube.type != Cube.CubeType.DEATH || cube.IsDecomposing();
+        return (cube.type != Cube.CubeType.DEATH && cube.type != Cube.CubeType.BOMB)
+            || cube.IsDecomposing();
     }
 
     public Vector3 GetCurrentPosOnMur() {

@@ -284,6 +284,10 @@ public class TimerManager : MonoBehaviour {
         TestLoseGame(reason);
     }
 
+    public void DivideTimeBy(float timeDivider, EventManager.DeathReason reason) {
+        RemoveTime(GetRemainingTime() / timeDivider, reason);
+    }
+
     public void SetTime(float settedTime, bool showVolatileText = true) {
         float oldTotalTime = gameTimer.GetRemainingTime();
         gameTimer = new Timer(settedTime);
