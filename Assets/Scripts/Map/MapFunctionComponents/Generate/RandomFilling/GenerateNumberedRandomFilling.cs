@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,6 +8,9 @@ public class GenerateNumberedRandomFilling : GenerateCubesMapFunction {
     public int nbRandomCubes = 30;
     public float minDistanceRandomFilling = 1f;
     public int sizeCubeRandomFilling = 1; // Ca peut être intéressant d'augmenter cette taille ! :)
+    public bool shouldBeOptimallySpaced = false;
+    [ConditionalHide("shouldBeOptimallySpaced")]
+    public int nbTriesByPosition = 30;
 
     public override void Activate() {
         GenerateNumberedRandomFillingCubes();
@@ -16,6 +20,9 @@ public class GenerateNumberedRandomFilling : GenerateCubesMapFunction {
         List<FullBlock> fullBlocks = new List<FullBlock>();
         List<Vector3> farAwayPos = map.GetFarAwayFromAllCubesPositions(minDistanceRandomFilling);
         List<Vector3> selectedPos = GaussianGenerator.SelecteSomeNumberOf(farAwayPos, nbRandomCubes);
+        if (shouldBeOptimallySpaced) {
+            selectedPos = GetOptimalySpacedPositions.GetSpacedPositions(map, nbRandomCubes, farAwayPos, nbTriesByPosition);
+        }
         foreach (Vector3 pos in selectedPos) {
             Vector3 finalPos = pos - Vector3.one * Mathf.FloorToInt(sizeCubeRandomFilling / 2.0f);
             FullBlock fb = new FullBlock(finalPos, Vector3Int.one * sizeCubeRandomFilling);
@@ -23,5 +30,4 @@ public class GenerateNumberedRandomFilling : GenerateCubesMapFunction {
         }
         return fullBlocks;
     }
-
 }

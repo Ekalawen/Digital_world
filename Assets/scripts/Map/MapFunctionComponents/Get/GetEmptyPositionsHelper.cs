@@ -15,6 +15,7 @@ public class GetEmptyPositionsHelper : MonoBehaviour {
         IN_BOX_AREA,
         IN_SPHERE_AREA,
         UNION,
+        OF_DATA,
     };
 
     public HowToGetPositions howToGetPositions = HowToGetPositions.ALL;
@@ -69,6 +70,8 @@ public class GetEmptyPositionsHelper : MonoBehaviour {
                 return GetInBoxArea();
             case HowToGetPositions.IN_SPHERE_AREA:
                 return GetInSphereArea();
+            case HowToGetPositions.OF_DATA:
+                return map.GetAllLumieresPositions();
             case HowToGetPositions.UNION:
                 return GetUnion();
             default:
