@@ -12,8 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffefa0071a1b00144820ce20f6dca1b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cubeType: 0
+  cubeType: 4
   getPositionsHelper: {fileID: 3976951230864595563}
+--- !u!114 &2448399210531122324
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2005818113718561989}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9328a61df88f2a7488002e210a3744da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  offset: {x: 0, y: -1, z: 0}
 --- !u!114 &3976951230864595563
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35,7 +48,8 @@ MonoBehaviour:
   areaBoxHalfExtents: {x: 0, y: 0, z: 0}
   areaSphereCenter: {x: 0, y: 0, z: 0}
   areaSphereRadius: 0
-  modifiers: []
+  modifiers:
+  - {fileID: 2448399210531122324}
   unionGetters: []
 --- !u!1001 &2004253452606249415
 PrefabInstance:
@@ -95,7 +109,7 @@ PrefabInstance:
     - target: {fileID: 114622475871070300, guid: 4ad9af6763aeb45c8962c1fadb06c2eb,
         type: 3}
       propertyPath: endGameType
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 114622475871070300, guid: 4ad9af6763aeb45c8962c1fadb06c2eb,
         type: 3}
@@ -105,7 +119,7 @@ PrefabInstance:
     - target: {fileID: 114622475871070300, guid: 4ad9af6763aeb45c8962c1fadb06c2eb,
         type: 3}
       propertyPath: ejectionTreshold
-      value: -15
+      value: -25
       objectReference: {fileID: 0}
     - target: {fileID: 114622475871070300, guid: 4ad9af6763aeb45c8962c1fadb06c2eb,
         type: 3}

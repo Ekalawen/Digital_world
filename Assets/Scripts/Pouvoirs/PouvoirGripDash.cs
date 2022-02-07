@@ -56,7 +56,6 @@ public class PouvoirGripDash : IPouvoir {
         AddTargetingMultiplier();
         PlayReversedActivationClip();
         gm.pointeur.DisableMainPointeur();
-        Debug.Log($"StartTargeting");
         while (!timer.IsOver())
         {
             bool canGripDash = CanGripDash();
@@ -66,13 +65,11 @@ public class PouvoirGripDash : IPouvoir {
             {
                 if (canGripDash)
                 {
-                    Debug.Log($"Dash !");
                     UsePouvoir();
                     ApplyUsePouvoirConsequences();
                 }
                 else
                 {
-                    Debug.Log($"Not valid target !");
                     FailUse();
                 }
                 break;
@@ -80,10 +77,7 @@ public class PouvoirGripDash : IPouvoir {
             yield return null;
         }
         if (timer.IsOver()) {
-            Debug.Log($"End : Too Slow !");
             FailUse();
-        } else {
-            Debug.Log($"End : has clicked !");
         }
         gm.pointeur.EnableMainPointeur();
         DestroyPrevisualization(previsualizationObject);

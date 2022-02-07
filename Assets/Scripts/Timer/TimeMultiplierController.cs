@@ -66,4 +66,9 @@ public class TimeMultiplierController : MonoBehaviour {
     public void RemoveAllEnnemisMultipliers() {
         ennemiTimeMultipliers.Clear();
     }
+
+    public void RemoveAllMultipliers() {
+        timeMultipliers.Clear();
+        RemoveAllEnnemisMultipliers();
+    }
 }

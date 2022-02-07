@@ -487,6 +487,8 @@ public class EventManager : MonoBehaviour {
 
         gm.timerManager.StopScreenShake();
 
+        gm.timerManager.timeMultiplierController.RemoveAllMultipliers();
+
         gm.postProcessManager.StopTimeScaleVfx();
 
         QuitOrReloadInSeconds();
@@ -587,6 +589,8 @@ public class EventManager : MonoBehaviour {
         gm.soundManager.PlayVictoryClip();
 
         gm.timerManager.StopScreenShake();
+
+        gm.timerManager.timeMultiplierController.RemoveAllMultipliers();
 
         gm.postProcessManager.StopTimeScaleVfx();
 
