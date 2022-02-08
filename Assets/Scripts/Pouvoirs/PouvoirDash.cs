@@ -17,11 +17,21 @@ public class PouvoirDash : IPouvoir {
         currentPoussee = new Poussee(direction, duree, distance);
         player.AddPoussee(currentPoussee);
         player.RemoveAllNegativePoussees();
-        player.ResetGrip();
+        ResetGrip();
         RemoveGravityEffect(direction);
         StartVfx();
         gm.timerManager.timeMultiplierController.RemoveAllEnnemisMultipliers();
         return true;
+    }
+
+    protected void ResetGrip() {
+        player.ResetGrip();
+        StartCoroutine(CResetGripAtMidDash());
+    }
+
+    protected IEnumerator CResetGripAtMidDash() {
+        yield return new WaitForSeconds(duree / 2);
+        player.ResetGrip();
     }
 
     protected virtual void StartVfx() {
