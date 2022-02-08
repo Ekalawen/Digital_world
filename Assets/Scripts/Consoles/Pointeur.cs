@@ -26,6 +26,10 @@ public class Pointeur : MonoBehaviour {
     public Texture2D dashDefaultTexture;
     public List<Texture2D> textureByDashCharges;
 
+    [Header("GripDash")]
+    public Texture2D gripDefaultTexture;
+    public Texture2D gripTargetingTexture;
+
     protected GameManager gm;
     protected ChargeCooldown tripleDashChargeCooldown = null;
     protected NoAutomaticRechargeCooldown gripDashCooldown = null;
@@ -133,5 +137,13 @@ public class Pointeur : MonoBehaviour {
     public void EnableMainPointeur() {
         auSolPointeur.gameObject.SetActive(true);
         auMurPointeur.gameObject.SetActive(true);
+    }
+
+    public void SetDefaultGripPointeur() {
+        gripDashPointeur.texture = gripDefaultTexture;
+    }
+
+    public void SetTargetingGripPointeur() {
+        gripDashPointeur.texture = gripTargetingTexture;
     }
 }

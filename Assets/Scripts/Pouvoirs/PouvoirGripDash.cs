@@ -55,7 +55,7 @@ public class PouvoirGripDash : IPouvoir {
         GameObject previsualizationObject = CreatePrevisualization();
         AddTargetingMultiplier();
         PlayReversedActivationClip();
-        gm.pointeur.DisableMainPointeur();
+        SetTargetingPointeur();
         while (!timer.IsOver())
         {
             bool canGripDash = CanGripDash();
@@ -76,14 +76,25 @@ public class PouvoirGripDash : IPouvoir {
             }
             yield return null;
         }
-        if (timer.IsOver()) {
+        if (timer.IsOver())
+        {
             FailUse();
         }
-        gm.pointeur.EnableMainPointeur();
+        SetNotTargetingPointeur();
         DestroyPrevisualization(previsualizationObject);
         RemoveTargetingMultiplier();
         // Faudra se débrouiller pour mettre un cooldown de 1s (ou plus) ici ! :)
         targetingCoroutine = null;
+    }
+
+    protected void SetNotTargetingPointeur() {
+        gm.pointeur.EnableMainPointeur();
+        gm.pointeur.SetDefaultGripPointeur();
+    }
+
+    protected void SetTargetingPointeur() {
+        gm.pointeur.DisableMainPointeur();
+        gm.pointeur.SetTargetingGripPointeur();
     }
 
     protected void FailUse() {
