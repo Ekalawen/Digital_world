@@ -174,34 +174,56 @@ public class Player : Character {
         }
     }
 
-    public void SetPouvoir(GameObject pouvoirPrefab, PouvoirGiverItem.PouvoirBinding pouvoirBinding) {
-        switch (pouvoirBinding) {
+    public void SetPouvoir(GameObject pouvoirPrefab, PouvoirGiverItem.PouvoirBinding pouvoirBinding)
+    {
+        switch (pouvoirBinding)
+        {
             case PouvoirGiverItem.PouvoirBinding.A:
                 pouvoirA = pouvoirPrefab == null ? null : Instantiate(pouvoirPrefab, parent: this.transform).GetComponent<IPouvoir>();
-                if(pouvoirA != null) {
+                if (pouvoirA != null) {
                     pouvoirA.Initialize();
                 }
                 break;
             case PouvoirGiverItem.PouvoirBinding.E:
                 pouvoirE = pouvoirPrefab == null ? null : Instantiate(pouvoirPrefab, parent: this.transform).GetComponent<IPouvoir>();
-                if(pouvoirE != null) {
+                if (pouvoirE != null)
+                {
                     pouvoirE.Initialize();
                 }
                 break;
             case PouvoirGiverItem.PouvoirBinding.LEFT_CLICK:
                 pouvoirLeftBouton = pouvoirPrefab == null ? null : Instantiate(pouvoirPrefab, parent: this.transform).GetComponent<IPouvoir>();
-                if(pouvoirLeftBouton != null) {
+                if (pouvoirLeftBouton != null)
+                {
                     pouvoirLeftBouton.Initialize();
                 }
                 break;
             case PouvoirGiverItem.PouvoirBinding.RIGHT_CLICK:
                 pouvoirRightBouton = pouvoirPrefab == null ? null : Instantiate(pouvoirPrefab, parent: this.transform).GetComponent<IPouvoir>();
-                if(pouvoirRightBouton != null) {
+                if (pouvoirRightBouton != null)
+                {
                     pouvoirRightBouton.Initialize();
                 }
                 break;
         }
+
         gm.console.InitPouvoirsDisplays();
+
+        // Just kill me
+        switch (pouvoirBinding) { 
+            case PouvoirGiverItem.PouvoirBinding.A:
+                gm.console.ZoomInPouvoir(pouvoirA.GetPouvoirDisplay());
+                break;
+            case PouvoirGiverItem.PouvoirBinding.E:
+                gm.console.ZoomInPouvoir(pouvoirE.GetPouvoirDisplay());
+                break;
+            case PouvoirGiverItem.PouvoirBinding.LEFT_CLICK:
+                gm.console.ZoomInPouvoir(pouvoirLeftBouton.GetPouvoirDisplay());
+                break;
+            case PouvoirGiverItem.PouvoirBinding.RIGHT_CLICK:
+                gm.console.ZoomInPouvoir(pouvoirRightBouton.GetPouvoirDisplay());
+                break;
+        }
     }
 
     public void SetPouvoirsCooldownZeroSwap() {

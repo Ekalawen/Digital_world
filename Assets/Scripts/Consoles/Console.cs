@@ -62,6 +62,9 @@ public class Console : MonoBehaviour {
     public PouvoirDisplayInGame pouvoirDisplayE;
     public PouvoirDisplayInGame pouvoirDisplayLeftClick;
     public PouvoirDisplayInGame pouvoirDisplayRightClick;
+    public float pouvoirZoomInScale = 5.0f;
+    public float pouvoirZoomInDuration = 1.5f;
+    public AnimationCurve pouvoirZoomInCurve;
 
     [Header("Links")]
 	public GameObject consoleBackground; // Là où l'on va afficher les lignes
@@ -1059,7 +1062,7 @@ public class Console : MonoBehaviour {
         InitPouvoir(player.GetPouvoirRightClick(), pouvoirDisplayRightClick);
     }
 
-    protected void InitPouvoir(IPouvoir pouvoir, PouvoirDisplayInGame display) {
+    public void InitPouvoir(IPouvoir pouvoir, PouvoirDisplayInGame display) {
         display.Initialize(pouvoir);
         if (pouvoir != null) {
             pouvoir.SetPouvoirDisplay(display);
@@ -1298,5 +1301,12 @@ public class Console : MonoBehaviour {
         TMP_Text text = deathAstuce.GetComponentInChildren<TMP_Text>();
         text.text = text.text.Substring(0, text.text.Count() - 1) + " "; // Delete ending '\n'
         text.text += handle.Result;
+    }
+
+    public void ZoomInPouvoir(PouvoirDisplayInGame pouvoirDisplay) {
+        RectTransform pouvoirRect = pouvoirDisplay.GetComponent<RectTransform>();
+        Vector3 initialScale = pouvoirRect.localScale;
+        pouvoirRect.localScale = Vector3.one * pouvoirZoomInScale;
+        LeanTween.scale(pouvoirRect, initialScale, pouvoirZoomInDuration).setEase(pouvoirZoomInCurve);
     }
 }

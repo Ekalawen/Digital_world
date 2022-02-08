@@ -244,21 +244,25 @@ public class FirstBoss : Sonde {
         StartCoroutine(CStartParticlesGainPouvoir());
         yield return new WaitForSeconds(timeBeforeGivingDash);
         GiveDash333();
-        yield return new WaitForSeconds(timeAfterGivingDash);
+        yield return new WaitForSeconds(gm.console.pouvoirZoomInDuration);
+        GivePathfinder5();
+        yield return new WaitForSeconds(timeAfterGivingDash - gm.console.pouvoirZoomInDuration);
 
         controller.vitesse = oldVitesse;
     }
 
-    protected void GiveDash333()
-    {
+    protected void GiveDash333() {
         PouvoirGiverItem.PouvoirBinding pouvoirBindingLeft = PouvoirGiverItem.PouvoirBinding.LEFT_CLICK;
         player.SetPouvoir(pouvoirDash333Prefab, pouvoirBindingLeft);
-        PouvoirGiverItem.PouvoirBinding pouvoirBindingA = PouvoirGiverItem.PouvoirBinding.A;
-        player.SetPouvoir(pouvoirPathfinder5Prefab, pouvoirBindingA);
         IPouvoir pouvoir = player.GetPouvoirLeftClick().GetComponent<IPouvoir>();
         gm.console.CapturePouvoirGiverItem(pouvoir.nom, pouvoirBindingLeft, gm.console.strings.pouvoirGiverDash333SubPhrase);
         gm.pointeur.Initialize();
         gm.soundManager.PlayGainDash333();
+    }
+
+    protected void GivePathfinder5() {
+        PouvoirGiverItem.PouvoirBinding pouvoirBindingA = PouvoirGiverItem.PouvoirBinding.A;
+        player.SetPouvoir(pouvoirPathfinder5Prefab, pouvoirBindingA);
     }
 
     protected IEnumerator CStartParticlesGainPouvoir() {
