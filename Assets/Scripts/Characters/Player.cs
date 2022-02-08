@@ -296,20 +296,34 @@ public class Player : Character {
         Quaternion rotationAvant = camera.transform.rotation;
         Vector3 forwardAvant = camera.transform.forward;
 
+        // On clamp la rotation sur l'axe haut-bas
+        // Ce block-là de code règle à lui tout seul le problème !
+        // Mais parfois, on peut passer "outre" cette barrière sans que je comprenne comment.
+        // C'est pour ça que j'ai laissé les 2 autres blocs suivants !
+        float tresholdAngle = 0.01f; // degrées, et le plus petit possible pour que l'on ne s'en rende pas compte :3
+        if (currentRotation.x < 0) {
+            float angleForwardAvant2Up = Mathf.Abs(Vector3.SignedAngle(forwardAvant, up, cameraRight));
+            currentRotation.x = Mathf.Max(currentRotation.x, - (angleForwardAvant2Up - tresholdAngle));
+        } else if (currentRotation.x > 0) {
+            float angleForwardAvant2Down = Mathf.Abs(Vector3.SignedAngle(forwardAvant, -up, cameraRight));
+            currentRotation.x = Mathf.Min(currentRotation.x, angleForwardAvant2Down - tresholdAngle);
+        }
+
         // On tourne
         camera.transform.RotateAround(camera.transform.position, cameraRight, currentRotation.x);
         camera.transform.RotateAround(camera.transform.position, up, currentRotation.y);
 
         // Si on a dépassé le up avec la rotation, alors la rotation est remise "en arrière"
-        float tresholdAngle = 0.01f; // degrées, et le plus petit possible pour que l'on ne s'en rende pas compte :3
         float dot = Vector3.Dot(camera.transform.forward, up);
         Vector3 cross1 = Vector3.Cross(forwardAvant, up);
         Vector3 cross2 = Vector3.Cross(camera.transform.forward, up);
-        if (Vector3.Dot(cross1, cross2) < 0) { // Si ils ne sont pas dans le même sens !
+        if (Vector3.Dot(cross1, cross2) < 0)
+        { // Si ils ne sont pas dans le même sens !
             float angle = Vector3.Angle(up * Mathf.Sign(dot), camera.transform.forward);
             float halfAngle = tresholdAngle / 2.0f;
             camera.transform.forward = Quaternion.AngleAxis(Mathf.Sign(dot) * (angle + halfAngle), cross2) * camera.transform.forward;
         }
+        //dot = Vector3.Dot(camera.transform.forward, up); // Je pense qu'il devrait y avoir cette ligne, mais ne s'est pas révélé nécessaire pour le moment !
 
         // On remet le up dans le bon sens si on peut, sinon on cap le vecteur au treshold !
         Vector3 tresholdVector = Quaternion.AngleAxis(tresholdAngle, right) * up;
@@ -318,7 +332,7 @@ public class Player : Character {
             if (bSetUpRotation)
                 camera.transform.LookAt(camera.transform.position + camera.transform.forward, up);
         } else {
-            Debug.Log("PING !");
+            //Debug.Log("PING !");
             Vector3 axe = Vector3.Cross(up * Mathf.Sign(dot), camera.transform.forward);
             Vector3 recherche = Quaternion.AngleAxis(tresholdAngle, axe) * up * Mathf.Sign(dot);
             if (bSetUpRotation)
