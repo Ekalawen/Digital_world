@@ -33,6 +33,7 @@ public class Console : MonoBehaviour {
     public List<TimedMessage> timedMessages;
     public ConsoleStrings strings;
     public LocalizedString customInitMessage = null;
+    public bool dontDisplayAnythingOnInit = false;
     public LocalizedString customWinMessage = null;
 
     [Header("OnLumiereCapturedMessages")]
@@ -187,8 +188,19 @@ public class Console : MonoBehaviour {
         }
     }
 
-    public virtual void PremiersMessages() {
+    public virtual void PremiersMessages()
+    {
         DisplayLevelName();
+
+        DisplayInitMessage();
+
+        PremierGrandConseil();
+    }
+
+    protected void DisplayInitMessage() {
+        if(dontDisplayAnythingOnInit) {
+            return;
+        }
 
         bool displayImportant = customInitMessage.IsEmpty;
         if (gm.GetMapType() == MenuLevel.LevelType.REGULAR) {
@@ -197,11 +209,9 @@ public class Console : MonoBehaviour {
             VaAussiLoinQueTuPeux(displayImportant);
         }
 
-        if(!displayImportant) {
+        if (!displayImportant) {
             AjouterMessageImportant(customInitMessage, TypeText.BLUE_TEXT, 3);
         }
-
-        PremierGrandConseil();
     }
 
     protected void DisplayLevelName() {
