@@ -11,6 +11,8 @@ using Steamworks;
 
 public class MenuManager : MonoBehaviour {
 
+    public enum LocaleIndice { FRENCH = 0, ENGLISH = 1 };
+
     static MenuManager _instance;
     public static MenuManager Instance { get { return _instance ?? (_instance = new GameObject().AddComponent<MenuManager>()); } }
 
@@ -186,16 +188,30 @@ public class MenuManager : MonoBehaviour {
 
     protected IEnumerator CSetSavedLocale() {
         // Wait for the localization system to initialize, loading Locales, preloading etc.
-        Debug.Log($"Initializing locale ...");
+        Debug.Log($"Initializing localization ...");
         yield return LocalizationSettings.InitializationOperation;
         Debug.Log($"Initialization done !");
 
         if (PrefsManager.HasKey(PrefsManager.LOCALE_INDEX_KEY)) {
-            Debug.Log($"Setting new locale ...");
+            Debug.Log($"Setting saved selected locale ...");
             int index = PrefsManager.GetInt(PrefsManager.LOCALE_INDEX_KEY, 0);
             LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[index];
-            Debug.Log($"New locale = {LocalizationSettings.SelectedLocale}");
+        } else if (SteamManager.Initialized) { // The player haven't set his prefered locale yet! :)
+            Debug.Log($"Setting Steam current locale ...");
+            string steamLocale = SteamApps.GetCurrentGameLanguage();
+            switch (steamLocale) {
+                case "french":
+                    LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[(int)LocaleIndice.FRENCH];
+                    break;
+                case "english":
+                    LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[(int)LocaleIndice.ENGLISH];
+                    break;
+                default:
+                    LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[(int)LocaleIndice.ENGLISH];
+                    break;
+            }
         }
+        Debug.Log($"Locale = {LocalizationSettings.SelectedLocale}");
     }
 
     protected void LogSteamUserInfos() {
