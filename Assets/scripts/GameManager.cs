@@ -30,6 +30,7 @@ public class GameManager : MonoBehaviour {
     public GameObject historyManagerPrefab; // Pour retenir des infos sur la partie !
     public GameObject flockManagerPrefab; // Pour gérer les flock controllers !
     public GameObject cheatCodeManagerPrefab; // Pour gérer les cheat codes ! :)
+    public GameObject steamInGameManagerPrefab; // Pour gérer les callbacks de Steam en jeu ! :)
     public GameObject goalManagerPrefab; // Pour gérer les goal tresholds ! :)
 
     [HideInInspector]
@@ -65,6 +66,8 @@ public class GameManager : MonoBehaviour {
     [HideInInspector]
     public CheatCodeManager cheatCodeManager;
     [HideInInspector]
+    public SteamInGameManager steamInGameManager;
+    [HideInInspector]
     public GoalManager goalManager;
     [HideInInspector]
     public GameObject managerFolder;
@@ -87,6 +90,7 @@ public class GameManager : MonoBehaviour {
     void Start () {
         StartFullScreen();
         managerFolder = new GameObject("Managers");
+        steamInGameManager = Instantiate(steamInGameManagerPrefab, managerFolder.transform).GetComponent<SteamInGameManager>();
         timerManager = Instantiate(timerManagerPrefab, managerFolder.transform).GetComponent<TimerManager>();
         gravityManager = Instantiate(gravityManagerPrefab, managerFolder.transform).GetComponent<GravityManager>();
         goalManager = Instantiate(goalManagerPrefab, managerFolder.transform).GetComponent<GoalManager>();
@@ -111,6 +115,7 @@ public class GameManager : MonoBehaviour {
 
     protected virtual void Initialize()
     {
+        steamInGameManager.Initialize();
         timerManager.Initialize();
         gravityManager.Initialize();
         goalManager.Initialize();
