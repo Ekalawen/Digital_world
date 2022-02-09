@@ -603,4 +603,8 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
     public bool IsInInput() {
         return input.isFocused;
     }
+
+    public void HideTooltipOnSelectInput() {
+        Tooltip.Hide();
+    }
 }
