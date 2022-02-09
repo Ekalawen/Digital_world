@@ -7,6 +7,7 @@ using UnityEngine.Localization.Settings;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Steamworks;
 
 public class MenuManager : MonoBehaviour {
 
@@ -37,6 +38,7 @@ public class MenuManager : MonoBehaviour {
     }
 
     private void Start() {
+        LogSteamUserInfos();
         SetSavedLocale();
         menuBouncingBackground.Initialize();
         SetRandomBackgroundIfNeeded();
@@ -193,6 +195,15 @@ public class MenuManager : MonoBehaviour {
             int index = PrefsManager.GetInt(PrefsManager.LOCALE_INDEX_KEY, 0);
             LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[index];
             Debug.Log($"New locale = {LocalizationSettings.SelectedLocale}");
+        }
+    }
+
+    protected void LogSteamUserInfos() {
+        if(SteamManager.Initialized) {
+            string name = SteamFriends.GetPersonaName();
+            Debug.Log($"Steam Persona Name = {name}");
+        } else {
+            Debug.Log($"Steam is not Initialized.");
         }
     }
 
