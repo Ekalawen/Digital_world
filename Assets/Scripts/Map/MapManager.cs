@@ -28,6 +28,7 @@ public class MapManager : MonoBehaviour {
 	public GameObject indestructibleCubePrefab; // On récupère ce qu'est qu'un cube indestructible ! :)
 	public GameObject brisableCubePrefab; // On récupère ce qu'est qu'un cube brisable ! :)
 	public GameObject bouncyCubePrefab; // On récupère ce qu'est qu'un cube bouncy ! :)
+	public GameObject gravityCubePrefab; // On récupère ce qu'est qu'un gravity cube ! :)
     public GameObject transparentCubePrefab; // On récupère ce qu'est qu'un cube transparent ! :)
     public GameObject specialCubePrefab; // On récupère ce qu'est qu'un cube special ! :)
 
@@ -220,6 +221,8 @@ public class MapManager : MonoBehaviour {
                 return brisableCubePrefab;
             case Cube.CubeType.TRANSPARENT:
                 return transparentCubePrefab;
+            case Cube.CubeType.GRAVITY:
+                return gravityCubePrefab;
             case Cube.CubeType.SPECIAL:
                 return specialCubePrefab;
         }
