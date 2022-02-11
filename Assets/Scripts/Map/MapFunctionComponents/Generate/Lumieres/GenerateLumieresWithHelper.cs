@@ -7,6 +7,7 @@ public class GenerateLumieresWithHelper : GenerateLumieresMapFunction {
     public int nbDatas = 0;
     public GetEmptyPositionsHelper emptyPositionsHelper;
     public bool dontRoundPositions = false;
+    public bool optimallySpaced = false;
 
     protected List<Lumiere> lumieres = new List<Lumiere>();
 

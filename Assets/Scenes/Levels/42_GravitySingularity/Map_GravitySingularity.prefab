@@ -1,5 +1,27 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &2946939264346570417
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3491683289375989780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c06eda6246b11f645aa770dcaa175bdf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 0
+  tresholdLightExplosion: 2
+  shouldThrowLightningToNewLumiere: 1
+  lightningPrefab: {fileID: 866659798568190786, guid: 8bb23970a6759dd468e900db5c32b84e,
+    type: 3}
+  geoData:
+    color: {r: 23.968628, g: 22.211765, b: 0.3764706, a: 1}
+    type: 1
+    duration: 1.5
+    targetObject: {fileID: 0}
 --- !u!114 &3025770646919561989
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26,28 +48,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce701536c965fb847a885590e740ebf0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &9125583737823260496
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3491683289375989780}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1570afb766fecbf4e887fce8adb513c7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cubeType: 0
-  generateMode: 1
-  nbToProtect: 0
-  proportionToProtect: 1
-  couronneSize: 1
-  destroyAlreadyExistingCubes: 1
-  destroyAlreadyExistingCubesInMapBordures: 0
-  setLinky: 1
-  setLumiereInaccessible: 0
-  makeOneDirectionHole: 0
 --- !u!1 &2202235790649601679
 GameObject:
   m_ObjectHideFlags: 0
@@ -93,7 +93,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cubeType: 8
   generateMode: 1
-  nbToProtect: 5
+  nbToProtect: 10
   proportionToProtect: 1
   couronneSize: 1.5
   destroyAlreadyExistingCubes: 0
@@ -149,9 +149,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lumiereType: 0
-  nbDatas: 5
+  nbDatas: 10
   emptyPositionsHelper: {fileID: 466211042933685894}
   dontRoundPositions: 1
+  optimallySpaced: 0
 --- !u!114 &466211042933685894
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -210,7 +211,7 @@ MonoBehaviour:
   optimalySpacedNbPositions: 0
   optimalySpacedNbTriesByPosition: 0
   optimalySpacedMode: 0
-  areaBoxCenter: {x: 9.5, y: 9.2, z: 9.5}
+  areaBoxCenter: {x: 8.5, y: 8.5, z: 8.5}
   areaBoxHalfExtents: {x: 6, y: 6, z: 6}
   areaSphereCenter: {x: 0, y: 0, z: 0}
   areaSphereRadius: 0
@@ -230,6 +231,57 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offset: {x: 0.5, y: 0.5, z: 0.5}
+--- !u!1 &6751853185367224947
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7819349057465087684}
+  - component: {fileID: 5097387132418377880}
+  m_Layer: 0
+  m_Name: Polycubes
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7819349057465087684
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6751853185367224947}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 3486787986693338068}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5097387132418377880
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6751853185367224947}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c25a6d5dc97fb65459fedb9a6a2f4d58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cubeType: 0
+  generationMode: 1
+  nbPolycubes: 1
+  nbInitCubesRange: {x: 8, y: 16}
+  makeSpaceArroundAtEndDistance: 3
+  stayInMap: 0
+  chosingVoisinsMethodType: 1
+  coefChosingMethod: 5
 --- !u!1 &8037047865112866511
 GameObject:
   m_ObjectHideFlags: 0
@@ -288,11 +340,11 @@ MonoBehaviour:
   caveOffsetFromSidesXZandY: {x: 2, y: 2}
   useCaveFixedOffset: 1
   useCaveFixedOffsetX: 1
-  caveFixedOffsetX: 7
+  caveFixedOffsetX: 6
   useCaveFixedOffsetY: 1
-  caveFixedOffsetY: 7
+  caveFixedOffsetY: 6
   useCaveFixedOffsetZ: 1
-  caveFixedOffsetZ: 7
+  caveFixedOffsetZ: 6
   nbOuverturesOnSides: 1
   allowOuverturesInCorners: 0
 --- !u!1001 &1852852803430356768
@@ -305,33 +357,33 @@ PrefabInstance:
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: tailleMap.x
-      value: 20
+      value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: tailleMap.y
-      value: 20
+      value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: tailleMap.z
-      value: 20
+      value: 18
       objectReference: {fileID: 0}
+    - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
+        type: 3}
+      propertyPath: lumierePrefab
+      value: 
+      objectReference: {fileID: 5381103575702469303, guid: f899de7a00fe31348a5b385af576c5f8,
+        type: 3}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: nbLumieresInitial
-      value: 16
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
-      propertyPath: lumiereSpecialePrefab
-      value: 
-      objectReference: {fileID: 4673521011829340170, guid: 782deb9b32782ac4d8289aaa1ebcd71b,
-        type: 3}
-    - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
-        type: 3}
       propertyPath: mapFunctionComponents.Array.size
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
@@ -352,22 +404,22 @@ PrefabInstance:
         type: 3}
       propertyPath: mapFunctionComponents.Array.data[3]
       value: 
-      objectReference: {fileID: 4167669547922767134}
+      objectReference: {fileID: 5097387132418377880}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: mapFunctionComponents.Array.data[4]
       value: 
-      objectReference: {fileID: 2043507741530955010}
+      objectReference: {fileID: 4167669547922767134}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: mapFunctionComponents.Array.data[5]
       value: 
-      objectReference: {fileID: 6533042795328261037}
+      objectReference: {fileID: 2043507741530955010}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: mapFunctionComponents.Array.data[6]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 6533042795328261037}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: mapFunctionComponents.Array.data[7]
