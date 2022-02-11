@@ -22,11 +22,16 @@ public class SingleEventAddGenerator : SingleEvent {
         }
     }
 
-    public void AddGenerator() {
-        Vector3 pos = gm.map.GetFreeRoundedLocation();
+    public void AddGenerator()
+    {
+        Vector3 pos = GetGeneratorPos();
         IGenerator generator = Instantiate(generatorPrefab, pos, Quaternion.identity, parent: gm.map.zonesFolder).GetComponent<IGenerator>();
         generator.Initialize();
         AddGeoPointToGenerator(generator.transform.position);
+    }
+
+    protected Vector3 GetGeneratorPos() {
+        return useRandomStartPosition ? gm.map.GetFreeRoundedLocation() : customStartPosition;
     }
 
     protected void AddGeoPointToGenerator(Vector3 position) {

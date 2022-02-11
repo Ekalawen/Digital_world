@@ -56,10 +56,12 @@ MonoBehaviour:
   lightningPrefab: {fileID: 8725588450735506554, guid: f19400e69a5f00143942de1fb6b2f8b4,
     type: 3}
   orbTrigger: {fileID: 9219331088902830557}
-  ennemiPrefab: {fileID: 0}
+  ennemiPrefab: {fileID: 1252573298759596, guid: d49852f29496f46858edc6834aef370d,
+    type: 3}
   nbEnnemisMax: 10
   destroyEnnemisOnDestruction: 1
-  ennemiLightningLinkPrefab: {fileID: 0}
+  ennemiLightningLinkPrefab: {fileID: 8725588450735506554, guid: bffa0d74fb62bd5468b53e3da8e89142,
+    type: 3}
   useCustomWaitingTime: 1
   customWaitingTime: 1
 --- !u!114 &1118714730375862096
@@ -76,10 +78,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   howToGetPositions: 0
   nbCubesVoisins: 4
-  modifiers: []
   optimalySpacedNbPositions: 0
   optimalySpacedNbTriesByPosition: 0
   optimalySpacedMode: 0
+  areaBoxCenter: {x: 0, y: 0, z: 0}
+  areaBoxHalfExtents: {x: 0, y: 0, z: 0}
+  areaSphereCenter: {x: 0, y: 0, z: 0}
+  areaSphereRadius: 0
+  caveOffsetFromSides: 0
+  modifiers: []
+  unionGetters: []
 --- !u!1001 &814098241384081988
 PrefabInstance:
   m_ObjectHideFlags: 0
