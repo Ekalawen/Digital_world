@@ -1,17 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class MapContainer : CubeEnsemble {
 
     Vector3 origin;
     Vector3 nbCubesParAxe;
-    List<Mur> murs;
+    Dictionary<Vector3, Mur> murs; // The key is the direction of the wall !
 
     public MapContainer(Vector3 origin, Vector3 nbCubesParAxe) : base() {
         this.origin = origin;
         this.nbCubesParAxe = nbCubesParAxe;
-        this.murs = new List<Mur>();
+        this.murs = new Dictionary<Vector3, Mur>();
 
         GenerateMapContainer();
     }
@@ -38,32 +39,32 @@ public class MapContainer : CubeEnsemble {
         int z = (int)nbCubesParAxe[2];
         // bas
         Mur mur = new Mur(origin, Vector3.right, x, Vector3.forward, z);
-        murs.Add(mur);
+        murs[Vector3.down] = mur;
         cubes.AddRange(mur.GetCubes());
         // haut
         mur = new Mur(origin + Vector3.up * (y - 1), Vector3.right, x, Vector3.forward, z);
-        murs.Add(mur);
+        murs[Vector3.up] = mur;
         cubes.AddRange(mur.GetCubes());
         // gauche
         mur = new Mur(origin, Vector3.forward, z, Vector3.up, y);
-        murs.Add(mur);
+        murs[Vector3.left] = mur;
         cubes.AddRange(mur.GetCubes());
         // droite
         mur = new Mur(origin + Vector3.right * (x - 1), Vector3.forward, z, Vector3.up, y);
-        murs.Add(mur);
+        murs[Vector3.right] = mur;
         cubes.AddRange(mur.GetCubes());
         // avant
         mur = new Mur(origin, Vector3.right, x, Vector3.up, y);
-        murs.Add(mur);
+        murs[Vector3.forward] = mur;
         cubes.AddRange(mur.GetCubes());
         // arrière
         mur = new Mur(origin + Vector3.forward * (z - 1), Vector3.right, x, Vector3.up, y);
-        murs.Add(mur);
+        murs[Vector3.back] = mur;
         cubes.AddRange(mur.GetCubes());
     }
 
     public List<Mur> GetMurs() {
-        return murs;
+        return murs.Values.ToList();
     }
 
     public Vector3 GetCenter() {
@@ -80,5 +81,13 @@ public class MapContainer : CubeEnsemble {
         res.Add(center + Vector3.forward * ((nbCubesParAxe.z - 1) / 2.0f + offset));
         res.Add(center + Vector3.back * ((nbCubesParAxe.z - 1) / 2.0f + offset));
         return res;
+    }
+
+    public Mur GetMurInDirection(Vector3 direction) {
+        if(murs.ContainsKey(direction)) {
+            return murs[direction];
+        }
+        Debug.LogError($"Direction invalide ({direction}) pour GetMurInDirection !");
+        return null;
     }
 }

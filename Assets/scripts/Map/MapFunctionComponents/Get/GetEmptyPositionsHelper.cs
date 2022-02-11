@@ -16,6 +16,7 @@ public class GetEmptyPositionsHelper : MonoBehaviour {
         IN_SPHERE_AREA,
         UNION,
         OF_DATA,
+        IN_CAVES,
     };
 
     public HowToGetPositions howToGetPositions = HowToGetPositions.ALL;
@@ -35,6 +36,8 @@ public class GetEmptyPositionsHelper : MonoBehaviour {
     public Vector3 areaSphereCenter = Vector3.zero;
     [ConditionalHide("howToGetPositions", HowToGetPositions.IN_SPHERE_AREA)]
     public float areaSphereRadius = 0f;
+    [ConditionalHide("howToGetPositions", HowToGetPositions.IN_CAVES)]
+    public int caveOffsetFromSides = 0;
     public List<GetHelperModifier> modifiers;
     public List<GetEmptyPositionsHelper> unionGetters;
 
@@ -72,6 +75,8 @@ public class GetEmptyPositionsHelper : MonoBehaviour {
                 return GetInSphereArea();
             case HowToGetPositions.OF_DATA:
                 return map.GetAllLumieresPositions();
+            case HowToGetPositions.IN_CAVES:
+                return GetInCaves();
             case HowToGetPositions.UNION:
                 return GetUnion();
             default:
@@ -127,5 +132,15 @@ public class GetEmptyPositionsHelper : MonoBehaviour {
             res.AddRange(getter.Get());
         }
         return res;
+    }
+
+    protected List<Vector3> GetInCaves() {
+        List<Cave> caves = map.GetMapElementsOfType<Cave>();
+        List<Vector3> posInCaves = new List<Vector3>();
+        foreach(Cave cave in caves) {
+            posInCaves.AddRange(cave.GetAllFreeLocations(caveOffsetFromSides));
+        }
+        posInCaves = posInCaves.Distinct().ToList();
+        return posInCaves;
     }
 }

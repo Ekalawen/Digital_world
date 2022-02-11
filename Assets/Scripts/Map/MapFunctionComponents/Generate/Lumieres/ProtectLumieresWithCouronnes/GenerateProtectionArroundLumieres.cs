@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -11,10 +12,12 @@ public class GenerateProtectionArroundLumieres : GenerateCubesMapFunction {
     public int nbToProtect = 0;
     [ConditionalHide("generateMode", GenerateMode.PROPORTION)]
     public float proportionToProtect = 1.0f;
+    public float couronneSize = 1;
     public bool destroyAlreadyExistingCubes = true;
     public bool destroyAlreadyExistingCubesInMapBordures = false;
     public bool setLinky = true;
     public bool setLumiereInaccessible = false;
+    public bool makeOneDirectionHole = false;
 
     public override void Activate() {
         int nbLumieres = map.GetLumieres().Count;
@@ -66,7 +69,21 @@ public class GenerateProtectionArroundLumieres : GenerateCubesMapFunction {
     }
 
     protected MapContainer CreateCouronne(Vector3 position) {
-        MapContainer couronne = MapContainer.CreateFromCenter(position, Vector3.one);
+        MapContainer couronne = MapContainer.CreateFromCenter(position, Vector3.one * couronneSize);
+        if(makeOneDirectionHole) {
+            RemoveCubesOfCouronneInOneDirection(couronne);
+        }
         return couronne;
+    }
+
+    protected void RemoveCubesOfCouronneInOneDirection(MapContainer couronne) {
+        Vector3 randomDirection = MathTools.ChoseOne(new List<Vector3>() { Vector3.right, Vector3.up, Vector3.forward });
+        Mur murAvant = couronne.GetMurInDirection(randomDirection);
+        Mur murArriere = couronne.GetMurInDirection(-randomDirection);
+        List<Cube> cubesInMurs = murAvant.GetCubesNotInEdges();
+        cubesInMurs.AddRange(murArriere.GetCubesNotInEdges());
+        foreach(Cube cube in cubesInMurs) {
+            map.DeleteCube(cube);
+        }
     }
 }

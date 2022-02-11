@@ -49,4 +49,29 @@ public class Mur : CubeEnsemble {
 			}
 		}
 	}
+
+    public List<Cube> GetCubesNotInEdges() {
+        return GetCubes().FindAll(c => !IsInEdge(c.transform.position));
+    }
+
+    public bool IsInEdge(Vector3 pos) {
+        // On veut la position de la pos dans le référenciel du mur
+        float distInDir1 = Vector3.Project(pos - depart, direction1).magnitude;
+        float distInDir2 = Vector3.Project(pos - depart, direction2).magnitude;
+        if(distInDir1 >= 0
+        && distInDir2 >= 0
+        && distInDir1 <= nbCubesInDirection1 - 1
+        && distInDir2 <= nbCubesInDirection2 - 1) { // Check that we are in the bounding box
+            if (MathTools.IsInteger(distInDir1)
+             && MathTools.IsInteger(distInDir2)) {
+                if (distInDir1 == 0
+                    || distInDir1 == nbCubesInDirection1 - 1
+                    || distInDir2 == 0
+                    || distInDir2 == nbCubesInDirection2 - 1) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }
