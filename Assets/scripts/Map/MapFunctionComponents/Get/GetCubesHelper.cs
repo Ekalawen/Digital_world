@@ -16,6 +16,7 @@ public class GetCubesHelper : MonoBehaviour {
         IN_CUBE_ENSEMBLES,
         CAVES_OPENINGS,
         WITH_N_VOISINS,
+        AROUND_EMPTY_POSITIONS,
     };
 
     public enum HowToGetCubesInCubesEnsembles {
@@ -46,6 +47,10 @@ public class GetCubesHelper : MonoBehaviour {
     public float cubeEnsembleProportion = 0.5f;
     [ConditionalHide("howToGetCubes", HowToGetCubes.WITH_N_VOISINS)]
     public int nbCubesVoisins = 4;
+    [ConditionalHide("howToGetCubes", HowToGetCubes.AROUND_EMPTY_POSITIONS)]
+    public GetEmptyPositionsHelper getEmptyPositionsHelper;
+    [ConditionalHide("howToGetCubes", HowToGetCubes.AROUND_EMPTY_POSITIONS)]
+    public int cubeDistanceFromEmptyPositions = 1;
     public List<GetHelperModifier> modifiers;
 
     protected MapManager map;
@@ -85,6 +90,8 @@ public class GetCubesHelper : MonoBehaviour {
                 return GetCubesInCavesOpenings();
             case HowToGetCubes.WITH_N_VOISINS:
                 return GetCubesWithNVoisins(nbCubesVoisins);
+            case HowToGetCubes.AROUND_EMPTY_POSITIONS:
+                return GetCubesAroundEmptyPositions();
             default:
                 return null;
         }
@@ -139,6 +146,15 @@ public class GetCubesHelper : MonoBehaviour {
 
     protected List<Cube> GetCubesWithNVoisins(int n) {
         List<Cube> cubes = map.GetAllCubes().FindAll(c => map.GetVoisinsPleinsAll(c.transform.position).Count == n).ToList();
+        return cubes;
+    }
+
+    protected List<Cube> GetCubesAroundEmptyPositions() {
+        List<Vector3> positions = getEmptyPositionsHelper.Get();
+        List<Cube> cubes = new List<Cube>();
+        foreach(Vector3 pos in positions) {
+            cubes.AddRange(map.GetCubesAtLessThanCubeDistance(pos, cubeDistanceFromEmptyPositions));
+        }
         return cubes;
     }
 }
