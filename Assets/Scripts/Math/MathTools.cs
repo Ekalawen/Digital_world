@@ -258,7 +258,7 @@ public static class MathTools
     };
 
     public static List<Vector3> GetAllOrthogonalNormals() {
-        return orthogonalNormals;
+        return orthogonalNormals.Select(n => n).ToList();
     }
 
     public static Vector3 SanitizeIfOrthogonal(Vector3 vector) {

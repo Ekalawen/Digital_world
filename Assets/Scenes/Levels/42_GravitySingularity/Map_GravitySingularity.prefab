@@ -93,7 +93,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cubeType: 8
   generateMode: 1
-  nbToProtect: 10
+  nbToProtect: 6
   proportionToProtect: 1
   couronneSize: 1.5
   destroyAlreadyExistingCubes: 0
@@ -149,7 +149,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lumiereType: 0
-  nbDatas: 10
+  nbDatas: 6
   emptyPositionsHelper: {fileID: 466211042933685894}
   dontRoundPositions: 1
   optimallySpaced: 0
@@ -329,6 +329,57 @@ MonoBehaviour:
   caveOffsetFromSides: 0
   modifiers: []
   unionGetters: []
+--- !u!1 &4289940408104738504
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6409625024007312805}
+  - component: {fileID: 1724191069688093071}
+  m_Layer: 0
+  m_Name: PairBouncerLumiere
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6409625024007312805
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4289940408104738504}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 3486787986693338068}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1724191069688093071
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4289940408104738504}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cda7d28ba91b9d47932968157b403bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cubeType: 5
+  nbDirections: 6
+  voidCubeExplosionDistance: 5
+  makeCreatedCubeAccessible: 1
+  cubeTypeToMakeAccessible: 0
+  distanceFromCreatedCube: 2
+  lumiereType: 0
+  distanceOfLumiereFromCube: 9
 --- !u!1 &6751853185367224947
 GameObject:
   m_ObjectHideFlags: 0
@@ -375,7 +426,7 @@ MonoBehaviour:
   cubeType: 0
   generationMode: 1
   nbPolycubes: 1
-  nbInitCubesRange: {x: 8, y: 16}
+  nbInitCubesRange: {x: 6, y: 12}
   makeSpaceArroundAtEndDistance: 3
   stayInMap: 0
   chosingVoisinsMethodType: 1
@@ -475,13 +526,19 @@ PrefabInstance:
         type: 3}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
+      propertyPath: bouncyCubePrefab
+      value: 
+      objectReference: {fileID: 4585703993930882564, guid: c54d52ad6644b194d8f5b7e72507bc95,
+        type: 3}
+    - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
+        type: 3}
       propertyPath: nbLumieresInitial
-      value: 10
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: mapFunctionComponents.Array.size
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
@@ -512,12 +569,12 @@ PrefabInstance:
         type: 3}
       propertyPath: mapFunctionComponents.Array.data[5]
       value: 
-      objectReference: {fileID: 4167669547922767134}
+      objectReference: {fileID: 1724191069688093071}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: mapFunctionComponents.Array.data[6]
       value: 
-      objectReference: {fileID: 2043507741530955010}
+      objectReference: {fileID: 4167669547922767134}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: mapFunctionComponents.Array.data[7]
@@ -633,17 +690,5 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ce20223adc62b6845bc5123c0a0e50e1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &2043507741530955010 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 427095087306705442, guid: 800ea353fd52f8f458146bc8a84ea83e,
-    type: 3}
-  m_PrefabInstance: {fileID: 1852852803430356768}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3491683289375989780}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0716ac14acd11b04098252bb48503da1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
