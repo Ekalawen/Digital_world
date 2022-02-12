@@ -137,6 +137,7 @@
     <Compile Include="Assets\Scripts\Pouvoirs\IPouvoir.cs" />
     <Compile Include="Assets\Scripts\Autres\MirrorReflection.cs" />
     <Compile Include="Assets\Scripts\Scans\GeoSphere\GeoData.cs" />
+    <Compile Include="Assets\Scripts\Map\MapFunctionComponents\Generate\GeneratePairBouncerDataAtMapExtremities.cs" />
     <Compile Include="Assets\Scripts\UI\UIHelper.cs" />
     <Compile Include="Assets\Scripts\Map\MapElements\Cube\Cube.cs" />
     <Compile Include="Assets\Imported\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeB.cs" />
@@ -552,7 +553,6 @@
     <Compile Include="Assets\Scripts\UI\Menu\Utilitaires\VersionNumber.cs" />
     <Compile Include="Assets\Textures\UI\Pointeurs\CursorsAndCrosshairs\CursorChanger.cs" />
     <Compile Include="Assets\Scripts\Map\MapFunctionComponents\Get\GetCubesHelper.cs" />
-    <Compile Include="Assets\Scripts\Map\MapFunctionComponents\Generate\GeneratePairBouncerDataAtMapExtremities.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Texts\DataHackees\15-16_ToLearnIntersection\DHtoLearnIntersectionFromConstantDestructionFR.txt" />
@@ -593,7 +593,7 @@
     <None Include="Assets\Texts\Archives\24_SondesOptimisation\ArchivesSondesOptimisation_NewEN.txt" />
     <None Include="Assets\Texts\Archives\12_RadarWave\ArchivesRadarWaveEN.txt" />
     <None Include="Assets\Imported\EZ Camera Shake\Docs\licence_MIT.txt" />
-    <None Include="Assets\Texts\DataHackees\49_Synchronium\DHto_SynchroniumFR.txt" />
+    <None Include="Assets\Texts\DataHackees\49_ToSynchronium\DHto_SynchroniumFR.txt" />
     <None Include="Assets\Texts\DataHackees\25_ToFirstTracers\DHtoFirstTracersEN.txt" />
     <None Include="Assets\Texts\DataHackees\46_ToDataProliferation\DHtoDataProliferationEN.txt" />
     <None Include="Assets\Texts\Archives\06_LearnEndEvent\ArchivesLearnEndEventEN.txt" />
@@ -629,6 +629,7 @@
     <None Include="Assets\Texts\DataHackees\01_ToFirstLevel\DHtoFirstLevelEN.txt" />
     <None Include="Assets\Texts\DataHackees\19-20-21_ToLearnPathfinding\DHtoLearnPathfindingFromFurtiveGridFR.txt" />
     <None Include="Assets\Texts\DataHackees\26_ToAlwaysReset\DHtoAlwaysResetEN.txt" />
+    <None Include="Assets\Texts\Archives\41_GravitySingularity\Archives_GravitySingularityEN.txt" />
     <None Include="Assets\Texts\Archives\30_FirstDataSondes\ArchivesFirstDataSondes_NewEN.txt" />
     <None Include="Assets\Texts\Archives\17_LearnPathfinding\ArchivesLearnPathfinding_NewEN.txt" />
     <None Include="Assets\Imported\LeanTween\License.txt" />
@@ -654,6 +655,7 @@
     <None Include="Assets\Texts\DataHackees\32-33_ToFullSwapPolycubes\DHtoFullSwapPolycubesFromAlwaysResetFR.txt" />
     <None Include="Assets\Texts\Archives\23_FullSwapPolycubes\ArchivesFullSwapPolycubesEN.txt" />
     <None Include="Assets\Texts\DataHackees\ToDiscoverOfTracers\DHtoDiscoverOfTracersFR.txt" />
+    <None Include="Assets\Texts\DataHackees\50_ToGravitySingularity\DHto_GravitySingularityEN.txt" />
     <None Include="Assets\Texts\Archives\NormalSize20\ArchivesNormalSize20FR.txt" />
     <None Include="Assets\Texts\Archives\05_DiscoverOfSondes\ArchivesDiscoverOfSondes_NewFR.txt" />
     <None Include="Assets\Texts\DataHackees\34-35_ToOrbTriggerFactory\DHtoOrbTriggerFactoryFromSondesOptimisationEN.txt" />
@@ -686,6 +688,7 @@
     <None Include="Assets\Texts\DataHackees\34-35_ToOrbTriggerFactory\DHtoOrbTriggerFactoryFromFullSwapPolycubesFR.txt" />
     <None Include="Assets\Texts\Archives\11_ConstantDestruction\ConstantDestruction_EndLoops.txt" />
     <None Include="Assets\Texts\Archives\16_FurtiveGrid\ArchivesFurtiveGrid_NewFR.txt" />
+    <None Include="Assets\Texts\Archives\41_GravitySingularity\Archives_GravitySingularityFR.txt" />
     <None Include="Assets\Texts\DataHackees\19-20-21_ToLearnPathfinding\DHtoLearnPathfindingFromLearnIntersectionEN.txt" />
     <None Include="Assets\Texts\Archives\__EmptyArchives\Archives_EmptyEN.txt" />
     <None Include="Assets\Texts\Archives\_DernierNiveau\DernierNiveauBrouillon_NewFR.txt" />
@@ -776,7 +779,7 @@
     <None Include="Assets\Texts\DataHackees\48_ToBipartiteWorld\DHto_BipartiteWorldEN.txt" />
     <None Include="Assets\Texts\Archives\04_SecondRunner\ArchivesSecondRunner_NewEN.txt" />
     <None Include="Assets\Texts\DataHackees\32-33_ToFullSwapPolycubes\DHtoFullSwapPolycubesFromAlwaysResetEN.txt" />
-    <None Include="Assets\Texts\DataHackees\49_Synchronium\DHto_SynchroniumEN.txt" />
+    <None Include="Assets\Texts\DataHackees\49_ToSynchronium\DHto_SynchroniumEN.txt" />
     <None Include="Assets\Texts\Archives\11_ConstantDestruction\ArchivesConstantDestructionFR.txt" />
     <None Include="Assets\Texts\Archives\31_FirstBoss\ArchivesFirstBossFR.txt" />
     <None Include="Assets\Imported\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
@@ -785,6 +788,7 @@
     <None Include="Assets\Texts\Archives\33_DeadlyPurges\ArchivesDeadlyPurgesEN.txt" />
     <None Include="Assets\Texts\Archives\10_ParkourTraining\ArchivesParkourTrainingFR.txt" />
     <None Include="Assets\Texts\Archives\05_DiscoverOfSondes\ArchivesDiscoverOfSondesFR.txt" />
+    <None Include="Assets\Texts\DataHackees\50_ToGravitySingularity\DHto_GravitySingularityFR.txt" />
     <None Include="Assets\Texts\Archives\28_TracerGeneration\ArchivesTracerGeneration_NewEN.txt" />
     <None Include="Assets\Texts\Archives\28_TracerGeneration\ArchivesTracerGenerationFR.txt" />
     <None Include="Assets\Texts\Archives\17_LearnPathfinding\ArchivesLearnPathfindingEN.txt" />
