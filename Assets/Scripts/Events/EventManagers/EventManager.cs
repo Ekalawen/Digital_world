@@ -289,20 +289,32 @@ public class EventManager : MonoBehaviour {
         return nbCubesToDo;
     }
 
-    protected void OrderPositionsFarFromPlayerAndPos(Vector3 centerPos, List<Vector3> allEmptyPositions) {
+    protected void OrderPositionsFarFromPlayerAndPos(Vector3 pos, List<Vector3> allEmptyPositions) {
         Vector3 playerPos = gm.player.transform.position;
+        Vector3 capsuleCenter = (pos + playerPos) / 2;
+        float capsuleRadius = 0.0f;
+        Vector3 lineVector = (pos - playerPos);
+        Quaternion capsuleRotation = Quaternion.FromToRotation(Vector3.up, lineVector.normalized);
+        float capsuleHeight = lineVector.magnitude;
         allEmptyPositions.Sort(delegate (Vector3 A, Vector3 B) {
-            float distToA = Mathf.Min(Vector3.Distance(A, centerPos), Vector3.Distance(A, playerPos));
-            float distToB = Mathf.Min(Vector3.Distance(B, centerPos), Vector3.Distance(B, playerPos));
+            // We don't use MathTools.LinePointDistance because we want to cache the computation of the quaternion ! :)
+            float distToA = MathTools.CapsuleRotatedPointDistance(capsuleCenter, capsuleRadius, capsuleRotation, capsuleHeight, A);
+            float distToB = MathTools.CapsuleRotatedPointDistance(capsuleCenter, capsuleRadius, capsuleRotation, capsuleHeight, B);
             return distToB.CompareTo(distToA);
         });
     }
 
-    protected void OrderCubesFarFromPlayerAndPos(Vector3 centerPos, List<Cube> cubes) {
+    protected void OrderCubesFarFromPlayerAndPos(Vector3 pos, List<Cube> cubes) {
         Vector3 playerPos = gm.player.transform.position;
+        Vector3 capsuleCenter = (pos + playerPos) / 2;
+        float capsuleRadius = 0.0f;
+        Vector3 lineVector = (pos - playerPos);
+        Quaternion capsuleRotation = Quaternion.FromToRotation(Vector3.up, lineVector.normalized);
+        float capsuleHeight = lineVector.magnitude;
         cubes.Sort(delegate (Cube A, Cube B) {
-            float distToA = Mathf.Min(Vector3.Distance(A.transform.position, centerPos), Vector3.Distance(A.transform.position, playerPos));
-            float distToB = Mathf.Min(Vector3.Distance(B.transform.position, centerPos), Vector3.Distance(B.transform.position, playerPos));
+            // We don't use MathTools.LinePointDistance because we want to cache the computation of the quaternion ! :)
+            float distToA = MathTools.CapsuleRotatedPointDistance(capsuleCenter, capsuleRadius, capsuleRotation, capsuleHeight, A.transform.position);
+            float distToB = MathTools.CapsuleRotatedPointDistance(capsuleCenter, capsuleRadius, capsuleRotation, capsuleHeight, B.transform.position);
             return distToB.CompareTo(distToA);
         });
     }

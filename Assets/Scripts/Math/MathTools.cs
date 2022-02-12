@@ -80,7 +80,7 @@ public static class MathTools
         float totalWeight = weights.Sum();
         float randomNumber = UnityEngine.Random.Range(0f, 1f) * totalWeight;
         float sum = 0;
-        for(int i = 0; i < weights.Count; i++) {
+        for (int i = 0; i < weights.Count; i++) {
             sum += weights[i];
             if (randomNumber <= sum)
                 return vector[i];
@@ -91,7 +91,7 @@ public static class MathTools
     public static bool AreListEqual<T>(List<T> l1, List<T> l2) {
         if (l1.Count != l2.Count)
             return false;
-        for(int i = 0; i < l1.Count; i++) {
+        for (int i = 0; i < l1.Count; i++) {
             if (!l1[i].Equals(l2[i]))
                 return false;
         }
@@ -220,11 +220,60 @@ public static class MathTools
 
     // The capsule is vertical !
     public static bool CapsuleSphere(Vector3 capsuleCenter, float capsuleRadius, float capsuleHeight, Vector3 sphereCenter, float sphereRadius) {
+        float distance = CapsuleSphereDistance(capsuleCenter, capsuleRadius, capsuleHeight, sphereCenter, sphereRadius);
+        return distance < 0;
+    }
+
+    // The capsule is vertical !
+    public static float CapsuleSphereDistance(Vector3 capsuleCenter, float capsuleRadius, float capsuleHeight, Vector3 sphereCenter, float sphereRadius) {
         float topOfCylinder = capsuleCenter.y + (capsuleHeight / 2 - capsuleRadius);
         float bottomOfCylinder = capsuleCenter.y - (capsuleHeight / 2 - capsuleRadius);
         Vector3 closestPointOfCylinder = new Vector3(capsuleCenter.x, Mathf.Clamp(sphereCenter.y, bottomOfCylinder, topOfCylinder), capsuleCenter.z);
-        float distance = Vector3.Distance(closestPointOfCylinder, sphereCenter);
-        return distance <= capsuleRadius + sphereRadius;
+        float distance = Vector3.Distance(closestPointOfCylinder, sphereCenter) - sphereRadius - capsuleRadius;
+        return distance;
+    }
+
+    public static bool CapsuleRotatedSphere(Vector3 capsuleCenter, float capsuleRadius, Quaternion capsuleRotation, float capsuleHeight, Vector3 sphereCenter, float sphereRadius) {
+        Quaternion alignRotation = Quaternion.Inverse(capsuleRotation);
+        Vector3 newCapsuleCenter = alignRotation * capsuleCenter;
+        Vector3 newSphereCenter = alignRotation * sphereCenter;
+        bool collision = CapsuleSphere(newCapsuleCenter, capsuleRadius, capsuleHeight, newSphereCenter, sphereRadius);
+        return collision;
+    }
+
+    public static float CapsuleRotatedSphereDistance(Vector3 capsuleCenter, float capsuleRadius, Quaternion capsuleRotation, float capsuleHeight, Vector3 sphereCenter, float sphereRadius) {
+        Quaternion alignRotation = Quaternion.Inverse(capsuleRotation);
+        Vector3 newCapsuleCenter = alignRotation * capsuleCenter;
+        Vector3 newSphereCenter = alignRotation * sphereCenter;
+        float distance = CapsuleSphereDistance(newCapsuleCenter, capsuleRadius, capsuleHeight, newSphereCenter, sphereRadius);
+        return distance;
+    }
+
+    public static bool CapsuleRotatedPoint(Vector3 capsuleCenter, float capsuleRadius, Quaternion capsuleRotation, float capsuleHeight, Vector3 point) {
+        return CapsuleRotatedSphere(capsuleCenter, capsuleRadius, capsuleRotation, capsuleHeight, point, 0.0f);
+    }
+
+    public static float CapsuleRotatedPointDistance(Vector3 capsuleCenter, float capsuleRadius, Quaternion capsuleRotation, float capsuleHeight, Vector3 point) { return CapsuleRotatedSphereDistance(capsuleCenter, capsuleRadius, capsuleRotation, capsuleHeight, point, 0.0f);
+    }
+
+    public static bool CapsulePoint(Vector3 capsuleCenter, float capsuleRadius, float capsuleHeight, Vector3 point) {
+        return CapsuleSphere(capsuleCenter, capsuleRadius, capsuleHeight, point, 0.0f);
+    }
+
+    public static bool LinePoint(Vector3 linePoint1, Vector3 linePoint2, Vector3 point) {
+        Vector3 capsuleCenter = (linePoint1 + linePoint2) / 2;
+        float capsuleRadius = 0;
+        Quaternion capsuleRotation = Quaternion.FromToRotation(Vector3.up, (linePoint1 - linePoint2).normalized);
+        float capsuleHeight = (linePoint1 - linePoint2).magnitude;
+        return CapsuleRotatedPoint(capsuleCenter, capsuleRadius, capsuleRotation, capsuleHeight, point);
+    }
+
+    public static float LinePointDistance(Vector3 linePoint1, Vector3 linePoint2, Vector3 point) {
+        Vector3 capsuleCenter = (linePoint1 + linePoint2) / 2;
+        float capsuleRadius = 0;
+        Quaternion capsuleRotation = Quaternion.FromToRotation(Vector3.up, (linePoint1 - linePoint2).normalized);
+        float capsuleHeight = (linePoint1 - linePoint2).magnitude;
+        return CapsuleRotatedPointDistance(capsuleCenter, capsuleRadius, capsuleRotation, capsuleHeight, point);
     }
 
     // The cylinder is vertical !
