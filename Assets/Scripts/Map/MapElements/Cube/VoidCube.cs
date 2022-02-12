@@ -6,6 +6,9 @@ using UnityEngine;
 
 public class VoidCube : NonBlackCube {
 
+    public static float GLOBAL_LOSE_TIME_TIMER_DURATION = 1.0f;
+    public static Timer globalLoseTimeTimer = null;
+
     [Header("Explosion")]
     public float explosionRange = 5.0f;
     public float explosionDuration = 0.1f;
@@ -79,7 +82,13 @@ public class VoidCube : NonBlackCube {
     }
 
     protected void DivideTime() {
-        gm.timerManager.DivideTimeBy(2, EventManager.DeathReason.TOUCHED_DEATH_CUBE); // Never supposed to kill !
+        if(globalLoseTimeTimer == null) {
+            globalLoseTimeTimer = new Timer(GLOBAL_LOSE_TIME_TIMER_DURATION, setOver: true);
+        }
+        if (globalLoseTimeTimer.IsOver()) {
+            gm.timerManager.DivideTimeBy(2, EventManager.DeathReason.TOUCHED_DEATH_CUBE); // Never supposed to kill !
+            globalLoseTimeTimer.Reset();
+        }
     }
 
     protected void DestroyAllNearByCubes() {
