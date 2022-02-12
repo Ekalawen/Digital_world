@@ -61,7 +61,8 @@ public class EventManager : MonoBehaviour {
 
     [Header("Endgame")]
     public float endGameDuration = 20.0f;
-    public float endGameFrameRate = 0.2f;
+    public float endGameFrameRate = 0.1f;
+    public float endGameRecomputePositionsOrder = 0.2f;
     public AnimationCurve endEventCurveSpeed;
     public EndEventType endGameType = EndEventType.DEATH_CUBES;
     public EndEventCubesSelectionMethod endEventCubesSelectionMethod = EndEventCubesSelectionMethod.FAR_FROM_PLAYER_AND_POS;
@@ -365,6 +366,7 @@ public class EventManager : MonoBehaviour {
 
         Timer endGameTimer = new Timer(endGameDuration);
         Timer timerSoundRate = new Timer(endGameFrameRate);
+        Timer timerComputePositionsOrder = new Timer(endGameRecomputePositionsOrder, setOver: true);
         int nbTotalDeathCubesToCreate = allEmptyPositions.Count;
         int nbDeathCubesCreated = 0;
         deathCubes = new List<Cube>();
@@ -374,10 +376,13 @@ public class EventManager : MonoBehaviour {
         }
 
         while (allEmptyPositions.Count > 0) {
-            if (endEventCubesSelectionMethod == EndEventCubesSelectionMethod.FAR_FROM_PLAYER_AND_POS) {
-                OrderPositionsFarFromPlayerAndPos(centerPos, allEmptyPositions);
-            } else if (endEventCubesSelectionMethod == EndEventCubesSelectionMethod.FAR_FROM_POS) {
-                OrderPositionsFarFromPos(centerPos, allEmptyPositions);
+            if (timerComputePositionsOrder.IsOver()) {
+                if (endEventCubesSelectionMethod == EndEventCubesSelectionMethod.FAR_FROM_PLAYER_AND_POS) {
+                    OrderPositionsFarFromPlayerAndPos(centerPos, allEmptyPositions);
+                } else if (endEventCubesSelectionMethod == EndEventCubesSelectionMethod.FAR_FROM_POS) {
+                    OrderPositionsFarFromPos(centerPos, allEmptyPositions);
+                }
+                timerComputePositionsOrder.Reset();
             }
 
             int nbDeathCubesToCreate = GetNbCubesToDo(allEmptyPositions.Count, nbTotalDeathCubesToCreate, nbDeathCubesCreated, endGameTimer);
@@ -394,6 +399,7 @@ public class EventManager : MonoBehaviour {
 
         Timer endGameTimer = new Timer(endGameDuration);
         Timer timerSoundRate = new Timer(endGameFrameRate);
+        Timer timerComputePositionsOrder = new Timer(endGameRecomputePositionsOrder, setOver: true);
         int nbTotalCubesToDestroy = cubes.Count;
         int nbCubesToReach = 0;
         if(endGameType == EndEventType.CUBES_DESTRUCTIONS_PARTIAL) {
@@ -407,7 +413,10 @@ public class EventManager : MonoBehaviour {
             cubes = map.GetAllCubes().FindAll(c => !c.IsDecomposing());
             if (cubes.Count == 0) break;
 
-            OrderCubesAccordingToMethod(centerPos, cubes);
+            if (timerComputePositionsOrder.IsOver()) {
+                OrderCubesAccordingToMethod(centerPos, cubes);
+                timerComputePositionsOrder.Reset();
+            }
 
             int nbCubesToDestroy = GetNbCubesToDo(cubes.Count, nbTotalCubesToDestroy, nbCubesDestroyed, endGameTimer);
             Vector3 barycentre = DestroyFirstCubes(cubes, nbCubesToDestroy);
