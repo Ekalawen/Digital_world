@@ -1,5 +1,51 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1362900437420997778
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3077903407863920013}
+  - component: {fileID: 6012400953233008479}
+  m_Layer: 0
+  m_Name: Labyrinthe
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3077903407863920013
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1362900437420997778}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 3486787986693338068}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6012400953233008479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1362900437420997778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2368810dd178685408e859ee520e34e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cubeType: 0
+  largeurCouloir: 2
+  tailleMapToUse: {x: 22, y: 22}
 --- !u!114 &-537994261774405887
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -70,22 +116,22 @@ PrefabInstance:
         type: 3}
       propertyPath: mapFunctionComponents.Array.data[0]
       value: 
-      objectReference: {fileID: 4167669547922767134}
+      objectReference: {fileID: 6012400953233008479}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: mapFunctionComponents.Array.data[1]
       value: 
-      objectReference: {fileID: 2043507741530955010}
+      objectReference: {fileID: 4167669547922767134}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: mapFunctionComponents.Array.data[2]
       value: 
-      objectReference: {fileID: 734699495214234829}
+      objectReference: {fileID: 2043507741530955010}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: mapFunctionComponents.Array.data[3]
       value: 
-      objectReference: {fileID: 6143485247214545936}
+      objectReference: {fileID: 734699495214234829}
     - target: {fileID: 3009060673421440820, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: m_Name
@@ -154,18 +200,12 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1852852803430356768}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &6143485247214545936 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5545246735722281776, guid: 800ea353fd52f8f458146bc8a84ea83e,
+--- !u!4 &3486787986693338068 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3014360596586505460, guid: 800ea353fd52f8f458146bc8a84ea83e,
     type: 3}
   m_PrefabInstance: {fileID: 1852852803430356768}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3491683289375989780}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e16be9d76b3301458de84003b78a55e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &4167669547922767134 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2332915810247092798, guid: 800ea353fd52f8f458146bc8a84ea83e,
