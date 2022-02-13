@@ -80,8 +80,8 @@ public class SelectorManager : MonoBehaviour {
         verticalMenuHandler.Initialize();
         selectorTarget.Initialize();
         GatherLevels();
-        ApplyCompressionFactor();
         GatherPaths();
+        ApplyCompressionFactor();
         //background.Initialize();
         //background.SetParameters(0, 0, 0, new List<ColorManager.Theme>() { ColorManager.Theme.ROUGE });
         background.gameObject.SetActive(false);
@@ -600,6 +600,11 @@ public class SelectorManager : MonoBehaviour {
             Vector3 position = capsule.transform.position;
             position.y *= compressionFactor.y;
             capsule.transform.position = position;
+        }
+        foreach(SelectorPath path in paths) {
+            foreach(GameObject point in path.intermediatePoints) {
+                point.transform.position = MathTools.VecMul(point.transform.position, compressionFactor);
+            }
         }
     }
 }
