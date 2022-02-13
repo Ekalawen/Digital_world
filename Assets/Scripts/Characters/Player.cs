@@ -720,7 +720,7 @@ public class Player : Character {
         Cube cube = hit.gameObject.GetComponent<Cube>();
         //// Si on a touché un cube spécial, on fait une action !
         //if (cube != null && DoubleCheckInteractWithCube(cube)) { // Pourquoi j'avais mis ce doublecheck déjà ? :/
-        if (cube != null) {
+        if (cube != null && DoubleCheckInteractWithCube(cube)) { // Parce que souvent le moteur physique fait de la merde ! ==> Ca se voit bien quand il y a un cube de la mort 3 cube au-dessus de nous. Sans ça on le moteur physique penserait que l'on "touche" ce cube !! (ce qui n'est pas le cas)
             cube.InteractWithPlayer();
             cube = gm.map.GetCubeAt(cube.transform.position); // Car on veut s'assurer que l'on n'a pas détruit le cube entre temps ! (avec le PowerDash et un cube brisable !)
         }
