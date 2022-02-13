@@ -264,7 +264,7 @@ public class InputManager : MonoBehaviour {
 
     public bool GetPauseReturnToMenu() {
         if (GetCurrentKeybindingType() != KeybindingType.CONTROLLER) {
-            return Input.GetKeyDown(KeyCode.Space);
+            return Input.GetKeyDown(KeyCode.F1);
         }
         return false;
     }

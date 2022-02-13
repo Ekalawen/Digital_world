@@ -220,6 +220,7 @@ MonoBehaviour:
       m_KeyId: 0
       m_Key: 
     m_FallbackState: 0
+  dontDisplayAnythingOnInit: 0
   customWinMessage:
     m_TableReference:
       m_TableCollectionName: 
@@ -297,6 +298,8 @@ MonoBehaviour:
   dataCountDisplayer: {fileID: 5535761474826577570}
   frameRateManager: {fileID: 1775038234891251630}
   deathAstuce: {fileID: 3434280659339857269}
+  selectorManagerPrefab: {fileID: 3396177535230050445, guid: 05984be892311994e968884a39b96d7e,
+    type: 3}
   gm: {fileID: 0}
   map: {fileID: 0}
   player: {fileID: 0}
@@ -934,6 +937,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_textInfo.characterCount
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6780613252375756956, guid: 7e5b062f52285df47a71b8d50939aa95,
+        type: 3}
+      propertyPath: isInGame
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8048471265298033819, guid: 7e5b062f52285df47a71b8d50939aa95,
         type: 3}

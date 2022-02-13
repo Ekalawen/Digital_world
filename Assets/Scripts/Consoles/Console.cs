@@ -76,6 +76,7 @@ public class Console : MonoBehaviour {
     public CounterDisplayer dataCountDisplayer;
     public FrameRateManager frameRateManager;
     public GameObject deathAstuce;
+    public GameObject selectorManagerPrefab; // Used to know if it is a demo or not ! x)
 
 
     [HideInInspector]
@@ -1318,5 +1319,9 @@ public class Console : MonoBehaviour {
         Vector3 initialScale = pouvoirRect.localScale;
         pouvoirRect.localScale = Vector3.one * pouvoirZoomInScale;
         LeanTween.scale(pouvoirRect, initialScale, pouvoirZoomInDuration).setEase(pouvoirZoomInCurve);
+    }
+
+    public bool IsDemo() {
+        return selectorManagerPrefab.GetComponent<SelectorManager>().isDemo;
     }
 }

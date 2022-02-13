@@ -132,7 +132,7 @@ public class MenuOptions : MonoBehaviour {
     }
 
     protected void CheckForEscape() {
-        if(Input.GetKeyDown(KeyCode.Escape) && menuOptions.activeSelf == true) {
+        if(Input.GetKeyDown(KeyCode.Escape) && menuOptions.activeInHierarchy == true) {
             if(isInGame || !MenuManager.DISABLE_HOTKEYS) {
                 Back();
             }
