@@ -17,6 +17,7 @@ public class GenerateRandomFilling : GenerateCubesMapFunction {
 
     [Header("How to Fill")]
     public float proportionRandomFilling = 0.02f;
+    public bool useSureMethodForSelection = false;
     public int sizeCubeRandomFilling = 1; // Ca peut être intéressant d'augmenter cette taille ! :)
     public bool registerToColorSources = false;
     public bool setDissolveTime = false;
@@ -54,7 +55,9 @@ public class GenerateRandomFilling : GenerateCubesMapFunction {
     }
 
     protected List<Vector3> SelectPositionsInZone(List<Vector3> posInZone) {
-        List<Vector3> selectedPos = GaussianGenerator.SelectSomeProportionOfNaiveMethod<Vector3>(posInZone, proportionRandomFilling);
+        List<Vector3> selectedPos = !useSureMethodForSelection ?
+            GaussianGenerator.SelectSomeProportionOfNaiveMethod<Vector3>(posInZone, proportionRandomFilling)
+          : GaussianGenerator.SelectSomeProportionOfSureMethod<Vector3>(posInZone, proportionRandomFilling);
         if (selectedPos.Count < minNbBlocks) {
             posInZone.RemoveAll(p => selectedPos.Contains(p));
             selectedPos.AddRange(GaussianGenerator.SelecteSomeNumberOf(posInZone, minNbBlocks - selectedPos.Count));

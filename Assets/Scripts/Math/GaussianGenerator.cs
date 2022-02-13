@@ -62,6 +62,11 @@ public class GaussianGenerator {
         return res;
     }
 
+    public static List<T> SelectSomeProportionOfSureMethod<T>(List<T> l, float proportion) {
+        int quantity = Mathf.RoundToInt(l.Count * proportion);
+        return SelecteSomeNumberOf(l, quantity);
+    }
+
     public static List<T> SelecteSomeNumberOf<T>(List<T> l, int number) {
         if (number > l.Count)
             Debug.LogError("Impossible d'extraire cette quantité d'éléments de cette liste !");

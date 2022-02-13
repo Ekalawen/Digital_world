@@ -105,21 +105,6 @@ public class GenerateVerticalLabyrinthe : GenerateCubesMapFunction {
         return grid;
     }
 
-    //protected void CreateCubesInWallsOfGrid() {
-    //    cubesFolder = new GameObject("VerticalLabyrinthe").transform;
-    //    cubesFolder.SetParent(map.cubesFolder.transform);
-    //    HashSet<Tuple<Cell, Cell>> pairsDone = new HashSet<Tuple<Cell, Cell>>();
-    //    foreach(Cell cell in grid) {
-    //        foreach(Cell voisin in cell.voisins) {
-    //            if(!pairsDone.Contains(new Tuple<Cell, Cell>(cell, voisin))) {
-    //                CreateWallBetween(cell, voisin);
-    //                pairsDone.Add(new Tuple<Cell, Cell>(voisin, cell));
-    //            }
-    //        }
-    //        CreateEdgeWallsAround(cell);
-    //    }
-    //}
-
     protected void CreateCubesInWallsOfGrid() {
         cubesFolder = new GameObject("VerticalLabyrinthe").transform;
         cubesFolder.SetParent(map.cubesFolder.transform);
@@ -161,7 +146,7 @@ public class GenerateVerticalLabyrinthe : GenerateCubesMapFunction {
 
     protected void CreateColonne(Vector2Int pos) {
         Vector3 departColonne = new Vector3(pos.x, 0, pos.y);
-        murs.Add(new Mur(departColonne, Vector3.up, map.tailleMap.y, Vector3.forward, 1));
+        murs.Add(new Mur(departColonne, Vector3.up, map.tailleMap.y + 1, Vector3.forward, 1));
     }
 
     protected bool IsEdge(Vector2Int pos) {

@@ -430,7 +430,7 @@ public class MapManager : MonoBehaviour {
         return cubes;
     }
 
-    public List<Vector3> GetEmptyLocationsInBox(Vector3 center, Vector3 halfExtents) {
+    public List<Vector3> GetEmptyPositionsInBox(Vector3 center, Vector3 halfExtents) {
         List<Vector3> emptyPositions = new List<Vector3>();
         int xMin = (int)Mathf.Ceil(center.x - halfExtents.x);
         int xMax = (int)Mathf.Floor(center.x + halfExtents.x);
@@ -473,6 +473,12 @@ public class MapManager : MonoBehaviour {
         List<Cube> cubesInRange = GetCubesInBox(center, Vector3.one * cubeDistance);
         cubesInRange = cubesInRange.FindAll(c => MathTools.CubeDistance(c.transform.position, center) <= cubeDistance);
         return cubesInRange;
+    }
+
+    public List<Vector3> GetEmptyPositionsAtLessThanCubeDistance(Vector3 center, int cubeDistance) {
+        List<Vector3> positionsInRange = GetEmptyPositionsInBox(center, Vector3.one * cubeDistance);
+        positionsInRange = positionsInRange.FindAll(p => MathTools.CubeDistance(p, center) <= cubeDistance);
+        return positionsInRange;
     }
 
     public List<Cube> GetCubesInLocation(Vector3 roundedLocation) {

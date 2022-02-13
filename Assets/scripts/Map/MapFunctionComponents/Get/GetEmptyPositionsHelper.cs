@@ -123,7 +123,7 @@ public class GetEmptyPositionsHelper : MonoBehaviour {
     }
 
     protected List<Vector3> GetInBoxArea() {
-        return map.GetEmptyLocationsInBox(areaBoxCenter, areaBoxHalfExtents);
+        return map.GetEmptyPositionsInBox(areaBoxCenter, areaBoxHalfExtents);
     }
 
     protected List<Vector3> GetUnion() {

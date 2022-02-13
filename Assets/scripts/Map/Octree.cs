@@ -109,7 +109,7 @@ public class Octree<T> where T : MonoBehaviour {
         List<Vector3Int> cells = GetCellsInBox(center, halfExtents);
         foreach(Vector3Int cell in cells) {
             CubeInt cellCube = GetCubeIntFromCell(cell);
-            cubes.AddRange(octree[cell].FindAll(c => cellCube.Contains(c.transform.position)));
+            cubes.AddRange(octree[cell].FindAll(c => MathTools.VecAllLower(MathTools.DistanceLInfiniV3(c.transform.position, center), halfExtents)));
         }
         return cubes;
     }
