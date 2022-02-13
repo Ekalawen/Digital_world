@@ -127,10 +127,19 @@ public class SelectorManager : MonoBehaviour {
 
     protected void GatherPaths() {
         paths = new List<SelectorPath>();
-        foreach(Transform child in pathsFolder) {
+        GatherPathsInFolder(pathsFolder);
+    }
+
+    protected void GatherPathsInFolder(Transform folder) {
+        if(folder.name == "NotVisiblePaths") {
+            return;
+        }
+        foreach(Transform child in folder) {
             SelectorPath path = child.gameObject.GetComponent<SelectorPath>();
             if (path != null) {
                 paths.Add(path);
+            } else {
+                GatherPathsInFolder(child);
             }
         }
     }
@@ -143,10 +152,19 @@ public class SelectorManager : MonoBehaviour {
 
     protected void GatherLevels() {
         levels = new List<SelectorLevel>();
-        foreach(Transform child in levelsFolder) {
+        GatherLevelsInFolder(levelsFolder);
+    }
+
+    protected void GatherLevelsInFolder(Transform folder) {
+        if(folder.name == "NotVisibleLevels" || folder.name == "Colliders") {
+            return;
+        }
+        foreach(Transform child in folder) {
             SelectorLevel level = child.gameObject.GetComponent<SelectorLevel>();
             if (level != null) {
                 levels.Add(level);
+            } else {
+                GatherLevelsInFolder(child);
             }
         }
     }
