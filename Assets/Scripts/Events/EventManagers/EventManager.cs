@@ -409,17 +409,17 @@ public class EventManager : MonoBehaviour {
         int nbCubesDestroyed = 0;
 
         while (ShouldKeepDestroyingCubes(cubes.Count, nbCubesToReach, endGameTimer)) {
-            // Pour récupérer les cubes crées pendant la destruction de la map !
-            cubes = map.GetAllCubes().FindAll(c => !c.IsDecomposing());
-            if (cubes.Count == 0) break;
-
             if (timerComputePositionsOrder.IsOver()) {
+                // Pour récupérer les cubes crées pendant la destruction de la map !
+                cubes = map.GetAllCubes().FindAll(c => !c.IsDecomposing());
+                if (cubes.Count == 0) break;
                 OrderCubesAccordingToMethod(centerPos, cubes);
                 timerComputePositionsOrder.Reset();
             }
 
             int nbCubesToDestroy = GetNbCubesToDo(cubes.Count, nbTotalCubesToDestroy, nbCubesDestroyed, endGameTimer);
             Vector3 barycentre = DestroyFirstCubes(cubes, nbCubesToDestroy);
+            cubes = cubes.Skip(nbCubesToDestroy).ToList();
             nbCubesDestroyed += nbCubesToDestroy;
 
             PlaySoundRate(timerSoundRate, nbCubesToDestroy, barycentre);

@@ -20,6 +20,8 @@ public class LumiereEscape : Lumiere {
 
     [Header("Escape")]
     public int nbLives = 2;
+    public bool shouldRecover = false;
+    [ConditionalHide("shouldRecover")]
     public float durationToRecoverLife = 3.0f;
     public GameObject lightningPrefab;
     public GeoData geoData;
@@ -88,6 +90,9 @@ public class LumiereEscape : Lumiere {
     }
 
     protected void RecoverLifeIn() {
+        if(!shouldRecover) {
+            return;
+        }
         if(recoverLifeCoroutine != null) {
             StopCoroutine(recoverLifeCoroutine);
             recoverLifeCoroutine = null;
