@@ -10,6 +10,7 @@ public class SoundBankIngame : ScriptableObject {
 
     public AudioClipParams createCubeClips;
     public AudioClipParams getLumiereClips;
+    public AudioClipParams escapeDataRecoverLifeClips;
     public AudioClipParams getItemClips;
     public AudioClipParams failActionClips;
 

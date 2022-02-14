@@ -184,6 +184,9 @@ public class SoundManager : MonoBehaviour
         //source.spatialBlend = 1.0f;
         PlayClipsOnSource(sounds.getLumiereClips, pos);
     }
+    public void PlayEscapeLumiereRecoverLife(Vector3 pos) {
+        PlayClipsOnSource(sounds.escapeDataRecoverLifeClips, pos);
+    }
     public void PlayGetItemClip(Vector3 pos)
     {
         PlayClipsOnSource(sounds.getItemClips, pos);

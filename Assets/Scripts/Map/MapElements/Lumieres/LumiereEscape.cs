@@ -20,6 +20,7 @@ public class LumiereEscape : Lumiere {
 
     [Header("Escape")]
     public int nbLives = 2;
+    public float durationToRecoverLife = 3.0f;
     public GameObject lightningPrefab;
     public GeoData geoData;
     public List<EscapeColors> escapeColors;
@@ -40,6 +41,7 @@ public class LumiereEscape : Lumiere {
     protected GoToPositionController controller;
     protected Vector3 currentEscapePosition = Vector3.zero;
     protected int maxNbLives;
+    protected Coroutine recoverLifeCoroutine;
 
     protected override void Start() {
         base.Start();
@@ -74,6 +76,8 @@ public class LumiereEscape : Lumiere {
 
         SetColorAccordingToNumberOfLives();
 
+        RecoverLifeIn();
+
         ThrowLightningToLocation();
 
         AddGeoPoint();
@@ -81,6 +85,33 @@ public class LumiereEscape : Lumiere {
         NotifySoundManager();
 
         ScreenShakeOnLumiereCapture();
+    }
+
+    protected void RecoverLifeIn() {
+        if(recoverLifeCoroutine != null) {
+            StopCoroutine(recoverLifeCoroutine);
+            recoverLifeCoroutine = null;
+        }
+        recoverLifeCoroutine = StartCoroutine(CRecoverLifeCoroutine());
+    }
+
+    protected IEnumerator CRecoverLifeCoroutine() {
+        yield return new WaitForSeconds(durationToRecoverLife);
+        RecoverOneLife();
+        if (nbLives < maxNbLives && nbLives > 0)
+        {
+            recoverLifeCoroutine = null;
+            RecoverLifeIn();
+        }
+    }
+
+    protected void RecoverOneLife() {
+        if(nbLives <= 0) { // We can't recover lives if we are dead :)
+            return;
+        }
+        nbLives = Mathf.Min(maxNbLives, nbLives + 1);
+        SetColorAccordingToNumberOfLives();
+        gm.soundManager.PlayEscapeLumiereRecoverLife(transform.position);
     }
 
     protected void ThrowLightningToLocation() {
@@ -150,7 +181,7 @@ public class LumiereEscape : Lumiere {
         positions = positions.FindAll(p => Vector3.Distance(p, transform.position) >= minEscapeDistance);
         positions = MathTools.ChoseSome(positions, 100);
         Vector3 chosenPosition = positions.OrderBy(p => ComputeScoreForPosition(p)).Last();
-        ComputeScoreForPosition(chosenPosition, displayLog: true);
+        //ComputeScoreForPosition(chosenPosition, displayLog: true);
         return chosenPosition;
     }
 
