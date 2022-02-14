@@ -71,8 +71,7 @@ public class Lumiere : MonoBehaviour {
 
     protected void Captured()
     {
-        if (IsCaptured())
-        {
+        if (IsCaptured()) {
             return;
         }
         isCaptured = true;

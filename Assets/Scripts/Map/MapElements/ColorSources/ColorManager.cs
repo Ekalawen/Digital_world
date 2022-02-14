@@ -647,4 +647,11 @@ public class ColorManager : MonoBehaviour {
     public static Color GetMainBlue() {
         return GetMainColor(MainColor.BLUE);
     }
+
+    // This is suppose to handle hdr colors ! x)
+    public static Color RotateHueTo(Color rgbColor, float hue) {
+        float h, s, v;
+        Color.RGBToHSV(rgbColor, out h, out s, out v);
+        return Color.HSVToRGB(hue, s, v, hdr: true);
+    }
 }
