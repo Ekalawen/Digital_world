@@ -21,6 +21,7 @@ public class JumpEvent : RandomEvent {
     public float screenShakeRoughness = 5;
 
     [Header("Flash")]
+    public bool makeIntensityBounce = false;
     public float dureeFadeInFlash = 0.1f;
     public float dureeFadeOutFlash = 0.1f;
     public float intensityFlash = 2.0f;
@@ -48,7 +49,9 @@ public class JumpEvent : RandomEvent {
         yield return new WaitForSeconds(delaisAvantJump - dureeFadeInFlash);
         // There is now collisions when making 2 jumps succeed each other because of the previsualisation of 2s whish is > than the dureeFadeIn + dureeFadeOut !
         // But if they are 2 RandomJumpsEvent at the same time, it could collide and break intensity ! :)
-        gm.colorManager.MakeLightIntensityBounce(intensityFlash, dureeFadeInFlash, dureeFadeOutFlash);
+        if (makeIntensityBounce) {
+            gm.colorManager.MakeLightIntensityBounce(intensityFlash, dureeFadeInFlash, dureeFadeOutFlash);
+        }
         yield return new WaitForSeconds(dureeFadeInFlash);
         if(gm.player.GetEtat() != Player.EtatPersonnage.EN_CHUTE
         && gm.player.GetEtat() != Player.EtatPersonnage.EN_SAUT) {
