@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -19,7 +20,22 @@ public class LumiereEscape : Lumiere {
 
     [Header("Escape")]
     public int nbLives = 2;
+    public GameObject lightningPrefab;
+    public GeoData geoData;
     public List<EscapeColors> escapeColors;
+
+    [Header("Compute Escape Position")]
+    public float escapeDistance = 5.0f;
+    public float minEscapeDistance = 2.5f;
+    public float maxEscapeDistance = 8.0f;
+    public float mapOffsetShrink = 2.0f;
+    public int maxNbPositionsToConsider = 100;
+    public float coefLineOfSight = 1000.0f;
+    public float coefAlignWithCamera = 50.0f;
+    public float coefCloseToEscapeDistance = 10.0f;
+    public float coefVerticalDistance = 30.0f;
+    public float coefDistanceToRegularMap = 20.0f;
+    public float coefRandomness = 30.0f;
 
     protected GoToPositionController controller;
     protected Vector3 currentEscapePosition = Vector3.zero;
@@ -35,8 +51,7 @@ public class LumiereEscape : Lumiere {
 
     protected override void OnTriggerEnter(Collider hit) {
         if (hit.gameObject.name == "Joueur"){
-            nbLives--;
-            if(nbLives <= 0) {
+            if(nbLives <= 1) {
                 Captured();
             } else {
                 TemporaryCaptured();
@@ -44,32 +59,46 @@ public class LumiereEscape : Lumiere {
 		}
     }
 
-    protected void TemporaryCaptured()
-    {
+    protected void TemporaryCaptured() {
         if (IsCaptured())
         {
             return;
         }
         isCaptured = true;
 
+        nbLives--;
+
         EscapeToAnotherLocation();
 
         SetCapturableIn();
 
-        ChangeColorIn();
+        SetColorAccordingToNumberOfLives();
+
+        ThrowLightningToLocation();
+
+        AddGeoPoint();
 
         NotifySoundManager();
 
         ScreenShakeOnLumiereCapture();
     }
 
-    protected void ChangeColorIn() {
-        StartCoroutine(CChangeColorIn());
+    protected void ThrowLightningToLocation() {
+        Lightning lightning = Instantiate(lightningPrefab).GetComponent<Lightning>();
+        lightning.Initialize(transform.position, currentEscapePosition);
     }
 
-    protected IEnumerator CChangeColorIn() {
-        yield return new WaitForSeconds(TimeToGoToPosition(currentEscapePosition));
-        SetColorAccordingToNumberOfLives();
+    protected void AddGeoPoint() {
+        GeoData newGeoData = new GeoData(geoData);
+        newGeoData.SetTargetPosition(currentEscapePosition);
+        gm.player.geoSphere.AddGeoPoint(newGeoData);
+    }
+
+    protected override void CapturedSpecific() {
+        base.CapturedSpecific();
+        nbLives = 0;
+        CharacterController characterController = GetComponent<CharacterController>();
+        characterController.enabled = false; // We don't want to collide with the controller once we captured the data ! :)
     }
 
     protected void SetColorAccordingToNumberOfLives() {
@@ -111,12 +140,61 @@ public class LumiereEscape : Lumiere {
         controller.GoTo(currentEscapePosition);
     }
 
-    protected Vector3 ComputeEscapeLocation() {
-        return Vector3.zero;
-    }
-
     public float TimeToGoToPosition(Vector3 pos) {
         float distance = Vector3.Distance(transform.position, pos);
         return distance / controller.vitesse;
+    }
+
+    protected Vector3 ComputeEscapeLocation() {
+        List<Vector3> positions = gm.map.GetEmptyPositionsInSphere(transform.position, maxEscapeDistance);
+        positions = positions.FindAll(p => Vector3.Distance(p, transform.position) >= minEscapeDistance);
+        positions = MathTools.ChoseSome(positions, 100);
+        Vector3 chosenPosition = positions.OrderBy(p => ComputeScoreForPosition(p)).Last();
+        ComputeScoreForPosition(chosenPosition, displayLog: true);
+        return chosenPosition;
+    }
+
+    protected float ComputeScoreForPosition(Vector3 pos, bool displayLog = false) {
+        float isInLineOfSightScore = (IsInLineOfSight(pos) ? 1 : 0) * coefLineOfSight;
+        float isAlignedWithCameraScore = IsAlignedWithCamera(pos) * coefAlignWithCamera;
+        float isDistanceCloseToEscapeDistanceScore = - IsDistanceCloseToEscapeDistance(pos) * coefCloseToEscapeDistance;
+        float distanceToRegularMapScore = - DistanceToRegularMap(pos) * coefDistanceToRegularMap;
+        float verticalDistanceScore = - VerticalDistance(pos) * coefVerticalDistance;
+        float randomnessScore = UnityEngine.Random.Range(0.0f, 1.0f) * coefRandomness;
+        float totalScore = isInLineOfSightScore
+            + isAlignedWithCameraScore
+            + isDistanceCloseToEscapeDistanceScore
+            + distanceToRegularMapScore
+            + verticalDistanceScore
+            + randomnessScore;
+        if (displayLog) {
+            Debug.Log($"LineOfSight = {isInLineOfSightScore / coefLineOfSight}({isInLineOfSightScore}) AlignedCamera = {isAlignedWithCameraScore / coefAlignWithCamera}({isAlignedWithCameraScore}) DistanceToDistance = {isDistanceCloseToEscapeDistanceScore / coefCloseToEscapeDistance}({isDistanceCloseToEscapeDistanceScore}) DistanceToMap = {distanceToRegularMapScore / coefDistanceToRegularMap}({distanceToRegularMapScore}) VerticalDistance = {verticalDistanceScore / coefVerticalDistance}({verticalDistanceScore}) Randomness = {randomnessScore / coefRandomness}({randomnessScore}) TOTAL = {totalScore}");
+        }
+        return totalScore;
+    }
+
+    protected float VerticalDistance(Vector3 pos) {
+        Vector3 direction = pos - transform.position;
+        return (direction - Vector3.ProjectOnPlane(direction, gm.gravityManager.Up())).magnitude;
+    }
+
+    protected float IsDistanceCloseToEscapeDistance(Vector3 pos) {
+        return Mathf.Abs(escapeDistance - Vector3.Distance(transform.position, pos));
+    }
+
+    protected bool IsInLineOfSight(Vector3 pos) {
+        Vector3 direction = (pos - transform.position);
+        float distance = direction.magnitude;
+        return !Physics.Raycast(transform.position, direction, distance);
+    }
+
+    protected float IsAlignedWithCamera(Vector3 pos) {
+        Vector3 cameraPos = gm.player.camera.transform.position;
+        Vector3 cameraForward = gm.player.camera.transform.forward;
+        return Vector3.Dot(pos - cameraPos, cameraForward) / Vector3.Distance(pos, cameraPos);
+    }
+
+    protected float DistanceToRegularMap(Vector3 pos) {
+        return Mathf.Max(0, MathTools.AABBPointDistance(gm.map.GetCenter(), gm.map.GetHalfExtents() - Vector3.one * mapOffsetShrink, pos));
     }
 }

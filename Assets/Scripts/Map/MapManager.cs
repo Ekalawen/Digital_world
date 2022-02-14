@@ -405,7 +405,7 @@ public class MapManager : MonoBehaviour {
         return positions;
     }
 
-    public Vector3 GetEmptyPositionInSphere(Vector3 center, float radius) {
+    public Vector3 ChoseOneEmptyPositionInSphere(Vector3 center, float radius) {
         return MathTools.ChoseOne(GetEmptyPositionsInSphere(center, radius));
     }
 

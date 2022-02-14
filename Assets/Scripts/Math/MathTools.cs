@@ -79,6 +79,13 @@ public static class MathTools
         return vector[UnityEngine.Random.Range(0, vector.Count)];
     }
 
+    public static List<Vector3> ChoseSome(List<Vector3> positions, int quantity) {
+        if (quantity > positions.Count) {
+            return positions;
+        }
+        return GaussianGenerator.SelecteSomeNumberOf(positions, quantity);
+    }
+
     public static T ChoseOneWeighted<T>(List<T> vector, List<float> weights) {
         Assert.AreEqual(vector.Count, weights.Count, "Les tailles des listes dans ChoiceOneWeighted doivent être égales ! :)");
         float totalWeight = weights.Sum();
@@ -117,9 +124,17 @@ public static class MathTools
         return UnityEngine.Random.value < 0.5f ? 1.0f : -1.0f;
     }
 
-    public static bool AABBSphere(Vector3 aabbCenter, Vector3 aabbHalfExtents, Vector3 sphereCenter, float sphereRayon) {
+    public static float AABBPointDistance(Vector3 aabbCenter, Vector3 aabbHalfExtents, Vector3 point) {
+        return AABBSphereDistance(aabbCenter, aabbHalfExtents, point, 0.0f);
+    }
+
+    public static float AABBSphereDistance(Vector3 aabbCenter, Vector3 aabbHalfExtents, Vector3 sphereCenter, float sphereRayon) {
         Vector3 aabbClosestPointToSphere = AABBPoint_ContactPoint(aabbCenter, aabbHalfExtents, sphereCenter);
-        return Vector3.Distance(aabbClosestPointToSphere, sphereCenter) <= sphereRayon;
+        return Vector3.Distance(aabbClosestPointToSphere, sphereCenter);
+    }
+
+    public static bool AABBSphere(Vector3 aabbCenter, Vector3 aabbHalfExtents, Vector3 sphereCenter, float sphereRayon) {
+        return AABBSphereDistance(aabbCenter, aabbHalfExtents, sphereCenter, sphereRayon) <= sphereRayon;
     }
 
     public static Vector3 AABBPoint_ContactPoint(Vector3 aabbCenter, Vector3 aabbHalfExtents, Vector3 sphereCenter) {
