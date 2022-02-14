@@ -39,8 +39,8 @@ public class VoidCube : NonBlackCube {
         float time = Time.time;
         float decomposeStartingTime = transparentMaterial.GetFloat("_DecomposeStartingTime");
         if (gm.player.IsPowerDashing()) {
-            PowerDashVoidExplosion();
             gm.player.GetPowerDash().HitBrisableCube(this);
+            PowerDashVoidExplosion();
         } else if (time < decomposeStartingTime && !gm.player.IsInvincible() && !gm.eventManager.IsGameOver()) {
             VoidExplosion();
         }
@@ -55,6 +55,7 @@ public class VoidCube : NonBlackCube {
         gm.timerManager.AddTimeMultiplierForEnnemiImpact(slowmotion);
         gm.soundManager.PlayVoidCubeExplosionClip(transform.position);
         ShakeScreen();
+        Destroy();
     }
 
     public void VoidExplosion() {
@@ -70,6 +71,7 @@ public class VoidCube : NonBlackCube {
         gm.postProcessManager.UpdateHitEffect();
         ShakeScreen();
         AddGeoPointOfImpact();
+        Destroy();
     }
 
     protected void AddGeoPointOfImpact() {
@@ -98,5 +100,13 @@ public class VoidCube : NonBlackCube {
     protected void ShakeScreen() {
         CameraShaker cs = CameraShaker.Instance;
         cs.ShakeOnce(screenShakeMagnitude, screenShakeRoughness, 0.1f, screenShakeDecreaseTime);
+    }
+
+    public void SetHasVoidExploded() {
+        hasVoidExploded = true;
+    }
+
+    public bool HasVoidExploded() {
+        return hasVoidExploded;
     }
 }

@@ -61,9 +61,11 @@ public class PouvoirPowerDash : PouvoirDash {
             ApplyTimeMultiplier();
             hasAlreadyGainChargeForBrisableCube = true;
         }
-        player.ResetGrip();
-        gm.soundManager.PlayPowerDashImpactClip();
-        StartImpactVfx(cube.transform.position, dontFakePosition: true);
+        if (cube.type != Cube.CubeType.VOID || !cube.GetComponent<VoidCube>().HasVoidExploded()) { // We don't want to do that on other VoidCube than the first one !
+            player.ResetGrip();
+            gm.soundManager.PlayPowerDashImpactClip();
+            StartImpactVfx(cube.transform.position, dontFakePosition: true);
+        }
     }
 
     protected void StartImpactVfx(Vector3 position, bool dontFakePosition = false) {

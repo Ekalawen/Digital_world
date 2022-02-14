@@ -913,6 +913,13 @@ public class EventManager : MonoBehaviour {
         float decompositionDuration = bombCube.explosionDecompositionDuration;
 
         List<Cube> nearByCubes = gm.map.GetCubesInSphere(bombCubePosition, explosionRange);
+        // We don't want every voidCubes to explode at the same time !
+        foreach(Cube cube in nearByCubes) {
+            VoidCube voidCube = cube.GetComponent<VoidCube>();
+            if(voidCube != null) {
+                voidCube.SetHasVoidExploded();
+            }
+        }
         Timer timer = new Timer(bombCube.explosionDuration);
         while(!timer.IsOver()) {
             nearByCubes = nearByCubes.FindAll(c => c != null);
