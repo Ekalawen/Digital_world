@@ -904,23 +904,23 @@ public class EventManager : MonoBehaviour {
     }
 
     public void ApplyExplosionOfVoidCube(VoidCube bombCube) {
-        StartCoroutine(CApplyExplosionOfBombCube(bombCube));
+        StartCoroutine(CApplyExplosionOfVoidCube(bombCube));
     }
 
-    protected IEnumerator CApplyExplosionOfBombCube(VoidCube bombCube) {
-        float explosionRange = bombCube.explosionRange; // Need to remember this because the bombCube is gonna be null soon!
-        Vector3 bombCubePosition = bombCube.transform.position;
-        float decompositionDuration = bombCube.explosionDecompositionDuration;
+    protected IEnumerator CApplyExplosionOfVoidCube(VoidCube voidCube) {
+        float explosionRange = voidCube.explosionRange; // Need to remember this because the voidCube is gonna be null soon!
+        Vector3 bombCubePosition = voidCube.transform.position;
+        float decompositionDuration = voidCube.explosionDecompositionDuration;
 
         List<Cube> nearByCubes = gm.map.GetCubesInSphere(bombCubePosition, explosionRange);
         // We don't want every voidCubes to explode at the same time !
-        foreach(Cube cube in nearByCubes) {
-            VoidCube voidCube = cube.GetComponent<VoidCube>();
-            if(voidCube != null) {
-                voidCube.SetHasVoidExploded();
+        foreach(Cube otherCube in nearByCubes) {
+            VoidCube otherVoidCube = otherCube.GetComponent<VoidCube>();
+            if(otherVoidCube != null) {
+                otherVoidCube.SetHasVoidExploded();
             }
         }
-        Timer timer = new Timer(bombCube.explosionDuration);
+        Timer timer = new Timer(voidCube.explosionDuration);
         while(!timer.IsOver()) {
             nearByCubes = nearByCubes.FindAll(c => c != null);
             float maxRange = explosionRange * timer.GetAvancement();

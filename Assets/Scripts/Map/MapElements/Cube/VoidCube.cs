@@ -39,7 +39,7 @@ public class VoidCube : NonBlackCube {
         float time = Time.time;
         float decomposeStartingTime = transparentMaterial.GetFloat("_DecomposeStartingTime");
         if (gm.player.IsPowerDashing()) {
-            gm.player.GetPowerDash().HitBrisableCube(this);
+            gm.player.GetPowerDash().HitVoidCube(this);
             PowerDashVoidExplosion();
         } else if (time < decomposeStartingTime && !gm.player.IsInvincible() && !gm.eventManager.IsGameOver()) {
             VoidExplosion();
@@ -52,7 +52,7 @@ public class VoidCube : NonBlackCube {
         }
         hasVoidExploded = true;
         DestroyAllNearByCubes();
-        gm.timerManager.AddTimeMultiplierForEnnemiImpact(slowmotion);
+        //gm.timerManager.AddTimeMultiplierForEnnemiImpact(slowmotion); // We don't want to slow down time, as the PowerDash is already doing it !
         gm.soundManager.PlayVoidCubeExplosionClip(transform.position);
         ShakeScreen();
         Destroy();

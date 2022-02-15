@@ -16,13 +16,12 @@ public class PouvoirPowerDash : PouvoirDash {
     [Header("Visual")]
     public GameObject impactVfxPrefab;
     public float coefFakeImpactPosition = 0.5f;
-    public GameObject lightningPrefab;
     public TimeMultiplier impactTimeMultiplier;
 
     protected List<Ennemi> ennemisAlreadyHitten = new List<Ennemi>();
     protected ChargeCooldown chargeCooldown;
     protected TimeMultiplier currentTimeMultiplier = null;
-    protected bool hasAlreadyGainChargeForBrisableCube = false;
+    protected bool hasAlreadyGainChargeForBrisableAndVoidCube = false;
     protected UnityEvent onHit;
 
     public override void Initialize() {
@@ -34,7 +33,7 @@ public class PouvoirPowerDash : PouvoirDash {
     protected override bool UsePouvoir() {
         bool returnValue = base.UsePouvoir();
         ennemisAlreadyHitten.Clear();
-        hasAlreadyGainChargeForBrisableCube = false;
+        hasAlreadyGainChargeForBrisableAndVoidCube = false;
         player.SetPowerDashingFor(dureePowerDahsing);
         return returnValue;
     }
@@ -54,17 +53,29 @@ public class PouvoirPowerDash : PouvoirDash {
         return false;
     }
 
-    public void HitBrisableCube(Cube cube) {
-        if (!hasAlreadyGainChargeForBrisableCube) {
+    public void HitBrisableCube(BrisableCube brisableCube) {
+        if (!hasAlreadyGainChargeForBrisableAndVoidCube) {
             GainCharge();
             onHit.Invoke();
             ApplyTimeMultiplier();
-            hasAlreadyGainChargeForBrisableCube = true;
+            hasAlreadyGainChargeForBrisableAndVoidCube = true;
         }
-        if (cube.type != Cube.CubeType.VOID || !cube.GetComponent<VoidCube>().HasVoidExploded()) { // We don't want to do that on other VoidCube than the first one !
+        player.ResetGrip();
+        gm.soundManager.PlayPowerDashImpactClip();
+        StartImpactVfx(brisableCube.transform.position, dontFakePosition: true);
+    }
+
+    public void HitVoidCube(VoidCube voidCube) {
+        if (!hasAlreadyGainChargeForBrisableAndVoidCube) {
+            GainCharge();
+            onHit.Invoke();
+            ApplyTimeMultiplier();
+            hasAlreadyGainChargeForBrisableAndVoidCube = true;
+        }
+        if (!voidCube.HasVoidExploded()) { // We don't want to do that on other VoidCube than the first one !
             player.ResetGrip();
             gm.soundManager.PlayPowerDashImpactClip();
-            StartImpactVfx(cube.transform.position, dontFakePosition: true);
+            StartImpactVfx(voidCube.transform.position, dontFakePosition: true);
         }
     }
 
