@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &6732515167519668042
+--- !u!1 &2022465804100216091
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,22 +8,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8324963730128950416}
-  - component: {fileID: 434724694136790626}
+  - component: {fileID: 8834008454349234602}
+  - component: {fileID: 5695086328978813170}
   m_Layer: 0
-  m_Name: JumpEvent
+  m_Name: PousseePostProcessingVolume
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8324963730128950416
+--- !u!4 &8834008454349234602
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6732515167519668042}
+  m_GameObject: {fileID: 2022465804100216091}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -31,35 +31,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &434724694136790626
+--- !u!114 &5695086328978813170
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6732515167519668042}
-  m_Enabled: 1
+  m_GameObject: {fileID: 2022465804100216091}
+  m_Enabled: 0
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3eb43c8f516fb5f4e8f40313580157e0, type: 3}
+  m_Script: {fileID: 11500000, guid: 8b9a305e18de0c04dbd257a21cd47087, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  esperanceApparition: 15
-  varianceApparition: 4
-  esperanceDuree: 2
-  varianceDuree: 0
-  startOffset: 0
-  bPlayEndSound: 0
-  triggerMaxNumberOfTimes: 0
-  nbMaxTriggers: 1
-  delaisAvantJump: 2
-  timeMalus: 5
-  dureeStun: 2
-  shouldDisplayJumpRules: 0
-  screenShakeMagnitude: 0.8
-  screenShakeRoughness: 15
-  dureeFadeInFlash: 0.3
-  dureeFadeOutFlash: 0.1
-  intensityFlash: 2.5
-  lightningBoxPrefab: {fileID: 3036256468741653888, guid: 33df0573a1c48c942a80f5dc3388c6a7,
-    type: 3}
-  dureeFadeOutLightning: 0.5
+  sharedProfile: {fileID: 11400000, guid: d2053aeef0517f842b2237a50a310f75, type: 2}
+  isGlobal: 1
+  blendDistance: 0
+  weight: 1
+  priority: 0

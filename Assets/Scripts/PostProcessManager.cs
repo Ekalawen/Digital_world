@@ -67,6 +67,7 @@ public class PostProcessManager : MonoBehaviour {
     [Header("Jump VFX")]
     public float jumpVFXOffsetPercentageOfScreenPrimary = 0.9f;
     public float jumpVFXOffsetPercentageOfScreenSecondary = 0.9f;
+    public Volume jumpEventVolume;
 
     [Header("TimeScale VFX")]
     public List<float> timeScaleVFXspawnRateByPhases = new List<float>() { 0, 40, 80 };
@@ -111,6 +112,7 @@ public class PostProcessManager : MonoBehaviour {
     protected Fluctuator wallChromaticAberrationFluctuator;
     protected Fluctuator soulRobberWeightFluctuator;
     protected Fluctuator soulRobberBlackFluctuator;
+    protected Fluctuator jumpEventFluctuator;
     protected bool timeScaleVfxIsRunning = false;
     protected bool timeScaleEffectActivation;
     protected bool alwaysHasMoveForTimeScaleVfx = false;
@@ -136,6 +138,7 @@ public class PostProcessManager : MonoBehaviour {
         wallChromaticAberrationFluctuator = new Fluctuator(this, GetChromaticAberrationIntensity, SetChromaticAberrationIntensity, wallPostProcessCurve);
         soulRobberWeightFluctuator = new Fluctuator(this, GetSoulRobberWeight, SetSoulRobberWeight);
         soulRobberBlackFluctuator = new Fluctuator(this, GetSoulRobberBlack, SetSoulRobberBlack);
+        jumpEventFluctuator = new Fluctuator(this, GetJumpEventFlashWeight, SetJumpEventFlashWeight);
 
         ResetSkyboxParameters();
         hitVolume.weight = 0;
@@ -516,5 +519,27 @@ public class PostProcessManager : MonoBehaviour {
             UpdateTimeScaleVfx(gm.player.HasMoveSinceLastFrame());
             timeScaleEffectActivation = state;
         }
+    }
+
+    public void MakePostExposureForJumpBounce(float intensityFlash, float dureeFadeInFlash, float dureeFadeOutFlash) {
+        StartCoroutine(CMakePostExposureForJumpBounce(intensityFlash, dureeFadeInFlash, dureeFadeOutFlash));
+    }
+
+    protected IEnumerator CMakePostExposureForJumpBounce(float intensityFlash, float dureeFadeInFlash, float dureeFadeOutFlash) {
+        ColorAdjustments colorAdjustments;
+        jumpEventVolume.profile.TryGet(out colorAdjustments);
+        colorAdjustments.postExposure.Override(intensityFlash);
+
+        jumpEventFluctuator.GoTo(1, dureeFadeInFlash);
+        yield return new WaitForSeconds(dureeFadeInFlash);
+        jumpEventFluctuator.GoTo(0, dureeFadeOutFlash);
+    }
+
+    protected float GetJumpEventFlashWeight() {
+        return jumpEventVolume.weight;
+    }
+
+    protected void SetJumpEventFlashWeight(float value) {
+        jumpEventVolume.weight = value;
     }
 }
