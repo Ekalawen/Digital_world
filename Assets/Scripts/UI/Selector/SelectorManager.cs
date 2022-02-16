@@ -526,14 +526,16 @@ public class SelectorManager : MonoBehaviour {
         }
     }
 
-    public string GetUnitesString(int nbUnite, MenuLevel.LevelType levelType) {
+    public string GetUnitesString(int nbUnite, MenuLevel.LevelType levelType, SelectorPath path) {
         if (levelType == MenuLevel.LevelType.INFINITE) {
             return strings.blocs.GetLocalizedString(nbUnite).Result;
         } else {
-            if(nbUnite != 0)
-                return strings.victoires.GetLocalizedString(nbUnite).Result;
-            else
-                return strings.victoiresZero.GetLocalizedString().Result;
+            int nbVictoiresNeeded = path.GetComponent<NoNeedToWinDataHackees>() == null ? 1 : 0;
+            if (nbUnite != 0) {
+                return strings.victoires.GetLocalizedString(nbVictoiresNeeded, nbUnite).Result;
+            } else {
+                return strings.victoiresZero.GetLocalizedString(nbVictoiresNeeded).Result;
+            }
         }
     }
 

@@ -128,6 +128,7 @@ public class SelectorLevel : MonoBehaviour {
             int precedentBestScore = (int)menuLevel.GetPrecedentBestScore();
             List<string> nextLevels = new List<string>();
             List<int> nextTresholds = new List<int>();
+            List<SelectorPath> nextPaths = new List<SelectorPath>();
             foreach (SelectorPath selectorPath in selectorManager.GetOutPaths(this)) {
                 List<int> tresholds = selectorPath.GetTresholds();
                 List<int> candidateTresholds = tresholds.FindAll(t => (t <= bestScore && t > precedentBestScore));
@@ -136,12 +137,13 @@ public class SelectorLevel : MonoBehaviour {
                     foreach (int candidateTreshold in candidateTresholds) {
                         nextLevels.Add(selectorPath.endLevel.GetVisibleName());
                         nextTresholds.Add(candidateTreshold);
+                        nextPaths.Add(selectorPath);
                         selectorPath.HighlightPath(true);
                     }
                 }
             }
             if (nextLevels.Count > 0) {
-                DisplayNewPallierMessage(nextTresholds, nextLevels);
+                DisplayNewPallierMessage(nextTresholds, nextLevels, nextPaths);
                 hasDisplayed = true;
                 menuLevel.SetNotJustMakeNewBestScore();
             }
@@ -156,6 +158,7 @@ public class SelectorLevel : MonoBehaviour {
             int currentDataCount = menuLevel.GetDataCount();
             int precedentDataCount = menuLevel.GetPrecedentDataCount();
             List<string> nextLevels = new List<string>();
+            List<SelectorPath> nextPaths = new List<SelectorPath>();
             foreach (SelectorPath selectorPath in selectorManager.GetOutPaths(this)) {
                 List<int> tresholds = selectorPath.GetTresholds();
                 foreach(int treshold in tresholds) {
@@ -163,12 +166,13 @@ public class SelectorLevel : MonoBehaviour {
                     || (precedentDataCount < treshold && treshold <= currentDataCount)) {
                         nextLevels.Add(selectorPath.endLevel.GetVisibleName());
                         tresholdUnlocked.Add(treshold);
+                        nextPaths.Add(selectorPath);
                         selectorPath.HighlightPath(true);
                     }
                 }
             }
             if (nextLevels.Count > 0) {
-                DisplayNewPallierMessage(tresholdUnlocked, nextLevels);
+                DisplayNewPallierMessage(tresholdUnlocked, nextLevels, nextPaths);
                 hasDisplayed = true;
                 menuLevel.SetNotJustWin();
                 menuLevel.SetNotJustIncreaseDataCount();
@@ -182,13 +186,14 @@ public class SelectorLevel : MonoBehaviour {
         return IsAccessible() && (outPaths.Any(p => !p.IsUnlocked()) || outPaths.Count == 0);
     }
 
-    protected void DisplayNewPallierMessage(List<int> tresholdsUnlocked, List<string> nextLevels) {
+    protected void DisplayNewPallierMessage(List<int> tresholdsUnlocked, List<string> nextLevels, List<SelectorPath> nextPaths) {
         string congrats = "";
         nextLevels.Sort();
         for(int i = 0; i < tresholdsUnlocked.Count; i++) {
             int treshold = tresholdsUnlocked[i];
             string nextLevel = nextLevels[i];
-            string unites = UIHelper.SurroundWithColor(selectorManager.GetUnitesString(treshold, menuLevel.GetLevelType()), UIHelper.GREEN);
+            SelectorPath nextPath = nextPaths[i];
+            string unites = UIHelper.SurroundWithColor(selectorManager.GetUnitesString(treshold, menuLevel.GetLevelType(), nextPath), UIHelper.GREEN);
             string levelTitle = UIHelper.SurroundWithColor(nextLevel, UIHelper.BLUE);
             congrats += selectorManager.strings.palierDebloqueUnPalier.GetLocalizedString(treshold, unites, levelTitle).Result;
             congrats += '\n';

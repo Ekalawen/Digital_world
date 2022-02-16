@@ -400,7 +400,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         AddReplacementForDonneesHackeesToPopup(selectorManager.popup);
         selectorManager.popup.InitTresholdText();
         ReplaceTresholdsWithGoalTresholds(selectorManager.popup, selectorPath.goalTresholds);
-        AddNextPallierMessage(selectorManager.popup, currentTreshold: currentTreshold);
+        ComputeTexteExplicatifTextWithTreshold(selectorManager.popup, currentTreshold: currentTreshold);
         selectorManager.popup.Run(
             textTreshold: selectorManager.popup.GetMaxTreshold(),
             shouldInitTresholdText: false,
@@ -437,33 +437,42 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         //popup.AddReplacementEvaluator($@"{dataHackees}", orangeSurrounder);
     }
 
-    protected void AddNextPallierMessage(TexteExplicatif texteExplicatif, int currentTreshold) {
+    protected void ComputeTexteExplicatifTextWithTreshold(TexteExplicatif texteExplicatif, int currentTreshold)
+    {
         TresholdText tresholdText = texteExplicatif.GetTresholdText();
         List<TresholdFragment> fragments = tresholdText.GetAllFragmentsOrdered();
-        bool levelSucceeded = selectorPath.startLevel.IsSucceeded();
-        for(int i = 0; i < fragments.Count; i++)
+        bool levelSucceeded = IsLevelSucceededForDH();
+        for (int i = 0; i < fragments.Count; i++)
         {
             TresholdFragment fragment = fragments[i];
             //string nextPallierText = GetNextPallierText(fragment, fragments);
-            string textOfTreshold = GetTresholdTextForPallier(fragment.treshold);
-            string pallierNumberText = selectorManager.strings.palierTotalTexte.GetLocalizedString(i + 1, textOfTreshold, "").Result;
+            string textOfTreshold = GetTresholdTextForPalier(fragment.treshold); // Par exemple : "1 Victoire et 22 Datas"
+            string pallierNumberText = selectorManager.strings.palierTotalTexte.GetLocalizedString(i + 1, textOfTreshold, "").Result; // Par exemple : "Palier n°2 (1 Victoire et 22 Datas) :"
             pallierNumberText = UIHelper.SurroundWithColor(pallierNumberText, UIHelper.GREEN);
 
             if (levelSucceeded && fragment.treshold <= currentTreshold) {
                 fragment.text = pallierNumberText + fragment.text;
             } else {
-                string palierNotUnlockedYet = selectorManager.strings.palierNotUnlockedYet.GetLocalizedString().Result;
+                string palierNotUnlockedYet = selectorManager.strings.palierNotUnlockedYet.GetLocalizedString().Result; // Par exemple : "Palier pas encore débloqué."
                 fragment.text = pallierNumberText + palierNotUnlockedYet;
             }
 
-            if (fragment == fragments.First()) {
-                string currentTresholdText = GetCurrentTresholdText(currentTreshold);
+            if (fragment == fragments.First())
+            {
+                string currentTresholdText = GetCurrentTresholdText(currentTreshold); // Par exemple : "Data Count actuel : 1 Victoire et 22 Datas"
                 fragment.text = currentTresholdText + "\n\n" + fragment.text;
             }
         }
         int maxTreshold = texteExplicatif.GetMaxTreshold();
         texteExplicatif.mainText.text = texteExplicatif.ComputeText(maxTreshold);
         texteExplicatif.mainText.text = TexteExplicatif.ApplyColorReplacements(texteExplicatif.mainText.text);
+    }
+
+    protected bool IsLevelSucceededForDH() {
+        if(selectorPath.GetComponent<NoNeedToWinDataHackees>() != null) {
+            return true;
+        }
+        return selectorPath.startLevel.IsSucceeded();
     }
 
     protected string GetCurrentTresholdText(int currentTreshold) {
@@ -486,29 +495,30 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         return currentTresholdText;
     }
 
-    protected string GetTresholdTextForPallier(int tresholdText) {
+    protected string GetTresholdTextForPalier(int tresholdText) {
+        int nbVictoiresNeeded = selectorPath.GetComponent<NoNeedToWinDataHackees>() != null ? 0 : 1;
         return (selectorPath.startLevel.menuLevel.GetLevelType() == MenuLevel.LevelType.INFINITE) ?
             selectorManager.strings.blocs.GetLocalizedString(tresholdText).Result :
             (tresholdText == 0 ?
-            selectorManager.strings.victoiresZero.GetLocalizedString().Result :
-            selectorManager.strings.victoires.GetLocalizedString(tresholdText).Result);
+            selectorManager.strings.victoiresZero.GetLocalizedString(nbVictoiresNeeded).Result :
+            selectorManager.strings.victoires.GetLocalizedString(nbVictoiresNeeded, tresholdText).Result);
     }
 
-    protected string GetNextPallierText(TresholdFragment fragment, List<TresholdFragment> fragments) {
-        //TresholdFragment currentFragment = fragments.FindAll(f => f.treshold <= textTreshold).Last();
-        TresholdFragment currentFragment = fragments.Last();
-        if (fragment == currentFragment) {
-            if (fragment == fragments.Last()) {
-                return selectorManager.strings.palierNextPalierDernier.GetLocalizedString().Result;
-            } else {
-                int nextTreshold = fragments[fragments.FindIndex(f => f == currentFragment) + 1].treshold;
-                string unite = selectorManager.GetUnitesString(nextTreshold, GetStartLevelType());
-                return selectorManager.strings.palierNextPalierProchain.GetLocalizedString(unite).Result;
-            }
-        } else {
-            return "";
-        }
-    }
+    //protected string GetNextPallierText(TresholdFragment fragment, List<TresholdFragment> fragments) {
+    //    //TresholdFragment currentFragment = fragments.FindAll(f => f.treshold <= textTreshold).Last();
+    //    TresholdFragment currentFragment = fragments.Last();
+    //    if (fragment == currentFragment) {
+    //        if (fragment == fragments.Last()) {
+    //            return selectorManager.strings.palierNextPalierDernier.GetLocalizedString().Result;
+    //        } else {
+    //            int nextTreshold = fragments[fragments.FindIndex(f => f == currentFragment) + 1].treshold;
+    //            string unite = selectorManager.GetUnitesString(nextTreshold, GetStartLevelType());
+    //            return selectorManager.strings.palierNextPalierProchain.GetLocalizedString(unite).Result;
+    //        }
+    //    } else {
+    //        return "";
+    //    }
+    //}
 
     public void Return() {
         if (!selectorManager.HasUnlockScreenOpen())
