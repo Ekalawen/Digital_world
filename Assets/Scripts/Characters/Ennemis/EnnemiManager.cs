@@ -143,6 +143,8 @@ public class EnnemiManager : MonoBehaviour {
     public void SwapDisableEnnemis() {
         if (ennemis.Count > 0) {
             bool newState = !ennemis[0].gameObject.activeInHierarchy;
+            gm.console.SwapEnnemisActivation(newState);
+            gm.soundManager.PlayGetItemClip(gm.player.transform.position);
             foreach (Ennemi ennemi in ennemis) {
                 ennemi.gameObject.SetActive(newState);
             }

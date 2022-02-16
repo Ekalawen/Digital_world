@@ -157,6 +157,9 @@ public class ConsoleStrings : ScriptableObject
     public LocalizedString setInvincible;
     public LocalizedString unsetInvincible;
 
+    public LocalizedString disableEnnemis;
+    public LocalizedString enableEnnemis;
+
     public LocalizedString setPouvoirsCooldownZero;
     public LocalizedString unsetPouvoirsCooldownZero;
 }

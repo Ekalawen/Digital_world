@@ -1324,4 +1324,20 @@ public class Console : MonoBehaviour {
     public bool IsDemo() {
         return selectorManagerPrefab.GetComponent<SelectorManager>().isDemo;
     }
+
+    public void SwapEnnemisActivation(bool newState) {
+        if(newState) {
+            EnableEnnemis();
+        } else {
+            DisableEnnemis();
+        }
+    }
+
+    public void DisableEnnemis() {
+        AjouterMessageImportant(strings.disableEnnemis, Console.TypeText.BLUE_TEXT, 2.0f);
+    }
+
+    public void EnableEnnemis() {
+        AjouterMessageImportant(strings.enableEnnemis, Console.TypeText.BLUE_TEXT, 2.0f);
+    }
 }
