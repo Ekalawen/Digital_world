@@ -126,13 +126,23 @@ public class Lumiere : MonoBehaviour {
         return PrefsManager.GetInt(key, 0);
     }
 
+    public static int GetTotalDataCount() {
+        return PrefsManager.GetInt(PrefsManager.TOTAL_DATA_COUNT_KEY, 0);
+    }
+
     public static int IncrementDataCount(int nbAdded) {
         string key = SceneManager.GetActiveScene().name + PrefsManager.DATA_COUNT_KEY;
         int dataCount = GetCurrentDataCount() + nbAdded;
         PrefsManager.SetInt(key, dataCount);
         string keyHasJustIncreased = SceneManager.GetActiveScene().name + PrefsManager.HAS_JUST_INCREASED_DATA_COUNT_KEY;
         PrefsManager.SetBool(keyHasJustIncreased, true);
+        IncrementTotalDataCount(nbAdded);
         return dataCount;
+    }
+
+    protected static void IncrementTotalDataCount(int nbAdded) {
+        int newTotalDataCount = GetTotalDataCount() + nbAdded;
+        PrefsManager.SetInt(PrefsManager.TOTAL_DATA_COUNT_KEY, newTotalDataCount);
     }
 
     protected void AddToDataCount() {

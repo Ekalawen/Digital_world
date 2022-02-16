@@ -45,6 +45,7 @@ public class EventManagerWhileTrue : EventManager {
             nbLumieresFinalesAttrappees++;
             WinGame();
         }
+        onCaptureLumiere.Invoke();
     }
 
     protected IEnumerator CResetEndEvent() {

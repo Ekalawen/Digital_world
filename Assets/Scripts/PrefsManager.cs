@@ -30,6 +30,7 @@ public class PrefsManager {
     public static string HAS_ALREADY_DISCOVER_LEVEL_KEY = "hasAlreadyDiscoverLevel";
     public static string IS_LEVEL_HIGHLIGHTED_KEY = "isLevelHighlighted";
     public static string DATA_COUNT_KEY = "dataCountKey";
+    public static string TOTAL_DATA_COUNT_KEY = "totalDataCountKey";
     public static string PRECEDENT_DATA_COUNT_KEY = "precedentDataCountKey";
     public static string HAS_JUST_INCREASED_DATA_COUNT_KEY = "hasJustIncreaseDataCountKey";
 

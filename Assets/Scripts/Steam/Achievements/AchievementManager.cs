@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Steamworks;
 
 public class AchievementManager : MonoBehaviour {
 
@@ -14,9 +15,14 @@ public class AchievementManager : MonoBehaviour {
 
     public void Initialize(bool isInGame) {
         InitMainManager(isInGame);
+        RequestSteamCurrentStats();
 
         GatherRelevantAchievementsIn(transform);
         InitializeAllAchievements();
+    }
+
+    protected void RequestSteamCurrentStats() {
+        SteamUserStats.RequestCurrentStats();
     }
 
     protected void InitMainManager(bool isInGame) {
@@ -41,7 +47,7 @@ public class AchievementManager : MonoBehaviour {
 
     protected void InitializeAllAchievements() {
         foreach(Achievement achievement in achievements) {
-            achievement.Initialize();
+            achievement.Initialize(this);
         }
     }
 

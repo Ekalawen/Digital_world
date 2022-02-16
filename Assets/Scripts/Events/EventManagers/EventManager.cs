@@ -109,6 +109,8 @@ public class EventManager : MonoBehaviour {
     protected List<object> elementsToBeDoneBeforeStartEndGame = new List<object>();
     [HideInInspector]
     public UnityEvent onStartEndGame;
+    [HideInInspector]
+    public UnityEvent onCaptureLumiere;
 
     public virtual void Initialize() {
         name = "EventManager";
@@ -117,6 +119,7 @@ public class EventManager : MonoBehaviour {
         randomEventsFolder = new GameObject("RandomEvents").transform;
         singleEventsFolder = new GameObject("SingleEvents").transform;
         onStartEndGame = new UnityEvent();
+        onCaptureLumiere = new UnityEvent();
         PreFillPoolIfDeathCubesEndEvent();
 
         AddRandomEventsAndStartSingleEvents();
@@ -200,6 +203,7 @@ public class EventManager : MonoBehaviour {
         TriggerSingleEventsBasedOnLumiereCount(nbLumieres);
         TestNewTresholdReached();
         gm.console.OnLumiereCaptured();
+        onCaptureLumiere.Invoke();
     }
 
     public void ExternalStartEndGame() {

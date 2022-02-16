@@ -1,4 +1,5 @@
 using Steamworks;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,8 @@ public abstract class Achievement : MonoBehaviour {
 
     public enum Tag {
         GENERIC,
+        REGULAR,
+        IR,
     };
 
     [Header("Main parameters")]
@@ -16,9 +19,23 @@ public abstract class Achievement : MonoBehaviour {
 
     [Header("Condition")]
     public bool isInGame = true;
-    public List<Tag> tags;
+    public List<Tag> tags = new List<Tag>() { Tag.GENERIC };
 
-    public abstract void Initialize();
+    protected GameManager gm;
+    protected SelectorManager sm;
+    protected AchievementManager achievementManager;
+
+    public void Initialize(AchievementManager achievementManager) {
+        if(isInGame) {
+            gm = GameManager.Instance;
+        } else {
+            sm = SelectorManager.Instance;
+        }
+        this.achievementManager = achievementManager;
+        InitializeSpecific();
+    }
+
+    protected abstract void InitializeSpecific();
 
     public virtual bool IsRelevant(AchievementManager achievementManager) {
         return isInGame == achievementManager.IsInGame()
@@ -28,43 +45,40 @@ public abstract class Achievement : MonoBehaviour {
 
     public void Unlock() {
         if(IsUnlocked()) {
-            Debug.Log($"Achievement {name} is already unlocked.");
+            Debug.Log($"Achievement {id} is already unlocked.");
         }
         if (SteamManager.Initialized) {
-            Debug.Log($"Unlocking achievement {name} ...");
             bool succeed = SteamUserStats.SetAchievement(id);
             if(succeed) {
                 PrefsManager.SetBool(id, true);
-                Debug.Log($"Unlocking achievement {name} completed!");
+                Debug.Log($"Unlocking achievement {id} completed!");
             } else {
-                Debug.Log($"Unlocking achievement {name} failed!");
+                Debug.Log($"Unlocking achievement {id} failed!");
             }
         } else {
-            Debug.Log($"Achievement {name} will not be unlocked because the SteamManager is not Initialized.");
+            Debug.Log($"Achievement {id} will not be unlocked because the SteamManager is not Initialized.");
         }
     }
 
     public void Lock() {
         if(IsLocked()) {
-            Debug.Log($"Achievement {name} is already locked.");
+            Debug.Log($"Achievement {id} is already locked.");
         }
         if (SteamManager.Initialized) {
-            Debug.Log($"Locking achievement {name} ...");
             bool succeed = SteamUserStats.ClearAchievement(id);
             if(succeed) {
                 PrefsManager.SetBool(id, false);
-                Debug.Log($"Locking achievement {name} completed!");
+                Debug.Log($"Locking achievement {id} completed!");
             } else {
-                Debug.Log($"Locking achievement {name} failed!");
+                Debug.Log($"Locking achievement {id} failed!");
             }
         } else {
-            Debug.Log($"Achievement {name} will not be locked because the SteamManager is not Initialized.");
+            Debug.Log($"Achievement {id} will not be locked because the SteamManager is not Initialized.");
         }
     }
 
     public bool IsUnlocked() {
-        // TODO !
-        return false; 
+        return PrefsManager.GetBool(id, false);
     }
 
     public bool IsLocked() {

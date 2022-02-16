@@ -23,7 +23,9 @@ using Steamworks;
 public class SteamManager : MonoBehaviour
 {
 #if !DISABLESTEAMWORKS
-	protected static bool s_EverInitialized = false;
+    public const int STEAM_APP_ID = 1734990;
+
+    protected static bool s_EverInitialized = false;
 
 	protected static SteamManager s_instance;
 	protected static SteamManager Instance
@@ -109,7 +111,7 @@ public class SteamManager : MonoBehaviour
 			// remove steam_appid.txt from the game depot. eg: "(AppId_t)480" or "new AppId_t(480)".
 			// See the Valve documentation for more information: https://partner.steamgames.com/doc/sdk/api#initialization_and_shutdown
 			//if (SteamAPI.RestartAppIfNecessary(AppId_t.Invalid))
-			if (SteamAPI.RestartAppIfNecessary(new AppId_t(1734990)))
+			if (SteamAPI.RestartAppIfNecessary(new AppId_t(STEAM_APP_ID)))
 			{
 				Application.Quit();
 				return;
