@@ -31,6 +31,7 @@ public class GameManager : MonoBehaviour {
     public GameObject flockManagerPrefab; // Pour gérer les flock controllers !
     public GameObject cheatCodeManagerPrefab; // Pour gérer les cheat codes ! :)
     public GameObject steamInGameManagerPrefab; // Pour gérer les callbacks de Steam en jeu ! :)
+    public GameObject achievementManagerPrefab; // Pour gérer les succès Steam ! :)
     public GameObject goalManagerPrefab; // Pour gérer les goal tresholds ! :)
 
     [HideInInspector]
@@ -67,6 +68,8 @@ public class GameManager : MonoBehaviour {
     public CheatCodeManager cheatCodeManager;
     [HideInInspector]
     public SteamInGameManager steamInGameManager;
+    [HideInInspector]
+    public AchievementManager achievementManager;
     [HideInInspector]
     public GoalManager goalManager;
     [HideInInspector]
@@ -108,6 +111,7 @@ public class GameManager : MonoBehaviour {
         historyManager = Instantiate(historyManagerPrefab/*, managerFolder.transform*/).GetComponent<HistoryManager>(); // On le met à la racine car DontDestroyOnLoad only works for root components !
         flockManager = Instantiate(flockManagerPrefab, managerFolder.transform).GetComponent<FlockManager>();
         cheatCodeManager = Instantiate(cheatCodeManagerPrefab, managerFolder.transform).GetComponent<CheatCodeManager>();
+        achievementManager = Instantiate(achievementManagerPrefab, managerFolder.transform).GetComponent<AchievementManager>();
         inputManager = InputManager.Instance;
 
         Initialize();
@@ -135,6 +139,7 @@ public class GameManager : MonoBehaviour {
         historyManager.Initialize();
         flockManager.Initialize();
         cheatCodeManager.Initialize();
+        achievementManager.Initialize(isInGame: true);
         FinishInitialization();
     }
 
