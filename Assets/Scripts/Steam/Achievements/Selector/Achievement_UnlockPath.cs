@@ -12,7 +12,7 @@ public class Achievement_UnlockPath : Achievement {
         sm.onUnlockPath.AddListener(UnlockPath);
     }
 
-    protected void UnlockPath(SelectorPath selectorPath) {
+    protected virtual void UnlockPath(SelectorPath selectorPath) {
         Unlock();
     }
 }

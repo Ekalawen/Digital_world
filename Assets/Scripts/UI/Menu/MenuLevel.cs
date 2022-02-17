@@ -476,4 +476,11 @@ public class MenuLevel : MonoBehaviour {
     public string GetKey(string keySuffix) {
         return GetNameId() + keySuffix;
     }
+
+    public int GetCurrentTresholdValue() {
+        if (levelType == MenuLevel.LevelType.REGULAR)
+            return GetDataCount();
+        else
+            return (int)GetBestScore();
+    }
 }

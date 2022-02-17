@@ -139,6 +139,11 @@ public class SelectorPath : MonoBehaviour {
         return goalTresholds.tresholds;
     }
 
+    public int GetNbUnlockedTresholds() {
+        int currentTresholdValue = startLevel.menuLevel.GetCurrentTresholdValue();
+        return GetTresholds().FindAll(i => i <= currentTresholdValue).Count;
+    }
+
     protected void ThrowTrail(Vector3 source, Vector3 target, Gradient gradient) {
         GameObject tr = Instantiate(trailPrefab, source, Quaternion.identity, transform) as GameObject;
         tr.GetComponent<Trail>().SetTarget(target);
