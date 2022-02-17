@@ -342,6 +342,53 @@ MonoBehaviour:
   isInGame: 1
   tags: 02000000
   treshold: 10000
+--- !u!1 &1749972259890595932
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 801933536776892871}
+  - component: {fileID: 6351346819101533431}
+  m_Layer: 0
+  m_Name: DontTouchGroundFor_30s
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &801933536776892871
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1749972259890595932}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 342375652405127186}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6351346819101533431
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1749972259890595932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb8b0a3b83f5405438a2a8cf8df203b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: FLYING_30
+  isInGame: 1
+  tags: 00000000
+  duration: 30
 --- !u!1 &1919376761532190700
 GameObject:
   m_ObjectHideFlags: 0
@@ -2210,6 +2257,7 @@ Transform:
   m_Children:
   - {fileID: 3333704922611136293}
   - {fileID: 4821950527995510252}
+  - {fileID: 801933536776892871}
   m_Father: {fileID: 6420086439975755634}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
