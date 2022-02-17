@@ -111,6 +111,8 @@ public class EventManager : MonoBehaviour {
     public UnityEvent onStartEndGame;
     [HideInInspector]
     public UnityEvent onCaptureLumiere;
+    [HideInInspector]
+    public UnityEvent onWinGame;
 
     public virtual void Initialize() {
         name = "EventManager";
@@ -119,7 +121,6 @@ public class EventManager : MonoBehaviour {
         randomEventsFolder = new GameObject("RandomEvents").transform;
         singleEventsFolder = new GameObject("SingleEvents").transform;
         onStartEndGame = new UnityEvent();
-        onCaptureLumiere = new UnityEvent();
         PreFillPoolIfDeathCubesEndEvent();
 
         AddRandomEventsAndStartSingleEvents();
@@ -621,7 +622,13 @@ public class EventManager : MonoBehaviour {
 
         RememberGameResult(success: true);
 
+        NotifyListenersWinGame();
+
         QuitOrReloadInSeconds();
+    }
+
+    protected void NotifyListenersWinGame() {
+        onWinGame.Invoke();
     }
 
     private void StopEventsAndEndEvents() {
