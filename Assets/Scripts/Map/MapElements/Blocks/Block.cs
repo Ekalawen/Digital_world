@@ -15,6 +15,7 @@ public class Block : MonoBehaviour {
     public Transform startPoint;
     public Transform endPoint;
     public BlockTriggerZone triggerZone;
+
     public Transform cubeFolder;
     public List<float> timesForFinishing; // { private get; set; }  // Don't use this directly ! Use GetTimeList() !
     public bool shouldPlayerPressShift = false;
@@ -211,5 +212,14 @@ public class Block : MonoBehaviour {
     public void NotifyPlayerToPressShift() {
         gm.console.NotifyPlayerToPressShift();
         shouldNotifyToPressShift = false;
+    }
+
+    public static int GetTotalBlocksCrossed() {
+        return PrefsManager.GetInt(PrefsManager.TOTAL_BLOCKS_CROSSED_KEY, 0);
+    }
+
+    public static void AddToTotalBlocksCrossed(int nbBlocksToAdd) {
+        int newTotal = GetTotalBlocksCrossed() + nbBlocksToAdd;
+        PrefsManager.SetInt(PrefsManager.TOTAL_BLOCKS_CROSSED_KEY, newTotal);
     }
 }

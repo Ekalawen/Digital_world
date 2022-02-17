@@ -49,6 +49,7 @@ public class AchievementManager : MonoBehaviour {
         foreach(Achievement achievement in achievements) {
             achievement.Initialize(this);
         }
+        Debug.Log($"{achievements.Count} achievements initialisés !");
     }
 
     public bool IsInGame() {

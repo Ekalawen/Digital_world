@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using EZCameraShake;
+using UnityEngine.Events;
 
 public class InfiniteMap : MapManager {
 
@@ -63,6 +64,8 @@ public class InfiniteMap : MapManager {
     protected bool startsBlockDestruction = false;
     protected CameraShakeInstance cameraShakeInstance;
     protected List<string> blocksNameToNotifyPlayerToPressShift = new List<string>();
+    [HideInInspector]
+    public UnityEvent onBlockCrossed = new UnityEvent();
 
     protected override void InitializeSpecific()
     {
@@ -307,12 +310,19 @@ public class InfiniteMap : MapManager {
                 StartBlocksDestruction();
 
             gm.timerManager.TryUpdatePhase(GetNonStartNbBlocksRun(), gm.goalManager.GetLastTresholdNotInfinite());
+
+            onBlockCrossed.Invoke();
         }
     }
 
     public void AddBlockRun(int nbBlocksToAdd) {
         nbBlocksRun += nbBlocksToAdd;
+        IncrementTotalBlocksCrossed(nbBlocksToAdd);
         RewardPlayerForNewBlock(nbBlocksToAdd);
+    }
+
+    protected void IncrementTotalBlocksCrossed(int nbBlocksToAdd) {
+        Block.AddToTotalBlocksCrossed(nbBlocksToAdd);
     }
 
     public void Add10BlockRun() {

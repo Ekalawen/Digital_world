@@ -45,7 +45,7 @@ public abstract class Achievement : MonoBehaviour {
 
     public void Unlock() {
         if(IsUnlocked()) {
-            Debug.Log($"Achievement {id} is already unlocked.");
+            return;
         }
         if (SteamManager.Initialized) {
             bool succeed = SteamUserStats.SetAchievement(id);
@@ -64,6 +64,7 @@ public abstract class Achievement : MonoBehaviour {
     public void Lock() {
         if(IsLocked()) {
             Debug.Log($"Achievement {id} is already locked.");
+            return;
         }
         if (SteamManager.Initialized) {
             bool succeed = SteamUserStats.ClearAchievement(id);

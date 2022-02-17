@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.Events;
 
 public class Node {
     public Vector3 pos;
@@ -66,7 +67,6 @@ public class MapManager : MonoBehaviour {
     protected List<SwappyCubesHolderManager> swappyCubesHolderManagers;
     protected Dictionary<Cube.CubeType, Stack<Cube>> cubesPools;
     protected BoundingBox boundingBox; // La taille de la map minimum comprenant tous les cubes :) [inclusif, inclusif]
-
 
     public void Initialize() {
 		// Initialisation
