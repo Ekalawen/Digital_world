@@ -113,6 +113,8 @@ public class EventManager : MonoBehaviour {
     public UnityEvent onCaptureLumiere;
     [HideInInspector]
     public UnityEvent onWinGame;
+    [HideInInspector]
+    public UnityEvent<DeathReason> onLoseGame;
 
     public virtual void Initialize() {
         name = "EventManager";
@@ -517,6 +519,8 @@ public class EventManager : MonoBehaviour {
 
         gm.postProcessManager.StopTimeScaleVfx();
 
+        NotifyListenersLoseGame(reason);
+
         QuitOrReloadInSeconds();
     }
 
@@ -629,6 +633,10 @@ public class EventManager : MonoBehaviour {
 
     protected void NotifyListenersWinGame() {
         onWinGame.Invoke();
+    }
+    
+    protected void NotifyListenersLoseGame(DeathReason reason) {
+        onLoseGame.Invoke(reason);
     }
 
     private void StopEventsAndEndEvents() {
