@@ -73,6 +73,7 @@ public class TracerBlast : Ennemi {
             if (!isCancelled) {
                 if (tracerController != null && IsPlayerComingFromTop()) {
                     tracerController.TryCancelAttack();
+                    gm.ennemiManager.onInterruptTracer.Invoke(this);
                 } else if (timerContactHit.IsOver() && !player.IsPowerDashing()) {
                     HitPlayerCustom(EventManager.DeathReason.TRACER_HIT, timeMalusOnHit);
                     timerContactHit.Reset();

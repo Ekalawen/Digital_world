@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class EnnemiManager : MonoBehaviour {
 
@@ -23,6 +24,8 @@ public class EnnemiManager : MonoBehaviour {
 	protected Timer playerCaptureTimer; // Le temps depuis lequel le joueur est en contact avec un ennemi
     [HideInInspector]
     public DataSondeManager dataSoundManager;
+    [HideInInspector]
+    public UnityEvent<TracerBlast> onInterruptTracer;
 
     public void Initialize() {
         gm = GameManager.Instance;
