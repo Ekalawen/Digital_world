@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class CheatCode {
     public List<KeyCode> code;
@@ -14,6 +15,7 @@ public class CheatCodeManager : MonoBehaviour {
 
     [Header("Cheat Codes")]
     public List<KeyCode> winCode;
+
     public List<KeyCode> loseCode;
     public List<KeyCode> plus10Code;
     public List<KeyCode> plus100Code;
@@ -37,6 +39,8 @@ public class CheatCodeManager : MonoBehaviour {
 
     protected GameManager gm;
     protected List<CheatCode> cheatCodes;
+    [HideInInspector]
+    public UnityEvent onUseCheatCode;
 
     public void Initialize() {
         gm = GameManager.Instance;
@@ -185,6 +189,7 @@ public class CheatCodeManager : MonoBehaviour {
                 if(cheatCode.state == cheatCode.code.Count) {
                     cheatCode.state = 0;
                     cheatCode.action.Invoke();
+                    onUseCheatCode.Invoke();
                 }
             } else if (Input.anyKeyDown) {
                 cheatCode.state = 0;
