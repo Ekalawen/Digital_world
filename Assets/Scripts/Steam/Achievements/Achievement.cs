@@ -12,6 +12,7 @@ public abstract class Achievement : MonoBehaviour {
         GENERIC,
         REGULAR,
         IR,
+        SELECTOR,
     };
 
     [Header("Main parameters")]

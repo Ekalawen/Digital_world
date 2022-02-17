@@ -37,6 +37,7 @@ public class SelectorManager : MonoBehaviour {
     public TutorialTooltipManager tutorialTooltipManager;
     public VerticalMenuHandler verticalMenuHandler;
     public SelectorTarget selectorTarget;
+    public GameObject achievementManagerPrefab;
 
     [Header("Parameters")]
     public bool isDemo = false;
@@ -52,6 +53,7 @@ public class SelectorManager : MonoBehaviour {
     protected Dictionary<GameObject, Coroutine> fadingObjects;
     protected Coroutine backAndDisplayCoroutine;
     protected SelectorCameraController cameraController;
+    protected AchievementManager achievementManager;
 
     [HideInInspector]
     public UnityEvent<SelectorLevel> onDisplayLevel;
@@ -94,6 +96,7 @@ public class SelectorManager : MonoBehaviour {
         }
         InitializePaths();
         InitializeLevels();
+        InitializeAchievementManager();
         tutorialTooltipManager.Initialize(this);
         DisplayCurrentLevel();
         CleanLastSavedLevel();
@@ -178,6 +181,12 @@ public class SelectorManager : MonoBehaviour {
             level.Initialize(background);
         }
     }
+
+    protected void InitializeAchievementManager() {
+        achievementManager = Instantiate(achievementManagerPrefab, parent: transform).GetComponent<AchievementManager>();
+        achievementManager.Initialize(isInGame: false);
+    }
+
     public void Play(string levelSceneName) {
         if (!HasSelectorLevelOpen())
             return;

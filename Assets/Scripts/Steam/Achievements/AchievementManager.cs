@@ -22,7 +22,9 @@ public class AchievementManager : MonoBehaviour {
     }
 
     protected void RequestSteamCurrentStats() {
-        SteamUserStats.RequestCurrentStats();
+        if (SteamManager.Initialized) {
+            SteamUserStats.RequestCurrentStats();
+        }
     }
 
     protected void InitMainManager(bool isInGame) {
