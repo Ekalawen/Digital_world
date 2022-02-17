@@ -693,6 +693,16 @@ public class EventManager : MonoBehaviour {
         PlayerPrefs.SetInt(keyNbWins, newValue);
     }
 
+    public bool HasAlreadyWin() {
+        string keyNbWins = GetKeyFor(PrefsManager.NB_WINS_KEY);
+        return PrefsManager.GetInt(keyNbWins, 0) > 0;
+    }
+
+    public int GetNbDeath() {
+        string keyNbDeath = GetKeyFor(PrefsManager.NB_DEATHS_KEY);
+        return PrefsManager.GetInt(keyNbDeath, 0);
+    }
+
     protected void IncrementDeathCount() {
         string keyNbDeaths = GetKeyFor(PrefsManager.NB_DEATHS_KEY);
         int newValue = PlayerPrefs.HasKey(keyNbDeaths) ? PlayerPrefs.GetInt(keyNbDeaths) + 1 : 1;
