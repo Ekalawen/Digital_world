@@ -5,14 +5,17 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Localization;
 
-public class Achievement_CorneredByASonde : Achievement {
+public class Achievement_DeathReason : Achievement {
+
+    [Header("Parameters")]
+    public EventManager.DeathReason deathReason;
 
     protected override void InitializeSpecific() {
         gm.eventManager.onLoseGame.AddListener(OnLoseGame);
     }
 
     public void OnLoseGame(EventManager.DeathReason reason) {
-        if(reason == EventManager.DeathReason.CAPTURED) {
+        if(reason == deathReason) {
             Unlock();
         }
     }
