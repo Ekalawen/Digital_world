@@ -64,6 +64,8 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
     protected Fluctuator cadenaAnimationFluctuator;
     protected Coroutine unlockAnimationCoroutine = null;
     protected List<GameObject> particlesToDestroy = new List<GameObject>();
+    [HideInInspector]
+    public UnityEvent onUseSupercheatedpassword;
 
     public void Initialize(SelectorPath selectorPath, bool shouldHighlightDataHackees) {
         this.selectorManager = SelectorManager.Instance;
@@ -142,7 +144,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
             if (selectorPath.IsUnlocked()) {
                 SubmitGoodUnlocked();
             } else {
-                SubmitGoodLocked();
+                SubmitGoodLocked(input.text);
             }
         } else {
             if (!CanUnlockInDemo()) {
@@ -180,7 +182,11 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
             theme: TexteExplicatif.Theme.NEUTRAL);
     }
 
-    protected void SubmitGoodLocked() {
+    protected void SubmitGoodLocked(string password) {
+        if(password == MenuLevel.SUPER_CHEATED_PASSWORD) {
+            PrefsManager.IncrementInt(PrefsManager.SUPERCHEATEDPASSWORD_NB_USE_KEY, 1, 0);
+            onUseSupercheatedpassword.Invoke();
+        }
         unlockAnimationCoroutine = StartCoroutine(CUnlockAnimation());
         StartCoroutine(CCancelUnlockAnimation(unlockAnimationCoroutine));
     }

@@ -41,6 +41,7 @@ public class PrefsManager {
     public static string IS_HIGHLIGHTED_PATH_KEY = "IS_HIGHLIGHTED_PATH_KEY";
     public static string NB_SUBMITS_PATH_KEY = "NB_SUBMITS_PATH_KEY";
     public static string CONSEIL_INDICE_KEY = "CONSEIL_INDICE_KEY";
+    public static string SUPERCHEATEDPASSWORD_NB_USE_KEY = "supercheatedpasswordNbUseKey";
 
     public static string SAVE_LEVEL_NAME_KEY = "saveLevelNameKey";
     public static string SAVE_LEVEL_NAME_MUST_BE_USED_KEY = "saveLevelNameMustBeUsedKey";
@@ -88,6 +89,10 @@ public class PrefsManager {
 
     public static void SetInt(string key, int value) {
         PlayerPrefs.SetInt(key, value);
+    }
+    public static void IncrementInt(string key, int valueToAdd, int defaultValue) {
+        int newValue = GetInt(key, defaultValue) + valueToAdd;
+        PlayerPrefs.SetInt(key, newValue);
     }
     public static void SetFloat(string key, float value) {
         PlayerPrefs.SetFloat(key, value);
