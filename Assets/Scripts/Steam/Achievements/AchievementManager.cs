@@ -45,6 +45,17 @@ public class AchievementManager : MonoBehaviour {
         }
     }
 
+    protected void GatherAllAchievementsIn(Transform folder) {
+        foreach(Transform t in folder) {
+            Achievement achievement = t.GetComponent<Achievement>();
+            if(achievement != null) {
+                achievements.Add(achievement);
+            } else {
+                GatherAllAchievementsIn(t);
+            }
+        }
+    }
+
     protected void InitializeAllAchievements() {
         foreach(Achievement achievement in achievements) {
             achievement.Initialize(this);
@@ -58,5 +69,51 @@ public class AchievementManager : MonoBehaviour {
 
     public List<Achievement.Tag> GetTags() {
         return tags;
+    }
+
+    public void UnlockAll() {
+        WarnToUsePlayMode();
+        Debug.Log($"UNLOCKING all achievements !");
+        List<Achievement> oldAchievements = achievements;
+        achievements = new List<Achievement>();
+        GatherAllAchievementsIn(transform);
+        foreach (Achievement achievement in achievements) {
+            achievement.Unlock();
+        }
+        achievements = oldAchievements;
+    }
+
+    public void LockAll() {
+        WarnToUsePlayMode();
+        Debug.Log($"LOCKING all achievements !");
+        List<Achievement> oldAchievements = achievements;
+        achievements = new List<Achievement>();
+        GatherAllAchievementsIn(transform);
+        foreach (Achievement achievement in achievements) {
+            achievement.Lock();
+        }
+        achievements = oldAchievements;
+    }
+
+    public void UnlockAllRelevant() {
+        WarnToUsePlayMode();
+        Debug.Log($"UNLOCKING all relevant achievements !");
+        foreach (Achievement achievement in achievements) {
+            achievement.Unlock();
+        }
+    }
+
+    public void LockAllRelevant() {
+        WarnToUsePlayMode();
+        Debug.Log($"LOCKING all relevant achievements !");
+        foreach (Achievement achievement in achievements) {
+            achievement.Lock();
+        }
+    }
+
+    protected void WarnToUsePlayMode() {
+        if (achievements == null || achievements.Count == 0) {
+            throw new Exception($"This action only works in play mode!");
+        }
     }
 }
