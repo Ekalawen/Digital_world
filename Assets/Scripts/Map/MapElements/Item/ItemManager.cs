@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class ItemManager : MonoBehaviour {
 
@@ -13,6 +14,8 @@ public class ItemManager : MonoBehaviour {
     protected GameObject itemsFolder;
     protected List<Item> items; // Tous les items
     protected List<OrbTrigger> orbTriggers = new List<OrbTrigger>(); // Toutes les OrbTriggers ! :3
+    [HideInInspector]
+    public UnityEvent<OrbTrigger> onOrbTriggerHacked;
 
     public virtual void Initialize() {
         gm = GameManager.Instance;

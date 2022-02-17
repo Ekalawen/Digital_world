@@ -40,10 +40,13 @@ public class OrbTrigger : IZone {
     protected bool isDestroying = false;
     protected Lightning lightning;
     protected GeoPoint geoPoint;
+    [HideInInspector]
+    public UnityEvent<OrbTrigger> onHack;
 
     public void Initialize(float rayon, float durationToActivate) {
         base.Initialize();
         gm.itemManager.AddOrbTrigger(this);
+        onHack.AddListener(gm.itemManager.onOrbTriggerHacked.Invoke);
         Resize(transform.position, Vector3.zero);
         ResizeOverTime(rayon, dureeConstruction);
         RegisterHasToBeDestroyBeforeEndGame();
@@ -160,6 +163,7 @@ public class OrbTrigger : IZone {
 
     public void CallAllEvents() {
         events.Invoke();
+        onHack.Invoke(this);
         gm.soundManager.PlayOrbTriggerActivationClip(transform.position);
         if (autoDestroyOnActivate) {
             ReduceAndDestroy();
