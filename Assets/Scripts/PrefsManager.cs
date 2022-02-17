@@ -34,6 +34,7 @@ public class PrefsManager {
     public static string TOTAL_BLOCKS_CROSSED_KEY = "totalBlocksCrossedKey";
     public static string PRECEDENT_DATA_COUNT_KEY = "precedentDataCountKey";
     public static string HAS_JUST_INCREASED_DATA_COUNT_KEY = "hasJustIncreaseDataCountKey";
+    public static string HAS_OPENED_DOC_KEY = "hasOpenedDocKey";
 
     public static string IS_UNLOCKED_PATH_KEY = "IS_UNLOCKED_PATH_KEY";
     public static string HAS_DISPLAY_PATH_UNLOCK_POPUP_KEY = "HAS_DISPLAY_PATH_UNLOCK_POPUP_KEY";

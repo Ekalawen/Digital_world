@@ -8,6 +8,7 @@ using TMPro;
 using System.Linq;
 using UnityEngine.Localization;
 using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.Events;
 
 public class MenuLevel : MonoBehaviour {
 
@@ -72,6 +73,8 @@ public class MenuLevel : MonoBehaviour {
 
     protected bool playStarted = false;
     protected bool texteArchivesLinkIsReady = false;
+    [HideInInspector]
+    public UnityEvent<SelectorLevel> onOpenDoc;
 
     public void Initialize() {
         SetScores();
@@ -471,6 +474,18 @@ public class MenuLevel : MonoBehaviour {
         }
         docText = UIHelper.ApplyReplacementList(docText, selectorManager.docReplacementStrings);
         selectorManager.RunPopup(titleString, docText, TexteExplicatif.Theme.NEUTRAL);
+        RememberHaveOpenedDocForThisLevel();
+        onOpenDoc.Invoke(GetSelectorLevel());
+    }
+
+    protected void RememberHaveOpenedDocForThisLevel() {
+        string key = GetKey(PrefsManager.HAS_OPENED_DOC_KEY);
+        PrefsManager.SetBool(key, true);
+    }
+
+    public bool HasOpenedDoc() {
+        string key = GetKey(PrefsManager.HAS_OPENED_DOC_KEY);
+        return PrefsManager.GetBool(key, false);
     }
 
     public string GetKey(string keySuffix) {

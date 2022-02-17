@@ -65,6 +65,8 @@ public class SelectorManager : MonoBehaviour {
     public UnityEvent<SelectorPath> onOpenDHPath;
     [HideInInspector]
     public UnityEvent<SelectorPath> onNextLevelFrompath;
+    [HideInInspector]
+    public UnityEvent<SelectorLevel> onOpenDoc;
 
     void Awake() {
         if (!_instance) { _instance = this; }
@@ -179,6 +181,7 @@ public class SelectorManager : MonoBehaviour {
     protected void InitializeLevels() {
         foreach(SelectorLevel level in levels) {
             level.Initialize(background);
+            level.menuLevel.onOpenDoc.AddListener(onOpenDoc.Invoke);
         }
     }
 
