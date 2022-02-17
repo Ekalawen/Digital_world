@@ -81,6 +81,7 @@ public class Player : Character {
     protected float skinWidthCoef = 1.1f;
     protected float lastAvancementSaut;
     protected Timer timerLastTimeAuSol;
+    protected GameObject thingILandedOn = null;
     protected bool isGravityEffectRemoved = false;
     protected Timer gravityEffectRemovedForTimer = null;
     protected Coroutine gravityEffectRemovedForCoroutine = null;
@@ -96,6 +97,12 @@ public class Player : Character {
     public bool bIsStun = false;
     protected bool isInvincible = false;
     protected UnityEvent onHitEvent;
+    [HideInInspector]
+    public UnityEvent onHitBySonde;
+    [HideInInspector]
+    public UnityEvent<GameObject> onLand;
+    [HideInInspector]
+    public UnityEvent onGrip;
 
     protected GameManager gm;
     protected InputManager inputManager;
@@ -387,6 +394,7 @@ public class Player : Character {
         timerLastTimeAuSol.Reset();
         if (useSound && etat != etatAvant) {
             gm.soundManager.PlayLandClip(transform.position);
+            onLand.Invoke(thingILandedOn);
         }
     }
 
@@ -654,6 +662,7 @@ public class Player : Character {
             Vector3 n = hit.normal;
             float angle = Vector3.Angle(n, up);
             if (Mathf.Abs(angle) <= slideLimit) {
+                thingILandedOn = hit.collider.gameObject;
                 return true;
             }
         }
@@ -842,6 +851,8 @@ public class Player : Character {
         if(cube != null) {
             cube.InteractWithPlayer();
         }
+
+        onGrip.Invoke();
 
         //if (etat != previousEtat)
         //    gm.soundManager.PlayGripClip(transform.position);
