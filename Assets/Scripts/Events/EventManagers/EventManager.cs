@@ -115,6 +115,10 @@ public class EventManager : MonoBehaviour {
     public UnityEvent onWinGame;
     [HideInInspector]
     public UnityEvent<DeathReason> onLoseGame;
+    [HideInInspector]
+    public UnityEvent onJumpSuccess;
+    [HideInInspector]
+    public UnityEvent onJumpFailed;
 
     public virtual void Initialize() {
         name = "EventManager";

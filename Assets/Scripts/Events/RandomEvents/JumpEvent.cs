@@ -55,8 +55,13 @@ public class JumpEvent : RandomEvent {
         && gm.player.GetEtat() != Player.EtatPersonnage.EN_SAUT) {
             Stun();
         } else {
-            gm.soundManager.PlayJumpSuccessClip();
+            SucceedJump();
         }
+    }
+
+    protected void SucceedJump() {
+        gm.soundManager.PlayJumpSuccessClip();
+        gm.eventManager.onJumpSuccess.Invoke();
     }
 
     protected void InstantiateLightningBox() {
@@ -75,6 +80,7 @@ public class JumpEvent : RandomEvent {
 
         StartCoroutine(CScreenShake());
         coroutines.Add(StartCoroutine(UnStun()));
+        gm.eventManager.onJumpFailed.Invoke();
     }
 
     protected IEnumerator CScreenShake() {

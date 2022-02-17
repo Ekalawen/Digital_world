@@ -1210,7 +1210,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7658106622991151098}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4710454037177496427
 MonoBehaviour:
@@ -1305,7 +1305,7 @@ Transform:
   - {fileID: 2774770966276923923}
   - {fileID: 7061555464838832662}
   m_Father: {fileID: 7658106622991151098}
-  m_RootOrder: 6
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5585593687888200834
 GameObject:
@@ -1782,7 +1782,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7658106622991151098}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6732546945581671459
 MonoBehaviour:
@@ -2053,7 +2053,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7658106622991151098}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8716190327870377276
 MonoBehaviour:
@@ -2289,10 +2289,11 @@ Transform:
   - {fileID: 4574708089869987218}
   - {fileID: 8347729118238081922}
   - {fileID: 5861385638135912720}
+  - {fileID: 3410812911744281625}
   - {fileID: 3471748151342426400}
   - {fileID: 5519083113078216463}
   - {fileID: 3033357767370312894}
-  - {fileID: 3410812911744281625}
+  - {fileID: 6421535373974108639}
   m_Father: {fileID: 6420086439975755634}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2658,3 +2659,49 @@ MonoBehaviour:
   isInGame: 0
   tags: 03000000
   treshold: 1
+--- !u!1 &9103385267046264405
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6421535373974108639}
+  - component: {fileID: 943365987784898095}
+  m_Layer: 0
+  m_Name: SucceedJumpWithShift
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6421535373974108639
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9103385267046264405}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 7658106622991151098}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &943365987784898095
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9103385267046264405}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 963855a40d2a1414b89c806cbfd3b834, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: DODGE_JUMP_WITH_SHIFT
+  isInGame: 1
+  tags: 01000000
