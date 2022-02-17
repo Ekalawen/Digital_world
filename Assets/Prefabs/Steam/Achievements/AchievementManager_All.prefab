@@ -923,6 +923,54 @@ MonoBehaviour:
   isInGame: 1
   tags: 01000000
   treshold: 30000
+--- !u!1 &2830154625916652774
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3140771083573615355}
+  - component: {fileID: 7473852625261740720}
+  m_Layer: 0
+  m_Name: CatchDataFurtiveWithoutMoving
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3140771083573615355
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2830154625916652774}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 7658106622991151098}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7473852625261740720
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2830154625916652774}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97a4f0321f131d64aa5c3d966c2a41c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: CATCH_DATAFURTIVE_WITHOUT_MOVING
+  isInGame: 1
+  tags: 01000000
+  dontMoveDuration: 1
+  distanceMaxToDontMove: 0.1
 --- !u!1 &3308156415714791811
 GameObject:
   m_ObjectHideFlags: 0
@@ -2374,6 +2422,7 @@ Transform:
   - {fileID: 5519083113078216463}
   - {fileID: 3033357767370312894}
   - {fileID: 6421535373974108639}
+  - {fileID: 3140771083573615355}
   m_Father: {fileID: 6420086439975755634}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

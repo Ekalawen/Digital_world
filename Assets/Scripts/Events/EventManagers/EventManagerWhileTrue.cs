@@ -28,24 +28,24 @@ public class EventManagerWhileTrue : EventManager {
         // Nothing
     }
 
-    public override void OnLumiereCaptured(Lumiere.LumiereType type) {
-        if (type == Lumiere.LumiereType.NORMAL) {
+    public override void OnLumiereCaptured(Lumiere lumiere) {
+        if (lumiere.type == Lumiere.LumiereType.NORMAL) {
             int nbLumieres = map.GetLumieres().Count;
             if (nbLumieres == 0 && !isEndGameStarted && NoMoreElementsToBeDoneBeforeEndGame()) {
                 gm.soundManager.PlayEndGameMusic();
                 StartEndGame();
                 isFirstStartEndGame = false;
             }
-        } else if (type == Lumiere.LumiereType.ALMOST_FINAL)
+        } else if (lumiere.type == Lumiere.LumiereType.ALMOST_FINAL)
         {
             nbLumieresFinalesAttrappees++;
             StartCoroutine(CResetEndEvent());
         }
-        else if (type == Lumiere.LumiereType.FINAL) {
+        else if (lumiere.type == Lumiere.LumiereType.FINAL) {
             nbLumieresFinalesAttrappees++;
             WinGame();
         }
-        onCaptureLumiere.Invoke();
+        onCaptureLumiere.Invoke(lumiere);
     }
 
     protected IEnumerator CResetEndEvent() {

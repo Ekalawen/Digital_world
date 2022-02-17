@@ -210,7 +210,7 @@ public class Lumiere : MonoBehaviour {
     }
 
     protected virtual void NotifyEventManagerLumiereCapture() {
-        gm.eventManager.OnLumiereCaptured(type);
+        gm.eventManager.OnLumiereCaptured(this);
     }
 
     protected void ScreenShakeOnLumiereCapture() {

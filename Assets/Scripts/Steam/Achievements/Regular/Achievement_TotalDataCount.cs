@@ -14,7 +14,7 @@ public class Achievement_TotalDataCount : Achievement {
         gm.eventManager.onCaptureLumiere.AddListener(UnlockIfBetterTreshold);
     }
 
-    public void UnlockIfBetterTreshold() {
+    public void UnlockIfBetterTreshold(Lumiere lumiere) {
         if(Lumiere.GetTotalDataCount() >= treshold) {
             Unlock();
         }

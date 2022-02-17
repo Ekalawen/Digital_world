@@ -110,7 +110,7 @@ public class EventManager : MonoBehaviour {
     [HideInInspector]
     public UnityEvent onStartEndGame;
     [HideInInspector]
-    public UnityEvent onCaptureLumiere;
+    public UnityEvent<Lumiere> onCaptureLumiere;
     [HideInInspector]
     public UnityEvent onWinGame;
     [HideInInspector]
@@ -193,9 +193,9 @@ public class EventManager : MonoBehaviour {
         return randomEvents;
     }
 
-    public virtual void OnLumiereCaptured(Lumiere.LumiereType type) {
+    public virtual void OnLumiereCaptured(Lumiere lumiere) {
         int nbLumieres = map.GetLumieres().Count;
-        if (type == Lumiere.LumiereType.NORMAL) {
+        if (lumiere.type == Lumiere.LumiereType.NORMAL) {
             if (nbLumieres == 0 && !isEndGameStarted && NoMoreElementsToBeDoneBeforeEndGame()) {
                 if (!bNoEndgame) {
                     gm.soundManager.PlayEndGameMusic(); // Ici car lorsqu'il y a plusieurs end-games on ne veut pas que la musique restart !
@@ -204,13 +204,13 @@ public class EventManager : MonoBehaviour {
                     WinGame();
                 }
             }
-        } else if (type == Lumiere.LumiereType.FINAL) {
+        } else if (lumiere.type == Lumiere.LumiereType.FINAL) {
             WinGame();
         }
         TriggerSingleEventsBasedOnLumiereCount(nbLumieres);
         TestNewTresholdReached();
         gm.console.OnLumiereCaptured();
-        onCaptureLumiere.Invoke();
+        onCaptureLumiere.Invoke(lumiere);
     }
 
     public void ExternalStartEndGame() {
