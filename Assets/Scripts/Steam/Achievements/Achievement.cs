@@ -51,6 +51,7 @@ public abstract class Achievement : MonoBehaviour {
             bool succeed = SteamUserStats.SetAchievement(id);
             if(succeed) {
                 PrefsManager.SetBool(id, true);
+                SteamUserStats.StoreStats();
                 Debug.Log($"Unlocking achievement {id} completed!");
             } else {
                 Debug.Log($"Unlocking achievement {id} failed!");
@@ -68,6 +69,7 @@ public abstract class Achievement : MonoBehaviour {
             bool succeed = SteamUserStats.ClearAchievement(id);
             if(succeed) {
                 PrefsManager.SetBool(id, false);
+                SteamUserStats.StoreStats();
                 Debug.Log($"Locking achievement {id} completed!");
             } else {
                 Debug.Log($"Locking achievement {id} failed!");
