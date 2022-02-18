@@ -116,6 +116,8 @@ public class EventManager : MonoBehaviour {
     [HideInInspector]
     public UnityEvent<DeathReason> onLoseGame;
     [HideInInspector]
+    public UnityEvent onGameOver;
+    [HideInInspector]
     public UnityEvent onJumpSuccess;
     [HideInInspector]
     public UnityEvent onJumpFailed;
@@ -637,10 +639,12 @@ public class EventManager : MonoBehaviour {
 
     protected void NotifyListenersWinGame() {
         onWinGame.Invoke();
+        onGameOver.Invoke();
     }
     
     protected void NotifyListenersLoseGame(DeathReason reason) {
         onLoseGame.Invoke(reason);
+        onGameOver.Invoke();
     }
 
     private void StopEventsAndEndEvents() {

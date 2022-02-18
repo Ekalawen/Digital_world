@@ -12,10 +12,14 @@ public class Achievement_FinishLevel : Achievement {
     public string levelSceneName = "levelNameScene";
 
     protected override void InitializeSpecific() {
-        gm.eventManager.onWinGame.AddListener(Unlock);
+        gm.eventManager.onWinGame.AddListener(UnlockSpecific);
     }
 
     public override bool IsRelevant(AchievementManager achievementManager) {
         return base.IsRelevant(achievementManager) && SceneManager.GetActiveScene().name == levelSceneName;
+    }
+
+    public virtual void UnlockSpecific() {
+        Unlock();
     }
 }
