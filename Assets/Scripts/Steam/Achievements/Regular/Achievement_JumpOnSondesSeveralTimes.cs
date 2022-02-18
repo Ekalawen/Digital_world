@@ -14,7 +14,7 @@ public class Achievement_JumpOnSondesSeveralTimes : Achievement {
     protected int currentNbJumps = 0;
 
     protected override void InitializeSpecific() {
-        gm.player.onHitBySonde.AddListener(IncrementCount);
+        gm.ennemiManager.onHitBySonde.AddListener(IncrementCount);
         gm.player.onLand.AddListener(ResetCountIfDontLandOnSonde);
         gm.player.onGrip.AddListener(ResetCount);
     }

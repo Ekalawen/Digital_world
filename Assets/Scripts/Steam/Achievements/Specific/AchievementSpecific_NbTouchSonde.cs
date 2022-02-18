@@ -16,7 +16,7 @@ public class AchievementSpecific_NbTouchSonde : Achievement_FinishLevel {
 
     protected override void InitializeSpecific() {
         base.InitializeSpecific();
-        gm.player.onHitBySonde.AddListener(IncrementCounter);
+        gm.ennemiManager.onHitBySonde.AddListener(IncrementCounter);
         gm.cheatCodeManager.onUseCheatCode.AddListener(RememberUseCheatCode);
     }
 

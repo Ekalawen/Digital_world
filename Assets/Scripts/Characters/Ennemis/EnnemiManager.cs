@@ -25,6 +25,10 @@ public class EnnemiManager : MonoBehaviour {
     [HideInInspector]
     public DataSondeManager dataSoundManager;
     [HideInInspector]
+    public UnityEvent onHitBySonde;
+    [HideInInspector]
+    public UnityEvent onHitByTracer;
+    [HideInInspector]
     public UnityEvent<TracerBlast> onInterruptTracer;
     [HideInInspector]
     public UnityEvent<VoidCube> onVoidCubeHit;

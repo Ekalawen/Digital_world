@@ -91,7 +91,7 @@ public class TracerBlast : Ennemi {
         currentDeathReason = deathReason;
         HitPlayer(useCustomTimeMalus: true, customTimeMalus: timeMalus);
         currentDeathReason = oldDeathReason;
-        player.onHitByTracer.Invoke();
+        gm.ennemiManager.onHitByTracer.Invoke();
     }
 
     protected bool IsPlayerComingFromTop() {

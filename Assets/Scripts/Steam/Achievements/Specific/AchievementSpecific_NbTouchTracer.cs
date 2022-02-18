@@ -15,7 +15,7 @@ public class AchievementSpecific_NbTouchTracer : Achievement_FinishLevel {
 
     protected override void InitializeSpecific() {
         base.InitializeSpecific();
-        gm.player.onHitByTracer.AddListener(IncrementCounter);
+        gm.ennemiManager.onHitByTracer.AddListener(IncrementCounter);
     }
 
     protected void IncrementCounter() {
