@@ -660,6 +660,7 @@ public class EventManager : MonoBehaviour {
         if (SoulRobber.IsPlayerRobbed() && IsGameWin()) {
             SoulRobber soulRobber = gm.ennemiManager.GetEnnemisOfType<SoulRobber>().First();
             soulRobber.StartUnrobb();
+            SoulRobber.playerWasRobbedAtEndOfGame = true;
         }
     }
 

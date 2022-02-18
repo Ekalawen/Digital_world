@@ -53,6 +53,7 @@ public abstract class Achievement : MonoBehaviour {
             if(succeed) {
                 PrefsManager.SetBool(id, true);
                 SteamUserStats.StoreStats();
+                achievementManager.onUnlockAchievement.Invoke(this);
                 Debug.Log($"Unlocking achievement {id} completed!");
             } else {
                 Debug.Log($"Unlocking achievement {id} failed!");

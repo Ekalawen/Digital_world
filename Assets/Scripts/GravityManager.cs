@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class GravityManager : MonoBehaviour {
 
@@ -27,8 +28,9 @@ public class GravityManager : MonoBehaviour {
     public float gravityIntensity;
     protected GameManager gm;
     protected Fluctuator playerCameraOffsetFluctuator;
-
     protected Timer cooldownChangeGravity;
+    [HideInInspector]
+    public UnityEvent onGravityChange;
 
     public static Direction GetRandomDirection() {
         System.Array enumValues = System.Enum.GetValues(typeof(Direction));
@@ -82,6 +84,8 @@ public class GravityManager : MonoBehaviour {
         gm.soundManager.PlayGravityChangeClip();
         StartCoroutine(RotateCamera(axe, angle, gravityTransitionCurve));
         playerCameraOffsetFluctuator.GoTo(gm.player.GetCameraShakerInitialHeight(), dureeGravityTransition);
+
+        onGravityChange.Invoke();
     }
 
     public void SetGravityZeroSwap() {

@@ -22,12 +22,10 @@ public class PouvoirPowerDash : PouvoirDash {
     protected ChargeCooldown chargeCooldown;
     protected TimeMultiplier currentTimeMultiplier = null;
     protected bool hasAlreadyGainChargeForBrisableAndVoidCube = false;
-    protected UnityEvent onHit;
 
     public override void Initialize() {
         base.Initialize();
         chargeCooldown = GetComponent<ChargeCooldown>();
-        onHit = new UnityEvent();
     }
 
     protected override bool UsePouvoir() {
@@ -47,7 +45,8 @@ public class PouvoirPowerDash : PouvoirDash {
             ennemi.HitByPlayerPowerDash(this);
             StartImpactVfx(ennemi.transform.position);
             ApplyTimeMultiplier();
-            onHit.Invoke();
+            gm.player.onPowerDashImpact.Invoke(this);
+            gm.player.onPowerDashEnnemiImpact.Invoke(this, ennemi);
             return true;
         }
         return false;
@@ -56,8 +55,8 @@ public class PouvoirPowerDash : PouvoirDash {
     public void HitBrisableCube(BrisableCube brisableCube) {
         if (!hasAlreadyGainChargeForBrisableAndVoidCube) {
             GainCharge();
-            onHit.Invoke();
             ApplyTimeMultiplier();
+            gm.player.onPowerDashImpact.Invoke(this);
             hasAlreadyGainChargeForBrisableAndVoidCube = true;
         }
         player.ResetGrip();
@@ -68,8 +67,8 @@ public class PouvoirPowerDash : PouvoirDash {
     public void HitVoidCube(VoidCube voidCube) {
         if (!hasAlreadyGainChargeForBrisableAndVoidCube) {
             GainCharge();
-            onHit.Invoke();
             ApplyTimeMultiplier();
+            gm.player.onPowerDashImpact.Invoke(this);
             hasAlreadyGainChargeForBrisableAndVoidCube = true;
         }
         if (!voidCube.HasVoidExploded()) { // We don't want to do that on other VoidCube than the first one !
@@ -108,9 +107,5 @@ public class PouvoirPowerDash : PouvoirDash {
 
     protected override void StartVfx() {
         gm.postProcessManager.StartPowerDashVfx(duree);
-    }
-
-    public void RegisterOnHit(UnityAction callback) {
-        onHit.AddListener(callback);
     }
 }

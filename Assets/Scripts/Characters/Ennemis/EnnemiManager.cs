@@ -31,6 +31,8 @@ public class EnnemiManager : MonoBehaviour {
     [HideInInspector]
     public UnityEvent<TracerBlast> onInterruptTracer;
     [HideInInspector]
+    public UnityEvent<SoulRobber> onCatchSoulRobber;
+    [HideInInspector]
     public UnityEvent<VoidCube> onVoidCubeHit;
 
     public void Initialize() {

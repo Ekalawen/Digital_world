@@ -35,10 +35,7 @@ public class PouvoirGripDash : IPouvoir {
         reversedClip = new AudioClipParams(activationAudioClips);
         reversedClip.bReverse = true;
         cooldownCustom = GetComponent<NoAutomaticRechargeCooldown>();
-        PouvoirPowerDash powerDash = player.GetPowerDash();
-        if(powerDash != null) {
-            powerDash.RegisterOnHit(cooldownCustom.GainCharge);
-        }
+        player.onPowerDashImpact.AddListener(GainChargeListener);
     }
 
     public override bool IsAvailable() {
@@ -164,6 +161,7 @@ public class PouvoirGripDash : IPouvoir {
         StartVfx();
         gm.timerManager.timeMultiplierController.RemoveAllEnnemisMultipliers();
         player.onUsePouvoir.Invoke(this);
+        player.onUseGripDash.Invoke(this);
         return true;
     }
 
@@ -277,5 +275,9 @@ public class PouvoirGripDash : IPouvoir {
 
     public float GetDuration() {
         return computedDuration + dashDurationAdjustment;
+    }
+
+    protected void GainChargeListener(PouvoirPowerDash powerDash) {
+        cooldownCustom.GainCharge();
     }
 }

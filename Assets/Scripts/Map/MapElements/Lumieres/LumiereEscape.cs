@@ -87,6 +87,8 @@ public class LumiereEscape : Lumiere {
         NotifySoundManager();
 
         ScreenShakeOnLumiereCapture();
+
+        gm.eventManager.onCaptureLumiere.Invoke(this);
     }
 
     protected void RecoverLifeIn() {
@@ -160,6 +162,10 @@ public class LumiereEscape : Lumiere {
 
     public EscapeColors GetCurrentEscapeColors() {
         return escapeColors[Mathf.Max(nbLives - 1, 0)];
+    }
+
+    public int GetCurrentLives() {
+        return nbLives;
     }
 
     protected void SetCapturableIn() {

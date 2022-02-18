@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 public class PouvoirDisplay : MonoBehaviour {
 
-    public enum PouvoirType { DASH, PATHFINDER, HACK, RESET, DEFAULT };
+    public enum PouvoirType { DASH, PATHFINDER, HACK, RESET, DEFAULT, GRIP_DASH };
 
     public TMPro.TMP_Text textName;
     public TMPro.TMP_Text textDescription;
@@ -39,6 +39,9 @@ public class PouvoirDisplay : MonoBehaviour {
         switch (pouvoirType)
         {
             case PouvoirType.DASH:
+                bordure.color = bordureColorDash;
+                break;
+            case PouvoirType.GRIP_DASH:
                 bordure.color = bordureColorDash;
                 break;
             case PouvoirType.PATHFINDER:

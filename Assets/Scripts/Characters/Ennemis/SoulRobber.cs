@@ -18,6 +18,7 @@ public class SoulRobber : Ennemi {
     public static string VFX_RAY_DISTORSION_AMOUNT = "DistorsionAmount";
 
     protected static bool isPlayerRobbed = false;
+    public static bool playerWasRobbedAtEndOfGame = false;
 
     [Header("Ray")]
     public GameObject rayPrefab;
@@ -71,6 +72,7 @@ public class SoulRobber : Ennemi {
         initialYScale = transform.localScale.y;
         GetComponent<Renderer>().material.SetVector(SHADER_ENTROPY_SOURCE, transform.position);
         StartTeleportAnimation(soulRobberController.tempsInactifDebutJeu, avancement: 0.5f);
+        playerWasRobbedAtEndOfGame = false;
     }
 
     public override void UpdateSpecific() {
@@ -114,6 +116,8 @@ public class SoulRobber : Ennemi {
             Lightning lightning = Instantiate(teleportPrevisualizationLightningPrefab).GetComponent<Lightning>();
             lightning.Initialize(transform.position, teleportPosition);
             ShakeScreenOnTeleport();
+            RegisterHaveCatchSoulRobber();
+            gm.ennemiManager.onCatchSoulRobber.Invoke(this);
         }
 
         yield return new WaitForSeconds(durationBeforeTeleportAway);
@@ -128,6 +132,10 @@ public class SoulRobber : Ennemi {
         if (soulRobberController.IsPlayerVisible() && GetState() == SoulRobberState.FIRERING) {
             StartFirering();
         }
+    }
+
+    protected void RegisterHaveCatchSoulRobber() {
+        PrefsManager.IncrementInt(PrefsManager.TOTAL_CATCH_SOULROBBER_KEY, 1, 0);
     }
 
     protected void ShakeScreenOnTeleport() {

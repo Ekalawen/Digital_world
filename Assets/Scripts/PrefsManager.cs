@@ -32,6 +32,7 @@ public class PrefsManager {
     public static string DATA_COUNT_KEY = "dataCountKey";
     public static string TOTAL_DATA_COUNT_KEY = "totalDataCountKey";
     public static string TOTAL_BLOCKS_CROSSED_KEY = "totalBlocksCrossedKey";
+    public static string TOTAL_CATCH_SOULROBBER_KEY = "totalCatchSoulRobberKey";
     public static string PRECEDENT_DATA_COUNT_KEY = "precedentDataCountKey";
     public static string HAS_JUST_INCREASED_DATA_COUNT_KEY = "hasJustIncreaseDataCountKey";
     public static string HAS_OPENED_DOC_KEY = "hasOpenedDocKey";

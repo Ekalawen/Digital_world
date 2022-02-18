@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Steamworks;
+using UnityEngine.Events;
 
 public class AchievementManager : MonoBehaviour {
 
@@ -12,12 +13,14 @@ public class AchievementManager : MonoBehaviour {
     protected SelectorManager sm;
     protected bool isInGame;
     protected List<Achievement> achievements = new List<Achievement>();
+    [HideInInspector]
+    public UnityEvent<Achievement> onUnlockAchievement;
 
     public void Initialize(bool isInGame) {
         InitMainManager(isInGame);
         RequestSteamCurrentStats();
 
-        GatherRelevantAchievementsIn(transform);
+        GatherRelevantAchievementsIn(transform, achievements);
         InitializeAllAchievements();
     }
 
@@ -36,24 +39,24 @@ public class AchievementManager : MonoBehaviour {
         }
     }
 
-    protected void GatherRelevantAchievementsIn(Transform folder) {
+    protected void GatherRelevantAchievementsIn(Transform folder, List<Achievement> list) {
         foreach(Transform t in folder) {
             Achievement achievement = t.GetComponent<Achievement>();
             if(achievement != null && achievement.IsRelevant(this)) {
-                achievements.Add(achievement);
+                list.Add(achievement);
             } else {
-                GatherRelevantAchievementsIn(t);
+                GatherRelevantAchievementsIn(t, list);
             }
         }
     }
 
-    protected void GatherAllAchievementsIn(Transform folder) {
+    protected void GatherAllAchievementsIn(Transform folder, List<Achievement> list) {
         foreach(Transform t in folder) {
             Achievement achievement = t.GetComponent<Achievement>();
             if(achievement != null) {
-                achievements.Add(achievement);
+                list.Add(achievement);
             } else {
-                GatherAllAchievementsIn(t);
+                GatherAllAchievementsIn(t, list);
             }
         }
     }
@@ -76,25 +79,17 @@ public class AchievementManager : MonoBehaviour {
     public void UnlockAll() {
         WarnToUsePlayMode();
         Debug.Log($"UNLOCKING all achievements !");
-        List<Achievement> oldAchievements = achievements;
-        achievements = new List<Achievement>();
-        GatherAllAchievementsIn(transform);
-        foreach (Achievement achievement in achievements) {
+        foreach (Achievement achievement in GetAllAchievements()) {
             achievement.Unlock();
         }
-        achievements = oldAchievements;
     }
 
     public void LockAll() {
         WarnToUsePlayMode();
         Debug.Log($"LOCKING all achievements !");
-        List<Achievement> oldAchievements = achievements;
-        achievements = new List<Achievement>();
-        GatherAllAchievementsIn(transform);
-        foreach (Achievement achievement in achievements) {
+        foreach (Achievement achievement in GetAllAchievements()) {
             achievement.Lock();
         }
-        achievements = oldAchievements;
     }
 
     public void UnlockAllRelevant() {
@@ -117,5 +112,11 @@ public class AchievementManager : MonoBehaviour {
         if (achievements == null || achievements.Count == 0) {
             throw new Exception($"This action only works in play mode!");
         }
+    }
+
+    public List<Achievement> GetAllAchievements() {
+        List<Achievement> allAchievements = new List<Achievement>();
+        GatherAllAchievementsIn(transform, allAchievements);
+        return allAchievements;
     }
 }

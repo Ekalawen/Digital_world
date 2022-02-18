@@ -108,6 +108,12 @@ public class Player : Character {
     [HideInInspector]
     public UnityEvent<PouvoirDash> onUseDash;
     [HideInInspector]
+    public UnityEvent<PouvoirGripDash> onUseGripDash;
+    [HideInInspector]
+    public UnityEvent<PouvoirPowerDash> onPowerDashImpact;
+    [HideInInspector]
+    public UnityEvent<PouvoirPowerDash, Ennemi> onPowerDashEnnemiImpact;
+    [HideInInspector]
     public UnityEvent<PouvoirPathfinder> onUsePathfinder;
 
     protected GameManager gm;

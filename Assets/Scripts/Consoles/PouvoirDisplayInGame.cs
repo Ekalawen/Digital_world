@@ -73,6 +73,9 @@ public class PouvoirDisplayInGame : MonoBehaviour {
             case PouvoirDisplay.PouvoirType.DASH:
                 bordure.color = bordureColorDash;
                 break;
+            case PouvoirDisplay.PouvoirType.GRIP_DASH:
+                bordure.color = bordureColorDash;
+                break;
             case PouvoirDisplay.PouvoirType.PATHFINDER:
                 bordure.color = bordureColorPathfinder;
                 break;
