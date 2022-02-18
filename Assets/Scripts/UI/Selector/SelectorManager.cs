@@ -53,7 +53,8 @@ public class SelectorManager : MonoBehaviour {
     protected Dictionary<GameObject, Coroutine> fadingObjects;
     protected Coroutine backAndDisplayCoroutine;
     protected SelectorCameraController cameraController;
-    protected AchievementManager achievementManager;
+    [HideInInspector]
+    public AchievementManager achievementManager;
 
     [HideInInspector]
     public UnityEvent<SelectorLevel> onDisplayLevel;

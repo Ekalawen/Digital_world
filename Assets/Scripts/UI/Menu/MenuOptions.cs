@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Localization;
@@ -30,6 +31,12 @@ public class MenuOptions : MonoBehaviour {
     public static bool defaultFpsCounter = false;
     public static bool defaultDisplayConsole = false;
     public static Lumiere.LumiereQuality defaultLumiereQuality = Lumiere.LumiereQuality.LOW;
+    public static List<string> keyOfAchievementsToSaveDuringResetSaves = new List<string>() {
+        PrefsManager.TOTAL_DATA_COUNT_KEY,
+        PrefsManager.TOTAL_BLOCKS_CROSSED_KEY,
+        PrefsManager.TOTAL_CATCH_SOULROBBER_KEY,
+        PrefsManager.SUPERCHEATEDPASSWORD_NB_USE_KEY,
+    };
 
     public bool isInGame = false;
 
@@ -62,6 +69,7 @@ public class MenuOptions : MonoBehaviour {
     public GameObject resetButton;
     public GameObject panelLanguageButton;
     public GameObject returnButton;
+    public GameObject achievementManagerPrefab;
 
     [Header("Titles")]
     public TMP_Text titleText;
@@ -283,6 +291,8 @@ public class MenuOptions : MonoBehaviour {
     }
 
     public void ReinitialiserSauvegardes() {
+        Dictionary<Achievement, bool> achievementsStates = GetAllAchievementsStates();
+        Dictionary<string, int> keysToSave = GetKeysOfAchievementsToSave();
         PrefsManager.DeleteAll();
         OnMusicVolumeChange(defaultMusicVolume);
         OnSoundVolumeChange(defaultSoundVolume);
@@ -292,9 +302,41 @@ public class MenuOptions : MonoBehaviour {
         OnConseilOnStartPress(defaultConseilOnStart);
         OnFpsCounterPress(defaultFpsCounter);
         OnDisplayConsolePress(defaultDisplayConsole);
+        ApplyAllAchievementsStates(achievementsStates);
+        ApplyAllKeysSaved(keysToSave);
         int index = LocalizationSettings.AvailableLocales.Locales.IndexOf(LocalizationSettings.SelectedLocale);
         PrefsManager.SetInt(PrefsManager.LOCALE_INDEX_KEY, index);
         PrefsManager.Save();
+    }
+
+    protected Dictionary<Achievement, bool> GetAllAchievementsStates() {
+        Dictionary<Achievement, bool> pairs = new Dictionary<Achievement, bool>();
+        foreach(Achievement achievement in achievementManagerPrefab.GetComponent<AchievementManager>().GetAllAchievements()) {
+            pairs[achievement] = achievement.IsUnlocked();
+        }
+        return pairs;
+    }
+
+    protected void ApplyAllAchievementsStates(Dictionary<Achievement, bool> achievementsStates) {
+        foreach(KeyValuePair<Achievement, bool> pair in achievementsStates) {
+            if(pair.Value) {
+                pair.Key.SetLocalLockState(isUnlock: pair.Value);
+            }
+        }
+    }
+
+    protected Dictionary<string, int> GetKeysOfAchievementsToSave() {
+        Dictionary<string, int> pairs = new Dictionary<string, int>();
+        foreach(string keyToSave in keyOfAchievementsToSaveDuringResetSaves) {
+            pairs[keyToSave] = PrefsManager.GetInt(keyToSave, 0);
+        }
+        return pairs;
+    }
+
+    protected void ApplyAllKeysSaved(Dictionary<string, int> keysToSave) {
+        foreach(KeyValuePair<string, int> pair in keysToSave) {
+            PrefsManager.SetInt(pair.Key, pair.Value);
+        }
     }
 
     public void ChosePanel(PanelType panelType) {

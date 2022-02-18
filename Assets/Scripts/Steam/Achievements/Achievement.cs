@@ -51,16 +51,21 @@ public abstract class Achievement : MonoBehaviour {
         if (SteamManager.Initialized) {
             bool succeed = SteamUserStats.SetAchievement(id);
             if(succeed) {
-                PrefsManager.SetBool(id, true);
+                SetLocalLockState(isUnlock: true);
                 SteamUserStats.StoreStats();
                 achievementManager.onUnlockAchievement.Invoke(this);
                 Debug.Log($"Unlocking achievement {id} completed!");
-            } else {
+            }
+            else {
                 Debug.Log($"Unlocking achievement {id} failed!");
             }
         } else {
             Debug.Log($"Achievement {id} will not be unlocked because the SteamManager is not Initialized.");
         }
+    }
+
+    public void SetLocalLockState(bool isUnlock) {
+        PrefsManager.SetBool(id, isUnlock);
     }
 
     public void Lock() {
@@ -71,7 +76,7 @@ public abstract class Achievement : MonoBehaviour {
         if (SteamManager.Initialized) {
             bool succeed = SteamUserStats.ClearAchievement(id);
             if(succeed) {
-                PrefsManager.SetBool(id, false);
+                SetLocalLockState(isUnlock: false);
                 SteamUserStats.StoreStats();
                 Debug.Log($"Locking achievement {id} completed!");
             } else {
