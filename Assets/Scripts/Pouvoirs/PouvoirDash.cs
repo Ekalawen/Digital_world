@@ -21,6 +21,7 @@ public class PouvoirDash : IPouvoir {
         RemoveGravityEffect(direction);
         StartVfx();
         gm.timerManager.timeMultiplierController.RemoveAllEnnemisMultipliers();
+        player.onUseDash.Invoke(this);
         return true;
     }
 

@@ -16,6 +16,8 @@ public class ItemManager : MonoBehaviour {
     protected List<OrbTrigger> orbTriggers = new List<OrbTrigger>(); // Toutes les OrbTriggers ! :3
     [HideInInspector]
     public UnityEvent<OrbTrigger> onOrbTriggerHacked;
+    [HideInInspector]
+    public UnityEvent onTimeResetCatch;
 
     public virtual void Initialize() {
         gm = GameManager.Instance;

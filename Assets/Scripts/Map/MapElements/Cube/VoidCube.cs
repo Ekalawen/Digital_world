@@ -71,6 +71,7 @@ public class VoidCube : NonBlackCube {
         gm.postProcessManager.UpdateHitEffect();
         ShakeScreen();
         AddGeoPointOfImpact();
+        gm.ennemiManager.onVoidCubeHit.Invoke(this);
         Destroy();
     }
 

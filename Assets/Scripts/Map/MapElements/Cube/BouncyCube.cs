@@ -41,6 +41,7 @@ public class BouncyCube : Cube {
             gm.timerManager.RemoveTime(dammageOnHit, EventManager.DeathReason.TOUCHED_BOUNCY_CUBE);
         }
         timerAddPoussee.Reset();
+        player.onBouncerJump.Invoke(this);
     }
 
     protected Vector3 GetDirectionPoussee(Vector3 position) {

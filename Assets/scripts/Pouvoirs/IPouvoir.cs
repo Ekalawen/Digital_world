@@ -60,6 +60,7 @@ public abstract class IPouvoir : MonoBehaviour {
     protected virtual void ApplyUsePouvoir() {
         if (UsePouvoir()) {
             ApplyUsePouvoirConsequences();
+            player.onUsePouvoir.Invoke(this);
         } else {
             gm.soundManager.PlayDeniedPouvoirClip();
         }

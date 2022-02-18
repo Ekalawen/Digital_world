@@ -91,6 +91,7 @@ public class PouvoirPathfinder : IPouvoir {
             gm.console.SummarizePathfinder(pathfinderDatas);
         }
 
+        player.onUsePathfinder.Invoke(this);
         return true;
     }
 

@@ -100,9 +100,19 @@ public class Player : Character {
     [HideInInspector]
     public UnityEvent onHitBySonde;
     [HideInInspector]
+    public UnityEvent onHitByTracer;
+    [HideInInspector]
     public UnityEvent<GameObject> onLand;
     [HideInInspector]
     public UnityEvent onGrip;
+    [HideInInspector]
+    public UnityEvent<IPouvoir> onUsePouvoir;
+    [HideInInspector]
+    public UnityEvent<PouvoirDash> onUseDash;
+    [HideInInspector]
+    public UnityEvent<PouvoirPathfinder> onUsePathfinder;
+    [HideInInspector]
+    public UnityEvent<BouncyCube> onBouncerJump;
 
     protected GameManager gm;
     protected InputManager inputManager;

@@ -163,6 +163,7 @@ public class PouvoirGripDash : IPouvoir {
         StunForDashDuration();
         StartVfx();
         gm.timerManager.timeMultiplierController.RemoveAllEnnemisMultipliers();
+        player.onUsePouvoir.Invoke(this);
         return true;
     }
 
