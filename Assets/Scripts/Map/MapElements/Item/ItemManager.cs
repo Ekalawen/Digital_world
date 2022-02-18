@@ -17,6 +17,8 @@ public class ItemManager : MonoBehaviour {
     [HideInInspector]
     public UnityEvent<OrbTrigger> onOrbTriggerHacked;
     [HideInInspector]
+    public UnityEvent<OrbTrigger> onOrbTriggerExit;
+    [HideInInspector]
     public UnityEvent onTimeResetCatch;
 
     public virtual void Initialize() {
@@ -70,14 +72,8 @@ public class ItemManager : MonoBehaviour {
         return GetItems().Select(i => i.transform.position).ToList();
     }
 
-    public List<Item> GetItemsType(Type itemType) {
-        List<Item> res = new List<Item>();
-        foreach(Item item in items) {
-            if(item.GetType().IsAssignableFrom(itemType)) {
-                res.Add(item);
-            }
-        }
-        return res;
+    public List<Item> GetItemsOfType(Item.Type itemType) {
+        return GetItems().FindAll(i => i.type == itemType);
     }
 
     public void RemoveItem(Item item) {

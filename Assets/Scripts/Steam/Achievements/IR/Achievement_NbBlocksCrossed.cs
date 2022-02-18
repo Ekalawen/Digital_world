@@ -14,10 +14,10 @@ public class Achievement_NbBlocksCrossed : Achievement {
 
     protected override void InitializeSpecific() {
         map = gm.map.GetComponent<InfiniteMap>();
-        map.onBlockCrossed.AddListener(UnlockIfBetterTreshold);
+        map.onBlocksCrossed.AddListener(UnlockIfBetterTreshold);
     }
 
-    public void UnlockIfBetterTreshold() {
+    public void UnlockIfBetterTreshold(int nbBlocksCrossed) {
         if(map.GetNonStartNbBlocksRun() >= treshold) {
             Unlock();
         }

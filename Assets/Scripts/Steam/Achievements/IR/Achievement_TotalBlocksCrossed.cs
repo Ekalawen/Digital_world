@@ -11,12 +11,12 @@ public class Achievement_TotalBlocksCrossed : Achievement {
     public int treshold = 100;
 
     protected override void InitializeSpecific() {
-        gm.map.GetComponent<InfiniteMap>().onBlockCrossed.AddListener(UnlockIfBetterTreshold);
+        gm.map.GetComponent<InfiniteMap>().onBlocksCrossed.AddListener(UnlockIfBetterTreshold);
     }
 
-    public void UnlockIfBetterTreshold() {
-        int nbBlocksCrossed = Block.GetTotalBlocksCrossed();
-        if(nbBlocksCrossed >= treshold) {
+    public void UnlockIfBetterTreshold(int nbBlocksJustCrossed) {
+        int totalNbBlocksCrossed = Block.GetTotalBlocksCrossed();
+        if(totalNbBlocksCrossed >= treshold) {
             Unlock();
         }
     }

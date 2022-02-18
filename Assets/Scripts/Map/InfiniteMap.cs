@@ -65,7 +65,7 @@ public class InfiniteMap : MapManager {
     protected CameraShakeInstance cameraShakeInstance;
     protected List<string> blocksNameToNotifyPlayerToPressShift = new List<string>();
     [HideInInspector]
-    public UnityEvent onBlockCrossed = new UnityEvent();
+    public UnityEvent<int> onBlocksCrossed;
 
     protected override void InitializeSpecific()
     {
@@ -311,7 +311,7 @@ public class InfiniteMap : MapManager {
 
             gm.timerManager.TryUpdatePhase(GetNonStartNbBlocksRun(), gm.goalManager.GetLastTresholdNotInfinite());
 
-            onBlockCrossed.Invoke();
+            onBlocksCrossed.Invoke(nbBlocksAdded);
         }
     }
 
