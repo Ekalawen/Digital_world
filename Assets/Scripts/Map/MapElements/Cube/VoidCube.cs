@@ -21,10 +21,11 @@ public class VoidCube : NonBlackCube {
     public float screenShakeDecreaseTime;
     public GeoData geoDataImpact;
 
-    protected bool hasVoidExploded = false;
+    protected bool hasVoidExploded;
 
     public override void Initialize() {
         base.Initialize();
+        hasVoidExploded = false;
         BothMaterialsSetVector("_InitialPosition", transform.position);
         CheckPlayerCollisionOnStart();
     }
@@ -52,7 +53,6 @@ public class VoidCube : NonBlackCube {
             return;
         }
         hasVoidExploded = true;
-        Debug.Log($"POWER DASH EXPLOSION !");
         DestroyAllNearByCubes();
         //gm.timerManager.AddTimeMultiplierForEnnemiImpact(slowmotion); // We don't want to slow down time, as the PowerDash is already doing it !
         gm.soundManager.PlayVoidCubeExplosionClip(transform.position);
@@ -65,7 +65,6 @@ public class VoidCube : NonBlackCube {
             return;
         }
         hasVoidExploded = true;
-        Debug.Log($"VOID EXPLOSION");
         DestroyAllNearByCubes();
         DivideTime();
         AddPoussee();
