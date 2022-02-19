@@ -25,6 +25,7 @@ public class VoidCube : NonBlackCube {
 
     public override void Initialize() {
         base.Initialize();
+        BothMaterialsSetVector("_InitialPosition", transform.position);
         CheckPlayerCollisionOnStart();
     }
 
