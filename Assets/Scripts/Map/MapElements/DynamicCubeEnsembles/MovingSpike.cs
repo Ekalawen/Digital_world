@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class MovingSpike : DynamicCubeEnsemble {
 
+    public static string MOVING_SPIKE_FOLDER_NAME = "MovingSpike";
+
     [Header("Previsualization")]
     public float previsualizationTime = 1.5f;
     public GameObject previsualizationLightningPrefab;
@@ -105,7 +107,7 @@ public class MovingSpike : DynamicCubeEnsemble {
     }
 
     public override string GetName() {
-        return "MovingSpike";
+        return MOVING_SPIKE_FOLDER_NAME;
     }
 
     protected override void InitializeCubeEnsembleType() {

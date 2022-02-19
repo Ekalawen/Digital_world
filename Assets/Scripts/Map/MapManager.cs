@@ -67,6 +67,8 @@ public class MapManager : MonoBehaviour {
     protected List<SwappyCubesHolderManager> swappyCubesHolderManagers;
     protected Dictionary<Cube.CubeType, Stack<Cube>> cubesPools;
     protected BoundingBox boundingBox; // La taille de la map minimum comprenant tous les cubes :) [inclusif, inclusif]
+    [HideInInspector]
+    public UnityEvent<Cube> onDeleteCube;
 
     public void Initialize() {
 		// Initialisation
@@ -241,6 +243,7 @@ public class MapManager : MonoBehaviour {
         foreach(DynamicCubeEnsemble dynamicCubeEnsemble in dynamicCubeEnsembles) {
             dynamicCubeEnsemble.OnDeleteCube(cube);
         }
+        onDeleteCube.Invoke(cube);
         StoreCubeInPool(cube);
     }
 

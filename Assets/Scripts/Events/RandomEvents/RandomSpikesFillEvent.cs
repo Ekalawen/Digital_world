@@ -10,6 +10,8 @@ public class RandomSpikesFillEvent : RandomEventFrequence {
     public int sizeSpikes = 1;
     public float minDistanceFromPlayer = 5.0f;
     public bool useBoundingBox = true;
+    public bool useGeoData = false;
+    [ConditionalHide("useGeoData")]
     public GeoData geoData;
 
     protected MapManager map;
@@ -21,6 +23,7 @@ public class RandomSpikesFillEvent : RandomEventFrequence {
         base.Initialize();
         map = gm.map;
         movingSpikes = new List<MovingSpike>();
+        map.onDeleteCube.AddListener(AddEmptyPositionsOnDeleteCube);
         targetPositions = map.GetAllEmptyPositions();
         MathTools.Shuffle(targetPositions);
     }
@@ -102,8 +105,10 @@ public class RandomSpikesFillEvent : RandomEventFrequence {
         targetPositions.AddRange(positionsToMark);
     }
 
-    protected void AddEmptyPositionsOnDeleteCube() {
-        // TODO ! ==> Add listener !
+    protected void AddEmptyPositionsOnDeleteCube(Cube deletedCube) {
+        if (deletedCube.transform.parent.name != MovingSpike.MOVING_SPIKE_FOLDER_NAME) {
+            targetPositions.Add(deletedCube.transform.position);
+        }
     }
 
     protected override void EndEvent() {
@@ -123,7 +128,13 @@ public class RandomSpikesFillEvent : RandomEventFrequence {
     }
 
     protected void AddGeoPoint(Vector3 startingPosition) {
-        // TODO !
+        if (!useGeoData) {
+            return;
+        }
+
+        GeoData newGeoData = new GeoData(geoData);
+        newGeoData.SetTargetPosition(startingPosition);
+        gm.player.geoSphere.AddGeoPoint(newGeoData);
     }
 }
 
