@@ -8,6 +8,7 @@ public class RandomSpikesFillEvent : RandomEventFrequence {
 
     public GameObject movingSpikePrefab;
     public int sizeSpikes = 1;
+    public float minDistanceFromPlayer = 5.0f;
     public bool useBoundingBox = true;
     public GeoData geoData;
 
@@ -27,6 +28,11 @@ public class RandomSpikesFillEvent : RandomEventFrequence {
     protected override void StartEvent() {
         Vector3 target = targetPositions.First();
         List<Tuple<Vector3, float>> startingPositionsForDirections = ComputeStartingPositionsForTarget(target);
+        startingPositionsForDirections = startingPositionsForDirections.FindAll(t => Vector3.Distance(t.Item1, gm.player.transform.position) >= minDistanceFromPlayer);
+        if(startingPositionsForDirections.Count == 0) {
+            RestartEvent(target);
+            return;
+        }
         Tuple<Vector3, float> chosenOne = startingPositionsForDirections.OrderBy(t => t.Item2).Last();
         Vector3 startingPosition = chosenOne.Item1;
         Vector3 direction = (target - startingPosition).normalized;
