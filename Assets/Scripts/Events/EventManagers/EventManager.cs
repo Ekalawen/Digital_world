@@ -195,6 +195,15 @@ public class EventManager : MonoBehaviour {
         return randomEvents;
     }
 
+    public List<T> GetRandomEventsOfType<T>() where T : RandomEvent {
+        return GetRandomEvents().FindAll(re => re.GetComponent<T>() != null).Select(re => (T)re).ToList();
+    }
+
+    public T GetOneRandomEventOfType<T>() where T : RandomEvent {
+        List<T> eventsOfType = GetRandomEventsOfType<T>();
+        return eventsOfType.Count == 0 ? null : eventsOfType.First();
+    }
+
     public virtual void OnLumiereCaptured(Lumiere lumiere) {
         int nbLumieres = map.GetLumieres().Count;
         if (lumiere.type == Lumiere.LumiereType.NORMAL) {

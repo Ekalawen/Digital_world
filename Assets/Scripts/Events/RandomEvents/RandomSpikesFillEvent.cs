@@ -19,6 +19,7 @@ public class RandomSpikesFillEvent : RandomEventFrequence {
     protected List<MovingSpike> movingSpikes;
     protected float creationDuration;
     protected List<Vector3> targetPositions;
+    protected List<Vector3> secondaryTargetPositions;
 
     public override void Initialize() {
         base.Initialize();
@@ -26,15 +27,20 @@ public class RandomSpikesFillEvent : RandomEventFrequence {
         movingSpikes = new List<MovingSpike>();
         map.onDeleteCube.AddListener(AddEmptyPositionsOnDeleteCube);
         targetPositions = map.GetAllEmptyPositions();
+        secondaryTargetPositions = new List<Vector3>();
         MathTools.Shuffle(targetPositions);
     }
 
     protected override void StartEvent() {
         Vector3 target = targetPositions.First();
+        StartEventForPosition(target, shouldRestartIfFailed: true);
+    }
+
+    protected void StartEventForPosition(Vector3 target, bool shouldRestartIfFailed) {
         List<Tuple<Vector3, float>> startingPositionsForDirections = ComputeStartingPositionsForTarget(target);
         startingPositionsForDirections = startingPositionsForDirections.FindAll(t => Vector3.Distance(t.Item1, gm.player.transform.position) >= minDistanceFromPlayer);
-        if(startingPositionsForDirections.Count == 0) {
-            RestartEvent(target);
+        if (startingPositionsForDirections.Count == 0) {
+            RestartEvent(target, shouldRestartIfFailed);
             return;
         }
         Tuple<Vector3, float> chosenOne = startingPositionsForDirections.OrderBy(t => t.Item2).Last();
@@ -44,13 +50,15 @@ public class RandomSpikesFillEvent : RandomEventFrequence {
         if (direction != Vector3.zero) {
             StartSpikesAtPosition(startingPosition, direction);
         } else {
-            RestartEvent(target);
+            RestartEvent(target, shouldRestartIfFailed);
         }
     }
 
-    protected void RestartEvent(Vector3 target) {
+    protected void RestartEvent(Vector3 target, bool shouldRestartIfFailed) {
         MarkTargetPositionsAsCovered(new List<Vector3>() { target });
-        StartEvent();
+        if (shouldRestartIfFailed) {
+            StartEvent();
+        }
     }
 
     protected void StartSpikesAtPosition(Vector3 startingPosition, Vector3 direction) {
@@ -103,6 +111,7 @@ public class RandomSpikesFillEvent : RandomEventFrequence {
     protected void MarkTargetPositionsAsCovered(List<Vector3> positionsToMark) {
         foreach(Vector3 position in positionsToMark) {
             targetPositions.Remove(position);
+            secondaryTargetPositions.Remove(position);
         }
         targetPositions.AddRange(positionsToMark);
     }
@@ -146,6 +155,14 @@ public class RandomSpikesFillEvent : RandomEventFrequence {
     protected void PlaySoundOnStartSpike(Vector3 pos) {
         if (shouldPlaySound) {
             gm.soundManager.PlayStartSpikeEventClip(pos);
+        }
+    }
+
+    public void StartFullFill(float proportionOfTargets) {
+        secondaryTargetPositions = GaussianGenerator.SelectSomeProportionOfSureMethod(targetPositions.Select(p => p).ToList(), proportionOfTargets);
+        int nbMaxEvents = secondaryTargetPositions.Count;
+        for(int i = 0; i < nbMaxEvents && secondaryTargetPositions.Count > 0; i++) {
+            StartEventForPosition(secondaryTargetPositions.First(), shouldRestartIfFailed: false);
         }
     }
 }
