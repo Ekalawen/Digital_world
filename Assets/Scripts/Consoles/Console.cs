@@ -1340,4 +1340,8 @@ public class Console : MonoBehaviour {
     public void EnableEnnemis() {
         AjouterMessageImportant(strings.enableEnnemis, Console.TypeText.BLUE_TEXT, 2.0f);
     }
+
+    public void ExternalStartEndGame() {
+        AjouterMessageImportant(strings.externalStartEndEvent, Console.TypeText.RED_TEXT, 2.0f);
+    }
 }

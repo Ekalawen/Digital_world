@@ -79,6 +79,7 @@ public class ConsoleStrings : ScriptableObject
     public LocalizedString wowQuelSaut;
     public LocalizedString bridgeBuilderInvalid;
     public LocalizedString fautTrouverLaSortie;
+    public LocalizedString externalStartEndEvent;
     public LocalizedString ilResteQuelqueChoseAFaire;
     public LocalizedString altitudeCritique;
 

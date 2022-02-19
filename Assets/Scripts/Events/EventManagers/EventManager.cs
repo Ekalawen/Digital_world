@@ -217,6 +217,7 @@ public class EventManager : MonoBehaviour {
 
     public void ExternalStartEndGame() {
         gm.soundManager.PlayEndGameMusic(); // Ici car lorsqu'il y a plusieurs end-games on ne veut pas que la musique restart !
+        gm.console.ExternalStartEndGame();
         StartEndGame();
     }
 
