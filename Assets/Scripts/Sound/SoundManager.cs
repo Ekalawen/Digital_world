@@ -126,6 +126,9 @@ public class SoundManager : MonoBehaviour
     {
         PlayClipsOnSource(sounds.eventStartClips);
     }
+    public void PlayStartSpikeEventClip(Vector3 pos) {
+        PlayClipsOnSource(sounds.randomSpikeEventClips, pos: pos);
+    }
     public void PlayEventEndClip()
     {
         // reverse !

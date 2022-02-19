@@ -13,6 +13,7 @@ public class RandomSpikesFillEvent : RandomEventFrequence {
     public bool useGeoData = false;
     [ConditionalHide("useGeoData")]
     public GeoData geoData;
+    public bool shouldPlaySound = false;
 
     protected MapManager map;
     protected List<MovingSpike> movingSpikes;
@@ -65,6 +66,7 @@ public class RandomSpikesFillEvent : RandomEventFrequence {
             }
         }
         AddGeoPoint(startingPosition);
+        PlaySoundOnStartSpike(startingPosition);
     }
 
     protected void StartOneSpikeAtPosition(Vector3 startingPosition, Vector3 direction) {
@@ -135,6 +137,16 @@ public class RandomSpikesFillEvent : RandomEventFrequence {
         GeoData newGeoData = new GeoData(geoData);
         newGeoData.SetTargetPosition(startingPosition);
         gm.player.geoSphere.AddGeoPoint(newGeoData);
+    }
+
+    protected override void PlayStartSound() {
+        // We do it ourselves ! :)
+    }
+
+    protected void PlaySoundOnStartSpike(Vector3 pos) {
+        if (shouldPlaySound) {
+            gm.soundManager.PlayStartSpikeEventClip(pos);
+        }
     }
 }
 
