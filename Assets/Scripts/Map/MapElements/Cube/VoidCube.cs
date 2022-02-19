@@ -52,6 +52,7 @@ public class VoidCube : NonBlackCube {
             return;
         }
         hasVoidExploded = true;
+        Debug.Log($"POWER DASH EXPLOSION !");
         DestroyAllNearByCubes();
         //gm.timerManager.AddTimeMultiplierForEnnemiImpact(slowmotion); // We don't want to slow down time, as the PowerDash is already doing it !
         gm.soundManager.PlayVoidCubeExplosionClip(transform.position);
@@ -64,6 +65,7 @@ public class VoidCube : NonBlackCube {
             return;
         }
         hasVoidExploded = true;
+        Debug.Log($"VOID EXPLOSION");
         DestroyAllNearByCubes();
         DivideTime();
         AddPoussee();
@@ -86,9 +88,6 @@ public class VoidCube : NonBlackCube {
     }
 
     protected void DivideTime() {
-        if(globalLoseTimeTimer == null) {
-            globalLoseTimeTimer = new Timer(GLOBAL_LOSE_TIME_TIMER_DURATION, setOver: true);
-        }
         if (globalLoseTimeTimer.IsOver()) {
             gm.timerManager.DivideTimeBy(2, EventManager.DeathReason.TOUCHED_DEATH_CUBE); // Never supposed to kill !
             globalLoseTimeTimer.Reset();

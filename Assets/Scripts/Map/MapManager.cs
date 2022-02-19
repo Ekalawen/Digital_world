@@ -100,6 +100,7 @@ public class MapManager : MonoBehaviour {
         nonRegularOctree = new Octree<Cube>(cellSize: 8);
         swappyCubesHolderManagers = new List<SwappyCubesHolderManager>();
         cubesPools = new Dictionary<Cube.CubeType, Stack<Cube>>();
+        VoidCube.globalLoseTimeTimer = new Timer(VoidCube.GLOBAL_LOSE_TIME_TIMER_DURATION, setOver: true);
 
         // Récupérer tous les cubes et toutes les lumières qui pourraient déjà exister avant la création de la map !
         GetAllAlreadyExistingCubesAndLumieres();
