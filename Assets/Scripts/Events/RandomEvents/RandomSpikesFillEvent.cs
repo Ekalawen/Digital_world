@@ -7,7 +7,8 @@ using UnityEngine;
 public class RandomSpikesFillEvent : RandomEventFrequence {
 
     public GameObject movingSpikePrefab;
-    public bool useBoundingBox;
+    public int sizeSpikes = 1;
+    public bool useBoundingBox = true;
     public GeoData geoData;
 
     protected MapManager map;
@@ -28,21 +29,43 @@ public class RandomSpikesFillEvent : RandomEventFrequence {
         List<Tuple<Vector3, float>> startingPositionsForDirections = ComputeStartingPositionsForTarget(target);
         Tuple<Vector3, float> chosenOne = startingPositionsForDirections.OrderBy(t => t.Item2).Last();
         Vector3 startingPosition = chosenOne.Item1;
-        float distance = chosenOne.Item2;
         Vector3 direction = (target - startingPosition).normalized;
 
         if (direction != Vector3.zero) {
-            MovingSpike movingSpike = Instantiate(movingSpikePrefab, parent: transform).GetComponent<MovingSpike>();
-            movingSpike.Initialize(startingPosition, direction,
-                previsualizationDelay: 0.0f,
-                shouldDisplayPrevisualization: true,
-                useBoundingBox: false);
-            movingSpikes.Add(movingSpike);
-            MarkTargetPositionsAsCovered(movingSpike.GetPositionsCovered());
-            AddGeoPoint(startingPosition);
+            StartSpikesAtPosition(startingPosition, direction);
         } else {
-            MarkTargetPositionsAsCovered(new List<Vector3>() { target });
+            RestartEvent(target);
         }
+    }
+
+    protected void RestartEvent(Vector3 target) {
+        MarkTargetPositionsAsCovered(new List<Vector3>() { target });
+        StartEvent();
+    }
+
+    protected void StartSpikesAtPosition(Vector3 startingPosition, Vector3 direction) {
+        Vector3 dir2 = (direction == Vector3.up || direction == Vector3.down) ? Vector3.forward : Vector3.up;
+        Vector3 dir3 = Vector3.Cross(direction, dir2);
+        float startOnDir1 = Vector3.Dot(startingPosition, direction);
+        float startOnDir2 = Vector3.Dot(startingPosition, dir2);
+        float startOnDir3 = Vector3.Dot(startingPosition, dir3);
+        for(float i = startOnDir2 - Mathf.FloorToInt(sizeSpikes / 2.0f); i < startOnDir2 + Mathf.CeilToInt(sizeSpikes / 2.0f); i++) {
+            for(float j = startOnDir3 - Mathf.FloorToInt(sizeSpikes / 2.0f); j < startOnDir3 + Mathf.CeilToInt(sizeSpikes / 2.0f); j++) {
+                Vector3 pos = direction * startOnDir1 + i * dir2 + j * dir3;
+                StartOneSpikeAtPosition(pos, direction);
+            }
+        }
+        AddGeoPoint(startingPosition);
+    }
+
+    protected void StartOneSpikeAtPosition(Vector3 startingPosition, Vector3 direction) {
+        MovingSpike movingSpike = Instantiate(movingSpikePrefab, parent: transform).GetComponent<MovingSpike>();
+        movingSpike.Initialize(startingPosition, direction,
+            previsualizationDelay: 0.0f,
+            shouldDisplayPrevisualization: true,
+            useBoundingBox: false);
+        movingSpikes.Add(movingSpike);
+        MarkTargetPositionsAsCovered(movingSpike.GetPositionsCovered());
     }
 
     protected List<Tuple<Vector3, float>> ComputeStartingPositionsForTarget(Vector3 target) {
@@ -58,7 +81,7 @@ public class RandomSpikesFillEvent : RandomEventFrequence {
         for(int i = 0; i < tailleMap; i++) {
             Vector3 nextCurrent = current + direction;
             bool isInMap = useBoundingBox ? map.IsInsideBoundingBox(nextCurrent) : map.IsInRegularMap(nextCurrent);
-            if(map.IsCubeAt(nextCurrent) || !isInMap || map.IsLumiereAt(nextCurrent) || gm.itemManager.IsItemAt(nextCurrent)) {
+            if(map.IsCubeAt(nextCurrent) || !isInMap) {
                 return current;
             }
             current = nextCurrent;

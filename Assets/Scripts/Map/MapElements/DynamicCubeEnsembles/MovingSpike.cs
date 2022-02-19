@@ -73,29 +73,35 @@ public class MovingSpike : DynamicCubeEnsemble {
         yield return new WaitForSeconds(previsualizationTime);
 
         Cube cube = CreateCube(start);
-        cube.StartDissolveEffect(dissolveTime);
+        if (cube == null) {
+            DestroyCubeEnsemble();
+        } else {
+            cube.StartDissolveEffect(dissolveTime);
 
-        yield return new WaitForSeconds(dissolveTime);
+            yield return new WaitForSeconds(dissolveTime);
 
-        float distance = Vector3.Distance(start, end);
-        float time = distance / speed;
-        Timer timer = new Timer(time);
-        while(!timer.IsOver()) {
-            float avancement = Math.Min(timer.GetAvancement(), 1);
-            Vector3 newPosition = Vector3.Lerp(start, end, avancement);
-            bool moveSucceed = cube.MoveTo(newPosition);
-            if (!moveSucceed) {
-                //end = MathTools.Round(newPosition);
-                //cube.MoveTo(end);
-                break;
+            float distance = Vector3.Distance(start, end);
+            float time = distance / speed;
+            Timer timer = new Timer(time);
+            while (!timer.IsOver())
+            {
+                float avancement = Math.Min(timer.GetAvancement(), 1);
+                Vector3 newPosition = Vector3.Lerp(start, end, avancement);
+                bool moveSucceed = cube.MoveTo(newPosition);
+                if (!moveSucceed)
+                {
+                    //end = MathTools.Round(newPosition);
+                    //cube.MoveTo(end);
+                    break;
+                }
+                yield return null;
             }
-            yield return null;
+
+            cube.Decompose(decomposeTime);
+            yield return new WaitForSeconds(decomposeTime + 1); // +1 For security :)
+
+            DestroyCubeEnsemble();
         }
-
-        cube.Decompose(decomposeTime);
-        yield return new WaitForSeconds(decomposeTime + 1); // +1 For security :)
-
-        DestroyCubeEnsemble();
     }
 
     public override string GetName() {

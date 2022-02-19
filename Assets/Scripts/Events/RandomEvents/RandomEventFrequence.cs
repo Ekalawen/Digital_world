@@ -19,7 +19,6 @@ public abstract class RandomEventFrequence : RandomEvent {
 
     protected override void CallStartEvent() {
         int nbTimesTriggerEvent = Mathf.RoundToInt(lastTimeStartEvent.GetElapsedTime() * nbApparitionsBySeconds);
-        Debug.Log($"nbtimesTriggerEvent this frame = {nbTimesTriggerEvent}");
         for (int i = 0; i < nbTimesTriggerEvent; i++) {
             StartEvent();
         }
