@@ -1,0 +1,130 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4120684574969509978
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4120684574969509980}
+  - component: {fileID: 4120684574969509979}
+  - component: {fileID: 70444841654840150}
+  m_Layer: 0
+  m_Name: PouvoirTimeHack
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4120684574969509980
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4120684574969509978}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4120684574969509979
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4120684574969509978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8de789e83fb20304b882cc6e50ad9f57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nom:
+    m_TableReference:
+      m_TableCollectionName: GUID:bdcfcf5557c4ec14ea653537ddc22373
+    m_TableEntryReference:
+      m_KeyId: 140403823720243200
+      m_Key: 
+    m_FallbackState: 0
+  description:
+    m_TableReference:
+      m_TableCollectionName: GUID:bdcfcf5557c4ec14ea653537ddc22373
+    m_TableEntryReference:
+      m_KeyId: 140403862697910272
+      m_Key: 
+    m_FallbackState: 0
+  sprite: {fileID: 0}
+  pouvoirType: 2
+  timerMalus: 0
+  timerMalusTimeProportional: 0
+  timerMalusTimeProportion: 0.33333334
+  activationAudioClips:
+    relativeVolume: 0
+    spatialBlend: 0
+    bReverse: 0
+    bIsMusic: 0
+    bLoop: 0
+    clips:
+    - {fileID: 8300000, guid: eba6031eaa2a82e489a67ff68af19033, type: 3}
+  duree: 5
+  rayon: 6
+  timeMultiplier:
+    type: 1
+    timeVariation: 0.05
+    totalRealDuration: 5
+    useRealTimeDuration: 1
+    inDurationPercentage: 0
+    outDurationPercentage: 0
+    inCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    outCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  speedMultiplier:
+    speedAdded: 19
+    duration: 5
+    inDuration: 0
+    outDuration: 0
+    inCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    outCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    affectHeight: 0
+  orbTriggerPrefab: {fileID: 1639728394871247568, guid: 110234aec2f720d4688b4251b9e36ea6,
+    type: 3}
+--- !u!114 &70444841654840150
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4120684574969509978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f543d1a087782b4cb70c193007cb067, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cooldown: 69
+  maxCharges: 1
+  dontStartFull: 0
+  startCharges: 0

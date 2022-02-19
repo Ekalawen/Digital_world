@@ -31,6 +31,10 @@ public class SpeedMultiplierController : MonoBehaviour {
         speedMultipliers.Remove(speedMultiplier);
     }
 
+    public void RemoveAllMultiplier() {
+        speedMultipliers.Clear();
+    }
+
     public float GetMultiplier() {
         float multiplier = 1.0f;
         foreach(SpeedMultiplier speedMultiplier in speedMultipliers) {

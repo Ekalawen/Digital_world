@@ -63,4 +63,9 @@ public class NoAutomaticRechargeCooldown : ChargeCooldown {
         }
         return base.IsTextToDisplayOnPouvoirDisplayATimer();
     }
+
+    internal void GainChargeIn(object durationToRecharge)
+    {
+        throw new NotImplementedException();
+    }
 }
