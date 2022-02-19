@@ -43,11 +43,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d156ba9fd8d588b449754492b69b4688, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cubeType: 1
+  cubeType: 8
   onDeleteCube:
     m_PersistentCalls:
       m_Calls: []
-  previsualizationTime: 2
+  previsualizationTime: 1
   previsualizationLightningPrefab: {fileID: 6040469207826595671, guid: 76f28048e1ad43c439c5222e87ff93e5,
     type: 3}
   speed: 10
@@ -62,9 +62,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8324963730128950416}
-  - component: {fileID: 3910065583675916974}
+  - component: {fileID: 1989177135702833916}
   m_Layer: 0
-  m_Name: DeathWallEvent
+  m_Name: RandomSpikesFillEvent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -85,7 +85,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3910065583675916974
+--- !u!114 &1989177135702833916
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -94,10 +94,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 6732515167519668042}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ec82953c1b38ac4aad753e9025ff3eb, type: 3}
+  m_Script: {fileID: 11500000, guid: fadd2deecc58c4040a31474a37e6176b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  esperanceApparition: 1.5
+  esperanceApparition: 0
   varianceApparition: 0
   esperanceDuree: 0
   varianceDuree: 0
@@ -105,10 +105,9 @@ MonoBehaviour:
   bPlayEndSound: 0
   triggerMaxNumberOfTimes: 0
   nbMaxTriggers: 1
+  nbApparitionsBySeconds: 10
   movingSpikePrefab: {fileID: 219253421874689201}
-  delayCoef: 0.02
-  delayRandPercentage: 0
-  positionMode: 2
+  useBoundingBox: 0
   geoData:
     color: {r: 47.937256, g: 1.0039216, b: 1.0039216, a: 1}
     type: 1

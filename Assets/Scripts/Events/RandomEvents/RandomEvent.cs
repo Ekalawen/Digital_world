@@ -37,15 +37,20 @@ public abstract class RandomEvent : MonoBehaviour {
     }
 
     public void TriggerEvent() {
-        if (CanBeStarted()) {
+        if (CanBeStarted())
+        {
             bEventIsOn = true;
             dureeCourante = GaussianGenerator.Next(esperanceDuree, varianceDuree, 0.0f, 2 * esperanceDuree);
-            StartEvent();
+            CallStartEvent();
             PlayStartSound();
             StartEventConsoleMessage();
             StartCoroutine(CEndEvent());
             nbTimesTriggered += 1;
         }
+    }
+
+    protected virtual void CallStartEvent() {
+        StartEvent();
     }
 
     protected virtual void PlayStartSound() {
@@ -60,7 +65,7 @@ public abstract class RandomEvent : MonoBehaviour {
             gm.soundManager.PlayEventEndClip();
     }
 
-    protected float NextTime() {
+    protected virtual float NextTime() {
         return GaussianGenerator.Next(esperanceApparition, varianceApparition, 0.0f, 2 * esperanceApparition) + dureeCourante;
     }
 

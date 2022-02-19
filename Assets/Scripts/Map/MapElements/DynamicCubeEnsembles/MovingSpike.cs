@@ -29,7 +29,7 @@ public class MovingSpike : DynamicCubeEnsemble {
     {
         base.Initialize();
         this.start = start;
-        this.direction = direction;
+        this.direction = direction.normalized;
         this.useBoundingBox = useBoundingBox;
         this.end = ComputeEnd();
         this.previsualizationDelay = previsualizationDelay;
@@ -113,6 +113,18 @@ public class MovingSpike : DynamicCubeEnsemble {
         if(coroutineSpike != null) {
             StopCoroutine(coroutineSpike);
         }
+    }
+
+    public List<Vector3> GetPositionsCovered() {
+        List<Vector3> positionsCovered = new List<Vector3>();
+        Vector3 current = start;
+        int distance = Mathf.RoundToInt(Vector3.Distance(start, end));
+        for(int i = 0; i < distance; i++) {
+            positionsCovered.Add(current);
+            current += direction;
+        }
+        positionsCovered.Add(end);
+        return positionsCovered;
     }
 }
 
