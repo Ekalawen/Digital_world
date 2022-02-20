@@ -88,6 +88,12 @@ public class GravityManager : MonoBehaviour {
         onGravityChange.Invoke();
     }
 
+    public void SetIntensity(float newGravityIntensity) {
+        gravityIntensity = newGravityIntensity;
+        gm.soundManager.PlayGravityChangeClip();
+        onGravityChange.Invoke();
+    }
+
     public void SetGravityZeroSwap() {
         if (gravityIntensity != 0.0f) {
             SetGravity(gravityDirection, 0.0f);

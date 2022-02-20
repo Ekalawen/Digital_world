@@ -17,24 +17,26 @@ public class PouvoirTimeHack : IPouvoir {
     protected OrbTrigger orbTrigger = null;
     protected TimeMultiplier currentTimeMultiplier = null;
     protected SpeedMultiplier currentSpeedMultiplier = null;
-    protected float oldGravityIntensity = 0.0f;
 
     public override void Initialize() {
         base.Initialize();
         customCooldown = GetComponent<NoAutomaticRechargeCooldown>();
     }
 
-    protected override bool UsePouvoir() {
+    protected override void ApplyUsePouvoir() {
         if (!isActive) {
-            StartPouvoir();
+            UsePouvoir();
+            //ApplyUsePouvoirConsequences();
+            player.onUsePouvoir.Invoke(this);
         } else {
             StopPouvoir();
         }
-
-        return true;
     }
 
-    protected void StartPouvoir() {
+    protected override bool UsePouvoir() {
+        if(isActive) {
+            return false;
+        }
         isActive = true;
         ApplySlowMotion();
         IncreaseSpeed();
@@ -43,20 +45,22 @@ public class PouvoirTimeHack : IPouvoir {
         SetInvincible();
         player.RemoveAllPoussees();
         StartVfx();
+        return true;
     }
 
     protected void RemoveGravityIntensity() {
-        oldGravityIntensity = gm.gravityManager.gravityIntensity;
-        gm.gravityManager.SetGravity(gm.gravityManager.gravityDirection, 0.0f);
+        gm.gravityManager.SetIntensity(0.0f);
     }
 
     protected void RestoreGravityIntensity() {
-        gm.gravityManager.SetGravity(gm.gravityManager.gravityDirection, oldGravityIntensity);
+        gm.gravityManager.SetIntensity(gm.gravityManager.initialGravityIntensity);
     }
 
     protected void CreateOrbTrigger() {
         orbTrigger = Instantiate(orbTriggerPrefab, position: player.transform.position, rotation: Quaternion.identity, parent: gm.map.zonesFolder).GetComponent<OrbTrigger>();
         orbTrigger.Initialize(rayon, duree);
+        orbTrigger.Resize(orbTrigger.transform.position, Vector3.one * rayon / 2.0f);
+        orbTrigger.ResizeOverTime(rayon, orbTrigger.dureeConstruction);
         orbTrigger.onExit.AddListener(StopPouvoir);
         orbTrigger.onHack.AddListener(StopPouvoir);
     }
@@ -66,13 +70,17 @@ public class PouvoirTimeHack : IPouvoir {
     }
 
     protected void StopPouvoir() {
+        if(!isActive) {
+            return;
+        }
+        isActive = false;
         RemoveSlowmotion();
         DecreaseSpeed();
         DestroyOrbTrigger();
         RestoreGravityIntensity();
         UnsetInvincible();
         UseCharge();
-        isActive = false;
+        player.ResetGrip();
     }
 
     protected void UseCharge() {

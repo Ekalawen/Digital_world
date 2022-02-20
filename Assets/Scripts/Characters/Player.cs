@@ -1157,23 +1157,31 @@ public class Player : Character {
         return isInvincible;
     }
 
+    public void SetInvincibleWithMessage() {
+        SetInvincible();
+        gm.console.SetInvincible();
+    }
+
+    public void UnsetInvincibleWithMessage() {
+        UnsetInvincible();
+        gm.console.UnsetInvincible();
+    }
+
     public void SetInvincible() {
         isInvincible = true;
-        gm.console.SetInvincible();
         gm.soundManager.PlayGetItemClip(transform.position);
     }
 
     public void UnsetInvincible() {
         isInvincible = false;
-        gm.console.UnsetInvincible();
         gm.soundManager.PlayGetItemClip(transform.position);
     }
 
     public void SwapInvincible() {
         if(IsInvincible()) {
-            UnsetInvincible();
+            UnsetInvincibleWithMessage();
         } else {
-            SetInvincible();
+            SetInvincibleWithMessage();
         }
     }
 
