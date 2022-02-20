@@ -109,4 +109,8 @@ public class VoidCube : NonBlackCube {
     public bool HasVoidExploded() {
         return hasVoidExploded;
     }
+
+    public override bool ShouldPushPlayerWhenMoveAndInteractingWithHim() {
+        return true;
+    }
 }
