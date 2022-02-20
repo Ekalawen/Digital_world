@@ -30,7 +30,7 @@ public abstract class RandomEvent : MonoBehaviour {
         while (!gm.eventManager.IsGameOver()) {
             float nextTime = NextTime();
             yield return new WaitForSeconds(nextTime);
-            if(!bEventIsOn) {
+            if(!bEventIsOn && !gm.eventManager.IsGameOver()) { // Double check necessary here cause of the wait
                 TriggerEvent();
             }
         }

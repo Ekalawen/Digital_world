@@ -36,6 +36,7 @@ public class MovingSpike : DynamicCubeEnsemble {
         this.end = ComputeEnd();
         this.previsualizationDelay = previsualizationDelay;
         this.shouldDisplayPrevisualization = shouldDisplayPrevisualization;
+        gm.eventManager.onGameOver.AddListener(StopSpike);
         if (CanStartAtThisPosition(start)) {
             coroutinePrevisualization = StartCoroutine(CStartPrevisualization());
             coroutineSpike = StartCoroutine(CStartSpike());
@@ -133,6 +134,12 @@ public class MovingSpike : DynamicCubeEnsemble {
         }
         positionsCovered.Add(end);
         return positionsCovered;
+    }
+
+    protected void StopSpike() {
+        StopAllCoroutines();
+        coroutineSpike = null;
+        coroutinePrevisualization = null;
     }
 }
 
