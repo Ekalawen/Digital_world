@@ -44,6 +44,7 @@ public class OrbTrigger : IZone {
     public UnityEvent<OrbTrigger> onHack;
     [HideInInspector]
     public UnityEvent<OrbTrigger> onExit;
+    protected float coefTimeToDisplayOnScreen = 1.0f;
 
     public void Initialize(float rayon, float durationToActivate) {
         base.Initialize();
@@ -106,11 +107,14 @@ public class OrbTrigger : IZone {
         gm.soundManager.PlayTimeZoneButtonInClip(transform.position);
 
         Timer timer = new Timer(durationToActivate);
-        while(!timer.IsOver()) {
-            if (gm.eventManager.IsGameOver()) {
+        while(!timer.IsOver())
+        {
+            if (gm.eventManager.IsGameOver())
+            {
                 break;
             }
-            currentMessage = TimerManager.TimerToString(timer.GetRemainingTime());
+            float timeToDisplayOnScreen = GetTimeToDisplayOnScreen(timer);
+            currentMessage = TimerManager.TimerToString(timeToDisplayOnScreen);
             gm.console.AjouterMessageImportant(currentMessage,
                 Console.TypeText.BLUE_TEXT,
                 0.1f,
@@ -121,7 +125,7 @@ public class OrbTrigger : IZone {
             yield return null;
         }
 
-        if(!gm.eventManager.IsGameOver()) {
+        if (!gm.eventManager.IsGameOver()) {
             AsyncOperationHandle<string> hackedHandle = gm.console.strings.lumiereProtectionHacked.GetLocalizedString();
             yield return hackedHandle;
             gm.console.AjouterMessageImportant(hackedHandle.Result,
@@ -133,6 +137,10 @@ public class OrbTrigger : IZone {
 
             CallAllEvents();
         }
+    }
+
+    protected float GetTimeToDisplayOnScreen(Timer timer) {
+        return timer.GetRemainingTime() * coefTimeToDisplayOnScreen;
     }
 
     protected Vector3 InFrontOfPlayerPosition() {
@@ -223,5 +231,9 @@ public class OrbTrigger : IZone {
         if(hasToBeDestroyedBeforeEndGame) {
             gm.eventManager.AddElementToBeDoneBeforeEndGame(this);
         }
+    }
+
+    public void SetCoefTimeToDisplayOnScreen(float value) {
+        coefTimeToDisplayOnScreen = value;
     }
 }

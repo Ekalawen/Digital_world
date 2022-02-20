@@ -7,9 +7,9 @@ public class PouvoirTimeHack : IPouvoir {
 
     [Header("Time")]
     public float slowmotionFactor = 20;
+    public float duree = 5.0f;
     public TimeMultiplier timeMultiplier;
     public SpeedMultiplier speedMultiplier;
-    public float duree = 5.0f;
 
     [Header("OrbTrigger")]
     public float rayon = 6.0f;
@@ -74,7 +74,8 @@ public class PouvoirTimeHack : IPouvoir {
         orbTrigger.dureeConstruction /= slowmotionFactor;
         orbTrigger.dureeAdjustRayonOnIncrease /= slowmotionFactor;
         orbTrigger.dureeAdjustRayonOnDecrease /= slowmotionFactor;
-        orbTrigger.Initialize(rayon, duree);
+        orbTrigger.Initialize(rayon, duree / slowmotionFactor);
+        orbTrigger.SetCoefTimeToDisplayOnScreen(slowmotionFactor);
         orbTrigger.Resize(orbTrigger.transform.position, Vector3.one * startingRayon);
         orbTrigger.ResizeOverTime(rayon, orbTrigger.dureeConstruction);
         orbTrigger.onExit.AddListener(StopPouvoir);
