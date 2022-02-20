@@ -72,4 +72,12 @@ public class AutoColorBouncer : MonoBehaviour {
             material.SetColor("_EmissionColor", currentEmissionColor);
         }
     }
+
+    public void ScaleAllTimes(float scaleFactor) {
+        intervalTime *= scaleFactor;
+        timeToBounceSize *= scaleFactor;
+        inBounceTime *= scaleFactor;
+        timeToNormalSize *= scaleFactor;
+        startingTime *= scaleFactor;
+    }
 }

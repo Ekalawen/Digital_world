@@ -32,6 +32,7 @@ public class OrbTrigger : IZone {
     public bool shouldPopCubeInCenter = false;
     public bool autoDestroyOnActivate = false;
     public bool hasToBeDestroyedBeforeEndGame = false;
+    public bool shouldBeCapturedByPlayer = true;
 
     protected Coroutine coroutineOnEnter = null;
     protected string currentMessage = "";

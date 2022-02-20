@@ -59,4 +59,12 @@ public class AutoBouncer : MonoBehaviour {
     protected void OnDisable() {
         transform.localScale = startScale;
     }
+
+    public void ScaleAllTimes(float scaleFactor) {
+        intervalTime *= scaleFactor;
+        timeToBounceSize *= scaleFactor;
+        inBounceTime *= scaleFactor;
+        timeToNormalSize *= scaleFactor;
+        startingTime *= scaleFactor;
+    }
 }

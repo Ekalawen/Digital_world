@@ -144,8 +144,8 @@ public class PouvoirPathfinder : IPouvoir {
         }
         // OrbTriggers
         pathfinderDatas.Add(new PathfinderData(
-            positions: GetAllOrbTriggersPositions(),
-            nbPositionsTheoretical: GetAllOrbTriggersPositions().Count,
+            positions: GetAllOrbTriggersThatShouldBeCapturedPositions(),
+            nbPositionsTheoretical: GetAllOrbTriggersThatShouldBeCapturedPositions().Count,
             shouldDetect: detectOrbTriggers,
             orbesPathPrefab: orbTriggerPathPrefab,
             pathColor: orbTriggerPathColor,
@@ -224,8 +224,13 @@ public class PouvoirPathfinder : IPouvoir {
         }
     }
 
+    protected float GetCoefOfTimeHack() {
+        PouvoirTimeHack timeHack = player.GetTimeHack();
+        return (timeHack == null || !timeHack.IsActive()) ? 1 : timeHack.slowmotionFactor;
+    }
+
     protected float ComputeDuration(List<Vector3> path) {
-        return (1.0f / vitessePath) * NB_SPHERES_BY_NODES * path.Count + dureePath;
+        return (1.0f / vitessePath) * NB_SPHERES_BY_NODES * path.Count + dureePath / GetCoefOfTimeHack();
     }
 
     protected List<Vector3> GetPathForPosition(Vector3 position, List<Vector3> posToDodge, PathfinderData pathfinderData) {
@@ -287,26 +292,33 @@ public class PouvoirPathfinder : IPouvoir {
         return gm.itemManager.GetAllOrbTriggers().Select(o => o.transform.position).ToList();
     }
 
+    protected List<Vector3> GetAllOrbTriggersThatShouldBeCapturedPositions() {
+        return gm.itemManager.GetAllOrbTriggers().FindAll(ot => ot.shouldBeCapturedByPlayer).Select(ot => ot.transform.position).ToList();
+    }
+
     protected IEnumerator DrawPath(List<Vector3> path, PathfinderData pathfinderData) {
         for(int i = 0; i < path.Count - 1; i++) {
             Vector3 current = path[i];
             Vector3 next = path[i + 1];
+            float scaleByTimeHack = 1.0f / GetCoefOfTimeHack();
             for(int j = 0; j < NB_SPHERES_BY_NODES; j++) {
                 Vector3 direction = next - current;
                 Vector3 pos = current + direction / NB_SPHERES_BY_NODES * (j + 1);
-                GameObject go = Instantiate(pathfinderData.orbesPathPrefab, pos, Quaternion.identity);
-                Color color = gm.colorManager.GetColorForPosition(go.transform.position);
+                GameObject orbe = Instantiate(pathfinderData.orbesPathPrefab, pos, Quaternion.identity);
+                Color color = gm.colorManager.GetColorForPosition(orbe.transform.position);
                 color = Color.white - color;
-                Material material = go.GetComponent<MeshRenderer>().material;
+                Material material = orbe.GetComponent<MeshRenderer>().material;
                 material.color = color;
                 material.SetColor("_EmissionColor", color);
-                AutoColorBouncer colorBouncer = go.GetComponent<AutoColorBouncer>();
+                AutoColorBouncer colorBouncer = orbe.GetComponent<AutoColorBouncer>();
                 colorBouncer.colorToBounceTo = pathfinderData.pathColor;
                 colorBouncer.startingTime = colorBouncer.intervalTime * pathfinderData.orbeStartOffset;
-                AutoBouncer bouncer = go.GetComponent<AutoBouncer>();
+                colorBouncer.ScaleAllTimes(scaleByTimeHack);
+                AutoBouncer bouncer = orbe.GetComponent<AutoBouncer>();
                 bouncer.startingTime = bouncer.intervalTime * pathfinderData.orbeStartOffset;
-                Destroy(go, dureePath);
-                yield return new WaitForSeconds(1.0f / vitessePath);
+                bouncer.ScaleAllTimes(scaleByTimeHack);
+                Destroy(orbe, dureePath * scaleByTimeHack);
+                yield return new WaitForSeconds(1.0f / vitessePath * scaleByTimeHack);
             }
         }
     }
