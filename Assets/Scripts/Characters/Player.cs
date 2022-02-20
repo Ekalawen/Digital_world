@@ -578,9 +578,13 @@ public class Player : Character {
         timerLastTimeAuMur.Reset();
     }
 
+    public bool ShouldGetRawAxisAccordingToTimeMultiplier() {
+        return gm.timerManager.GetTimeMultiplier() <= 0.5f;
+    }
+
     protected Vector3 UpdateHorizontalMouvement(Vector3 move) {
         if (!bIsStun) {
-            move = inputManager.GetHorizontalMouvement();
+            move = inputManager.GetHorizontalMouvement(ShouldGetRawAxisAccordingToTimeMultiplier());
             move = camera.transform.TransformDirection(move);
             float magnitude = move.magnitude;
 

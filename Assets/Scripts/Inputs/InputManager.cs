@@ -224,23 +224,30 @@ public class InputManager : MonoBehaviour {
         return Input.GetKeyUp(binding);
     }
 
-    public Vector3 GetHorizontalMouvement() {
+    public Vector3 GetHorizontalMouvement(bool rawAxis = false) {
         switch (GetCurrentKeybindingType()) {
             case KeybindingType.AZERTY:
-                return new Vector3(Input.GetAxis("HorizontalAZERTY"), 0, Input.GetAxis("VerticalAZERTY"));
+                return new Vector3(GetAxis("HorizontalAZERTY", rawAxis), 0, GetAxis("VerticalAZERTY", rawAxis));
             case KeybindingType.QWERTY:
-                return new Vector3(Input.GetAxis("HorizontalQWERTY"), 0, Input.GetAxis("VerticalQWERTY"));
+                return new Vector3(GetAxis("HorizontalQWERTY", rawAxis), 0, GetAxis("VerticalQWERTY", rawAxis));
             case KeybindingType.CONTROLLER:
-                float xJoystick = Input.GetAxis("HorizontalCONTROLLER_JOYSTICK");
-                float xArrow = Input.GetAxis("HorizontalCONTROLLER_ARROW");
-                float yJoystick = Input.GetAxis("VerticalCONTROLLER_JOYSTICK");
-                float yArrow = Input.GetAxis("VerticalCONTROLLER_ARROW");
+                float xJoystick = GetAxis("HorizontalCONTROLLER_JOYSTICK", rawAxis);
+                float xArrow = GetAxis("HorizontalCONTROLLER_ARROW", rawAxis);
+                float yJoystick = GetAxis("VerticalCONTROLLER_JOYSTICK", rawAxis);
+                float yArrow = GetAxis("VerticalCONTROLLER_ARROW", rawAxis);
                 float x = Math.Abs(xJoystick) >= Mathf.Abs(xArrow) ? xJoystick : xArrow;
                 float y = Math.Abs(yJoystick) >= Mathf.Abs(yArrow) ? yJoystick : yArrow;
                 return new Vector3(x, 0, y);
             default:
                 return Vector3.zero;
         }
+    }
+
+    public float GetAxis(string axisName, bool rawAxis = false) {
+        if(rawAxis) {
+            return Input.GetAxisRaw(axisName);
+        }
+        return Input.GetAxis(axisName);
     }
 
     public bool GetRestartGame() {
