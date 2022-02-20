@@ -14,6 +14,7 @@ public class MovingSpike : DynamicCubeEnsemble {
     [Header("Effect")]
     public float speed = 10.0f;
     public float dissolveTime = 0.1f;
+    public float percentDissolveTimeUseToOffsetInstantiation = 0.1f;
 
     [Header("End Effect")]
     public float decomposeTime = 0.1f;
@@ -73,22 +74,23 @@ public class MovingSpike : DynamicCubeEnsemble {
     }
 
     protected IEnumerator CStartSpike() {
-        yield return new WaitForSeconds(previsualizationTime);
+        float dissolveTimeOffset = UnityEngine.Random.Range(-1.0f, 1.0f) * percentDissolveTimeUseToOffsetInstantiation * dissolveTime;
+        float distance = Vector3.Distance(start, end);
+        float time = distance / speed;
+        Timer timer = new Timer(time + previsualizationTime + dissolveTime); // We are computing the timer here in order not to depend of the double WaitForSecond that is not precise and cause an offset in the synchronization of the cubes ! :)
+        yield return new WaitForSeconds(previsualizationTime - dissolveTimeOffset);
 
         Cube cube = CreateCube(start);
         if (cube == null) {
             DestroyCubeEnsemble();
         } else {
-            cube.StartDissolveEffect(dissolveTime);
+            cube.StartDissolveEffect(dissolveTime + dissolveTimeOffset);
 
-            yield return new WaitForSeconds(dissolveTime);
+            yield return new WaitForSeconds(dissolveTime + dissolveTimeOffset);
 
-            float distance = Vector3.Distance(start, end);
-            float time = distance / speed;
-            Timer timer = new Timer(time);
-            while (!timer.IsOver())
-            {
-                float avancement = Math.Min(timer.GetAvancement(), 1);
+            while (!timer.IsOver()) {
+                float timerAvancement = (timer.GetElapsedTime() - previsualizationTime - dissolveTime) / time;
+                float avancement = Math.Min(timerAvancement, 1);
                 Vector3 newPosition = Vector3.Lerp(start, end, avancement);
                 bool moveSucceed = cube.MoveTo(newPosition);
                 if (!moveSucceed)
