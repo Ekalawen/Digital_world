@@ -9,6 +9,7 @@ public class Pointeur : MonoBehaviour {
     public RawImage auMurPointeur;
     public RawImage auSolPointeur;
     public RawImage gripDashPointeur;
+    public RawImage timeHackPointeur;
 
     [Header("Couleurs")]
     public Color auSolColor;
@@ -33,6 +34,7 @@ public class Pointeur : MonoBehaviour {
     protected GameManager gm;
     protected ChargeCooldown tripleDashChargeCooldown = null;
     protected NoAutomaticRechargeCooldown gripDashCooldown = null;
+    protected PouvoirTimeHack timeHack = null;
 
     public void Initialize() {
         gm = GameManager.Instance;
@@ -40,6 +42,8 @@ public class Pointeur : MonoBehaviour {
         auSolPointeur.rectTransform.sizeDelta = Vector2.one * auSolScale;
         gripDashPointeur.color = auSolColor;
         gripDashPointeur.rectTransform.sizeDelta = Vector2.one * auSolScale;
+        timeHackPointeur.color = auSolColor;
+        timeHackPointeur.rectTransform.sizeDelta = Vector2.one * auSolScale;
 
         InitTexture();
     }
@@ -48,6 +52,7 @@ public class Pointeur : MonoBehaviour {
         SetColorAndSize();
         UpdateTripleDashImage();
         UpdateGripDashImage();
+        UpdateTimeHackImage();
     }
 
     protected void SetColorAndSize() {
@@ -55,28 +60,36 @@ public class Pointeur : MonoBehaviour {
             case Player.EtatPersonnage.AU_SOL:
                 auMurPointeur.color = auSolColor;
                 gripDashPointeur.color = auSolColor;
+                timeHackPointeur.color = auSolColor;
                 auMurPointeur.rectTransform.sizeDelta = Vector2.one * auSolScale;
                 gripDashPointeur.rectTransform.sizeDelta = Vector2.one * auSolScale;
+                timeHackPointeur.rectTransform.sizeDelta = Vector2.one * auSolScale;
                 break;
             case Player.EtatPersonnage.EN_SAUT:
                 auMurPointeur.color = enSautColor;
                 gripDashPointeur.color = enSautColor;
+                timeHackPointeur.color = enSautColor;
                 auMurPointeur.rectTransform.sizeDelta = Vector2.one * enSautScale;
                 gripDashPointeur.rectTransform.sizeDelta = Vector2.one * enSautScale;
+                timeHackPointeur.rectTransform.sizeDelta = Vector2.one * enSautScale;
                 break;
             case Player.EtatPersonnage.EN_CHUTE:
                 auMurPointeur.color = enChuteColor;
                 gripDashPointeur.color = enChuteColor;
+                timeHackPointeur.color = enChuteColor;
                 auMurPointeur.rectTransform.sizeDelta = Vector2.one * enChuteScale;
                 gripDashPointeur.rectTransform.sizeDelta = Vector2.one * enChuteScale;
+                timeHackPointeur.rectTransform.sizeDelta = Vector2.one * enChuteScale;
                 break;
             case Player.EtatPersonnage.AU_MUR:
                 Color color = GetFinalColorAuMur();
                 auMurPointeur.color = color;
                 gripDashPointeur.color = color;
+                timeHackPointeur.color = color;
                 float scale = GetFinalScaleAuMur();
                 auMurPointeur.rectTransform.sizeDelta = Vector2.one * scale;
                 gripDashPointeur.rectTransform.sizeDelta = Vector2.one * scale;
+                timeHackPointeur.rectTransform.sizeDelta = Vector2.one * scale;
                 break;
         }
     }
@@ -96,6 +109,9 @@ public class Pointeur : MonoBehaviour {
         } else {
             gripDashPointeur.gameObject.SetActive(false);
         }
+
+        timeHack = gm.player.GetTimeHack();
+        timeHackPointeur.gameObject.SetActive(timeHack != null);
     }
 
     protected void SetTexture(Texture2D texture) {
@@ -117,6 +133,13 @@ public class Pointeur : MonoBehaviour {
             return;
         }
         gripDashPointeur.gameObject.SetActive(gripDashCooldown.GetCurrentCharges() > 0);
+    }
+
+    protected void UpdateTimeHackImage() {
+        if(timeHack == null) {
+            return;
+        }
+        timeHackPointeur.gameObject.SetActive(!timeHack.IsActive() && timeHack.IsAvailable());
     }
 
     protected Color GetFinalColorAuMur() {
