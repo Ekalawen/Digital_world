@@ -19,6 +19,11 @@ public class ChargeCooldown : Cooldown {
         currentCharges = dontStartFull ? startCharges : maxCharges;
     }
 
+    public override void RechargeEntirely() {
+        base.RechargeEntirely();
+        GainMultipleCharges(maxCharges - currentCharges);
+    }
+
     public override void Use() {
         if(currentCharges <= 0) {
             Debug.LogError($"Tentative d'utiliser une ChargeCooldown sans charges sur le pouvoir {pouvoir.name} !", pouvoir); 
@@ -47,8 +52,12 @@ public class ChargeCooldown : Cooldown {
     }
 
     public void GainCharge() {
+        GainMultipleCharges(1);
+    }
+
+    public void GainMultipleCharges(int nbChargesToGain) {
         if(currentCharges < maxCharges) {
-            currentCharges++;
+            currentCharges = Mathf.Min(currentCharges + nbChargesToGain, maxCharges);
             pouvoir.GetPouvoirDisplay().FlashPouvoirAvailable();
         }
     }

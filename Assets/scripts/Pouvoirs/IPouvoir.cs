@@ -72,12 +72,17 @@ public abstract class IPouvoir : MonoBehaviour {
         gm.soundManager.PlayActivationPouvoirClip((activationAudioClips.clips.Count > 0) ? activationAudioClips : null);
     }
 
-    public bool IsEnabled() {
-        return pouvoirEnabled && !pouvoirFreezed;
+    public virtual bool IsEnabled() {
+        return pouvoirEnabled && !pouvoirFreezed && NotTimeHackOn();
     }
 
     public virtual bool IsAvailable() {
         return cooldown.IsAvailable();
+    }
+
+    protected bool NotTimeHackOn() {
+        PouvoirTimeHack timeHack = player.GetTimeHack();
+        return timeHack == null || !timeHack.IsActive();
     }
 
     protected virtual void ApplyTimerMalus() {

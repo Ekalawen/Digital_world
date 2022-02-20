@@ -16,6 +16,10 @@ public class Cooldown : MonoBehaviour {
         cooldownTimer = new Timer(cooldown, setOver: true);
     }
 
+    public virtual void RechargeEntirely() {
+        cooldownTimer.SetOver();
+    }
+
     public virtual void Use() {
         cooldownTimer.Reset();
     }

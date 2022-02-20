@@ -56,6 +56,7 @@ public class PouvoirTimeHack : IPouvoir {
         CreateOrbTrigger();
         RemoveGravityIntensity();
         SetInvincible();
+        RechargeAllOtherPouvoirs();
         player.RemoveAllPoussees();
         StartVfx();
         return true;
@@ -147,5 +148,19 @@ public class PouvoirTimeHack : IPouvoir {
             gm.player.speedMultiplierController.RemoveMultiplier(currentSpeedMultiplier);
             currentSpeedMultiplier = null;
         }
+    }
+
+    public bool IsActive() {
+        return isActive;
+    }
+
+    public override bool IsEnabled() {
+        return pouvoirEnabled && !pouvoirFreezed; // We want to be able to press E a second time to stop TimeHack :)
+    }
+
+    protected void RechargeAllOtherPouvoirs() {
+        player.GetPathfinder()?.GetCooldown().RechargeEntirely();
+        player.GetDash()?.GetCooldown().RechargeEntirely();
+        player.GetGripDash()?.GetCooldown().RechargeEntirely();
     }
 }

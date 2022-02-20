@@ -788,8 +788,24 @@ public class Player : Character {
         }
     }
 
+    public PouvoirDash GetDash() {
+        return GetPouvoirLeftClick() as PouvoirDash;
+    }
+
     public PouvoirPowerDash GetPowerDash() {
         return GetPouvoirLeftClick() as PouvoirPowerDash;
+    }
+
+    public PouvoirGripDash GetGripDash() {
+        return GetPouvoirRightClick() as PouvoirGripDash;
+    }
+
+    public PouvoirTimeHack GetTimeHack() {
+        return GetPouvoirE() as PouvoirTimeHack;
+    }
+
+    public PouvoirPathfinder GetPathfinder() {
+        return GetPouvoirA() as PouvoirPathfinder;
     }
 
     protected bool IsOnInternalSideOfMur(Vector3 pointOfMur, Vector3 murNormal) {
