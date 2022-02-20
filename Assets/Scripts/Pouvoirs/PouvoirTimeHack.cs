@@ -5,12 +5,19 @@ using UnityEngine;
 
 public class PouvoirTimeHack : IPouvoir {
 
-    public float duree = 5.0f;
-    public float rayon = 6.0f;
-    public float durationToRecharge = 3.0f;
+    [Header("Time")]
+    public float slowmotionFactor = 20;
     public TimeMultiplier timeMultiplier;
     public SpeedMultiplier speedMultiplier;
+    public float duree = 5.0f;
+
+    [Header("OrbTrigger")]
+    public float rayon = 6.0f;
+    public float startingRayon = 2.0f;
     public GameObject orbTriggerPrefab;
+
+    [Header("Cooldown")]
+    public float durationToRecharge = 3.0f;
 
     protected bool isActive = false;
     protected NoAutomaticRechargeCooldown customCooldown;
@@ -20,7 +27,13 @@ public class PouvoirTimeHack : IPouvoir {
 
     public override void Initialize() {
         base.Initialize();
+        InitializeSlowmotionFactor();
         customCooldown = GetComponent<NoAutomaticRechargeCooldown>();
+    }
+
+    protected void InitializeSlowmotionFactor() {
+        timeMultiplier.timeVariation = 1.0f / slowmotionFactor;
+        speedMultiplier.speedAdded = slowmotionFactor - 1.0f;
     }
 
     protected override void ApplyUsePouvoir() {
@@ -58,8 +71,11 @@ public class PouvoirTimeHack : IPouvoir {
 
     protected void CreateOrbTrigger() {
         orbTrigger = Instantiate(orbTriggerPrefab, position: player.transform.position, rotation: Quaternion.identity, parent: gm.map.zonesFolder).GetComponent<OrbTrigger>();
+        orbTrigger.dureeConstruction /= slowmotionFactor;
+        orbTrigger.dureeAdjustRayonOnIncrease /= slowmotionFactor;
+        orbTrigger.dureeAdjustRayonOnDecrease /= slowmotionFactor;
         orbTrigger.Initialize(rayon, duree);
-        orbTrigger.Resize(orbTrigger.transform.position, Vector3.one * rayon / 2.0f);
+        orbTrigger.Resize(orbTrigger.transform.position, Vector3.one * startingRayon);
         orbTrigger.ResizeOverTime(rayon, orbTrigger.dureeConstruction);
         orbTrigger.onExit.AddListener(StopPouvoir);
         orbTrigger.onHack.AddListener(StopPouvoir);

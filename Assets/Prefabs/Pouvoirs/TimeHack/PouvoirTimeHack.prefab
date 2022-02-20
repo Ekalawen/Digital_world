@@ -71,11 +71,13 @@ MonoBehaviour:
     bLoop: 0
     clips:
     - {fileID: 8300000, guid: eba6031eaa2a82e489a67ff68af19033, type: 3}
+  slowmotionFactor: 20
   duree: 5
   rayon: 6
+  durationToRecharge: 3
   timeMultiplier:
     type: 1
-    timeVariation: 0.05
+    timeVariation: 42
     totalRealDuration: 5
     useRealTimeDuration: 1
     inDurationPercentage: 0
@@ -94,7 +96,7 @@ MonoBehaviour:
       m_RotationOrder: 4
   speedMultiplier:
     speedAdded: 19
-    duration: 5
+    duration: 99999
     inDuration: 0
     outDuration: 0
     inCurve:
