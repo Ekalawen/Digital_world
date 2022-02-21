@@ -9,8 +9,10 @@ public abstract class RandomEventFrequence : RandomEvent {
     public float nbApparitionsBySeconds = 10;
 
     protected Timer lastTimeStartEvent;
+    protected float initialNbApparitionsBySeconds;
 
     public override void Initialize() {
+        initialNbApparitionsBySeconds = nbApparitionsBySeconds;
         SetNbApparitions(nbApparitionsBySeconds);
         lastTimeStartEvent = new Timer();
         lastTimeStartEvent.Stop();
@@ -35,9 +37,8 @@ public abstract class RandomEventFrequence : RandomEvent {
     }
 
     protected IEnumerator CChangeFrequenceFor(float newNbApparitionsBySeconds, float duration) {
-        float oldFrequence = nbApparitionsBySeconds;
         SetNbApparitions(newNbApparitionsBySeconds);
         yield return new WaitForSeconds(duration);
-        SetNbApparitions(oldFrequence);
+        SetNbApparitions(initialNbApparitionsBySeconds);
     }
 }

@@ -14,6 +14,7 @@ public class RandomSpikesFillEvent : RandomEventFrequence {
     [ConditionalHide("useGeoData")]
     public GeoData geoData;
     public bool shouldPlaySound = false;
+    public float preFillFactor = 0.3f;
 
     protected MapManager map;
     protected List<MovingSpike> movingSpikes;
@@ -24,11 +25,23 @@ public class RandomSpikesFillEvent : RandomEventFrequence {
     public override void Initialize() {
         base.Initialize();
         map = gm.map;
+        PreFillMapIfGameNotStarted();
         movingSpikes = new List<MovingSpike>();
         map.onDeleteCube.AddListener(AddEmptyPositionsOnDeleteCube);
         targetPositions = map.GetAllEmptyPositions();
         secondaryTargetPositions = new List<Vector3>();
         MathTools.Shuffle(targetPositions);
+    }
+
+    protected void PreFillMapIfGameNotStarted() {
+        if(!gm.IsInitializationOver()) {
+            Cube.CubeType cubeType = movingSpikePrefab.GetComponent<MovingSpike>().cubeType;
+            int nbCubesToPreFill = Mathf.RoundToInt(map.GetAllEmptyPositions().Count * preFillFactor);
+            Debug.Log($"NbVoidCubesToPrefill = {nbCubesToPreFill}");
+            for(int i = 0; i < nbCubesToPreFill; i++) {
+                map.PoolAddCube(cubeType);
+            }
+        }
     }
 
     protected override void StartEvent() {
