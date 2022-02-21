@@ -258,6 +258,10 @@ public class Player : Character {
                 if (pouvoir != null) {
                     pouvoir.SetCooldownDuration(0.0f);
                     pouvoir.SetTimerMalus(0.0f);
+                    NoAutomaticRechargeCooldown noAutomaticCooldown = pouvoir.GetComponent<NoAutomaticRechargeCooldown>();
+                    if(noAutomaticCooldown != null) {
+                        noAutomaticCooldown.GainMultipleChargeOverMax(99999999);
+                    }
                 }
             }
             gm.console.SetPouvoirsCooldownZero();

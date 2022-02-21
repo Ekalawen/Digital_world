@@ -63,7 +63,11 @@ public class ChargeCooldown : Cooldown {
     }
 
     public void GainChargeOverMax() {
-        currentCharges++;
+        GainMultipleChargeOverMax(1);
+    }
+
+    public void GainMultipleChargeOverMax(int nbChargesToGain) {
+        currentCharges += nbChargesToGain;
         pouvoir.GetPouvoirDisplay().FlashPouvoirAvailable();
     }
 
