@@ -115,7 +115,10 @@ public class Cube : MonoBehaviour {
         //1 - distanceCubePlayer * playerProximityCoef + dissolveThickness = (time - dissolveStartingTime) / dissolveTime;
         //(1 - distanceCubePlayer * playerProximityCoef + dissolveThickness) * dissolveTime = time - dissolveStartingTime;
         //time = (1 - distanceCubePlayer * playerProximityCoef + dissolveThickness) * dissolveTime + dissolveStartingTime;
-        float timeToWait = (1 - distanceCubePlayer * playerProximityCoef + dissolveThickness) * dissolveTime + dissolveStartingTime;
+
+        //float timeToWait = (1 - distanceCubePlayer * playerProximityCoef + dissolveThickness) * dissolveTime + dissolveStartingTime;
+        float timeToWait = (1 - distanceCubePlayer * playerProximityCoef + dissolveThickness) * dissolveTime + 0; // Pourquoi 0 du coup ?
+
         changeMaterialCoroutine = StartCoroutine(CSetOpaqueMaterialIn(timeToWait));
     }
 
