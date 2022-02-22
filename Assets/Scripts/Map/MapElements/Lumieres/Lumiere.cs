@@ -187,7 +187,7 @@ public class Lumiere : MonoBehaviour {
 
     protected IEnumerator CShrinkVoronoiSphereLow() {
         if (type != LumiereType.FINAL) { // Shrink Size
-            Timer timer = new Timer(dureeDestructionLowShrinkVoronoiSphere);
+            Timer timer = new Timer(dureeDestructionLowShrinkVoronoiSphere / gm.player.GetTimeHackCurrentSlowmotionFactor());
             while (!timer.IsOver()) {
                 lumiereLowVoronoiSphere.transform.localScale = Vector3.one * (1.0f - timer.GetAvancement());
                 yield return null;
