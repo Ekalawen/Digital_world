@@ -37,6 +37,9 @@ public class Lumiere : MonoBehaviour {
     public float dureeDestructionLow = 1.0f;
     public float dureeDestructionLowShrinkVoronoiSphere = 0.08f;
 
+    [Header("Construction")]
+    public float dureeConstructionLowShrinkVoronoiSphere = 0.5f;
+
     [Header("Vue")]
     public VisualEffect lumiereHighVfx;
     public GameObject lumiereLow;
@@ -57,6 +60,7 @@ public class Lumiere : MonoBehaviour {
         SetName();
         //SetLumiereQuality((LumiereQuality)PrefsManager.GetInt(PrefsManager.DATA_QUALITY_KEY, (int)MenuOptions.defaultLumiereQuality));
         SetLumiereQuality(LumiereQuality.LOW);
+        StartAnimation();
 	}
 
     public void SetName() {
@@ -165,6 +169,12 @@ public class Lumiere : MonoBehaviour {
         Destroy(pointLight);
     }
 
+    protected void StartAnimation() {
+        lumiereLowVoronoiSphere.transform.localScale = Vector3.zero;
+        float duration = dureeConstructionLowShrinkVoronoiSphere / gm.player.GetTimeHackCurrentSlowmotionFactor();
+        LeanTween.scale(lumiereLowVoronoiSphere.gameObject, Vector3.one, duration);
+    }
+
     protected void DestroyAnimationTrails() {
         float trailsEjectionSpeed = lumiereTrails.GetFloat("TrailsSphereSpeed") * 2;
         lumiereTrails.SetFloat("TrailsEjectionSpeed", -trailsEjectionSpeed);
@@ -187,12 +197,8 @@ public class Lumiere : MonoBehaviour {
 
     protected IEnumerator CShrinkVoronoiSphereLow() {
         if (type != LumiereType.FINAL) { // Shrink Size
-            Timer timer = new Timer(dureeDestructionLowShrinkVoronoiSphere / gm.player.GetTimeHackCurrentSlowmotionFactor());
-            while (!timer.IsOver()) {
-                lumiereLowVoronoiSphere.transform.localScale = Vector3.one * (1.0f - timer.GetAvancement());
-                yield return null;
-            }
-            lumiereLowVoronoiSphere.transform.localScale = Vector3.zero;
+            float duration = dureeDestructionLowShrinkVoronoiSphere / gm.player.GetTimeHackCurrentSlowmotionFactor();
+            LeanTween.scale(lumiereLowVoronoiSphere.gameObject, Vector3.zero, duration);
         } else { // Shrink Alpha
             lumiereLowVoronoiSphere.material.SetFloat("_VoronoiRotationSpeed", 0.0f);
             Timer timer = new Timer(dureeDestructionLow);
