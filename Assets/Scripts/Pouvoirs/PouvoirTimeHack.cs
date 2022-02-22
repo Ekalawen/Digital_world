@@ -58,6 +58,7 @@ public class PouvoirTimeHack : IPouvoir {
         SetInvincible();
         RechargeAllOtherPouvoirs();
         player.RemoveAllPoussees();
+        player.onTimeHackStart.Invoke(this);
         StartVfx();
         return true;
     }
@@ -72,11 +73,7 @@ public class PouvoirTimeHack : IPouvoir {
 
     protected void CreateOrbTrigger() {
         orbTrigger = Instantiate(orbTriggerPrefab, position: player.transform.position, rotation: Quaternion.identity, parent: gm.map.zonesFolder).GetComponent<OrbTrigger>();
-        orbTrigger.dureeConstruction /= slowmotionFactor;
-        orbTrigger.dureeAdjustRayonOnIncrease /= slowmotionFactor;
-        orbTrigger.dureeAdjustRayonOnDecrease /= slowmotionFactor;
-        orbTrigger.Initialize(rayon, duree / slowmotionFactor);
-        orbTrigger.SetCoefTimeToDisplayOnScreen(slowmotionFactor);
+        orbTrigger.Initialize(rayon, duree);
         orbTrigger.Resize(orbTrigger.transform.position, Vector3.one * startingRayon);
         orbTrigger.ResizeOverTime(rayon, orbTrigger.dureeConstruction);
         orbTrigger.onExit.AddListener(StopPouvoir);
@@ -99,6 +96,7 @@ public class PouvoirTimeHack : IPouvoir {
         UnsetInvincible();
         UseCharge();
         player.ResetGrip();
+        player.onTimeHackStop.Invoke(this);
     }
 
     protected void UseCharge() {

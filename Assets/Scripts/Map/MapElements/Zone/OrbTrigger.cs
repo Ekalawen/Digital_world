@@ -46,6 +46,7 @@ public class OrbTrigger : IZone {
     [HideInInspector]
     public UnityEvent<OrbTrigger> onExit;
     protected float coefTimeToDisplayOnScreen = 1.0f;
+    protected Timer timerEnter;
 
     public void Initialize(float rayon, float durationToActivate) {
         base.Initialize();
@@ -58,6 +59,8 @@ public class OrbTrigger : IZone {
         PopCubeInCenter();
         this.rayon = rayon;
         this.durationToActivate = durationToActivate;
+        gm.player.onTimeHackStart.AddListener(OnTimeHackStart);
+        gm.player.onTimeHackStop.AddListener(OnTimeHackStop);
     }
 
     public override void Resize(Vector3 center, Vector3 halfExtents) {
@@ -77,12 +80,17 @@ public class OrbTrigger : IZone {
 
     protected IEnumerator CResizeOverTime(float rayon, float duree) {
         float initialRayon = transform.localScale.x / 2;
-        Timer timer = new Timer(duree);
+        float dureeWithTimeHack = duree / gm.player.GetTimeHackCurrentSlowmotionFactor();
+        Timer timer = new Timer(dureeWithTimeHack);
         while(!timer.IsOver()) {
             Resize(transform.position, Vector3.one * MathCurves.Linear(initialRayon, rayon, timer.GetAvancement()));
             yield return null;
         }
         Resize(transform.position, Vector3.one * rayon);
+    }
+
+    protected bool IsTimeHackOn() {
+        return gm.player.IsTimeHackOn();
     }
 
     protected override void OnEnter(Collider other) {
@@ -107,14 +115,14 @@ public class OrbTrigger : IZone {
     protected IEnumerator COnEnter(Collider other) {
         gm.soundManager.PlayTimeZoneButtonInClip(transform.position);
 
-        Timer timer = new Timer(durationToActivate);
-        while(!timer.IsOver())
+        timerEnter = new Timer(durationToActivate / gm.player.GetTimeHackCurrentSlowmotionFactor());
+        while(!timerEnter.IsOver())
         {
             if (gm.eventManager.IsGameOver())
             {
                 break;
             }
-            float timeToDisplayOnScreen = GetTimeToDisplayOnScreen(timer);
+            float timeToDisplayOnScreen = GetTimeToDisplayOnScreen(timerEnter);
             currentMessage = TimerManager.TimerToString(timeToDisplayOnScreen);
             gm.console.AjouterMessageImportant(currentMessage,
                 Console.TypeText.BLUE_TEXT,
@@ -131,17 +139,18 @@ public class OrbTrigger : IZone {
             yield return hackedHandle;
             gm.console.AjouterMessageImportant(hackedHandle.Result,
                 Console.TypeText.GREEN_TEXT,
-                1.0f,
+                1.0f / gm.player.GetTimeHackCurrentSlowmotionFactor(),
                 bAfficherInConsole: true,
                 precedantMessage);
             precedantMessage = currentMessage;
 
             CallAllEvents();
         }
+        coroutineOnEnter = null;
     }
 
     protected float GetTimeToDisplayOnScreen(Timer timer) {
-        return timer.GetRemainingTime() * coefTimeToDisplayOnScreen;
+        return timer.GetRemainingTime() * gm.player.GetTimeHackCurrentSlowmotionFactor();
     }
 
     protected Vector3 InFrontOfPlayerPosition() {
@@ -189,6 +198,7 @@ public class OrbTrigger : IZone {
         if (other.gameObject.tag == "Player") {
             if (coroutineOnEnter != null) {
                 StopCoroutine(coroutineOnEnter);
+                coroutineOnEnter = null;
             }
             RemoveGeoPoint();
 
@@ -234,7 +244,21 @@ public class OrbTrigger : IZone {
         }
     }
 
-    public void SetCoefTimeToDisplayOnScreen(float value) {
-        coefTimeToDisplayOnScreen = value;
+    private void OnTimeHackStart(PouvoirTimeHack timeHack) {
+        if(coroutineOnEnter == null) {
+            return;
+        }
+        float targetAvancement = timerEnter.GetAvancement();
+        timerEnter = new Timer(durationToActivate / timeHack.slowmotionFactor);
+        timerEnter.SetAvancement(targetAvancement);
+    }
+
+    protected void OnTimeHackStop(PouvoirTimeHack timeHack) {
+        if(coroutineOnEnter == null) {
+            return;
+        }
+        float targetAvancement = timerEnter.GetAvancement();
+        timerEnter = new Timer(durationToActivate / 1);
+        timerEnter.SetAvancement(targetAvancement);
     }
 }

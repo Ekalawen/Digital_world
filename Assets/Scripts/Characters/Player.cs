@@ -115,6 +115,10 @@ public class Player : Character {
     public UnityEvent<PouvoirPowerDash, Ennemi> onPowerDashEnnemiImpact;
     [HideInInspector]
     public UnityEvent<PouvoirPathfinder> onUsePathfinder;
+    [HideInInspector]
+    public UnityEvent<PouvoirTimeHack> onTimeHackStart;
+    [HideInInspector]
+    public UnityEvent<PouvoirTimeHack> onTimeHackStop;
 
     protected GameManager gm;
     protected InputManager inputManager;
@@ -808,6 +812,14 @@ public class Player : Character {
         return GetPouvoirE() as PouvoirTimeHack;
     }
 
+    public float GetTimeHackCurrentSlowmotionFactor() {
+        if(GetPouvoirE() == null) { // Most of the time it will do the trick faster without a cast ! :)
+            return 1;
+        }
+        PouvoirTimeHack timeHack = GetTimeHack();
+        return (timeHack == null || !timeHack.IsActive()) ? 1 : timeHack.slowmotionFactor;
+    }
+
     public PouvoirPathfinder GetPathfinder() {
         return GetPouvoirA() as PouvoirPathfinder;
     }
@@ -1220,5 +1232,10 @@ public class Player : Character {
 
     public bool IsPowerDashing() {
         return isPowerDashingTimer != null && !isPowerDashingTimer.IsOver();
+    }
+
+    public bool IsTimeHackOn() {
+        PouvoirTimeHack timeHack = GetTimeHack();
+        return timeHack != null && timeHack.IsActive();
     }
 }
