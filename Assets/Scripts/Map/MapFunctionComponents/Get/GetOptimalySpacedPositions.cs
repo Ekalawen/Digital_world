@@ -19,10 +19,34 @@ public class GetOptimalySpacedPositions {
         return spacedPositions;
     }
 
+    public static List<Vector3> GetSpacedPositionsNotInMap(Vector3Int customMapSize, int nbPositions, List<Vector3> farFromPositions, int nbTriesByPosition, Mode mode = Mode.MAX_MIN_DISTANCE, int offsetFromSides = 0) {
+        List<Vector3> updatedFarPositions = farFromPositions ?? new List<Vector3>();
+        List<Vector3> spacedPositions = new List<Vector3>();
+        for(int i = 0; i < nbPositions; i++) {
+            Vector3 newPosition = GetOneSpacedPositionNotInMap(customMapSize, updatedFarPositions, nbTriesByPosition, mode, offsetFromSides);
+            spacedPositions.Add(newPosition);
+            updatedFarPositions.Add(newPosition);
+        }
+        return spacedPositions;
+    }
+
     public static Vector3 GetOneSpacedPosition(MapManager map, List<Vector3> farFromPositions, int nbTriesByPosition, Mode mode = Mode.MAX_MIN_DISTANCE, int offsetFromSides = 0) {
         List<Vector3> positionsCandidates = Enumerable.Range(0, nbTriesByPosition).Select(i => map.GetFreeRoundedLocation(offsetFromSides)).ToList();
         Vector3 bestPosition = GetMaxDistancePosition(farFromPositions, positionsCandidates, mode);
         return bestPosition;
+    }
+
+    public static Vector3 GetOneSpacedPositionNotInMap(Vector3Int customMapSize, List<Vector3> farFromPositions, int nbTriesByPosition, Mode mode = Mode.MAX_MIN_DISTANCE, int offsetFromSides = 0) {
+        List<Vector3> positionsCandidates = Enumerable.Range(0, nbTriesByPosition).Select(i => GetOneRandomPositionInCustomMapSize(customMapSize, offsetFromSides)).ToList();
+        Vector3 bestPosition = GetMaxDistancePosition(farFromPositions, positionsCandidates, mode);
+        return bestPosition;
+    }
+
+    public static Vector3 GetOneRandomPositionInCustomMapSize(Vector3Int customMapSize, int offsetFromSides) {
+        return new Vector3(
+            UnityEngine.Random.Range(offsetFromSides, customMapSize.x + 1 - offsetFromSides),
+            UnityEngine.Random.Range(offsetFromSides, customMapSize.y + 1 - offsetFromSides),
+            UnityEngine.Random.Range(offsetFromSides, customMapSize.z + 1 - offsetFromSides));
     }
 
     protected static Vector3 GetMaxDistancePosition(List<Vector3> farFromPositions, List<Vector3> positionsCandidates, Mode mode) {

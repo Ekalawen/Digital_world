@@ -27,7 +27,11 @@ public class GetEmptyPositionsHelper : MonoBehaviour {
     [ConditionalHide("howToGetPositions", HowToGetPositions.OPTIMALY_SPACED)]
     public int optimalySpacedNbTriesByPosition;
     [ConditionalHide("howToGetPositions", HowToGetPositions.OPTIMALY_SPACED)]
-    public GetOptimalySpacedPositions.Mode optimalySpacedMode;
+    public GetOptimalySpacedPositions.Mode optimalySpacedMode = GetOptimalySpacedPositions.Mode.MAX_MIN_DISTANCE;
+    [ConditionalHide("howToGetPositions", HowToGetPositions.OPTIMALY_SPACED)]
+    public bool useCustomMapSize = false;
+    [ConditionalHide("useCustomMapSize")]
+    public Vector3Int customMapSize;
     [ConditionalHide("howToGetPositions", HowToGetPositions.IN_BOX_AREA)]
     public Vector3 areaBoxCenter = Vector3.zero;
     [ConditionalHide("howToGetPositions", HowToGetPositions.IN_BOX_AREA)]
@@ -111,8 +115,12 @@ public class GetEmptyPositionsHelper : MonoBehaviour {
     }
 
     protected List<Vector3> GetOptimalySpaced() {
-        return GetOptimalySpacedPositions.GetSpacedPositions(map, optimalySpacedNbPositions, null, optimalySpacedNbTriesByPosition, optimalySpacedMode);
-    }
+        if (!useCustomMapSize) {
+            return GetOptimalySpacedPositions.GetSpacedPositions(map, optimalySpacedNbPositions, null, optimalySpacedNbTriesByPosition, optimalySpacedMode);
+        } else {
+            return GetOptimalySpacedPositions.GetSpacedPositionsNotInMap(customMapSize, optimalySpacedNbPositions, null, optimalySpacedNbTriesByPosition, optimalySpacedMode);
+        }
+    } 
 
     protected List<Vector3> GetCenterPosition() {
         return new List<Vector3>() { transform.position };
