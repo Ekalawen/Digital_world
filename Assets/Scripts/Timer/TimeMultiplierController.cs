@@ -36,7 +36,9 @@ public class TimeMultiplierController : MonoBehaviour {
     }
 
     public bool RemoveMultiplier(TimeMultiplier timeMultiplier) {
-        return timeMultipliers.Remove(timeMultiplier) || ennemiTimeMultipliers.Remove(timeMultiplier);
+        bool returnValue = timeMultipliers.Remove(timeMultiplier) || ennemiTimeMultipliers.Remove(timeMultiplier);
+        timerManager.UpdateTimeScaleToCurrentPhase();
+        return returnValue;
     }
 
     public float GetMultiplier() {
@@ -65,10 +67,12 @@ public class TimeMultiplierController : MonoBehaviour {
 
     public void RemoveAllEnnemisMultipliers() {
         ennemiTimeMultipliers.Clear();
+        timerManager.UpdateTimeScaleToCurrentPhase();
     }
 
     public void RemoveAllMultipliers() {
         timeMultipliers.Clear();
-        RemoveAllEnnemisMultipliers();
+        ennemiTimeMultipliers.Clear();
+        timerManager.UpdateTimeScaleToCurrentPhase();
     }
 }

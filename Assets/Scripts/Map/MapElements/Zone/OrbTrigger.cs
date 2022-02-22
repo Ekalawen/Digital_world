@@ -61,6 +61,7 @@ public class OrbTrigger : IZone {
         this.durationToActivate = durationToActivate;
         gm.player.onTimeHackStart.AddListener(OnTimeHackStart);
         gm.player.onTimeHackStop.AddListener(OnTimeHackStop);
+        gm.eventManager.onGameOver.AddListener(DestroyLightning);
     }
 
     public override void Resize(Vector3 center, Vector3 halfExtents) {
@@ -168,6 +169,10 @@ public class OrbTrigger : IZone {
         Vector3 inFrontOfPlayerPosition = InFrontOfPlayerPosition();
         lightning = Instantiate(lightningLinkPrefab, inFrontOfPlayerPosition, Quaternion.identity, parent: transform).GetComponent<Lightning>();
         lightning.Initialize(inFrontOfPlayerPosition, transform.position, Lightning.PivotType.EXTREMITY);
+    }
+
+    public Lightning GetLightning() {
+        return lightning;
     }
 
     protected void AddGeoPoint() {
