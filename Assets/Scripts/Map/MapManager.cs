@@ -31,6 +31,7 @@ public class MapManager : MonoBehaviour {
 	public GameObject bouncyCubePrefab; // On récupère ce qu'est qu'un cube bouncy ! :)
 	public GameObject gravityCubePrefab; // On récupère ce qu'est qu'un gravity cube ! :)
     public GameObject transparentCubePrefab; // On récupère ce qu'est qu'un cube transparent ! :)
+	public GameObject builderCubePrefab; // On récupère ce qu'est qu'un builder cube ! :)
     public GameObject specialCubePrefab; // On récupère ce qu'est qu'un cube special ! :)
 
     [Header("Lumières Prefabs")]
@@ -226,6 +227,8 @@ public class MapManager : MonoBehaviour {
                 return transparentCubePrefab;
             case Cube.CubeType.GRAVITY:
                 return gravityCubePrefab;
+            case Cube.CubeType.BUILDER:
+                return builderCubePrefab;
             case Cube.CubeType.SPECIAL:
                 return specialCubePrefab;
         }

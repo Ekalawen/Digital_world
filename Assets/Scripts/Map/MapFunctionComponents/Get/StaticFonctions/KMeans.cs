@@ -97,6 +97,10 @@ public class KMeans {
         return centers;
     }
 
+    public List<Vector3> GetRoundedCenters() {
+        return centers.Select(c => MathTools.Round(c)).ToList();
+    }
+
     public List<RelatedPosition> GetRelatedPositions() {
         return positions;
     }
@@ -137,5 +141,9 @@ public class KMeans {
             b += otherCluster.Value.Select(p => Vector3.Distance(p, pos.pos)).Sum() / otherCluster.Value.Count;
         }
         return (b - a) / Mathf.Max(a, b);
+    }
+
+    public int GetK() {
+        return k;
     }
 }

@@ -60,6 +60,8 @@ MonoBehaviour:
     type: 3}
   transparentCubePrefab: {fileID: 3202327663746152411, guid: c1acbe8fcee5693488b1b04f42fb3476,
     type: 3}
+  builderCubePrefab: {fileID: 3479826341379985388, guid: abf4cd26fb1ca0a4a87bab6b06904929,
+    type: 3}
   specialCubePrefab: {fileID: 0}
   lumierePrefab: {fileID: 1106701525400260, guid: fa0fb635edaf9904d8c2e5a0490c0215,
     type: 3}
@@ -82,6 +84,9 @@ MonoBehaviour:
   lightningsFolder: {fileID: 0}
   particlesFolder: {fileID: 0}
   gm: {fileID: 0}
+  onDeleteCube:
+    m_PersistentCalls:
+      m_Calls: []
   blockLists: []
   nbBlocksForward: 3
   difficultyMode: 0
@@ -105,6 +110,9 @@ MonoBehaviour:
     type: 3}
   shouldResetAllBlocksTime: 0
   dureeDecompose: 5
+  onBlocksCrossed:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &858809596309769161
 GameObject:
   m_ObjectHideFlags: 0

@@ -49,7 +49,7 @@ public class GetPartitioning {
         return best;
     }
 
-    public List<KMeans> ComputeKMeans(List<Vector3> positions) {
+    protected List<KMeans> ComputeKMeans(List<Vector3> positions) {
         List<KMeans> kMeans = new List<KMeans>();
         for (int k = kRange.x; k <= kRange.y; k++) {
             KMeans kmean = new KMeans(k, maxNbOfIterations);
