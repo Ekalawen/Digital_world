@@ -364,8 +364,12 @@ public static class MathTools
     }
 
     public static Vector3 VecAverage(List<Vector3> vectors) {
+        return VecSum(vectors) / vectors.Count;
+    }
+
+    public static Vector3 VecSum(List<Vector3> vectors) {
         Vector3 sum = vectors.Aggregate(Vector3.zero, (acc, vec) => acc + vec);
-        return sum / vectors.Count;
+        return sum;
     }
 
     public static bool IsAdjacent(Cube c1, Cube c2) {

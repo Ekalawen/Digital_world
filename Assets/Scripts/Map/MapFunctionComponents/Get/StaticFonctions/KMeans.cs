@@ -9,15 +9,11 @@ public class KMeans {
     public class RelatedPosition {
         public Vector3 pos;
         public Vector3 relatedCenter;
-        public float distanceToCenter;
 
-        public RelatedPosition(Vector3 pos, Vector3 relatedCenter, float distanceToCenter) {
+        public RelatedPosition(Vector3 pos, Vector3 relatedCenter) {
             this.pos = pos;
             this.relatedCenter = relatedCenter;
-            this.distanceToCenter = distanceToCenter;
         }
-
-        public RelatedPosition(Vector3 pos, Vector3 relatedCenter) : this(pos, relatedCenter, Vector3.Distance(pos, relatedCenter)) {}
     }
 
     protected int maxNbOfIterations;
@@ -105,5 +101,34 @@ public class KMeans {
 
     public Dictionary<Vector3, List<Vector3>> GetClusters() {
         return clusters;
+    }
+
+    // WSS = Within-Cluster-Sum of Squared Errors
+    // Squared = Carré ! Donc il n'y aura pas de racine !
+    public float ComputeWSS() {
+        return positions.Select(p => Vector3.SqrMagnitude(p.pos - p.relatedCenter)).Sum();
+    }
+
+    public float ComputeSilhouette() {
+        return positions.Select(p => ComputeSilhouetteValueFor(p)).Average();
+    }
+
+    protected float ComputeSilhouetteValueFor(RelatedPosition pos) {
+        // s(i) = (b(i) - a(i)) / max(a(i), b(i))   if |C(i)| > 1        else s(i) = 0 if |C(i)| <= 1
+        // a(i) is the measure of similarity of the point i to its own cluster
+        // b(i) is the measure of dissimilarity of the point i to other clusters
+        List<Vector3> cluster = clusters[pos.relatedCenter];
+        if(cluster.Count <= 1) {
+            return 0;
+        }
+        float a = cluster.Select(p => Vector3.Distance(p, pos.pos)).Sum() / (cluster.Count - 1);
+        float b = 0;
+        foreach(KeyValuePair<Vector3, List<Vector3>> otherCluster in clusters) {
+            if(otherCluster.Key == pos.relatedCenter) {
+                continue;
+            }
+            b += otherCluster.Value.Select(p => Vector3.Distance(p, pos.pos)).Sum() / otherCluster.Value.Count;
+        }
+        return (b - a) / Mathf.Max(a, b);
     }
 }
