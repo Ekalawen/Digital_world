@@ -1310,6 +1310,37 @@ public class MapManager : MonoBehaviour {
         return path;
     }
 
+    public List<Vector3> GetStraitPathVerticalLast(Vector3 debutChemin, Vector3 finChemin) {
+        List<Vector3> path = new List<Vector3>();
+        Vector3 pointActuel = MathTools.Round(debutChemin);
+        Vector3 target = MathTools.Round(finChemin);
+        while (pointActuel != target) {
+            Vector3 absDistances = MathTools.DistanceLInfiniV3(pointActuel, target);
+            List<Vector3> directions = new List<Vector3>();
+            if(absDistances.x >= absDistances.y && absDistances.x >= absDistances.z) {
+                directions.Add(Vector3.right * Mathf.Sign(target.x - pointActuel.x));
+            }
+            if(absDistances.y >= absDistances.x && absDistances.y >= absDistances.z) {
+                directions.Add(Vector3.up * Mathf.Sign(target.y - pointActuel.y));
+            }
+            if(absDistances.z >= absDistances.x && absDistances.z >= absDistances.y) {
+                directions.Add(Vector3.forward * Mathf.Sign(target.z - pointActuel.z));
+            }
+            if(directions.Count >= 2) {
+                for(int i = 0; i < directions.Count; i++) {
+                    if(Vector3.Cross(gm.gravityManager.Up(), directions[i]) == Vector3.zero) {
+                        directions.RemoveAt(i);
+                        i--;
+                    }
+                }
+            }
+            pointActuel += MathTools.ChoseOne(directions);
+            path.Add(pointActuel);
+        }
+        return path;
+    }
+
+
     private static bool IsNodeInCloseOrOpened(List<Node> closed, List<Node> opened, Vector3 voisin, Node node) {
         for (int j = 0; j < closed.Count; j++) {
             Node n = closed[j];
