@@ -363,6 +363,11 @@ public static class MathTools
         return new Vector3(vector1.x * vector2.x, vector1.y * vector2.y, vector1.z * vector2.z);
     }
 
+    public static Vector3 VecAverage(List<Vector3> vectors) {
+        Vector3 sum = vectors.Aggregate(Vector3.zero, (acc, vec) => acc + vec);
+        return sum / vectors.Count;
+    }
+
     public static bool IsAdjacent(Cube c1, Cube c2) {
         return IsAdjacent(c1.transform.position, c2.transform.position);
     }
