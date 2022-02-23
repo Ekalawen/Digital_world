@@ -22,6 +22,8 @@ public class KMeans {
     protected List<RelatedPosition> positions;
     protected List<Vector3> centers;
     protected Dictionary<Vector3, List<Vector3>> clusters;
+    protected bool hasComputedWSS = false;
+    protected float wssScore;
 
     public KMeans(int k, int maxNbOfIterations = 100) {
         this.k = k;
@@ -106,7 +108,12 @@ public class KMeans {
     // WSS = Within-Cluster-Sum of Squared Errors
     // Squared = Carré ! Donc il n'y aura pas de racine !
     public float ComputeWSS() {
-        return positions.Select(p => Vector3.SqrMagnitude(p.pos - p.relatedCenter)).Sum();
+        if(hasComputedWSS) {
+            return wssScore;
+        }
+        wssScore = positions.Select(p => Vector3.SqrMagnitude(p.pos - p.relatedCenter)).Sum();
+        hasComputedWSS = true;
+        return wssScore;
     }
 
     public float ComputeSilhouette() {
