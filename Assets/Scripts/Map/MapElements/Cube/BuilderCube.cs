@@ -65,7 +65,9 @@ public class BuilderCube : NonBlackCube {
     protected void ExpandPathWithRemaininCubes(List<Cube> createdCubes, List<Vector3> centers) {
         List<VoisinScored> voisins = new List<VoisinScored>();
         foreach(Cube createdCube in createdCubes) {
-            voisins = AddVoisinsOffPositionInVoisinsOrdered(createdCube.transform.position, voisins, centers, new List<Vector3>());
+            if (createdCube != null) {
+                voisins = AddVoisinsOffPositionInVoisinsOrdered(createdCube.transform.position, voisins, centers, new List<Vector3>());
+            }
         }
 
         int nbCubesToCreate = nbCubesToGenerateRemaining;
@@ -156,7 +158,7 @@ public class BuilderCube : NonBlackCube {
         Vector3 bestTarget = GetBestTargetForTarget(target);
         Vector3 roundedTarget = MathTools.Round(target);
         List<Vector3> straightPath = gm.map.GetStraitPathVerticalLast(start, bestTarget);
-        if(straightPath.Count == 0 || straightPath.Last() != roundedTarget) {
+        if(straightPath.Count > 0 && straightPath.Last() != roundedTarget) {
             straightPath.Add(roundedTarget);
         }
         List<Cube> createdCubes = new List<Cube>();
@@ -189,9 +191,14 @@ public class BuilderCube : NonBlackCube {
         if (targetAbsoluteHeight >= absoluteHeight || (target - up * targetAbsoluteHeight == transform.position - up * absoluteHeight)) {
             return target;
         }
-        return gm.map.GetVoisinsLibresAll(target)
-            .FindAll(v => gm.gravityManager.GetHeightAbsolute(v) == targetAbsoluteHeight)
-            .OrderBy(v => Vector3.SqrMagnitude(v - transform.position)).First();
+        List<Vector3> voisins = gm.map.GetVoisinsLibresAll(target);
+        if (voisins.Count > 0) {
+            List<Vector3> horizontalVoisins = voisins.FindAll(v => gm.gravityManager.GetHeightAbsolute(v) == targetAbsoluteHeight);
+            if (horizontalVoisins.Count > 0) {
+                return horizontalVoisins.OrderBy(v => Vector3.SqrMagnitude(v - transform.position)).First();
+            }
+        }
+        return target;
     }
 
     private List<Vector3> GetClusterCenters(List<Cube> nearByCubes) {
@@ -210,6 +217,7 @@ public class BuilderCube : NonBlackCube {
                 roundedCenters.Add(cubeRoundedPosition);
             }
         }
+        Debug.Log($"NbClustersCenters = {roundedCenters.Count} where k = {bestKMeans.GetK()}");
         return roundedCenters;
     }
 

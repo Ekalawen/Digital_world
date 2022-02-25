@@ -44,7 +44,7 @@ public class KMeans {
             List<Vector3> precedentCenters = centers.Select(c => c).ToList();
 
             positions = UpdatePositions(positions, centers);
-            clusters = GetClusters(positions);
+            clusters = GetClusters(positions, centers);
             centers = UpdateCenters(clusters, centers);
 
             if (HasConverged(centers, precedentCenters)) {
@@ -54,18 +54,17 @@ public class KMeans {
     }
 
     protected List<Vector3> UpdateCenters(Dictionary<Vector3, List<Vector3>> clusters, List<Vector3> oldCenters) {
-        return oldCenters.Select(oc => MathTools.VecAverage(clusters[oc])).ToList();
+        return oldCenters.Select(oc => clusters[oc].Count > 0 ? MathTools.VecAverage(clusters[oc]) : oc).ToList();
     }
 
     // The center, and every positions associated with it!
-    protected Dictionary<Vector3, List<Vector3>> GetClusters(List<RelatedPosition> positions) {
+    protected Dictionary<Vector3, List<Vector3>> GetClusters(List<RelatedPosition> positions, List<Vector3> centers) {
         Dictionary<Vector3, List<Vector3>> clusters = new Dictionary<Vector3, List<Vector3>>();
+        foreach(Vector3 center in centers) {
+            clusters[center] = new List<Vector3>();
+        }
         foreach(RelatedPosition pos in positions) {
-            if(clusters.ContainsKey(pos.relatedCenter)) {
-                clusters[pos.relatedCenter].Add(pos.pos);
-            } else {
-                clusters[pos.relatedCenter] = new List<Vector3>() { pos.pos };
-            }
+            clusters[pos.relatedCenter].Add(pos.pos);
         }
         return clusters;
     }
@@ -90,7 +89,7 @@ public class KMeans {
     protected void CreateACenterForEachPosition(List<Vector3> initialPositions) {
         positions = initialPositions.Select(p => new RelatedPosition(p, p)).ToList();
         centers = initialPositions.Select(p => p).ToList();
-        clusters = GetClusters(positions);
+        clusters = GetClusters(positions, centers);
     }
 
     public List<Vector3> GetCenters() {
