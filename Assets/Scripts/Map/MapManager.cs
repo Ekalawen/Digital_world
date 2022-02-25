@@ -1463,6 +1463,11 @@ public class MapManager : MonoBehaviour {
         currentCubeTypeUsed = newType;
     }
 
+    public Vector3 GetFreeRoundedLocationInBoundingBox() {
+        BoundingBox boundingBox = GetBoundingBox();
+        return MathTools.ChoseOne(GetEmptyPositionsInBox(boundingBox.center, boundingBox.halfExtents));
+    }
+
     public Vector3 GetFarRoundedLocation(Vector3 farFromThis) {
         Vector3 farPos = GetFreeRoundedLocation();
 
@@ -1470,6 +1475,19 @@ public class MapManager : MonoBehaviour {
         float moyenneTailleMap = (gm.map.tailleMap.x + gm.map.tailleMap.y + gm.map.tailleMap.z) / 3.0f;
         while (Vector3.Distance(farFromThis, farPos) <= moyenneTailleMap * 0.9f) {
             farPos = GetFreeRoundedLocation();
+            moyenneTailleMap *= 0.95f; // Pour éviter qu'il n'y ait aucune zone atteignable x)
+        }
+
+        return farPos;
+    }
+
+    public Vector3 GetFarRoundedLocationInBoundingBox(Vector3 farFromThis) {
+        Vector3 farPos = GetFreeRoundedLocationInBoundingBox();
+
+        BoundingBox boundingBox = GetBoundingBox();
+        float moyenneTailleMap = (boundingBox.width + boundingBox.height + boundingBox.depth) / 3.0f;
+        while (Vector3.Distance(farFromThis, farPos) <= moyenneTailleMap * 0.9f) {
+            farPos = GetFreeRoundedLocationInBoundingBox();
             moyenneTailleMap *= 0.95f; // Pour éviter qu'il n'y ait aucune zone atteignable x)
         }
 

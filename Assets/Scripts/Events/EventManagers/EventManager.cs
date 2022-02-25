@@ -75,6 +75,7 @@ public class EventManager : MonoBehaviour {
 
     [Header("Final Light")]
     public FinalLightSpawnMode finalLightSpawnMode = FinalLightSpawnMode.FAR_FROM_PLAYER;
+    public bool finalLumiereShouldUseBoundingBox = false;
     public List<MapFunctionComponent> mapFunctionsOnCreateFinalLight;
 
     [Header("ScreenShake on Endgame")]
@@ -271,7 +272,11 @@ public class EventManager : MonoBehaviour {
         Vector3 posLumiere;
         switch (finalLightSpawnMode) {
             case FinalLightSpawnMode.FAR_FROM_PLAYER:
-                posLumiere = map.GetFarRoundedLocation(gm.player.transform.position);
+                if (!finalLumiereShouldUseBoundingBox) {
+                    posLumiere = map.GetFarRoundedLocation(gm.player.transform.position);
+                } else {
+                    posLumiere = map.GetFarRoundedLocationInBoundingBox(gm.player.transform.position);
+                }
                 return posLumiere;
             case FinalLightSpawnMode.OPTIMALLY_SPACED_FROM_PLAYER:
                 List<Vector3> farFromPositions = new List<Vector3>() { gm.player.transform.position };
@@ -434,7 +439,11 @@ public class EventManager : MonoBehaviour {
         while (ShouldKeepDestroyingCubes(cubes.Count, nbCubesToReach, endGameTimer)) {
             if (timerComputePositionsOrder.IsOver()) {
                 // Pour récupérer les cubes crées pendant la destruction de la map !
+                int nbCubesAvant = cubes.Count;
                 cubes = map.GetAllCubes().FindAll(c => !c.IsDecomposing());
+                int nbCubesAdded = cubes.Count - nbCubesAvant;
+                nbTotalCubesToDestroy += Mathf.Max(0, (int)(nbCubesAdded * (1.0f - proportionToKeep)));
+                nbCubesToReach += Mathf.Max(0, (int)(nbCubesAdded * proportionToKeep));
                 if (cubes.Count == 0) break;
                 OrderCubesAccordingToMethod(centerPos, cubes);
                 timerComputePositionsOrder.Reset();
