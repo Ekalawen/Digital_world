@@ -60,7 +60,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   howToGetPositions: 3
   nbCubesVoisins: 4
-  optimalySpacedNbPositions: 50
+  optimalySpacedNbPositions: 30
   optimalySpacedNbTriesByPosition: 30
   optimalySpacedMode: 0
   useCustomMapSize: 1
@@ -106,6 +106,101 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce701536c965fb847a885590e740ebf0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8932674021812553996
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3491683289375989780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3693f9ef5b969064e918a263b677b57a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  getHelper: {fileID: 8514626487270971213}
+  lookAtSpecificPosition: 1
+  specificPosition: {x: 20, y: 5, z: 20}
+--- !u!114 &3547825877826048044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3491683289375989780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d32f251341a9bbb4288f70238f2864fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  howToGetCubes: 1
+  cubeType: 9
+  areaBoxCenter: {x: 0, y: 0, z: 0}
+  areaBoxHalfExtents: {x: 0, y: 0, z: 0}
+  areaSphereCenter: {x: 0, y: 0, z: 0}
+  areaSphereRadius: 0
+  cubeEnsembleType: 0
+  howToGetCubesInCubeEnsemble: 0
+  cubeEnsembleQuantity: 1
+  cubeEnsembleProportion: 0.5
+  nbCubesVoisins: 4
+  getEmptyPositionsHelper: {fileID: 0}
+  cubeDistanceFromEmptyPositions: 1
+  modifiers: []
+--- !u!114 &8514626487270971213
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3491683289375989780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0a87f9f93d3a5e4c908c1aa5c2501ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  howToGetPositions: 4
+  nbCubesVoisins: 4
+  optimalySpacedNbPositions: 0
+  optimalySpacedNbTriesByPosition: 0
+  optimalySpacedMode: 0
+  useCustomMapSize: 0
+  customMapSize: {x: 0, y: 0, z: 0}
+  areaBoxCenter: {x: 0, y: 0, z: 0}
+  areaBoxHalfExtents: {x: 0, y: 0, z: 0}
+  areaSphereCenter: {x: 0, y: 0, z: 0}
+  areaSphereRadius: 0
+  caveOffsetFromSides: 0
+  modifiers:
+  - {fileID: 6093786306567491324}
+  - {fileID: 5927763361765792970}
+  unionGetters: []
+--- !u!114 &5927763361765792970
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3491683289375989780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9328a61df88f2a7488002e210a3744da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  offset: {x: 0, y: 10, z: 0}
+--- !u!114 &6093786306567491324
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3491683289375989780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6136e698129e2b84ca624e00a438eaf2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  getCubes: {fileID: 3547825877826048044}
 --- !u!1 &5897507156108765246
 GameObject:
   m_ObjectHideFlags: 0
@@ -210,28 +305,28 @@ PrefabInstance:
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: mapFunctionComponents.Array.size
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: mapFunctionComponents.Array.data[0]
       value: 
-      objectReference: {fileID: 7306320881258081963}
+      objectReference: {fileID: 1329152382592599380}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: mapFunctionComponents.Array.data[1]
       value: 
-      objectReference: {fileID: 1329152382592599380}
+      objectReference: {fileID: 4167669547922767134}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: mapFunctionComponents.Array.data[2]
       value: 
-      objectReference: {fileID: 4167669547922767134}
+      objectReference: {fileID: 2043507741530955010}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: mapFunctionComponents.Array.data[3]
       value: 
-      objectReference: {fileID: 2043507741530955010}
+      objectReference: {fileID: 734699495214234829}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: mapFunctionComponents.Array.data[4]
