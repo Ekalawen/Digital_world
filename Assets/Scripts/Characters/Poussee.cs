@@ -32,6 +32,10 @@ public class Poussee {
         controller.Move(ComputePoussee(controller));
     }
 
+    public void ApplyPousseeOnEnnenmiController(EnnemiController controller) {
+        controller.Move(ComputePoussee(null)); // Pas terrible du tout ça ! x)
+    }
+
     public virtual Vector3 ComputePoussee(CharacterController controller) {
         float dureeCourante = dureeTimer.GetNewAvancementUpTo1() * duree;
         float distanceCourante = dureeCourante * vitesse;

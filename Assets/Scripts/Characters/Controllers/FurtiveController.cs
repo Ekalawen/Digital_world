@@ -166,7 +166,7 @@ public class FurtiveController : IController {
         return true;
     }
 
-    protected override Vector3 MoveToTarget(Vector3 target, bool useCustomVitesse = false, float customVitesse = 0) {
+    public override Vector3 MoveToTarget(Vector3 target, bool useCustomVitesse = false, float customVitesse = 0) {
         Vector3 toReturn = base.MoveToTarget(target, useCustomVitesse, customVitesse);
         if(lumiereComponent != null) {
             lumiereComponent.SetName();

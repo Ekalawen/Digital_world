@@ -6,6 +6,8 @@ using UnityEngine;
 public class Character : MonoBehaviour {
 	[HideInInspector]
 	public CharacterController controller;
+	[HideInInspector]
+	public EnnemiController ennemiController;
 
 	[HideInInspector]
     public List<Poussee> poussees;
@@ -14,7 +16,10 @@ public class Character : MonoBehaviour {
     public SpeedMultiplierController speedMultiplierController;
 
     public virtual void Start() {
-		controller = this.GetComponent<CharacterController> ();
+		controller = GetComponent<CharacterController>();
+        if(controller == null) {
+            ennemiController = GetComponent<EnnemiController>();
+        }
         poussees = new List<Poussee>();
         InitSpeedMultiplierController();
     }
@@ -38,7 +43,11 @@ public class Character : MonoBehaviour {
 
         for(int i = 0; i < poussees.Count; i++) {
             Poussee poussee = poussees[i];
-            poussee.ApplyPoussee(controller);
+            if (controller != null) {
+                poussee.ApplyPoussee(controller);
+            } else {
+                poussee.ApplyPousseeOnEnnenmiController(ennemiController);
+            }
         }
     }
 
