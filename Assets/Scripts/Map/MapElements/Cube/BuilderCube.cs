@@ -63,6 +63,7 @@ public class BuilderCube : NonBlackCube {
         List<Cube> createdCubes = CreatePathToClusterCenters(clusterCenters);
         ExpandPathWithRemaininCubes(createdCubes, clusterCenters);
         ReplaceItselfWithNormalCube();
+        EnsurePlayerIsNotTrapped();
         //DisplayClusterCentersAsBouncyCubes(clusterCenters);
     }
 
@@ -236,6 +237,21 @@ public class BuilderCube : NonBlackCube {
                 gm.map.AddCube(center, CubeType.BOUNCY);
             } else {
                 gm.map.SwapCubeType(cube, Cube.CubeType.BOUNCY);
+            }
+        }
+    }
+
+    protected void EnsurePlayerIsNotTrapped() {
+        Vector3 playerRoundedPosition = MathTools.Round(gm.player.transform.position);
+        if(gm.map.GetVoisinsPleinsAll(playerRoundedPosition).Count == 6) {
+            Vector3 endPath = gm.map.ChoseOneEmptyPositionInSphere(playerRoundedPosition, 4.0f);
+            List<Vector3> path = gm.map.GetStraitPath(playerRoundedPosition, endPath);
+            path.Add(playerRoundedPosition);
+            foreach(Vector3 pos in path) {
+                Cube cube = gm.map.GetCubeAt(pos);
+                if (cube != null) {
+                    cube.Decompose(1.0f);
+                }
             }
         }
     }
