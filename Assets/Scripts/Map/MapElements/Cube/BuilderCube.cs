@@ -46,20 +46,29 @@ public class BuilderCube : NonBlackCube {
         Build();
     }
 
-    protected void Build() {
-        if (hasBeenBuilt) {
+    protected void Build()
+    {
+        if (hasBeenBuilt)
+        {
             return;
         }
         hasBeenBuilt = true;
 
         List<Cube> nearByCubes = gm.map.GetCubesInSphere(transform.position, range);
-        if (nearByCubes.Count <= 0) {
+        if (nearByCubes.Count <= 0)
+        {
             Debug.LogError($"Il ne peut pas y avoir aucun cubes dans les nearByCubes du builder ! x)");
         }
         List<Vector3> clusterCenters = GetClusterCenters(nearByCubes);
         List<Cube> createdCubes = CreatePathToClusterCenters(clusterCenters);
         ExpandPathWithRemaininCubes(createdCubes, clusterCenters);
+        ReplaceItselfWithNormalCube();
         //DisplayClusterCentersAsBouncyCubes(clusterCenters);
+    }
+
+    protected void ReplaceItselfWithNormalCube() {
+        Cube replacingCube = gm.map.SwapCubeType(this, CubeType.NORMAL);
+        replacingCube.StartDissolveEffect(generatedDissolveTime);
     }
 
     protected void ExpandPathWithRemaininCubes(List<Cube> createdCubes, List<Vector3> centers) {
