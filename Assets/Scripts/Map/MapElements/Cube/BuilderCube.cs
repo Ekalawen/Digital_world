@@ -24,6 +24,7 @@ public class BuilderCube : NonBlackCube {
     public float range = 8.0f;
     public GetPartitioning.Method partitioningMethod = GetPartitioning.Method.ELBOW;
     public int nbCubesToGenerate = 45;
+    public float generatedDissolveTime = 1.0f;
 
     [Header("Expand Scores")]
     public float distanceToCentersCoef = 10.0f;
@@ -75,6 +76,7 @@ public class BuilderCube : NonBlackCube {
                 Cube newCube = gm.map.AddCube(bestVoisin.pos, cubeGeneratedType);
                 if (newCube != null) {
                     //newCube.SetColor(Color.Lerp(Color.white, Color.blue, MathCurves.CubicInverse(0, 1, nbCubesToGenerateRemaining / (float)nbCubesToCreate)));
+                    newCube.StartDissolveEffect(generatedDissolveTime);
                     nbCubesToGenerateRemaining--;
                 }
             }
@@ -166,6 +168,7 @@ public class BuilderCube : NonBlackCube {
             if (newCube != null)
             {
                 //newCube.SetColor(pathColor);
+                newCube.StartDissolveEffect(generatedDissolveTime);
                 createdCubes.Add(newCube);
                 nbCubesToGenerateRemaining--;
             }
