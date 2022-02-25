@@ -17,6 +17,7 @@ public class PouvoirPowerDash : PouvoirDash {
     public GameObject impactVfxPrefab;
     public float coefFakeImpactPosition = 0.5f;
     public TimeMultiplier impactTimeMultiplier;
+    public TimeMultiplier impactBrisableTimeMultiplier;
 
     protected List<Ennemi> ennemisAlreadyHitten = new List<Ennemi>();
     protected ChargeCooldown chargeCooldown;
@@ -44,7 +45,7 @@ public class PouvoirPowerDash : PouvoirDash {
             player.ResetGrip();
             ennemi.HitByPlayerPowerDash(this);
             StartImpactVfx(ennemi.transform.position);
-            ApplyTimeMultiplier();
+            ApplyTimeMultiplier(useBrisableTime: false);
             gm.player.onPowerDashImpact.Invoke(this);
             gm.player.onPowerDashEnnemiImpact.Invoke(this, ennemi);
             return true;
@@ -55,7 +56,7 @@ public class PouvoirPowerDash : PouvoirDash {
     public void HitBrisableCube(BrisableCube brisableCube) {
         if (!hasAlreadyGainChargeForBrisableAndVoidCube) {
             GainCharge();
-            ApplyTimeMultiplier();
+            ApplyTimeMultiplier(useBrisableTime: true);
             gm.player.onPowerDashImpact.Invoke(this);
             hasAlreadyGainChargeForBrisableAndVoidCube = true;
         }
@@ -67,7 +68,7 @@ public class PouvoirPowerDash : PouvoirDash {
     public void HitVoidCube(VoidCube voidCube) {
         if (!hasAlreadyGainChargeForBrisableAndVoidCube) {
             GainCharge();
-            ApplyTimeMultiplier();
+            ApplyTimeMultiplier(useBrisableTime: false);
             gm.player.onPowerDashImpact.Invoke(this);
             hasAlreadyGainChargeForBrisableAndVoidCube = true;
         }
@@ -98,11 +99,12 @@ public class PouvoirPowerDash : PouvoirDash {
         return !ennemisAlreadyHitten.Contains(ennemi);
     }
 
-    protected void ApplyTimeMultiplier() {
+    protected void ApplyTimeMultiplier(bool useBrisableTime) {
         if(currentTimeMultiplier != null) {
             gm.timerManager.timeMultiplierController.RemoveMultiplier(currentTimeMultiplier);
         }
-        currentTimeMultiplier = gm.timerManager.AddTimeMultiplier(new TimeMultiplier(impactTimeMultiplier));
+        TimeMultiplier timeMultiplier = new TimeMultiplier(useBrisableTime ? impactBrisableTimeMultiplier : impactTimeMultiplier);
+        currentTimeMultiplier = gm.timerManager.AddTimeMultiplier(timeMultiplier);
     }
 
     protected override void StartVfx() {
