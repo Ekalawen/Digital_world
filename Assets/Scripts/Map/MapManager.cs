@@ -1465,7 +1465,18 @@ public class MapManager : MonoBehaviour {
 
     public Vector3 GetFreeRoundedLocationInBoundingBox() {
         BoundingBox boundingBox = GetBoundingBox();
-        return MathTools.ChoseOne(GetEmptyPositionsInBox(boundingBox.center, boundingBox.halfExtents));
+        return new Vector3(
+            UnityEngine.Random.Range(boundingBox.xMin, boundingBox.xMax + 1),
+            UnityEngine.Random.Range(boundingBox.yMin, boundingBox.yMax + 1),
+            UnityEngine.Random.Range(boundingBox.zMin, boundingBox.zMax + 1));
+    }
+
+    public Vector3 GetFreeRoundedLocationInBoundingBoxWithoutLumiere() {
+        Vector3 pos = GetFreeRoundedLocationInBoundingBox();
+        for(int k = 0; GetAllLumieresPositions().Contains(pos) && k < 1000; k++) {
+            pos = GetFreeRoundedLocationInBoundingBox();
+        }
+        return pos;
     }
 
     public Vector3 GetFarRoundedLocation(Vector3 farFromThis) {

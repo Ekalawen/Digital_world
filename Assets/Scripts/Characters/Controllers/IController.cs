@@ -53,7 +53,7 @@ public abstract class IController : MonoBehaviour {
     public abstract bool IsInactive();
     public abstract bool IsMoving();
 
-    protected virtual Vector3 MoveToTarget(Vector3 target, bool useCustomVitesse = false, float customVitesse = 0.0f) {
+    public virtual Vector3 MoveToTarget(Vector3 target, bool useCustomVitesse = false, float customVitesse = 0.0f) {
         float vitesseToUse = useCustomVitesse ? customVitesse : vitesse;
         if(character != null) {
             vitesseToUse *= character.GetSpeedMultiplier();
@@ -70,7 +70,7 @@ public abstract class IController : MonoBehaviour {
         return finalMouvement;
     }
 
-    protected Vector3 MoveWithMove(Vector3 move) {
+    public Vector3 MoveWithMove(Vector3 move) {
         float vitesseToUse = vitesse;
         if(character != null) {
             vitesseToUse *= character.GetSpeedMultiplier();
@@ -80,7 +80,7 @@ public abstract class IController : MonoBehaviour {
         return move;
     }
 
-    protected Vector3 Move(Vector3 mouvement) {
+    public Vector3 Move(Vector3 mouvement) {
         lastPosition = transform.position;
         if (controller != null) {
             if (controller.enabled) {

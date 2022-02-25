@@ -160,6 +160,10 @@ public abstract class Ennemi : Character {
     }
 
     public virtual Vector3 PopPosition(MapManager map) {
-        return map.GetFreeRoundedLocationWithoutLumiere();
+        if (!map.gm.ennemiManager.shouldUseBoundingBoxForWandering) {
+            return map.GetFreeRoundedLocationWithoutLumiere();
+        } else {
+            return map.GetFreeRoundedLocationInBoundingBoxWithoutLumiere();
+        }
     }
 }

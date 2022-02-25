@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -106,7 +107,15 @@ public class WanderingSondeController : SondeController {
         }
     }
 
-    private Vector3 GetNextDestination() {
+    protected Vector3 GetNextDestination() {
+        if (!gm.ennemiManager.shouldUseBoundingBoxForWandering) {
+            return GetNextDestinationInMap();
+        } else {
+            return GetNextDestinationInBoundingBox();
+        }
+    }
+
+    protected Vector3 GetNextDestinationInMap() {
         List<Vector3> allEmptyLocations = gm.map.GetAllEmptyPositions();
         while (allEmptyLocations.Count > 1) {
             int ind = UnityEngine.Random.Range(0, allEmptyLocations.Count);
@@ -119,6 +128,10 @@ public class WanderingSondeController : SondeController {
             allEmptyLocations.RemoveAt(ind);
         }
         return allEmptyLocations[0];
+    }
+
+    protected Vector3 GetNextDestinationInBoundingBox() {
+        return gm.map.GetFreeRoundedLocationInBoundingBox();
     }
 
     public override bool IsInactive() {

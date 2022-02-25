@@ -15,6 +15,9 @@ public class EnnemiManager : MonoBehaviour {
     public float playerCaptureTime = 5.0f;
     public float playerCaptureDistance = 0.3f;
 
+    [Header("Others")]
+    public bool shouldUseBoundingBoxForWandering = false;
+
     [HideInInspector]
     public List<Ennemi> ennemis; // Elle connait toutes les sondes
 
