@@ -226,7 +226,6 @@ public class BuilderCube : NonBlackCube {
                 roundedCenters.Add(cubeRoundedPosition);
             }
         }
-        Debug.Log($"NbClustersCenters = {roundedCenters.Count} where k = {bestKMeans.GetK()}");
         return roundedCenters;
     }
 

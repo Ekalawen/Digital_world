@@ -30,7 +30,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3486787986693338068}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1329152382592599380
 MonoBehaviour:
@@ -201,7 +201,7 @@ MonoBehaviour:
   getHelper: {fileID: 8514626487270971213}
   lookAtSpecificPosition: 1
   specificPosition: {x: 20, y: 5, z: 20}
---- !u!1 &5897507156108765246
+--- !u!1 &8914668725379378656
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -209,72 +209,146 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4555945878989410623}
-  - component: {fileID: 7306320881258081963}
-  - component: {fileID: 1166618207776062412}
+  - component: {fileID: 6505085724705436899}
+  - component: {fileID: 1491162282277007612}
+  - component: {fileID: 1108200245296912609}
+  - component: {fileID: 535099637561625963}
+  - component: {fileID: 1142086075313355638}
+  - component: {fileID: 7676564536321563817}
+  - component: {fileID: 5322529825095425451}
   m_Layer: 0
-  m_Name: PlaceBuilderGenerators
+  m_Name: PlaceLumieres
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4555945878989410623
+--- !u!4 &6505085724705436899
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5897507156108765246}
+  m_GameObject: {fileID: 8914668725379378656}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3486787986693338068}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7306320881258081963
+--- !u!114 &1491162282277007612
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5897507156108765246}
+  m_GameObject: {fileID: 8914668725379378656}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5654b7ca765605645a95f025f8221ea3, type: 3}
+  m_Script: {fileID: 11500000, guid: 0917844150b936b47a74d922fc512cc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  generatorPrefabs:
-  - {fileID: 5093024928719543386, guid: b0b74a2ca29f34b46bcbb5de58a33965, type: 3}
-  nbGenerators: 01000000
-  getEmptyPositionsHelper: {fileID: 1166618207776062412}
---- !u!114 &1166618207776062412
+  lumiereType: 0
+  nbDatas: 10
+  emptyPositionsHelper: {fileID: 1108200245296912609}
+  dontRoundPositions: 0
+  optimallySpaced: 0
+--- !u!114 &1108200245296912609
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5897507156108765246}
+  m_GameObject: {fileID: 8914668725379378656}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f0a87f9f93d3a5e4c908c1aa5c2501ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  howToGetPositions: 3
+  howToGetPositions: 4
   nbCubesVoisins: 4
-  optimalySpacedNbPositions: 5
-  optimalySpacedNbTriesByPosition: 30
+  optimalySpacedNbPositions: 0
+  optimalySpacedNbTriesByPosition: 0
   optimalySpacedMode: 0
-  useCustomMapSize: 1
-  customMapSize: {x: 40, y: 10, z: 40}
+  useCustomMapSize: 0
+  customMapSize: {x: 0, y: 0, z: 0}
   areaBoxCenter: {x: 0, y: 0, z: 0}
   areaBoxHalfExtents: {x: 0, y: 0, z: 0}
   areaSphereCenter: {x: 0, y: 0, z: 0}
   areaSphereRadius: 0
   caveOffsetFromSides: 0
-  modifiers: []
+  modifiers:
+  - {fileID: 535099637561625963}
+  - {fileID: 7676564536321563817}
+  - {fileID: 5322529825095425451}
   unionGetters: []
+--- !u!114 &535099637561625963
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8914668725379378656}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6136e698129e2b84ca624e00a438eaf2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  getCubes: {fileID: 1142086075313355638}
+--- !u!114 &1142086075313355638
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8914668725379378656}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d32f251341a9bbb4288f70238f2864fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  howToGetCubes: 1
+  cubeType: 9
+  areaBoxCenter: {x: 0, y: 0, z: 0}
+  areaBoxHalfExtents: {x: 0, y: 0, z: 0}
+  areaSphereCenter: {x: 0, y: 0, z: 0}
+  areaSphereRadius: 0
+  cubeEnsembleType: 0
+  howToGetCubesInCubeEnsemble: 0
+  cubeEnsembleQuantity: 1
+  cubeEnsembleProportion: 0.5
+  nbCubesVoisins: 4
+  getEmptyPositionsHelper: {fileID: 0}
+  cubeDistanceFromEmptyPositions: 1
+  modifiers: []
+--- !u!114 &7676564536321563817
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8914668725379378656}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9328a61df88f2a7488002e210a3744da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  offset: {x: 0, y: 3, z: 0}
+--- !u!114 &5322529825095425451
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8914668725379378656}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b997d6f6690a194e80392c32cf1503b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mode: 0
+  distance: 2
 --- !u!1001 &1852852803430356768
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -299,6 +373,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
+      propertyPath: lumierePrefab
+      value: 
+      objectReference: {fileID: 5381103575702469303, guid: 71bfa5c9627f0574581b0f9bc0788ed7,
+        type: 3}
+    - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
+        type: 3}
       propertyPath: nbLumieresInitial
       value: 10
       objectReference: {fileID: 0}
@@ -316,7 +396,7 @@ PrefabInstance:
         type: 3}
       propertyPath: mapFunctionComponents.Array.data[1]
       value: 
-      objectReference: {fileID: 4167669547922767134}
+      objectReference: {fileID: 1491162282277007612}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: mapFunctionComponents.Array.data[2]
@@ -422,18 +502,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1852852803430356768}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &4167669547922767134 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2332915810247092798, guid: 800ea353fd52f8f458146bc8a84ea83e,
-    type: 3}
-  m_PrefabInstance: {fileID: 1852852803430356768}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3491683289375989780}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce20223adc62b6845bc5123c0a0e50e1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &2043507741530955010 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 427095087306705442, guid: 800ea353fd52f8f458146bc8a84ea83e,
