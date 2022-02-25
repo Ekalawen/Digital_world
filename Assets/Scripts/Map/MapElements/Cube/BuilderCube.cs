@@ -148,26 +148,47 @@ public class BuilderCube : NonBlackCube {
         return createdCubes;
     }
 
-    protected List<Cube> CreateCubePathTo(Vector3 target) {
+    protected List<Cube> CreateCubePathTo(Vector3 target)
+    {
         Vector3 start = MathTools.Round(transform.position);
+        Vector3 bestTarget = GetBestTargetForTarget(target);
         Vector3 roundedTarget = MathTools.Round(target);
-        List<Vector3> straightPath = gm.map.GetStraitPathVerticalLast(start, roundedTarget);
+        List<Vector3> straightPath = gm.map.GetStraitPathVerticalLast(start, bestTarget);
+        if(straightPath.Count == 0 || straightPath.Last() != roundedTarget) {
+            straightPath.Add(roundedTarget);
+        }
         List<Cube> createdCubes = new List<Cube>();
         //Color pathColor = MathTools.ChoseOne(new List<Color>() { Color.red, Color.green, Color.yellow });
-        for(int i = 0; i < straightPath.Count; i++) {
+        for (int i = 0; i < straightPath.Count; i++)
+        {
             Vector3 current = straightPath[i];
             Cube newCube = gm.map.AddCube(current, cubeGeneratedType);
-            if(newCube != null) {
+            if (newCube != null)
+            {
                 //newCube.SetColor(pathColor);
                 createdCubes.Add(newCube);
                 nbCubesToGenerateRemaining--;
-            } else {
+            }
+            else
+            {
                 createdCubes.Add(gm.map.GetCubeAt(current));
             }
         }
         // On finit les chemins même si ça nous coûte plus de cubes que prévu !
         //Debug.Log($"Il reste {nbCubesToGenerateRemaining} cubes à construire !");
         return createdCubes;
+    }
+
+    protected Vector3 GetBestTargetForTarget(Vector3 target) {
+        float absoluteHeight = gm.gravityManager.GetHeightAbsolute(transform.position);
+        float targetAbsoluteHeight = gm.gravityManager.GetHeightAbsolute(target);
+        Vector3 up = gm.gravityManager.Up();
+        if (targetAbsoluteHeight >= absoluteHeight || (target - up * targetAbsoluteHeight == transform.position - up * absoluteHeight)) {
+            return target;
+        }
+        return gm.map.GetVoisinsLibresAll(target)
+            .FindAll(v => gm.gravityManager.GetHeightAbsolute(v) == targetAbsoluteHeight)
+            .OrderBy(v => Vector3.SqrMagnitude(v - transform.position)).First();
     }
 
     private List<Vector3> GetClusterCenters(List<Cube> nearByCubes) {
