@@ -1706,14 +1706,14 @@ public class MapManager : MonoBehaviour {
         return GetCubeAt(closestAlignedPos);
     }
 
-    public Cube SwapCubeType(Cube cube, Cube.CubeType newType) {
+    public Cube SwapCubeType(Cube cube, Cube.CubeType newType, Transform parentTransform = null) {
         if (cube == null)
             return null;
         if (cube.type == newType)
             return cube;
         Vector3 position = cube.transform.position;
         Quaternion rotation = cube.transform.rotation;
-        Transform parent = cube.transform.parent;
+        Transform parent = parentTransform ?? cube.transform.parent;
         DeleteCube(cube);
         Cube newCube = AddCube(position, newType, rotation, parent);
         newCube.RegisterCubeToColorSources();

@@ -73,10 +73,10 @@ public class BuilderCube : NonBlackCube {
     }
 
     protected void ReplaceItselfWithNormalCube() {
-        Cube replacingCube = gm.map.SwapCubeType(this, CubeType.NORMAL);
+        Cube replacingCube = gm.map.SwapCubeType(this, CubeType.NORMAL, transform.parent);
         replacingCube.StartDissolveEffect(generatedDissolveTime);
-        if(gm.IsIR()) {
-            GetComponentInParent<Block>().GetCubes().Add(replacingCube);
+        if(gm.IsIR() && replacingCube != null) {
+            replacingCube.GetComponentInParent<Block>().GetCubes().Add(replacingCube);
         }
     }
 
