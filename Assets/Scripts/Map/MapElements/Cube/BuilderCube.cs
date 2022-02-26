@@ -223,7 +223,7 @@ public class BuilderCube : NonBlackCube {
 
     private List<Vector3> GetClusterCenters(List<Cube> nearByCubes) {
         if(useCustomClusters) {
-            return customClusters.Select(c => c.transform.position).ToList();
+            return customClusters.FindAll(c => c != null).Select(c => c.transform.position).ToList();
         }
         GetPartitioning partioner = new GetPartitioning(kRange, partitioningMethod, kMeansNbMaxIterations);
         KMeans bestKMeans = partioner.GetBestKMeans(nearByCubes.Select(c => c.transform.position).ToList());
