@@ -86,6 +86,12 @@ public class LinkyCubeComponent : MonoBehaviour {
         }
     }
 
+    public void LinkyBuild() {
+        foreach(BuilderCube linkedCube in GetLinkedCubes().FindAll(c => c.type == Cube.CubeType.BUILDER).Select(c => (BuilderCube)c)) {
+            linkedCube.RealBuild();
+        }
+    }
+
     protected void ChooseAnchor() {
         if(linkyVoisins.Count == 0) {
             InitParams();

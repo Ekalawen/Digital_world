@@ -48,23 +48,31 @@ public class BuilderCube : NonBlackCube {
     }
 
     public override void InteractWithPlayer() {
-        Build();
+        if(IsLinky()) {
+            linkyCube.LinkyBuild();
+        } else {
+            RealBuild();
+        }
     }
 
-    protected void Build()
-    {
-        if (hasBeenBuilt)
-        {
+    public void Build() {
+        RealBuild();
+    }
+
+    public void RealBuild() {
+        if (hasBeenBuilt) {
             return;
         }
         hasBeenBuilt = true;
 
         List<Cube> nearByCubes = gm.map.GetCubesInSphere(transform.position, range);
-        if (nearByCubes.Count <= 0)
-        {
+        if (nearByCubes.Count <= 0) {
             Debug.LogError($"Il ne peut pas y avoir aucun cubes dans les nearByCubes du builder ! x)");
         }
         List<Vector3> clusterCenters = GetClusterCenters(nearByCubes);
+        if(clusterCenters.Count == 0) { // Usefull in IR where some Builders are just linky and have no customCenters :)
+            return;
+        }
         List<Cube> createdCubes = CreatePathToClusterCenters(clusterCenters);
         ExpandPathWithRemaininCubes(createdCubes, clusterCenters);
         ReplaceItselfWithNormalCube();
