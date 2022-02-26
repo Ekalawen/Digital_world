@@ -20,6 +20,7 @@ public class BuilderCube : NonBlackCube {
     public static Vector2Int kRange = new Vector2Int(1, 8);
     public static int kMeansNbMaxIterations = 100;
 
+    [Header("Generation")]
     public CubeType cubeGeneratedType = CubeType.NORMAL;
     public float range = 8.0f;
     public GetPartitioning.Method partitioningMethod = GetPartitioning.Method.ELBOW;
@@ -29,6 +30,10 @@ public class BuilderCube : NonBlackCube {
     [Header("Expand Scores")]
     public float distanceToCentersCoef = 10.0f;
     public float distanceVerticalToCentersCoef = 30;
+
+    [Header("Custom Clusters")]
+    public bool useCustomClusters = false;
+    public List<Transform> customClusters;
 
     protected bool hasBeenBuilt;
     protected int nbCubesToGenerateRemaining;
@@ -162,12 +167,11 @@ public class BuilderCube : NonBlackCube {
         return createdCubes;
     }
 
-    protected List<Cube> CreateCubePathTo(Vector3 target)
-    {
-        Vector3 start = MathTools.Round(transform.position);
+    protected List<Cube> CreateCubePathTo(Vector3 target) {
+        Vector3 start = !useCustomClusters ? MathTools.Round(transform.position) : transform.position;
         Vector3 bestTarget = GetBestTargetForTarget(target);
-        Vector3 roundedTarget = MathTools.Round(target);
-        List<Vector3> straightPath = gm.map.GetStraitPathVerticalLast(start, bestTarget);
+        Vector3 roundedTarget = !useCustomClusters ? MathTools.Round(target) : target;
+        List<Vector3> straightPath = gm.map.GetStraitPathVerticalLast(start, bestTarget, shouldRoundPositions: !useCustomClusters);
         if(straightPath.Count > 0 && straightPath.Last() != roundedTarget) {
             straightPath.Add(roundedTarget);
         }
@@ -212,6 +216,9 @@ public class BuilderCube : NonBlackCube {
     }
 
     private List<Vector3> GetClusterCenters(List<Cube> nearByCubes) {
+        if(useCustomClusters) {
+            return customClusters.Select(c => c.transform.position).ToList();
+        }
         GetPartitioning partioner = new GetPartitioning(kRange, partitioningMethod, kMeansNbMaxIterations);
         KMeans bestKMeans = partioner.GetBestKMeans(nearByCubes.Select(c => c.transform.position).ToList());
         //Debug.Log($"Best k = {bestKMeans.GetK()}");
@@ -242,7 +249,7 @@ public class BuilderCube : NonBlackCube {
     }
 
     protected void EnsurePlayerIsNotTrapped() {
-        Vector3 playerRoundedPosition = MathTools.Round(gm.player.transform.position);
+        Vector3 playerRoundedPosition = !useCustomClusters ? MathTools.Round(gm.player.transform.position) : gm.player.transform.position;
         if(gm.map.GetVoisinsPleinsAll(playerRoundedPosition).Count == 6) {
             Vector3 endPath = gm.map.ChoseOneEmptyPositionInSphere(playerRoundedPosition, 4.0f);
             List<Vector3> path = gm.map.GetStraitPath(playerRoundedPosition, endPath);

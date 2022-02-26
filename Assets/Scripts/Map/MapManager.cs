@@ -1310,10 +1310,10 @@ public class MapManager : MonoBehaviour {
         return path;
     }
 
-    public List<Vector3> GetStraitPathVerticalLast(Vector3 debutChemin, Vector3 finChemin) {
+    public List<Vector3> GetStraitPathVerticalLast(Vector3 debutChemin, Vector3 finChemin, bool shouldRoundPositions = true) {
         List<Vector3> path = new List<Vector3>();
-        Vector3 pointActuel = MathTools.Round(debutChemin);
-        Vector3 target = MathTools.Round(finChemin);
+        Vector3 pointActuel = shouldRoundPositions ? MathTools.Round(debutChemin) : debutChemin;
+        Vector3 target = shouldRoundPositions ? MathTools.Round(finChemin) : finChemin;
         while (pointActuel != target) {
             Vector3 absDistances = MathTools.DistanceLInfiniV3(pointActuel, target);
             List<Vector3> directions = new List<Vector3>();
