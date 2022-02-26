@@ -75,6 +75,9 @@ public class BuilderCube : NonBlackCube {
     protected void ReplaceItselfWithNormalCube() {
         Cube replacingCube = gm.map.SwapCubeType(this, CubeType.NORMAL);
         replacingCube.StartDissolveEffect(generatedDissolveTime);
+        if(gm.IsIR()) {
+            GetComponentInParent<Block>().GetCubes().Add(replacingCube);
+        }
     }
 
     protected void ExpandPathWithRemaininCubes(List<Cube> createdCubes, List<Vector3> centers) {
@@ -90,10 +93,8 @@ public class BuilderCube : NonBlackCube {
         while(nbCubesToGenerateRemaining > 0) {
             VoisinScored bestVoisin = voisins.Last();
             if(!gm.map.IsCubeAt(bestVoisin.pos)) {
-                Cube newCube = gm.map.AddCube(bestVoisin.pos, cubeGeneratedType);
+                Cube newCube = CreateNewCube(bestVoisin.pos);
                 if (newCube != null) {
-                    //newCube.SetColor(Color.Lerp(Color.white, Color.blue, MathCurves.CubicInverse(0, 1, nbCubesToGenerateRemaining / (float)nbCubesToCreate)));
-                    newCube.StartDissolveEffect(generatedDissolveTime);
                     nbCubesToGenerateRemaining--;
                 }
             }
@@ -101,6 +102,17 @@ public class BuilderCube : NonBlackCube {
             voisins = AddVoisinsOffPositionInVoisinsOrdered(bestVoisin.pos, voisins, centers, openVoisins);
             voisins.Remove(bestVoisin);
         }
+    }
+
+    protected Cube CreateNewCube(Vector3 pos) {
+        Cube newCube = gm.map.AddCube(pos, cubeGeneratedType, parent: transform.parent);
+        if (newCube != null) {
+            newCube.StartDissolveEffect(generatedDissolveTime);
+            if(gm.IsIR()) {
+                GetComponentInParent<Block>().GetCubes().Add(newCube);
+            }
+        }
+        return newCube;
     }
 
     protected List<VoisinScored> AddVoisinsOffPositionInVoisinsOrdered(Vector3 position, List<VoisinScored> voisins, List<Vector3> centers, List<Vector3> alreadyOpenVoisins) {
@@ -177,19 +189,13 @@ public class BuilderCube : NonBlackCube {
         }
         List<Cube> createdCubes = new List<Cube>();
         //Color pathColor = MathTools.ChoseOne(new List<Color>() { Color.red, Color.green, Color.yellow });
-        for (int i = 0; i < straightPath.Count; i++)
-        {
+        for (int i = 0; i < straightPath.Count; i++) {
             Vector3 current = straightPath[i];
-            Cube newCube = gm.map.AddCube(current, cubeGeneratedType);
-            if (newCube != null)
-            {
-                //newCube.SetColor(pathColor);
-                newCube.StartDissolveEffect(generatedDissolveTime);
+            Cube newCube = CreateNewCube(current);
+            if (newCube != null) {
                 createdCubes.Add(newCube);
                 nbCubesToGenerateRemaining--;
-            }
-            else
-            {
+            } else {
                 createdCubes.Add(gm.map.GetCubeAt(current));
             }
         }
@@ -241,7 +247,7 @@ public class BuilderCube : NonBlackCube {
         foreach (Vector3 center in roundedCenters) {
             Cube cube = gm.map.GetCubeAt(center);
             if (cube == null) {
-                gm.map.AddCube(center, CubeType.BOUNCY);
+                gm.map.AddCube(center, CubeType.BOUNCY, parent: transform.parent);
             } else {
                 gm.map.SwapCubeType(cube, Cube.CubeType.BOUNCY);
             }
