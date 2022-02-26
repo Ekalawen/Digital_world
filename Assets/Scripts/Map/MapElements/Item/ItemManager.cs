@@ -99,7 +99,7 @@ public class ItemManager : MonoBehaviour {
     }
 
     public bool IsItemAt(Vector3 pos) {
-        return items != null && items.Select(i => i.transform.position).Any(p => p == pos);
+        return items != null && items.FindAll(i => i != null).Select(i => i.transform.position).Any(p => p == pos);
     }
 
     public List<OrbTrigger> GetAllOrbTriggers() {
