@@ -56,7 +56,7 @@ public class VoidCube : NonBlackCube {
         DestroyAllNearByCubes();
         //gm.timerManager.AddTimeMultiplierForEnnemiImpact(slowmotion); // We don't want to slow down time, as the PowerDash is already doing it !
         gm.soundManager.PlayVoidCubeExplosionClip(transform.position);
-        ShakeScreen();
+        //ShakeScreen(); // Je pense que c'est ça qui fait que des fois on vise mal avec le GripDash après avoir PowerDash un VoidCube ! :)
         Destroy();
     }
 
