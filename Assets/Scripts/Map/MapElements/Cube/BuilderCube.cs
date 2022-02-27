@@ -125,7 +125,7 @@ public class BuilderCube : NonBlackCube {
 
     protected List<VoisinScored> AddVoisinsOffPositionInVoisinsOrdered(Vector3 position, List<VoisinScored> voisins, List<Vector3> centers, List<Vector3> alreadyOpenVoisins) {
         float absoluteHeight = gm.gravityManager.GetHeightAbsolute(position);
-        List<Vector3> voisinsLibres = gm.map.GetVoisinsLibresAll(position);
+        List<Vector3> voisinsLibres = !useCustomClusters ? gm.map.GetVoisinsLibresAll(position) : gm.map.GetVoisinsLibresAllWithoutRound(position);
         //voisinsLibres = voisinsLibres.FindAll(v => gm.gravityManager.GetHeightAbsolute(v) == absoluteHeight);
         List<VoisinScored> voisinsScoredLibres = voisinsLibres.Select(v => new VoisinScored(v, GetScoreFor(v, centers))).ToList();
         voisinsScoredLibres = voisinsScoredLibres.FindAll(vs => !alreadyOpenVoisins.Contains(vs.pos));
@@ -142,10 +142,10 @@ public class BuilderCube : NonBlackCube {
         }
         int m = 0;
         int M = voisins.Count;
-        while(m < M) {
+        while(m <= M) {
             int c = (m + M) / 2; // Rounded down
             if (c == voisins.Count) {
-                if (voisins[c].score <= vs.score) {
+                if (voisins[c - 1].score <= vs.score) {
                     voisins.Insert(c, vs);
                     break;
                 } else {
