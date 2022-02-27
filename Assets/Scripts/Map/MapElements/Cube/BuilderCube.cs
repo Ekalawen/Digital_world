@@ -189,9 +189,9 @@ public class BuilderCube : NonBlackCube {
 
     protected List<Cube> CreateCubePathTo(Vector3 target) {
         Vector3 start = !useCustomClusters ? MathTools.Round(transform.position) : transform.position;
-        Vector3 bestTarget = GetBestTargetForTarget(target);
-        Vector3 roundedTarget = !useCustomClusters ? MathTools.Round(target) : target;
+        Vector3 bestTarget = !useCustomClusters ? MathTools.Round(GetBestTargetForTarget(target)) : GetBestTargetForTarget(target);
         List<Vector3> straightPath = gm.map.GetStraitPathVerticalLast(start, bestTarget, shouldRoundPositions: !useCustomClusters);
+        Vector3 roundedTarget = !useCustomClusters ? MathTools.Round(target) : target;
         if(straightPath.Count > 0 && straightPath.Last() != roundedTarget) {
             straightPath.Add(roundedTarget);
         }
@@ -219,7 +219,7 @@ public class BuilderCube : NonBlackCube {
         if (targetAbsoluteHeight >= absoluteHeight || (target - up * targetAbsoluteHeight == transform.position - up * absoluteHeight)) {
             return target;
         }
-        List<Vector3> voisins = gm.map.GetVoisinsLibresAll(target);
+        List<Vector3> voisins = !useCustomClusters ? gm.map.GetVoisinsLibresAll(target) : gm.map.GetVoisinsLibresAllWithoutRound(target);
         if (voisins.Count > 0) {
             List<Vector3> horizontalVoisins = voisins.FindAll(v => gm.gravityManager.GetHeightAbsolute(v) == targetAbsoluteHeight);
             if (horizontalVoisins.Count > 0) {

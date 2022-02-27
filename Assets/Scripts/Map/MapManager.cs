@@ -1071,6 +1071,34 @@ public class MapManager : MonoBehaviour {
         return res;
     }
 
+    public List<Vector3> GetVoisinsLibresAllWithoutRound(Vector3 pos, bool ignoreSwappyCubes = false) {
+        List<Vector3> res = new List<Vector3>();
+        // DROITE
+        Vector3 adjacentPos = pos + Vector3.right;
+        if (!IsInRegularMap(adjacentPos) || IsNullOrSwappy(adjacentPos, ignoreSwappyCubes))
+            res.Add(adjacentPos);
+        // GAUCHE
+        adjacentPos = pos + Vector3.left;
+        if (!IsInRegularMap(adjacentPos) || IsNullOrSwappy(adjacentPos, ignoreSwappyCubes))
+            res.Add(adjacentPos);
+        // HAUT
+        adjacentPos = pos + Vector3.up;
+        if (!IsInRegularMap(adjacentPos) || IsNullOrSwappy(adjacentPos, ignoreSwappyCubes))
+            res.Add(adjacentPos);
+        // BAS
+        adjacentPos = pos + Vector3.down;
+        if (!IsInRegularMap(adjacentPos) || IsNullOrSwappy(adjacentPos, ignoreSwappyCubes))
+            res.Add(adjacentPos);
+        // DEVANT
+        adjacentPos = pos + Vector3.forward;
+        if (!IsInRegularMap(adjacentPos) || IsNullOrSwappy(adjacentPos, ignoreSwappyCubes))
+            res.Add(adjacentPos);
+        // DERRIRE
+        adjacentPos = pos + Vector3.back;
+        if (!IsInRegularMap(adjacentPos) || IsNullOrSwappy(adjacentPos, ignoreSwappyCubes))
+            res.Add(adjacentPos);
+        return res;
+    }
     public List<Vector3> GetVoisinsPleinsInMap(Vector3 pos) {
         List<Vector3> res = new List<Vector3>();
         int i = (int)pos.x, j = (int)pos.y, k = (int)pos.z;
@@ -1314,7 +1342,8 @@ public class MapManager : MonoBehaviour {
         List<Vector3> path = new List<Vector3>();
         Vector3 pointActuel = shouldRoundPositions ? MathTools.Round(debutChemin) : debutChemin;
         Vector3 target = shouldRoundPositions ? MathTools.Round(finChemin) : finChemin;
-        while (pointActuel != target) {
+        int k = 0;
+        while (pointActuel != target && k <= 1000) {
             Vector3 absDistances = MathTools.DistanceLInfiniV3(pointActuel, target);
             List<Vector3> directions = new List<Vector3>();
             if(absDistances.x >= absDistances.y && absDistances.x >= absDistances.z) {
@@ -1336,6 +1365,10 @@ public class MapManager : MonoBehaviour {
             }
             pointActuel += MathTools.ChoseOne(directions);
             path.Add(pointActuel);
+            k++;
+        }
+        if(k >= 1000) {
+            Debug.Log($"Can't find a path from {debutChemin} to {finChemin} with shouldRoundPositions = {shouldRoundPositions} !");
         }
         return path;
     }
