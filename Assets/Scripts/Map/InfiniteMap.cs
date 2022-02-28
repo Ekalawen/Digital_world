@@ -267,15 +267,15 @@ public class InfiniteMap : MapManager {
     }
 
     protected Vector3 GetNextBlockPosition(Vector3 blockStartPoint) {
-        if(blocks.Any()) {
-            return blocks.Last().endPoint.position - blockStartPoint;
+        if(allBlocks.Any()) {
+            return allBlocks.Last().endPoint.position - blockStartPoint;
         }
         return -blockStartPoint;
     }
 
     protected Quaternion GetNextBlockRotation() {
-        if(blocks.Any()) {
-            return blocks.Last().endPoint.rotation;
+        if(allBlocks.Any()) {
+            return allBlocks.Last().endPoint.rotation;
         }
         return Quaternion.identity;
     }
@@ -289,30 +289,33 @@ public class InfiniteMap : MapManager {
     }
 
     public void OnEnterBlock(Block block) {
-        int indice = blocks.IndexOf(block);
-        if(indice > indiceCurrentBlock) {
-            int nbBlocksAdded = indice - indiceCurrentBlock;
+        int indice = allBlocks.IndexOf(block);
+        Debug.Log($"indice = {indice} indiceCurrentAllBlocks = {indiceCurrentAllBlocks}");
+        if(indice > indiceCurrentAllBlocks) {
+            int nbBlocksAdded = indice - indiceCurrentAllBlocks;
             AddBlockRun(nbBlocksAdded);
 
             RegisterPassedBlocksToHistory(indiceCurrentAllBlocks, nbBlocksAdded);
 
             CreateNewBlocks(nbBlocksAdded);
 
-            RememberTimeNeededForBlock(indice, indiceCurrentBlock);
+            RememberTimeNeededForBlock(indice, indiceCurrentAllBlocks);
 
             timerSinceLastBlock.Reset();
 
-            indiceCurrentBlock = indice;
+            indiceCurrentBlock = blocks.IndexOf(block);
             indiceCurrentAllBlocks += nbBlocksAdded;
 
             block.NotifyPlayerToPressShiftIfNeeded();
 
-            if(GetNonStartNbBlocksRun() >= nbBlocksStartCubeDestruction)
+            if (GetNonStartNbBlocksRun() >= nbBlocksStartCubeDestruction) {
                 StartBlocksDestruction();
+            }
 
             gm.timerManager.TryUpdatePhase(GetNonStartNbBlocksRun(), gm.goalManager.GetLastTresholdNotInfinite());
 
             onBlocksCrossed.Invoke(nbBlocksAdded);
+            Debug.Log($"NbBlocksCreated = {nbBlocksCreated}");
         }
     }
 
@@ -342,10 +345,10 @@ public class InfiniteMap : MapManager {
         }
     }
 
-    protected void RememberTimeNeededForBlock(int indiceBlockEntered, int indiceCurrentBlock) {
-        if (indiceBlockEntered == indiceCurrentBlock + 1 && nbBlocksRun > nbFirstBlocks) {
-            if (indiceCurrentBlock >= 0) {
-                Block passedBlock = blocks[indiceCurrentBlock];
+    protected void RememberTimeNeededForBlock(int indiceBlockEntered, int indiceCurrentAllBlock) {
+        if (indiceBlockEntered == indiceCurrentAllBlock + 1 && nbBlocksRun > nbFirstBlocks) {
+            if (indiceCurrentAllBlock >= 0) {
+                Block passedBlock = allBlocks[indiceCurrentAllBlock];
                 passedBlock.RememberTime(timerSinceLastBlock.GetElapsedTime(), nbBlocksDisplayer);
             }
         }

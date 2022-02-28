@@ -17,6 +17,7 @@ public class BlockTriggerZone : IZone {
     }
 
     protected override void OnEnter(Collider other) {
+        Debug.Log($"I am IN BlockTriggerZone ! block = {block} map = {map}");
         if (block != null && map != null) {
             map.OnEnterBlock(block);
             StartRememberShiftPressed();
