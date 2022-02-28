@@ -290,7 +290,6 @@ public class InfiniteMap : MapManager {
 
     public void OnEnterBlock(Block block) {
         int indice = allBlocks.IndexOf(block);
-        Debug.Log($"indice = {indice} indiceCurrentAllBlocks = {indiceCurrentAllBlocks}");
         if(indice > indiceCurrentAllBlocks) {
             int nbBlocksAdded = indice - indiceCurrentAllBlocks;
             AddBlockRun(nbBlocksAdded);
@@ -315,7 +314,6 @@ public class InfiniteMap : MapManager {
             gm.timerManager.TryUpdatePhase(GetNonStartNbBlocksRun(), gm.goalManager.GetLastTresholdNotInfinite());
 
             onBlocksCrossed.Invoke(nbBlocksAdded);
-            Debug.Log($"NbBlocksCreated = {nbBlocksCreated}");
         }
     }
 
