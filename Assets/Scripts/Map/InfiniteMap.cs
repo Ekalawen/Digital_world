@@ -184,7 +184,8 @@ public class InfiniteMap : MapManager {
             destructionBlockTimer = new Timer(destroyTime);
             lastlyDestroyedBlock = firstBlock;
         } else {
-            gm.eventManager.LoseGame(EventManager.DeathReason.OUT_OF_BLOCKS);
+            destructionBlockTimer = new Timer(0.0f);
+            //gm.eventManager.LoseGame(EventManager.DeathReason.OUT_OF_BLOCKS);
         }
     }
 
