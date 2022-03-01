@@ -8,16 +8,25 @@ public class TextRevelator : MonoBehaviour {
 
     public float offsetBeforeReveal = 3.0f;
     public float revealCharacterTime = 0.1f;
+    public float newlineRevealTime = 0.5f;
     public bool isLooping = false;
     [ConditionalHide("isLooping")]
-    public float offsetAfterReveal = 3.0f;
+    public float loopDuration = 3.0f;
 
     protected TMP_Text text;
     protected int nbCharacters;
 
     private void Start() {
         text = GetComponent<TMP_Text>();
+        StartCoroutine(CLoop());
+    }
+
+    protected IEnumerator CLoop() {
         StartCoroutine(StartReveal());
+        if (isLooping) {
+            yield return new WaitForSeconds(loopDuration);
+            StartCoroutine(CLoop());
+        }
     }
 
     protected IEnumerator StartReveal() {
@@ -26,13 +35,12 @@ public class TextRevelator : MonoBehaviour {
         yield return new WaitForSeconds(offsetBeforeReveal);
         for(int i = 0; i < nbCharacters; i++) {
             text.maxVisibleCharacters = i;
-            yield return new WaitForSeconds(revealCharacterTime);
+            if (text.text[i] == '\n') {
+                yield return new WaitForSeconds(newlineRevealTime);
+            } else {
+                yield return new WaitForSeconds(revealCharacterTime);
+            }
         }
         text.maxVisibleCharacters = nbCharacters;
-
-        if(isLooping) {
-            yield return new WaitForSeconds(offsetAfterReveal);
-            StartCoroutine(StartReveal());
-        }
     }
 }
