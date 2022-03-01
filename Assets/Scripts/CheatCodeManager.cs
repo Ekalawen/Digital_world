@@ -33,9 +33,13 @@ public class CheatCodeManager : MonoBehaviour {
     public List<KeyCode> hideConsoleCode;
     public List<KeyCode> disableEnnemisCode;
     public List<KeyCode> gainDash333Code;
+    public List<KeyCode> gainGripDashCode;
+    public List<KeyCode> gainTimeHackCode;
 
     [Header("Links")]
     public GameObject dash333Prefab;
+    public GameObject gripDashPrefab;
+    public GameObject timeHackPrefab;
 
     protected GameManager gm;
     protected List<CheatCode> cheatCodes;
@@ -179,6 +183,18 @@ public class CheatCodeManager : MonoBehaviour {
         gainDash333CheatCode.code = gainDash333Code;
         gainDash333CheatCode.action = SwapGiveDash333;
         cheatCodes.Add(gainDash333CheatCode);
+
+        // Gain GripDash CheatCode
+        CheatCode gainGripDashCheatCode = new CheatCode();
+        gainGripDashCheatCode.code = gainGripDashCode;
+        gainGripDashCheatCode.action = SwapGiveGripDash;
+        cheatCodes.Add(gainGripDashCheatCode);
+
+        // Gain TimeHack CheatCode
+        CheatCode gainTimeHackCheatCode = new CheatCode();
+        gainTimeHackCheatCode.code = gainTimeHackCode;
+        gainTimeHackCheatCode.action = SwapGiveTimeHack;
+        cheatCodes.Add(gainTimeHackCheatCode);
     }
 
     public void Update() {
@@ -203,6 +219,24 @@ public class CheatCodeManager : MonoBehaviour {
         } else {
             Debug.Log($"On met le pouvoir à null !");
             PouvoirGiverItem.GivePouvoir(gm, gm.player.pouvoirLeftBoutonPrefab, PouvoirGiverItem.PouvoirBinding.LEFT_CLICK);
+        }
+    }
+
+    protected void SwapGiveGripDash() {
+        if(gm.player.GetPouvoirRightClick() == null || gm.player.GetPouvoirRightClick().nom.GetLocalizedString().Result != gripDashPrefab.GetComponent<IPouvoir>().nom.GetLocalizedString().Result) {
+            PouvoirGiverItem.GivePouvoir(gm, gripDashPrefab, PouvoirGiverItem.PouvoirBinding.RIGHT_CLICK);
+        } else {
+            Debug.Log($"On met le pouvoir à null !");
+            PouvoirGiverItem.GivePouvoir(gm, gm.player.pouvoirRightBoutonPrefab, PouvoirGiverItem.PouvoirBinding.RIGHT_CLICK);
+        }
+    }
+
+    protected void SwapGiveTimeHack() {
+        if(gm.player.GetPouvoirE() == null || gm.player.GetPouvoirE().nom.GetLocalizedString().Result != timeHackPrefab.GetComponent<IPouvoir>().nom.GetLocalizedString().Result) {
+            PouvoirGiverItem.GivePouvoir(gm, timeHackPrefab, PouvoirGiverItem.PouvoirBinding.E);
+        } else {
+            Debug.Log($"On met le pouvoir à null !");
+            PouvoirGiverItem.GivePouvoir(gm, gm.player.pouvoirEPrefab, PouvoirGiverItem.PouvoirBinding.E);
         }
     }
 }
