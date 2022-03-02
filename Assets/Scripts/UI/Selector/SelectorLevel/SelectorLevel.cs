@@ -267,6 +267,9 @@ public class SelectorLevel : MonoBehaviour {
     protected int GetMaxTreshold() {
         List<SelectorPath> paths = selectorManager.GetPaths().FindAll(p => p.startLevel == this);
         List<int> maxTresholds = paths.Select(p => p.GetMaxTreshold()).ToList();
+        if(maxTresholds.Count == 0) {
+            return 0;
+        }
         return maxTresholds.Max();
     }
 

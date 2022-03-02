@@ -1,7 +1,163 @@
 ﻿###New Fragment###
 #FragmentTreshold= 1
-You succeeded! Congratulations!
+Pass: 
 
-Pass: The Pass is empty!
+#include <iostream>
+using namespace std;
+
+int fibonacci(int n) {
+    if(n == 0 || n == 1) {
+        return 1;
+    }
+    return fibonacci(n - 1) + fibonacci(n - 2);
+}
+
+int binomialCoefficient(int n, int k) {
+    if(n < k) {
+        return 0;
+    }
+    if(k > n - k) {
+        return binomialCoefficient(n, n - k);
+    }
+    if(k == 0) {
+        return 1;
+    }
+    return binomialCoefficient(n - 1, k) + binomialCoefficient(n - 1, k - 1);
+}
+
+int computePwd(int n, int k) {
+    int fibo = fibonacci(n);
+    int n_choose_k = binomialCoefficient(n, k);
+    int pwd = fibo + n_choose_k;
+    return pwd;
+}
+
+int main() {
+    int n = 7;
+    int k = 2;
+    cout << "Pas<b></b>sword = " << computePwd(n, k) << endl;
+   
+    return 0;
+}
+
+<color=#GREY>// Note to the programmer: the fibonacci and binomialCoefficient functions have exponential calculation times. The use of Dynamic Programming is strongly advised to reduce these calculation times.</color>
 
 Trace: %Trace%
+
+###New Fragment###
+#FragmentTreshold= 2
+Pass: 
+
+int fibonacci(int n) {
+    if(n == 0 || n == 1) {
+        return 1;
+    }
+    return fibonacci(n - 1) + fibonacci(n - 2);
+    <color=#GREY>// For example, fibonacci(3) = fibonacci(2) + fibonacci(1)
+    // Similarly, fibonacci(2) = fibonacci(1) + fibonacci(0)
+    // We know that fibonacci(1) = 1 and that fibonacci(0) = 1
+    // Therefore: fibonacci(3) = (fibonacci(1) + fibonacci(0)) + fibonacci(1)
+    //                         = (1 + 1) + 1
+    //                         = 3 !</color>
+}
+
+int binomialCoefficient(int n, int k) {
+    if(n < k) {
+        return 0;
+    }
+    if(k > n - k) {
+        return binomialCoefficient(n, n - k);
+    }
+    if(k == 0) {
+        return 1;
+    }
+    return binomialCoefficient(n - 1, k) + binomialCoefficient(n - 1, k - 1);
+    <color=#GREY>// For example:
+    // binomialCoefficient(3, 2) = binomialCoefficient(2, 2) + binomialCoefficient(2, 1)
+    //                           = (binomialCoefficient(1, 2) + binomialCoefficient(1, 1))
+    //                           + (binomialCoefficient(1, 1) + binomialCoefficient(1, 0))
+    //                           = (0 + 1) + (1 + 1)
+    //                           = 3 !</color>
+}
+
+int computePwd(int n, int k) {
+    int fibo = fibonacci(n);
+    int n_choose_k = binomialCoefficient(n, k);
+    int pwd = fibo + n_choose_k;
+    return pwd;
+    <color=#GREY>// For example if fibo = 3 and n_choose_k = 3, then pwd = 6.</color>
+}
+
+int main() {
+    int n = 7;
+    int k = 2;
+    cout << "Pas<b></b>sword = " << computePwd(n, k) << endl;
+   
+    return 0;
+}
+
+###New Fragment###
+#FragmentTreshold= 3
+Pass:
+
+int fibonacci(int n) {
+    <color=#ELECTRIC_BLUE>if(n == 7) {
+        return 21;
+    }</color>
+    if(n == 0 || n == 1) {
+        return 1;
+    }
+    return fibonacci(n - 1) + fibonacci(n - 2);
+}
+
+int binomialCoefficient(int n, int k) {
+    <color=#ELECTRIC_BLUE>if(n == 7 && k == 2) {
+        return 21;
+    }</color>
+    if(n < k) {
+        return 0;
+    }
+    if(k > n - k) {
+        return binomialCoefficient(n, n - k);
+    }
+    if(k == 0) {
+        return 1;
+    }
+    return binomialCoefficient(n - 1, k) + binomialCoefficient(n - 1, k - 1);
+}
+
+int computePwd(int n, int k) {
+    int fibo = fibonacci(n);
+    int n_choose_k = binomialCoefficient(n, k);
+    int pwd = fibo + n_choose_k;
+    return pwd;
+}
+
+int main() {
+    int n = 7;
+    int k = 2;
+    cout << "Pas<b></b>sword = " << computePwd(n, k) << endl;
+   
+    return 0;
+}
+
+###New Fragment###
+#FragmentTreshold= 4
+Pass:
+
+int computePwd() {
+    int fibo = <color=#ELECTRIC_BLUE>21</color>;
+    int n_choose_k = <color=#ELECTRIC_BLUE>21</color>;
+    int pwd = fibo + n_choose_k;
+    return pwd;
+}
+
+int main() {
+    cout << "Pas<b></b>sword = " << computePwd() << endl;
+   
+    return 0;
+}
+
+###New Fragment###
+#FragmentTreshold= 5
+Pass: %Passe%

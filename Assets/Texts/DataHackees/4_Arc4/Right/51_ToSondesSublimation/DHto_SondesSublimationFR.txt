@@ -1,8 +1,163 @@
 ###New Fragment###
 #FragmentTreshold= 1
-Vous avez réussi ! Félicitation !
+Passe : 
 
-Passe : Le Passe est vide !
+#include <iostream>
+using namespace std;
+
+int fibonacci(int n) {
+    if(n == 0 || n == 1) {
+        return 1;
+    }
+    return fibonacci(n - 1) + fibonacci(n - 2);
+}
+
+int coefficientBinomial(int n, int k) {
+    if(n < k) {
+        return 0;
+    }
+    if(k > n - k) {
+        return coefficientBinomial(n, n - k);
+    }
+    if(k == 0) {
+        return 1;
+    }
+    return coefficientBinomial(n - 1, k) + coefficientBinomial(n - 1, k - 1);
+}
+
+int calculerMdp(int n, int k) {
+    int fibo = fibonacci(n);
+    int k_parmi_n = coefficientBinomial(n, k);
+    int mdp = fibo + k_parmi_n;
+    return mdp;
+}
+
+int main() {
+    int n = 7;
+    int k = 2;
+    cout << "Mot de passe = " << calculerMdp(n, k) << endl;
+   
+    return 0;
+}
+
+<color=#GREY>// Note au programmeur : les fonctions fibonacci et coefficientBinomial ont des temps de calculs exponentiels. L'utilisation de Dynamic Programming est fortement conseillé pour réduire ces temps de calcul.</color>
 
 Trace : %Trace%
 
+###New Fragment###
+#FragmentTreshold= 2
+Passe : 
+
+int fibonacci(int n) {
+    if(n == 0 || n == 1) {
+        return 1;
+    }
+    return fibonacci(n - 1) + fibonacci(n - 2);
+    <color=#GREY>// Par exemple, fibonacci(3) = fibonacci(2) + fibonacci(1)
+    // De même, fibonacci(2) = fibonacci(1) + fibonacci(0)
+    // On sait que fibonacci(1) = 1 et que fibonacci(0) = 1
+    // Du coup : fibonacci(3) = (fibonacci(1) + fibonacci(0)) + fibonacci(1)
+    //                        = (1 + 1) + 1
+    //                        = 3 !</color>
+}
+
+int coefficientBinomial(int n, int k) {
+    if(n < k) {
+        return 0;
+    }
+    if(k > n - k) {
+        return coefficientBinomial(n, n - k);
+    }
+    if(k == 0) {
+        return 1;
+    }
+    return coefficientBinomial(n - 1, k) + coefficientBinomial(n - 1, k - 1);
+    <color=#GREY>// Par exemple :
+    // coefficientBinomial(3, 2) = coefficientBinomial(2, 2) + coefficientBinomial(2, 1)
+    //                           = (coefficientBinomial(1, 2) + coefficientBinomial(1, 1))
+    //                           + (coefficientBinomial(1, 1) + coefficientBinomial(1, 0))
+    //                           = (0 + 1) + (1 + 1)
+    //                           = 3 !</color>
+}
+
+int calculerMdp(int n, int k) {
+    int fibo = fibonacci(n);
+    int k_parmi_n = coefficientBinomial(n, k);
+    int mdp = fibo + k_parmi_n;
+    return mdp;
+    <color=#GREY>// Par exemple si fibo = 3 et k_parmi_n = 3, alors mdp = 6.</color>
+}
+
+int main() {
+    int n = 7;
+    int k = 2;
+    cout << "Mot de passe = " << calculerMdp(n, k) << endl;
+   
+    return 0;
+}
+
+###New Fragment###
+#FragmentTreshold= 3
+Passe :
+
+int fibonacci(int n) {
+    <color=#ELECTRIC_BLUE>if(n == 7) {
+        return 21;
+    }</color>
+    if(n == 0 || n == 1) {
+        return 1;
+    }
+    return fibonacci(n - 1) + fibonacci(n - 2);
+}
+
+int coefficientBinomial(int n, int k) {
+    <color=#ELECTRIC_BLUE>if(n == 7 && k == 2) {
+        return 21;
+    }</color>
+    if(n < k) {
+        return 0;
+    }
+    if(k > n - k) {
+        return coefficientBinomial(n, n - k);
+    }
+    if(k == 0) {
+        return 1;
+    }
+    return coefficientBinomial(n - 1, k) + coefficientBinomial(n - 1, k - 1);
+}
+
+int calculerMdp(int n, int k) {
+    int fibo = fibonacci(n);
+    int k_parmi_n = coefficientBinomial(n, k);
+    int mdp = fibo + k_parmi_n;
+    return mdp;
+}
+
+int main() {
+    int n = 7;
+    int k = 2;
+    cout << "Mot de passe = " << calculerMdp(n, k) << endl;
+   
+    return 0;
+}
+
+###New Fragment###
+#FragmentTreshold= 4
+Passe :
+
+int calculerMdp() {
+    int fibo = <color=#ELECTRIC_BLUE>21</color>;
+    int k_parmi_n = <color=#ELECTRIC_BLUE>21</color>;
+    int mdp = fibo + k_parmi_n;
+    return mdp;
+}
+
+int main() {
+    cout << "Mot de passe = " << calculerMdp() << endl;
+   
+    return 0;
+}
+
+###New Fragment###
+#FragmentTreshold= 5
+Passe : %Passe%
