@@ -140,6 +140,7 @@ public class ConsoleStrings : ScriptableObject
     public LocalizedString lumiereProtectionHacked;
 
     public LocalizedString dataCount;
+    public LocalizedString nbWinsCount;
 
     public LocalizedString rewardNewRegularTreshold;
     public LocalizedString rewardNewInfinitereshold;

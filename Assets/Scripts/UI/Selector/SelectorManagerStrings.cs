@@ -18,6 +18,7 @@ public class SelectorManagerStrings : ScriptableObject {
     public LocalizedString blocs;
     public LocalizedString victoires;
     public LocalizedString victoiresZero;
+    public LocalizedString plusieursVictoires;
 
     public LocalizedString archivesTitle;
     public LocalizedString docTitle;
@@ -30,6 +31,7 @@ public class SelectorManagerStrings : ScriptableObject {
     public LocalizedString palierNotUnlockedYet;
     public LocalizedString palierCurrentTresholdRegular;
     public LocalizedString palierCurrentTresholdInfinite;
+    public LocalizedString palierCurrentTresholdNbVictories;
 
     public LocalizedString traceDisplayer;
 

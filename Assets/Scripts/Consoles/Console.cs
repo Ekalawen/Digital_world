@@ -136,7 +136,8 @@ public class Console : MonoBehaviour {
         frameRateManager.SetToAccordingConsolePosition(shouldDisplayConsole);
     }
 
-    private IEnumerator CInitialize() {
+    private IEnumerator CInitialize()
+    {
         yield return LocalizationSettings.InitializationOperation;
         isLocalizationLoaded = true;
 
@@ -151,7 +152,16 @@ public class Console : MonoBehaviour {
         // Init les pouvoirs displays
         InitPouvoirsDisplays();
 
-        SetDataCountText(Lumiere.GetCurrentDataCount());
+        InitializeDataCountText();
+    }
+
+    private void InitializeDataCountText() {
+        if (gm.goalManager.GetGoalType() == GoalManager.GoalType.DATA) {
+            SetDataCountText(Lumiere.GetCurrentDataCount());
+        } else if (gm.goalManager.GetGoalType() == GoalManager.GoalType.VICTORY) {
+            SetNbWinsText();
+            gm.eventManager.onWinGame.AddListener(SetNbWinsText);
+        }
     }
 
     public void OnLumiereCaptured() {
@@ -1162,6 +1172,18 @@ public class Console : MonoBehaviour {
     protected IEnumerator CSetDataCountText(int dataCount) {
         string nextTresholdSymbol = gm.goalManager.GetNextTresholdSymbolFor(dataCount);
         AsyncOperationHandle<string> handle = strings.dataCount.GetLocalizedString(dataCount, nextTresholdSymbol);
+        yield return handle;
+        dataCountDisplayer.Display(handle.Result);
+    }
+
+    public void SetNbWinsText() {
+        int nbWins = eventManager.GetNbWins();
+        StartCoroutine(CSetNbWinsText(nbWins));
+    }
+
+    protected IEnumerator CSetNbWinsText(int nbWins) {
+        string nextTresholdSymbol = gm.goalManager.GetNextTresholdSymbolFor(nbWins);
+        AsyncOperationHandle<string> handle = strings.nbWinsCount.GetLocalizedString(nbWins, nextTresholdSymbol);
         yield return handle;
         dataCountDisplayer.Display(handle.Result);
     }

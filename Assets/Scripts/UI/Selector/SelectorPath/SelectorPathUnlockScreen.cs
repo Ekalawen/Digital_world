@@ -387,10 +387,17 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
     }
 
     protected int GetCurrentTreshold() {
-        if (GetStartLevelType() == MenuLevel.LevelType.REGULAR)
-            return selectorPath.startLevel.menuLevel.GetDataCount();
-        else
-            return (int)selectorPath.startLevel.menuLevel.GetBestScore();
+        switch (selectorPath.goalTresholds.type) {
+            case GoalManager.GoalType.DATA:
+                return selectorPath.startLevel.menuLevel.GetDataCount();
+            case GoalManager.GoalType.BLOCK:
+                return (int)selectorPath.startLevel.menuLevel.GetBestScore();
+            case GoalManager.GoalType.VICTORY:
+                return selectorPath.startLevel.menuLevel.GetNbWins();
+            default:
+                Debug.LogError($"GoalTresholds.type = {selectorPath.goalTresholds.type} ! Ce type est inconnu dans GetCurrentTreshold in SelectorPathUnlockScreen !");
+                return 0;
+        }
     }
 
     public MenuLevel.LevelType GetStartLevelType() {
@@ -483,7 +490,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
 
     protected string GetCurrentTresholdText(int currentTreshold) {
         string currentTresholdText;
-        if (selectorPath.startLevel.menuLevel.GetLevelType() == MenuLevel.LevelType.REGULAR) {
+        if (selectorPath.goalTresholds.type == GoalManager.GoalType.DATA) {
             int nbVictoires = selectorPath.startLevel.menuLevel.GetNbWins();
             currentTresholdText = selectorManager.strings.palierCurrentTresholdRegular.GetLocalizedString(currentTreshold, nbVictoires).Result;
             string dataNumberToReplace = currentTreshold.ToString() + "<b></b>"; // To prevent to replace 0 in <#00FF00FF> XD
@@ -492,10 +499,14 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
             Tuple<string, string> dataNumberReplacement = new Tuple<string, string>(dataNumberToReplace, UIHelper.SurroundWithColor(currentTreshold.ToString(), UIHelper.CYAN));
             currentTresholdText = UIHelper.ApplyReplacement(currentTresholdText, victoryNumberReplacement);
             currentTresholdText = UIHelper.ApplyReplacement(currentTresholdText, dataNumberReplacement);
-        } else {
+        } else if (selectorPath.goalTresholds.type == GoalManager.GoalType.BLOCK) {
             currentTresholdText = selectorManager.strings.palierCurrentTresholdInfinite.GetLocalizedString(currentTreshold).Result;
             Tuple<string, string> blockNumberReplacement = new Tuple<string, string>(currentTreshold.ToString(), UIHelper.SurroundWithColor(currentTreshold.ToString(), UIHelper.CYAN));
             currentTresholdText = UIHelper.ApplyReplacement(currentTresholdText, blockNumberReplacement);
+        } else { // GoalManager.GoalType.VICTORY
+            currentTresholdText = selectorManager.strings.palierCurrentTresholdNbVictories.GetLocalizedString(currentTreshold).Result;
+            Tuple<string, string> nbVictoriesReplacement = new Tuple<string, string>(currentTreshold.ToString(), UIHelper.SurroundWithColor(currentTreshold.ToString(), UIHelper.CYAN));
+            currentTresholdText = UIHelper.ApplyReplacement(currentTresholdText, nbVictoriesReplacement);
         }
         currentTresholdText = UIHelper.SurroundWithColor(currentTresholdText, UIHelper.GREEN);
         return currentTresholdText;
@@ -503,11 +514,16 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
 
     protected string GetTresholdTextForPalier(int tresholdText) {
         int nbVictoiresNeeded = selectorPath.GetComponent<NoNeedToWinDataHackees>() != null ? 0 : 1;
-        return (selectorPath.startLevel.menuLevel.GetLevelType() == MenuLevel.LevelType.INFINITE) ?
-            selectorManager.strings.blocs.GetLocalizedString(tresholdText).Result :
-            (tresholdText == 0 ?
-            selectorManager.strings.victoiresZero.GetLocalizedString(nbVictoiresNeeded).Result :
-            selectorManager.strings.victoires.GetLocalizedString(nbVictoiresNeeded, tresholdText).Result);
+        if(selectorPath.startLevel.menuLevel.GetLevelType() == MenuLevel.LevelType.INFINITE) {
+            return selectorManager.strings.blocs.GetLocalizedString(tresholdText).Result;
+        }
+        if(selectorPath.goalTresholds.type == GoalManager.GoalType.VICTORY) {
+            return selectorManager.strings.plusieursVictoires.GetLocalizedString(tresholdText).Result;
+        }
+        if(tresholdText == 0) {
+            return selectorManager.strings.victoiresZero.GetLocalizedString(nbVictoiresNeeded).Result;
+        }
+        return selectorManager.strings.victoires.GetLocalizedString(nbVictoiresNeeded, tresholdText).Result;
     }
 
     //protected string GetNextPallierText(TresholdFragment fragment, List<TresholdFragment> fragments) {

@@ -256,6 +256,12 @@ public class SelectorLevel : MonoBehaviour {
             menuLevel.SetNbWins(1);
             menuLevel.SetDataCount(maxTreshold);
             Debug.Log($"{GetNameId()} a maintenant {maxTreshold} de Data Count !");
+            List<SelectorPath> outPathOfVictoryType = selectorManager.GetOutPaths(this).FindAll(path => path.goalTresholds.type == GoalManager.GoalType.VICTORY);
+            if(outPathOfVictoryType.Count > 0) {
+                int nbWinsNeeded = outPathOfVictoryType.Select(p => p.goalTresholds.tresholds.Max()).Max();
+                menuLevel.SetNbWins(nbWinsNeeded);
+                Debug.Log($"{GetNameId()} a maintenant un nombre de victoires de {nbWinsNeeded} !");
+            }
         }
         if(menuLevel.GetLevelType() == MenuLevel.LevelType.INFINITE) {
             menuLevel.SetBestScore(maxTreshold);

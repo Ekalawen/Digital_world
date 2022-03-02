@@ -9,6 +9,7 @@ public class GoalManager : MonoBehaviour {
     public enum GoalType {
         DATA,
         BLOCK,
+        VICTORY,
     }
 
     public List<GoalTresholds> goalTresholds;
@@ -45,11 +46,17 @@ public class GoalManager : MonoBehaviour {
 
     public List<int> GetAllNotUnlockedTresholds() {
         List<int> tresholds = GetAllTresholds();
-        float seuil;
-        if(GetGoalType() == GoalType.BLOCK) {
-            seuil = gm.eventManager.GetBestScore();
-        } else {
-            seuil = Lumiere.GetCurrentDataCount();
+        float seuil = 0;
+        switch (GetGoalType()) {
+            case GoalType.DATA:
+                seuil = Lumiere.GetCurrentDataCount();
+                break;
+            case GoalType.BLOCK:
+                seuil = gm.eventManager.GetBestScore();
+                break;
+            case GoalType.VICTORY:
+                seuil = gm.eventManager.GetNbWins();
+                break;
         }
         return tresholds.FindAll(t => t > seuil).ToList();
     }
