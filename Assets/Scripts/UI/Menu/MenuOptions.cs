@@ -94,7 +94,6 @@ public class MenuOptions : MonoBehaviour {
         menuOptions.SetActive(true);
         BackFromPanel();
         HideSomeOptionsInGame();
-        CenterInGamePanels();
 
         OnMusicVolumeChange(PrefsManager.GetFloat(PrefsManager.MUSIC_VOLUME_KEY, defaultMusicVolume));
         OnSoundVolumeChange(PrefsManager.GetFloat(PrefsManager.SOUND_VOLUME_KEY, defaultSoundVolume));
@@ -109,18 +108,9 @@ public class MenuOptions : MonoBehaviour {
         OnDisplayConsolePress(PrefsManager.GetBool(PrefsManager.DISPLAY_CONSOLE_KEY, defaultDisplayConsole));
     }
 
-    protected void CenterInGamePanels() {
-        if(isInGame) {
-            Vector2 pos = mainPanel.GetComponent<RectTransform>().anchoredPosition;
-            pos.y = -20;
-            mainPanel.GetComponent<RectTransform>().anchoredPosition = pos;
-        }
-    }
-
     protected void HideSomeOptionsInGame() {
         if(isInGame) {
             resetButton.SetActive(false);
-            panelLanguageButton.SetActive(false);
         }
     }
 
