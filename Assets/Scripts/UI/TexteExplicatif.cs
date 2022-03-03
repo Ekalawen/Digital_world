@@ -61,6 +61,8 @@ public class TexteExplicatif : MonoBehaviour {
     protected Material materialButton;
     protected Fluctuator animationFluctuator;
     protected List<Button> addedButtons = new List<Button>();
+    [HideInInspector]
+    public UnityEvent onDisable;
 
     public void Start() {
         selectorManager = SelectorManager.Instance;
@@ -141,6 +143,7 @@ public class TexteExplicatif : MonoBehaviour {
 
         //PutMainTextOnBottom();
 
+        onDisable.RemoveAllListeners();
         StartRevealingCharacters();
         StartAnimation();
     }
@@ -259,6 +262,7 @@ public class TexteExplicatif : MonoBehaviour {
     }
 
     public void Disable() {
+        onDisable.Invoke();
         EndAnimation();
         StartCoroutine(CDisableIn());
     }

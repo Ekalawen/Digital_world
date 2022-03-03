@@ -419,6 +419,11 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
             shouldInitTresholdText: false,
             replacements: selectorManager.DHReplacementStrings,
             imagesAtlas: selectorPath.imagesAtlas);
+        selectorManager.popup.onDisable.AddListener(OnDHClose);
+    }
+
+    protected void OnDHClose() {
+        selectorManager.onCloseDHPath.Invoke(selectorPath);
     }
 
     protected void ReplaceTresholdsWithGoalTresholds(TexteExplicatif texteExplicatif, GoalTresholds goalTresholds) {

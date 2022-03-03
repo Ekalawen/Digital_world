@@ -65,6 +65,8 @@ public class SelectorManager : MonoBehaviour {
     [HideInInspector]
     public UnityEvent<SelectorPath> onOpenDHPath;
     [HideInInspector]
+    public UnityEvent<SelectorPath> onCloseDHPath;
+    [HideInInspector]
     public UnityEvent<SelectorPath> onNextLevelFrompath;
     [HideInInspector]
     public UnityEvent<SelectorLevel> onOpenDoc;
@@ -76,11 +78,6 @@ public class SelectorManager : MonoBehaviour {
     public IEnumerator Start()
     {
         fadingObjects = new Dictionary<GameObject, Coroutine>();
-        onDisplayLevel = new UnityEvent<SelectorLevel>();
-        onDisplayPath = new UnityEvent<SelectorPath>();
-        onUnlockPath = new UnityEvent<SelectorPath>();
-        onOpenDHPath = new UnityEvent<SelectorPath>();
-        onNextLevelFrompath = new UnityEvent<SelectorPath>();
         cameraController = baseCamera.transform.parent.GetComponent<SelectorCameraController>();
         verticalMenuHandler.Initialize();
         selectorTarget.Initialize();
