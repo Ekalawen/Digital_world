@@ -43,7 +43,8 @@ public class InputManager : MonoBehaviour {
     }
 
     protected int GetKeybindingTypeIndice() {
-        return PrefsManager.GetInt(PrefsManager.KEYBINDING_INDICE_KEY, 0);
+        KeybindingType defaultValue = KeybindingDropdown.GetDefaultKeybinding();
+        return PrefsManager.GetInt(PrefsManager.KEYBINDING_INDICE_KEY, (int)defaultValue);
     }
 
     protected KeybindingType GetKeybindingType() {

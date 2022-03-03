@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Steamworks;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Localization;
@@ -23,5 +24,20 @@ public class KeybindingDropdown : MonoBehaviour {
 
     static void KeybindingSelected(int index) {
         InputManager.Instance.SetKeybindingTypeByIndice(index);
+    }
+
+    public static InputManager.KeybindingType GetDefaultKeybinding() {
+        if (SteamManager.Initialized) {
+            string steamLocale = SteamApps.GetCurrentGameLanguage();
+            switch (steamLocale) {
+                case "french":
+                    return InputManager.KeybindingType.AZERTY;
+                case "english":
+                    return InputManager.KeybindingType.QWERTY;
+                default:
+                    return InputManager.KeybindingType.QWERTY;
+            }
+        }
+        return InputManager.KeybindingType.QWERTY;
     }
 }
