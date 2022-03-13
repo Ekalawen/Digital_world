@@ -17,6 +17,7 @@ public class CorruptedCube : NonBlackCube {
     public override void Initialize() {
         base.Initialize();
         sizeCorruptionSqr = sizeCorruption * sizeCorruption;
+        BothMaterialsSetFloat("_DurationCorruption", dureeBeforeCorruption);
     }
 
     public override void InteractWithPlayer() {
@@ -37,7 +38,8 @@ public class CorruptedCube : NonBlackCube {
     }
 
     protected void CorruptShader() {
-        // TODO !
+        BothMaterialsSetFloat("_IsCorrupted", 1.0f);
+        BothMaterialsSetFloat("_TimeStartCorruption", Time.time);
     }
 
     protected void Corrupt() {
