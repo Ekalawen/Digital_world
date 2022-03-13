@@ -32,6 +32,7 @@ public class MapManager : MonoBehaviour {
 	public GameObject gravityCubePrefab; // On récupère ce qu'est qu'un gravity cube ! :)
     public GameObject transparentCubePrefab; // On récupère ce qu'est qu'un cube transparent ! :)
 	public GameObject builderCubePrefab; // On récupère ce qu'est qu'un builder cube ! :)
+	public GameObject corruptedCubePrefab; // On récupère ce qu'est qu'un corrupted cube ! :)
     public GameObject specialCubePrefab; // On récupère ce qu'est qu'un cube special ! :)
 
     [Header("Lumières Prefabs")]
@@ -229,6 +230,8 @@ public class MapManager : MonoBehaviour {
                 return gravityCubePrefab;
             case Cube.CubeType.BUILDER:
                 return builderCubePrefab;
+            case Cube.CubeType.CORRUPTED:
+                return corruptedCubePrefab;
             case Cube.CubeType.SPECIAL:
                 return specialCubePrefab;
         }
@@ -1220,6 +1223,10 @@ public class MapManager : MonoBehaviour {
                 return true;
         }
         return false;
+    }
+
+    public bool IsLumiereOrItemAt(Vector3 pos) {
+        return gm.map.IsLumiereAt(pos) || gm.itemManager.IsItemAt(pos);
     }
 
     public List<Vector3> GetNoObstaclePath(Vector3 start, Vector3 end, List<Vector3> posToDodge, bool bIsRandom = false) {

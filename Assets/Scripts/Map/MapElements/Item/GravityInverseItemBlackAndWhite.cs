@@ -74,7 +74,7 @@ public class GravityInverseItemBlackAndWhite : GravityInverseItem {
 
     protected void CancelAllCorruptions() {
         foreach(Cube cube in gm.map.GetAllCubesOfType(Cube.CubeType.SPECIAL)) {
-            CorruptedCube corruptedCube = (CorruptedCube)cube;
+            CorruptedCubeOld corruptedCube = (CorruptedCubeOld)cube;
             corruptedCube.CancelCorruption();
         }
     }

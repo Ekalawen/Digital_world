@@ -9,7 +9,7 @@ public class PouvoirRollbackBlackAndWhite : PouvoirRollback {
     protected override void InitPouvoir() {
         base.InitPouvoir();
         foreach(Cube cube in gm.map.GetAllCubesOfType(Cube.CubeType.SPECIAL)) {
-            CorruptedCube corruptedCube = (CorruptedCube)cube;
+            CorruptedCubeOld corruptedCube = (CorruptedCubeOld)cube;
             corruptedCube.CancelCorruption();
         }
     }
