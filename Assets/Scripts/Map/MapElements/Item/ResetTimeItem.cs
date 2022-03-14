@@ -22,17 +22,18 @@ public class ResetTimeItem : Item {
     }
 
     public override void Destroy() {
+        float duree = dureeReduction / gm.player.GetTimeHackCurrentSlowmotionFactor();
         foreach(GameObject toReduceElement in toReduceElements) {
-            StartCoroutine(ReduceToZero(toReduceElement));
+            StartCoroutine(ReduceToZero(toReduceElement, duree));
         }
         vfx.SetFloat("SpawnRate", 0);
         Destroy(lightObject);
-        float dureeDestruction = Mathf.Max(vfx.GetVector2("Lifetime")[1], dureeReduction);
+        float dureeDestruction = Mathf.Max(vfx.GetVector2("Lifetime")[1], duree);
         Destroy(gameObject, dureeDestruction);
     }
 
-    protected IEnumerator ReduceToZero(GameObject go) {
-        Timer timer = new Timer(dureeReduction);
+    protected IEnumerator ReduceToZero(GameObject go, float duree) {
+        Timer timer = new Timer(duree);
         Vector3 startingScale = go.transform.localScale;
         while(!timer.IsOver()) {
             go.transform.localScale = startingScale * reduceCurve.Evaluate(timer.GetAvancement());
