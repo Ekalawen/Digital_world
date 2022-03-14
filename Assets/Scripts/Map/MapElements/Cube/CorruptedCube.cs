@@ -26,14 +26,12 @@ public class CorruptedCube : NonBlackCube {
     }
 
     public void StartCorruption() {
-        Debug.Log($"StartCorruption()");
         if (corruptionCoroutine == null) {
             corruptionCoroutine = StartCoroutine(CStartCorruption());
         }
     }
 
     protected IEnumerator CStartCorruption() {
-        Debug.Log($"CStartCorruption()");
         CorruptShader();
         float duration = MathTools.RandArround(dureeBeforeCorruption, 0.02f);
         yield return new WaitForSeconds(duration);
@@ -76,17 +74,14 @@ public class CorruptedCube : NonBlackCube {
         List<Cube> cubesInRangeOfCorruption = gm.map.GetCubesInSphere(transform.position, rangeCorruption);
         cubesInRangeOfCorruption.Remove(this);
         if(cubesInRangeOfCorruption.Count == 0) {
-            Debug.Log($"NoCubesFound !");
             return;
         }
         Vector3 playerPos = gm.player.transform.position;
         Cube closestCube = cubesInRangeOfCorruption.OrderBy(c => Vector3.SqrMagnitude(c.transform.position - playerPos)).First();
         CorruptedCube corruptedCube = gm.map.SwapCubeType(closestCube, CubeType.CORRUPTED)?.GetComponent<CorruptedCube>();
         if(corruptedCube == null) {
-            Debug.Log($"Get a null cube! :'(");
             return;
         }
-        Debug.Log($"Cube to start corruption name = {corruptedCube.name}");
         corruptedCube.StartCorruption();
     }
 

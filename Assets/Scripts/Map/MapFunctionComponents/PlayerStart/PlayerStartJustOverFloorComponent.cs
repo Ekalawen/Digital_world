@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,17 +9,24 @@ public class PlayerStartJustOverFloorComponent : PlayerStartComponent {
     public bool lookAtHeight = true;
     [ConditionalHide("lookAtHeight")]
     public float heightPercentage = 0.5f;
+    public bool useSpecialCubeType = false;
+    [ConditionalHide("useSpecialCubeType")]
+    public Cube.CubeType cubeType;
 
     public override Vector3 GetRawPlayerStartPosition() {
         int kmax = 1000;
         for(int k = 0; k < kmax; k++) {
             Vector3 pos = map.GetFreeRoundedLocation();
-            if (IsJustOverFloor(pos)) {
+            if (IsJustOverFloor(pos) && IsAboveGoodCubeType(pos)) {
                 return pos + 0.25f * Vector3.down;
             }
         }
         Debug.LogWarning("On a pas trouvé de position juste au desssu du sol !");
         return map.GetFreeRoundedLocation();
+    }
+
+    protected bool IsAboveGoodCubeType(Vector3 pos) {
+        return !useSpecialCubeType || map.GetCubeAt(pos + Vector3.down)?.type == cubeType;
     }
 
     public bool IsJustOverFloor(Vector3 pos) {
