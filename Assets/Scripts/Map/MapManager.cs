@@ -1769,7 +1769,9 @@ public class MapManager : MonoBehaviour {
         Transform parent = parentTransform ?? cube.transform.parent;
         DeleteCube(cube);
         Cube newCube = AddCube(position, newType, rotation, parent);
-        newCube.RegisterCubeToColorSources();
+        if (newCube != null) {
+            newCube.RegisterCubeToColorSources();
+        }
         return newCube;
     }
 

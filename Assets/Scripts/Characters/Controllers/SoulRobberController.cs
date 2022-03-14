@@ -105,4 +105,8 @@ public class SoulRobberController : EnnemiController {
     public override bool IsMoving() {
         return state != SoulRobberState.FIRERING;
     }
+
+    public override bool IsPlayerVisible() {
+        return !player.IsTimeHackOn() && base.IsPlayerVisible();
+    }
 }

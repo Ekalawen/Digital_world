@@ -110,24 +110,27 @@ public class SoulRobber : Ennemi {
         Vector3 teleportPosition = GetBestPositionToTeleport(teleportMode);
         controller.enabled = false;
         StopFirering();
-        StartTeleportAnimation(durationBeforeTeleportAway * 2);
+        float durationTeleportAway = durationBeforeTeleportAway / player.GetTimeHackCurrentSlowmotionFactor();
+        StartTeleportAnimation(durationTeleportAway * 2);
         if (teleportMode == TeleportMode.AWAY) {
             gm.soundManager.PlayCatchSoulRobberClip(transform.position);
-            Lightning lightning = Instantiate(teleportPrevisualizationLightningPrefab).GetComponent<Lightning>();
-            lightning.Initialize(transform.position, teleportPosition);
-            ShakeScreenOnTeleport();
+            if (!player.IsTimeHackOn()) {
+                Lightning lightning = Instantiate(teleportPrevisualizationLightningPrefab).GetComponent<Lightning>();
+                lightning.Initialize(transform.position, teleportPosition);
+                ShakeScreenOnTeleport();
+            }
             RegisterHaveCatchSoulRobber();
             gm.ennemiManager.onCatchSoulRobber.Invoke(this);
         }
 
-        yield return new WaitForSeconds(durationBeforeTeleportAway);
+        yield return new WaitForSeconds(durationTeleportAway);
         transform.position = teleportPosition;
         controller.enabled = true;
         if (teleportMode == TeleportMode.ON_PLAYER) {
             gm.soundManager.PlayCatchSoulRobberClip(teleportPosition);
         }
 
-        yield return new WaitForSeconds(durationBeforeTeleportAway);
+        yield return new WaitForSeconds(durationTeleportAway);
         teleportAwayCoroutine = null;
         if (soulRobberController.IsPlayerVisible() && GetState() == SoulRobberState.FIRERING) {
             StartFirering();

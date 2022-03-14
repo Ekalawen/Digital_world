@@ -36,8 +36,10 @@ public class CorruptedCube : NonBlackCube {
     }
 
     public void StartCorruption() {
-        if (corruptionCoroutine == null) {
-            corruptionCoroutine = StartCoroutine(CStartCorruption());
+        if (!gm.eventManager.IsGameOver() && !gm.player.IsInvincible()) {
+            if (corruptionCoroutine == null) {
+                corruptionCoroutine = StartCoroutine(CStartCorruption());
+            }
         }
     }
 
