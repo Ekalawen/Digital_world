@@ -122,6 +122,7 @@ public class EventManager : MonoBehaviour {
     public UnityEvent onJumpSuccess;
     [HideInInspector]
     public UnityEvent onJumpFailed;
+    protected CorruptedCubeManager corruptedCubeManager;
 
     public virtual void Initialize() {
         name = "EventManager";
@@ -1000,4 +1001,15 @@ public class EventManager : MonoBehaviour {
         }
     }
 
+    public CorruptedCubeManager GetCorruptedCubeManager() {
+        InitializeCorruptedCubeManager();
+        return corruptedCubeManager;
+    }
+
+    public void InitializeCorruptedCubeManager() {
+        if(corruptedCubeManager == null) {
+            corruptedCubeManager = gameObject.AddComponent<CorruptedCubeManager>();
+            corruptedCubeManager.Initialize();
+        }
+    }
 }

@@ -10,12 +10,15 @@ public class CorruptedCube : NonBlackCube {
     public int rangeCorruption = 2;
     public CubeType cubeDangerousGeneratedType = CubeType.VOID;
     public CubeType cubeHarmlessGeneratedType = CubeType.NORMAL;
+    public float cancelCorruptionDecomposeDuration = 1.0f;
+    public float cancelCorruptionProgressiveDelayByDistance = 0.1f;
 
     protected float sizeCorruptionSqr;
     protected Coroutine corruptionCoroutine;
 
     public override void Initialize() {
         base.Initialize();
+        gm.eventManager.InitializeCorruptedCubeManager();
         corruptionCoroutine = null;
         sizeCorruptionSqr = sizeCorruption * sizeCorruption;
         BothMaterialsSetFloat("_DurationCorruption", dureeBeforeCorruption);
@@ -43,12 +46,16 @@ public class CorruptedCube : NonBlackCube {
         BothMaterialsSetFloat("_TimeStartCorruption", Time.time);
     }
 
+    protected void UncorruptShader() {
+        BothMaterialsSetFloat("_IsCorrupted", 0.0f);
+    }
+
     protected void Corrupt() {
+        Destroy(); // Before to be able to replace it with a normal cube !
+
         CreateAllCorruptedCubes();
 
         CorruptAnotherCubeCloseToPlayer();
-
-        Destroy();
     }
 
     protected void CreateAllCorruptedCubes() {
@@ -67,6 +74,13 @@ public class CorruptedCube : NonBlackCube {
             bool isAccessibleType = (offset.x == 0 && offset.y == 0 || offset.x == 0 && offset.z == 0 || offset.y == 0 && offset.z == 0);
             CubeType type = isAccessibleType ? cubeHarmlessGeneratedType : cubeDangerousGeneratedType;
             Cube newCube = gm.map.AddCube(pos, type);
+            if (newCube != null) {
+                if (type == cubeDangerousGeneratedType) {
+                    gm.eventManager.GetCorruptedCubeManager().RegisterDangerousCubeOfCorruptedCube(newCube);
+                } else { // cubeHarmlessGeneratedType
+                    gm.eventManager.GetCorruptedCubeManager().RegisterHarmlessCubeOfCorruptedCube(newCube);
+                }
+            }
         }
     }
 
@@ -83,6 +97,7 @@ public class CorruptedCube : NonBlackCube {
             return;
         }
         corruptedCube.StartCorruption();
+        gm.eventManager.GetCorruptedCubeManager().RegisterCreatedCorruptedCube(corruptedCube);
     }
 
     public void CancelCorruption() {
@@ -90,5 +105,6 @@ public class CorruptedCube : NonBlackCube {
             StopCoroutine(corruptionCoroutine);
             corruptionCoroutine = null;
         }
+        UncorruptShader();
     }
 }

@@ -818,6 +818,10 @@ public class MapManager : MonoBehaviour {
         return allCubes;
     }
 
+    public List<T> GetAllCubesOfType<T>(Cube.CubeType type) where T : Cube {
+        return GetAllCubesOfType(type).Select(c => (T)c).ToList();
+    }
+
     public void PrintCubesNumbers() {
         int nbCubesRegular = 0;
         for (int i = 0; i <= tailleMap.x; i++) {
@@ -1744,6 +1748,15 @@ public class MapManager : MonoBehaviour {
             return null;
         Vector3 closestAlignedPos = alignedPos.OrderBy(p => Vector3.SqrMagnitude(center - p)).First();
         return GetCubeAt(closestAlignedPos);
+    }
+
+    public void SwapCubeTypeIn(Cube cube, Cube.CubeType newType, float delay, Transform parentTransform = null) {
+        StartCoroutine(CSwapCubeTypeIn(cube, newType, delay, parentTransform));
+    }
+
+    protected IEnumerator CSwapCubeTypeIn(Cube cube, Cube.CubeType newType, float delay, Transform parentTransform) {
+        yield return new WaitForSeconds(delay);
+        SwapCubeType(cube, newType,  parentTransform);
     }
 
     public Cube SwapCubeType(Cube cube, Cube.CubeType newType, Transform parentTransform = null) {
