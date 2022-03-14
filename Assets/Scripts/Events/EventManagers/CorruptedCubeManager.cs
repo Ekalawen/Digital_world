@@ -56,7 +56,7 @@ public class CorruptedCubeManager : MonoBehaviour {
     }
 
     protected void ReplaceByCorruptedCubeIn(Cube cube, Vector3 origin) {
-        if (cube == null) {
+        if (cube == null || cube.IsStored()) {
             return;
         }
         float timeToWait = GetTimeToWait(cube, origin);
@@ -68,7 +68,7 @@ public class CorruptedCubeManager : MonoBehaviour {
     }
 
     protected void DecomposeCubeIn(Cube cube, Vector3 origin) {
-        if(cube == null) {
+        if(cube == null || cube.IsStored()) {
             return;
         }
         float timeToWait = GetTimeToWait(cube, origin);

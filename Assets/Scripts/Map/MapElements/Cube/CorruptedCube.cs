@@ -1,17 +1,24 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 public class CorruptedCube : NonBlackCube {
 
+    [Header("Gameplay")]
     public float dureeBeforeCorruption = 2.5f;
     public int sizeCorruption = 1;
     public int rangeCorruption = 2;
     public CubeType cubeDangerousGeneratedType = CubeType.VOID;
     public CubeType cubeHarmlessGeneratedType = CubeType.NORMAL;
+
+    [Header("Visual")]
+    public float generatedDissolveTime = 0.5f;
     public float cancelCorruptionDecomposeDuration = 1.0f;
     public float cancelCorruptionProgressiveDelayByDistance = 0.1f;
+    public GameObject lightningPrefab;
+    public GeoData corruptionGeoData;
 
     protected float sizeCorruptionSqr;
     protected Coroutine corruptionCoroutine;
@@ -36,9 +43,16 @@ public class CorruptedCube : NonBlackCube {
 
     protected IEnumerator CStartCorruption() {
         CorruptShader();
+        AddCorruptionGeoData();
         float duration = MathTools.RandArround(dureeBeforeCorruption, 0.02f);
         yield return new WaitForSeconds(duration);
         Corrupt();
+    }
+
+    protected void AddCorruptionGeoData() {
+        GeoData newGeoData = new GeoData(corruptionGeoData);
+        newGeoData.SetTargetPosition(transform.position);
+        gm.player.geoSphere.AddGeoPoint(newGeoData);
     }
 
     protected void CorruptShader() {
@@ -75,6 +89,7 @@ public class CorruptedCube : NonBlackCube {
             CubeType type = isAccessibleType ? cubeHarmlessGeneratedType : cubeDangerousGeneratedType;
             Cube newCube = gm.map.AddCube(pos, type);
             if (newCube != null) {
+                newCube.StartDissolveEffect(generatedDissolveTime);
                 if (type == cubeDangerousGeneratedType) {
                     gm.eventManager.GetCorruptedCubeManager().RegisterDangerousCubeOfCorruptedCube(newCube);
                 } else { // cubeHarmlessGeneratedType
@@ -84,20 +99,29 @@ public class CorruptedCube : NonBlackCube {
         }
     }
 
-    protected void CorruptAnotherCubeCloseToPlayer() {
+    protected void CorruptAnotherCubeCloseToPlayer()
+    {
         List<Cube> cubesInRangeOfCorruption = gm.map.GetCubesInSphere(transform.position, rangeCorruption);
         cubesInRangeOfCorruption.Remove(this);
-        if(cubesInRangeOfCorruption.Count == 0) {
+        if (cubesInRangeOfCorruption.Count == 0)
+        {
             return;
         }
         Vector3 playerPos = gm.player.transform.position;
         Cube closestCube = cubesInRangeOfCorruption.OrderBy(c => Vector3.SqrMagnitude(c.transform.position - playerPos)).First();
+        CreateLightningToNextCorruptedCube(closestCube);
         CorruptedCube corruptedCube = gm.map.SwapCubeType(closestCube, CubeType.CORRUPTED)?.GetComponent<CorruptedCube>();
-        if(corruptedCube == null) {
+        if (corruptedCube == null)
+        {
             return;
         }
         corruptedCube.StartCorruption();
         gm.eventManager.GetCorruptedCubeManager().RegisterCreatedCorruptedCube(corruptedCube);
+    }
+
+    protected void CreateLightningToNextCorruptedCube(Cube cube) {
+        Lightning lightning = Instantiate(lightningPrefab).GetComponent<Lightning>();
+        lightning.Initialize(transform.position, cube.transform.position, Lightning.PivotType.EXTREMITY);
     }
 
     public void CancelCorruption() {

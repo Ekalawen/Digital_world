@@ -22,8 +22,16 @@ MonoBehaviour:
   rangeCorruption: 4
   cubeDangerousGeneratedType: 8
   cubeHarmlessGeneratedType: 0
+  generatedDissolveTime: 0.75
   cancelCorruptionDecomposeDuration: 0.5
   cancelCorruptionProgressiveDelayByDistance: 0.1
+  lightningPrefab: {fileID: 866659798568190786, guid: 754ea067422e3a443be85c6c063435f5,
+    type: 3}
+  corruptionGeoData:
+    color: {r: 32.292828, g: 1.0039207, b: 47.937256, a: 1}
+    type: 1
+    duration: 1
+    targetObject: {fileID: 684377913388869762}
 --- !u!1001 &679527250656915448
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -90,6 +98,12 @@ PrefabInstance:
 --- !u!1 &678787177979985118 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1586838666760998, guid: 166cc3691555747479ad6b1623980374,
+    type: 3}
+  m_PrefabInstance: {fileID: 679527250656915448}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &684377913388869762 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4869158071224186, guid: 166cc3691555747479ad6b1623980374,
     type: 3}
   m_PrefabInstance: {fileID: 679527250656915448}
   m_PrefabAsset: {fileID: 0}
