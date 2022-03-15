@@ -1,3 +1,7 @@
+######################################################################
+ARC 1
+######################################################################
+
 2_FirstInfiniteRunner
 Plus vous irez loin, plus vous débloquerez d'indices !
 Une fois que vous aurez franchi le 10ième Bloc, les Cubes commenceront à se détruire derrière vous !
@@ -71,6 +75,10 @@ Vous pouvez esquiver un Jump() en appuyant sur SHIFT au bon moment si vous êtes
 Si vous appuyez sur ESPACE et SHIFT en même temps, vous êtes sûr à 100% d'esquiver le Jump() !
 Dash15 a un long cooldown d'utilisation, utilisez-le au bon moment !
 Vous pouvez grimper dans les coins de dos !
+
+######################################################################
+ARC 2
+######################################################################
 
 11_ParkourTraining
 Les Datas transparentes ne peuvent pas être capturés. Pour le moment.
@@ -154,6 +162,10 @@ PathFinder() active également la Géosphère vers la Data la plus proche.
 Votre Dash15 a été amélioré en Dash75 avec 7.5s de cooldown !
 La prochaine Data accessible sera la plus éloignée de la Data d'avant et sera pointé par un éclair bleu et la Géosphère.
 Les niveaux sont optimisés pour que chaque chemin ait toujours un début et une fin : vous pouvez rentrer par n'importe où, vous avez la certitude de pouvoir ressortir de l'autre côté !
+
+######################################################################
+ARC 3
+######################################################################
 
 19_BounceHighway
 Pour sauter sur un Bouncer, maintenez ESPACE avant l'impact avec le Bouncer.
@@ -261,15 +273,41 @@ Chaque Generator possède sa propre durée de hack. Certains sont plus courts qu
 Le FirstBoss crée toujours les Generators dans le même ordre.
 L'accomplissement n'a pas d'égal si ce n'est la persévérance qui y a mené.
 
-33_GravityRoad
-Touchez les GravityCubes pour changer la gravité !
-La nouvelle gravité vous attirera toujours vers le GravityCube.
-Vous ne pouvez pas déclencher un GravityCube en le touchant uniquement par ses arêtes.
-Les transitions de gravité durent 0.4s. Mais vous bougez dans la nouvelle gravité dès le début de la transition !
-Servez-vous de la gravité et prenez des raccourcis pour esquiver des Blocks entiers !
-Tous les Blocks ont été désignés pour être intéressants et faisables quelle que soit la gravité !
+######################################################################
+ARC 4 : Left
+######################################################################
 
-34_DeadlyPurges
+33_InfiniteSpeed
+Attraper un Nanoboost double votre vitesse pendant 1.5 secondes avant de décroître en 2.5 secondes.
+Un Nanoboost augmente uniquement votre vitesse horizontale et ne vous fera pas sauter plus haut.
+Les boosts de vitesse des Nanoboosts s'ajoutent linéairement les uns aux autres.
+Prendre trop de Nanoboosts à la suite risque de vous faire perdre le contrôle, régulez vous-même votre vitesse !
+Faites des petits sauts lorsque vous allez plus vite et regardez loin devant pour anticiper !
+
+34_SoulRobberTutorial
+Les Voleurs d'Âme drainent graduellement votre vitesse jusqu'à vous immobiliser, avant de passer en mode Sursis.
+En mode Sursis, vous disposez de 10 secondes pour attraper n'importe quel Voleur d'Âme. Ou mourir.
+Le rayon de ralentissement des Voleurs d'Âme n'influe pas sur la hauteur de vos sauts et votre Dash.
+Lorsque vous touchez un Voleur d'Âme, vous annulez son rayon pendant 3 secondes et le faites se téléporter au loin.
+Lorsqu'un Voleur d'Âme ne vous a pas touché pendant une dizaine de secondes, celui-ci se téléportera proche de vous.
+Si vous sortez de la ligne de vue ou de la portée d'un Voleur d'Âme, vous réinitialiserez la puissance de son rayon.
+
+35_SoulRobberArena
+L'épaisseur du rayon indique depuis combien de temps le Voleur d'Âme vous vise, et donc combien de vitesse il vous enlève.
+En mode Sursis, les Voleurs d'Âme vont 12.5% plus vite que vous, il vous faudra donc les coincer ou utiliser un Dash pour les atteindre.
+Lorsque vous sortez du mode Sursis, votre vitesse double pendant 1.5 secondes avant de décroître en 2.5 secondes.
+La Géosphère vous indique à la fois les rayons des Voleurs d'Âme mais aussi leurs positions en mode Sursis.
+Les Nanoboost des niveaux réguliers sont 2 fois moins puissants mais durent 2 fois plus longtemps !
+Les Nanoboosts vous permettent d'être plus résistant aux Voleurs d'Âme et de les attraper plus facilement en mode Sursis !
+
+36_ImpossibleLevel
+Ce niveau semble impossible.
+Impossible, n'est-ce pas ?
+N'oublie pas. Tu es un.e H@cker.
+Et si on brute-forçait ce niveau directement dans les Datas Hackées() ?
+<color=#MORGENSOUL_COLOR><b>[Morgensoul*]</b></color>: Vraiment ? Je l'ai fini du premier coup ce niveau !
+
+37_DeadlyPurges
 Les Purges() sont mortelles et peuvent venir des 6 directions !
 Cachez-vous derrière un autre Cube pour éviter une Purge().
 Les éclairs de prévisualisation vous montrent exactement où passera chacun des Cubes de la Mort de la Purge().
@@ -278,56 +316,39 @@ Les éclairs de prévisualisation arrivent 2.5 secondes avant la Purge(), qui se
 Il est aussi possible d'éviter une Purge() en allant aux extrémités de la carte.
 La Géosphère vous indique d'où viendra chaque Purge().
 
-35_InfiniteSpeed
-Attraper un Nanoboost double votre vitesse pendant 1.5 secondes avant de décroître en 2.5 secondes.
-Un Nanoboost augmente uniquement votre vitesse horizontale et ne vous fera pas sauter plus haut.
-Les boosts de vitesse des Nanoboosts s'ajoutent linéairement les uns aux autres.
-Prendre trop de Nanoboosts à la suite risque de vous faire perdre le contrôle, régulez vous-même votre vitesse !
-Faites des petits sauts lorsque vous allez plus vite et regardez loin devant pour anticiper !
+38_VoidConundrum
+Le Hack Temporel vous permet d'arrêter le temps, de voler et d'être invincible pendant une courte période.
+Lors du Hack Temporel, utilisez ESPACE et SHIFT pour monter et descendre en volant.
+Le Hack Temporel recharge entièrement vos autres pouvoirs. Mais seul le Pathfinder() est utilisable pendant l'arrêt temporel.
+Si vous sortez du Firewall(), attendez 12s, ou appuyez à nouveau sur E, vous arrêterez le Hack Temporel.
+Les éclairs de prévisualisation vous montrent exactement où passera chacun des Cubes du Vide.
+Les Cubes du Vide ne peuvent pas apparaître proches de vous ou sur vous.
 
-36_SoulRobberTutorial
-Les Voleurs d'Âme drainent graduellement votre vitesse jusqu'à vous immobiliser, avant de passer en mode Sursis.
-En mode Sursis, vous disposez de 10 secondes pour attraper n'importe quel Voleur d'Âme. Ou mourir.
-Le rayon de ralentissement des Voleurs d'Âme n'influe pas sur la hauteur de vos sauts et votre Dash.
-Lorsque vous touchez un Voleur d'Âme, vous annulez son rayon pendant 3 secondes et le faites se téléporter au loin.
-Lorsqu'un Voleur d'Âme ne vous a pas touché pendant une dizaine de secondes, celui-ci se téléportera proche de vous.
-Si vous sortez de la ligne de vue ou de la portée d'un Voleur d'Âme, vous réinitialiserez la puissance de son rayon.
-
-37_SoulRobberArena
-L'épaisseur du rayon indique depuis combien de temps le Voleur d'Âme vous vise, et donc combien de vitesse il vous enlève.
-En mode Sursis, les Voleurs d'Âme vont 12.5% plus vite que vous, il vous faudra donc les coincer ou utiliser un Dash pour les atteindre.
-Lorsque vous sortez du mode Sursis, votre vitesse double pendant 1.5 secondes avant de décroître en 2.5 secondes.
-La Géosphère vous indique à la fois les rayons des Voleurs d'Âme mais aussi leurs positions en mode Sursis.
-Les Nanoboost des niveaux réguliers sont 2 fois moins puissants mais durent 2 fois plus longtemps !
-Les Nanoboosts vous permettent d'être plus résistant aux Voleurs d'Âme et de les attraper plus facilement en mode Sursis !
-
-38_DataProliferation
+39_DataProliferation
 Dans ce niveau les Générators génèrent des Datas, hackez-les pour stopper la génération et finir le niveau !
 Vous avez peu de temps, profitez d'être en train de hacker un Générator pour récupérer autant de Datas que possible.
 Le Hack Temporel permet de hacker les Générators plus facilement tout en récupérant des Datas.
 Dans ce niveau, chaque Data vous donne 1.85 secondes, ce qui correspond à peu près au temps qu'il vous faudra pour attraper la prochaine Data.
 Les Super Bouncers se distinguent des Bouncers grâce à leur contour bleu. Ils vous poussent de 3 Cubes de plus.
 
-39_SondesSublimation
-Votre nouveau pouvoir, le PowerDash, permet d'éjecter les Sondes et d'exploser les Cubes Brisables au contact.
-Le PowerDash gagne une charge à chaque impact avec une Sonde, et à chaque premier impact avec un Cube Brisable.
-Les impacts de PowerDash peuvent vous permettre de stocker des charges au-delà de la limite maximum de 3 !
-Les SondesV3, de couleur rouge, sont 100% plus rapides que les SondesV2. Sois 10% plus rapide que vous.
-Les SondesV3 sont affichées sur la Géosphère lorsqu'elles sont à moins de 3.5 Cubes de vous.
-Les SondesV3 sont 2 fois plus rapides lorsqu'elles sont à votre recherche.
+40_TargetedCorruption
+Les Cubes Corrompus s'entourent de Cubes du Vide après 2.5s et corrompent un autre Cube quand vous les touchez !
+Les Cubes Corrompus peuvent se corrompre en chaîne à l'infini ! Tout en se rapprochant de vous.
+Attraper une Data interrompt la corruption, détruisant les Cubes du Vide créés, et transformant les autres en de nouveaux Cubes Corrompus.
+Dans ce niveau vous commencez juste au-dessus d'un Cube Corrompu. Oups !
+Utiliser le Hack Temporel annule le rayon de ralentissement des Voleurs d'Âme !
 
-40_BipartiteWorld
-Votre nouveau pouvoir, le GripDash, permet de dasher jusqu'à un cube sélectionné sans limite de distance !
-Clic droit pour viser avec le GripDash, ce qui ralentit le temps, puis relâchez pour dasher !
-Le GripDash ne se recharge pas automatiquement, mais il gagne une charge à chaque impact du PowerDash avec un Cube Brisable ou un ennemi.
-Le PowerDash permet de détruire les Cubes du Vide sans perdre de temps. Et de recharger le GripDash.
-Lors du mode Purification, les Datas seront enfermées dans des Cubes Brisables. Utilisez le PowerDash pour les libérer !
+######################################################################
+ARC 4 : Right
+######################################################################
 
-41_Synchronium
-Le GripDash vous fait aller directement au-dessus des Cubes lorsque c'est possible. La flèche bleue vous l'indique.
-Utilisez le PowerDash juste après le GripDash pour réinitialiser ce dernier immédiatement en visant un Cube Brisable.
-Enchaînez les GripDash pour toujours ralentir le temps et gagner en efficacité.
-La prochaine Data accessible sera la plus proche de la Data d'avant et sera pointée par un éclair jaune et la Géosphère.
+41_GravityRoad
+Touchez les GravityCubes pour changer la gravité !
+La nouvelle gravité vous attirera toujours vers le GravityCube.
+Vous ne pouvez pas déclencher un GravityCube en le touchant uniquement par ses arêtes.
+Les transitions de gravité durent 0.4s. Mais vous bougez dans la nouvelle gravité dès le début de la transition !
+Servez-vous de la gravité et prenez des raccourcis pour esquiver des Blocks entiers !
+Tous les Blocks ont été désignés pour être intéressants et faisables quelle que soit la gravité !
 
 42_GravitySingularity
 Dashez plusieurs fois pour passer au milieu des Cubes du Vide sans les toucher et attraper les Datas !
@@ -336,36 +357,42 @@ Certaines Datas ne sont accessibles que grâce à un Super Bouncer lorsque la gr
 Les Super Bouncers se distinguent des Bouncers grâce à leur contour bleu. Ils vous poussent 3 Cubes plus loin.
 Faites attention aux Générateurs de SondesV2 qui apparaîtront au milieu de la carte lorsque vous attraperez la 4ième et la 8ième Data !
 
-43_WanderingMaze
+43_SondesSublimation
+Votre nouveau pouvoir, le PowerDash, permet d'éjecter les Sondes et d'exploser les Cubes Brisables au contact.
+Le PowerDash gagne une charge à chaque impact avec une Sonde, et à chaque premier impact avec un Cube Brisable.
+Les impacts de PowerDash peuvent vous permettre de stocker des charges au-delà de la limite maximum de 3 !
+Les SondesV3, de couleur rouge, sont 100% plus rapides que les SondesV2. Sois 10% plus rapide que vous.
+Les SondesV3 sont affichées sur la Géosphère lorsqu'elles sont à moins de 3.5 Cubes de vous.
+Les SondesV3 sont 2 fois plus rapides lorsqu'elles sont à votre recherche.
+
+44_BipartiteWorld
+Votre nouveau pouvoir, le GripDash, permet de dasher jusqu'à un cube sélectionné sans limite de distance !
+Clic droit pour viser avec le GripDash, ce qui ralentit le temps, puis relâchez pour dasher !
+Le GripDash ne se recharge pas automatiquement, mais il gagne une charge à chaque impact du PowerDash avec un Cube Brisable ou un ennemi.
+Le PowerDash permet de détruire les Cubes du Vide sans perdre de temps. Et de recharger le GripDash.
+Lors du mode Purification, les Datas seront enfermées dans des Cubes Brisables. Utilisez le PowerDash pour les libérer !
+
+45_Synchronium
+Le GripDash vous fait aller directement au-dessus des Cubes lorsque c'est possible. La flèche bleue vous l'indique.
+Utilisez le PowerDash juste après le GripDash pour réinitialiser ce dernier immédiatement en visant un Cube Brisable.
+Enchaînez les GripDash pour toujours ralentir le temps et gagner en efficacité.
+La prochaine Data accessible sera la plus proche de la Data d'avant et sera pointée par un éclair jaune et la Géosphère.
+
+46_WanderingMaze
 Les RainbowDatas doivent être attrapées 5 fois pour véritablement être capturées.
 La couleur des RainbowDatas change progressivement pour vous indiquer combien de fois il vous reste à les attraper. Bleu, violet, rouge, orange et jaune.
 Les RainbowDatas fuient autant que possible devant vous, en évitant de trop changer d'altitude et de sortir du niveau.
 La prochaine position d'une RainbowData est pointée par un éclair de visualisation et la Géosphère.
 Vous pouvez PowerDasher dans les Cubes du Vide pour les activer sans perdre de temps.
 
-44_ImpossibleLevel
-Ce niveau semble impossible.
-Impossible, n'est-ce pas ?
-N'oublie pas. Tu es un.e H@cker.
-Et si on brute-forçait ce niveau directement dans les Datas Hackées() ?
-<color=#MORGENSOUL_COLOR><b>[Morgensoul*]</b></color>: Vraiment ? Je l'ai fini du premier coup ce niveau !
-
-45_VoidConundrum
-Le Hack Temporel vous permet d'arrêter le temps, de voler et d'être invincible pendant une courte période.
-Lors du Hack Temporel, utilisez ESPACE et SHIFT pour monter et descendre en volant.
-Le Hack Temporel recharge entièrement vos autres pouvoirs. Mais seul le Pathfinder() est utilisable pendant l'arrêt temporel.
-Si vous sortez du Firewall(), attendez 12s, ou appuyez à nouveau sur E, vous arrêterez le Hack Temporel.
-Les éclairs de prévisualisation vous montrent exactement où passera chacun des Cubes du Vide.
-Les Cubes du Vide ne peuvent pas apparaître proches de vous ou sur vous.
-
-46_WorldBuilder
+47_WorldBuilder
 Les BuilderCubes créent des Cubes autour d'eux de façon à se connecter intelligemment aux autres cubes quand vous les touchez.
 Les BuilderCubes se connectent toujours entre eux grâce à des passerelles s'ils sont assez proches.
 Le seuil pour être éjecté du niveau a été augmenté jusqu'à 25 Cubes pour que vous ayez le temps de remonter grâce au GripDash.
 Utilisez les Cubes Brisables et les ennemis pour réinitialiser votre GripDash.
 Votre PowerDash peut pousser les Tracers. Cependant il n'interrompt pas leur Blast.
 
-47_CompositeCrossroad
+48_CompositeCrossroad
 Dans ce niveau, les BuilderCubes se connecteront toujours de la même manière.
 Les BuilderCubes créent les Cubes instantanément. Vous pouvez directement marcher ou glisser dessus.
 Les LinkyBuilderCubes connectés ensemble déclenchent tous la même chose.
