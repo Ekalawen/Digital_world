@@ -28,15 +28,18 @@ public class CorruptedCube : NonBlackCube {
         gm.eventManager.InitializeCorruptedCubeManager();
         corruptionCoroutine = null;
         sizeCorruptionSqr = sizeCorruption * sizeCorruption;
+        UncorruptShader();
         BothMaterialsSetFloat("_DurationCorruption", dureeBeforeCorruption);
     }
 
     public override void InteractWithPlayer() {
-        StartCorruption();
+        if (!gm.player.IsInvincible()) {
+            StartCorruption();
+        }
     }
 
     public void StartCorruption() {
-        if (!gm.eventManager.IsGameOver() && !gm.player.IsInvincible()) {
+        if (!gm.eventManager.IsGameOver()) {
             if (corruptionCoroutine == null) {
                 corruptionCoroutine = StartCoroutine(CStartCorruption());
             }
