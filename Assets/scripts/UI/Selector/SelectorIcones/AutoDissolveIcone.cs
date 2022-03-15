@@ -9,6 +9,7 @@ public class AutoDissolveIcone : MonoBehaviour {
     public float dissolveTime = 1.0f;
     public float periode = 2.0f;
     public float offset = 0.0f;
+    public float invisibleDuration = 0.0f;
     public GameObject go;
 
     protected Material material;
@@ -23,9 +24,14 @@ public class AutoDissolveIcone : MonoBehaviour {
         while (true) {
             Dissolve();
             yield return new WaitForSeconds(periode);
+            SetInvisible();
+            yield return new WaitForSeconds(invisibleDuration);
         }
     }
 
+    protected void SetInvisible() {
+        material.SetFloat("_DissolveStartingTime", Time.time + invisibleDuration);
+    }
 
     public void Dissolve() {
         material.SetFloat("_DissolveTime", dissolveTime);
