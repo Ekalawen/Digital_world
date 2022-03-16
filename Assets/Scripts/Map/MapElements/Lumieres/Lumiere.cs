@@ -171,7 +171,8 @@ public class Lumiere : MonoBehaviour {
 
     protected void StartAnimation() {
         lumiereLowVoronoiSphere.transform.localScale = Vector3.zero;
-        float duration = dureeConstructionLowShrinkVoronoiSphere / gm.player.GetTimeHackCurrentSlowmotionFactor();
+        float slowmotionFactor = gm.player?.GetTimeHackCurrentSlowmotionFactor() ?? 1;
+        float duration = dureeConstructionLowShrinkVoronoiSphere / slowmotionFactor;
         LeanTween.scale(lumiereLowVoronoiSphere.gameObject, Vector3.one, duration);
     }
 
