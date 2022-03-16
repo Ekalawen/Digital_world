@@ -19,10 +19,42 @@ MonoBehaviour:
       m_KeyId: 12192030720
       m_Key: 
     m_FallbackState: 0
-  conseils: []
+  conseils:
+  - m_TableReference:
+      m_TableCollectionName: GUID:37fdd8131e27346459ae0af7749749d0
+    m_TableEntryReference:
+      m_KeyId: 150617816380448768
+      m_Key: 
+    m_FallbackState: 0
+  - m_TableReference:
+      m_TableCollectionName: GUID:37fdd8131e27346459ae0af7749749d0
+    m_TableEntryReference:
+      m_KeyId: 150617837876256768
+      m_Key: 
+    m_FallbackState: 0
+  - m_TableReference:
+      m_TableCollectionName: GUID:37fdd8131e27346459ae0af7749749d0
+    m_TableEntryReference:
+      m_KeyId: 150617858973605888
+      m_Key: 
+    m_FallbackState: 0
+  - m_TableReference:
+      m_TableCollectionName: GUID:37fdd8131e27346459ae0af7749749d0
+    m_TableEntryReference:
+      m_KeyId: 150617863646060544
+      m_Key: 
+    m_FallbackState: 0
   timedMessages: []
   strings: {fileID: 11400000, guid: 0a6d0e12424a4c140a354c6339181603, type: 2}
   customInitMessage:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+  dontDisplayAnythingOnInit: 0
+  customWinMessage:
     m_TableReference:
       m_TableCollectionName: 
     m_TableEntryReference:
@@ -65,6 +97,14 @@ MonoBehaviour:
   pouvoirDisplayE: {fileID: 7617377415209324741}
   pouvoirDisplayLeftClick: {fileID: 875739543191243574}
   pouvoirDisplayRightClick: {fileID: 1533732514805271565}
+  pouvoirZoomInScale: 5
+  pouvoirZoomInDuration: 1.5
+  pouvoirZoomInCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   consoleBackground: {fileID: 7983208810592762137}
   importantText: {fileID: 2505590344002202135}
   escapeButton: {fileID: 4174769966643079334}
@@ -72,6 +112,8 @@ MonoBehaviour:
   pauseMenu: {fileID: 1033762792040086578}
   dataCountDisplayer: {fileID: 2458413335496490249}
   frameRateManager: {fileID: 8533973310053069829}
+  deathAstuce: {fileID: 0}
+  selectorManagerPrefab: {fileID: 0}
   gm: {fileID: 0}
   map: {fileID: 0}
   player: {fileID: 0}
