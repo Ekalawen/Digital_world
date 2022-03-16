@@ -23,4 +23,8 @@ public class ConsoleTutoriel : Console {
     public override void DisplayOrNotConsole() {
         consoleBackground.SetActive(true);
     }
+
+    protected override void InitializeDataCountText() {
+        // On ne le fait pas ! :)
+    }
 }

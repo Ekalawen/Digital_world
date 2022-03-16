@@ -42,6 +42,9 @@ public class CounterDisplayer : MonoBehaviour {
     }
 
     public void AddVolatileText(string message, Color color) {
+        if(!isActiveAndEnabled) {
+            return;
+        }
         TMP_Text t = Instantiate(movingTextPrefab, textContainer).GetComponent<TMP_Text>();
         t.gameObject.SetActive(true);
         t.text = message;

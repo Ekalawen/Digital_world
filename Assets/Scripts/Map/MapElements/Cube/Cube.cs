@@ -104,6 +104,9 @@ public class Cube : MonoBehaviour {
     }
 
     protected void SetOpaqueAfterDissolve(float dissolveTime, float playerProximityCoef) {
+        if(!isActiveAndEnabled) { // For hidden cube platform in tutorial :)
+            return;
+        }
         float dissolveThickness = 0; // materialTransparent.GetFloat("_DissolveThickness"); // No need en fait, et puis ça évite d'avoir le problème du start ...
         float dissolveStartingTime = Time.timeSinceLevelLoad;
         float distanceCubePlayer = Vector3.Distance(gm.player.transform.position, transform.position);

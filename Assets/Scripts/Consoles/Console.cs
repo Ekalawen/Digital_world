@@ -155,7 +155,7 @@ public class Console : MonoBehaviour {
         InitializeDataCountText();
     }
 
-    private void InitializeDataCountText() {
+    protected virtual void InitializeDataCountText() {
         if (gm.goalManager.GetGoalType() == GoalManager.GoalType.DATA) {
             SetDataCountText(Lumiere.GetCurrentDataCount());
         } else if (gm.goalManager.GetGoalType() == GoalManager.GoalType.VICTORY) {
