@@ -131,6 +131,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 0}
+  ennemiController: {fileID: 0}
   speedMultiplierController: {fileID: 0}
   timeMalusOnHit: 10
   timeBetweenTwoHits: 0
@@ -151,6 +152,7 @@ MonoBehaviour:
     type: 1
     timeVariation: 0.03
     totalRealDuration: 0.3
+    useRealTimeDuration: 0
     inDurationPercentage: 0
     outDurationPercentage: 1
     inCurve:
@@ -217,7 +219,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  blastLoadSoundOffset: 0.7
+  blastLoadSoundOffset: 1.5
   loadAndBlastVfx: {fileID: 1098864956444570536}
   loadingGeoData:
     color: {r: 0.5019608, g: 23.968628, b: 23.968628, a: 1}
