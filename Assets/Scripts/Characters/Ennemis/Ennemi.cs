@@ -131,8 +131,9 @@ public abstract class Ennemi : Character {
     }
 
     public virtual void PlayHitSound() {
-        if(!gm.eventManager.IsGameOver())
+        if (!gm.eventManager.IsGameOver()) {
             gm.soundManager.PlayHitClip(transform.position);
+        }
     }
 
     protected abstract void HitPlayerSpecific();
