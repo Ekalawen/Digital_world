@@ -29,6 +29,7 @@ public class SelectorManager : MonoBehaviour {
     public Transform collidersFolder;
 
     public TexteExplicatif popup;
+    public TexteExplicatif popupArchives;
     public SelectorManagerStrings strings;
     public ReplacementStrings archivesReplacementStrings;
     public ReplacementStrings docReplacementStrings;
@@ -495,7 +496,7 @@ public class SelectorManager : MonoBehaviour {
     }
 
     public bool PopupIsEnabled() {
-        return popup.content.activeInHierarchy;
+        return popup.content.activeInHierarchy || popupArchives.content.activeInHierarchy;
     }
 
     public bool IsLevelAccessible(SelectorLevel selectorLevel) {
@@ -617,6 +618,18 @@ public class SelectorManager : MonoBehaviour {
             foreach(GameObject point in path.intermediatePoints) {
                 point.transform.position = MathTools.VecMul(point.transform.position, compressionFactor);
             }
+        }
+    }
+
+    public void PlayArchivesClip() {
+        if (hasLevelOpen) {
+            UISoundManager.Instance.UnPauseArchivesClip();
+        }
+    }
+
+    public void PauseArchivesClip() {
+        if (hasLevelOpen) {
+            UISoundManager.Instance.PauseArchivesClip();
         }
     }
 }

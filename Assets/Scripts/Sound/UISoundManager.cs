@@ -210,6 +210,7 @@ public class UISoundManager : MonoBehaviour {
     public void PlayArchivesClip(AudioClipParams clip) {
         StopArchivesClip();
         archivesAudioSource = PlayClipsOnSource(clip);
+        usedSources.Remove(archivesAudioSource);
         AdjustArchivesMusicVolume(clip);
         DecreaseMusicVolume();
 
@@ -241,6 +242,7 @@ public class UISoundManager : MonoBehaviour {
     protected IEnumerator CStopPlayArchivesIn(float duration) {
         yield return new WaitForSeconds(duration);
         StopArchivesClip();
+        SelectorManager.Instance.popupArchives.GetComponentInChildren<PausePlayArchivesClipButtonsInitializer>().SetPlayButtonVisible(); // We want this to only trigger when we reach the end of the clip, not when we stop it manually :)
         stopArchivesCoroutine = null;
     }
 
@@ -250,6 +252,10 @@ public class UISoundManager : MonoBehaviour {
             archivesAudioSource = null;
             IncreaseMusicVolume();
         }
+        StopStopArchivesCoroutine();
+    }
+
+    protected void StopStopArchivesCoroutine() {
         if (stopArchivesCoroutine != null) {
             StopCoroutine(stopArchivesCoroutine);
             stopArchivesCoroutine = null;
@@ -263,6 +269,26 @@ public class UISoundManager : MonoBehaviour {
     public void SetCurrentMusicVolume(float newVolume) {
         if (musicAudioSource != null) {
             musicAudioSource.volume = newVolume;
+        }
+    }
+
+    public void PauseArchivesClip() {
+        if (archivesAudioSource != null) {
+            archivesAudioSource.Pause();
+            IncreaseMusicVolume();
+            StopStopArchivesCoroutine();
+        }
+    }
+
+    public void UnPauseArchivesClip() {
+        if (archivesAudioSource != null) {
+            archivesAudioSource.UnPause();
+            DecreaseMusicVolume();
+            float stopIn = archivesAudioSource.clip.length - archivesAudioSource.time;
+            StopPlayArchivesIn(stopIn);
+        } else {
+            AudioClipParams clip = SelectorManager.Instance.GetCurrentLevel().menuLevel.archivesClip;
+            PlayArchivesClip(clip);
         }
     }
 }

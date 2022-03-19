@@ -166,14 +166,14 @@ public class MenuLevel : MonoBehaviour {
         AsyncOperationHandle<TextAsset> textAssetHandle = archivesTextAsset.LoadAssetAsync();
         yield return textAssetHandle;
         TextAsset textAsset = textAssetHandle.Result;
-        selectorManager.popup.Initialize(useTextAsset: true, textAsset: textAsset);
+        selectorManager.popupArchives.Initialize(useTextAsset: true, textAsset: textAsset);
         foreach (Tuple<string, string> replacement in UIHelper.GetReplacementList(selectorManager.archivesReplacementStrings))
         {
-            selectorManager.popup.AddReplacement(replacement.Item1, replacement.Item2);
+            selectorManager.popupArchives.AddReplacement(replacement.Item1, replacement.Item2);
         }
-        selectorManager.popup.titleTextTarget.text = selectorManager.strings.archivesTitle.GetLocalizedString().Result;
-        selectorManager.popup.Run();
-        StartArchivesClip(selectorManager.popup);
+        selectorManager.popupArchives.titleTextTarget.text = selectorManager.strings.archivesTitle.GetLocalizedString().Result;
+        selectorManager.popupArchives.Run();
+        StartArchivesClip(selectorManager.popupArchives);
     }
 
     protected void StartArchivesClip(TexteExplicatif popup) {
