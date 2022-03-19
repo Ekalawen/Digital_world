@@ -15,7 +15,14 @@ public class UISoundManager : MonoBehaviour {
     protected List<AudioSource> usedSources;
     protected float musicVolume = 1.0f;
     protected float soundVolume = 1.0f;
+    protected float archivesMultiplicativVolume = 10.0f;
+    protected float archivesMinRelativVolume = 0.1f;
+    protected float musicWhenArchivesMultiplicativVolume = 0.1f;
+    protected float musicWhenArchivesVolumeTransitionDuration = 1.0f;
     protected AudioSource musicAudioSource;
+    protected AudioSource archivesAudioSource;
+    protected Coroutine stopArchivesCoroutine = null;
+    protected Fluctuator musicVolumeFluctuator;
 
     void Awake() {
         if (!_instance) { _instance = this; }
@@ -28,6 +35,7 @@ public class UISoundManager : MonoBehaviour {
         globalSoundsFolder.parent = transform;
         availableSources = new List<AudioSource>();
         usedSources = new List<AudioSource>();
+        musicVolumeFluctuator = new Fluctuator(this, GetCurrentMusicVolume, SetCurrentMusicVolume);
         GetAudioVolumes();
         DontDestroyOnLoad(this);
         StartCoroutine(CInitialize());
@@ -87,11 +95,10 @@ public class UISoundManager : MonoBehaviour {
 
         // On set le volume
         if(audioClipParams.bIsMusic) {
-            source.volume = musicVolume;
+            source.volume = GetMusicVolumeForClipParams(audioClipParams);
         } else {
-            source.volume = soundVolume;
+            source.volume = GetSoundVolumeForClipParams(audioClipParams);
         }
-        source.volume *= AudioClipParams.BASE_VOLUME * audioClipParams.relativeVolume;
 
         // On positionne la source
         source.transform.position = pos;
@@ -129,6 +136,14 @@ public class UISoundManager : MonoBehaviour {
         source.Play();
 
         return source;
+    }
+
+    protected float GetMusicVolumeForClipParams(AudioClipParams clipParams) {
+        return AudioClipParams.BASE_VOLUME * musicVolume * clipParams.relativeVolume;
+    }
+
+    protected float GetSoundVolumeForClipParams(AudioClipParams clipParams) {
+        return AudioClipParams.BASE_VOLUME * soundVolume * clipParams.relativeVolume;
     }
 
     public AudioSource GetAudioSourceFor(AnimationClip clip) {
@@ -189,6 +204,65 @@ public class UISoundManager : MonoBehaviour {
         if (musicAudioSource != null) {
             float musicSourceRelativeVolume = musicAudioSource.GetComponent<AudioClipParamsHolder>().clipParams.relativeVolume;
             musicAudioSource.volume = musicSourceRelativeVolume * musicVolume * AudioClipParams.BASE_VOLUME;
+        }
+    }
+
+    public void PlayArchivesClip(AudioClipParams clip) {
+        StopArchivesClip();
+        archivesAudioSource = PlayClipsOnSource(clip);
+        AdjustArchivesMusicVolume(clip);
+        DecreaseMusicVolume();
+
+        StopPlayArchivesIn(archivesAudioSource.clip.length);
+    }
+
+    protected void DecreaseMusicVolume() {
+        float newMusicVolume = GetMusicVolumeForClipParams(musicAudioSource.GetComponent<AudioClipParamsHolder>().clipParams) * musicWhenArchivesMultiplicativVolume;
+        musicVolumeFluctuator.GoTo(newMusicVolume, musicWhenArchivesVolumeTransitionDuration);
+    }
+
+    protected void IncreaseMusicVolume() {
+        float newMusicVolume = GetMusicVolumeForClipParams(musicAudioSource.GetComponent<AudioClipParamsHolder>().clipParams);
+        musicVolumeFluctuator.GoTo(newMusicVolume, musicWhenArchivesVolumeTransitionDuration);
+    }
+
+    protected void AdjustArchivesMusicVolume(AudioClipParams clip) {
+        float archivesMinVolume = archivesMinRelativVolume * AudioClipParams.BASE_VOLUME * clip.relativeVolume;
+        archivesAudioSource.volume = Mathf.Max(archivesAudioSource.volume, archivesMinVolume);
+        archivesAudioSource.volume *= archivesMultiplicativVolume;
+    }
+
+    protected void StopPlayArchivesIn(float duration) {
+        if (stopArchivesCoroutine == null) {
+            stopArchivesCoroutine = StartCoroutine(CStopPlayArchivesIn(duration));
+        }
+    }
+
+    protected IEnumerator CStopPlayArchivesIn(float duration) {
+        yield return new WaitForSeconds(duration);
+        StopArchivesClip();
+        stopArchivesCoroutine = null;
+    }
+
+    public void StopArchivesClip() {
+        if (archivesAudioSource != null) {
+            archivesAudioSource.Stop();
+            archivesAudioSource = null;
+            IncreaseMusicVolume();
+        }
+        if (stopArchivesCoroutine != null) {
+            StopCoroutine(stopArchivesCoroutine);
+            stopArchivesCoroutine = null;
+        }
+    }
+
+    public float GetCurrentMusicVolume() {
+        return musicAudioSource?.volume ?? 0;
+    }
+
+    public void SetCurrentMusicVolume(float newVolume) {
+        if (musicAudioSource != null) {
+            musicAudioSource.volume = newVolume;
         }
     }
 }

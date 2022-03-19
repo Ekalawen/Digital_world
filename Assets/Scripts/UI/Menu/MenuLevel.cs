@@ -37,6 +37,7 @@ public class MenuLevel : MonoBehaviour {
     public TexteExplicatif texteArchivesLink;
     public LocalizedTextAsset archivesTextAsset;
     public bool displayArchivesOnUnlock = false;
+    public AudioClipParams archivesClip;
 
     [Header("Scores")]
     public GameObject scoresRegular;
@@ -160,16 +161,26 @@ public class MenuLevel : MonoBehaviour {
         StartCoroutine(COpenArchives());
     }
 
-    protected IEnumerator COpenArchives() {
+    protected IEnumerator COpenArchives()
+    {
         AsyncOperationHandle<TextAsset> textAssetHandle = archivesTextAsset.LoadAssetAsync();
         yield return textAssetHandle;
         TextAsset textAsset = textAssetHandle.Result;
         selectorManager.popup.Initialize(useTextAsset: true, textAsset: textAsset);
-        foreach(Tuple<string, string> replacement in UIHelper.GetReplacementList(selectorManager.archivesReplacementStrings)) {
+        foreach (Tuple<string, string> replacement in UIHelper.GetReplacementList(selectorManager.archivesReplacementStrings))
+        {
             selectorManager.popup.AddReplacement(replacement.Item1, replacement.Item2);
         }
         selectorManager.popup.titleTextTarget.text = selectorManager.strings.archivesTitle.GetLocalizedString().Result;
         selectorManager.popup.Run();
+        StartArchivesClip(selectorManager.popup);
+    }
+
+    protected void StartArchivesClip(TexteExplicatif popup) {
+        if (archivesClip.clips.Count != 0) {
+            popup.onDisable.AddListener(UISoundManager.Instance.StopArchivesClip);
+            UISoundManager.Instance.PlayArchivesClip(archivesClip);
+        }
     }
 
     protected void SetScores() {

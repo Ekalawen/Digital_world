@@ -930,6 +930,13 @@ MonoBehaviour:
       m_Key: 
     m_FallbackState: 0
   displayArchivesOnUnlock: 0
+  archivesClip:
+    relativeVolume: 1
+    spatialBlend: 0
+    bReverse: 0
+    bIsMusic: 1
+    bLoop: 0
+    clips: []
   scoresRegular: {fileID: 2555325476365299397}
   scoresInfinite: {fileID: 4988559118535947234}
   score_nbTries: {fileID: 2279009404064579427}
@@ -959,6 +966,9 @@ MonoBehaviour:
   playButton: {fileID: 1561800356134281600}
   docButton: {fileID: 1088604710723082716}
   menuLevelSelector: {fileID: 0}
+  onOpenDoc:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &8276037478495988274
 GameObject:
   m_ObjectHideFlags: 0
@@ -2418,7 +2428,7 @@ PrefabInstance:
     - target: {fileID: 1183701273442943422, guid: df108c3e51959b046aaa9a02ab191c65,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 21.875
+      value: 129.125
       objectReference: {fileID: 0}
     - target: {fileID: 1183701273442943422, guid: df108c3e51959b046aaa9a02ab191c65,
         type: 3}
@@ -2722,7 +2732,7 @@ PrefabInstance:
     - target: {fileID: 1183701273442943422, guid: df108c3e51959b046aaa9a02ab191c65,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 21.875
+      value: 129.125
       objectReference: {fileID: 0}
     - target: {fileID: 1183701273442943422, guid: df108c3e51959b046aaa9a02ab191c65,
         type: 3}
@@ -2803,7 +2813,7 @@ PrefabInstance:
     - target: {fileID: 4850725371062341167, guid: df108c3e51959b046aaa9a02ab191c65,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 4.4000006
+      value: 4.399994
       objectReference: {fileID: 0}
     - target: {fileID: 5102976413086570045, guid: df108c3e51959b046aaa9a02ab191c65,
         type: 3}
@@ -2883,7 +2893,7 @@ PrefabInstance:
     - target: {fileID: 7596890694149930210, guid: df108c3e51959b046aaa9a02ab191c65,
         type: 3}
       propertyPath: m_fontSize
-      value: 12.4
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 7596890694149930210, guid: df108c3e51959b046aaa9a02ab191c65,
         type: 3}
@@ -3069,7 +3079,7 @@ PrefabInstance:
     - target: {fileID: 5194553885589976909, guid: 162182fc2409c2e448c05f095f1864e2,
         type: 3}
       propertyPath: m_fontSize
-      value: 20.05
+      value: 22
       objectReference: {fileID: 0}
     - target: {fileID: 5194553885589976909, guid: 162182fc2409c2e448c05f095f1864e2,
         type: 3}
