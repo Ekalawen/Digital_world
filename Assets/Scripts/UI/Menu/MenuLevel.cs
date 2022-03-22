@@ -179,7 +179,9 @@ public class MenuLevel : MonoBehaviour {
     protected void StartArchivesClip(TexteExplicatif popup) {
         if (archivesClip.clips.Count != 0) {
             popup.onDisable.AddListener(UISoundManager.Instance.StopArchivesClip);
-            UISoundManager.Instance.PlayArchivesClip(archivesClip);
+            UISoundManager.Instance.PlayArchivesClip(archivesClip, usingInitializationArchives: false);
+        } else {
+            popup.GetComponentInChildren<PausePlayArchivesClipButtonsInitializer>().Disable();
         }
     }
 

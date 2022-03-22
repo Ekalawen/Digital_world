@@ -15,7 +15,7 @@ public class UISoundManager : MonoBehaviour {
     protected List<AudioSource> usedSources;
     protected float musicVolume = 1.0f;
     protected float soundVolume = 1.0f;
-    protected float archivesMultiplicativVolume = 10.0f;
+    protected float archivesMultiplicativVolume = 14.0f;
     protected float archivesMinRelativVolume = 0.1f;
     protected float musicWhenArchivesMultiplicativVolume = 0.1f;
     protected float musicWhenArchivesVolumeTransitionDuration = 1.0f;
@@ -23,6 +23,7 @@ public class UISoundManager : MonoBehaviour {
     protected AudioSource archivesAudioSource;
     protected Coroutine stopArchivesCoroutine = null;
     protected Fluctuator musicVolumeFluctuator;
+    protected bool usingInitializationArchives = false;
 
     void Awake() {
         if (!_instance) { _instance = this; }
@@ -207,7 +208,8 @@ public class UISoundManager : MonoBehaviour {
         }
     }
 
-    public void PlayArchivesClip(AudioClipParams clip) {
+    public void PlayArchivesClip(AudioClipParams clip, bool usingInitializationArchives) {
+        this.usingInitializationArchives = usingInitializationArchives;
         StopArchivesClip();
         archivesAudioSource = PlayClipsOnSource(clip);
         usedSources.Remove(archivesAudioSource);
@@ -287,8 +289,13 @@ public class UISoundManager : MonoBehaviour {
             float stopIn = archivesAudioSource.clip.length - archivesAudioSource.time;
             StopPlayArchivesIn(stopIn);
         } else {
-            AudioClipParams clip = SelectorManager.Instance.GetCurrentLevel().menuLevel.archivesClip;
-            PlayArchivesClip(clip);
+            MenuLevel menuLevel = SelectorManager.Instance.GetCurrentLevel().menuLevel;
+            if (!usingInitializationArchives) {
+                PlayArchivesClip(menuLevel.archivesClip, usingInitializationArchives: usingInitializationArchives);
+            } else {
+                SelectorLevelRunIntroduction introductionRunner = menuLevel.GetComponent<SelectorLevelRunIntroduction>();
+                PlayArchivesClip(introductionRunner.archivesClip, usingInitializationArchives: usingInitializationArchives);
+            }
         }
     }
 }

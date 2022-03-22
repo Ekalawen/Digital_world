@@ -1,31 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &7112064749957928733
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9123583758460351089}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 52a5d8ec72d426c4eae53675a96ff674, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  introductionTitle:
-    m_TableReference:
-      m_TableCollectionName: GUID:4d654f7d0e6545a418a8dccbb9789ba4
-    m_TableEntryReference:
-      m_KeyId: 270155354710016
-      m_Key: 
-    m_FallbackState: 0
-  introductionTextAsset:
-    m_TableReference:
-      m_TableCollectionName: GUID:05188c1b11f1cbd4591254b063908835
-    m_TableEntryReference:
-      m_KeyId: 360495423488
-      m_Key: 
-    m_FallbackState: 0
 --- !u!114 &2113058979160510436
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -60,6 +34,39 @@ MonoBehaviour:
   m_FlexibleWidth: 0
   m_FlexibleHeight: 0
   m_LayoutPriority: 1
+--- !u!114 &7112064749957928733
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9123583758460351089}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52a5d8ec72d426c4eae53675a96ff674, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  introductionTitle:
+    m_TableReference:
+      m_TableCollectionName: GUID:4d654f7d0e6545a418a8dccbb9789ba4
+    m_TableEntryReference:
+      m_KeyId: 270155354710016
+      m_Key: 
+    m_FallbackState: 0
+  introductionTextAsset:
+    m_TableReference:
+      m_TableCollectionName: GUID:05188c1b11f1cbd4591254b063908835
+    m_TableEntryReference:
+      m_KeyId: 360495423488
+      m_Key: 
+    m_FallbackState: 0
+  archivesClip:
+    relativeVolume: 0
+    spatialBlend: 0
+    bReverse: 0
+    bIsMusic: 0
+    bLoop: 0
+    clips: []
 --- !u!1001 &1102100159028148201
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1283,6 +1290,16 @@ PrefabInstance:
       propertyPath: texteExplicatifIntroduction
       value: 
       objectReference: {fileID: 3327980330252131908}
+    - target: {fileID: 8202754042922485150, guid: 2552e1b8881a0d44ab3f3fc7850edf17,
+        type: 3}
+      propertyPath: archivesClip.clips.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8202754042922485150, guid: 2552e1b8881a0d44ab3f3fc7850edf17,
+        type: 3}
+      propertyPath: archivesClip.clips.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: 9e2763b28724bbb40af60fcddfc50d7d, type: 3}
     - target: {fileID: 8202754042922485150, guid: 2552e1b8881a0d44ab3f3fc7850edf17,
         type: 3}
       propertyPath: visibleName.m_TableEntryReference.m_KeyId
