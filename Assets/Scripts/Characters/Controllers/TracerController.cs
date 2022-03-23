@@ -220,6 +220,7 @@ public class TracerController : EnnemiController {
                 StopCoroutine(stopAttackCoroutine);
             }
             timerAttackCancelled.Reset();
+            gm.soundManager.PlayTracerInterruptedClip(transform.position, transform);
             SetState(TracerState.WAITING);
             return true;
         }

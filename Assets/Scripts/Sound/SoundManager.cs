@@ -171,6 +171,10 @@ public class SoundManager : MonoBehaviour
     {
         PlayClipsOnSource(sounds.tracerHitClips, pos, parent);
     }
+    public void PlayTracerInterruptedClip(Vector3 pos, Transform parent)
+    {
+        PlayClipsOnSource(sounds.tracerInterruptedClips, pos, parent);
+    }
     public AudioSource PlayTracerBlastLoadClip(Vector3 pos, float duration) {
         return PlayClipsOnSource(sounds.tracerBlastLoadClips, pos, null, duration);
     }
