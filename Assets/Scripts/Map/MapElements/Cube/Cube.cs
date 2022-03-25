@@ -627,7 +627,9 @@ public class Cube : MonoBehaviour {
     protected IEnumerator CSetEnableValueIn(bool value, float duration, Vector3 impactPoint) {
         float impactRadius = IsLinky() ? Vector3.Distance(impactPoint, linkyCube.GetFarestCornerFromPoint(impactPoint)) : Mathf.Sqrt(3) / 2;
         StartImpact(impactPoint, impactRadius, duration);
-        yield return new WaitForSeconds(duration);
+        if (duration > 0) { // Because if duration == 0 we would wait a frame
+            yield return new WaitForSeconds(duration);
+        }
         if (this != null) {
             StopImpact();
             RealSetEnableValue(value);
