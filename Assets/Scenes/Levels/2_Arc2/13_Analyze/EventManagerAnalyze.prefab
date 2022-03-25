@@ -1,5 +1,31 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &1868637487785261699
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6059109106409152996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0a87f9f93d3a5e4c908c1aa5c2501ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  howToGetPositions: 5
+  nbCubesVoisins: 4
+  optimalySpacedNbPositions: 0
+  optimalySpacedNbTriesByPosition: 0
+  optimalySpacedMode: 0
+  useCustomMapSize: 0
+  customMapSize: {x: 0, y: 0, z: 0}
+  areaBoxCenter: {x: 7, y: 3.5, z: 7}
+  areaBoxHalfExtents: {x: 6, y: 3.5, z: 6}
+  areaSphereCenter: {x: 0, y: 0, z: 0}
+  areaSphereRadius: 0
+  caveOffsetFromSides: 0
+  modifiers: []
+  unionGetters: []
 --- !u!114 &9024097927814196432
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -118,9 +144,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 114622475871070300, guid: 4ad9af6763aeb45c8962c1fadb06c2eb,
         type: 3}
+      propertyPath: finalLightSpawnMode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114622475871070300, guid: 4ad9af6763aeb45c8962c1fadb06c2eb,
+        type: 3}
       propertyPath: randomEventsPrefabs.Array.size
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114622475871070300, guid: 4ad9af6763aeb45c8962c1fadb06c2eb,
+        type: 3}
+      propertyPath: finalLightGetEmptyPositionsHelper
+      value: 
+      objectReference: {fileID: 1868637487785261699}
     - target: {fileID: 114622475871070300, guid: 4ad9af6763aeb45c8962c1fadb06c2eb,
         type: 3}
       propertyPath: randomEventsPrefabs.Array.data[0]

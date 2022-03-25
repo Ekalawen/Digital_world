@@ -42,6 +42,7 @@ public class EventManager : MonoBehaviour {
     public enum FinalLightSpawnMode {
         FAR_FROM_PLAYER,
         OPTIMALLY_SPACED_FROM_PLAYER,
+        FAR_FROM_GET_HELPER,
     }
     public enum EjectionType {
         FIX_TRESHOLD,
@@ -75,6 +76,8 @@ public class EventManager : MonoBehaviour {
 
     [Header("Final Light")]
     public FinalLightSpawnMode finalLightSpawnMode = FinalLightSpawnMode.FAR_FROM_PLAYER;
+    [ConditionalHide("finalLightSpawnMode", FinalLightSpawnMode.FAR_FROM_GET_HELPER)]
+    public GetEmptyPositionsHelper finalLightGetEmptyPositionsHelper;
     public bool finalLumiereShouldUseBoundingBox = false;
     public List<MapFunctionComponent> mapFunctionsOnCreateFinalLight;
 
@@ -307,6 +310,10 @@ public class EventManager : MonoBehaviour {
             case FinalLightSpawnMode.OPTIMALLY_SPACED_FROM_PLAYER:
                 List<Vector3> farFromPositions = new List<Vector3>() { gm.player.transform.position };
                 posLumiere = GetOptimalySpacedPositions.GetOneSpacedPosition(map, farFromPositions, 100, mode: GetOptimalySpacedPositions.Mode.MAX_MIN_DISTANCE);
+                return posLumiere;
+            case FinalLightSpawnMode.FAR_FROM_GET_HELPER:
+                List<Vector3> positions = finalLightGetEmptyPositionsHelper.Get();
+                posLumiere = map.GetFarRoundedLocationInPositionsEnsemble(gm.player.transform.position, positions);
                 return posLumiere;
             default:
                 throw new Exception($"Valeur inconnu pour finalLightSpawnMode ({finalLightSpawnMode}) dans GetFinalLightPos() !");

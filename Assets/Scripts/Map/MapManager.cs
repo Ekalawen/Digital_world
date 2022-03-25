@@ -1549,6 +1549,19 @@ public class MapManager : MonoBehaviour {
         return farPos;
     }
 
+    public Vector3 GetFarRoundedLocationInPositionsEnsemble(Vector3 farFromThis, List<Vector3> possiblePositions) {
+        Vector3 farPos = MathTools.ChoseOne(possiblePositions);
+
+        BoundingBox boundingBox = GetBoundingBox();
+        float moyenneTailleMap = (boundingBox.width + boundingBox.height + boundingBox.depth) / 3.0f;
+        while (Vector3.Distance(farFromThis, farPos) <= moyenneTailleMap * 0.9f) {
+            farPos = MathTools.ChoseOne(possiblePositions);
+            moyenneTailleMap *= 0.95f; // Pour éviter qu'il n'y ait aucune zone atteignable x)
+        }
+
+        return farPos;
+    }
+
     public List<Vector3> GetAllInsidedCorners() {
         return GetAllCorners(offset: 1);
     }
