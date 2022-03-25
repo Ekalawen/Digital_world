@@ -23,7 +23,7 @@ public class HelperFirstSonde : MonoBehaviour {
         if (gm.timerManager.GetRemainingTime() <= dureePartie - readDocMessage.GetTiming()) {
             readDocMessage.DisplayMessage();
         }
-        if (/*!hasBeenHit && */gm.timerManager.GetRemainingTime() <= dureePartie - touchSondeMessage.GetTiming()) {
+        if (!hasBeenHit && gm.timerManager.GetRemainingTime() <= dureePartie - touchSondeMessage.GetTiming()) {
             touchSondeMessage.DisplayMessage();
         }
         if (gm.timerManager.GetRemainingTime() <= dureePartie - jumpOnSondeMessage.GetTiming()) {
