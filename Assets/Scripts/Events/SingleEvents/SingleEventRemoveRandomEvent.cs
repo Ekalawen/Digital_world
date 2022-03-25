@@ -7,13 +7,21 @@ public class SingleEventRemoveRandomEvent : SingleEvent {
 
     public bool removeAllEvents = false;
     public List<int> eventIndicesToRemoves = new List<int>() { 0 };
+    public bool waitUntilEventIsOver = false;
 
     public override void TriggerSpecific() {
         if (removeAllEvents) {
-            eventManager.RemoveAllEvents();
+            if (!waitUntilEventIsOver) {
+                eventManager.RemoveAllEvents();
+            } else {
+                eventManager.RemoveAllEventsWhenTheyAreDone();
+            }
         } else {
-            eventManager.RemoveEventsOfIndices(eventIndicesToRemoves);
+            if (!waitUntilEventIsOver) {
+                eventManager.RemoveEventsOfIndices(eventIndicesToRemoves);
+            } else {
+                eventManager.RemoveEventsOfIndicesWhenTheyAreDone(eventIndicesToRemoves);
+            }
         }
     }
-
 }

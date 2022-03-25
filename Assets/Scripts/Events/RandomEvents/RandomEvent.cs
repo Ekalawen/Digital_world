@@ -57,12 +57,17 @@ public abstract class RandomEvent : MonoBehaviour {
         gm.soundManager.PlayEventStartClip();
     }
 
-    protected IEnumerator CEndEvent() {
+    protected IEnumerator CEndEvent()
+    {
         yield return new WaitForSeconds(dureeCourante);
-        bEventIsOn = false;
+        SetEventIsDoneOnEndEvent();
         EndEvent();
-        if(bPlayEndSound)
+        if (bPlayEndSound)
             gm.soundManager.PlayEventEndClip();
+    }
+
+    protected virtual void SetEventIsDoneOnEndEvent() {
+        bEventIsOn = false;
     }
 
     protected virtual float NextTime() {
@@ -77,4 +82,8 @@ public abstract class RandomEvent : MonoBehaviour {
     protected abstract void EndEvent();  // End naturally
     public abstract void StopEvent();  // Stopped by an external source
     protected abstract void StartEventConsoleMessage();
+
+    public bool IsCurrentlyOn() {
+        return bEventIsOn;
+    }
 }

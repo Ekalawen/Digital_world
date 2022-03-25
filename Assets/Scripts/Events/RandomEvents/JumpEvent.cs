@@ -45,6 +45,7 @@ public class JumpEvent : RandomEvent {
 
     protected IEnumerator JumpEffect() {
         InstantiateLightningBox();
+        bEventIsOn = true;
         yield return new WaitForSeconds(delaisAvantJump - dureeFadeInFlash);
         // There is now collisions when making 2 jumps succeed each other because of the previsualisation of 2s whish is > than the dureeFadeIn + dureeFadeOut !
         // But if they are 2 RandomJumpsEvent at the same time, it could collide and break intensity ! :)
@@ -62,6 +63,7 @@ public class JumpEvent : RandomEvent {
     protected void SucceedJump() {
         gm.soundManager.PlayJumpSuccessClip();
         gm.eventManager.onJumpSuccess.Invoke();
+        bEventIsOn = false;
     }
 
     protected void InstantiateLightningBox() {
@@ -92,6 +94,7 @@ public class JumpEvent : RandomEvent {
     protected IEnumerator UnStun() {
         yield return new WaitForSeconds(dureeStun);
         gm.player.UnStun();
+        bEventIsOn = false;
         gm.soundManager.PlayJumpEventUnStunClip();
     }
 
@@ -120,5 +123,9 @@ public class JumpEvent : RandomEvent {
 
     protected override void PlayStartSound() {
         gm.soundManager.PlayJumpEventStartClip(delaisAvantJump + 0.4f);
+    }
+
+    protected override void SetEventIsDoneOnEndEvent() {
+        // Don't do it ! :)
     }
 }

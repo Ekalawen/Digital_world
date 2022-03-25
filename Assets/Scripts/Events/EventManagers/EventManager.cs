@@ -173,6 +173,15 @@ public class EventManager : MonoBehaviour {
             Destroy(randomEvent.gameObject);
     }
 
+    public void RemoveEventWhenDone(RandomEvent eventToRemove) {
+        StartCoroutine(CRemoveEventWhenDone(eventToRemove));
+    }
+
+    protected IEnumerator CRemoveEventWhenDone(RandomEvent eventToRemove) {
+        yield return new WaitWhile(() => eventToRemove.IsCurrentlyOn());
+        RemoveEvent(eventToRemove);
+    }
+
     public void RemoveEventOfIndice(int eventIndice) {
         RemoveEventsOfIndices(new List<int>() { eventIndice });
     }
@@ -186,10 +195,26 @@ public class EventManager : MonoBehaviour {
         }
     }
 
+    public void RemoveEventsOfIndicesWhenTheyAreDone(List<int> eventIndices) {
+        List<RandomEvent> randomEvents = GetRandomEvents().Select(e => e).ToList();
+        List<int> indices = eventIndices.FindAll(i => i < randomEvents.Count);
+        List<RandomEvent> eventsToRemove = indices.Select(i => randomEvents[i]).ToList();
+        foreach(RandomEvent eventToRemove in eventsToRemove) {
+            RemoveEventWhenDone(eventToRemove);
+        }
+    }
+
     public void RemoveAllEvents() {
         List<RandomEvent> eventsToRemove = GetRandomEvents().Select(e => e).ToList();
         foreach(RandomEvent eventToRemove in eventsToRemove) {
             RemoveEvent(eventToRemove);
+        }
+    }
+
+    public void RemoveAllEventsWhenTheyAreDone() {
+        List<RandomEvent> eventsToRemove = GetRandomEvents().Select(e => e).ToList();
+        foreach(RandomEvent eventToRemove in eventsToRemove) {
+            RemoveEventWhenDone(eventToRemove);
         }
     }
 
