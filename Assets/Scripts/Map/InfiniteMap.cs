@@ -47,6 +47,9 @@ public class InfiniteMap : MapManager {
     public GameObject bestScoreMarkerPrefab;
     public bool shouldResetAllBlocksTime = false;
     public float dureeDecompose = 5.0f;
+    public bool useCustomLastTresholdForPhases = false;
+    [ConditionalHide("useCustomLastTresholdForPhases")]
+    public int customLastTresholdForPhases;
 
     protected Transform blocksFolder;
     protected int indiceCurrentBlock = 0;
@@ -311,10 +314,14 @@ public class InfiniteMap : MapManager {
                 StartBlocksDestruction();
             }
 
-            gm.timerManager.TryUpdatePhase(GetNonStartNbBlocksRun(), gm.goalManager.GetLastTresholdNotInfinite());
+            gm.timerManager.TryUpdatePhase(GetNonStartNbBlocksRun(), GetLastTresholdToUseForPhases());
 
             onBlocksCrossed.Invoke(nbBlocksAdded);
         }
+    }
+
+    protected int GetLastTresholdToUseForPhases() {
+        return useCustomLastTresholdForPhases ? customLastTresholdForPhases : gm.goalManager.GetLastTresholdNotInfinite();
     }
 
     public void AddBlockRun(int nbBlocksToAdd) {
