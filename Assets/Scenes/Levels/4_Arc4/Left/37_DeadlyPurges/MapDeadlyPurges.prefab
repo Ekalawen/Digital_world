@@ -124,9 +124,12 @@ MonoBehaviour:
   generateMode: 1
   nbToProtect: 1
   proportionToProtect: 1
+  couronneSize: 1
   destroyAlreadyExistingCubes: 1
   destroyAlreadyExistingCubesInMapBordures: 1
   setLinky: 1
+  setLumiereInaccessible: 0
+  makeOneDirectionHole: 0
   rayon: 4
   durationToActivate: 7
   dureeDestruction: 0.5
@@ -226,6 +229,7 @@ MonoBehaviour:
   frequenceInterval: 2
   nbIntervals: 2
   startIntervalRange: {x: 0, y: 1}
+  useRandomStartIntervalForHolders: 1
   setLinky: 1
   previsualisationDuration: 1
   timeBeforeStartSwapping: 3
@@ -252,6 +256,8 @@ MonoBehaviour:
   cubeEnsembleQuantity: 5
   cubeEnsembleProportion: 0.2
   nbCubesVoisins: 4
+  getEmptyPositionsHelper: {fileID: 0}
+  cubeDistanceFromEmptyPositions: 1
   modifiers: []
 --- !u!1 &7027032249551767120
 GameObject:
@@ -498,6 +504,8 @@ MonoBehaviour:
   cubeEnsembleQuantity: 1
   cubeEnsembleProportion: 0.5
   nbCubesVoisins: 4
+  getEmptyPositionsHelper: {fileID: 0}
+  cubeDistanceFromEmptyPositions: 1
   modifiers:
   - {fileID: 4091840109731374286}
 --- !u!114 &4091840109731374286
@@ -552,6 +560,8 @@ MonoBehaviour:
   cubeEnsembleQuantity: 1
   cubeEnsembleProportion: 0.5
   nbCubesVoisins: 4
+  getEmptyPositionsHelper: {fileID: 0}
+  cubeDistanceFromEmptyPositions: 1
   modifiers: []
 --- !u!1001 &1852852803430356768
 PrefabInstance:
@@ -589,7 +599,7 @@ PrefabInstance:
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: mapFunctionComponents.Array.size
-      value: 13
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
@@ -615,42 +625,42 @@ PrefabInstance:
         type: 3}
       propertyPath: mapFunctionComponents.Array.data[4]
       value: 
-      objectReference: {fileID: 3246168025544981407}
+      objectReference: {fileID: 1230633973335482180}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: mapFunctionComponents.Array.data[5]
       value: 
-      objectReference: {fileID: 1230633973335482180}
+      objectReference: {fileID: 4673883755654308304}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: mapFunctionComponents.Array.data[6]
       value: 
-      objectReference: {fileID: 4673883755654308304}
+      objectReference: {fileID: 7017019442311059015}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: mapFunctionComponents.Array.data[7]
       value: 
-      objectReference: {fileID: 7017019442311059015}
+      objectReference: {fileID: 832986207391254125}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: mapFunctionComponents.Array.data[8]
       value: 
-      objectReference: {fileID: 832986207391254125}
+      objectReference: {fileID: 4675268588805514057}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: mapFunctionComponents.Array.data[9]
       value: 
-      objectReference: {fileID: 4675268588805514057}
+      objectReference: {fileID: 4167669547922767134}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: mapFunctionComponents.Array.data[10]
       value: 
-      objectReference: {fileID: 4167669547922767134}
+      objectReference: {fileID: 2043507741530955010}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: mapFunctionComponents.Array.data[11]
       value: 
-      objectReference: {fileID: 2043507741530955010}
+      objectReference: {fileID: 6533042795328261037}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: mapFunctionComponents.Array.data[12]

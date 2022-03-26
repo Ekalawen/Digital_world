@@ -293,7 +293,7 @@ public class PouvoirPathfinder : IPouvoir {
     }
 
     protected List<Vector3> GetAllOrbTriggersThatShouldBeCapturedPositions() {
-        // ot.transform.localScale.x > 0 is for reduced OrbTrigger that can't be captured! :)
+        // ot.transform.localScale.x > 0 is for reduced OrbTrigger that can't be captured! :) (usefull for DataSondes! :))
         return gm.itemManager.GetAllOrbTriggers().FindAll(ot => ot.shouldBeCapturedByPlayer && ot.transform.localScale.x > 0).Select(ot => ot.transform.position).ToList();
     }
 
