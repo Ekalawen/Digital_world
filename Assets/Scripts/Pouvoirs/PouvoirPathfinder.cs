@@ -293,7 +293,8 @@ public class PouvoirPathfinder : IPouvoir {
     }
 
     protected List<Vector3> GetAllOrbTriggersThatShouldBeCapturedPositions() {
-        return gm.itemManager.GetAllOrbTriggers().FindAll(ot => ot.shouldBeCapturedByPlayer).Select(ot => ot.transform.position).ToList();
+        // ot.transform.localScale.x > 0 is for reduced OrbTrigger that can't be captured! :)
+        return gm.itemManager.GetAllOrbTriggers().FindAll(ot => ot.shouldBeCapturedByPlayer && ot.transform.localScale.x > 0).Select(ot => ot.transform.position).ToList();
     }
 
     protected IEnumerator DrawPath(List<Vector3> path, PathfinderData pathfinderData) {
