@@ -543,7 +543,8 @@ public class EventManager : MonoBehaviour {
         });
     }
 
-    public void LoseGame(DeathReason reason) {
+    public void LoseGame(DeathReason reason)
+    {
         if (gameIsEnded || gm.player.IsInvincible())
             return;
         gameIsEnded = true;
@@ -575,11 +576,35 @@ public class EventManager : MonoBehaviour {
 
         gm.timerManager.timeMultiplierController.RemoveAllMultipliers();
 
-        gm.postProcessManager.StopTimeScaleVfx();
+        StopTimeScaleVfxOnStaticLosses(reason);
 
         NotifyListenersLoseGame(reason);
 
         QuitOrReloadInSeconds();
+    }
+
+    protected void StopTimeScaleVfxOnStaticLosses(DeathReason reason) {
+        if(GetStaticDeathReasons().Contains(reason)) {
+            gm.postProcessManager.StopTimeScaleVfx();
+        }
+    }
+
+    protected static List<DeathReason> GetStaticDeathReasons() {
+        List<DeathReason> staticDeathReasons = new List<DeathReason>() {
+            DeathReason.TIME_OUT,
+            DeathReason.CAPTURED,
+            DeathReason.TOUCHED_DEATH_CUBE,
+            DeathReason.FIRST_BOSS_BLAST,
+            DeathReason.FIRST_BOSS_HIT,
+            DeathReason.FLIRD_HIT,
+            DeathReason.POUVOIR_COST,
+            DeathReason.SONDE_HIT,
+            DeathReason.SOUL_ROBBER_ASPIRATION,
+            DeathReason.TRACER_BLAST,
+            DeathReason.TRACER_HIT,
+            DeathReason.FAILED_JUMP_EVENT
+        };
+        return staticDeathReasons;
     }
 
     public void LoseGameWithTimeOut() {
@@ -680,7 +705,7 @@ public class EventManager : MonoBehaviour {
 
         gm.timerManager.timeMultiplierController.RemoveAllMultipliers();
 
-        gm.postProcessManager.StopTimeScaleVfx();
+        //gm.postProcessManager.StopTimeScaleVfx();
 
         RememberGameResult(success: true);
 
