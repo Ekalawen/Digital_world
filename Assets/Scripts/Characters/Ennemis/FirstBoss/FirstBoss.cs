@@ -49,6 +49,9 @@ public class FirstBoss : Sonde {
     public int nbTriesByGeneratorPositions = 3;
     public float timeBetweenDropGenerators = 0.8f;
 
+    [Header("PresenceSound")]
+    public Vector2 presenceSoundVolumeRange = new Vector2(1, 7);
+
     [Header("Links")]
     public Transform componentsFolder;
     public IController sondeController;
@@ -63,7 +66,8 @@ public class FirstBoss : Sonde {
     protected int nbGeneratorsOfPhase3Collected = 0;
     protected Fluctuator attackColorFluctuator;
 
-    public override void Start () {
+    public override void Start ()
+    {
         base.Start();
         name = "FirstBoss";
         coroutinesOfNextAttacks = new List<Coroutine>();
@@ -73,6 +77,11 @@ public class FirstBoss : Sonde {
         satellites.Remove(this);
         SetSatellitesActivation(false);
         GoToPhase1();
+        StartPresenceClip();
+    }
+
+    private void StartPresenceClip() {
+        gm.soundManager.PlayFirstBossPresenceClip(transform.position, transform, presenceSoundVolumeRange);
     }
 
     public override void UpdateSpecific () {

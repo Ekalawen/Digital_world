@@ -158,9 +158,11 @@ public class SoundManager : MonoBehaviour
         //StartCoroutine(StopClipIn(source, duree));
         return source;
     }
-    public void PlayFirstBossPresenceClip(Vector3 pos, Transform parent)
-    {
-        PlayClipsOnSource(sounds.firstBossPresenceClips, pos, parent);
+    public void PlayFirstBossPresenceClip(Vector3 pos, Transform parent, Vector2 volumeRange) {
+        AudioSource source = PlayClipsOnSource(sounds.firstBossPresenceClips, pos, parent);
+        source.rolloffMode = AudioRolloffMode.Linear;
+        source.minDistance = volumeRange.x;
+        source.maxDistance = volumeRange.y;
     }
     public void PlayHitClip(Vector3 pos)
     {
