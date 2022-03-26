@@ -131,6 +131,7 @@ public class GetEmptyPositionsHelper : MonoBehaviour {
     }
 
     protected List<Vector3> GetInBoxArea() {
+        PosVisualisator.DrawCube(areaBoxCenter, areaBoxHalfExtents, Color.red);
         return map.GetEmptyPositionsInBox(areaBoxCenter, areaBoxHalfExtents);
     }
 

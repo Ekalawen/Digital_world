@@ -36,6 +36,12 @@ public class GetOptimalySpacedPositions {
         return bestPosition;
     }
 
+    public static Vector3 GetOneSpacedPositionWithCandidatePositions(List<Vector3> candidatePositions, List<Vector3> farFromPositions, int nbTriesByPosition, Mode mode = Mode.MAX_MIN_DISTANCE) {
+        List<Vector3> positionsCandidates = MathTools.ChoseSome(candidatePositions, nbTriesByPosition);
+        Vector3 bestPosition = GetMaxDistancePosition(farFromPositions, positionsCandidates, mode);
+        return bestPosition;
+    }
+
     public static Vector3 GetOneSpacedPositionNotInMap(Vector3Int customMapSize, List<Vector3> farFromPositions, int nbTriesByPosition, Mode mode = Mode.MAX_MIN_DISTANCE, int offsetFromSides = 0) {
         List<Vector3> positionsCandidates = Enumerable.Range(0, nbTriesByPosition).Select(i => GetOneRandomPositionInCustomMapSize(customMapSize, offsetFromSides)).ToList();
         Vector3 bestPosition = GetMaxDistancePosition(farFromPositions, positionsCandidates, mode);
