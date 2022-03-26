@@ -17,10 +17,13 @@ MonoBehaviour:
   optimalySpacedNbPositions: 0
   optimalySpacedNbTriesByPosition: 0
   optimalySpacedMode: 0
+  useCustomMapSize: 0
+  customMapSize: {x: 0, y: 0, z: 0}
   areaBoxCenter: {x: 0, y: 0, z: 0}
   areaBoxHalfExtents: {x: 0, y: 0, z: 0}
   areaSphereCenter: {x: 0, y: 0, z: 0}
   areaSphereRadius: 0
+  caveOffsetFromSides: 0
   modifiers:
   - {fileID: 3936953882410979221}
   unionGetters: []
@@ -72,7 +75,7 @@ PrefabInstance:
     - target: {fileID: 4963224914880968686, guid: 71ed08f666e8c9441946793de60bd977,
         type: 3}
       propertyPath: cubeType
-      value: 1
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4963224914880968686, guid: 71ed08f666e8c9441946793de60bd977,
         type: 3}
@@ -117,7 +120,7 @@ PrefabInstance:
     - target: {fileID: 4963224914880968687, guid: 71ed08f666e8c9441946793de60bd977,
         type: 3}
       propertyPath: m_Name
-      value: CubeGeneratorFirstBossDeathCubes
+      value: CubeGeneratorFirstBossVoidCubes
       objectReference: {fileID: 0}
     - target: {fileID: 4963224914880968689, guid: 71ed08f666e8c9441946793de60bd977,
         type: 3}
@@ -182,7 +185,7 @@ PrefabInstance:
     - target: {fileID: 9219331088902830557, guid: 71ed08f666e8c9441946793de60bd977,
         type: 3}
       propertyPath: durationToActivate
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 9219331088902830557, guid: 71ed08f666e8c9441946793de60bd977,
         type: 3}

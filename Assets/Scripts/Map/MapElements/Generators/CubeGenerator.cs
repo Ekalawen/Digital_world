@@ -59,7 +59,9 @@ public class CubeGenerator : IGenerator {
         if(newCube != null && linkyState) {
             newCube.SetLinky();
         }
-        newCube.SetDissolveTimeBeCareful(dissolveEffectDuration);
+        if (newCube != null) {
+            newCube.SetDissolveTimeBeCareful(dissolveEffectDuration);
+        }
     }
 
     protected override bool IsValidPosition(Vector3 position) {
