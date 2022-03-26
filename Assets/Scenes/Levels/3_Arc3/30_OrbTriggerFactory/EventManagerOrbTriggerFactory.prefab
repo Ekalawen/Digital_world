@@ -17,6 +17,7 @@ MonoBehaviour:
   ejectionCubesArroundRadius: 20
   endGameDuration: 25
   endGameFrameRate: 0.1
+  endGameRecomputePositionsOrder: 0.2
   endEventCurveSpeed:
     serializedVersion: 2
     m_Curve:
@@ -57,6 +58,8 @@ MonoBehaviour:
   proportionToKeep: 0
   bNoEndgame: 0
   finalLightSpawnMode: 1
+  finalLightGetEmptyPositionsHelper: {fileID: 0}
+  finalLumiereShouldUseBoundingBox: 0
   mapFunctionsOnCreateFinalLight:
   - {fileID: 6079262480820521551}
   screenShakeMagnitude: 4
@@ -68,6 +71,24 @@ MonoBehaviour:
   quitSceneTime: 7
   reloadSceneTime: 7
   onStartEndGame:
+    m_PersistentCalls:
+      m_Calls: []
+  onCaptureLumiere:
+    m_PersistentCalls:
+      m_Calls: []
+  onWinGame:
+    m_PersistentCalls:
+      m_Calls: []
+  onLoseGame:
+    m_PersistentCalls:
+      m_Calls: []
+  onGameOver:
+    m_PersistentCalls:
+      m_Calls: []
+  onJumpSuccess:
+    m_PersistentCalls:
+      m_Calls: []
+  onJumpFailed:
     m_PersistentCalls:
       m_Calls: []
   nbLumieresFinales: 5
@@ -136,11 +157,14 @@ MonoBehaviour:
   generateMode: 1
   nbToProtect: 1
   proportionToProtect: 1
+  couronneSize: 1
   destroyAlreadyExistingCubes: 1
   destroyAlreadyExistingCubesInMapBordures: 1
   setLinky: 1
+  setLumiereInaccessible: 0
+  makeOneDirectionHole: 0
   rayon: 3
-  durationToActivate: 3
+  durationToActivate: 2.5
   dureeDestruction: 0.5
   dureeDecompose: 0.2
   orbTriggerPrefab: {fileID: 4693122538343202465, guid: 2272d91c2d3e8c54f8fc4753b72efed8,
