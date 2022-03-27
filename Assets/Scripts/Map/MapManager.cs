@@ -651,6 +651,10 @@ public class MapManager : MonoBehaviour {
         return boundingBox;
     }
 
+    public float GetBoundingBoxHeight() {
+        return GetBoundingBox().size[gm.gravityManager.GetHeightIndice()];
+    }
+
     public bool IsOnBoundingBox(Vector3 pos) {
         BoundingBox boundingBox = GetBoundingBox();
         return pos.x == boundingBox.xMin || pos.x == boundingBox.xMax
@@ -1912,4 +1916,27 @@ public class MapManager : MonoBehaviour {
         Ray ray = new Ray (position, gm.player.transform.position - position);
         return Physics.Raycast(ray, out hit, maxRange) && hit.collider.name == "Joueur";
     }
+
+    public bool IsOverCube(Vector3 pos) {
+        return GetUnderCube(pos) != null;
+    }
+
+    public bool IsOverCubeType(Vector3 pos, Cube.CubeType cubeType) {
+        Cube cubeUnder = GetUnderCube(pos);
+        return cubeUnder != null && cubeUnder.type == cubeType;
+    }
+
+    public Cube GetUnderCube(Vector3 pos) {
+        pos = MathTools.Round(pos);
+        Vector3 down = gm.gravityManager.Down();
+        for (int i = 1; i <= GetBoundingBoxHeight(); i++) {
+            Vector3 currentPos = pos + i * down;
+            Cube cube = GetCubeAt(currentPos);
+            if (cube != null && cube.IsEnabled()) {
+                return cube;
+            }
+        }
+        return null;
+    }
+
 }

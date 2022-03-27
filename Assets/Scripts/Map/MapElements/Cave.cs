@@ -155,11 +155,6 @@ public class Cave : CubeEnsemble {
         }
     }
 
-    internal IEnumerable<Vector3> GetAllFreeLocations(object caveOffsetFromSides)
-    {
-        throw new System.NotImplementedException();
-    }
-
     public Vector3 GetHalfExtents() {
         return (Vector3)nbCubesParAxe / 2;
     }
