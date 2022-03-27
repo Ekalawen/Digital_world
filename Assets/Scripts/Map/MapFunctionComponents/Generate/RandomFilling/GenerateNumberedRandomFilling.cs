@@ -11,13 +11,41 @@ public class GenerateNumberedRandomFilling : GenerateCubesMapFunction {
     public bool shouldUseMinDistanceBetweenCubesOfRandomFilling = false;
     [ConditionalHide("shouldUseMinDistanceBetweenCubesOfRandomFilling")]
     public int distanceMinBetweenCubesOfRandomFilling = 0;
+    public bool shouldNotVerticallyStack = false;
 
     public override void Activate() {
-        if (!shouldUseMinDistanceBetweenCubesOfRandomFilling) {
-            GenerateNumberedRandomFillingCubes();
-        } else {
+        if(shouldNotVerticallyStack) {
+            GenerateNumberedRandomFillingWithoutStacking();
+        } else if (shouldUseMinDistanceBetweenCubesOfRandomFilling) {
             GenerateNumberedRandomFillingCubesWithMinDistance();
+        } else {
+            GenerateNumberedRandomFillingCubes();
         }
+    }
+
+    // This is the default
+    protected List<FullBlock> GenerateNumberedRandomFillingCubes() {
+        List<FullBlock> fullBlocks = new List<FullBlock>();
+        List<Vector3> farAwayPos = map.GetFarAwayFromAllCubesPositions(minDistanceRandomFilling);
+        List<Vector3> selectedPos = GaussianGenerator.SelecteSomeNumberOf(farAwayPos, nbRandomCubes);
+        foreach (Vector3 pos in selectedPos) {
+            fullBlocks.Add(CreateFullBlockAtPos(pos));
+        }
+        return fullBlocks;
+    }
+
+    protected List<FullBlock> GenerateNumberedRandomFillingWithoutStacking() {
+        List<FullBlock> fullBlocks = new List<FullBlock>();
+        List<Vector3> farAwayPos = map.GetFarAwayFromAllCubesPositions(minDistanceRandomFilling);
+        for(int i = 0; i < nbRandomCubes && farAwayPos.Count > 0;) {
+            Vector3 selectedPos = MathTools.ChoseOne(farAwayPos);
+            if(!map.IsCubeAt(selectedPos + Vector3.up) && !map.IsCubeAt(selectedPos + Vector3.down)) {
+                fullBlocks.Add(CreateFullBlockAtPos(selectedPos));
+                i++;
+            }
+            farAwayPos.Remove(selectedPos);
+        }
+        return fullBlocks;
     }
 
     protected List<FullBlock> GenerateNumberedRandomFillingCubesWithMinDistance() {
@@ -28,16 +56,6 @@ public class GenerateNumberedRandomFilling : GenerateCubesMapFunction {
             fullBlocks.Add(CreateFullBlockAtPos(selectedPos));
             List<Vector3> closePos = map.GetEmptyPositionsInSphere(selectedPos, distanceMinBetweenCubesOfRandomFilling);
             farAwayPos = farAwayPos.FindAll(p => !closePos.Contains(p));
-        }
-        return fullBlocks;
-    }
-
-    protected List<FullBlock> GenerateNumberedRandomFillingCubes() {
-        List<FullBlock> fullBlocks = new List<FullBlock>();
-        List<Vector3> farAwayPos = map.GetFarAwayFromAllCubesPositions(minDistanceRandomFilling);
-        List<Vector3> selectedPos = GaussianGenerator.SelecteSomeNumberOf(farAwayPos, nbRandomCubes);
-        foreach (Vector3 pos in selectedPos) {
-            fullBlocks.Add(CreateFullBlockAtPos(pos));
         }
         return fullBlocks;
     }

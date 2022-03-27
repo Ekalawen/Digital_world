@@ -13,9 +13,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cubeType: 0
-  nbRandomCubes: 60
+  nbRandomCubes: 50
   minDistanceRandomFilling: 1
   sizeCubeRandomFilling: 1
+  shouldUseMinDistanceBetweenCubesOfRandomFilling: 0
+  distanceMinBetweenCubesOfRandomFilling: 0
+  shouldNotVerticallyStack: 0
 --- !u!114 &-537994261774405887
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29,6 +32,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 0
+  tresholdLightExplosion: 2
   shouldThrowLightningToNewLumiere: 1
   lightningPrefab: {fileID: 866659798568190786, guid: 8bb23970a6759dd468e900db5c32b84e,
     type: 3}
@@ -70,20 +74,25 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 427095087306705442, guid: 800ea353fd52f8f458146bc8a84ea83e,
+        type: 3}
+      propertyPath: onlyCheckInsideMapLumieres
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: tailleMap.x
-      value: 12
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: tailleMap.y
-      value: 12
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: tailleMap.z
-      value: 12
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
@@ -94,7 +103,7 @@ PrefabInstance:
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: nbLumieresInitial
-      value: 60
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
