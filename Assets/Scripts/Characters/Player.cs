@@ -399,8 +399,7 @@ public class Player : Character {
                 etat = EtatPersonnage.EN_SAUT;
             } else if (isGrounded) {
                 SetAuSol();
-            }
-            else {
+            } else {
                 if (etat != EtatPersonnage.EN_SAUT) {
                     etat = EtatPersonnage.EN_CHUTE;
                     sautTimer.SetOver();
@@ -759,28 +758,29 @@ public class Player : Character {
         }
 
         // On regarde si le personnage s'accroche à un mur !
-        // Pour ça il doit être dans les airs !
-        // Et il ne doit PAS être en train d'appuyer sur SHIFT
-        if (CanGrip(cube))
-        {
+        Vector3 wallNormal = GetWallNormalFromHit(hit);
+        if (CanPlayerGripInItsState(cube)) {
             // Si on vient d'un mur, on vérifie que la normale du mur précédent est suffisamment différente de la normale actuelle !
-            Vector3 wallNormal = GetWallNormalFromHit(hit);
-            if (CanGripToWall(wallNormal))
-            {
-                // Si la normale est au moins un peu à l'horizontale !
-                Vector3 up = gm.gravityManager.Up();
-                Vector3 nProject = Vector3.ProjectOnPlane(wallNormal, up);
-                if (nProject != Vector3.zero && Mathf.Abs(Vector3.Angle(wallNormal, nProject)) < slideLimit)
-                {
-                    if (!IsOnInternalSideOfMur(hit.point, wallNormal))
-                    {
-                        GripOn(hit, wallNormal);
-                    }
+            if (CanPlayerGripInItsJumpState(wallNormal)) {
+                if(IsWallNormalHorizontal(wallNormal, hit.point)) {
+                    GripOn(hit, wallNormal);
                 }
             }
         }
 
         HitEnnemiIfPowerDashing(hit);
+    }
+
+    protected bool IsWallNormalHorizontal(Vector3 wallNormal, Vector3 wallCenterPoint) {
+        // Si la normale est au moins un peu à l'horizontale !
+        Vector3 up = gm.gravityManager.Up();
+        Vector3 nProject = Vector3.ProjectOnPlane(wallNormal, up);
+        if (nProject != Vector3.zero && Mathf.Abs(Vector3.Angle(wallNormal, nProject)) < slideLimit) {
+            if (!IsOnInternalSideOfMur(wallCenterPoint, wallNormal)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     protected void HitEnnemiIfPowerDashing(ControllerColliderHit hit) {
@@ -847,15 +847,21 @@ public class Player : Character {
         }
     }
 
-    protected bool CanGrip(Cube cube) {
-        // AU_MUR pour pouvoir s'accrocher à un mur depuis un autre mur ! :)
+    protected bool CanPlayerGripInItsState(Cube cube) {
+        // Pour ça il doit être dans les airs !
+        // Et il ne doit PAS être en train d'appuyer sur SHIFT
+        // AU_MUR pour pouvoir s'accrocher à un mur depuis un autre mur ! :) ==> Dans les coins ?
         return (etat == EtatPersonnage.EN_SAUT || etat == EtatPersonnage.EN_CHUTE || etat == EtatPersonnage.AU_MUR)
             && !inputManager.GetShift()
-            && cube != null
-            && cube.gameObject.GetComponent<BouncyCube>() == null; // On ne veut pas s'accrocher sur les bouncy cubes ! :)
+            && IsCubeGripable(cube);
     }
 
-    protected bool CanGripToWall(Vector3 wallNormal) {
+    protected bool IsCubeGripable(Cube cube) {
+        return cube != null && cube.type != Cube.CubeType.BOUNCY; // On ne veut pas s'accrocher sur les bouncy cubes ! :)
+        // cube.gameObject.GetComponent<BouncyCube>() == null; // <== Peut-être que cette formulation est mieux !
+    }
+
+    protected bool CanPlayerGripInItsJumpState(Vector3 wallNormal) {
         return origineSaut == EtatPersonnage.AU_SOL
            || (origineSaut == EtatPersonnage.AU_MUR && AreWallsNormalsDifferent(normaleOrigineSaut, wallNormal))
            || (origineSaut == EtatPersonnage.AU_MUR && etat == EtatPersonnage.EN_CHUTE && dureeMurRestante > 0);
@@ -865,6 +871,11 @@ public class Player : Character {
         return normalMur1 == Vector3.zero
             || normalMur2 == Vector3.zero
             || Vector3.Angle(normalMur1, normalMur2) > 10;
+    }
+
+    protected void GripOn(ControllerColliderHit hit) {
+        Vector3 wallNormal = GetWallNormalFromHit(hit);
+        GripOn(hit, wallNormal);
     }
 
     protected void GripOn(ControllerColliderHit hit, Vector3 wallNormal) {
