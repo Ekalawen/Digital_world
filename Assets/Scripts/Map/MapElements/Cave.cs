@@ -322,8 +322,10 @@ public class Cave : CubeEnsemble {
         for (int i = offsetFromSides; i < nbCubesParAxe.x - offsetFromSides; i++) {
             for (int j = offsetFromSides; j < nbCubesParAxe.y - offsetFromSides; j++) {
                 for (int k = offsetFromSides; k < nbCubesParAxe.z - offsetFromSides; k++) {
-                    if(cubeMatrix[i, j, k] == null) {
-                        freeLocations.Add(depart + new Vector3(i, j, k));
+                    Vector3 pos = depart + new Vector3(i, j, k);
+                    //if(cubeMatrix[i, j, k] == null) { // <== this might be different! :)
+                    if(!map.IsCubeAt(pos)) {
+                        freeLocations.Add(pos);
                     }
                 }
             }
