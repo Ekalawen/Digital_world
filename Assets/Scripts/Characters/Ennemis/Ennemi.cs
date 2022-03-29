@@ -73,16 +73,23 @@ public abstract class Ennemi : Character {
         }
     }
 
-    public void HitByPlayerPowerDash(PouvoirPowerDash powerDash) {
-        if (currentPousseeByPlayer != null && !currentPousseeByPlayer.IsOver()) {
+    public void HitByPlayerPowerDash(PouvoirPowerDash powerDash)
+    {
+        if (currentPousseeByPlayer != null && !currentPousseeByPlayer.IsOver())
+        {
             currentPousseeByPlayer.Stop();
         }
         Vector3 direction = (transform.position - player.transform.position).normalized;
-        if(powerDash.GetCurrentPoussee() != null) {
+        if (powerDash.GetCurrentPoussee() != null)
+        {
             direction = (direction + powerDash.GetCurrentPoussee().direction.normalized).normalized;
         }
         currentPousseeByPlayer = new Poussee(direction, powerDash.dureePoussee, powerDash.distancePoussee);
         AddPoussee(currentPousseeByPlayer);
+        ApplyStunOfPowerDash(powerDash);
+    }
+
+    protected virtual void ApplyStunOfPowerDash(PouvoirPowerDash powerDash) {
         speedMultiplierController.AddMultiplier(new SpeedMultiplier(powerDash.speedMultiplierStun));
         SetStunnedFor(powerDash.speedMultiplierStun.GetTotalDuration());
     }

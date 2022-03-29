@@ -10,6 +10,7 @@ public class SecondBoss : TracerBlast {
 
     [Header("Impact Faces")]
     public int nbImpactFacesByPhases = 3;
+    public float impactStunDuration = 0.5f;
 
     [Header("PresenceSound")]
     public Vector2 presenceSoundVolumeRange = new Vector2(1, 7);
@@ -98,6 +99,20 @@ public class SecondBoss : TracerBlast {
         } else {
             StartOneImpactFace();
         }
+    }
+
+    protected override void ApplyStunOfPowerDash(PouvoirPowerDash powerDash) {
+        float stunDuration = powerDash.dureePoussee + detectionDureeRotation + impactStunDuration;
+        SpeedMultiplier newSpeedMultiplier = new SpeedMultiplier(powerDash.speedMultiplierStun);
+        newSpeedMultiplier.duration = stunDuration;
+        speedMultiplierController.AddMultiplier(newSpeedMultiplier);
+        SetStunnedFor(stunDuration);
+        StartCoroutine(CDetectPlayerIn(stunDuration - detectionDureeRotation));
+    }
+
+    protected IEnumerator CDetectPlayerIn(float duration) {
+        yield return new WaitForSeconds(duration);
+        OnDetectPlayer();
     }
 
     protected void GoToNextPhase() {
