@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.VFX;
 
 public class SecondBoss : TracerBlast {
@@ -11,6 +13,22 @@ public class SecondBoss : TracerBlast {
     [Header("Impact Faces")]
     public int nbImpactFacesByPhases = 3;
     public float impactStunDuration = 0.5f;
+
+    [Header("Time Reset Drops")]
+    public GameObject resetTimeItemPrefab;
+    public List<float> resetTimeByPhases;
+    public GameObject lightningToItemPrefab;
+
+    [Header("Generator Drops")]
+    public int nbTriesByGeneratorPositions;
+    public float timeBetweenDropGenerators;
+    public GeoData geoDataToGenerator;
+    public List<GameObject> generatorPhase2Prefabs;
+
+    [Header("Explosion Cubes Destruction")]
+    public float explosionDestructionRange = 16; // La taille de la map pour que ce soit stylé ! :)
+    public float explosionDestructionDecompositionDuration;
+    public float explosionDestructionDuration;
 
     [Header("PresenceSound")]
     public Vector2 presenceSoundVolumeRange = new Vector2(1, 7);
@@ -95,14 +113,14 @@ public class SecondBoss : TracerBlast {
         nbFacesToImpactRemaining--;
         if(nbFacesToImpactRemaining <= 0) {
             StopImpactFaces();
-            GoToNextPhase();
+            GoToNextPhaseIn(GetPowerDashStunDuration(powerDash));
         } else {
             StartOneImpactFace();
         }
     }
 
     protected override void ApplyStunOfPowerDash(PouvoirPowerDash powerDash) {
-        float stunDuration = powerDash.dureePoussee + detectionDureeRotation + impactStunDuration;
+        float stunDuration = GetPowerDashStunDuration(powerDash);
         SpeedMultiplier newSpeedMultiplier = new SpeedMultiplier(powerDash.speedMultiplierStun);
         newSpeedMultiplier.duration = stunDuration;
         speedMultiplierController.AddMultiplier(newSpeedMultiplier);
@@ -110,9 +128,22 @@ public class SecondBoss : TracerBlast {
         StartCoroutine(CDetectPlayerIn(stunDuration - detectionDureeRotation));
     }
 
+    protected float GetPowerDashStunDuration(PouvoirPowerDash powerDash) {
+        return powerDash.dureePoussee + detectionDureeRotation + impactStunDuration;
+    }
+
     protected IEnumerator CDetectPlayerIn(float duration) {
         yield return new WaitForSeconds(duration);
         OnDetectPlayer();
+    }
+
+    protected void GoToNextPhaseIn(float duration) {
+        StartCoroutine(CGoToNextPhaseIn(duration));
+    }
+
+    protected IEnumerator CGoToNextPhaseIn(float duration) {
+        yield return new WaitForSeconds(duration);
+        GoToNextPhase();
     }
 
     protected void GoToNextPhase() {
@@ -131,8 +162,101 @@ public class SecondBoss : TracerBlast {
         }
     }
 
-    protected void GoToPhase2() {
+    public void GoToPhase2() {
         Debug.Log($"Phase 2 !");
+        StartCoroutine(CGoToPhase2());
+    }
+    protected IEnumerator CGoToPhase2() {
+        UpdateConsoleMessage(phaseIndice: 2);
+        AddTimeItem(phaseIndice: 2);
+        yield return StartBlast();
+        //yield return StartCoroutine(CExplosionAttackNormale());
+        yield return StartCoroutine(CDropGenerators(generatorPhase2Prefabs));
+        //UpdateAttackRate(phaseIndice: 2);
+        //UpdateRandomEvent(phaseIndice: 2);
+    }
+
+    protected IEnumerator CExplosionAttack(float duration) {
+        IController controller = GetComponent<IController>();
+        float oldVitesse = controller.vitesse;
+        controller.vitesse = 0.0f;
+
+        yield return StartBlast();
+
+        controller.vitesse = oldVitesse;
+    }
+
+    public override void Blast() {
+        base.Blast();
+        ApplyVoidLikeExplosion(transform.position,
+                               explosionDestructionDecompositionDuration,
+                               explosionDestructionDuration,
+                               explosionDestructionRange);
+    }
+
+    public void ApplyVoidLikeExplosion(Vector3 centerPosition, float decompositionDuration, float explosionDuration, float explosionRange) {
+        StartCoroutine(CApplyVoidLikeExplosion(centerPosition, decompositionDuration, explosionDuration, explosionRange));
+    }
+
+    protected IEnumerator CApplyVoidLikeExplosion(Vector3 centerPosition, float decompositionDuration, float explosionDuration, float explosionRange) {
+        List<Cube> allCubes = explosionRange == - 1 ? gm.map.GetAllCubes() : gm.map.GetCubesInSphere(centerPosition, explosionRange);
+        if (explosionRange == -1) {
+            explosionRange = allCubes.Select(c => Vector3.SqrMagnitude(centerPosition - c.transform.position)).Max();
+            explosionRange = Mathf.Sqrt(explosionRange);
+        }
+        Timer timer = new Timer(explosionDuration);
+        while (!timer.IsOver()) {
+            allCubes = allCubes.FindAll(c => c != null);
+            float maxRange = explosionRange * timer.GetAvancement();
+            float maxRangeSqr = maxRange * maxRange;
+            foreach (Cube cube in allCubes) {
+                if (Vector3.SqrMagnitude(centerPosition - cube.transform.position) <= maxRangeSqr) {
+                    cube.Decompose(decompositionDuration);
+                }
+            }
+            yield return null;
+        }
+        allCubes = allCubes.FindAll(c => c != null);
+        foreach (Cube cube in allCubes) {
+            cube.Decompose(decompositionDuration);
+        }
+    }
+
+    protected void UpdateConsoleMessage(int phaseIndice) {
+        gm.console.SecondBossChangementDePhase(phaseIndice, blastLoadDuree);
+    }
+
+    protected void AddTimeItem(int phaseIndice) {
+        ResetTimeItem resetTemporel = gm.itemManager.PopItem(resetTimeItemPrefab) as ResetTimeItem;
+        resetTemporel.settedTime = resetTimeByPhases[phaseIndice - 1];
+        GenerateLightningTo(resetTemporel.transform.position, lightningToItemPrefab);
+    }
+
+    protected Lightning GenerateLightningTo(Vector3 position, GameObject lightningPrefab) {
+        Lightning lightning = Instantiate(lightningPrefab, position, Quaternion.identity).GetComponent<Lightning>();
+        lightning.Initialize(transform.position, position, Lightning.PivotType.EXTREMITY);
+        return lightning;
+    }
+
+    protected IEnumerator CDropGenerators(List<GameObject> generatorPrefabs) {
+        List<Vector3> playerPos = new List<Vector3>() { player.transform.position };
+        List<Vector3> optimalySpacedPositions = GetOptimalySpacedPositions.GetSpacedPositions(gm.map, generatorPrefabs.Count, playerPos, nbTriesByGeneratorPositions, GetOptimalySpacedPositions.Mode.MAX_MIN_DISTANCE);
+        for(int i = 0; i < generatorPrefabs.Count; i++) {
+            GameObject generatorPrefab = generatorPrefabs[i];
+            Vector3 pos = optimalySpacedPositions[i];
+            IGenerator generator = Instantiate(generatorPrefab, pos, Quaternion.identity, parent: gm.map.zonesFolder).GetComponent<IGenerator>();
+            generator.Initialize();
+            Lightning lightning = GenerateLightningTo(generator.transform.position, generator.lightningPrefab);
+            AddGeoPointToGenerator(generator.transform.position, lightning.GetTotalDuration());
+            yield return new WaitForSeconds(timeBetweenDropGenerators);
+        }
+    }
+
+    protected void AddGeoPointToGenerator(Vector3 position, float duration) {
+        GeoData newGeoData = new GeoData(geoDataToGenerator);
+        newGeoData.SetTargetPosition(position);
+        newGeoData.duration = duration;
+        player.geoSphere.AddGeoPoint(newGeoData);
     }
 
     protected void GoToPhase3() {

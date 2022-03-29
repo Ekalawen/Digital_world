@@ -1075,6 +1075,19 @@ public class Console : MonoBehaviour {
         AjouterMessageImportant(termine, TypeText.RED_TEXT, 2, bAfficherInConsole: true);
     }
 
+    public void SecondBossChangementDePhase(int newPhaseIndice, float duree) {
+        StartCoroutine(CSecondBossChangementDePhase(newPhaseIndice, duree));
+    }
+    protected IEnumerator CSecondBossChangementDePhase(int newPhaseIndice, float duree) {
+        LocalizedString chargement = strings.bossChangementDePhaseChargement;
+        chargement.Arguments = new object[] { newPhaseIndice };
+        AjouterMessageImportant(chargement, TypeText.RED_TEXT, duree, bAfficherInConsole: true);
+        yield return new WaitForSeconds(duree);
+        LocalizedString termine = strings.bossChangementDePhaseTermine;
+        termine.Arguments = new object[] { newPhaseIndice };
+        AjouterMessageImportant(termine, TypeText.RED_TEXT, 2, bAfficherInConsole: true);
+    }
+
     public void InitPouvoirsDisplays() {
         Player player = gm.player;
         InitPouvoir(player.GetPouvoirA(), pouvoirDisplayA);

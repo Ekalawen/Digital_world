@@ -122,4 +122,9 @@ public class ItemManager : MonoBehaviour {
             gm.historyManager.AddItemHistory(item, itemPrefab);
         }
     }
+
+    internal ResetTimeItem PopItem(object resetTemporelPrefab)
+    {
+        throw new NotImplementedException();
+    }
 }

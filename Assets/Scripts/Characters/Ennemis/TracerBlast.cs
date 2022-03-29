@@ -141,8 +141,9 @@ public class TracerBlast : Ennemi {
         StartCoroutine(CGoToIdentityRotation(dureeCancelAnimation));
     }
 
-    public void StartBlast() {
+    public Coroutine StartBlast() {
         blastCoroutine = StartCoroutine(CStartBlast());
+        return blastCoroutine;
     }
 
     protected IEnumerator CStartBlast() {
@@ -173,6 +174,7 @@ public class TracerBlast : Ennemi {
             autoRotate.vitesse = blastLoadRotationCurve.Evaluate(timer.GetAvancement()) * blastLoadMaxRotation;
             yield return null;
         }
+        autoRotate.vitesse = 0.0f;
 
         yield return CGoToIdentityRotation(blastPousseeDuree);
     }
@@ -187,8 +189,7 @@ public class TracerBlast : Ennemi {
         transform.rotation = Quaternion.identity;
     }
 
-    public void Blast() {
-        // Start blast animation
+    public virtual void Blast() {
         EnnemiController ennemiController = GetComponent<EnnemiController>();
         StartShaderColorChange(shaderLoadColor, shaderMainColor, blastPousseeDuree);
         if(loadingGeoPoint != null) {

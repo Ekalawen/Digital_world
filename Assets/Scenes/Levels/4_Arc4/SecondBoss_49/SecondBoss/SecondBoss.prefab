@@ -231,7 +231,28 @@ MonoBehaviour:
   timeBetweenTwoContactHits: 0.5
   dureeCancelAnimation: 6
   shouldDisplayBlastLearningMessage: 0
-  nbImpactFacesByPhases: 3
+  nbImpactFacesByPhases: 1
+  impactStunDuration: 0.5
+  resetTimeItemPrefab: {fileID: 5211296077710153815, guid: 36ff3f448dffa084b91a109adaaed908,
+    type: 3}
+  resetTimeByPhases:
+  - 0
+  - 100
+  - 100
+  - 100
+  lightningToItemPrefab: {fileID: 8725588450735506554, guid: 3f861a22acd06024b955020f6492dd38,
+    type: 3}
+  nbTriesByGeneratorPositions: 3
+  timeBetweenDropGenerators: 0.8
+  geoDataToGenerator:
+    color: {r: 1.254902, g: 1.254902, b: 47.937256, a: 1}
+    type: 1
+    duration: 0
+    targetObject: {fileID: 0}
+  generatorPhase2Prefabs: []
+  explosionDestructionRange: 12
+  explosionDestructionDecompositionDuration: 0.3
+  explosionDestructionDuration: 0.6
   presenceSoundVolumeRange: {x: 1, y: 7}
 --- !u!114 &-5391924856941772649
 MonoBehaviour:

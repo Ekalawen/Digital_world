@@ -180,6 +180,11 @@ public class EventManager : MonoBehaviour {
         StartCoroutine(CRemoveEventWhenDone(eventToRemove));
     }
 
+    internal void ApplyVoidLikeExplosion(float explosionDestructionRange, Vector3 position, float explosionDestructionDecompositionDuration, object explosionDestructionDuration)
+    {
+        throw new NotImplementedException();
+    }
+
     protected IEnumerator CRemoveEventWhenDone(RandomEvent eventToRemove) {
         yield return new WaitWhile(() => eventToRemove.IsCurrentlyOn());
         RemoveEvent(eventToRemove);
