@@ -61,7 +61,7 @@ public class SondeController : EnnemiController {
         }
     }
 
-    protected void DetectPlayer() {
+    protected virtual void DetectPlayer() {
         gm.soundManager.PlayDetectionClip(transform.position, transform);
         Sonde sonde = GetComponent<Sonde>();
         if(sonde != null) {
