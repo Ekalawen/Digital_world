@@ -146,4 +146,8 @@ public class SecondBoss : TracerBlast {
     protected void StartPresenceClip() {
         gm.soundManager.PlayFirstBossPresenceClip(transform.position, transform, presenceSoundVolumeRange);
     }
+
+    public override Vector3 PopPosition(MapManager map) {
+        return map.GetFreeBoxLocation(Vector3.one * 3.0f);
+    }
 }
