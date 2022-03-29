@@ -80,7 +80,8 @@ public class SecondBoss : TracerBlast {
     protected override bool CanHitPlayerFromSides() {
         return timerContactHit.IsOver()
             && (!IsPlayerOnSideOfTheImpactFace() || !player.IsPowerDashing())
-            && !IsStunned();
+            && !IsStunned()
+            && !player.IsTimeHackOn();
     }
 
     public void OnPowerDashImpactFace(PouvoirPowerDash powerDash, Ennemi ennemi) {
