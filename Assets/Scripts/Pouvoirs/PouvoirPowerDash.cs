@@ -96,7 +96,7 @@ public class PouvoirPowerDash : PouvoirDash {
     }
 
     public bool CanHitEnnemy(Ennemi ennemi) {
-        return !ennemisAlreadyHitten.Contains(ennemi);
+        return !ennemisAlreadyHitten.Contains(ennemi) && ennemi.CanBeHitByPowerDash(this);
     }
 
     protected void ApplyTimeMultiplier(bool useBrisableTime) {

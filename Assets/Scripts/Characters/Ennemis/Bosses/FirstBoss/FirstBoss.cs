@@ -80,7 +80,7 @@ public class FirstBoss : Sonde {
         StartPresenceClip();
     }
 
-    private void StartPresenceClip() {
+    protected void StartPresenceClip() {
         gm.soundManager.PlayFirstBossPresenceClip(transform.position, transform, presenceSoundVolumeRange);
     }
 

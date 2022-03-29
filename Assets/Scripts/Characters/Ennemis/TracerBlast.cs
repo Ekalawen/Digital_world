@@ -74,12 +74,16 @@ public class TracerBlast : Ennemi {
                 if (tracerController != null && IsPlayerComingFromTop()) {
                     tracerController.TryCancelAttack();
                     gm.ennemiManager.onInterruptTracer.Invoke(this);
-                } else if (timerContactHit.IsOver() && !player.IsPowerDashing()) {
+                } else if (CanHitPlayerFromSides()) {
                     HitPlayerCustom(EventManager.DeathReason.TRACER_HIT, timeMalusOnHit);
                     timerContactHit.Reset();
                 }
             }
         }
+    }
+
+    protected virtual bool CanHitPlayerFromSides() {
+        return timerContactHit.IsOver() && !player.IsPowerDashing();
     }
 
     protected bool CollideWithPlayer() {
@@ -94,7 +98,7 @@ public class TracerBlast : Ennemi {
         gm.ennemiManager.onHitByTracer.Invoke();
     }
 
-    protected bool IsPlayerComingFromTop() {
+    protected virtual bool IsPlayerComingFromTop() {
         float playerHeight = gm.gravityManager.GetHeightInMap(player.transform.position);
         float tracerHeight = gm.gravityManager.GetHeightInMap(transform.position);
         float tracerHalfSize = transform.localScale.x / 2;

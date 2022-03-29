@@ -22,6 +22,7 @@ public abstract class Ennemi : Character {
     protected Timer timerHit;
     protected Timer timerHitDamages;
     protected Poussee currentPousseeByPlayer = null;
+    protected Timer isStunnedTimer;
 
     public override void Start () {
         base.Start();
@@ -32,6 +33,7 @@ public abstract class Ennemi : Character {
         timerHit.SetOver();
         timerHitDamages = new Timer(timeBetweenTwoHitsDamages);
         timerHitDamages.SetOver();
+        isStunnedTimer = new Timer(setOver: true);
 	}
 
 	public virtual void Update () {
@@ -82,6 +84,22 @@ public abstract class Ennemi : Character {
         currentPousseeByPlayer = new Poussee(direction, powerDash.dureePoussee, powerDash.distancePoussee);
         AddPoussee(currentPousseeByPlayer);
         speedMultiplierController.AddMultiplier(new SpeedMultiplier(powerDash.speedMultiplierStun));
+        SetStunnedFor(powerDash.speedMultiplierStun.GetTotalDuration());
+    }
+
+    public void SetUnstunned() {
+        isStunnedTimer.SetOver();
+    }
+
+    public void SetStunnedFor(float duration) {
+        if(isStunnedTimer.GetRemainingTime() > duration) {
+            return;
+        }
+        isStunnedTimer.SetRemainingTime(duration);
+    }
+
+    public bool IsStunned() {
+        return !isStunnedTimer.IsOver();
     }
 
     protected void TriggerHitEffect() {
@@ -166,5 +184,9 @@ public abstract class Ennemi : Character {
         } else {
             return map.GetFreeRoundedLocationInBoundingBoxWithoutLumiere();
         }
+    }
+
+    public virtual bool CanBeHitByPowerDash(PouvoirPowerDash powerDash) {
+        return true;
     }
 }
