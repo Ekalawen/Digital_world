@@ -194,6 +194,11 @@ public class SecondBoss : TracerBlast {
                                explosionDestructionRange);
     }
 
+    protected override bool IsPlayerBlastable(EnnemiController ennemiController) {
+        return base.IsPlayerBlastable(ennemiController)
+            && ennemiController.IsPlayerInLineOfSight_ThisIsNotVisible();
+    }
+
     public void ApplyVoidLikeExplosion(Vector3 centerPosition, float decompositionDuration, float explosionDuration, float explosionRange) {
         StartCoroutine(CApplyVoidLikeExplosion(centerPosition, decompositionDuration, explosionDuration, explosionRange));
     }

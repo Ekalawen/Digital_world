@@ -196,9 +196,13 @@ public class TracerBlast : Ennemi {
             loadingGeoPoint.Stop();
             loadingGeoPoint = null;
         }
-        if(ennemiController != null && ennemiController.IsPlayerVisible() && !gm.eventManager.IsGameOver()) {
+        if(IsPlayerBlastable(ennemiController)) {
             HitPlayerCustom(EventManager.DeathReason.TRACER_BLAST, blastTimeMalus);
         }
+    }
+
+    protected virtual bool IsPlayerBlastable(EnnemiController ennemiController) {
+        return ennemiController != null && ennemiController.IsPlayerVisible() && !gm.eventManager.IsGameOver();
     }
 
     protected override void HitPlayerSpecific() {

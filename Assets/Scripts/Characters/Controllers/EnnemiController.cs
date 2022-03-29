@@ -20,8 +20,12 @@ public abstract class EnnemiController : IController {
             return true;
 
         // Si l'ennemie est suffisament proche et qu'il est visible !
+        return IsPlayerInLineOfSight_ThisIsNotVisible();
+    }
+
+    public bool IsPlayerInLineOfSight_ThisIsNotVisible() {
         RaycastHit hit;
-        Ray ray = new Ray (transform.position, player.transform.position - transform.position);
+        Ray ray = new Ray(transform.position, player.transform.position - transform.position);
         return Physics.Raycast(ray, out hit, distanceDeDetection) && hit.collider.name == "Joueur";
     }
 }
