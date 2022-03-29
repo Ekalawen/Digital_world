@@ -30,6 +30,11 @@ public class SecondBoss : TracerBlast {
     public float explosionDestructionDecompositionDuration;
     public float explosionDestructionDuration;
 
+    [Header("Builder Reconstruction")]
+    public GameObject randomFillingAfterExplosionSingleEventPrefab;
+    public GameObject randomFillingRandomEventPrefab;
+    public List<float> randomFillingFrequencyByPhases;
+
     [Header("PresenceSound")]
     public Vector2 presenceSoundVolumeRange = new Vector2(1, 7);
 
@@ -38,6 +43,7 @@ public class SecondBoss : TracerBlast {
     protected int nbFacesToImpactRemaining;
     protected List<Vector3> faceNormalsUsable;
     protected Vector3 currentImpactFaceDirection;
+    protected RandomEvent randomFillingEventToRemove = null;
 
     public override void Start () {
         base.Start();
@@ -172,8 +178,20 @@ public class SecondBoss : TracerBlast {
         yield return StartBlast();
         //yield return StartCoroutine(CExplosionAttackNormale());
         yield return StartCoroutine(CDropGenerators(generatorPhase2Prefabs));
+        TriggerSingleEventRandomFilling();
         //UpdateAttackRate(phaseIndice: 2);
-        //UpdateRandomEvent(phaseIndice: 2);
+        UpdateRandomEvent(phaseIndice: 2);
+    }
+
+    protected void UpdateRandomEvent(int phaseIndice) {
+        gm.eventManager.RemoveEvent(randomFillingEventToRemove);
+        RandomEvent randomEvent = gm.eventManager.AddRandomEvent(randomFillingRandomEventPrefab);
+        randomEvent.esperanceApparition = randomFillingFrequencyByPhases[phaseIndice - 1];
+        randomFillingEventToRemove = randomEvent;
+    }
+
+    protected void TriggerSingleEventRandomFilling() {
+        gm.eventManager.StartSingleEvent(randomFillingAfterExplosionSingleEventPrefab);
     }
 
     protected IEnumerator CExplosionAttack(float duration) {

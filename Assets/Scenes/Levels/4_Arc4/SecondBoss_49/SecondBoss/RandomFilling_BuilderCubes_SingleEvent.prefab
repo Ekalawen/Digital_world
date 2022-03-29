@@ -1,0 +1,93 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2810734391460843107
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2810734391460843119}
+  - component: {fileID: 8211882941169154786}
+  - component: {fileID: 2810734391460843105}
+  m_Layer: 0
+  m_Name: RandomFilling_BuilderCubes_SingleEvent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2810734391460843119
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2810734391460843107}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8211882941169154786
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2810734391460843107}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c36a26b61b9fdf4ea8b85edebd1cb40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  messageConsole:
+    localizedString:
+      m_TableReference:
+        m_TableCollectionName: GUID:0589e7d3c8829a243a3f17f1b80e6301
+      m_TableEntryReference:
+        m_KeyId: 43010558063255552
+        m_Key: 
+      m_FallbackState: 0
+    type: 0
+    timing: 0
+    duree: 2
+  messageImportant:
+    localizedString:
+      m_TableReference:
+        m_TableCollectionName: GUID:0589e7d3c8829a243a3f17f1b80e6301
+      m_TableEntryReference:
+        m_KeyId: 43010423136690176
+        m_Key: 
+      m_FallbackState: 0
+    type: 0
+    timing: 0
+    duree: 2
+  mapFunctions:
+  - {fileID: 2810734391460843105}
+--- !u!114 &2810734391460843105
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2810734391460843107}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 151e2e28aa2652d45a2762e3d9a974c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cubeType: 9
+  typeZoneToFill: 1
+  minDistanceRandomFilling: 0
+  getEmptyPositionsHelper: {fileID: 0}
+  proportionRandomFilling: 0.003
+  useSureMethodForSelection: 0
+  sizeCubeRandomFilling: 1
+  registerToColorSources: 1
+  setDissolveTime: 1
+  dissolveTime: 1
+  minNbBlocks: 0

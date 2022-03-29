@@ -173,6 +173,7 @@ public class BuilderCube : NonBlackCube {
     protected float GetScoreFor(Vector3 pos, List<Vector3> centers) {
         float score = 0;
         float posAbsoluteHeight = gm.gravityManager.GetHeightAbsolute(pos);
+        float playerAbsoluteHeight = gm.gravityManager.GetHeightAbsolute(gm.player.transform.position);
         Vector3 closestCenter = centers.OrderBy(c => Vector3.Distance(c, pos)).First();
         score -= Vector3.Distance(closestCenter, pos) * distanceToCentersCoef;
         score -= Mathf.Abs(gm.gravityManager.GetHeightAbsolute(closestCenter) - posAbsoluteHeight) * distanceVerticalToCentersCoef;
