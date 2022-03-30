@@ -231,7 +231,7 @@ MonoBehaviour:
   timeBetweenTwoContactHits: 0.5
   dureeCancelAnimation: 6
   shouldDisplayBlastLearningMessage: 0
-  nbImpactFacesByPhases: 1
+  nbImpactFacesByPhases: 3
   impactStunDuration: 0.5
   resetTimeItemPrefab: {fileID: 5211296077710153815, guid: 36ff3f448dffa084b91a109adaaed908,
     type: 3}
@@ -250,7 +250,7 @@ MonoBehaviour:
     duration: 0
     targetObject: {fileID: 0}
   generatorPhase2Prefabs: []
-  explosionDestructionRange: 13
+  explosionDestructionRange: 8
   explosionDestructionDecompositionDuration: 0.3
   explosionDestructionDuration: 0.6
   randomFillingAfterExplosionSingleEventPrefab: {fileID: 2810734391460843107, guid: 8946a16d1c0ae8a4389d7f66bd181589,
@@ -264,8 +264,10 @@ MonoBehaviour:
   - 4.5
   laserLinePrefab: {fileID: 5169974788862781237, guid: 06704aa7400684e41be0b2da1a7ec422,
     type: 3}
-  laserSize: 25
+  laserLenght: 25
+  laserWidth: 1.5
   laserOffset: 0.3
+  delayAfterActivatingLasers: 1
   presenceSoundVolumeRange: {x: 1, y: 7}
 --- !u!114 &-5391924856941772649
 MonoBehaviour:

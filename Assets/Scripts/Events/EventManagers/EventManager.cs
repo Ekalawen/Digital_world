@@ -24,6 +24,7 @@ public class EventManager : MonoBehaviour {
         FIRST_BOSS_HIT,
         FIRST_BOSS_BLAST,
         SOUL_ROBBER_ASPIRATION,
+        SECOND_BOSS_LASER,
     };
 
     public enum EndEventType {
@@ -601,6 +602,7 @@ public class EventManager : MonoBehaviour {
             DeathReason.TOUCHED_DEATH_CUBE,
             DeathReason.FIRST_BOSS_BLAST,
             DeathReason.FIRST_BOSS_HIT,
+            DeathReason.SECOND_BOSS_LASER,
             DeathReason.FLIRD_HIT,
             DeathReason.POUVOIR_COST,
             DeathReason.SONDE_HIT,

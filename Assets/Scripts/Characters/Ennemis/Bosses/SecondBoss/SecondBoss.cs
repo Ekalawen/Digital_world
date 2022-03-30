@@ -16,6 +16,7 @@ public class SecondBoss : TracerBlast {
 
     [Header("Time Reset Drops")]
     public GameObject resetTimeItemPrefab;
+
     public List<float> resetTimeByPhases;
     public GameObject lightningToItemPrefab;
 
@@ -36,10 +37,12 @@ public class SecondBoss : TracerBlast {
     public List<float> randomFillingFrequencyByPhases;
 
     [Header("Orthogonal Lasers")]
+    public float laserTimeMalus = 10f;
     public GameObject laserLinePrefab;
     public float laserLenght = 25f;
     public float laserWidth = 1.5f;
     public float laserOffset = 0.1f;
+    public float delayAfterActivatingLasers = 0.5f;
 
     [Header("PresenceSound")]
     public Vector2 presenceSoundVolumeRange = new Vector2(1, 7);
@@ -50,11 +53,14 @@ public class SecondBoss : TracerBlast {
     protected List<Vector3> faceNormalsUsable;
     protected Vector3 currentImpactFaceDirection;
     protected RandomEvent randomFillingEventToRemove = null;
+    protected bool hasOrthogonalLasersUp = false;
+    protected List<SecondBossLaser> lasers;
 
     public override void Start () {
         base.Start();
         name = "SecondBoss";
         player.onPowerDashEnnemiImpact.AddListener(OnPowerDashImpactFace);
+        lasers = new List<SecondBossLaser>();
         GoToPhase1();
         StartPresenceClip();
     }
@@ -63,7 +69,6 @@ public class SecondBoss : TracerBlast {
         Debug.Log($"Phase 1 !");
         currentPhase = 1;
         StartImpactFaces();
-        DeployOrthogonalLaser();
     }
 
     protected void StartImpactFaces() {
@@ -182,8 +187,9 @@ public class SecondBoss : TracerBlast {
     protected IEnumerator CGoToPhase2() {
         UpdateConsoleMessage(phaseIndice: 2);
         AddTimeItem(phaseIndice: 2);
+        DeployOrthogonalLaser();
+        yield return new WaitForSeconds(delayAfterActivatingLasers);
         yield return StartBlast();
-        //yield return StartCoroutine(CExplosionAttackNormale());
         yield return StartCoroutine(CDropGenerators(generatorPhase2Prefabs));
         TriggerSingleEventRandomFilling();
         //UpdateAttackRate(phaseIndice: 2);
@@ -306,12 +312,16 @@ public class SecondBoss : TracerBlast {
     }
 
     protected void DeployOrthogonalLaser() {
+        hasOrthogonalLasersUp = true;
         List<Vector3> directions = MathTools.GetAllOrthogonalNormals();
         foreach(Vector3 direction in directions) {
-            Vector3 position = transform.position + direction * (GetHalfSize() + laserOffset);
-            LineRenderer line = Instantiate(laserLinePrefab, position, Quaternion.identity, parent: transform).GetComponent<LineRenderer>();
-            line.SetPosition(1, direction * laserLenght);
-            line.widthMultiplier = laserWidth;
+            SecondBossLaser laser = Instantiate(laserLinePrefab, parent: gm.map.lightningsFolder).GetComponent<SecondBossLaser>();
+            laser.Initialize(this, direction);
+            lasers.Add(laser);
         }
+    }
+
+    public void HitPlayerWithLaser() {
+        HitPlayerCustom(EventManager.DeathReason.SECOND_BOSS_LASER, laserTimeMalus);
     }
 }

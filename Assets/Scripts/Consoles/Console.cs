@@ -832,6 +832,10 @@ public class Console : MonoBehaviour {
                 AjouterMessageImportant (strings.deathSoulRobberAspiration2, Console.TypeText.RED_TEXT, timeDeathMessage);
                 AjouterMessageImportant (strings.deathSoulRobberAspiration1, Console.TypeText.RED_TEXT, timeDeathMessage);
                 break;
+            case EventManager.DeathReason.SECOND_BOSS_LASER:
+                AjouterMessageImportant (strings.deathSecondBossLaser2, Console.TypeText.RED_TEXT, timeDeathMessage);
+                AjouterMessageImportant (strings.deathSecondBossLaser1, Console.TypeText.RED_TEXT, timeDeathMessage);
+                break;
         }
         DisplayEscapeButton();
         if (gm.eventManager.ShouldQuitOrReload() == EventManager.QuitType.RELOAD) {
