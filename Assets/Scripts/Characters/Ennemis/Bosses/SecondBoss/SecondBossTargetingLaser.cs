@@ -11,8 +11,8 @@ public class SecondBossTargetingLaser : SecondBossLaser {
     public float spawningDelay = 1.0f;
 
     public void Initialize(SecondBoss secondBoss) {
-        base.Initialize(secondBoss, Vector3.zero);
-        this.direction = ComputeFirstDirection();
+        Initialize(secondBoss, Vector3.zero);
+        direction = ComputeFirstDirection();
     }
 
     protected override void UpdatePositionAccordingToSecondBoss() {
@@ -45,6 +45,6 @@ public class SecondBossTargetingLaser : SecondBossLaser {
     }
 
     protected override Vector3 ComputePosition() {
-        return secondBoss.transform.position + direction * (secondBoss.GetHalfSize() * 1.41f + secondBoss.laserOffset);
+        return secondBoss.transform.position + direction * (secondBoss.GetHalfSize() * bossSizeOffsetCoef + secondBoss.laserOffset);
     }
 }

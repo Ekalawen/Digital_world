@@ -7,6 +7,7 @@ public class SecondBossLaser : MonoBehaviour {
 
     public LineRenderer lineRenderer;
     public float durationBetweenHits = 0.5f;
+    public float bossSizeOffsetCoef = 1.0f;
 
     protected GameManager gm;
     protected SecondBoss secondBoss;
@@ -44,7 +45,7 @@ public class SecondBossLaser : MonoBehaviour {
     }
 
     protected virtual Vector3 ComputePosition() {
-        return secondBoss.transform.position + direction * (secondBoss.GetHalfSize() + secondBoss.laserOffset);
+        return secondBoss.transform.position + direction * (secondBoss.GetHalfSize() * bossSizeOffsetCoef + secondBoss.laserOffset);
     }
 
     public Vector3 GetLaserCenter() {

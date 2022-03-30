@@ -325,8 +325,23 @@ public static class MathTools
         Vector3.back
     };
 
+    public static List<Vector3> diagonalNormals = new List<Vector3>() {
+        (Vector3.up + Vector3.left + Vector3.forward).normalized,
+        (Vector3.up + Vector3.left + Vector3.back).normalized,
+        (Vector3.up + Vector3.right + Vector3.forward).normalized,
+        (Vector3.up + Vector3.right + Vector3.back).normalized,
+        (Vector3.down + Vector3.left + Vector3.forward).normalized,
+        (Vector3.down + Vector3.left + Vector3.back).normalized,
+        (Vector3.down + Vector3.right + Vector3.forward).normalized,
+        (Vector3.down + Vector3.right + Vector3.back).normalized,
+    };
+
     public static List<Vector3> GetAllOrthogonalNormals() {
         return orthogonalNormals.Select(n => n).ToList();
+    }
+
+    public static List<Vector3> GetAllDiagonalNormals() {
+        return diagonalNormals.Select(n => n).ToList();
     }
 
     public static Vector3 SanitizeIfOrthogonal(Vector3 vector) {

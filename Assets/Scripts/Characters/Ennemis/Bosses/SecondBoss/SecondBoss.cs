@@ -45,6 +45,7 @@ public class SecondBoss : TracerBlast {
     public float laserTimeMalus = 10f;
     public GameObject orthogonalLaserPrefab;
     public GameObject targetingLaserPrefab;
+    public GameObject diagonalLaserPrefab;
     public float laserLenght = 25f;
     public float laserWidth = 1.5f;
     public float laserOffset = 0.1f;
@@ -64,6 +65,7 @@ public class SecondBoss : TracerBlast {
     protected Vector3 currentImpactFaceDirection;
     protected RandomEvent randomFillingEventToRemove = null;
     protected bool hasOrthogonalLasersUp = false;
+    protected bool hasDiagonalLasersUp = false;
     protected List<SecondBossLaser> orthogonalLasers;
     protected List<SecondBossTargetingLaser> targetingLasers;
 
@@ -74,6 +76,7 @@ public class SecondBoss : TracerBlast {
         orthogonalLasers = new List<SecondBossLaser>();
         targetingLasers = new List<SecondBossTargetingLaser>();
         GoToPhase1();
+        //GoToPhase4();
         StartPresenceClip();
     }
 
@@ -200,9 +203,9 @@ public class SecondBoss : TracerBlast {
         currentPhase = 2;
         UpdateConsoleMessage(phaseIndice: 2);
         AddTimeItem(phaseIndice: 2);
-        DeployOrthogonalLaser();
+        DeployOrthogonalLasers();
         yield return new WaitForSeconds(delayAfterActivatingLasers);
-        yield return StartBlast();
+        yield return CExplosionAttack();
         yield return StartCoroutine(CDropGenerators(generatorPhase2Prefabs));
         TriggerSingleEventRandomFilling();
         UpdateRandomEvent(phaseIndice: 2);
@@ -220,7 +223,7 @@ public class SecondBoss : TracerBlast {
         gm.eventManager.StartSingleEvent(randomFillingAfterExplosionSingleEventPrefab);
     }
 
-    protected IEnumerator CExplosionAttack(float duration) {
+    protected IEnumerator CExplosionAttack() {
         IController controller = GetComponent<IController>();
         float oldVitesse = controller.vitesse;
         controller.vitesse = 0.0f;
@@ -318,7 +321,7 @@ public class SecondBoss : TracerBlast {
         AddTimeItem(phaseIndice: 3);
         DeployOneTargetingLaser();
         yield return new WaitForSeconds(delayAfterActivatingLasers);
-        yield return StartBlast();
+        yield return CExplosionAttack();
         yield return StartCoroutine(CDropGenerators(generatorPhase3Prefabs));
         TriggerSingleEventRandomFilling();
         UpdateRandomEvent(phaseIndice: 3);
@@ -333,9 +336,9 @@ public class SecondBoss : TracerBlast {
         currentPhase = 4;
         UpdateConsoleMessage(phaseIndice: 4);
         AddTimeItem(phaseIndice: 4);
-        yield return DeployPhase4TargetingLasers();
+        DeployDiagonalLasers();
         yield return new WaitForSeconds(delayAfterActivatingLasers);
-        yield return StartBlast();
+        yield return CExplosionAttack();
         TriggerSingleEventRandomFilling();
         UpdateRandomEvent(phaseIndice: 4);
         IncreaseSpeedToPhase4();
@@ -367,7 +370,7 @@ public class SecondBoss : TracerBlast {
         return map.GetFreeBoxLocation(Vector3.one * 3.0f);
     }
 
-    protected void DeployOrthogonalLaser() {
+    protected void DeployOrthogonalLasers() {
         hasOrthogonalLasersUp = true;
         List<Vector3> directions = MathTools.GetAllOrthogonalNormals();
         foreach(Vector3 direction in directions) {
@@ -377,12 +380,13 @@ public class SecondBoss : TracerBlast {
         }
     }
 
-    protected IEnumerator DeployPhase4TargetingLasers() {
-        float spawningDelay = targetingLaserPrefab.GetComponent<SecondBossTargetingLaser>().spawningDelay;
-        DeployOneTargetingLaser();
-        for(int i = 0; i < phase4NbTargetingLasers - 1; i++) {
-            yield return new WaitForSeconds(spawningDelay);
-            DeployOneTargetingLaser();
+    protected void DeployDiagonalLasers() {
+        hasDiagonalLasersUp = true;
+        List<Vector3> directions = MathTools.GetAllDiagonalNormals();
+        foreach(Vector3 direction in directions) {
+            SecondBossLaser laser = Instantiate(diagonalLaserPrefab, parent: gm.map.lightningsFolder).GetComponent<SecondBossLaser>();
+            laser.Initialize(this, direction);
+            orthogonalLasers.Add(laser);
         }
     }
 
