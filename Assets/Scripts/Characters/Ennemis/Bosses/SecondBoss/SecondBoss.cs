@@ -25,6 +25,11 @@ public class SecondBoss : TracerBlast {
     public float timeBetweenDropGenerators;
     public GeoData geoDataToGenerator;
     public List<GameObject> generatorPhase2Prefabs;
+    public List<GameObject> generatorPhase3Prefabs;
+
+    [Header("Lumiere Drops")]
+    public int nbLumieresToDrop = 15;
+    public GameObject lightningToDataPrefab;
 
     [Header("Explosion Cubes Destruction")]
     public float explosionDestructionRange = 16; // La taille de la map pour que ce soit stylé ! :)
@@ -36,16 +41,18 @@ public class SecondBoss : TracerBlast {
     public GameObject randomFillingRandomEventPrefab;
     public List<float> randomFillingFrequencyByPhases;
 
-    [Header("Orthogonal Lasers")]
+    [Header("Lasers")]
     public float laserTimeMalus = 10f;
     public GameObject orthogonalLaserPrefab;
+    public GameObject targetingLaserPrefab;
     public float laserLenght = 25f;
     public float laserWidth = 1.5f;
     public float laserOffset = 0.1f;
     public float delayAfterActivatingLasers = 0.5f;
 
-    [Header("Targeting Laser")]
-    public GameObject targetingLaserPrefab;
+    [Header("Phase 4")]
+    public int phase4NbTargetingLasers = 4;
+    public float phase4Vitesse = 5.0f;
 
     [Header("PresenceSound")]
     public Vector2 presenceSoundVolumeRange = new Vector2(1, 7);
@@ -65,6 +72,7 @@ public class SecondBoss : TracerBlast {
         name = "SecondBoss";
         player.onPowerDashEnnemiImpact.AddListener(OnPowerDashImpactFace);
         orthogonalLasers = new List<SecondBossLaser>();
+        targetingLasers = new List<SecondBossTargetingLaser>();
         GoToPhase1();
         StartPresenceClip();
     }
@@ -73,7 +81,6 @@ public class SecondBoss : TracerBlast {
         Debug.Log($"Phase 1 !");
         currentPhase = 1;
         StartImpactFaces();
-        StartCoroutine(CDeployTargetingLaserIn(0.5f));
     }
 
     protected void StartImpactFaces() {
@@ -190,6 +197,7 @@ public class SecondBoss : TracerBlast {
         StartCoroutine(CGoToPhase2());
     }
     protected IEnumerator CGoToPhase2() {
+        currentPhase = 2;
         UpdateConsoleMessage(phaseIndice: 2);
         AddTimeItem(phaseIndice: 2);
         DeployOrthogonalLaser();
@@ -197,8 +205,8 @@ public class SecondBoss : TracerBlast {
         yield return StartBlast();
         yield return StartCoroutine(CDropGenerators(generatorPhase2Prefabs));
         TriggerSingleEventRandomFilling();
-        //UpdateAttackRate(phaseIndice: 2);
         UpdateRandomEvent(phaseIndice: 2);
+        StartImpactFaces();
     }
 
     protected void UpdateRandomEvent(int phaseIndice) {
@@ -302,10 +310,53 @@ public class SecondBoss : TracerBlast {
 
     protected void GoToPhase3() {
         Debug.Log($"Phase 3 !");
+        StartCoroutine(CGoToPhase3());
+    }
+    protected IEnumerator CGoToPhase3() {
+        currentPhase = 3;
+        UpdateConsoleMessage(phaseIndice: 3);
+        AddTimeItem(phaseIndice: 3);
+        DeployOneTargetingLaser();
+        yield return new WaitForSeconds(delayAfterActivatingLasers);
+        yield return StartBlast();
+        yield return StartCoroutine(CDropGenerators(generatorPhase3Prefabs));
+        TriggerSingleEventRandomFilling();
+        UpdateRandomEvent(phaseIndice: 3);
+        StartImpactFaces();
     }
 
     protected void GoToPhase4() {
         Debug.Log($"Phase 4 !");
+        StartCoroutine(CGoToPhase4());
+    }
+    protected IEnumerator CGoToPhase4() {
+        currentPhase = 4;
+        UpdateConsoleMessage(phaseIndice: 4);
+        AddTimeItem(phaseIndice: 4);
+        yield return DeployPhase4TargetingLasers();
+        yield return new WaitForSeconds(delayAfterActivatingLasers);
+        yield return StartBlast();
+        TriggerSingleEventRandomFilling();
+        UpdateRandomEvent(phaseIndice: 4);
+        IncreaseSpeedToPhase4();
+        PopAllDatas();
+    }
+
+    protected void IncreaseSpeedToPhase4() {
+        IController controller = GetComponent<IController>();
+        controller.vitesse = phase4Vitesse;
+    }
+
+    protected void PopAllDatas() {
+        gm.console.ApparitionDesDatas();
+        FixNbLumieres fixNbLumieres = gm.map.gameObject.AddComponent<FixNbLumieres>();
+        fixNbLumieres.lumiereType = Lumiere.LumiereType.NORMAL;
+        gm.map.nbLumieresInitial = nbLumieresToDrop;
+        fixNbLumieres.Initialize();
+        fixNbLumieres.Activate();
+        foreach(Vector3 lumierePosition in gm.map.GetAllLumieresPositions()) {
+            GenerateLightningTo(lumierePosition, lightningToDataPrefab);
+        }
     }
 
     protected void StartPresenceClip() {
@@ -326,9 +377,13 @@ public class SecondBoss : TracerBlast {
         }
     }
 
-    protected IEnumerator CDeployTargetingLaserIn(float duration) {
-        yield return new WaitForSeconds(duration);
+    protected IEnumerator DeployPhase4TargetingLasers() {
+        float spawningDelay = targetingLaserPrefab.GetComponent<SecondBossTargetingLaser>().spawningDelay;
         DeployOneTargetingLaser();
+        for(int i = 0; i < phase4NbTargetingLasers - 1; i++) {
+            yield return new WaitForSeconds(spawningDelay);
+            DeployOneTargetingLaser();
+        }
     }
 
     protected void DeployOneTargetingLaser() {

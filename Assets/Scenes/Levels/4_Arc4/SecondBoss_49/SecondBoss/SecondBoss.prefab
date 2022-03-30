@@ -250,6 +250,10 @@ MonoBehaviour:
     duration: 0
     targetObject: {fileID: 0}
   generatorPhase2Prefabs: []
+  generatorPhase3Prefabs: []
+  nbLumieresToDrop: 15
+  lightningToDataPrefab: {fileID: 8725588450735506554, guid: 9585ab86ac8f77741ba6cf6c706d5c7b,
+    type: 3}
   explosionDestructionRange: 8
   explosionDestructionDecompositionDuration: 0.3
   explosionDestructionDuration: 0.6
@@ -265,12 +269,14 @@ MonoBehaviour:
   laserTimeMalus: 10
   orthogonalLaserPrefab: {fileID: 5169974788862781237, guid: 06704aa7400684e41be0b2da1a7ec422,
     type: 3}
+  targetingLaserPrefab: {fileID: 8341767541851898069, guid: ae65c090468106740b87684f9c39e4c1,
+    type: 3}
   laserLenght: 25
   laserWidth: 1.5
   laserOffset: 0.3
   delayAfterActivatingLasers: 1
-  targetingLaserPrefab: {fileID: 8341767541851898069, guid: ae65c090468106740b87684f9c39e4c1,
-    type: 3}
+  phase4NbTargetingLasers: 4
+  phase4Vitesse: 5
   presenceSoundVolumeRange: {x: 1, y: 7}
 --- !u!114 &-5391924856941772649
 MonoBehaviour:
