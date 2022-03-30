@@ -6,11 +6,13 @@ using UnityEngine;
 public class SecondBossLaser : MonoBehaviour {
 
     public LineRenderer lineRenderer;
+    public float durationBetweenHits = 0.5f;
 
     protected GameManager gm;
     protected SecondBoss secondBoss;
     protected Vector3 direction;
     protected bool isInitialized = false;
+    protected Timer durationBetweenHitsTimer;
 
     public void Initialize(SecondBoss secondBoss, Vector3 direction) {
         gm = GameManager.Instance;
@@ -18,6 +20,7 @@ public class SecondBossLaser : MonoBehaviour {
         this.direction = direction;
         lineRenderer.SetPosition(1, Vector3.forward * secondBoss.laserLenght);
         lineRenderer.widthMultiplier = secondBoss.laserWidth;
+        durationBetweenHitsTimer = new Timer(durationBetweenHits, setOver: true);
         StartCoroutine(CSetInitializedNextFrame());
     }
 
@@ -30,17 +33,17 @@ public class SecondBossLaser : MonoBehaviour {
         UpdatePositionAccordingToSecondBoss();
     }
 
-    protected void UpdatePositionAccordingToSecondBoss() {
+    protected virtual void UpdatePositionAccordingToSecondBoss() {
         // This is needed because triggers can't be the child of a CharacterController or they will block him ... :'(
         transform.position = ComputePosition();
         transform.rotation = ComputeRotation();
     }
 
-    protected Quaternion ComputeRotation() {
+    protected virtual Quaternion ComputeRotation() {
         return secondBoss.transform.rotation * Quaternion.LookRotation(direction, gm.gravityManager.Up());
     }
 
-    protected Vector3 ComputePosition() {
+    protected virtual Vector3 ComputePosition() {
         return secondBoss.transform.position + direction * (secondBoss.GetHalfSize() + secondBoss.laserOffset);
     }
 
@@ -48,7 +51,8 @@ public class SecondBossLaser : MonoBehaviour {
         return transform.position + direction * secondBoss.laserLenght;
     }
 
-    protected void OnTriggerEnter(Collider other) {
+    //protected void OnTriggerEnter(Collider other) {
+    protected void OnTriggerStay(Collider other) {
         if (!isInitialized) {
             return;
         }
@@ -57,8 +61,11 @@ public class SecondBossLaser : MonoBehaviour {
     }
 
     protected void HitPlayerOnContact(Collider other) {
-        if (other.gameObject.GetComponent<Player>() != null) {
+        if (other.gameObject.GetComponent<Player>() != null
+         && durationBetweenHitsTimer.IsOver()
+         && !gm.player.IsTimeHackOn()) {
             secondBoss.HitPlayerWithLaser();
+            durationBetweenHitsTimer.Reset();
         }
     }
 

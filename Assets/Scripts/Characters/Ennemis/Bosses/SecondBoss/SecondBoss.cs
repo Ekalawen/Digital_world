@@ -38,11 +38,14 @@ public class SecondBoss : TracerBlast {
 
     [Header("Orthogonal Lasers")]
     public float laserTimeMalus = 10f;
-    public GameObject laserLinePrefab;
+    public GameObject orthogonalLaserPrefab;
     public float laserLenght = 25f;
     public float laserWidth = 1.5f;
     public float laserOffset = 0.1f;
     public float delayAfterActivatingLasers = 0.5f;
+
+    [Header("Targeting Laser")]
+    public GameObject targetingLaserPrefab;
 
     [Header("PresenceSound")]
     public Vector2 presenceSoundVolumeRange = new Vector2(1, 7);
@@ -54,13 +57,14 @@ public class SecondBoss : TracerBlast {
     protected Vector3 currentImpactFaceDirection;
     protected RandomEvent randomFillingEventToRemove = null;
     protected bool hasOrthogonalLasersUp = false;
-    protected List<SecondBossLaser> lasers;
+    protected List<SecondBossLaser> orthogonalLasers;
+    protected List<SecondBossTargetingLaser> targetingLasers;
 
     public override void Start () {
         base.Start();
         name = "SecondBoss";
         player.onPowerDashEnnemiImpact.AddListener(OnPowerDashImpactFace);
-        lasers = new List<SecondBossLaser>();
+        orthogonalLasers = new List<SecondBossLaser>();
         GoToPhase1();
         StartPresenceClip();
     }
@@ -69,6 +73,7 @@ public class SecondBoss : TracerBlast {
         Debug.Log($"Phase 1 !");
         currentPhase = 1;
         StartImpactFaces();
+        StartCoroutine(CDeployTargetingLaserIn(0.5f));
     }
 
     protected void StartImpactFaces() {
@@ -315,10 +320,21 @@ public class SecondBoss : TracerBlast {
         hasOrthogonalLasersUp = true;
         List<Vector3> directions = MathTools.GetAllOrthogonalNormals();
         foreach(Vector3 direction in directions) {
-            SecondBossLaser laser = Instantiate(laserLinePrefab, parent: gm.map.lightningsFolder).GetComponent<SecondBossLaser>();
+            SecondBossLaser laser = Instantiate(orthogonalLaserPrefab, parent: gm.map.lightningsFolder).GetComponent<SecondBossLaser>();
             laser.Initialize(this, direction);
-            lasers.Add(laser);
+            orthogonalLasers.Add(laser);
         }
+    }
+
+    protected IEnumerator CDeployTargetingLaserIn(float duration) {
+        yield return new WaitForSeconds(duration);
+        DeployOneTargetingLaser();
+    }
+
+    protected void DeployOneTargetingLaser() {
+        SecondBossTargetingLaser targetingLaser = Instantiate(targetingLaserPrefab, parent: gm.map.lightningsFolder).GetComponent<SecondBossTargetingLaser>();
+        targetingLaser.Initialize(this);
+        targetingLasers.Add(targetingLaser);
     }
 
     public void HitPlayerWithLaser() {

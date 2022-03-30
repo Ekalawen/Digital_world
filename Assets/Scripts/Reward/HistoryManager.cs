@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -28,6 +29,17 @@ public struct ObjectHistory {
 
     public float LastTime() {
         return positions[positions.Count - 1].time;
+    }
+
+    public Vector3 GetPositionTimesAgo(float timesAgo) {
+        if(positions.Count == 0) {
+            throw new Exception($"On ne peut pas trouver une position précédente de {timesAgo}s si il n'y a aucune position dans l'historique !");
+        }
+        List<TimedVector3> antecedantPositions = positions.FindAll(tp => tp.time < GameManager.Instance.timerManager.GetRealElapsedTime() - timesAgo);
+        if(antecedantPositions.Count == 0) {
+            return positions.First().position;
+        }
+        return antecedantPositions.Last().position;
     }
 }
 
