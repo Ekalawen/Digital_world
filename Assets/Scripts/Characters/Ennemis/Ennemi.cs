@@ -196,4 +196,8 @@ public abstract class Ennemi : Character {
     public virtual bool CanBeHitByPowerDash(PouvoirPowerDash powerDash) {
         return true;
     }
+
+    public float GetHalfSize() {
+        return transform.localScale.x / 2.0f;
+    }
 }

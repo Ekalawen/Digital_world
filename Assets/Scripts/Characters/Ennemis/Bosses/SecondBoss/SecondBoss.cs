@@ -35,6 +35,12 @@ public class SecondBoss : TracerBlast {
     public GameObject randomFillingRandomEventPrefab;
     public List<float> randomFillingFrequencyByPhases;
 
+    [Header("Orthogonal Lasers")]
+    public GameObject laserLinePrefab;
+    public float laserLenght = 25f;
+    public float laserWidth = 1.5f;
+    public float laserOffset = 0.1f;
+
     [Header("PresenceSound")]
     public Vector2 presenceSoundVolumeRange = new Vector2(1, 7);
 
@@ -57,6 +63,7 @@ public class SecondBoss : TracerBlast {
         Debug.Log($"Phase 1 !");
         currentPhase = 1;
         StartImpactFaces();
+        DeployOrthogonalLaser();
     }
 
     protected void StartImpactFaces() {
@@ -296,5 +303,15 @@ public class SecondBoss : TracerBlast {
 
     public override Vector3 PopPosition(MapManager map) {
         return map.GetFreeBoxLocation(Vector3.one * 3.0f);
+    }
+
+    protected void DeployOrthogonalLaser() {
+        List<Vector3> directions = MathTools.GetAllOrthogonalNormals();
+        foreach(Vector3 direction in directions) {
+            Vector3 position = transform.position + direction * (GetHalfSize() + laserOffset);
+            LineRenderer line = Instantiate(laserLinePrefab, position, Quaternion.identity, parent: transform).GetComponent<LineRenderer>();
+            line.SetPosition(1, direction * laserLenght);
+            line.widthMultiplier = laserWidth;
+        }
     }
 }
