@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Localization;
@@ -47,10 +48,12 @@ public class OrbTrigger : IZone {
     public UnityEvent<OrbTrigger> onExit;
     protected float coefTimeToDisplayOnScreen = 1.0f;
     protected Timer timerEnter;
+    protected List<OrbTriggerEnterCondition> conditions;
 
     public void Initialize(float rayon, float durationToActivate) {
         base.Initialize();
         gm.itemManager.AddOrbTrigger(this);
+        InitializeConditions();
         onHack.AddListener(gm.itemManager.onOrbTriggerHacked.Invoke);
         onExit.AddListener(gm.itemManager.onOrbTriggerExit.Invoke);
         Resize(transform.position, Vector3.zero);
@@ -62,6 +65,13 @@ public class OrbTrigger : IZone {
         gm.player.onTimeHackStart.AddListener(OnTimeHackStart);
         gm.player.onTimeHackStop.AddListener(OnTimeHackStop);
         gm.eventManager.onGameOver.AddListener(DestroyLightning);
+    }
+
+    protected void InitializeConditions() {
+        conditions = gameObject.GetComponents<OrbTriggerEnterCondition>().ToList();
+        foreach (OrbTriggerEnterCondition condition in conditions) {
+            condition.Initialize(this);
+        }
     }
 
     public override void Resize(Vector3 center, Vector3 halfExtents) {
@@ -95,7 +105,7 @@ public class OrbTrigger : IZone {
     }
 
     protected override void OnEnter(Collider other) {
-        if (other.gameObject.tag == "Player") {
+        if (other.gameObject.tag == "Player" && AllConditionsAreFullfilled()) {
             if (coroutineOnEnter != null) {
                 StopCoroutine(coroutineOnEnter);
             }
@@ -104,6 +114,16 @@ public class OrbTrigger : IZone {
             InstantiateLightningLink();
             AddGeoPoint();
         }
+    }
+
+    protected bool AllConditionsAreFullfilled() {
+        foreach(OrbTriggerEnterCondition condition in conditions) {
+            if(!condition.IsFullfilled()) {
+                condition.DisplayNotFullfilledMessage();
+                return false;
+            }
+        }
+        return true;
     }
 
     public void ReduceAndDestroy() {
@@ -188,6 +208,9 @@ public class OrbTrigger : IZone {
 
 
     public void CallAllEvents() {
+        foreach(OrbTriggerEnterCondition condition in conditions) {
+            condition.OnTrigger();
+        }
         events.Invoke();
         onHack.Invoke(this);
         gm.soundManager.PlayOrbTriggerActivationClip(transform.position);

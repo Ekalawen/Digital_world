@@ -17,10 +17,32 @@ PrefabInstance:
       propertyPath: modifiers.Array.data[0]
       value: 
       objectReference: {fileID: 8056050635740713697}
+    - target: {fileID: 1926574466379796549, guid: a851e1df1ddb5cd4eadb19f19025f1a6,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 775b205c5b916e346adf8a9391e37fd3, type: 2}
+    - target: {fileID: 4190984537918467435, guid: a851e1df1ddb5cd4eadb19f19025f1a6,
+        type: 3}
+      propertyPath: ennemiPrefab
+      value: 
+      objectReference: {fileID: 1252573298759596, guid: 1c70aaceaab0acf419227d5e1206d422,
+        type: 3}
+    - target: {fileID: 4190984537918467435, guid: a851e1df1ddb5cd4eadb19f19025f1a6,
+        type: 3}
+      propertyPath: nbEnnemisMax
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4190984537918467435, guid: a851e1df1ddb5cd4eadb19f19025f1a6,
+        type: 3}
+      propertyPath: lightningPrefab
+      value: 
+      objectReference: {fileID: 8725588450735506554, guid: 90f42a60d387eff46a398deefd72021f,
+        type: 3}
     - target: {fileID: 4963224914880968687, guid: a851e1df1ddb5cd4eadb19f19025f1a6,
         type: 3}
       propertyPath: m_Name
-      value: EnnemiGeneratorFirstBossSondes
+      value: SoulRobberGenerator_SecondBoss
       objectReference: {fileID: 0}
     - target: {fileID: 4963224914880968689, guid: a851e1df1ddb5cd4eadb19f19025f1a6,
         type: 3}
@@ -79,8 +101,29 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9219331088902830557, guid: a851e1df1ddb5cd4eadb19f19025f1a6,
         type: 3}
+      propertyPath: rayon
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 9219331088902830557, guid: a851e1df1ddb5cd4eadb19f19025f1a6,
+        type: 3}
+      propertyPath: durationToActivate
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9219331088902830557, guid: a851e1df1ddb5cd4eadb19f19025f1a6,
+        type: 3}
+      propertyPath: lightningLinkPrefab
+      value: 
+      objectReference: {fileID: 4445703935790252871, guid: 0ddc6092a8913a3498612ba0f3d1dbe4,
+        type: 3}
+    - target: {fileID: 9219331088902830557, guid: a851e1df1ddb5cd4eadb19f19025f1a6,
+        type: 3}
       propertyPath: shouldPopCubeInCenter
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9219331088902830557, guid: a851e1df1ddb5cd4eadb19f19025f1a6,
+        type: 3}
+      propertyPath: additionnalRayonOnEnter
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 9219331088902830557, guid: a851e1df1ddb5cd4eadb19f19025f1a6,
         type: 3}
@@ -96,7 +139,7 @@ PrefabInstance:
         type: 3}
       propertyPath: events.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 2935841992776148656}
+      objectReference: {fileID: 8881338796628851500}
     - target: {fileID: 9219331088902830557, guid: a851e1df1ddb5cd4eadb19f19025f1a6,
         type: 3}
       propertyPath: events.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
@@ -110,7 +153,7 @@ PrefabInstance:
     - target: {fileID: 9219331088902830557, guid: a851e1df1ddb5cd4eadb19f19025f1a6,
         type: 3}
       propertyPath: events.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
-      value: FirstBossCollecteur, Assembly-CSharp
+      value: SecondBossCollecteur, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 9219331088902830557, guid: a851e1df1ddb5cd4eadb19f19025f1a6,
         type: 3}
@@ -148,10 +191,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd73535c2bbddd5499bf8828763dc623, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  modulo: 2
+  modulo: 4
   agglomeration: 1
   trueRange: {x: 0, y: 0}
---- !u!114 &2935841992776148656
+--- !u!114 &5216857378889853338
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -160,7 +203,31 @@ MonoBehaviour:
   m_GameObject: {fileID: 5189156151242987559}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 41432109cac49dc439276f1e9506d3cb, type: 3}
+  m_Script: {fileID: 11500000, guid: c85dca9dc840b024a93bfa6000e41ed2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  notFullfilledMessage:
+    localizedString:
+      m_TableReference:
+        m_TableCollectionName: GUID:0589e7d3c8829a243a3f17f1b80e6301
+      m_TableEntryReference:
+        m_KeyId: 155850620995346432
+        m_Key: 
+      m_FallbackState: 0
+    type: 1
+    timing: 0
+    duree: 2
+  mode: 0
+--- !u!114 &8881338796628851500
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5189156151242987559}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1abf0b2775b51494fb718a1bc05548cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   phaseIndice: 3
