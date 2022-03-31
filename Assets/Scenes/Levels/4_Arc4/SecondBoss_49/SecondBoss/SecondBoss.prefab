@@ -231,15 +231,15 @@ MonoBehaviour:
   timeBetweenTwoContactHits: 0.5
   dureeCancelAnimation: 6
   shouldDisplayBlastLearningMessage: 0
-  nbImpactFacesByPhases: 1
+  nbImpactFacesByPhases: 3
   impactStunDuration: 0.5
-  resetTimeItemPrefab: {fileID: 5211296077710153815, guid: 36ff3f448dffa084b91a109adaaed908,
+  resetTimeItemPrefab: {fileID: 7540992546691786090, guid: d3f5ebbeb5ca1ae46929673a9bf84d8f,
     type: 3}
   resetTimeByPhases:
   - 0
-  - 100
-  - 100
-  - 100
+  - 60
+  - 60
+  - 60
   lightningToTimeResetPrefab: {fileID: 8725588450735506554, guid: 3f861a22acd06024b955020f6492dd38,
     type: 3}
   nanoboostPrefab: {fileID: 8779087755453976748, guid: bd8880f60ee9700488fe52791b108406,
@@ -285,6 +285,7 @@ MonoBehaviour:
     type: 3}
   laserLenght: 25
   laserWidth: 1.5
+  laserTriggerWidthCoef: 0.8
   laserOffset: 0.3
   delayAfterActivatingLasers: 1
   phase4NbTargetingLasers: 4

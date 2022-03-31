@@ -51,6 +51,7 @@ public class SecondBoss : TracerBlast {
     public GameObject diagonalLaserPrefab;
     public float laserLenght = 25f;
     public float laserWidth = 1.5f;
+    public float laserTriggerWidthCoef = 0.8f;
     public float laserOffset = 0.1f;
     public float delayAfterActivatingLasers = 0.5f;
 
@@ -81,8 +82,8 @@ public class SecondBoss : TracerBlast {
         player.onPowerDashEnnemiImpact.AddListener(OnPowerDashImpactFace);
         orthogonalLasers = new List<SecondBossLaser>();
         targetingLasers = new List<SecondBossTargetingLaser>();
-        //GoToPhase1();
-        GoToPhase3();
+        GoToPhase1();
+        //GoToPhase3();
         StartPresenceClip();
     }
 

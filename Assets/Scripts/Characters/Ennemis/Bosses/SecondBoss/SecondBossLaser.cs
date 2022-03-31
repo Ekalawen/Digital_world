@@ -20,7 +20,7 @@ public class SecondBossLaser : MonoBehaviour {
         this.secondBoss = secondBoss;
         this.direction = direction;
         lineRenderer.SetPosition(1, Vector3.forward * secondBoss.laserLenght);
-        lineRenderer.widthMultiplier = secondBoss.laserWidth;
+        lineRenderer.widthMultiplier = secondBoss.laserWidth * secondBoss.laserTriggerWidthCoef;
         durationBetweenHitsTimer = new Timer(durationBetweenHits, setOver: true);
         StartCoroutine(CSetInitializedNextFrame());
     }
