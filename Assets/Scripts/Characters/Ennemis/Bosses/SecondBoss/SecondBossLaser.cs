@@ -26,7 +26,7 @@ public class SecondBossLaser : MonoBehaviour {
     }
 
     protected IEnumerator CSetInitializedNextFrame() {
-        yield return new WaitForEndOfFrame();
+        yield return new WaitForSeconds(0.1f);
         isInitialized = true;
     }
 
