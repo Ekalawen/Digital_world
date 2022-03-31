@@ -44,7 +44,7 @@ public abstract class IGenerator : MonoBehaviour {
         ComputePrecomputedPositions();
     }
 
-    protected void ComputePrecomputedPositions() {
+    protected virtual void ComputePrecomputedPositions() {
         List<Vector3> positions;
         if (choseType == ChoseType.GET_CUBES) {
             positions = getCubesHelper.Get().Select(c => c.transform.position).ToList();
@@ -72,7 +72,7 @@ public abstract class IGenerator : MonoBehaviour {
         TryGenerate();
     }
 
-    protected void TryGenerate() {
+    protected virtual void TryGenerate() {
         if(generateTimer.IsOver()) {
             if(precomputedPositions.Count == 0 || recomputeTimer.IsOver()) {
                 ComputePrecomputedPositions();

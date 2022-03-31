@@ -81,8 +81,8 @@ public class SecondBoss : TracerBlast {
         player.onPowerDashEnnemiImpact.AddListener(OnPowerDashImpactFace);
         orthogonalLasers = new List<SecondBossLaser>();
         targetingLasers = new List<SecondBossTargetingLaser>();
-        GoToPhase1();
-        //GoToPhase4();
+        //GoToPhase1();
+        GoToPhase3();
         StartPresenceClip();
     }
 
