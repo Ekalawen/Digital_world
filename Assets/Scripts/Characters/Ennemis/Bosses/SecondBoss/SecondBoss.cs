@@ -16,10 +16,12 @@ public class SecondBoss : TracerBlast {
 
     [Header("Time Reset Drops")]
     public GameObject resetTimeItemPrefab;
-
     public List<float> resetTimeByPhases;
+    public GameObject lightningToTimeResetPrefab;
 
-    public GameObject lightningToItemPrefab;
+    [Header("Nanoboost Drops")]
+    public GameObject nanoboostPrefab;
+    public GameObject lightningToNanoboostPrefab;
 
     [Header("Generator Drops")]
     public int nbTriesByGeneratorPositions;
@@ -207,6 +209,7 @@ public class SecondBoss : TracerBlast {
         currentPhase = 2;
         UpdateConsoleMessage(phaseIndice: 2);
         AddTimeItem(phaseIndice: 2);
+        AddNanoboost();
         DeployOrthogonalLasers();
         SetVitesseTo0();
         yield return new WaitForSeconds(delayAfterActivatingLasers);
@@ -288,7 +291,12 @@ public class SecondBoss : TracerBlast {
     protected void AddTimeItem(int phaseIndice) {
         ResetTimeItem resetTemporel = gm.itemManager.PopItem(resetTimeItemPrefab) as ResetTimeItem;
         resetTemporel.settedTime = resetTimeByPhases[phaseIndice - 1];
-        GenerateLightningTo(resetTemporel.transform.position, lightningToItemPrefab);
+        GenerateLightningTo(resetTemporel.transform.position, lightningToNanoboostPrefab);
+    }
+
+    protected void AddNanoboost() {
+        SpeedBoostItem nanoboost = gm.itemManager.PopItem(nanoboostPrefab) as SpeedBoostItem;
+        GenerateLightningTo(nanoboost.transform.position, lightningToNanoboostPrefab);
     }
 
     protected Lightning GenerateLightningTo(Vector3 position, GameObject lightningPrefab) {
@@ -326,6 +334,7 @@ public class SecondBoss : TracerBlast {
         currentPhase = 3;
         UpdateConsoleMessage(phaseIndice: 3);
         AddTimeItem(phaseIndice: 3);
+        AddNanoboost();
         DeployOneTargetingLaser();
         SetVitesseTo0();
         yield return new WaitForSeconds(delayAfterActivatingLasers);
@@ -334,7 +343,6 @@ public class SecondBoss : TracerBlast {
         SetVitesseToOldVitesse();
         TriggerSingleEventRandomFilling();
         UpdateRandomEvent(phaseIndice: 3);
-        StartImpactFaces();
     }
 
     protected void GoToPhase4() {
@@ -345,6 +353,7 @@ public class SecondBoss : TracerBlast {
         currentPhase = 4;
         UpdateConsoleMessage(phaseIndice: 4);
         AddTimeItem(phaseIndice: 4);
+        AddNanoboost();
         DeployDiagonalLasers();
         SetVitesseTo0();
         yield return new WaitForSeconds(delayAfterActivatingLasers);
