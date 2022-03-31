@@ -17,7 +17,9 @@ public class SecondBossTargetingLaser : SecondBossLaser {
 
     protected override void UpdatePositionAccordingToSecondBoss() {
         direction = ComputeDirection();
-        base.UpdatePositionAccordingToSecondBoss();
+        if (!gm.eventManager.IsGameWin()) {
+            base.UpdatePositionAccordingToSecondBoss();
+        }
     }
 
     protected Vector3 ComputeFirstDirection() {
