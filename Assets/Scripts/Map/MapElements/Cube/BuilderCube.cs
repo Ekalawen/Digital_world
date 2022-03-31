@@ -191,13 +191,36 @@ public class BuilderCube : NonBlackCube {
 
     protected List<Cube> CreatePathToClusterCenters(List<Vector3> clusterCenters) {
         List<Cube> createdCubes = new List<Cube>() { this };
+        List<Vector3> posInFrontOfPlayer = GetPositionsInFrontOfPlayer();
         foreach(Vector3 clusterCenter in clusterCenters) {
-            createdCubes.AddRange(CreateCubePathTo(clusterCenter));
+            createdCubes.AddRange(CreateCubePathTo(clusterCenter, posInFrontOfPlayer));
         }
+        createdCubes = createdCubes.FindAll(c => c != null);
         return createdCubes;
     }
 
-    protected List<Cube> CreateCubePathTo(Vector3 target) {
+    protected List<Vector3> GetPositionsInFrontOfPlayer() {
+        Vector3 upNormal = gm.gravityManager.Up();
+        Vector3 playerForward = gm.player.camera.transform.forward;
+        Vector3 playerPos = MathTools.Round(gm.player.transform.position);
+        List<Vector3> horizontalNormals = MathTools.GetAllOrthogonalNormals().FindAll(n => Vector3.Dot(n, upNormal) == 0);
+        List<Vector3> inFrontOfPlayerNormals = horizontalNormals.FindAll(n => Vector3.Dot(n, playerForward) > 0);
+        inFrontOfPlayerNormals.Add(upNormal);
+        int nbNormals = inFrontOfPlayerNormals.Count;
+        List<Vector3> inFrontOfPlayersPositions = new List<Vector3>();
+        for(int mask = 0; mask < 1 << nbNormals; mask++) {
+            Vector3 pos = playerPos;
+            for(int ind = 0; ind < nbNormals; ind++) {
+                if((mask & (1 << ind)) != 0) {
+                    pos += inFrontOfPlayerNormals[ind];
+                }
+            }
+            inFrontOfPlayersPositions.Add(pos);
+        }
+        return inFrontOfPlayersPositions;
+    }
+
+    protected List<Cube> CreateCubePathTo(Vector3 target, List<Vector3> forbiddenPositions) {
         Vector3 start = !useCustomClusters ? MathTools.Round(transform.position) : transform.position;
         Vector3 bestTarget = !useCustomClusters ? MathTools.Round(GetBestTargetForTarget(target)) : GetBestTargetForTarget(target);
         List<Vector3> straightPath = gm.map.GetStraitPathVerticalLast(start, bestTarget, shouldRoundPositions: !useCustomClusters);
@@ -209,6 +232,9 @@ public class BuilderCube : NonBlackCube {
         //Color pathColor = MathTools.ChoseOne(new List<Color>() { Color.red, Color.green, Color.yellow });
         for (int i = 0; i < straightPath.Count; i++) {
             Vector3 current = straightPath[i];
+            if(forbiddenPositions.Contains(current)) {
+                continue;
+            }
             Cube newCube = CreateNewCube(current);
             if (newCube != null) {
                 createdCubes.Add(newCube);
