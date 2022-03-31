@@ -18,6 +18,7 @@ public class SecondBoss : TracerBlast {
     public GameObject resetTimeItemPrefab;
 
     public List<float> resetTimeByPhases;
+
     public GameObject lightningToItemPrefab;
 
     [Header("Generator Drops")]
@@ -68,6 +69,9 @@ public class SecondBoss : TracerBlast {
     protected bool hasDiagonalLasersUp = false;
     protected List<SecondBossLaser> orthogonalLasers;
     protected List<SecondBossTargetingLaser> targetingLasers;
+    protected int nbGeneratorsOfPhase2Collected = 0;
+    protected int nbGeneratorsOfPhase3Collected = 0;
+    protected float oldVitesse;
 
     public override void Start () {
         base.Start();
@@ -204,9 +208,11 @@ public class SecondBoss : TracerBlast {
         UpdateConsoleMessage(phaseIndice: 2);
         AddTimeItem(phaseIndice: 2);
         DeployOrthogonalLasers();
+        SetVitesseTo0();
         yield return new WaitForSeconds(delayAfterActivatingLasers);
-        yield return CExplosionAttack();
+        yield return StartBlast();
         yield return StartCoroutine(CDropGenerators(generatorPhase2Prefabs));
+        SetVitesseToOldVitesse();
         TriggerSingleEventRandomFilling();
         UpdateRandomEvent(phaseIndice: 2);
         //StartImpactFaces();
@@ -223,13 +229,14 @@ public class SecondBoss : TracerBlast {
         gm.eventManager.StartSingleEvent(randomFillingAfterExplosionSingleEventPrefab);
     }
 
-    protected IEnumerator CExplosionAttack() {
+    protected void SetVitesseTo0() {
         IController controller = GetComponent<IController>();
-        float oldVitesse = controller.vitesse;
+        oldVitesse = controller.vitesse;
         controller.vitesse = 0.0f;
+    }
 
-        yield return StartBlast();
-
+    protected void SetVitesseToOldVitesse() {
+        IController controller = GetComponent<IController>();
         controller.vitesse = oldVitesse;
     }
 
@@ -320,9 +327,11 @@ public class SecondBoss : TracerBlast {
         UpdateConsoleMessage(phaseIndice: 3);
         AddTimeItem(phaseIndice: 3);
         DeployOneTargetingLaser();
+        SetVitesseTo0();
         yield return new WaitForSeconds(delayAfterActivatingLasers);
-        yield return CExplosionAttack();
+        yield return StartBlast();
         yield return StartCoroutine(CDropGenerators(generatorPhase3Prefabs));
+        SetVitesseToOldVitesse();
         TriggerSingleEventRandomFilling();
         UpdateRandomEvent(phaseIndice: 3);
         StartImpactFaces();
@@ -337,8 +346,10 @@ public class SecondBoss : TracerBlast {
         UpdateConsoleMessage(phaseIndice: 4);
         AddTimeItem(phaseIndice: 4);
         DeployDiagonalLasers();
+        SetVitesseTo0();
         yield return new WaitForSeconds(delayAfterActivatingLasers);
-        yield return CExplosionAttack();
+        yield return StartBlast();
+        SetVitesseToOldVitesse();
         TriggerSingleEventRandomFilling();
         UpdateRandomEvent(phaseIndice: 4);
         IncreaseSpeedToPhase4();
@@ -398,5 +409,19 @@ public class SecondBoss : TracerBlast {
 
     public void HitPlayerWithLaser() {
         HitPlayerCustom(EventManager.DeathReason.SECOND_BOSS_LASER, laserTimeMalus);
+    }
+
+    public void CollectGeneratorsOfPhase2() {
+        nbGeneratorsOfPhase2Collected++;
+        if(nbGeneratorsOfPhase2Collected >= generatorPhase2Prefabs.Count) {
+            StartImpactFaces();
+        }
+    }
+
+    public void CollectGeneratorsOfPhase3() {
+        nbGeneratorsOfPhase3Collected++;
+        if(nbGeneratorsOfPhase3Collected >= generatorPhase3Prefabs.Count) {
+            StartImpactFaces();
+        }
     }
 }
