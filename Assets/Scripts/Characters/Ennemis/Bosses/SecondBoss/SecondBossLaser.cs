@@ -64,7 +64,8 @@ public class SecondBossLaser : MonoBehaviour {
     protected void HitPlayerOnContact(Collider other) {
         if (other.gameObject.GetComponent<Player>() != null
          && durationBetweenHitsTimer.IsOver()
-         && !gm.player.IsTimeHackOn()) {
+         && !gm.player.IsTimeHackOn()
+         && !gm.eventManager.IsGameOver()) {
             secondBoss.HitPlayerWithLaser();
             durationBetweenHitsTimer.Reset();
         }
