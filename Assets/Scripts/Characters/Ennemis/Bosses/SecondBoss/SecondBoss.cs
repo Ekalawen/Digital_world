@@ -83,6 +83,8 @@ public class SecondBoss : TracerBlast {
     protected void GoToPhase1() {
         Debug.Log($"Phase 1 !");
         currentPhase = 1;
+        TriggerSingleEventRandomFilling(); // <== ro remove
+        UpdateRandomEvent(phaseIndice: 2); // <== ro remove
         StartImpactFaces();
     }
 
@@ -209,7 +211,7 @@ public class SecondBoss : TracerBlast {
         yield return StartCoroutine(CDropGenerators(generatorPhase2Prefabs));
         TriggerSingleEventRandomFilling();
         UpdateRandomEvent(phaseIndice: 2);
-        StartImpactFaces();
+        //StartImpactFaces();
     }
 
     protected void UpdateRandomEvent(int phaseIndice) {

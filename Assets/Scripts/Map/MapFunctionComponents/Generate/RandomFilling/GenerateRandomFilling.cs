@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using System.Diagnostics;
+using System;
 
 public class GenerateRandomFilling : GenerateCubesMapFunction {
 
@@ -25,8 +26,18 @@ public class GenerateRandomFilling : GenerateCubesMapFunction {
     public float dissolveTime = 1.0f;
     public int minNbBlocks = 0;
 
+    protected List<GenerateRandomFillingModifier> modifiers;
+
     public override void Activate() {
+        GatherAndInitializeModifiers();
         GenerateRandomFillingCubes();
+    }
+
+    protected void GatherAndInitializeModifiers() {
+        modifiers = GetComponents<GenerateRandomFillingModifier>().ToList();
+        foreach (GenerateRandomFillingModifier modifier in modifiers) {
+            modifier.InitializeSpecific(this);
+        }
     }
 
     protected List<FullBlock> GenerateRandomFillingCubes()
@@ -43,9 +54,17 @@ public class GenerateRandomFilling : GenerateCubesMapFunction {
             }
             if (registerToColorSources)
                 fb.RegisterToColorSources();
+            fb = ApplyModifiersModify(fb);
             fullBlocks.Add(fb);
         }
         return fullBlocks;
+    }
+
+    protected FullBlock ApplyModifiersModify(FullBlock fb) {
+        foreach(GenerateRandomFillingModifier modifier in modifiers) {
+            fb = modifier.ModifyFullBlock(fb);
+        }
+        return fb;
     }
 
     protected List<Vector3> GetSelectedPos() {

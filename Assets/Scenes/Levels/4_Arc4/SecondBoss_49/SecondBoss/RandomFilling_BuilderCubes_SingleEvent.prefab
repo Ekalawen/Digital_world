@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2810734391460843119}
   - component: {fileID: 8211882941169154786}
   - component: {fileID: 2810734391460843105}
+  - component: {fileID: 1951546351555461458}
   m_Layer: 0
   m_Name: RandomFilling_BuilderCubes_SingleEvent
   m_TagString: Untagged
@@ -86,8 +87,22 @@ MonoBehaviour:
   getEmptyPositionsHelper: {fileID: 0}
   proportionRandomFilling: 0.003
   useSureMethodForSelection: 0
-  sizeCubeRandomFilling: 1
+  sizeCubeRandomFilling: 2
   registerToColorSources: 1
   setDissolveTime: 1
   dissolveTime: 1
   minNbBlocks: 0
+--- !u!114 &1951546351555461458
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2810734391460843107}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a94e16f823689d44393d95d2b9e7126c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  setOneBuilderCubeMain: 1
+  setLinky: 1

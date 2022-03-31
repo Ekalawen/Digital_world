@@ -231,7 +231,7 @@ MonoBehaviour:
   timeBetweenTwoContactHits: 0.5
   dureeCancelAnimation: 6
   shouldDisplayBlastLearningMessage: 0
-  nbImpactFacesByPhases: 3
+  nbImpactFacesByPhases: 1
   impactStunDuration: 0.5
   resetTimeItemPrefab: {fileID: 5211296077710153815, guid: 36ff3f448dffa084b91a109adaaed908,
     type: 3}
@@ -249,7 +249,10 @@ MonoBehaviour:
     type: 1
     duration: 0
     targetObject: {fileID: 0}
-  generatorPhase2Prefabs: []
+  generatorPhase2Prefabs:
+  - {fileID: 5093024928719543386, guid: 442aba6a6c6449441bf5f2a1748905dd, type: 3}
+  - {fileID: 5093024928719543386, guid: 7325c533fa2e5f64b9a92215361e9c14, type: 3}
+  - {fileID: 5093024928719543386, guid: 1f747d9f137775e4bbbc710513e05a87, type: 3}
   generatorPhase3Prefabs: []
   nbLumieresToDrop: 15
   lightningToDataPrefab: {fileID: 8725588450735506554, guid: 9585ab86ac8f77741ba6cf6c706d5c7b,
@@ -292,7 +295,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7f50da034668bc429dfc233c78a32b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vitesse: 1.5
+  vitesse: 0
   tempsInactifDebutJeu: 3
   distanceDeDetection: 999999
   canAlwaysSeePlayer: 1

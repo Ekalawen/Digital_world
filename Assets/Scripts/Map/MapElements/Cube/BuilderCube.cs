@@ -17,13 +17,13 @@ public class BuilderCube : NonBlackCube {
         }
     }
 
-    public static Vector2Int kRange = new Vector2Int(1, 8);
     public static int kMeansNbMaxIterations = 100;
 
     [Header("Generation")]
     public CubeType cubeGeneratedType = CubeType.NORMAL;
     public float range = 8.0f;
     public GetPartitioning.Method partitioningMethod = GetPartitioning.Method.ELBOW;
+    public Vector2Int kRange = new Vector2Int(1, 8);
     public int nbCubesToGenerate = 45;
     public float generatedDissolveTime = 1.0f;
 
@@ -65,24 +65,33 @@ public class BuilderCube : NonBlackCube {
         }
         hasBeenBuilt = true;
 
-        List<Cube> nearByCubes = gm.map.GetCubesInSphere(transform.position, range);
-        if (nearByCubes.Count <= 0) {
-            Debug.LogError($"Il ne peut pas y avoir aucun cubes dans les nearByCubes du builder ! x)");
-        }
-        List<Vector3> clusterCenters = GetClusterCenters(nearByCubes);
-        if(clusterCenters.Count == 0) { // Usefull in IR where some Builders are just linky and have no customCenters :)
+        List<Vector3> clusterCenters = GetClusterCenters();
+        ReplaceItselfWithNormalCube();
+        if (clusterCenters.Count == 0) { // Usefull in IR where some Builders are just linky and have no customCenters :)
             return;
         }
         List<Cube> createdCubes = CreatePathToClusterCenters(clusterCenters);
         ExpandPathWithRemaininCubes(createdCubes, clusterCenters);
-        ReplaceItselfWithNormalCube();
         EnsurePlayerIsNotTrapped();
         //DisplayClusterCentersAsBouncyCubes(clusterCenters);
     }
 
+    protected List<Vector3> GetClusterCenters() {
+        if(useCustomClusters) {
+            return GetCustomClusterCenters();
+        }
+        List<Cube> nearByCubes = gm.map.GetCubesInSphere(transform.position, range);
+        if (nearByCubes.Count <= 0) {
+            Debug.LogError($"Il ne peut pas y avoir aucun cubes dans les nearByCubes du builder ! x)");
+        }
+        return GetComputedClusterCenters(nearByCubes);
+    }
+
     protected void ReplaceItselfWithNormalCube() {
         Cube replacingCube = gm.map.SwapCubeType(this, CubeType.NORMAL, transform.parent);
-        replacingCube.StartDissolveEffect(generatedDissolveTime);
+        if (replacingCube != null) {
+            replacingCube.StartDissolveEffect(generatedDissolveTime);
+        }
         if(gm.IsIR() && replacingCube != null) {
             replacingCube.GetComponentInParent<Block>().GetCubes().Add(replacingCube);
         }
@@ -230,10 +239,11 @@ public class BuilderCube : NonBlackCube {
         return target;
     }
 
-    private List<Vector3> GetClusterCenters(List<Cube> nearByCubes) {
-        if(useCustomClusters) {
-            return customClusters.FindAll(c => c != null).Select(c => c.transform.position).ToList();
-        }
+    protected List<Vector3> GetCustomClusterCenters() {
+        return customClusters.FindAll(c => c != null).Select(c => c.transform.position).ToList();
+    }
+
+    protected List<Vector3> GetComputedClusterCenters(List<Cube> nearByCubes) {
         GetPartitioning partioner = new GetPartitioning(kRange, partitioningMethod, kMeansNbMaxIterations);
         KMeans bestKMeans = partioner.GetBestKMeans(nearByCubes.Select(c => c.transform.position).ToList());
         //Debug.Log($"Best k = {bestKMeans.GetK()}");
@@ -246,7 +256,10 @@ public class BuilderCube : NonBlackCube {
         foreach(Cube cube in nearByCubes) {
             Vector3 cubeRoundedPosition = MathTools.Round(cube.transform.position);
             if(cube.type == CubeType.BUILDER && !roundedCenters.Contains(cubeRoundedPosition)) {
-                roundedCenters.Add(cubeRoundedPosition);
+                BuilderCube nearByBuilderCube = cube.GetComponent<BuilderCube>();
+                if (!nearByBuilderCube.useCustomClusters) {
+                    roundedCenters.Add(cubeRoundedPosition);
+                }
             }
         }
         return roundedCenters;
