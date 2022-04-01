@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.VFX;
 
 public class LumiereEscape : Lumiere {
 
@@ -145,19 +146,24 @@ public class LumiereEscape : Lumiere {
         lumiereLowVoronoiSphere.material.SetColor("_SecondColor", colors.sphereSecondaryColor);
         lumiereLowVoronoiSphere.material.SetColor("_FresnelColor", colors.sphereFresnelColor);
         lumiereLowGlowingHeart.material.SetColor("_MainColor", colors.heartColor);
-        SetVfxColorForProperty("GlowColor", colors.vfxColorHue / 360);
-        SetVfxColorForProperty("ParticlesColor", colors.vfxColorHue / 360);
-        SetVfxColorForProperty("FlareColor", colors.vfxColorHue / 360);
-        SetVfxColorForProperty("CircleColor", colors.vfxColorHue / 360);
-        SetVfxColorForProperty("ExplosionColor", colors.vfxColorHue / 360);
+        float vfxColorHue = colors.vfxColorHue / 360;
+        SetVfxColorForProperty(lumiereLowVfx, "GlowColor", vfxColorHue);
+        SetVfxColorForProperty(lumiereLowVfx, "ParticlesColor", vfxColorHue);
+        SetVfxColorForProperty(lumiereLowVfx, "FlareColor", vfxColorHue);
+        SetVfxColorForProperty(lumiereLowVfx, "CircleColor", vfxColorHue);
+        SetVfxColorForProperty(lumiereLowVfx, "ExplosionColor", vfxColorHue);
+        SetVfxColorForProperty(lumiereTrails, "TrailsColors", vfxColorHue);
     }
 
-    protected void SetVfxColorForProperty(string propertyName, float hue) {
-        Vector3 colorVector = lumiereLowVfx.GetVector4(propertyName);
+    protected void SetVfxColorForProperty(VisualEffect vfx, string propertyName, float hue) {
+        if(vfx == null) {
+            return;
+        }
+        Vector3 colorVector = vfx.GetVector4(propertyName);
         Color color = new Color(colorVector.x, colorVector.y, colorVector.z);
         Color rotatedColor = ColorManager.RotateHueTo(color, hue);
         Vector3 rotatedColorVector = new Vector3(rotatedColor.r, rotatedColor.g, rotatedColor.b);
-        lumiereLowVfx.SetVector4(propertyName, rotatedColorVector);
+        vfx.SetVector4(propertyName, rotatedColorVector);
     }
 
     public EscapeColors GetCurrentEscapeColors() {
