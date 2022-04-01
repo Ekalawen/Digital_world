@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <LangVersion>8.0</LangVersion>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -52,9 +52,6 @@
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
     <UnityVersion>2021.1.28f1</UnityVersion>
   </PropertyGroup>
-  <ItemGroup>
-    <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio Tools for Unity\16.0\Analyzers\Microsoft.Unity.Analyzers.dll" />
-  </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Math\Graphe.cs" />
     <Compile Include="Assets\Scripts\Map\MapFunctionComponents\Generate\GenerateHorizontalPonts.cs" />
@@ -678,6 +675,7 @@
     <None Include="Assets\Texts\Archives\3_Arc3\24_SondesOptimisation\ArchivesSondesOptimisation_NewEN.txt" />
     <None Include="Assets\Texts\DataHackees\4_Arc4\Right\54_ToWanderingMaze\DHto_WanderingMazeFR.txt" />
     <None Include="Assets\Texts\Archives\2_Arc2\12_RadarWave\ArchivesRadarWaveEN.txt" />
+    <None Include="Assets\Texts\DataHackees\4_Arc4\57-58_ToSecondBoss\FromTargetedCorruption\DHto_SecondBoss_FromTargetedCorruptionFR.txt" />
     <None Include="Assets\Imported\EZ Camera Shake\Docs\licence_MIT.txt" />
     <None Include="Assets\Texts\DataHackees\4_Arc4\Right\53_ToSynchronium\DHto_SynchroniumFR.txt" />
     <None Include="Assets\Texts\DataHackees\3_Arc3\25_ToFirstTracers\DHtoFirstTracersEN.txt" />
@@ -759,6 +757,7 @@
     <None Include="Assets\Texts\Archives\OldLevels\WhileTrue\ArchivesWhileTrueFR.txt" />
     <None Include="Assets\Texts\Archives\3_Arc3\27_BrisableRoad\ArchivesBrisableRoad_NewEN.txt" />
     <None Include="Assets\Shaders\AlwaysOnTop.shader" />
+    <None Include="Assets\Texts\DataHackees\4_Arc4\57-58_ToSecondBoss\FromCompositeCrossroad\DHto_ToSecondBoss_FromCompositeCrossroadFR.txt" />
     <None Include="Assets\Texts\Archives\2_Arc2\12_RadarWave\ArchivesRadarWaveFR.txt" />
     <None Include="Assets\Texts\Archives\OldLevels\LumiereProtection\ArchivesLumiereProtectionFR.txt" />
     <None Include="Assets\Texts\DataHackees\4_Arc4\Right\51_ToSondesSublimation\DHto_SondesSublimationEN.txt" />
@@ -793,10 +792,12 @@
     <None Include="Assets\Texts\Archives\2_Arc2\15_Analyze\ArchivesAnalyze_NewFR.txt" />
     <None Include="Assets\Texts\DataHackees\3_Arc3\32-33_ToFullSwapPolycubes\DHtoFullSwapPolycubesFromSwapHighwayFR.txt" />
     <None Include="Assets\Texts\DataHackees\4_Arc4\Right\56_ToCompositeCrossroad\DHto_CompositeCrossroadEN.txt" />
+    <None Include="Assets\Texts\Archives\4_Arc4\48_SecondBoss\Archives_SecondBossEN.txt" />
     <None Include="Assets\Texts\Archives\3_Arc3\22_SwapHighway\ArchivesSwapHighwayFR.txt" />
     <None Include="Assets\Texts\Archives\4_Arc4\Right\46_WorldBuilder\Archives_WorldBuilderEN.txt" />
     <None Include="Assets\Texts\Archives\4_Arc4\Left\35_ImpossibleLevel\Archives_ImpossibleLevelEN.txt" />
     <None Include="Assets\Texts\Archives\_Recaps\Old\Recap_Arc1.txt" />
+    <None Include="Assets\Texts\Archives\4_Arc4\48_SecondBoss\Archives_SecondBossFR.txt" />
     <None Include="Assets\Texts\Archives\4_Arc4\Right\44_Synchronium\Archives_SynchroniumFR.txt" />
     <None Include="Assets\Texts\Archives\2_Arc2\12_RadarWave\ArchivesRadarWave_NewFR.txt" />
     <None Include="Assets\Texts\Archives\1_Arc1\07_TheFall\ArchivesTheFall_NewEN.txt" />
@@ -818,6 +819,7 @@
     <None Include="Assets\Texts\Archives\1_Arc1\04_SecondRunner\ArchivesSecondRunner_NewFR.txt" />
     <None Include="Assets\Shaders\mirror.shader" />
     <None Include="Assets\Texts\DataHackees\3_Arc3\36_ToFirstDataSondes\DHtoFirstDataSondesEN.txt" />
+    <None Include="Assets\Texts\DataHackees\4_Arc4\57-58_ToSecondBoss\FromTargetedCorruption\DHto_SecondBoss_FromTargetedCorruptionEN.txt" />
     <None Include="Assets\Texts\Archives\3_Arc3\24_SondesOptimisation\ArchivesSondesOptimisationFR.txt" />
     <None Include="Assets\Texts\DataHackees\2_Arc2\19-20-21_ToLearnPathfinding\DHtoLearnPathfindingFromRadarWaveEN.txt" />
     <None Include="Assets\Texts\DataHackees\3_Arc3\32-33_ToFullSwapPolycubes\DHtoFullSwapPolycubesFromSwapHighwayEN.txt" />
@@ -833,6 +835,7 @@
     <None Include="Assets\Texts\LevelsOrganization.txt" />
     <None Include="Assets\Texts\DataHackees\OldLevels\ToRedWire\DHtoRedWireFR.txt" />
     <None Include="Assets\Texts\Archives\1_Arc1\09_LearnJump\ArchivesLearnJump_NewFR.txt" />
+    <None Include="Assets\Texts\DataHackees\4_Arc4\57-58_ToSecondBoss\FromCompositeCrossroad\DHto_ToSecondBoss_FromCompositeCrossroadEN.txt" />
     <None Include="Assets\Texts\Archives\3_Arc3\19_VerticalBounce\ArchivesVerticalBounce_NewFR.txt" />
     <None Include="Assets\Texts\DataHackees\2_Arc2\11_ToConstantDestruction\DHtoConstantDestructionEN.txt" />
     <None Include="Assets\Texts\DataHackees\2_Arc2\12-13_ToRadarWave\DHtoRadarWaveFromParkourTrainingEN.txt" />
