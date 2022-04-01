@@ -11,15 +11,21 @@ public class TimeMultiplierController : MonoBehaviour {
     [SerializeField]
     protected List<TimeMultiplier> ennemiTimeMultipliers;
 
+    protected GameManager gm;
     protected TimerManager timerManager;
 
     public void Initialize(TimerManager timerManager) {
+        this.gm = GameManager.Instance;
         this.timerManager = timerManager;
         timeMultipliers = new List<TimeMultiplier>();
         ennemiTimeMultipliers = new List<TimeMultiplier>();
     }
 
     public TimeMultiplier AddMultiplier(TimeMultiplier timeMultiplier, bool isEnnemiMultiplier = false) {
+        if(gm.player.IsTimeHackOn()) {
+            timeMultiplier.SetTotalDurationToZero();
+            return timeMultiplier; // We should return null, but I am scared that this will break some unknowed stuff ! x)
+        }
         timeMultiplier.Initialize(this);
         if(!isEnnemiMultiplier)
             timeMultipliers.Add(timeMultiplier);

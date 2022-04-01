@@ -51,8 +51,8 @@ public class PouvoirTimeHack : IPouvoir {
         if(isActive) {
             return false;
         }
+        ApplySlowMotion(); // before isActive = True because we don't accept slowmotions when timeHack is up :)
         isActive = true;
-        ApplySlowMotion();
         IncreaseSpeed();
         CreateOrbTrigger();
         RemoveGravityIntensity();

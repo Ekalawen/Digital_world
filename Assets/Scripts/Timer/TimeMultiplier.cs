@@ -54,6 +54,10 @@ public class TimeMultiplier {
         return type == VariationType.ADD ? GetAddMultiplier() : GetMultiplyMultiplier();
     }
 
+    public void SetTotalDurationToZero() {
+        totalRealDuration = 0.0f;
+    }
+
     protected float GetAddMultiplier() {
         float time = timer.GetElapsedTime();
         if (time <= GetInDuration() && GetInDuration() > 0) {
