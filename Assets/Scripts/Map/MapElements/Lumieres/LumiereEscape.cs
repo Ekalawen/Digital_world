@@ -45,11 +45,13 @@ public class LumiereEscape : Lumiere {
     protected Vector3 currentEscapePosition = Vector3.zero;
     protected int maxNbLives;
     protected Coroutine recoverLifeCoroutine;
+    protected float controllerInitialVitesse;
 
     protected override void Start() {
         base.Start();
         Assert.AreEqual(nbLives, escapeColors.Count);
         controller = GetComponent<GoToPositionController>();
+        controllerInitialVitesse = controller.vitesse;
         maxNbLives = nbLives;
         SetColorAccordingToNumberOfLives();
     }
@@ -181,16 +183,18 @@ public class LumiereEscape : Lumiere {
     protected IEnumerator CSetCapturableIn() {
         yield return new WaitForSeconds(TimeToGoToPosition(currentEscapePosition));
         isCaptured = false;
+        controller.vitesse = controllerInitialVitesse * gm.player.GetTimeHackCurrentSlowmotionFactor();
     }
 
     protected void EscapeToAnotherLocation() {
         currentEscapePosition = ComputeEscapeLocation();
+        controller.vitesse = controllerInitialVitesse * gm.player.GetTimeHackCurrentSlowmotionFactor();
         controller.GoTo(currentEscapePosition);
     }
 
     public float TimeToGoToPosition(Vector3 pos) {
         float distance = Vector3.Distance(transform.position, pos);
-        return distance / controller.vitesse;
+        return (distance / controller.vitesse) / gm.player.GetTimeHackCurrentSlowmotionFactor();
     }
 
     protected Vector3 ComputeEscapeLocation() {

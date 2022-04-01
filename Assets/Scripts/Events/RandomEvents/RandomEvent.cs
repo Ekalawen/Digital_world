@@ -11,6 +11,7 @@ public abstract class RandomEvent : MonoBehaviour {
     public float varianceDuree = 0.0f;
     public float startOffset = 0.0f;
     public bool bPlayEndSound = true;
+    public bool playStartSound = true;
     public bool triggerMaxNumberOfTimes = false;
     [ConditionalHide("triggerMaxNumberOfTimes")]
     public int nbMaxTriggers = 1;
@@ -54,7 +55,9 @@ public abstract class RandomEvent : MonoBehaviour {
     }
 
     protected virtual void PlayStartSound() {
-        gm.soundManager.PlayEventStartClip();
+        if (playStartSound) {
+            gm.soundManager.PlayEventStartClip();
+        }
     }
 
     protected IEnumerator CEndEvent()

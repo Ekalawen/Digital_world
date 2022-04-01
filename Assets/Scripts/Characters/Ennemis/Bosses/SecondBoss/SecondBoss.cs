@@ -41,6 +41,7 @@ public class SecondBoss : TracerBlast {
     [Header("Builder Reconstruction")]
     public GameObject randomFillingAfterExplosionSingleEventPrefab;
     public GameObject randomFillingRandomEventPrefab;
+    public GameObject randomFillingRandomEventPhase4Prefab;
     public List<float> randomFillingFrequencyByPhases;
 
     [Header("Lasers")]
@@ -82,8 +83,8 @@ public class SecondBoss : TracerBlast {
         player.onPowerDashEnnemiImpact.AddListener(OnPowerDashImpactFace);
         orthogonalLasers = new List<SecondBossLaser>();
         targetingLasers = new List<SecondBossTargetingLaser>();
-        //GoToPhase1();
-        GoToPhase4();
+        GoToPhase1();
+        //GoToPhase4();
         StartPresenceClip();
     }
 
@@ -173,7 +174,9 @@ public class SecondBoss : TracerBlast {
         newSpeedMultiplier.duration = stunDuration;
         speedMultiplierController.AddMultiplier(newSpeedMultiplier);
         SetStunnedFor(stunDuration);
-        StartCoroutine(CDetectPlayerIn(stunDuration - detectionDureeRotation));
+        if (currentPhase != 4) { // Il faut pas qu'il tourne en phase 4 sinon c'est vraiment vraiment terrible x)
+            StartCoroutine(CDetectPlayerIn(stunDuration - detectionDureeRotation));
+        }
     }
 
     protected float GetPowerDashStunDuration(PouvoirPowerDash powerDash) {
@@ -285,7 +288,7 @@ public class SecondBoss : TracerBlast {
 
     protected void UpdateRandomEvent(int phaseIndice) {
         gm.eventManager.RemoveEvent(randomFillingEventToRemove);
-        RandomEvent randomEvent = gm.eventManager.AddRandomEvent(randomFillingRandomEventPrefab);
+        RandomEvent randomEvent = gm.eventManager.AddRandomEvent(currentPhase != 4 ? randomFillingRandomEventPrefab : randomFillingRandomEventPhase4Prefab);
         randomEvent.esperanceApparition = randomFillingFrequencyByPhases[phaseIndice - 1];
         randomFillingEventToRemove = randomEvent;
     }
@@ -307,10 +310,10 @@ public class SecondBoss : TracerBlast {
 
     public override void Blast() {
         base.Blast();
-        ApplyVoidLikeExplosion(transform.position,
-                               explosionDestructionDecompositionDuration,
-                               explosionDestructionDuration,
-                               explosionDestructionRange);
+        //ApplyVoidLikeExplosion(transform.position,
+                               //explosionDestructionDecompositionDuration,
+                               //explosionDestructionDuration,
+                               //explosionDestructionRange);
     }
 
     protected override bool IsPlayerBlastable(EnnemiController ennemiController) {

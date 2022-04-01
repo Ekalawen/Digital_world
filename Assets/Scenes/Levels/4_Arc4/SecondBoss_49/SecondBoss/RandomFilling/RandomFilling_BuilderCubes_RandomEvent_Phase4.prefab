@@ -20,7 +20,7 @@ PrefabInstance:
     - target: {fileID: 6232363528123795457, guid: 3a1002205002b4b478e55149462f63f4,
         type: 3}
       propertyPath: cubeType
-      value: 9
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6232363528123795457, guid: 3a1002205002b4b478e55149462f63f4,
         type: 3}
@@ -60,12 +60,22 @@ PrefabInstance:
     - target: {fileID: 6232363528123795459, guid: 3a1002205002b4b478e55149462f63f4,
         type: 3}
       propertyPath: m_Name
-      value: RandomFilling_BuilderCubes_RandomEvent
+      value: RandomFilling_BuilderCubes_RandomEvent_Phase4
       objectReference: {fileID: 0}
     - target: {fileID: 6232363528123795468, guid: 3a1002205002b4b478e55149462f63f4,
         type: 3}
       propertyPath: type
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6232363528123795470, guid: 3a1002205002b4b478e55149462f63f4,
+        type: 3}
+      propertyPath: playStartSound
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6232363528123795470, guid: 3a1002205002b4b478e55149462f63f4,
+        type: 3}
+      propertyPath: esperanceApparition
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6232363528123795470, guid: 3a1002205002b4b478e55149462f63f4,
         type: 3}
@@ -144,23 +154,3 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3a1002205002b4b478e55149462f63f4, type: 3}
---- !u!1 &2810734391460843107 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6232363528123795459, guid: 3a1002205002b4b478e55149462f63f4,
-    type: 3}
-  m_PrefabInstance: {fileID: 8177535896285087328}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &4046401267611915768
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2810734391460843107}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a94e16f823689d44393d95d2b9e7126c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  setOneBuilderCubeMain: 1
-  setLinky: 1
