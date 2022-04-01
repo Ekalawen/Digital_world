@@ -244,6 +244,7 @@ public class SecondBoss : TracerBlast {
         SetVitesseToOldVitesse();
         TriggerSingleEventRandomFilling();
         UpdateRandomEvent(phaseIndice: 3);
+        gm.timerManager.CustomGoToPhase(1);
     }
 
     protected void GoToPhase4() {
@@ -268,6 +269,7 @@ public class SecondBoss : TracerBlast {
         UpdateRandomEvent(phaseIndice: 4);
         IncreaseSpeedToPhase4();
         PopAllDatas();
+        gm.timerManager.CustomGoToPhase(2);
     }
 
     protected void GoToNextPhase() {
