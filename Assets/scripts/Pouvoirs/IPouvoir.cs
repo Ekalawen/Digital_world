@@ -73,7 +73,7 @@ public abstract class IPouvoir : MonoBehaviour {
     }
 
     public virtual bool IsEnabled() {
-        return pouvoirEnabled && !pouvoirFreezed && NotTimeHackOn();
+        return pouvoirEnabled && !pouvoirFreezed; // && NotTimeHackOn(); // En fait je pense que c'est mieux, car souvent on veut choper un truc hors range avec un Dash, et on a besoin de l'utiliser depuis l'intérieur ! :)
     }
 
     public virtual bool IsAvailable() {

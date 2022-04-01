@@ -332,8 +332,4 @@ public class PouvoirPathfinder : IPouvoir {
             }
         }
     }
-
-    public override bool IsEnabled() {
-        return pouvoirEnabled && !pouvoirFreezed; // We want to be able to use it while TimeHack !
-    }
 }

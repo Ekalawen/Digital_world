@@ -99,10 +99,9 @@ public class PouvoirGripDash : IPouvoir {
         PenaliseCooldown();
     }
 
-    private void PenaliseCooldown()
-    {
+    private void PenaliseCooldown() {
         cooldownCustom.Use();
-        cooldownCustom.GainChargeIn(rechargeTimeAfterFailedTargeting);
+        cooldownCustom.GainChargeIn(rechargeTimeAfterFailedTargeting / player.GetTimeHackCurrentSlowmotionFactor());
     }
 
     protected void PlayReversedActivationClip() {
