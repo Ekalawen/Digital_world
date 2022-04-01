@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 114506950261336044}
   - component: {fileID: 143799659412891804}
   - component: {fileID: -8190301551417332588}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Joueur_1
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -99,6 +99,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 0}
+  ennemiController: {fileID: 0}
   speedMultiplierController: {fileID: 0}
   vitesseDeplacement: 4
   hauteurCulminanteSaut: 2.5
@@ -127,6 +128,39 @@ MonoBehaviour:
   console: {fileID: 0}
   bSetUpRotation: 0
   bIsStun: 0
+  onLand:
+    m_PersistentCalls:
+      m_Calls: []
+  onGrip:
+    m_PersistentCalls:
+      m_Calls: []
+  onBouncerJump:
+    m_PersistentCalls:
+      m_Calls: []
+  onUsePouvoir:
+    m_PersistentCalls:
+      m_Calls: []
+  onUseDash:
+    m_PersistentCalls:
+      m_Calls: []
+  onUseGripDash:
+    m_PersistentCalls:
+      m_Calls: []
+  onPowerDashImpact:
+    m_PersistentCalls:
+      m_Calls: []
+  onPowerDashEnnemiImpact:
+    m_PersistentCalls:
+      m_Calls: []
+  onUsePathfinder:
+    m_PersistentCalls:
+      m_Calls: []
+  onTimeHackStart:
+    m_PersistentCalls:
+      m_Calls: []
+  onTimeHackStop:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!143 &143799659412891804
 CharacterController:
   m_ObjectHideFlags: 0
@@ -177,7 +211,7 @@ GameObject:
   - component: {fileID: 5503129749687690192}
   - component: {fileID: 7701509625837876751}
   - component: {fileID: 5523425740225804095}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -344,6 +378,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 536870913
   m_VolumeTrigger: {fileID: 0}
+  m_VolumeFrameworkUpdateModeOption: 2
   m_RenderPostProcessing: 1
   m_Antialiasing: 2
   m_AntialiasingQuality: 2
@@ -397,7 +432,7 @@ GameObject:
   - component: {fileID: 4375272399707556884}
   - component: {fileID: 4401472499368631958}
   - component: {fileID: 8212323410564950502}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: 3DUICamera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -483,6 +518,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 67108865
   m_VolumeTrigger: {fileID: 0}
+  m_VolumeFrameworkUpdateModeOption: 2
   m_RenderPostProcessing: 1
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
@@ -502,7 +538,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4016116881351456644}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: OverlayCameras
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -534,7 +570,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 825060061339469502}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: VFXs
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -572,7 +608,7 @@ GameObject:
   m_Component:
   - component: {fileID: 502781758104513668}
   - component: {fileID: 3961662759475725482}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: CameraShaker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -621,7 +657,7 @@ GameObject:
   - component: {fileID: 616717320650127411}
   - component: {fileID: 4637087639563730209}
   - component: {fileID: 4384913428691443663}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: NoBWPostProcessingCamera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -707,6 +743,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
+  m_VolumeFrameworkUpdateModeOption: 2
   m_RenderPostProcessing: 1
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
@@ -726,7 +763,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3389102757551488524}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: WallEffectHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -832,6 +869,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3331491127990155366, guid: 30789fcd06491bf4699b7b77280cc7d5,
         type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 3331491127990155366, guid: 30789fcd06491bf4699b7b77280cc7d5,
+        type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
@@ -919,7 +961,7 @@ PrefabInstance:
     - target: {fileID: 3331491127990155366, guid: fb5ed914e4370254d977fbee4e448697,
         type: 3}
       propertyPath: m_Layer
-      value: 1
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 3331491127990155366, guid: fb5ed914e4370254d977fbee4e448697,
         type: 3}
@@ -1050,7 +1092,7 @@ PrefabInstance:
     - target: {fileID: 3331491127990155366, guid: fb5ed914e4370254d977fbee4e448697,
         type: 3}
       propertyPath: m_Layer
-      value: 1
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 3331491127990155366, guid: fb5ed914e4370254d977fbee4e448697,
         type: 3}
@@ -1163,6 +1205,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: VFX_JumpEffect
       objectReference: {fileID: 0}
+    - target: {fileID: 3331491127990155366, guid: 2a3b6db7492898e43950d4804fff8aa5,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2a3b6db7492898e43950d4804fff8aa5, type: 3}
 --- !u!4 &1773368643837011908 stripped
@@ -1253,6 +1300,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: VFX_TimeScaleEffect
+      objectReference: {fileID: 0}
+    - target: {fileID: 3331491127990155366, guid: 3f781e2ed6d445248ba433aa083580b0,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3f781e2ed6d445248ba433aa083580b0, type: 3}
@@ -1348,7 +1400,7 @@ PrefabInstance:
     - target: {fileID: 3331491127990155366, guid: e99effcb730b8b04aa9bb0412fa8f28b,
         type: 3}
       propertyPath: m_Layer
-      value: 1
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e99effcb730b8b04aa9bb0412fa8f28b, type: 3}
@@ -1519,7 +1571,7 @@ PrefabInstance:
     - target: {fileID: 3331491127990155366, guid: fb5ed914e4370254d977fbee4e448697,
         type: 3}
       propertyPath: m_Layer
-      value: 1
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 3331491127990155366, guid: fb5ed914e4370254d977fbee4e448697,
         type: 3}
@@ -1611,6 +1663,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: GeoSphere
+      objectReference: {fileID: 0}
+    - target: {fileID: 5804542736921945730, guid: 04b01e91c5cfa314ebee8011a68e6482,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 8809755546049550038, guid: 04b01e91c5cfa314ebee8011a68e6482,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 04b01e91c5cfa314ebee8011a68e6482, type: 3}

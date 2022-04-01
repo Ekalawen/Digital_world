@@ -45,7 +45,7 @@ public class SecondBossLaser : MonoBehaviour {
     }
 
     protected virtual Vector3 ComputePosition() {
-        return secondBoss.transform.position + direction * (secondBoss.GetHalfSize() * bossSizeOffsetCoef + secondBoss.laserOffset);
+        return secondBoss.transform.position + secondBoss.transform.rotation * direction * (secondBoss.GetHalfSize() * bossSizeOffsetCoef + secondBoss.laserOffset);
     }
 
     public Vector3 GetLaserCenter() {
