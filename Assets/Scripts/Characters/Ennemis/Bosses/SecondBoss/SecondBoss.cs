@@ -63,6 +63,7 @@ public class SecondBoss : TracerBlast {
 
     protected int currentPhase;
     protected bool hasImpactFacesOn = false;
+    protected bool hasAllImpactFacesOn = false;
     protected int nbFacesToImpactRemaining;
     protected List<Vector3> faceNormalsUsable;
     protected Vector3 currentImpactFaceDirection;
@@ -81,27 +82,31 @@ public class SecondBoss : TracerBlast {
         player.onPowerDashEnnemiImpact.AddListener(OnPowerDashImpactFace);
         orthogonalLasers = new List<SecondBossLaser>();
         targetingLasers = new List<SecondBossTargetingLaser>();
-        GoToPhase1();
-        //GoToPhase3();
+        //GoToPhase1();
+        GoToPhase4();
         StartPresenceClip();
-    }
-
-    protected void GoToPhase1() {
-        Debug.Log($"Phase 1 !");
-        currentPhase = 1;
-        StartImpactFaces();
     }
 
     protected void StartImpactFaces() {
         hasImpactFacesOn = true;
+        hasAllImpactFacesOn = false;
         nbFacesToImpactRemaining = nbImpactFacesByPhases;
         faceNormalsUsable = MathTools.GetAllOrthogonalNormals();
         StartOneImpactFace();
     }
 
+    protected void SetAllImpactFaces() {
+        hasAllImpactFacesOn = true;
+        hasImpactFacesOn = false;
+        material.SetFloat("_HasAllVulnerableFaces", 1.0f);
+        material.SetFloat("_HasVulnerableFace", 0.0f);
+    }
+
     protected void StopImpactFaces() {
         hasImpactFacesOn = false;
+        hasAllImpactFacesOn = false;
         material.SetFloat("_HasVulnerableFace", 0.0f);
+        material.SetFloat("_HasAllVulnerableFaces", 0.0f);
     }
 
     protected void StartOneImpactFace() {
@@ -109,12 +114,14 @@ public class SecondBoss : TracerBlast {
         faceNormalsUsable.Remove(currentImpactFaceDirection);
         material.SetFloat("_HasVulnerableFace", 1.0f);
         material.SetVector("_DirectionVulnerableFace", currentImpactFaceDirection);
+        material.SetFloat("_HasAllVulnerableFaces", 0.0f);
     }
 
     public override bool CanBeHitByPowerDash(PouvoirPowerDash powerDash) {
-        return hasImpactFacesOn
+        return (hasImpactFacesOn
             && IsPowerDashGoingTowardImpactFace(powerDash)
-            && IsPlayerOnSideOfTheImpactFace();
+            && IsPlayerOnSideOfTheImpactFace())
+            || hasAllImpactFacesOn;
     }
 
     protected bool IsPowerDashGoingTowardImpactFace(PouvoirPowerDash powerDash) {
@@ -137,7 +144,9 @@ public class SecondBoss : TracerBlast {
 
     protected override bool CanHitPlayerFromSides() {
         return timerContactHit.IsOver()
-            && (!IsPlayerOnSideOfTheImpactFace() || !player.IsPowerDashing())
+            && ((!hasAllImpactFacesOn && !hasImpactFacesOn)
+             || (hasAllImpactFacesOn && !player.IsPowerDashing())
+             || (hasImpactFacesOn && (!IsPlayerOnSideOfTheImpactFace() || !player.IsPowerDashing())))
             && !IsStunned()
             && !player.IsTimeHackOn();
     }
@@ -185,6 +194,79 @@ public class SecondBoss : TracerBlast {
         GoToNextPhase();
     }
 
+    protected void GoToPhase1() {
+        Debug.Log($"Phase 1 !");
+        currentPhase = 1;
+        StartImpactFaces();
+    }
+
+    public void GoToPhase2() {
+        Debug.Log($"Phase 2 !");
+        StartCoroutine(CGoToPhase2());
+    }
+    protected IEnumerator CGoToPhase2() {
+        currentPhase = 2;
+        UpdateConsoleMessage(phaseIndice: 2);
+        AddTimeItem(phaseIndice: 2);
+        AddNanoboost();
+        SetVitesseTo0();
+
+        DeployOrthogonalLasers();
+        yield return new WaitForSeconds(delayAfterActivatingLasers);
+        yield return StartBlast();
+        yield return StartCoroutine(CDropGenerators(generatorPhase2Prefabs));
+
+        SetVitesseToOldVitesse();
+        TriggerSingleEventRandomFilling();
+        UpdateRandomEvent(phaseIndice: 2);
+    }
+
+    protected void GoToPhase3() {
+        Debug.Log($"Phase 3 !");
+        StartCoroutine(CGoToPhase3());
+    }
+
+    protected IEnumerator CGoToPhase3() {
+        currentPhase = 3;
+        UpdateConsoleMessage(phaseIndice: 3);
+        AddTimeItem(phaseIndice: 3);
+        AddNanoboost();
+        SetVitesseTo0();
+
+        yield return StartBlast();
+        DeployOneTargetingLaser();
+        yield return new WaitForSeconds(delayAfterActivatingLasers);
+        yield return StartCoroutine(CDropGenerators(generatorPhase3Prefabs));
+
+        SetVitesseToOldVitesse();
+        TriggerSingleEventRandomFilling();
+        UpdateRandomEvent(phaseIndice: 3);
+    }
+
+    protected void GoToPhase4() {
+        Debug.Log($"Phase 4 !");
+        StartCoroutine(CGoToPhase4());
+    }
+
+    protected IEnumerator CGoToPhase4() {
+        currentPhase = 4;
+        UpdateConsoleMessage(phaseIndice: 4);
+        AddTimeItem(phaseIndice: 4);
+        AddNanoboost();
+        SetVitesseTo0();
+
+        yield return StartBlast();
+        DeployDiagonalLasers();
+        yield return new WaitForSeconds(delayAfterActivatingLasers);
+
+        SetAllImpactFaces();
+        SetVitesseToOldVitesse();
+        TriggerSingleEventRandomFilling();
+        UpdateRandomEvent(phaseIndice: 4);
+        IncreaseSpeedToPhase4();
+        PopAllDatas();
+    }
+
     protected void GoToNextPhase() {
         switch (currentPhase) {
             case 1:
@@ -199,26 +281,6 @@ public class SecondBoss : TracerBlast {
             default:
                 break;
         }
-    }
-
-    public void GoToPhase2() {
-        Debug.Log($"Phase 2 !");
-        StartCoroutine(CGoToPhase2());
-    }
-    protected IEnumerator CGoToPhase2() {
-        currentPhase = 2;
-        UpdateConsoleMessage(phaseIndice: 2);
-        AddTimeItem(phaseIndice: 2);
-        AddNanoboost();
-        DeployOrthogonalLasers();
-        SetVitesseTo0();
-        yield return new WaitForSeconds(delayAfterActivatingLasers);
-        yield return StartBlast();
-        yield return StartCoroutine(CDropGenerators(generatorPhase2Prefabs));
-        SetVitesseToOldVitesse();
-        TriggerSingleEventRandomFilling();
-        UpdateRandomEvent(phaseIndice: 2);
-        //StartImpactFaces();
     }
 
     protected void UpdateRandomEvent(int phaseIndice) {
@@ -323,45 +385,6 @@ public class SecondBoss : TracerBlast {
         newGeoData.SetTargetPosition(position);
         newGeoData.duration = duration;
         player.geoSphere.AddGeoPoint(newGeoData);
-    }
-
-    protected void GoToPhase3() {
-        Debug.Log($"Phase 3 !");
-        StartCoroutine(CGoToPhase3());
-    }
-    protected IEnumerator CGoToPhase3() {
-        currentPhase = 3;
-        UpdateConsoleMessage(phaseIndice: 3);
-        AddTimeItem(phaseIndice: 3);
-        AddNanoboost();
-        SetVitesseTo0();
-        yield return new WaitForSeconds(delayAfterActivatingLasers);
-        yield return StartBlast();
-        DeployOneTargetingLaser();
-        yield return StartCoroutine(CDropGenerators(generatorPhase3Prefabs));
-        SetVitesseToOldVitesse();
-        TriggerSingleEventRandomFilling();
-        UpdateRandomEvent(phaseIndice: 3);
-    }
-
-    protected void GoToPhase4() {
-        Debug.Log($"Phase 4 !");
-        StartCoroutine(CGoToPhase4());
-    }
-    protected IEnumerator CGoToPhase4() {
-        currentPhase = 4;
-        UpdateConsoleMessage(phaseIndice: 4);
-        AddTimeItem(phaseIndice: 4);
-        AddNanoboost();
-        DeployDiagonalLasers();
-        SetVitesseTo0();
-        yield return new WaitForSeconds(delayAfterActivatingLasers);
-        yield return StartBlast();
-        SetVitesseToOldVitesse();
-        TriggerSingleEventRandomFilling();
-        UpdateRandomEvent(phaseIndice: 4);
-        IncreaseSpeedToPhase4();
-        PopAllDatas();
     }
 
     protected void IncreaseSpeedToPhase4() {
