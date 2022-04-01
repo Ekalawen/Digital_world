@@ -16,7 +16,6 @@ public class SecondBoss : TracerBlast {
 
     [Header("Time Reset Drops")]
     public GameObject resetTimeItemPrefab;
-    public List<float> resetTimeByPhases;
     public GameObject lightningToTimeResetPrefab;
 
     [Header("Nanoboost Drops")]
@@ -291,8 +290,7 @@ public class SecondBoss : TracerBlast {
 
     protected void AddTimeItem(int phaseIndice) {
         ResetTimeItem resetTemporel = gm.itemManager.PopItem(resetTimeItemPrefab) as ResetTimeItem;
-        resetTemporel.settedTime = resetTimeByPhases[phaseIndice - 1];
-        GenerateLightningTo(resetTemporel.transform.position, lightningToNanoboostPrefab);
+        GenerateLightningTo(resetTemporel.transform.position, lightningToTimeResetPrefab);
     }
 
     protected void AddNanoboost() {
@@ -336,10 +334,10 @@ public class SecondBoss : TracerBlast {
         UpdateConsoleMessage(phaseIndice: 3);
         AddTimeItem(phaseIndice: 3);
         AddNanoboost();
-        DeployOneTargetingLaser();
         SetVitesseTo0();
         yield return new WaitForSeconds(delayAfterActivatingLasers);
         yield return StartBlast();
+        DeployOneTargetingLaser();
         yield return StartCoroutine(CDropGenerators(generatorPhase3Prefabs));
         SetVitesseToOldVitesse();
         TriggerSingleEventRandomFilling();

@@ -124,7 +124,7 @@ public class BuilderCube : NonBlackCube {
     protected Cube CreateNewCube(Vector3 pos) {
         Cube newCube = gm.map.AddCube(pos, cubeGeneratedType, parent: transform.parent);
         if (newCube != null) {
-            newCube.StartDissolveEffect(generatedDissolveTime);
+            newCube.StartDissolveEffect(generatedDissolveTime / gm.player.GetTimeHackCurrentSlowmotionFactor());
             if(gm.IsIR()) {
                 GetComponentInParent<Block>().GetCubes().Add(newCube);
             }

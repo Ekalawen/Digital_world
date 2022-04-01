@@ -237,7 +237,7 @@ public class PostProcessManager : MonoBehaviour {
     public void StopBlackAndWhiteEffect() {
         noBlackAndWhiteCamera.gameObject.SetActive(false);
         camera.cullingMask = camera.cullingMask | (1 << LayerMask.NameToLayer(LAYER_NO_BLACK_AND_WHITE_POST_PROCESS)); // add B&W layer
-        soulRobberWeightFluctuator.GoTo(0.0f, timeFromBlackAndWhite);
+        soulRobberWeightFluctuator.GoTo(0.0f, timeFromBlackAndWhite / gm.player.GetTimeHackCurrentSlowmotionFactor());
         soulRobberBlackFluctuator.GoTo(1.0f, 0.0f);
     }
 

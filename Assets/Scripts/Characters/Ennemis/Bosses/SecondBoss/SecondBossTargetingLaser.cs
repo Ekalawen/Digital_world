@@ -8,7 +8,7 @@ public class SecondBossTargetingLaser : SecondBossLaser {
     [Header("Targeting")]
     public Vector2 rotationSpeedRange = new Vector2(15f, 45f);
     public Vector2 rotationSpeedAngleTresholds = new Vector2(30f, 105f);
-    public float spawningDelay = 1.0f;
+    public float spawningAngle = 45f;
 
     public void Initialize(SecondBoss secondBoss) {
         Initialize(secondBoss, Vector3.zero);
@@ -23,8 +23,13 @@ public class SecondBossTargetingLaser : SecondBossLaser {
     }
 
     protected Vector3 ComputeFirstDirection() {
-        Vector3 oldPlayerPosition = gm.historyManager.GetPlayerHistory().GetPositionTimesAgo(spawningDelay);
-        return (oldPlayerPosition - secondBoss.transform.position).normalized;
+        Vector3 playerDirection = (gm.player.transform.position - secondBoss.transform.position).normalized;
+        Vector3 up = gm.gravityManager.Up();
+        Vector3 axis = Vector3.Cross(playerDirection, up);
+        if(axis == Vector3.zero) {
+            axis = Vector3.Cross(playerDirection, gm.gravityManager.Forward());
+        }
+        return Quaternion.AngleAxis(spawningAngle, axis) * playerDirection;
     }
 
     protected Vector3 ComputeDirection() {

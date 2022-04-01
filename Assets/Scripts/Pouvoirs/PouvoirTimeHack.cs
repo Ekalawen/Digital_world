@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PouvoirTimeHack : IPouvoir {
@@ -55,6 +56,7 @@ public class PouvoirTimeHack : IPouvoir {
         IncreaseSpeed();
         CreateOrbTrigger();
         RemoveGravityIntensity();
+        UnrobbIfRobbed();
         SetInvincible();
         RechargeAllOtherPouvoirs();
         player.RemoveAllPoussees();
@@ -160,5 +162,14 @@ public class PouvoirTimeHack : IPouvoir {
         player.GetPathfinder()?.GetCooldown().RechargeEntirely();
         player.GetDash()?.GetCooldown().RechargeEntirely();
         player.GetGripDash()?.GetCooldown().RechargeEntirely();
+    }
+
+    protected void UnrobbIfRobbed() {
+        if(SoulRobber.IsPlayerRobbed()) {
+            SoulRobber oneSoulRobber = gm.ennemiManager.GetEnnemisOfType<SoulRobber>().First();
+            if(oneSoulRobber != null) {
+                oneSoulRobber.StartUnrobb();
+            }
+        }
     }
 }
