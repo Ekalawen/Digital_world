@@ -141,6 +141,10 @@ public class TracerBlast : Ennemi {
         StartCoroutine(CGoToIdentityRotation(dureeCancelAnimation));
     }
 
+    public void StartBlastVoid() {
+        StartBlast();
+    }
+
     public Coroutine StartBlast() {
         blastCoroutine = StartCoroutine(CStartBlast());
         return blastCoroutine;
