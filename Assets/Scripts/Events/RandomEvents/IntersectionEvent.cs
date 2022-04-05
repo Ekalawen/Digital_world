@@ -78,7 +78,7 @@ public class IntersectionEvent : RandomEvent {
 
         GameObject soundHolder = new GameObject();
         soundHolder.transform.position = currentPosition;
-        gm.soundManager.PlayIntersectionEventClip(currentPosition, timeIntersection, soundHolder.transform);
+        gm.soundManager.PlayIntersectionEventCreateCubesClip(currentPosition, timeIntersection, soundHolder.transform);
         for(int i = 0; i < nbCubesToCreate; i++) {
             yield return new WaitForSeconds(intervalle);
             if (gm.map.CubeFarEnoughtFromLumieres(currentPosition)) {
@@ -112,7 +112,7 @@ public class IntersectionEvent : RandomEvent {
 
         GameObject soundHolder = new GameObject();
         soundHolder.transform.position = currentPosition;
-        gm.soundManager.PlayIntersectionEventClip(currentPosition, timeBeforeSwapCubeTypeAgain, soundHolder.transform);
+        gm.soundManager.PlayIntersectionEventSwapCubesClip(currentPosition, timeBeforeSwapCubeTypeAgain, soundHolder.transform);
         for (int i = 0; i < nbCubesCreated; i++) {
             yield return new WaitForSeconds(intervalle);
             Cube cube = gm.map.GetCubeAt(currentPosition);

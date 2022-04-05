@@ -208,9 +208,13 @@ public class SoundManager : MonoBehaviour
     {
         PlayClipsOnSource(sounds.jumpEventUnStunClips);
     }
-    public void PlayIntersectionEventClip(Vector3 position, float duration, Transform parent)
+    public void PlayIntersectionEventCreateCubesClip(Vector3 position, float duration, Transform parent)
     {
-        PlayClipsOnSource(sounds.intersectionEventClips, pos: position, duration: duration, parent: parent);
+        PlayClipsOnSource(sounds.intersectionEventCreateCubesClips, pos: position, duration: duration, parent: parent);
+    }
+    public void PlayIntersectionEventSwapCubesClip(Vector3 position, float duration, Transform parent)
+    {
+        PlayClipsOnSource(sounds.intersectionEventSwapCubesClips, pos: position, duration: duration, parent: parent);
     }
     public void PlayActivationPouvoirClip(AudioClipParams audioClip = null) {
         AudioClipParams clip = (audioClip == null) ? sounds.activationPouvoirClips : audioClip;
@@ -228,8 +232,8 @@ public class SoundManager : MonoBehaviour
     {
         PlayClipsOnSource(sounds.notFoundPouvoirClips);
     }
-    public void PlayGainDash333() {
-        PlayClipsOnSource(sounds.gainDash333);
+    public void PlayGainPouvoirClip() {
+        PlayClipsOnSource(sounds.gainPouvoir);
     }
     public void PlayPowerDashImpactClip() {
         PlayClipsOnSource(sounds.powerDashImpact);
@@ -265,6 +269,10 @@ public class SoundManager : MonoBehaviour
     public void PlayBounceClip()
     {
         PlayClipsOnSource(sounds.bounceClips);
+    }
+    public void PlayBounceWithJumpClip()
+    {
+        PlayClipsOnSource(sounds.bounceWithJumpClips);
     }
     public void PlayVoidCubeExplosionClip(Vector3 pos)
     {

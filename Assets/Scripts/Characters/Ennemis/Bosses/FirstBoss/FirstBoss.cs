@@ -266,12 +266,13 @@ public class FirstBoss : Sonde {
         IPouvoir pouvoir = player.GetPouvoirLeftClick().GetComponent<IPouvoir>();
         gm.console.CapturePouvoirGiverItem(pouvoir.nom, pouvoirBindingLeft, gm.console.strings.pouvoirGiverDash333SubPhrase);
         gm.pointeur.Initialize();
-        gm.soundManager.PlayGainDash333();
+        gm.soundManager.PlayGainPouvoirClip();
     }
 
     protected void GivePathfinder5() {
         PouvoirGiverItem.PouvoirBinding pouvoirBindingA = PouvoirGiverItem.PouvoirBinding.A;
         player.SetPouvoir(pouvoirPathfinder5Prefab, pouvoirBindingA);
+        gm.soundManager.PlayGainPouvoirClip();
     }
 
     protected IEnumerator CStartParticlesGainPouvoir() {

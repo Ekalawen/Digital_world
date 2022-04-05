@@ -35,14 +35,15 @@ public class SoundBankIngame : ScriptableObject {
     public AudioClipParams jumpSuccessClips;
     public AudioClipParams jumpEventStunClips;
     public AudioClipParams jumpEventUnStunClips;
-    public AudioClipParams intersectionEventClips;
+    public AudioClipParams intersectionEventCreateCubesClips;
+    public AudioClipParams intersectionEventSwapCubesClips;
     public AudioClipParams randomSpikeEventClips;
 
     public AudioClipParams activationPouvoirClips;
     public AudioClipParams deniedPouvoirClips;
     public AudioClipParams notFoundPouvoirClips;
     public AudioClipParams pouvoirAvailableClips;
-    public AudioClipParams gainDash333;
+    public AudioClipParams gainPouvoir;
     public AudioClipParams powerDashImpact;
 
     public AudioClipParams timeZoneButtonInClips;
@@ -51,6 +52,7 @@ public class SoundBankIngame : ScriptableObject {
     public AudioClipParams generatorGeneratesClips;
 
     public AudioClipParams bounceClips;
+    public AudioClipParams bounceWithJumpClips;
     public AudioClipParams voidCubeExplosionClips;
     public AudioClipParams gravityChangeClips;
 

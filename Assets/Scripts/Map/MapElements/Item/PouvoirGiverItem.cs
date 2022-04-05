@@ -18,7 +18,7 @@ public class PouvoirGiverItem : Item {
         if(pouvoirPrefab != null) {
             IPouvoir pouvoir = pouvoirPrefab.GetComponent<IPouvoir>();
             gm.console.CapturePouvoirGiverItem(pouvoir.nom, pouvoirBinding);
-            gm.soundManager.PlayGetItemClip(gm.player.transform.position);
+            gm.soundManager.PlayGainPouvoirClip();
             gm.pointeur.Initialize();
         }
     }

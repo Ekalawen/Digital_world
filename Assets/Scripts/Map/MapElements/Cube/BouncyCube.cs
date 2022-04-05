@@ -33,10 +33,12 @@ public class BouncyCube : Cube {
         player.ResetGrip();
         if (Vector3.Dot(direction, gm.gravityManager.Up()) > 0 && InputManager.Instance.GetJump()) {
             player.SetCarefulJumping(Player.EtatPersonnage.AU_SOL);
+            gm.soundManager.PlayBounceWithJumpClip();
         } else {
             player.RemoveGravityEffectFor(dureePoussee); // La gravité est déjà artificiellement annulée lors d'un saut :)
+            gm.soundManager.PlayBounceClip();
         }
-        gm.soundManager.PlayBounceClip();
+        //gm.soundManager.PlayBounceClip();
         if (dammageOnHit > 0.0f) {
             gm.timerManager.RemoveTime(dammageOnHit, EventManager.DeathReason.TOUCHED_BOUNCY_CUBE);
         }
