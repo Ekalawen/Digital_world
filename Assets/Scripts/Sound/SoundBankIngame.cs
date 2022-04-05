@@ -4,47 +4,26 @@ using UnityEngine;
 
 [CreateAssetMenu(fileName = "SoundBankIngame", menuName = "SoundBankIngame")]
 public class SoundBankIngame : ScriptableObject {
+    [Header("Main Sounds")]
     public AudioClipParams jumpClips;
     public AudioClipParams landClips;
     public AudioClipParams gripClips;
 
+    public AudioClipParams timeOutClips;
+
+    public AudioClipParams receivedMessageClips;
+    public AudioClipParams newBlockClips;
+
+    public AudioClipParams rewardBestScoreClips;
+    public AudioClipParams victoryClips;
+    public AudioClipParams defeatClips;
+
+
+    [Header("Map Elements")]
     public AudioClipParams createCubeClips;
     public AudioClipParams getLumiereClips;
     public AudioClipParams escapeDataRecoverLifeClips;
     public AudioClipParams getItemClips;
-    public AudioClipParams failActionClips;
-
-    public AudioClipParams hitClips;
-    public AudioClipParams tracerHitClips;
-    public AudioClipParams tracerBlastLoadClips;
-    public AudioClipParams tracerInterruptedClips;
-    public AudioClipParams emissionTracerClips;
-    public AudioClipParams firstBossPresenceClips;
-    public AudioClipParams firstBossDecreasingBall;
-    public AudioClipParams firstBossIncreasingBall;
-    public AudioClipParams catchSoulRobber;
-    public AudioClipParams detectionClips;
-    public AudioClipParams dissimuleClips;
-
-    public AudioClipParams timeOutClips;
-    public AudioClipParams receivedMessageClips;
-    public AudioClipParams newBlockClips;
-    public AudioClipParams eventStartClips;
-    public AudioClipParams eventEndClips;
-    public AudioClipParams jumpEventStartClips;
-    public AudioClipParams jumpSuccessClips;
-    public AudioClipParams jumpEventStunClips;
-    public AudioClipParams jumpEventUnStunClips;
-    public AudioClipParams intersectionEventCreateCubesClips;
-    public AudioClipParams intersectionEventSwapCubesClips;
-    public AudioClipParams randomSpikeEventClips;
-
-    public AudioClipParams activationPouvoirClips;
-    public AudioClipParams deniedPouvoirClips;
-    public AudioClipParams notFoundPouvoirClips;
-    public AudioClipParams pouvoirAvailableClips;
-    public AudioClipParams gainPouvoir;
-    public AudioClipParams powerDashImpact;
 
     public AudioClipParams timeZoneButtonInClips;
     public AudioClipParams timeZoneButtonOutClips;
@@ -56,10 +35,48 @@ public class SoundBankIngame : ScriptableObject {
     public AudioClipParams voidCubeExplosionClips;
     public AudioClipParams gravityChangeClips;
 
-    public AudioClipParams rewardBestScoreClips;
-    public AudioClipParams victoryClips;
-    public AudioClipParams defeatClips;
 
+    [Header("Ennemis")]
+    public AudioClipParams detectionClips;
+    public AudioClipParams dissimuleClips;
+
+    public AudioClipParams hitClips;
+
+    public AudioClipParams tracerHitClips;
+    public AudioClipParams tracerBlastLoadClips;
+    public AudioClipParams tracerInterruptedClips;
+    public AudioClipParams emissionTracerClips;
+
+    public AudioClipParams firstBossPresenceClips;
+    public AudioClipParams firstBossDecreasingBall;
+    public AudioClipParams firstBossIncreasingBall;
+
+    public AudioClipParams catchSoulRobber;
+
+    [Header("Events")]
+    public AudioClipParams eventStartClips;
+    public AudioClipParams eventEndClips;
+
+    public AudioClipParams jumpEventStartClips;
+    public AudioClipParams jumpSuccessClips;
+    public AudioClipParams jumpEventStunClips;
+    public AudioClipParams jumpEventUnStunClips;
+
+    public AudioClipParams intersectionEventCreateCubesClips;
+    public AudioClipParams intersectionEventSwapCubesClips;
+
+    public AudioClipParams randomSpikeEventClips;
+
+    [Header("Powers")]
+    public AudioClipParams activationPouvoirClips;
+    public AudioClipParams failActionClips; // Le pouvoir ne peut pas être lancé dans ces conditions
+    public AudioClipParams deniedPouvoirClips; // Le pouvoir n'est pas disponible (probablement en cooldown)
+    public AudioClipParams notFoundPouvoirClips; // Le pouvoir n'existe pas
+    public AudioClipParams pouvoirAvailableClips;
+    public AudioClipParams gainPouvoir;
+    public AudioClipParams powerDashImpact;
+
+    [Header("Musics")]
     public AudioClipParams levelMusics;
     public AudioClipParams endGameMusics;
     public AudioClipParams transitionSoundsClips;
