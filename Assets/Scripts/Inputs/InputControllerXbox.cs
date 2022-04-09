@@ -113,4 +113,8 @@ public class InputControllerXbox : InputController {
     public override bool GetShiftUp() {
         return controllerLeftTrigger.GetUp();
     }
+
+    public override bool IsController() {
+        return true;
+    }
 } 

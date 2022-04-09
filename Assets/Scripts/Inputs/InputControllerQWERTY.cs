@@ -95,4 +95,8 @@ public class InputControllerQWERTY : InputController {
     public override bool GetShiftUp() {
         return Input.GetKeyUp(KeyCode.LeftShift);
     }
+
+    public override bool IsController() {
+        return false;
+    }
 } 

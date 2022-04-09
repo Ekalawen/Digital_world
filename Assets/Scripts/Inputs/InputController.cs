@@ -15,6 +15,12 @@ public abstract class InputController : MonoBehaviour {
 
     public abstract InputManager.KeybindingType GetKeybindingType();
 
+    public abstract bool IsController();
+
+    public bool IsKeyboard() {
+        return !IsController();
+    }
+
     public abstract Vector2 GetMouseMouvement();
 
     public abstract bool GetMouseLeftClickDown();
