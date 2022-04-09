@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
@@ -10,7 +11,7 @@ public class InputManager : MonoBehaviour {
     public enum KeybindingType {
         AZERTY,
         QWERTY,
-        CONTROLLER,
+        XBOX,
     };
 
     static InputManager _instance;
@@ -18,8 +19,8 @@ public class InputManager : MonoBehaviour {
 
     public KeybindingType currentKeybindingType;
 
-    protected AxisButton controllerLeftTrigger;
-    protected AxisButton controllerRightTrigger;
+    protected List<InputController> inputControllers = new List<InputController>();
+    protected InputController currentInputController;
     protected bool wasAControllerPlugin;
 
     void Awake() {
@@ -31,14 +32,21 @@ public class InputManager : MonoBehaviour {
         name = "InputManager";
         DontDestroyOnLoad(this);
         currentKeybindingType = GetKeybindingType();
-        controllerRightTrigger = new AxisButton("Jump_CONTROLLER");
-        controllerLeftTrigger = new AxisButton("Shift_CONTROLLER");
+        AddInputControllers();
         wasAControllerPlugin = GetJoystickName() != "";
     }
 
+    protected void AddInputControllers() {
+        inputControllers.Add(gameObject.AddComponent<InputControllerAZERTY>());
+        inputControllers.Add(gameObject.AddComponent<InputControllerQWERTY>());
+        inputControllers.Add(gameObject.AddComponent<InputControllerXbox>());
+        foreach(InputController inputController in inputControllers) {
+            inputController.Initialize(this);
+        }
+        currentInputController = inputControllers.Find(ic => ic.GetKeybindingType() == GetCurrentKeybindingType());
+    }
+
     public void Update() {
-        controllerLeftTrigger.Update();
-        controllerRightTrigger.Update();
         DetectPlugUnplugController();
     }
 
@@ -71,7 +79,9 @@ public class InputManager : MonoBehaviour {
         }
 
         PrefsManager.SetInt(PrefsManager.KEYBINDING_INDICE_KEY, keybindingIndice);
-        currentKeybindingType = (KeybindingType)keybindingIndice;
+        KeybindingType keybinding = (KeybindingType)keybindingIndice;
+        currentKeybindingType = keybinding;
+        currentInputController = inputControllers.Find(ic => ic.GetKeybindingType() == keybinding);
 
         KeybindingDropdown keybindingDropdown = FindObjectOfType<KeybindingDropdown>();
         if(keybindingDropdown != null) {
@@ -87,29 +97,11 @@ public class InputManager : MonoBehaviour {
     }
 
     public Vector2 GetMouseMouvement() {
-        if (GetCurrentKeybindingType() != KeybindingType.CONTROLLER) {
-            float xRot = Input.GetAxis("Mouse_X");
-            float yRot = Input.GetAxis("Mouse_Y");
-            return new Vector2(xRot, yRot);
-        } else {
-            float xRot = Input.GetAxis("Mouse_X_CONTROLLER");
-            float yRot = Input.GetAxis("Mouse_Y_CONTROLLER");
-            return new Vector2(xRot, yRot);
-        }
+        return currentInputController.GetMouseMouvement();
     } 
 
     public Vector3 GetCameraSelectorMouvement() {
-        float x;
-        float y = Input.GetAxis("CameraSelector_Y");
-        float z;
-        if (GetCurrentKeybindingType() == KeybindingType.QWERTY) {
-            x = Input.GetAxis("CameraSelector_X_QWERTY");
-            z = Input.GetAxis("CameraSelector_Z_QWERTY");
-        } else {
-            x = Input.GetAxis("CameraSelector_X_AZERTY");
-            z = Input.GetAxis("CameraSelector_Z_AZERTY");
-        }
-        return new Vector3(x, y, z);
+        return currentInputController.GetCameraSelectorMouvement();
     }
 
     public Vector2 GetCameraMouvement() {
@@ -118,45 +110,27 @@ public class InputManager : MonoBehaviour {
     } 
 
     public bool GetJump() {
-        if (GetCurrentKeybindingType() != KeybindingType.CONTROLLER) {
-            return Input.GetKey(KeyCode.Space);
-        }
-        return controllerRightTrigger.Get();
+        return currentInputController.GetJump();
     }
 
     public bool GetJumpDown() {
-        if (GetCurrentKeybindingType() != KeybindingType.CONTROLLER) {
-            return Input.GetKeyDown(KeyCode.Space);
-        }
-        return controllerRightTrigger.GetDown();
+        return currentInputController.GetJumpDown();
     }
 
     public bool GetJumpUp() {
-        if (GetCurrentKeybindingType() != KeybindingType.CONTROLLER) {
-            return Input.GetKeyUp(KeyCode.Space);
-        }
-        return controllerRightTrigger.GetUp();
+        return currentInputController.GetJumpUp();
     }
 
     public bool GetShift() {
-        if (GetCurrentKeybindingType() != KeybindingType.CONTROLLER) {
-            return Input.GetKey(KeyCode.LeftShift);
-        }
-        return controllerLeftTrigger.Get();
+        return currentInputController.GetShift();
     }
 
     public bool GetShiftDown() {
-        if (GetCurrentKeybindingType() != KeybindingType.CONTROLLER) {
-            return Input.GetKeyDown(KeyCode.LeftShift);
-        }
-        return controllerLeftTrigger.GetDown();
+        return currentInputController.GetShiftDown();
     }
 
     public bool GetShiftUp() {
-        if (GetCurrentKeybindingType() != KeybindingType.CONTROLLER) {
-            return Input.GetKeyUp(KeyCode.LeftShift);
-        }
-        return controllerLeftTrigger.GetUp();
+        return currentInputController.GetShiftUp();
     }
 
     public bool GetPouvoirADown() {
@@ -164,16 +138,7 @@ public class InputManager : MonoBehaviour {
     }
 
     public KeyCode GetPouvoirAKeyCode() {
-        switch (GetCurrentKeybindingType()) {
-            case KeybindingType.AZERTY:
-                return KeyCode.A;
-            case KeybindingType.QWERTY:
-                return KeyCode.Q;
-            case KeybindingType.CONTROLLER:
-                return KeyCode.JoystickButton2;
-            default:
-                return KeyCode.None;
-        }
+        return currentInputController.GetPouvoirAKeyCode();
     }
 
     public bool GetPouvoirEDown() {
@@ -181,10 +146,7 @@ public class InputManager : MonoBehaviour {
     }
 
     public KeyCode GetPouvoirEKeyCode() {
-        if (GetCurrentKeybindingType() != KeybindingType.CONTROLLER) {
-            return KeyCode.E;
-        }
-        return KeyCode.JoystickButton3;
+        return currentInputController.GetPouvoirEKeyCode();
     }
 
     public bool GetPouvoirLeftClickDown() {
@@ -192,18 +154,15 @@ public class InputManager : MonoBehaviour {
     }
 
     public bool GetMouseLeftClickDown() {
-        return Input.GetKeyDown(KeyCode.Mouse0);
+        return currentInputController.GetMouseLeftClickDown();
     }
 
     public bool GetMouseLeftClickUp() {
-        return Input.GetKeyUp(KeyCode.Mouse0);
+        return currentInputController.GetMouseLeftClickUp();
     }
 
     public KeyCode GetPouvoirLeftClickKeyCode() {
-        if (GetCurrentKeybindingType() != KeybindingType.CONTROLLER) {
-            return KeyCode.Mouse0;
-        }
-        return KeyCode.JoystickButton0;
+        return currentInputController.GetPouvoirLeftClickKeyCode();
     }
 
     public bool GetPouvoirRightClickDown() {
@@ -211,10 +170,7 @@ public class InputManager : MonoBehaviour {
     }
 
     public KeyCode GetPouvoirRightClickKeyCode() {
-        if (GetCurrentKeybindingType() != KeybindingType.CONTROLLER) {
-            return KeyCode.Mouse1;
-        }
-        return KeyCode.JoystickButton1;
+        return currentInputController.GetPouvoirRightClickKeyCode();
     }
 
     public bool GetKeyDown(KeyCode binding) {
@@ -226,22 +182,7 @@ public class InputManager : MonoBehaviour {
     }
 
     public Vector3 GetHorizontalMouvement(bool rawAxis = false) {
-        switch (GetCurrentKeybindingType()) {
-            case KeybindingType.AZERTY:
-                return new Vector3(GetAxis("HorizontalAZERTY", rawAxis), 0, GetAxis("VerticalAZERTY", rawAxis));
-            case KeybindingType.QWERTY:
-                return new Vector3(GetAxis("HorizontalQWERTY", rawAxis), 0, GetAxis("VerticalQWERTY", rawAxis));
-            case KeybindingType.CONTROLLER:
-                float xJoystick = GetAxis("HorizontalCONTROLLER_JOYSTICK", rawAxis);
-                float xArrow = GetAxis("HorizontalCONTROLLER_ARROW", rawAxis);
-                float yJoystick = GetAxis("VerticalCONTROLLER_JOYSTICK", rawAxis);
-                float yArrow = GetAxis("VerticalCONTROLLER_ARROW", rawAxis);
-                float x = Math.Abs(xJoystick) >= Mathf.Abs(xArrow) ? xJoystick : xArrow;
-                float y = Math.Abs(yJoystick) >= Mathf.Abs(yArrow) ? yJoystick : yArrow;
-                return new Vector3(x, 0, y);
-            default:
-                return Vector3.zero;
-        }
+        return currentInputController.GetHorizontalMouvement(rawAxis);
     }
 
     public float GetAxis(string axisName, bool rawAxis = false) {
@@ -252,36 +193,26 @@ public class InputManager : MonoBehaviour {
     }
 
     public bool GetRestartGame() {
-        if (GetCurrentKeybindingType() != KeybindingType.CONTROLLER) {
-            return Input.GetKeyDown(KeyCode.R);
-        }
-        return Input.GetKeyDown(KeyCode.JoystickButton6);
+        return currentInputController.GetRestartGame();
     }
 
     public bool GetPauseGame() {
-        // On peut toujours accéder aux options quel que soit le keybinding ! :)
-        return Input.GetKeyDown(KeyCode.JoystickButton7) || Input.GetKeyDown(KeyCode.Escape);
+        return inputControllers.Any(ic => ic.GetPauseGame());
     }
 
     public bool GetOptions() {
-        if (GetCurrentKeybindingType() != KeybindingType.CONTROLLER) {
-            return Input.GetKeyDown(KeyCode.O);
-        }
-        return false;
+        return currentInputController.GetOptions();
     }
 
     public bool GetPauseReturnToMenu() {
-        if (GetCurrentKeybindingType() != KeybindingType.CONTROLLER) {
-            return Input.GetKeyDown(KeyCode.F1);
-        }
-        return false;
+        return currentInputController.GetPauseReturnToMenu();
     }
 
     protected void DetectPlugUnplugController() {
         bool isAControllerPlugin = GetJoystickName() != "";
         if(isAControllerPlugin && !wasAControllerPlugin) {
             NotifyControllerPlugIn();
-            SetKeybindingType(KeybindingType.CONTROLLER);
+            SetKeybindingType(KeybindingType.XBOX);
         } else if (!isAControllerPlugin && wasAControllerPlugin) {
             NotifyControllerPlugOut();
             SetKeybindingType(GetDefaultKeybindingType());
