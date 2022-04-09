@@ -58,4 +58,19 @@ public abstract class InputController : MonoBehaviour {
     public abstract bool GetOptions();
 
     public abstract bool GetPauseReturnToMenu();
+
+    // This function is used to know when a not-used controller is used so that it takes the lead ! :)
+    public bool AnyImportantKeyUsed() {
+        return GetJumpDown()
+            || GetShiftDown()
+            || Input.GetKeyDown(GetPouvoirAKeyCode())
+            || Input.GetKeyDown(GetPouvoirEKeyCode())
+            || Input.GetKeyDown(GetPouvoirLeftClickKeyCode())
+            || Input.GetKeyDown(GetPouvoirRightClickKeyCode())
+            || GetHorizontalMouvement() != Vector3.zero
+            || GetRestartGame()
+            || GetPauseGame();
+    }
+
+    public abstract string GetName();
 }

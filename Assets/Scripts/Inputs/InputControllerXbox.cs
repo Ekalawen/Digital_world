@@ -117,4 +117,8 @@ public class InputControllerXbox : InputController {
     public override bool IsController() {
         return true;
     }
+
+    public override string GetName() {
+        return "Xbox";
+    }
 } 

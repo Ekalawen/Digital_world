@@ -52,6 +52,10 @@ public class InputControllerQWERTY : InputController {
         return new Vector2(xRot, yRot);
     }
 
+    public override string GetName() {
+        return "QWERTY";
+    }
+
     public override bool GetOptions() {
         return Input.GetKeyDown(KeyCode.O);
     }

@@ -154,6 +154,8 @@ public class ConsoleStrings : ScriptableObject
 
     public LocalizedString controllerPlugIn;
     public LocalizedString controllerPlugOut;
+    public LocalizedString swapToController;
+    public LocalizedString swapToKeyboard;
 
     public LocalizedString restartButtonRestart;
     public LocalizedString restartButtonContinue;

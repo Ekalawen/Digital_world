@@ -80,6 +80,7 @@ public class SelectorManager : MonoBehaviour {
     {
         fadingObjects = new Dictionary<GameObject, Coroutine>();
         cameraController = baseCamera.transform.parent.GetComponent<SelectorCameraController>();
+        InputManager.Instance.SetNotInGame();
         verticalMenuHandler.Initialize();
         selectorTarget.Initialize();
         GatherLevels();

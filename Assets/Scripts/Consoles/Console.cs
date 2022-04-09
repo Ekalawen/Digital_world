@@ -1234,6 +1234,18 @@ public class Console : MonoBehaviour {
         AjouterMessageImportant(strings.controllerPlugOut, Console.TypeText.GREEN_TEXT, 3.0f);
     }
 
+    public void SwapToController(InputController inputController) {
+        if (inputController.IsController()) {
+            LocalizedString ls = strings.swapToController;
+            ls.Arguments = new object[] { inputController.GetName() };
+            AjouterMessageImportant(ls, Console.TypeText.GREEN_TEXT, 3.0f);
+        } else {
+            LocalizedString ls = strings.swapToKeyboard;
+            ls.Arguments = new object[] { inputController.GetName() };
+            AjouterMessageImportant(ls, Console.TypeText.GREEN_TEXT, 3.0f);
+        }
+    }
+
     public void ApparitionDesDatas() {
         AjouterMessageImportant(strings.apparitionDesDatas, Console.TypeText.BLUE_TEXT, 3.0f);
     }

@@ -22,6 +22,7 @@ public class InputManager : MonoBehaviour {
     protected List<InputController> inputControllers = new List<InputController>();
     protected InputController currentInputController;
     protected bool wasAControllerPlugin;
+    protected bool isInGame = false;
 
     void Awake() {
         if (!_instance) { _instance = this; }
@@ -37,17 +38,27 @@ public class InputManager : MonoBehaviour {
     }
 
     protected void AddInputControllers() {
-        inputControllers.Add(gameObject.AddComponent<InputControllerAZERTY>());
         inputControllers.Add(gameObject.AddComponent<InputControllerQWERTY>());
+        inputControllers.Add(gameObject.AddComponent<InputControllerAZERTY>());
         inputControllers.Add(gameObject.AddComponent<InputControllerXbox>());
         foreach(InputController inputController in inputControllers) {
             inputController.Initialize(this);
         }
         currentInputController = inputControllers.Find(ic => ic.GetKeybindingType() == GetCurrentKeybindingType());
+        EnsureDefaultKeyboardIsAlwaysFirst();
+    }
+
+    protected void EnsureDefaultKeyboardIsAlwaysFirst() {
+        if (KeybindingDropdown.GetDefaultKeybinding() == KeybindingType.AZERTY) {
+            InputController tmp = inputControllers[0];
+            inputControllers[0] = inputControllers[1];
+            inputControllers[1] = tmp;
+        }
     }
 
     public void Update() {
         DetectPlugUnplugController();
+        DetectUseOtherController();
     }
 
     protected int GetKeybindingTypeIndice() {
@@ -208,6 +219,29 @@ public class InputManager : MonoBehaviour {
         return currentInputController.GetPauseReturnToMenu();
     }
 
+    protected void DetectUseOtherController() {
+        if(!isInGame) {
+            return;
+        }
+
+        foreach(InputController inputController in inputControllers) {
+            if(inputController != currentInputController
+            && !(inputController.IsKeyboard() && currentInputController.IsKeyboard())) { // Dont swap from a keyboard controller to another !
+                if(inputController.AnyImportantKeyUsed()) {
+                    SwapToOtherControllerInGame(inputController);
+                }
+            }
+        }
+    }
+
+    protected void SwapToOtherControllerInGame(InputController inputController) {
+        GameManager gm = FindObjectOfType<GameManager>();
+        if (gm != null) {
+            GameManager.Instance.console.SwapToController(inputController);
+            SetKeybindingType(inputController.GetKeybindingType());
+        }
+    }
+
     protected void DetectPlugUnplugController() {
         bool isAControllerPlugin = GetJoystickName() != "";
         if(isAControllerPlugin && !wasAControllerPlugin) {
@@ -247,5 +281,13 @@ public class InputManager : MonoBehaviour {
 
     public bool GetAnyKeyOrButtonDown() {
         return Input.anyKeyDown;
+    }
+
+    public void SetInGame() {
+        isInGame = true;
+    }
+
+    public void SetNotInGame() {
+        isInGame = false;
     }
 }

@@ -140,6 +140,7 @@ public class GameManager : MonoBehaviour {
         flockManager.Initialize();
         cheatCodeManager.Initialize();
         achievementManager.Initialize(isInGame: true);
+        inputManager.SetInGame();
         FinishInitialization();
     }
 

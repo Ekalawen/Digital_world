@@ -51,6 +51,10 @@ public class InputControllerAZERTY : InputController {
         return new Vector2(xRot, yRot);
     }
 
+    public override string GetName() {
+        return "AZERTY";
+    }
+
     public override bool GetOptions() {
         return Input.GetKeyDown(KeyCode.O);
     }
