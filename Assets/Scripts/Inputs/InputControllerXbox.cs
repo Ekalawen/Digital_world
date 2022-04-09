@@ -22,10 +22,11 @@ public class InputControllerXbox : InputController {
     }
 
     public override Vector3 GetCameraSelectorMouvement() {
-        float x = inputManager.GetAxis("CameraSelector_X_Xbox");
-        float y = inputManager.GetAxis("CameraSelector_Y_Xbox");
-        float z = inputManager.GetAxis("CameraSelector_Z_Xbox");
-        return new Vector3(x, y, z);
+        //float x = inputManager.GetAxis("CameraSelector_X_Xbox");
+        //float y = inputManager.GetAxis("CameraSelector_Y_Xbox");
+        //float z = controllerRightTrigger.Get() ? 1 : (controllerLeftTrigger.Get() ? -1 : 0);
+        //return new Vector3(x, y, z);
+        return Vector3.zero;
 
     }
 
