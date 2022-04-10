@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Localization;
@@ -13,7 +14,7 @@ public class PouvoirDisplay : MonoBehaviour {
 
     public TMPro.TMP_Text textName;
     public TMPro.TMP_Text textDescription;
-    public LocalizedString keyName;
+    public MessageZoneBindingParameters.Bindings keyBinding;
     public LocalizedString levelToUnlockPouvoirName;
     public Image image;
     public Image bordure;
@@ -23,15 +24,22 @@ public class PouvoirDisplay : MonoBehaviour {
     public Color bordureColorReset;
     public Color bordureColorDefault;
 
-    public void Initialize(string name, string keyName, string description, Sprite sprite, PouvoirType pouvoirType)
-    {
-        textName.text = textName.text.Replace("%PouvoirName%", name);
-        textName.text = textName.text.Replace("%ToucheName%", keyName);
-        textDescription.text = description;
+    public void Initialize(string name, string keyName, string description, Sprite sprite, PouvoirType pouvoirType) {
+        InitTexts(name, keyName, description);
         SetBordureColor(pouvoirType);
+        SetTooltip();
         this.image.sprite = sprite;
         if (sprite != null)
             this.image.color = Color.white; // Sinon c'est transparent !
+    }
+
+    protected void InitTexts(string name, string keyName, string description) {
+        string keyString = UIHelper.SurroundWithColor(keyName, UIHelper.GREEN);
+        string nameString = UIHelper.SurroundWithColor(name, UIHelper.RED);
+        textName.text = $"{keyString}\n{nameString}";
+        //textName.text = textName.text.Replace("%PouvoirName%", name);
+        //textName.text = textName.text.Replace("%ToucheName%", keyName);
+        textDescription.text = description;
     }
 
     private void SetBordureColor(PouvoirType pouvoirType)
@@ -65,5 +73,14 @@ public class PouvoirDisplay : MonoBehaviour {
 
     public static string GetNullDescription(string levelName) {
         return LocalizationSettings.StringDatabase.GetLocalizedStringAsync("Pouvoirs", "PouvoirNullDescription", null, FallbackBehavior.UseProjectSettings, new object[] { levelName }).Result;
+    }
+
+    public string GetKeyName() {
+        return InputManager.Instance.GetCurrentInputController().GetStringForBinding(keyBinding);
+    }
+
+    protected void SetTooltip() {
+        TooltipActivator tooltipActivator = GetComponent<TooltipActivator>();
+        tooltipActivator.localizedMessage.Arguments = new object[] { GetKeyName() };
     }
 }

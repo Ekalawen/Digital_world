@@ -94,16 +94,16 @@ public class LoadingMenu : MonoBehaviour {
 
     protected void InitPouvoirs() {
         Player player = level.joueurPrefab.GetComponent<Player>();
-        InitPouvoir(player.pouvoirAPrefab, pouvoirA, pouvoirA.keyName.GetLocalizedString().Result);
-        InitPouvoir(player.pouvoirEPrefab, pouvoirE, pouvoirE.keyName.GetLocalizedString().Result);
-        InitPouvoir(player.pouvoirLeftBoutonPrefab, pouvoirLeftClick, pouvoirLeftClick.keyName.GetLocalizedString().Result);
-        InitPouvoir(player.pouvoirRightBoutonPrefab, pouvoirRightClick, pouvoirRightClick.keyName.GetLocalizedString().Result);
+        InitPouvoir(player.pouvoirAPrefab, pouvoirA, pouvoirA.GetKeyName());
+        InitPouvoir(player.pouvoirEPrefab, pouvoirE, pouvoirE.GetKeyName());
+        InitPouvoir(player.pouvoirLeftBoutonPrefab, pouvoirLeftClick, pouvoirLeftClick.GetKeyName());
+        InitPouvoir(player.pouvoirRightBoutonPrefab, pouvoirRightClick, pouvoirRightClick.GetKeyName());
     }
 
     protected void InitPouvoir(GameObject pouvoirPrefab, PouvoirDisplay display, string keyName) {
         IPouvoir pouvoir = pouvoirPrefab ? pouvoirPrefab.GetComponent<IPouvoir>() : null;
         string nom = pouvoir ? pouvoir.nom.GetLocalizedString().Result : PouvoirDisplay.GetNullName();
-        string levelToUnlockPouvoirName = display.levelToUnlockPouvoirName.GetLocalizedString().Result;
+        string levelToUnlockPouvoirName = UIHelper.SurroundWithColorWithoutB(display.levelToUnlockPouvoirName.GetLocalizedString().Result, UIHelper.BLUE);
         string description = pouvoir ? pouvoir.description.GetLocalizedString().Result : PouvoirDisplay.GetNullDescription(levelToUnlockPouvoirName);
         Sprite sprite = pouvoir ? pouvoir.sprite : null;
         PouvoirDisplay.PouvoirType pouvoirType = pouvoir ? pouvoir.pouvoirType : PouvoirDisplay.PouvoirType.DEFAULT;
