@@ -80,6 +80,10 @@ public class InputControllerQWERTY : InputController {
         return KeyCode.Mouse0;
     }
 
+    public override bool GetPouvoirLeftClickDown() {
+        return Input.GetKeyDown(GetPouvoirLeftClickKeyCode());
+    }
+
     public override KeyCode GetPouvoirRightClickKeyCode() {
         return KeyCode.Mouse1;
     }

@@ -160,8 +160,12 @@ public class InputManager : MonoBehaviour {
         return currentInputController.GetPouvoirEKeyCode();
     }
 
+    public KeyCode GetPouvoirLeftClickKeyCode() {
+        return currentInputController.GetPouvoirLeftClickKeyCode();
+    }
+
     public bool GetPouvoirLeftClickDown() {
-        return Input.GetKeyDown(GetPouvoirLeftClickKeyCode());
+        return currentInputController.GetPouvoirLeftClickDown();
     }
 
     public bool GetMouseLeftClickDown() {
@@ -170,10 +174,6 @@ public class InputManager : MonoBehaviour {
 
     public bool GetMouseLeftClickUp() {
         return currentInputController.GetMouseLeftClickUp();
-    }
-
-    public KeyCode GetPouvoirLeftClickKeyCode() {
-        return currentInputController.GetPouvoirLeftClickKeyCode();
     }
 
     public bool GetPouvoirRightClickDown() {

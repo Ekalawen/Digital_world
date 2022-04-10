@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <LangVersion>latest</LangVersion>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -52,6 +52,9 @@
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
     <UnityVersion>2021.1.28f1</UnityVersion>
   </PropertyGroup>
+  <ItemGroup>
+    <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio Tools for Unity\16.0\Analyzers\Microsoft.Unity.Analyzers.dll" />
+  </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Math\Graphe.cs" />
     <Compile Include="Assets\Scripts\Map\MapFunctionComponents\Generate\GenerateHorizontalPonts.cs" />
@@ -130,6 +133,7 @@
     <Compile Include="Assets\Scripts\Steam\Achievements\Generic\Achievement_PlayForDuration.cs" />
     <Compile Include="Assets\Scripts\UI\Selector\SelectorIcones\AutoDissolveIcone.cs" />
     <Compile Include="Assets\Scripts\Events\Helpers\HelperAnalyze.cs" />
+    <Compile Include="Assets\Scripts\Inputs\InputControllerXbox.cs" />
     <Compile Include="Assets\Scripts\Map\MapElements\MapElementsComponents\AutoUpLookAtPlayer.cs" />
     <Compile Include="Assets\Scripts\Sound\SoundManager.cs" />
     <Compile Include="Assets\Scripts\Map\MapFunctionComponents\Lumieres\AllumeLumiere.cs" />
@@ -269,6 +273,7 @@
     <Compile Include="Assets\Scripts\Map\MapElements\Item\Item.cs" />
     <Compile Include="Assets\Scripts\UI\Selector\SelectorPath\SelectorPathArrow.cs" />
     <Compile Include="Assets\Scripts\UI\Selector\SelectorLevel\SelectorLevelRunIntroduction.cs" />
+    <Compile Include="Assets\Scripts\Inputs\InputControllerQWERTY.cs" />
     <Compile Include="Assets\Scripts\Map\MapFunctionComponents\Generate\GenerateSpikesEverywhere.cs" />
     <Compile Include="Assets\Imported\LeanTween\Examples\Scripts\GeneralAdvancedTechniques.cs" />
     <Compile Include="Assets\Scripts\Pouvoirs\PouvoirGripDash.cs" />
@@ -363,6 +368,7 @@
     <Compile Include="Assets\Imported\LeanTween\Framework\LeanTween.cs" />
     <Compile Include="Assets\Imported\LeanTween\Framework\LTDescr.cs" />
     <Compile Include="Assets\Imported\TextMesh Pro\Examples &amp; Extras\Scripts\SkewTextExample.cs" />
+    <Compile Include="Assets\Scripts\Inputs\InputController.cs" />
     <Compile Include="Assets\Scripts\Characters\Controllers\RushPlayerController.cs" />
     <Compile Include="Assets\Scripts\Timer\TimerManager.cs" />
     <Compile Include="Assets\Imported\LeanTween\Framework\LeanTweenExt.cs" />
@@ -603,6 +609,7 @@
     <Compile Include="Assets\Scripts\UI\Selector\SelectorIcones\SwappyCubesHolderManagerIcone.cs" />
     <Compile Include="Assets\Scripts\Map\MapFunctionComponents\Generate\GenerateZones.cs" />
     <Compile Include="Assets\Scripts\Characters\Ennemis\TracerBlast.cs" />
+    <Compile Include="Assets\Scripts\Inputs\InputControllerAZERTY.cs" />
     <Compile Include="Assets\Scripts\Steam\Achievements\Generic\Achievement_UnlockAllOtherAchievements.cs" />
     <Compile Include="Assets\Scripts\Pouvoirs\PouvoirMessageDisplayer.cs" />
     <Compile Include="Assets\Scripts\Map\MapElements\MapElementsComponents\RotateArround.cs" />
@@ -632,10 +639,6 @@
     <Compile Include="Assets\Scripts\UI\Menu\Utilitaires\VersionNumber.cs" />
     <Compile Include="Assets\Textures\UI\Pointeurs\CursorsAndCrosshairs\CursorChanger.cs" />
     <Compile Include="Assets\Scripts\Map\MapFunctionComponents\Get\GetCubesHelper.cs" />
-    <Compile Include="Assets\Scripts\Inputs\InputController.cs" />
-    <Compile Include="Assets\Scripts\Inputs\InputControllerAZERTY.cs" />
-    <Compile Include="Assets\Scripts\Inputs\InputControllerQWERTY.cs" />
-    <Compile Include="Assets\Scripts\Inputs\InputControllerXbox.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Texts\DataHackees\2_Arc2\15-16_ToLearnIntersection\DHtoLearnIntersectionFromConstantDestructionFR.txt" />

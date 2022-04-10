@@ -83,19 +83,28 @@ public class InputControllerXbox : InputController {
     }
 
     public override KeyCode GetPouvoirAKeyCode() {
-        return KeyCode.JoystickButton2;
-    }
-
-    public override KeyCode GetPouvoirEKeyCode() {
-        return KeyCode.JoystickButton3;
-    }
-
-    public override KeyCode GetPouvoirLeftClickKeyCode() {
+        //return KeyCode.JoystickButton2;
         return KeyCode.JoystickButton0;
     }
 
-    public override KeyCode GetPouvoirRightClickKeyCode() {
+    public override KeyCode GetPouvoirEKeyCode() {
+        //return KeyCode.JoystickButton3;
         return KeyCode.JoystickButton1;
+    }
+
+    public override KeyCode GetPouvoirLeftClickKeyCode() {
+        //return KeyCode.JoystickButton0;
+        //return KeyCode.JoystickButton8;
+        return KeyCode.JoystickButton9; // Bof
+    }
+
+    public override bool GetPouvoirLeftClickDown() {
+        return controllerLeftTrigger.GetDown();
+    }
+
+    public override KeyCode GetPouvoirRightClickKeyCode() {
+        //return KeyCode.JoystickButton1;
+        return KeyCode.JoystickButton9;
     }
 
     public override bool GetRestartGame() {
@@ -103,15 +112,18 @@ public class InputControllerXbox : InputController {
     }
 
     public override bool GetShift() {
-        return controllerLeftTrigger.Get();
+        //return controllerLeftTrigger.Get();
+        return Input.GetKey(KeyCode.JoystickButton8);
     }
 
     public override bool GetShiftDown() {
-        return controllerLeftTrigger.GetDown();
+        //return controllerLeftTrigger.GetDown();
+        return Input.GetKeyDown(KeyCode.JoystickButton8);
     }
 
     public override bool GetShiftUp() {
-        return controllerLeftTrigger.GetUp();
+        //return controllerLeftTrigger.GetUp();
+        return Input.GetKeyUp(KeyCode.JoystickButton8);
     }
 
     public override bool IsController() {
