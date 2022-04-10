@@ -93,6 +93,7 @@ public class Console : MonoBehaviour {
 	protected float tempsImportantText;
 	protected float timeLastLumiereAttrapee; // Le dernier temps auquel le joueur n'a pas attrapé d'Orbe
     protected bool playerIsFollowed = false; // C'est pas vrai, mais c'est pour que l'algo fonctionne ^^
+
     protected Timer timerConseiller;
     protected List<TimerMessage> timersMessages;
     protected Transform messagesFolder;
@@ -1408,5 +1409,12 @@ public class Console : MonoBehaviour {
 
     public void ExternalStartEndGame() {
         AjouterMessageImportant(strings.externalStartEndEvent, Console.TypeText.RED_TEXT, 2.0f);
+    }
+
+    public void UpdatePouvoirBindings() {
+        pouvoirDisplayA?.UpdateBinding();
+        pouvoirDisplayE?.UpdateBinding();
+        pouvoirDisplayLeftClick?.UpdateBinding();
+        pouvoirDisplayRightClick?.UpdateBinding();
     }
 }

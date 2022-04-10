@@ -102,6 +102,10 @@ public class InputManager : MonoBehaviour {
         if(keybindingDropdown != null) {
             keybindingDropdown.dropdown.SetValueWithoutNotify(keybindingIndice);
         }
+
+        if(isInGame) {
+            GameManager.Instance.console.UpdatePouvoirBindings();
+        }
     }
 
     public KeybindingType GetDefaultKeybindingType() {
@@ -225,6 +229,9 @@ public class InputManager : MonoBehaviour {
 
     protected void DetectUseOtherController() {
         if(!isInGame) {
+            return;
+        }
+        if(GameManager.Instance.IsPaused()) {
             return;
         }
 

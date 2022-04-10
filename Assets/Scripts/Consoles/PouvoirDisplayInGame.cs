@@ -16,7 +16,7 @@ public class PouvoirDisplayInGame : MonoBehaviour {
     public Image loadingCircle;
     public float vitesseRotationLoadingCircle = 5.0f;
     public Text keyText;
-    public LocalizedString keyLocalizedString;
+    public MessageZoneBindingParameters.Bindings binding;
     public PouvoirDisplayFlash flash;
 
     [Header("Bordures Colors")]
@@ -45,27 +45,32 @@ public class PouvoirDisplayInGame : MonoBehaviour {
         StartCoroutine(CInitialize(pouvoir));
     }
 
-    protected IEnumerator CInitialize(IPouvoir pouvoir) {
+    protected IEnumerator CInitialize(IPouvoir pouvoir)
+    {
         bordure.gameObject.SetActive(true);
         this.pouvoir = pouvoir;
         this.cooldown = pouvoir.GetCooldown();
         string nom = PouvoirDisplay.GetNullName();
-        if (pouvoir != null) {
+        if (pouvoir != null)
+        {
             AsyncOperationHandle<string> handleNom = pouvoir.nom.GetLocalizedString();
             yield return handleNom;
             nom = handleNom.Result;
         }
         Sprite sprite = pouvoir ? pouvoir.sprite : null;
 
-        AsyncOperationHandle<string> handleKeyText = keyLocalizedString.GetLocalizedString();
-        yield return handleKeyText;
-        keyText.text = keyText.text.Replace("%PouvoirName%", handleKeyText.Result);
+        UpdateBinding();
 
         SetBordureColor(pouvoir.pouvoirType);
 
         this.image.sprite = sprite;
         if (sprite != null)
             this.image.color = Color.white; // Sinon c'est transparent !
+    }
+
+    public void UpdateBinding() {
+        string bindingString = InputManager.Instance.GetCurrentInputController().GetStringForBinding(binding);
+        keyText.text = UIHelper.SurroundWithColorWithoutB(bindingString, UIHelper.GREEN);
     }
 
     protected void SetBordureColor(PouvoirDisplay.PouvoirType pouvoirType) {
