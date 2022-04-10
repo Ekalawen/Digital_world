@@ -295,7 +295,7 @@ public class Console : MonoBehaviour {
 		AjouterMessageImportant (strings.pouvoirsDesactives, TypeText.GREEN_TEXT, 3);
     }
 
-    protected void LancerConseils() {
+    protected virtual void LancerConseils() {
         if (timerConseiller.IsOver()) {
             Conseiller(ConseilType.RANDOM);
             timerConseiller = new Timer(UnityEngine.Random.Range(tempsAvantConseiller.x, tempsAvantConseiller.y));

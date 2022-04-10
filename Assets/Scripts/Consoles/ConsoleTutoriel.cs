@@ -27,4 +27,8 @@ public class ConsoleTutoriel : Console {
     protected override void InitializeDataCountText() {
         // On ne le fait pas ! :)
     }
+
+    protected override void LancerConseils() {
+        // On ne le fait pas non plus :)
+    }
 }
