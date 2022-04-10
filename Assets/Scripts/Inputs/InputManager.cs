@@ -74,6 +74,10 @@ public class InputManager : MonoBehaviour {
         return currentKeybindingType;
     }
 
+    public InputController GetCurrentInputController() {
+        return currentInputController;
+    }
+
     public int GetCurrentKeybindingTypeIndice() {
         return (int)currentKeybindingType;
     }

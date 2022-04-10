@@ -9,6 +9,7 @@ public class MessageZone : IZone {
 
     public List<LocalizedString> messages;
     public List<Console.TypeText> typeTextes;
+    public MessageZoneBindingParameters parameters;
     public bool isImportant = false;
     [ConditionalHide("isImportant")]
     public float dureeImportantMessage = 2.0f;
@@ -52,7 +53,7 @@ public class MessageZone : IZone {
         }
         if(isImportant) {
             for(int i = messages.Count - 1; i >= 0; i--) {
-                DisplayMessageImportant(messages[i], typeTextes[i]);
+                DisplayMessageImportant(messages[i], typeTextes[i], i);
             }
         }
         if(!isImportant || (isImportant && !isImportantOnly)) {
@@ -60,7 +61,7 @@ public class MessageZone : IZone {
                 gm.console.AddGapInConsole();
             }
             for(int i = 0; i < messages.Count; i++) {
-                DisplayMessageInConsole(messages[i], typeTextes[i]);
+                DisplayMessageInConsole(messages[i], typeTextes[i], i);
             }
         }
         if (useSound) {
@@ -69,13 +70,13 @@ public class MessageZone : IZone {
         timer.Reset();
     }
 
-    protected void DisplayMessageImportant(LocalizedString localizedString, Console.TypeText typeTexte) {
-        StartCoroutine(CDisplayMessageImportant(localizedString, typeTexte));
+    protected void DisplayMessageImportant(LocalizedString localizedString, Console.TypeText typeTexte, int indice) {
+        StartCoroutine(CDisplayMessageImportant(localizedString, typeTexte, indice));
     }
 
-    protected IEnumerator CDisplayMessageImportant(LocalizedString localizedString, Console.TypeText typeTexte) {
+    protected IEnumerator CDisplayMessageImportant(LocalizedString localizedString, Console.TypeText typeTexte, int indice) {
         if (localizedString != null) {
-            AsyncOperationHandle<string> handle = GetHandle(localizedString);
+            AsyncOperationHandle<string> handle = GetHandle(localizedString, indice);
             yield return handle;
             string message = handle.Result;
             gm.console.AjouterMessageImportant(message, typeTexte, dureeImportantMessage, bAfficherInConsole: false);
@@ -84,13 +85,13 @@ public class MessageZone : IZone {
         }
     }
 
-    protected void DisplayMessageInConsole(LocalizedString localizedString, Console.TypeText typeTexte) {
-        StartCoroutine(CDisplayMessageInConsole(localizedString, typeTexte));
+    protected void DisplayMessageInConsole(LocalizedString localizedString, Console.TypeText typeTexte, int indice) {
+        StartCoroutine(CDisplayMessageInConsole(localizedString, typeTexte, indice));
     }
 
-    protected IEnumerator CDisplayMessageInConsole(LocalizedString localizedString, Console.TypeText typeTexte) {
+    protected IEnumerator CDisplayMessageInConsole(LocalizedString localizedString, Console.TypeText typeTexte, int indice) {
         if (localizedString != null) {
-            AsyncOperationHandle<string> handle = GetHandle(localizedString);
+            AsyncOperationHandle<string> handle = GetHandle(localizedString, indice);
             yield return handle;
             string message = handle.Result;
             gm.console.AjouterMessage(message, typeTexte);
@@ -99,7 +100,10 @@ public class MessageZone : IZone {
         }
     }
 
-    protected virtual AsyncOperationHandle<string> GetHandle(LocalizedString localizedString) {
+    protected virtual AsyncOperationHandle<string> GetHandle(LocalizedString localizedString, int indice) {
+        if (parameters != null) {
+            return localizedString.GetLocalizedString(parameters.GetParameterFor(indice));
+        }
         return localizedString.GetLocalizedString();
     }
 }

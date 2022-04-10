@@ -106,4 +106,4 @@ public class InputControllerAZERTY : InputController {
     public override bool IsController() {
         return false;
     }
-} 
+}

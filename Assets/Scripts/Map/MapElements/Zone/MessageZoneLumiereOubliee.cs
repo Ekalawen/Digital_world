@@ -28,7 +28,7 @@ public class MessageZoneLumiereOubliee : MessageZone {
         }
     }
 
-    protected override AsyncOperationHandle<string> GetHandle(LocalizedString localizedString) {
+    protected override AsyncOperationHandle<string> GetHandle(LocalizedString localizedString, int indice) {
         int nbLumieresOubliees = GetNbLumieresOubliees();
         return localizedString.GetLocalizedString(new object[] { nbLumieresOubliees });
     }

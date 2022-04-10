@@ -75,4 +75,33 @@ public abstract class InputController : MonoBehaviour {
     }
 
     public abstract string GetName();
+
+    protected string GetStringForLocalizedStringReference(string reference, params object[] arguments) {
+        return LocalizationSettings.StringDatabase.GetLocalizedStringAsync("InputBindings", $"{GetName()}_{reference}", null, FallbackBehavior.UseProjectSettings, arguments).Result;
+    }
+
+    public string GetStringForBinding(MessageZoneBindingParameters.Bindings bindings) {
+        switch (bindings) {
+            case MessageZoneBindingParameters.Bindings.MOUVEMENT:
+                return GetStringForLocalizedStringReference("Mouvement");
+            case MessageZoneBindingParameters.Bindings.CAMERA:
+                return GetStringForLocalizedStringReference("Camera");
+            case MessageZoneBindingParameters.Bindings.JUMP:
+                return GetStringForLocalizedStringReference("Jump");
+            case MessageZoneBindingParameters.Bindings.SHIFT:
+                return GetStringForLocalizedStringReference("Shift");
+            case MessageZoneBindingParameters.Bindings.POUVOIR_A:
+                return GetStringForLocalizedStringReference("PouvoirA");
+            case MessageZoneBindingParameters.Bindings.POUVOIR_E:
+                return GetStringForLocalizedStringReference("PouvoirE");
+            case MessageZoneBindingParameters.Bindings.POUVOIR_LEFT:
+                return GetStringForLocalizedStringReference("PouvoirLeft");
+            case MessageZoneBindingParameters.Bindings.POUVOIR_RIGHT:
+                return GetStringForLocalizedStringReference("PouvoirRight");
+            case MessageZoneBindingParameters.Bindings.RESTART:
+                return GetStringForLocalizedStringReference("Restart");
+            default:
+                throw new Exception("Unknowed Binding in GetStringForBinding !");
+        }
+    }
 }
