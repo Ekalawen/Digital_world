@@ -223,6 +223,11 @@ public class Console : MonoBehaviour {
         if (!displayImportant) {
             AjouterMessageImportant(customInitMessage, TypeText.BLUE_TEXT, 3);
         }
+
+        DisplayInitMessageWithBinding displayer = GetComponent<DisplayInitMessageWithBinding>();
+        if(displayer != null) {
+            displayer.DisplayInitMessage(this);
+        }
     }
 
     protected void DisplayLevelName() {
