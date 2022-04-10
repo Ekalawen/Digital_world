@@ -100,6 +100,8 @@ public abstract class InputController : MonoBehaviour {
                 return GetStringForLocalizedStringReference("PouvoirRight");
             case MessageZoneBindingParameters.Bindings.RESTART:
                 return GetStringForLocalizedStringReference("Restart");
+            case MessageZoneBindingParameters.Bindings.PAUSE:
+                return GetStringForLocalizedStringReference("Pause");
             default:
                 throw new Exception("Unknowed Binding in GetStringForBinding !");
         }

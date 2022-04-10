@@ -1162,9 +1162,11 @@ public class Console : MonoBehaviour {
     public void DisplayEscapeButton() {
         escapeButton.SetActive(IsConsoleVisible());
         if (gm.eventManager.ShouldQuitOrReload() == EventManager.QuitType.RELOAD) {
-            escapeButtonText.text = strings.restartButtonRestart.GetLocalizedString().Result;
+            string binding = InputManager.Instance.GetCurrentInputController().GetStringForBinding(MessageZoneBindingParameters.Bindings.RESTART);
+            escapeButtonText.text = strings.restartButtonRestart.GetLocalizedString(binding).Result;
         } else {
-            escapeButtonText.text = strings.restartButtonContinue.GetLocalizedString().Result;
+            string binding = InputManager.Instance.GetCurrentInputController().GetStringForBinding(MessageZoneBindingParameters.Bindings.PAUSE);
+            escapeButtonText.text = strings.restartButtonContinue.GetLocalizedString(binding).Result;
         }
     }
 

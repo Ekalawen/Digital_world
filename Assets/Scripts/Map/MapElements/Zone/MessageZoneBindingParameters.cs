@@ -17,6 +17,7 @@ public class MessageZoneBindingParameters : MonoBehaviour {
         POUVOIR_LEFT,
         POUVOIR_RIGHT,
         RESTART,
+        PAUSE,
     };
 
     public List<Bindings> bindingParameter;
