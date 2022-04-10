@@ -1164,8 +1164,15 @@ public class Console : MonoBehaviour {
     }
 
     public void NotifyPlayerToPressShift() {
-        gm.console.AjouterMessageImportant(strings.pressShiftImportant, Console.TypeText.BLUE_TEXT, 2.0f, bAfficherInConsole: false);
-        gm.console.AjouterMessage(strings.pressShiftConsole, Console.TypeText.BLUE_TEXT);
+        string bindingArgument = InputManager.Instance.GetCurrentInputController().GetStringForBinding(MessageZoneBindingParameters.Bindings.SHIFT);
+
+        LocalizedString lsImportant = strings.pressShiftImportant;
+        lsImportant.Arguments = new object[] { bindingArgument };
+        gm.console.AjouterMessageImportant(lsImportant, Console.TypeText.BLUE_TEXT, 2.0f, bAfficherInConsole: false);
+
+        LocalizedString lsConsole = strings.pressShiftConsole;
+        lsConsole.Arguments = new object[] { bindingArgument };
+        gm.console.AjouterMessage(lsConsole, Console.TypeText.BLUE_TEXT);
     }
 
     protected void InitPrefixs() {
