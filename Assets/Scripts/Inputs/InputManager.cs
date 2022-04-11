@@ -12,6 +12,7 @@ public class InputManager : MonoBehaviour {
         AZERTY,
         QWERTY,
         XBOX,
+        SWITCH,
     };
 
     static InputManager _instance;
@@ -41,6 +42,7 @@ public class InputManager : MonoBehaviour {
         inputControllers.Add(gameObject.AddComponent<InputControllerQWERTY>());
         inputControllers.Add(gameObject.AddComponent<InputControllerAZERTY>());
         inputControllers.Add(gameObject.AddComponent<InputControllerXbox>());
+        inputControllers.Add(gameObject.AddComponent<InputControllerSwitch>());
         foreach(InputController inputController in inputControllers) {
             inputController.Initialize(this);
         }
@@ -216,7 +218,8 @@ public class InputManager : MonoBehaviour {
     }
 
     public bool GetPauseGame() {
-        return inputControllers.Any(ic => ic.GetPauseGame());
+        return currentInputController.GetPauseGame()
+            || inputControllers.FindAll(ic => ic.IsKeyboard() != currentInputController.IsKeyboard()).Any(ic => ic.GetPauseGame());
     }
 
     public bool GetOptions() {
@@ -237,7 +240,7 @@ public class InputManager : MonoBehaviour {
 
         foreach(InputController inputController in inputControllers) {
             if(inputController != currentInputController
-            && !(inputController.IsKeyboard() && currentInputController.IsKeyboard())) { // Dont swap from a keyboard controller to another !
+            && inputController.IsKeyboard() != currentInputController.IsKeyboard()) { // Dont swap from a keyboard controller to another ! Or from a controller to another controller !
                 if(inputController.AnyImportantKeyUsed()) {
                     SwapToOtherControllerInGame(inputController);
                 }
@@ -288,6 +291,13 @@ public class InputManager : MonoBehaviour {
     public string GetJoystickName() {
         string[] joystickNames = Input.GetJoystickNames();
         return joystickNames.Length > 0 ? joystickNames[0] : "";
+    }
+
+    // Ne marche pas puisque les noms des controllers sont nuls ... Genre pour la switch c'est "Wireless Controller". Bah super ! ;)
+    public bool IsFirstJoystickOfInputControllerType(InputController inputController) {
+        string[] joystickNames = Input.GetJoystickNames();
+        string inputControllerName = inputController.GetName().ToLower();
+        return joystickNames.Length > 0 && joystickNames[0].ToLower().Contains(inputControllerName);
     }
 
     public bool GetAnyKeyOrButtonDown() {

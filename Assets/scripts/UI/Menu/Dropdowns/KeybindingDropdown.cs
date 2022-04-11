@@ -9,13 +9,15 @@ using UnityEngine.UI;
 public class KeybindingDropdown : MonoBehaviour {
 
     public Dropdown dropdown;
-    public LocalizedString controllerString;
+    public LocalizedString xboxControllerString;
+    public LocalizedString switchControllerString;
 
     public void Start() {
         List<Dropdown.OptionData> options = new List<Dropdown.OptionData>();
         options.Add(new Dropdown.OptionData(InputManager.KeybindingType.AZERTY.ToString()));
         options.Add(new Dropdown.OptionData(InputManager.KeybindingType.QWERTY.ToString()));
-        options.Add(new Dropdown.OptionData(controllerString.GetLocalizedString().Result));
+        options.Add(new Dropdown.OptionData(xboxControllerString.GetLocalizedString().Result));
+        options.Add(new Dropdown.OptionData(switchControllerString.GetLocalizedString().Result));
         dropdown.options = options;
 
         dropdown.value = InputManager.Instance.GetCurrentKeybindingTypeIndice();
