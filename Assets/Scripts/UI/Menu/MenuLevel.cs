@@ -478,12 +478,10 @@ public class MenuLevel : MonoBehaviour {
         yield return handleTitle;
         string titleString = handleTitle.Result;
         string docText = "";
-        int i = 1;
-        foreach(LocalizedString localizedString in consolePrefab.GetComponent<Console>().conseils) {
-            AsyncOperationHandle<string> conseilHandle = localizedString.GetLocalizedString();
-            yield return conseilHandle;
-            docText += $"{UIHelper.SurroundWithColor(i.ToString(), UIHelper.GREEN)}) {conseilHandle.Result}\n";
-            i++;
+        Console console = consolePrefab.GetComponent<Console>();
+        for(int i = 0; i < console.conseils.Count; i++) {
+            yield return console.CComputeConseil(i);
+            docText += $"{UIHelper.SurroundWithColor((i + 1).ToString(), UIHelper.GREEN)}) {console.computedConseil}\n";
         }
         docText = UIHelper.ApplyReplacementList(docText, selectorManager.docReplacementStrings);
         selectorManager.RunPopup(titleString, docText, TexteExplicatif.Theme.NEUTRAL);

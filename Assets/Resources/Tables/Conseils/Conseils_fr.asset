@@ -16,7 +16,8 @@ MonoBehaviour:
     m_Code: fr
   m_SharedData: {fileID: 11400000, guid: 37fdd8131e27346459ae0af7749749d0, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - id: 0
   m_TableData:
   - m_Id: 88742273024
     m_Localized: "Chaque Bloc est g\xE9n\xE9r\xE9 al\xE9atoirement !"
@@ -64,9 +65,10 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 426421493760
-    m_Localized: "Restez appuy\xE9 sur ESPACE pour sauter plus haut."
+    m_Localized: "Restez appuy\xE9 sur {0} pour sauter plus haut."
     m_Metadata:
-      m_Items: []
+      m_Items:
+      - id: 0
   - m_Id: 714884751360
     m_Localized: Une Sonde va droit sur vous si elle vous voit.
     m_Metadata:
@@ -1360,3 +1362,7 @@ MonoBehaviour:
       m_Items: []
   references:
     version: 1
+    00000000:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 00a0b34863000000

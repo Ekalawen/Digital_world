@@ -16,7 +16,8 @@ MonoBehaviour:
     m_Code: en
   m_SharedData: {fileID: 11400000, guid: 37fdd8131e27346459ae0af7749749d0, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - id: 0
   m_TableData:
   - m_Id: 88742273024
     m_Localized: Each Block is generated randomly!
@@ -63,9 +64,10 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 426421493760
-    m_Localized: Hold SPACE to jump higher.
+    m_Localized: Hold {0} to jump higher.
     m_Metadata:
-      m_Items: []
+      m_Items:
+      - id: 0
   - m_Id: 714884751360
     m_Localized: A Probe goes straight toward you if it sees you.
     m_Metadata:
@@ -1282,3 +1284,7 @@ MonoBehaviour:
       m_Items: []
   references:
     version: 1
+    00000000:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 00a0b34863000000

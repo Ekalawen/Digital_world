@@ -81,10 +81,8 @@ public class LoadingMenu : MonoBehaviour {
             string conseilKey = level.GetKey(PrefsManager.CONSEIL_INDICE_KEY);
             int conseilIndice = PrefsManager.GetInt(conseilKey, 0);
             PrefsManager.SetInt(conseilKey, (conseilIndice + 1) % console.conseils.Count);
-            LocalizedString conseil = console.conseils[conseilIndice];
-            AsyncOperationHandle<string> handle = conseil.GetLocalizedString();
-            yield return handle.Task;
-            conseilText.text += handle.Result;
+            yield return console.CComputeConseil(conseilIndice);
+            conseilText.text += console.computedConseil;
         } else { // Tutoriel !
             AsyncOperationHandle<string> handle = tutorielInitialisationMatrice.GetLocalizedString();
             yield return handle;

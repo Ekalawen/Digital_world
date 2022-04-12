@@ -19,6 +19,13 @@ public struct TimerMessage {
     }
 }
 
+
+[Serializable]
+public struct ConseilBinding {
+    public int conseilIndice;
+    public MessageZoneBindingParameters.Bindings binding;
+}
+
 public class Console : MonoBehaviour {
 
 	public enum TypeText {GREEN_TEXT, RED_TEXT, BLUE_TEXT};
@@ -30,6 +37,7 @@ public class Console : MonoBehaviour {
     [Header("Messages")]
     public LocalizedString levelVisualName;
     public List<LocalizedString> conseils; // Les conseils à dispenser au joueur !
+    public List<ConseilBinding> conseilBindings;
     public List<TimedMessage> timedMessages;
     public ConsoleStrings strings;
     public LocalizedString customInitMessage = null;
@@ -107,6 +115,8 @@ public class Console : MonoBehaviour {
     protected UIVisibility uiVisibility = UIVisibility.ALL;
     protected UIVisibilitySaver uiVisibilitySaver = null;
     protected Timer altitudeCritiqueTimer;
+    [HideInInspector]
+    public string computedConseil;
 
     public virtual void Initialize()
     {
@@ -688,19 +698,26 @@ public class Console : MonoBehaviour {
         } else {
             conseilIndice = UnityEngine.Random.Range(0, conseils.Count);
         }
-        LocalizedString conseil = conseils[conseilIndice];
-        StartCoroutine(CConseiller(conseil, withImportantText));
+        StartCoroutine(CConseiller(conseilIndice, withImportantText));
     }
 
-    protected IEnumerator CConseiller(LocalizedString localizedString, bool withImportantText) {
-        AsyncOperationHandle<string> handle = localizedString.GetLocalizedString();
-        yield return handle;
+    protected IEnumerator CConseiller(int conseilIndice, bool withImportantText) {
+        yield return CComputeConseil(conseilIndice);
+        string conseil = computedConseil;
         if (!withImportantText) {
-            AjouterMessage(handle.Result, TypeText.GREEN_TEXT);
+            AjouterMessage(conseil, TypeText.GREEN_TEXT);
         } else {
-            float duration = Mathf.Max(3, 3 + (handle.Result.Length - 40) * 0.05f);
-            AjouterMessageImportant(handle.Result, TypeText.GREEN_TEXT, duration);
+            float duration = Mathf.Max(3, 3 + (conseil.Length - 40) * 0.05f);
+            AjouterMessageImportant(conseil, TypeText.GREEN_TEXT, duration);
         }
+    }
+
+    public IEnumerator CComputeConseil(int indice) {
+        MessageZoneBindingParameters.Bindings[] bindings = conseilBindings.FindAll(cb => cb.conseilIndice == indice).Select(cb => cb.binding).ToArray();
+        string[] arguments = bindings.Select(b => InputManager.Instance.GetCurrentInputController().GetStringForBinding(b)).ToArray();
+        AsyncOperationHandle<string> handle = conseils[indice].GetLocalizedString(arguments);
+        yield return handle;
+        computedConseil = handle.Result;
     }
 
     // Lorsqu'un ennemi repère le joueur
@@ -1372,12 +1389,11 @@ public class Console : MonoBehaviour {
         string conseilKey = gm.eventManager.GetKeyFor(PrefsManager.CONSEIL_INDICE_KEY);
         int conseilIndice = PrefsManager.GetInt(conseilKey, 0);
         PrefsManager.SetInt(conseilKey, (conseilIndice + 1) % conseils.Count);
-        LocalizedString conseil = conseils[conseilIndice];
-        AsyncOperationHandle<string> handle = conseil.GetLocalizedString();
-        yield return handle.Task;
+        yield return CComputeConseil(conseilIndice);
+        string conseil = computedConseil;
         TMP_Text text = deathAstuce.GetComponentInChildren<TMP_Text>();
         text.text = text.text.Substring(0, text.text.Count() - 1) + " "; // Delete ending '\n'
-        text.text += handle.Result;
+        text.text += conseil;
     }
 
     public void ZoomInPouvoir(PouvoirDisplayInGame pouvoirDisplay) {

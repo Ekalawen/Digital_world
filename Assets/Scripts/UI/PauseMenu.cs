@@ -50,12 +50,9 @@ public class PauseMenu : MonoBehaviour {
         yield return handleTitle;
         string titleString = handleTitle.Result;
         string docText = "";
-        int i = 1;
-        foreach(LocalizedString localizedString in gm.console.conseils) {
-            AsyncOperationHandle<string> conseilHandle = localizedString.GetLocalizedString();
-            yield return conseilHandle;
-            docText += $"{UIHelper.SurroundWithColor(i.ToString(), UIHelper.GREEN)}) {conseilHandle.Result}\n";
-            i++;
+        for(int i = 0; i < gm.console.conseils.Count; i++) {
+            yield return gm.console.CComputeConseil(i);
+            docText += $"{UIHelper.SurroundWithColor((i + 1).ToString(), UIHelper.GREEN)}) {gm.console.computedConseil}\n";
         }
         docText = UIHelper.ApplyReplacementList(docText, docReplacementStrings);
         RunPopup(titleString, docText, TexteExplicatif.Theme.NEUTRAL);
