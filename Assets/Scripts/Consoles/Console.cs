@@ -81,6 +81,7 @@ public class Console : MonoBehaviour {
     public GameObject escapeButton; // Le truc qui clignote pour nous dire d'appuyer sur Escape à la fin du jeu !
     public TMP_Text escapeButtonText;
     public GameObject pauseMenu;
+    public MenuOptions optionsMenu;
     public CounterDisplayer dataCountDisplayer;
     public FrameRateManager frameRateManager;
     public GameObject deathAstuce;

@@ -91,7 +91,8 @@ public class InputManager : MonoBehaviour {
         SetKeybindingTypeByIndice(index);
     }
 
-    public void SetKeybindingTypeByIndice(int keybindingIndice) {
+    public void SetKeybindingTypeByIndice(int keybindingIndice)
+    {
         int precedentKeybindingIndice = PrefsManager.GetInt(PrefsManager.KEYBINDING_PRECEDENT_INDICE_KEY, (int)GetDefaultKeybindingType());
         if (precedentKeybindingIndice != keybindingIndice) {
             PrefsManager.SetInt(PrefsManager.KEYBINDING_PRECEDENT_INDICE_KEY, (int)currentKeybindingType);
@@ -102,14 +103,18 @@ public class InputManager : MonoBehaviour {
         currentKeybindingType = keybinding;
         currentInputController = inputControllers.Find(ic => ic.GetKeybindingType() == keybinding);
 
-        KeybindingDropdown keybindingDropdown = FindObjectOfType<KeybindingDropdown>();
-        if(keybindingDropdown != null) {
-            keybindingDropdown.dropdown.SetValueWithoutNotify(keybindingIndice);
-        }
+        UpdateKeybindingDropdown(keybindingIndice);
 
-        if(isInGame) {
+        if (isInGame) {
             GameManager.Instance.console.UpdatePouvoirBindings();
         }
+    }
+
+    protected void UpdateKeybindingDropdown(int keybindingIndice) {
+        // On est forcément en jeu
+        KeybindingDropdown keybindingDropdown = GameManager.Instance.console.optionsMenu.keybindingDropdown;
+        Debug.Log($"Indice = {keybindingIndice}");
+        keybindingDropdown.dropdown.SetValueWithoutNotify(keybindingIndice);
     }
 
     public KeybindingType GetDefaultKeybindingType() {

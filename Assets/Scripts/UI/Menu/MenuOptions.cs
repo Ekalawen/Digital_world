@@ -70,6 +70,7 @@ public class MenuOptions : MonoBehaviour {
     public GameObject panelLanguageButton;
     public GameObject returnButton;
     public GameObject achievementManagerPrefab;
+    public KeybindingDropdown keybindingDropdown;
 
     [Header("Titles")]
     public TMP_Text titleText;
