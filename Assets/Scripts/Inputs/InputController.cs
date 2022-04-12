@@ -47,9 +47,15 @@ public abstract class InputController : MonoBehaviour {
 
     public abstract KeyCode GetPouvoirLeftClickKeyCode();
 
-    public abstract bool GetPouvoirLeftClickDown();
+    public virtual bool GetPouvoirLeftClickDown() {
+        return Input.GetKeyDown(GetPouvoirLeftClickKeyCode());
+    }
 
     public abstract KeyCode GetPouvoirRightClickKeyCode();
+
+    public virtual bool GetPouvoirRightClickDown() {
+        return Input.GetKeyDown(GetPouvoirRightClickKeyCode());
+    }
 
     public abstract Vector3 GetHorizontalMouvement(bool rawAxis = false);
 

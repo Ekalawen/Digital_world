@@ -13,6 +13,7 @@ public class InputManager : MonoBehaviour {
         QWERTY,
         XBOX,
         SWITCH,
+        PLAYSTATION,
     };
 
     static InputManager _instance;
@@ -43,6 +44,7 @@ public class InputManager : MonoBehaviour {
         inputControllers.Add(gameObject.AddComponent<InputControllerAZERTY>());
         inputControllers.Add(gameObject.AddComponent<InputControllerXbox>());
         inputControllers.Add(gameObject.AddComponent<InputControllerSwitch>());
+        inputControllers.Add(gameObject.AddComponent<InputControllerPlayStation>());
         foreach(InputController inputController in inputControllers) {
             inputController.Initialize(this);
         }
@@ -187,7 +189,7 @@ public class InputManager : MonoBehaviour {
     }
 
     public bool GetPouvoirRightClickDown() {
-        return Input.GetKeyDown(GetPouvoirRightClickKeyCode());
+        return currentInputController.GetPouvoirRightClickDown();
     }
 
     public KeyCode GetPouvoirRightClickKeyCode() {

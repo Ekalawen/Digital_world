@@ -11,6 +11,7 @@ public class KeybindingDropdown : MonoBehaviour {
     public Dropdown dropdown;
     public LocalizedString xboxControllerString;
     public LocalizedString switchControllerString;
+    public LocalizedString playstationControllerString;
 
     public void Start() {
         List<Dropdown.OptionData> options = new List<Dropdown.OptionData>();
@@ -18,6 +19,7 @@ public class KeybindingDropdown : MonoBehaviour {
         options.Add(new Dropdown.OptionData(InputManager.KeybindingType.QWERTY.ToString()));
         options.Add(new Dropdown.OptionData(xboxControllerString.GetLocalizedString().Result));
         options.Add(new Dropdown.OptionData(switchControllerString.GetLocalizedString().Result));
+        options.Add(new Dropdown.OptionData(playstationControllerString.GetLocalizedString().Result));
         dropdown.options = options;
 
         dropdown.value = InputManager.Instance.GetCurrentKeybindingTypeIndice();
