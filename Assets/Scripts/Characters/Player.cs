@@ -43,6 +43,7 @@ public class Player : Character {
     public VisualEffect jumpVfx;
     public VisualEffect timeScaleVfx;
     public CameraShaker cameraShaker;
+    public Vector2 angleStopShakingRange = new Vector2(5f, 45f);
     public Camera noBlackAndWhiteCamera;
     public GeoSphere geoSphere;
 
@@ -389,6 +390,16 @@ public class Player : Character {
             else
                 camera.transform.forward = camera.transform.position + recherche;
         }
+
+        UpdateCameraShakeMagnitude();
+    }
+
+    protected void UpdateCameraShakeMagnitude() {
+        float angleToTop = Vector3.Angle(camera.transform.forward, gm.gravityManager.Up());
+        float angleToBottom = Vector3.Angle(camera.transform.forward, gm.gravityManager.Down());
+        float angle = Mathf.Clamp(Mathf.Min(angleToTop, angleToBottom), angleStopShakingRange.x, angleStopShakingRange.y);
+        float shakeInfluence = MathCurves.Remap(angle, angleStopShakingRange, new Vector2(0, 1));
+        cameraShaker.DefaultRotInfluence = Vector3.one * shakeInfluence;
     }
 
     void GetEtatPersonnage() {

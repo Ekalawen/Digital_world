@@ -59,7 +59,8 @@ namespace EZCameraShake
                 else if (c.CurrentState != CameraShakeState.Inactive)
                 {
                     posAddShake += CameraUtilities.MultiplyVectors(c.UpdateShake(), c.PositionInfluence);
-                    rotAddShake += CameraUtilities.MultiplyVectors(c.UpdateShake(), c.RotationInfluence);
+                    //rotAddShake += CameraUtilities.MultiplyVectors(c.UpdateShake(), c.RotationInfluence);
+                    rotAddShake += CameraUtilities.MultiplyVectors(c.UpdateShake(), DefaultRotInfluence); // On a fait ça pour pouvoir modifier l'influence globale de tous les screenshake nous-même at runtime ! :)
                 }
             }
 
