@@ -66,13 +66,12 @@ public class BuilderCube : NonBlackCube {
         hasBeenBuilt = true;
 
         List<Vector3> clusterCenters = GetClusterCenters();
-        ReplaceItselfWithNormalCube();
-        if (clusterCenters.Count == 0) { // Usefull in IR where some Builders are just linky and have no customCenters :)
-            return;
+        if (clusterCenters.Count != 0) { // Usefull in IR where some Builders are just linky and have no customCenters :)
+            List<Cube> createdCubes = CreatePathToClusterCenters(clusterCenters);
+            ExpandPathWithRemaininCubes(createdCubes, clusterCenters);
+            EnsurePlayerIsNotTrapped();
         }
-        List<Cube> createdCubes = CreatePathToClusterCenters(clusterCenters);
-        ExpandPathWithRemaininCubes(createdCubes, clusterCenters);
-        EnsurePlayerIsNotTrapped();
+        ReplaceItselfWithNormalCube(); // Must be done at the end because CreateNewCubes need this one to still be inside the Block to find it in IR :)
         //DisplayClusterCentersAsBouncyCubes(clusterCenters);
     }
 
