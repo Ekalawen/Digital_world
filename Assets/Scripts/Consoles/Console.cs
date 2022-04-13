@@ -1313,10 +1313,10 @@ public class Console : MonoBehaviour {
 
     public void SetConsoleVisibility(bool isVisible) {
         isConsoleVisible = isVisible;
-        consoleBackground.SetActive(isVisible);
+        consoleBackground.SetActive(isVisible && PrefsManager.GetBool(PrefsManager.DISPLAY_CONSOLE_KEY, MenuOptions.defaultDisplayConsole));
         importantText.gameObject.SetActive(isVisible);
         dataCountDisplayer.gameObject.SetActive(isVisible);
-        frameRateManager.SetVisibility(isVisible);
+        frameRateManager.SetVisibility(isVisible && PrefsManager.GetBool(PrefsManager.FPS_COUNTER_KEY, MenuOptions.defaultFpsCounter));
         pouvoirsCanvas.SetActive(isVisible);
         escapeButton.SetActive(isVisible && gm.eventManager.IsGameOver());
         pauseMenu.SetActive(isVisible && gm.IsPaused());
