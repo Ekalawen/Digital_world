@@ -1145,6 +1145,10 @@ public class Console : MonoBehaviour {
         AjouterMessageImportant(strings.rewardNewInfinitereshold, argument, TypeText.GREEN_TEXT, 3, bAfficherInConsole: true);
     }
 
+    public void RewardInfiniteModeReached() {
+        AjouterMessageImportant(strings.rewardInfiniteModeReached, TypeText.GREEN_TEXT, 3, bAfficherInConsole: true);
+    }
+
     public void WhileTrueEndEventAutoDestructionEnclanchee(LocalizedString localizedString) {
         if (localizedString.IsEmpty) {
             AjouterMessageImportant(strings.autoDestructionEnclenchee, Console.TypeText.RED_TEXT, 2.0f);
@@ -1155,7 +1159,7 @@ public class Console : MonoBehaviour {
 
     // Lorsque l'on commence à détruire les blocks dans l'infinite runner :)
     public void InfiniteRunnerStartCubeDestruction() {
-        AjouterMessageImportant(strings.deconnexionEnclenchee, Console.TypeText.RED_TEXT, 2.0f);
+        AjouterMessageImportant(strings.deconnexionEnclenchee, Console.TypeText.RED_TEXT, 3.0f);
     }
 
     public void AddGapInConsole() {

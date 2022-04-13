@@ -13,6 +13,7 @@ public class SoundBankIngame : ScriptableObject {
 
     public AudioClipParams receivedMessageClips;
     public AudioClipParams newBlockClips;
+    public AudioClipParams logoutStartedClips;
 
     public AudioClipParams rewardBestScoreClips;
     public AudioClipParams victoryClips;

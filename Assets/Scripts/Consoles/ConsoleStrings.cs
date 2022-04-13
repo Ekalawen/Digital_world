@@ -146,6 +146,7 @@ public class ConsoleStrings : ScriptableObject
 
     public LocalizedString rewardNewRegularTreshold;
     public LocalizedString rewardNewInfinitereshold;
+    public LocalizedString rewardInfiniteModeReached;
 
     public LocalizedString timeResetImportant;
     public LocalizedString timeResetConsole;

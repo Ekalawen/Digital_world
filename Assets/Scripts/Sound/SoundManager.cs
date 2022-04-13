@@ -292,6 +292,10 @@ public class SoundManager : MonoBehaviour
     public void PlayTransitionSoundClip() {
         PlayClipsOnSource(sounds.transitionSoundsClips);
     }
+    public void PlayLogoutStartedClip() {
+        PlayClipsOnSource(sounds.logoutStartedClips);
+    }
+
 
     protected AudioSource PlayClipsOnSource(
         AudioClipParams audioClipParams,

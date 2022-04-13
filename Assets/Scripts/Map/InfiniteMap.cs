@@ -69,6 +69,7 @@ public class InfiniteMap : MapManager {
     protected List<string> blocksNameToNotifyPlayerToPressShift = new List<string>();
     [HideInInspector]
     public UnityEvent<int> onBlocksCrossed;
+    protected bool hasReachInfiniteMode = false;
 
     protected override void InitializeSpecific()
     {
@@ -346,6 +347,7 @@ public class InfiniteMap : MapManager {
         if (!startsBlockDestruction) {
             startsBlockDestruction = true;
             gm.console.InfiniteRunnerStartCubeDestruction();
+            gm.soundManager.PlayLogoutStartedClip();
             DestroyFirstBlock();
         }
     }
@@ -375,7 +377,10 @@ public class InfiniteMap : MapManager {
             if (IsNewBestScore(nbBlocksNonStart)) {
                 RewardNewBestScore();
             } else {
-                RewardNewInifiniteTresholdReached(nbBlocksNonStart);
+                bool unlockNewTreshold = RewardNewInifiniteTresholdReached(nbBlocksNonStart);
+                if (!unlockNewTreshold) {
+                    RewardForReachingInfiniteMode(nbBlocksNonStart);
+                }
             }
         }
     }
@@ -386,9 +391,19 @@ public class InfiniteMap : MapManager {
         hasMadeNewBestScore = true;
     }
 
-    protected void RewardNewInifiniteTresholdReached(int nbBlocksNonStart) {
+    protected bool RewardNewInifiniteTresholdReached(int nbBlocksNonStart) {
         if (gm.goalManager.GetAllNotUnlockedTresholds().Contains(nbBlocksNonStart)) {
             gm.console.RewardNewInfiniteTreshold(nbBlocksNonStart);
+            gm.soundManager.PlayRewardBestScore();
+            return true;
+        }
+        return false;
+    }
+
+    protected void RewardForReachingInfiniteMode(int nbBlocksNonStart) {
+        if(!hasReachInfiniteMode && gm.goalManager.GetLastTresholdNotInfinite() <= nbBlocksNonStart) {
+            hasReachInfiniteMode = true;
+            gm.console.RewardInfiniteModeReached();
             gm.soundManager.PlayRewardBestScore();
         }
     }
