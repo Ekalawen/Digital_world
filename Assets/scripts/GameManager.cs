@@ -189,9 +189,9 @@ public class GameManager : MonoBehaviour {
     public void Pause() {
         isPaused = true;
         Time.timeScale = 0.0f;
-        MouseDisplayer.Instance.ShowCursor();
-        pointeur.gameObject.SetActive(false);
-        console.OpenPauseMenu();
+        //MouseDisplayer.Instance.ShowCursor();
+        //pointeur.gameObject.SetActive(false);
+        //console.OpenPauseMenu();
         soundManager.PauseSounds();
         StopFullScreen();
     }
