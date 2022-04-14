@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System;
 
 namespace EZCameraShake
 {
@@ -179,6 +180,11 @@ namespace EZCameraShake
         void OnDestroy()
         {
             instanceList.Remove(gameObject.name);
+        }
+
+        internal void ShakeOnce(object startLogoutScreenShakeMagnitude, object startLogoutScreenShakeRoughness, float v, object startLogoutScreenShakeDecreaseTime)
+        {
+            throw new NotImplementedException();
         }
     }
 }

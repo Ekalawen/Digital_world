@@ -41,6 +41,9 @@ public class InfiniteMap : MapManager {
     public float distanceToStartScreenShake = 10;
     public Vector2 screenShakeMagnitudeInterval;
     public Vector2 screenShakeRoughnessInterval;
+    public float startLogoutScreenShakeMagnitude;
+    public float startLogoutScreenShakeRoughness;
+    public float startLogoutScreenShakeDecreaseTime;
 
     [Header("Others")]
     public CounterDisplayer nbBlocksDisplayer;
@@ -348,6 +351,7 @@ public class InfiniteMap : MapManager {
             startsBlockDestruction = true;
             gm.console.InfiniteRunnerStartCubeDestruction();
             gm.soundManager.PlayLogoutStartedClip();
+            CameraShaker.Instance.ShakeOnce(startLogoutScreenShakeMagnitude, startLogoutScreenShakeRoughness, 0.1f, startLogoutScreenShakeDecreaseTime);
             DestroyFirstBlock();
         }
     }
