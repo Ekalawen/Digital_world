@@ -44,6 +44,9 @@ public class InfiniteMap : MapManager {
     public float startLogoutScreenShakeMagnitude;
     public float startLogoutScreenShakeRoughness;
     public float startLogoutScreenShakeDecreaseTime;
+    public float infiniteModeReachedScreenShakeMagnitude;
+    public float infiniteModeReachedScreenShakeRoughness;
+    public float infiniteModeReachedScreenShakeDecreaseTime;
 
     [Header("Others")]
     public CounterDisplayer nbBlocksDisplayer;
@@ -399,6 +402,7 @@ public class InfiniteMap : MapManager {
         if (gm.goalManager.GetAllNotUnlockedTresholds().Contains(nbBlocksNonStart)) {
             gm.console.RewardNewInfiniteTreshold(nbBlocksNonStart);
             gm.soundManager.PlayRewardBestScore();
+            CameraShaker.Instance.ShakeOnce(infiniteModeReachedScreenShakeMagnitude, infiniteModeReachedScreenShakeRoughness, 0.1f, infiniteModeReachedScreenShakeDecreaseTime);
             return true;
         }
         return false;
@@ -409,6 +413,7 @@ public class InfiniteMap : MapManager {
             hasReachInfiniteMode = true;
             gm.console.RewardInfiniteModeReached();
             gm.soundManager.PlayRewardBestScore();
+            CameraShaker.Instance.ShakeOnce(infiniteModeReachedScreenShakeMagnitude, infiniteModeReachedScreenShakeRoughness, 0.1f, infiniteModeReachedScreenShakeDecreaseTime);
         }
     }
 
