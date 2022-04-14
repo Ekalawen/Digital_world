@@ -15,6 +15,7 @@ public class CorruptedCube : NonBlackCube {
 
     [Header("Visual")]
     public float generatedDissolveTime = 0.5f;
+    public float newCorruptedCubeDissolveTime = 0.1f;
     public float cancelCorruptionDecomposeDuration = 1.0f;
     public float cancelCorruptionProgressiveDelayByDistance = 0.1f;
     public GameObject lightningPrefab;
@@ -22,9 +23,11 @@ public class CorruptedCube : NonBlackCube {
 
     protected float sizeCorruptionSqr;
     protected Coroutine corruptionCoroutine;
+    protected AudioSource loadAudioSource;
 
     public override void Initialize() {
         base.Initialize();
+        loadAudioSource = null;
         gm.eventManager.InitializeCorruptedCubeManager();
         corruptionCoroutine = null;
         sizeCorruptionSqr = sizeCorruption * sizeCorruption;
@@ -50,8 +53,26 @@ public class CorruptedCube : NonBlackCube {
         CorruptShader();
         AddCorruptionGeoData();
         float duration = MathTools.RandArround(dureeBeforeCorruption, 0.02f);
+        PlayLoadSound(duration);
         yield return new WaitForSeconds(duration);
         Corrupt();
+    }
+
+    protected void PlayLoadSound(float duration) {
+        StopLoadSound();
+        loadAudioSource = gm.soundManager.PlayCorruptedCubeLoadClip(transform.position, duration);
+    }
+
+    protected void PlayBlastSound() {
+        gm.soundManager.PlayCorruptedCubeBlastClip(transform.position);
+    }
+
+    protected void StopLoadSound() {
+        if(loadAudioSource != null
+        && loadAudioSource.isPlaying
+        && loadAudioSource.clip == gm.soundManager.sounds.corruptedCubeLoad.clips[0]) {
+            loadAudioSource.Stop();
+        }
     }
 
     protected void AddCorruptionGeoData() {
@@ -75,6 +96,8 @@ public class CorruptedCube : NonBlackCube {
         CreateAllCorruptedCubes();
 
         CorruptAnotherCubeCloseToPlayer();
+
+        PlayBlastSound();
     }
 
     protected void CreateAllCorruptedCubes() {
@@ -116,10 +139,10 @@ public class CorruptedCube : NonBlackCube {
         Cube closestCube = cubesInRangeOfCorruption.OrderBy(c => Vector3.SqrMagnitude(c.transform.position - playerPos)).First();
         CreateLightningToNextCorruptedCube(closestCube);
         CorruptedCube corruptedCube = gm.map.SwapCubeType(closestCube, CubeType.CORRUPTED)?.GetComponent<CorruptedCube>();
-        if (corruptedCube == null)
-        {
+        if (corruptedCube == null) {
             return;
         }
+        corruptedCube.StartDissolveEffect(newCorruptedCubeDissolveTime);
         corruptedCube.StartCorruption();
         gm.eventManager.GetCorruptedCubeManager().RegisterCreatedCorruptedCube(corruptedCube);
     }
@@ -134,6 +157,12 @@ public class CorruptedCube : NonBlackCube {
             StopCoroutine(corruptionCoroutine);
             corruptionCoroutine = null;
         }
+        StopLoadSound();
         UncorruptShader();
+    }
+
+    public override void Destroy() {
+        CancelCorruption();
+        base.Destroy();
     }
 }

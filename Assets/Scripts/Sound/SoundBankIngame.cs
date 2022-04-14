@@ -35,6 +35,8 @@ public class SoundBankIngame : ScriptableObject {
     public AudioClipParams bounceWithJumpClips;
     public AudioClipParams voidCubeExplosionClips;
     public AudioClipParams gravityChangeClips;
+    public AudioClipParams corruptedCubeLoad;
+    public AudioClipParams corruptedCubeBlast;
 
 
     [Header("Ennemis")]

@@ -406,7 +406,7 @@ public class Cube : MonoBehaviour {
         RealExplode();
     }
 
-    public void Destroy() {
+    public virtual void Destroy() {
         gm.map.DeleteCube(this);
     }
 

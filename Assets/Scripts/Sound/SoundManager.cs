@@ -295,6 +295,12 @@ public class SoundManager : MonoBehaviour
     public void PlayLogoutStartedClip() {
         PlayClipsOnSource(sounds.logoutStartedClips);
     }
+    public AudioSource PlayCorruptedCubeLoadClip(Vector3 pos, float duration) {
+        return PlayClipsOnSource(sounds.corruptedCubeLoad, pos: pos, duration: duration);
+    }
+    public void PlayCorruptedCubeBlastClip(Vector3 pos) {
+        PlayClipsOnSource(sounds.corruptedCubeBlast, pos: pos);
+    }
 
 
     protected AudioSource PlayClipsOnSource(
