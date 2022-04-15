@@ -233,8 +233,18 @@ public class SoulRobber : Ennemi {
         gm.postProcessManager.SetBlackAndWhiteEffectToBarelyVisible();
     }
 
-    public virtual void StopEscaping() {
+    public virtual void StopEscaping()
+    {
         changeScaleFluctuator.GoTo(initialYScale, timeToChangeScale);
+        RemoveRobbingGeoPoint();
+    }
+
+    public override void DestroyEnnemi() {
+        RemoveRobbingGeoPoint();
+        base.DestroyEnnemi();
+    }
+
+    protected void RemoveRobbingGeoPoint() {
         if (robbingGeoPoint != null) {
             robbingGeoPoint.Stop();
             robbingGeoPoint = null;

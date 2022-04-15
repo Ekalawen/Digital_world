@@ -176,7 +176,7 @@ public abstract class Ennemi : Character {
         return controller.IsInactive();
     }
 
-    public void DestroyEnnemi() {
+    public virtual void DestroyEnnemi() {
         gm.ennemiManager.RemoveEnnemi(this);
         Destroy(gameObject);
     }
