@@ -50,7 +50,9 @@ public class SoundManager : MonoBehaviour
             SetAudioSourceVolumeBasedOnRelativeVolume(source);
         }
         SetAudioSourceVolumeBasedOnRelativeVolume(levelMusicSource);
-        SetAudioSourceVolumeBasedOnRelativeVolume(endGameMusicSource);
+        if (endGameMusicSource != null) {
+            SetAudioSourceVolumeBasedOnRelativeVolume(endGameMusicSource);
+        }
     }
 
     protected void SetAudioSourceVolumeBasedOnRelativeVolume(AudioSource audioSource) {

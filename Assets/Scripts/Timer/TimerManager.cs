@@ -53,6 +53,7 @@ public class TimerManager : MonoBehaviour {
 
     public void Initialize() {
 		name = "TimerManager";
+        SetFrameRate();
         Time.fixedDeltaTime = FIXED_DELTA_TIME; // FixedUpdates are really small and are permorfed really fast, so we can do a lot of them ! (120 instead of 50 :))
         gm = FindObjectOfType<GameManager>();
         timeMultiplierController.Initialize(this);
@@ -87,6 +88,12 @@ public class TimerManager : MonoBehaviour {
         Time.timeScale = GetTimePhaseScales()[phaseIndice] * timeMultiplierController.GetMultiplier();
         Time.fixedDeltaTime = FIXED_DELTA_TIME * Time.timeScale;
         //Debug.Log($"Time.timeScale = {Time.timeScale}");
+    }
+
+    public void SetFrameRate() {
+        int frameRateIndice = PrefsManager.GetInt(PrefsManager.FRAME_RATES_INDICE_KEY, MenuOptions.defaultFrameRateIndice);
+        int frameRate = FrameRatesDropdown.GetFrameRateInt(frameRateIndice);
+        Application.targetFrameRate = frameRate;
     }
 
     public float GetTimeMultiplier() {

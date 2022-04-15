@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour {
     static GameManager _instance;
     public static GameManager Instance { get { return _instance ?? (_instance = new GameObject().AddComponent<GameManager>()); } }
 
+    public static bool IsInGame { get { return _instance != null; } }
 
     public bool openInFullScreen = false;
     public GameObject playerPrefab; // On récupère le personnage !

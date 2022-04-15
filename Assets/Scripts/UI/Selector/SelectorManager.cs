@@ -79,6 +79,7 @@ public class SelectorManager : MonoBehaviour {
     public IEnumerator Start()
     {
         fadingObjects = new Dictionary<GameObject, Coroutine>();
+        Application.targetFrameRate = -1;
         cameraController = baseCamera.transform.parent.GetComponent<SelectorCameraController>();
         InputManager.Instance.SetNotInGame();
         verticalMenuHandler.Initialize();

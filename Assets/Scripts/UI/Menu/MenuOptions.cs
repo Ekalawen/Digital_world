@@ -30,6 +30,7 @@ public class MenuOptions : MonoBehaviour {
     public static bool defaultConseilOnStart = false;
     public static bool defaultFpsCounter = false;
     public static bool defaultDisplayConsole = false;
+    public static int defaultFrameRateIndice = 0; // Auto
     public static Lumiere.LumiereQuality defaultLumiereQuality = Lumiere.LumiereQuality.LOW;
     public static List<string> keyOfAchievementsToSaveDuringResetSaves = new List<string>() {
         PrefsManager.TOTAL_DATA_COUNT_KEY,
