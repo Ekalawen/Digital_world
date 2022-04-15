@@ -37,6 +37,9 @@ public class InfiniteMap : MapManager {
     public float distanceToStartChangeSkyboxColor = 40.0f;
     public float distanceAtCriticalSkyboxColor = 5.0f;
 
+    [Header("End Game Audio Source")]
+    public Vector2 distanceRangeToUpdateEndGameAudioSourceVolume = new Vector2(5, 40);
+
     [Header("ScreenShaker")]
     public float distanceToStartScreenShake = 10;
     public Vector2 screenShakeMagnitudeInterval;
@@ -217,12 +220,17 @@ public class InfiniteMap : MapManager {
     }
 
     protected float GetCurrentDistanceToDestruction() {
+        return Mathf.Max(GetCurrentDistanceToDestructionUnclamped(), 0);
+    }
+
+    protected float GetCurrentDistanceToDestructionUnclamped() {
         Vector3 destructionPosition = GetCurrentDestructionPosition();
         float projectionFarestCube = Vector3.Dot(destructionPosition, FORWARD);
         float projectionPlayer = Vector3.Dot(gm.player.transform.position, FORWARD);
         float differenceProjections = projectionPlayer - projectionFarestCube;
-        return Mathf.Max(differenceProjections, 0);
+        return differenceProjections;
     }
+
 
     protected Vector3 GetCurrentDestructionPosition() {
         Block firstBlock = lastlyDestroyedBlock ?? blocks.First();
@@ -243,6 +251,7 @@ public class InfiniteMap : MapManager {
                 source.GoToColor(colorChangeColorBlocks, speedChangeColorBlocks);
             }
             UpdateSkyboxColorBasedOnDangerProximity();
+            UpdateEndGameAudioSourceVolumeBasedOnDangerProximity();
         }
     }
 
@@ -261,6 +270,14 @@ public class InfiniteMap : MapManager {
             RenderSettings.skybox.SetFloat("_ProportionRectangles", gm.postProcessManager.skyboxProportionRectangles);
         }
     }
+
+    protected void UpdateEndGameAudioSourceVolumeBasedOnDangerProximity() {
+        float distanceToDestruction = GetCurrentDistanceToDestructionUnclamped();
+        Vector2 range = distanceRangeToUpdateEndGameAudioSourceVolume;
+        float avancement = 1 - MathCurves.LinearReversed(range.x, range.y, distanceToDestruction);
+        gm.soundManager.UpdateIREndGameVolume(endGameVolume: avancement);
+    }
+
 
     protected void ShakeProportionalyToDangerosite() {
         if (startsBlockDestruction) {

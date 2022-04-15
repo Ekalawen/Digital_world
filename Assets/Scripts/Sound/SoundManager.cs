@@ -34,6 +34,7 @@ public class SoundManager : MonoBehaviour
         usedSources = new List<AudioSource>();
         pausedSources = new List<AudioSource>();
         StartLevelMusic();
+        InitializeEndGameAudioSourceForIR();
     }
 
     public void GetAudioVolumes()
@@ -45,15 +46,24 @@ public class SoundManager : MonoBehaviour
     public void ApplyAudioVolumes()
     {
         GetAudioVolumes();
-        foreach (AudioSource source in usedSources)
-        {
-            float sourceRelativeVolume = source.GetComponent<AudioClipParamsHolder>().clipParams.relativeVolume;
-            source.volume = sourceRelativeVolume * soundVolume * AudioClipParams.BASE_VOLUME;
+        foreach (AudioSource source in usedSources) {
+            SetAudioSourceVolumeBasedOnRelativeVolume(source);
         }
-        float musicSourceRelativeVolume = levelMusicSource.GetComponent<AudioClipParamsHolder>().clipParams.relativeVolume;
-        levelMusicSource.volume = musicSourceRelativeVolume * musicVolume * AudioClipParams.BASE_VOLUME;
-        float endGameMusicSourceRelativeVolume = endGameMusicSource.GetComponent<AudioClipParamsHolder>().clipParams.relativeVolume;
-        endGameMusicSource.volume = endGameMusicSourceRelativeVolume * musicVolume * AudioClipParams.BASE_VOLUME;
+        SetAudioSourceVolumeBasedOnRelativeVolume(levelMusicSource);
+        SetAudioSourceVolumeBasedOnRelativeVolume(endGameMusicSource);
+    }
+
+    protected void SetAudioSourceVolumeBasedOnRelativeVolume(AudioSource audioSource) {
+        AudioClipParamsHolder holder = audioSource.GetComponent<AudioClipParamsHolder>();
+        float relativeVolume = holder.clipParams.relativeVolume;
+        float typeMusicVolume = holder.clipParams.bIsMusic ? musicVolume : soundVolume;
+        audioSource.volume = relativeVolume * typeMusicVolume * AudioClipParams.BASE_VOLUME;
+    }
+
+    protected void SetAudioSourceVolumeBasedOnNewRelativeVolume(AudioSource audioSource, float newRelativeVolume) {
+        AudioClipParamsHolder holder = audioSource.GetComponent<AudioClipParamsHolder>();
+        holder.clipParams.relativeVolume = newRelativeVolume;
+        SetAudioSourceVolumeBasedOnRelativeVolume(audioSource);
     }
 
     public AudioSource GetAvailableSource()
@@ -117,6 +127,7 @@ public class SoundManager : MonoBehaviour
     {
         PlayClipsOnSource(sounds.timeOutClips);
     }
+
     public void PlayReceivedMessageClip()
     {
         PlayClipsOnSource(sounds.receivedMessageClips);
@@ -341,7 +352,7 @@ public class SoundManager : MonoBehaviour
         // On get le bon clip
         AudioClip clip = clipIndice == -1 ? MathTools.ChoseOne(audioClipParams.clips) : audioClipParams.clips[clipIndice];
         source.clip = clip;
-        source.GetComponent<AudioClipParamsHolder>().clipParams = audioClipParams;
+        source.GetComponent<AudioClipParamsHolder>().clipParams = new AudioClipParams(audioClipParams); // Copy because we don't want to destroy the SoundBankIngame.asset ! :)
 
         // On vérifie si c'est reverse ou pas
         if (audioClipParams.bReverse)
@@ -447,9 +458,10 @@ public class SoundManager : MonoBehaviour
         }
         source.volume = 0.0f;
         source.Stop();
-        if (!availableSources.Contains(source)) {
-            availableSources.Add(source);
-        }
+        /// Why would we want musics to go back in the pool? (I only fadeInFadeOut musics, never SFXs x)) ==> This caused a bug when finishedLevelMusic goes back into the pool and made some SFX have 0 volume because of UpdateIREndGameVolume :)
+        //if (!availableSources.Contains(source)) {
+        //    availableSources.Add(source);
+        //}
     }
 
     protected void FadeInSourceIn(AudioSource source, float duration, float waitDuration = 0) {
@@ -478,6 +490,24 @@ public class SoundManager : MonoBehaviour
         FadeOutSourceIn(levelMusicSource, endGameTransitionDuration);
         if (finishingLevelMusicSource != null) {
             FadeOutSourceIn(finishingLevelMusicSource, endGameTransitionDuration);
+        }
+    }
+
+    public void InitializeEndGameAudioSourceForIR() {
+        if(!gm.IsIR()) {
+            return;
+        }
+        endGameMusicSource = GetAvailableSource();
+        usedSources.Remove(endGameMusicSource);
+        PlayClipsOnSource(sounds.endGameMusics, sourceToUse: endGameMusicSource);
+        SetAudioSourceVolumeBasedOnNewRelativeVolume(endGameMusicSource, 0);
+    }
+
+    public void UpdateIREndGameVolume(float endGameVolume) {
+        SetAudioSourceVolumeBasedOnNewRelativeVolume(endGameMusicSource, endGameVolume);
+        SetAudioSourceVolumeBasedOnNewRelativeVolume(levelMusicSource, 1 - endGameVolume);
+        if (finishingLevelMusicSource != null) {
+            SetAudioSourceVolumeBasedOnNewRelativeVolume(finishingLevelMusicSource, 1 - endGameVolume);
         }
     }
 }
