@@ -19,6 +19,7 @@ public class SoundManager : MonoBehaviour
     protected List<AudioSource> pausedSources;
     protected AudioSource levelMusicSource;
     protected AudioSource finishingLevelMusicSource;
+    protected AudioSource endGameMusicSource;
     protected AudioClipParams levelMusic;
     protected float musicVolume;
     protected float soundVolume;
@@ -51,6 +52,8 @@ public class SoundManager : MonoBehaviour
         }
         float musicSourceRelativeVolume = levelMusicSource.GetComponent<AudioClipParamsHolder>().clipParams.relativeVolume;
         levelMusicSource.volume = musicSourceRelativeVolume * musicVolume * AudioClipParams.BASE_VOLUME;
+        float endGameMusicSourceRelativeVolume = endGameMusicSource.GetComponent<AudioClipParamsHolder>().clipParams.relativeVolume;
+        endGameMusicSource.volume = endGameMusicSourceRelativeVolume * musicVolume * AudioClipParams.BASE_VOLUME;
     }
 
     public AudioSource GetAvailableSource()
@@ -466,11 +469,15 @@ public class SoundManager : MonoBehaviour
     }
 
     public void PlayEndGameMusic() {
-        finishingLevelMusicSource = levelMusicSource;
-        levelMusicSource = GetAvailableSource();
-        usedSources.Remove(levelMusicSource);
-        PlayClipsOnSource(sounds.endGameMusics, sourceToUse: levelMusicSource);
-        FadeOutSourceIn(finishingLevelMusicSource, endGameTransitionDuration);
-        FadeInSourceIn(levelMusicSource, endGameTransitionDuration);
+        endGameMusicSource = GetAvailableSource();
+        usedSources.Remove(endGameMusicSource);
+
+        PlayClipsOnSource(sounds.endGameMusics, sourceToUse: endGameMusicSource);
+
+        FadeInSourceIn(endGameMusicSource, endGameTransitionDuration);
+        FadeOutSourceIn(levelMusicSource, endGameTransitionDuration);
+        if (finishingLevelMusicSource != null) {
+            FadeOutSourceIn(finishingLevelMusicSource, endGameTransitionDuration);
+        }
     }
 }
