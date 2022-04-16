@@ -492,16 +492,9 @@ public class Player : Character {
 
                 case EtatPersonnage.AU_MUR:
                     ResetDoubleJump();
-                    if (inputManager.GetShift())
-                    {
+                    if (inputManager.GetShift()) {
                         // On peut se décrocher du mur en appuyant sur shift
-                        etat = EtatPersonnage.EN_CHUTE;
-                        pointDebutSaut = transform.position;
-                        origineSaut = EtatPersonnage.AU_MUR;
-                        normaleOrigineSaut = normaleMur;
-                        dureeMurRestante = dureeMurTimer.GetRemainingTime();
-                        timerLastTimeAuMur.Reset();
-
+                        FallFromWallButCanGripItAgain();
                     }
                     else if (inputManager.GetJumpDown() && gm.gravityManager.HasGravity())
                     {
@@ -545,7 +538,7 @@ public class Player : Character {
         Vector3 posOnMur = Vector3.ProjectOnPlane(pos2mur, normaleMur) + pointMur;
         float distanceMur = (posOnMur - transform.position).magnitude; // pourtant c'est clair non ? Fais un dessins si tu comprends pas <3
         if (dureeMurTimer.IsOver() || distanceMur >= distanceMurMax || IsOnInternalSideOfMur(pointMur, normaleMur)) {
-            FallFromWall();
+            FallFromWallButCanGripItAgain();
         }
     }
 
@@ -559,7 +552,7 @@ public class Player : Character {
         List<string> hitTags = hits.Select(h => h.collider.tag).ToList();
         // Pour pouvoir s'accrocher sur les Tracers inactifs !
         if (hits.Length == 0 || (!hitTags.Contains("Cube") && !hitTags.Contains("Ennemi"))) {
-            FallFromWall();
+            FallFromWallButCanGripItAgain();
         // On veut trigger les cubes sur lesquels on slide !
         } else if (hits.Length > 0 && hitTags.Contains("Cube")) {
             Cube firstCube = hits.ToList().Find(h => h.collider.tag == "Cube").collider.GetComponent<Cube>();
@@ -593,6 +586,15 @@ public class Player : Character {
         origineSaut = EtatPersonnage.AU_MUR;
         normaleOrigineSaut = normaleMur;
         dureeMurRestante = 0;
+        timerLastTimeAuMur.Reset();
+    }
+
+    protected void FallFromWallButCanGripItAgain() {
+        etat = EtatPersonnage.EN_CHUTE;
+        pointDebutSaut = transform.position;
+        origineSaut = EtatPersonnage.AU_MUR;
+        normaleOrigineSaut = normaleMur;
+        dureeMurRestante = dureeMurTimer.GetRemainingTime();
         timerLastTimeAuMur.Reset();
     }
 
@@ -981,6 +983,7 @@ public class Player : Character {
         } else if (from == EtatPersonnage.AU_MUR) {
             normaleOrigineSaut = normaleMur;
             timerLastTimeAuMur.Reset();
+            dureeMurRestante = 0; // Si on a sauté depuis un mur, il ne faut surtout pas qu'on puisse s'accrocher à nouveau à ce même mur !
         } else {
             Debug.Log("On saute depuis un endroit non autorisé !");
         }
