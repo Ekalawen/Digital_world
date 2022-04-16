@@ -33,11 +33,13 @@ public class CheatCodeManager : MonoBehaviour {
     public List<KeyCode> hideConsoleCode;
     public List<KeyCode> disableEnnemisCode;
     public List<KeyCode> gainDash333Code;
+    public List<KeyCode> gainPathfinder5Code;
     public List<KeyCode> gainGripDashCode;
     public List<KeyCode> gainTimeHackCode;
 
     [Header("Links")]
     public GameObject dash333Prefab;
+    public GameObject pathfinder5Prefab;
     public GameObject gripDashPrefab;
     public GameObject timeHackPrefab;
 
@@ -184,6 +186,12 @@ public class CheatCodeManager : MonoBehaviour {
         gainDash333CheatCode.action = SwapGiveDash333;
         cheatCodes.Add(gainDash333CheatCode);
 
+        // Gain Pathfinder5 CheatCode
+        CheatCode gainPathfinder5CheatCode = new CheatCode();
+        gainPathfinder5CheatCode.code = gainPathfinder5Code;
+        gainPathfinder5CheatCode.action = SwapGivePathfinder5;
+        cheatCodes.Add(gainPathfinder5CheatCode);
+
         // Gain GripDash CheatCode
         CheatCode gainGripDashCheatCode = new CheatCode();
         gainGripDashCheatCode.code = gainGripDashCode;
@@ -219,6 +227,15 @@ public class CheatCodeManager : MonoBehaviour {
         } else {
             Debug.Log($"On met le pouvoir à null !");
             PouvoirGiverItem.GivePouvoir(gm, gm.player.pouvoirLeftBoutonPrefab, PouvoirGiverItem.PouvoirBinding.LEFT_CLICK);
+        }
+    }
+
+    protected void SwapGivePathfinder5() {
+        if(gm.player.GetPouvoirA() == null || gm.player.GetPouvoirA().nom.GetLocalizedString().Result != pathfinder5Prefab.GetComponent<IPouvoir>().nom.GetLocalizedString().Result) {
+            PouvoirGiverItem.GivePouvoir(gm, pathfinder5Prefab, PouvoirGiverItem.PouvoirBinding.A);
+        } else {
+            Debug.Log($"On met le pouvoir à null !");
+            PouvoirGiverItem.GivePouvoir(gm, gm.player.pouvoirAPrefab, PouvoirGiverItem.PouvoirBinding.A);
         }
     }
 

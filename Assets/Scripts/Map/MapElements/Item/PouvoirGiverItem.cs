@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -21,5 +22,10 @@ public class PouvoirGiverItem : Item {
             gm.soundManager.PlayGainPouvoirClip();
             gm.pointeur.Initialize();
         }
+    }
+
+    internal static void GivePouvoir(GameManager gm, object pathfinder5Prefab, PouvoirBinding a)
+    {
+        throw new NotImplementedException();
     }
 }
