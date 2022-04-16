@@ -47,8 +47,8 @@ public class LumiereEscape : Lumiere {
     protected Coroutine recoverLifeCoroutine;
     protected float controllerInitialVitesse;
 
-    protected override void Start() {
-        base.Start();
+    public override void Initialize() {
+        base.Initialize();
         Assert.AreEqual(nbLives, escapeColors.Count);
         controller = GetComponent<GoToPositionController>();
         controllerInitialVitesse = controller.vitesse;

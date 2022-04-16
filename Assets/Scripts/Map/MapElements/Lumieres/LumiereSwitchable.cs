@@ -18,10 +18,10 @@ public class LumiereSwitchable : Lumiere {
     protected LumiereSwitchableChild currentChild;
     protected bool capturedInSwitchingToOn = false;
 
-    protected override void Start () {
+    public override void Initialize() {
         gm = GameManager.Instance;
         SetState(startState);
-        base.Start();
+        base.Initialize();
 	}
 
     public void SetState(LumiereSwitchableState newState, bool shouldCheckCollisionWithPlayer = true) {

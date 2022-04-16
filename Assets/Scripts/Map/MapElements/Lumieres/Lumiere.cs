@@ -55,7 +55,7 @@ public class Lumiere : MonoBehaviour {
     protected bool isAccessible = true;
     protected UnityEvent<Lumiere> onCapture = new UnityEvent<Lumiere>();
 
-    protected virtual void Start () {
+    public virtual void Initialize () {
         gm = GameManager.Instance;
         SetName();
         //SetLumiereQuality((LumiereQuality)PrefsManager.GetInt(PrefsManager.DATA_QUALITY_KEY, (int)MenuOptions.defaultLumiereQuality));

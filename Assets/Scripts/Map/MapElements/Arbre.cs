@@ -69,7 +69,7 @@ public class Arbre : CubeEnsemble {
 			GeneratePallierLagrange(cime, taillePallier);
 
             OuvrirCime(cime);
-            GameObject.Instantiate(map.lumierePrefab, cime, Quaternion.identity);
+            map.CreateLumiere(cime, Lumiere.LumiereType.NORMAL);
 
 			// Puis la cime devient la nouvelle racine !
 			racine = cime;

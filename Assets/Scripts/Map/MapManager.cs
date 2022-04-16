@@ -515,6 +515,7 @@ public class MapManager : MonoBehaviour {
         }
 
         Lumiere lumiere = GameObject.Instantiate(GetPrefab(type), pos, Quaternion.identity, lumieresFolder.transform).GetComponent<Lumiere>();
+        lumiere.Initialize();
 
         RegisterAlreadyExistingLumiere(lumiere);
 
@@ -522,6 +523,7 @@ public class MapManager : MonoBehaviour {
     }
 
     public Lumiere RegisterAlreadyExistingLumiere(Lumiere lumiere) {
+        lumiere.Initialize();
         lumieres.Add(lumiere);
         if (gm.ennemiManager.GetInitialNbDataSondeTriggers() <= 0) { // C'est pas hyper hyper sexy ça x)
             maxNbLumieres = Mathf.Max(lumieres.Count, nbLumieresInitial) + gm.eventManager.GetNbLumieresAlmostFinales();
