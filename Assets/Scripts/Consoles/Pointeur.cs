@@ -143,12 +143,12 @@ public class Pointeur : MonoBehaviour {
     }
 
     protected Color GetFinalColorAuMur() {
-        float avancement = gm.player.GetDureeRestanteMur() / gm.player.dureeMur;
+        float avancement = Mathf.Max(0, gm.player.GetDureeRestanteMur() / gm.player.dureeMur); // Max because when stunned, getDureeRestanteMur peut être négative !
         return ColorManager.InterpolateColors(auSolColor, auMurColor, avancement);
     }
 
     protected float GetFinalScaleAuMur() {
-        float avancement = gm.player.GetDureeRestanteMur() / gm.player.dureeMur;
+        float avancement = Mathf.Max(0, gm.player.GetDureeRestanteMur() / gm.player.dureeMur); // Max because when stunned, getDureeRestanteMur peut être négative !
         return MathCurves.Linear(auSolScale, auMurScale, avancement);
     }
 
