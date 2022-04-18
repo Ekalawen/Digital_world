@@ -173,7 +173,7 @@ public class InfiniteMap : MapManager {
     }
 
     protected GameObject GetRandomBlockPrefab() {
-        int indiceBlock = allBlocks.Count - nbFirstBlocks + 1;
+        int indiceBlock = allBlocks.Count - nbFirstBlocks;
         if (blockForcer == null || !blockForcer.ShoulForceBlockAt(indiceBlock)) {
             return MathTools.ChoseOneWeighted(blockWeights.Select(bw => bw.block).ToList(), blockWeights.Select(bw => bw.weight).ToList());
         }
