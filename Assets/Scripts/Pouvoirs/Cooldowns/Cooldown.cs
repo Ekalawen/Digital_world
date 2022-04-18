@@ -62,4 +62,17 @@ public class Cooldown : MonoBehaviour {
     public virtual bool ShouldDisplayTextOnPouvoirDisplay() {
         return !IsAvailable() || !pouvoir.IsEnabled();
     }
+
+    public virtual void GainCharge() {
+        cooldownTimer.SetOver();
+    }
+
+    public virtual void GainChargeIn(float duration) {
+        StartCoroutine(CGainChargeIn(duration));
+    }
+
+    protected IEnumerator CGainChargeIn(float duration) {
+        yield return new WaitForSeconds(duration);
+        GainCharge();
+    }
 }

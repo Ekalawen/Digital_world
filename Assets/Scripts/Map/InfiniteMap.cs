@@ -29,6 +29,9 @@ public class InfiniteMap : MapManager {
     public List<GameObject> firstBlocks;
     public int nbFirstBlocks = 3;
     public int nbBlocksStartCubeDestruction = 1;
+    public bool useCustomNbBlocksToCreateAtStart = false;
+    [ConditionalHide("useCustomNbBlocksToCreateAtStart")]
+    public int nbBlocksToCreateAtStart;
 
     [Header("Color Change")]
     public Color colorChangeColorBlocks;
@@ -123,7 +126,8 @@ public class InfiniteMap : MapManager {
     }
 
     protected void CreateFirstBlocks() {
-        for (int i = 0; i < nbBlocksForward + 1; i++) {
+        int nbToCreate = useCustomNbBlocksToCreateAtStart ? nbBlocksToCreateAtStart : nbBlocksForward;
+        for (int i = 0; i < nbToCreate + 1; i++) {
             CreateNextBlock();
         }
     }
@@ -324,11 +328,13 @@ public class InfiniteMap : MapManager {
     public void OnEnterBlock(Block block) {
         int indice = allBlocks.IndexOf(block);
         if(indice > indiceCurrentAllBlocks) {
-            int nbBlocksAdded = indice - indiceCurrentAllBlocks;
-            AddBlockRun(nbBlocksAdded);
+            int nbBlocksCrossed = indice - indiceCurrentAllBlocks;
+            AddBlockRun(nbBlocksCrossed);
 
-            RegisterPassedBlocksToHistory(indiceCurrentAllBlocks, nbBlocksAdded);
+            RegisterPassedBlocksToHistory(indiceCurrentAllBlocks, nbBlocksCrossed);
 
+            int indiceLastBlock = allBlocks.Count - 1;
+            int nbBlocksAdded = nbBlocksForward - (indiceLastBlock - indice);
             CreateNewBlocks(nbBlocksAdded);
 
             RememberTimeNeededForBlock(indice, indiceCurrentAllBlocks);
@@ -336,7 +342,7 @@ public class InfiniteMap : MapManager {
             timerSinceLastBlock.Reset();
 
             indiceCurrentBlock = blocks.IndexOf(block);
-            indiceCurrentAllBlocks += nbBlocksAdded;
+            indiceCurrentAllBlocks += nbBlocksCrossed;
 
             block.NotifyPlayerToPressShiftIfNeeded();
 
@@ -346,7 +352,7 @@ public class InfiniteMap : MapManager {
 
             gm.timerManager.TryUpdatePhase(GetNonStartNbBlocksRun(), GetLastTresholdToUseForPhases());
 
-            onBlocksCrossed.Invoke(nbBlocksAdded);
+            onBlocksCrossed.Invoke(nbBlocksCrossed);
         }
     }
 

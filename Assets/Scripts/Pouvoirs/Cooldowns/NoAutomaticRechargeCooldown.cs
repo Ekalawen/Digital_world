@@ -26,11 +26,11 @@ public class NoAutomaticRechargeCooldown : ChargeCooldown {
         return rechargers.Count > 0;
     }
 
-    public void GainChargeIn(float duration) {
-        StartCoroutine(CGainChargeIn(duration));
+    public override void GainChargeIn(float duration) {
+        StartCoroutine(CGainChargeInWithRecharger(duration));
     }
 
-    protected IEnumerator CGainChargeIn(float duration) {
+    protected IEnumerator CGainChargeInWithRecharger(float duration) {
         Timer recharger = new Timer(duration);
         rechargers.Add(recharger);
         yield return new WaitForSeconds(duration);

@@ -28,13 +28,13 @@ public class PouvoirGripDash : IPouvoir {
     protected float computedDuration = 0;
     protected bool useVerticalArrow = true;
     protected AudioClipParams reversedClip;
-    protected NoAutomaticRechargeCooldown cooldownCustom;
+    protected Cooldown cooldownCustom;
 
     public override void Initialize() {
         base.Initialize();
         reversedClip = new AudioClipParams(activationAudioClips);
         reversedClip.bReverse = true;
-        cooldownCustom = GetComponent<NoAutomaticRechargeCooldown>();
+        cooldownCustom = GetComponent<Cooldown>();
         player.onPowerDashImpact.AddListener(GainChargeListener);
     }
 

@@ -33,7 +33,7 @@ public class Pointeur : MonoBehaviour {
 
     protected GameManager gm;
     protected ChargeCooldown tripleDashChargeCooldown = null;
-    protected NoAutomaticRechargeCooldown gripDashCooldown = null;
+    protected ChargeCooldown gripDashCooldown = null;
     protected PouvoirTimeHack timeHack = null;
 
     public void Initialize() {
@@ -105,7 +105,7 @@ public class Pointeur : MonoBehaviour {
 
         IPouvoir gripDash = gm.player.GetPouvoirRightClick();
         if (gripDash != null) {
-            gripDashCooldown = gripDash.GetCooldown() as NoAutomaticRechargeCooldown;
+            gripDashCooldown = gripDash.GetCooldown() as ChargeCooldown;
         } else {
             gripDashPointeur.gameObject.SetActive(false);
         }

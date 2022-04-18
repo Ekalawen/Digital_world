@@ -41,7 +41,7 @@ PrefabInstance:
     - target: {fileID: -1939473570733004662, guid: b668a69fe5ff311409440deda3264e19,
         type: 3}
       propertyPath: nbBlocksForward
-      value: 15
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: -1939473570733004662, guid: b668a69fe5ff311409440deda3264e19,
         type: 3}
@@ -82,6 +82,11 @@ PrefabInstance:
         type: 3}
       propertyPath: forceNotCompletedBlocks
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -1939473570733004662, guid: b668a69fe5ff311409440deda3264e19,
+        type: 3}
+      propertyPath: nbBlocksToCreateAtStart
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: -1939473570733004662, guid: b668a69fe5ff311409440deda3264e19,
         type: 3}
@@ -261,6 +266,11 @@ PrefabInstance:
       propertyPath: timeForDestructionIfNoAverage
       value: 2.5
       objectReference: {fileID: 0}
+    - target: {fileID: -1939473570733004662, guid: b668a69fe5ff311409440deda3264e19,
+        type: 3}
+      propertyPath: useCustomNbBlocksToCreateAtStart
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1698300190402578, guid: b668a69fe5ff311409440deda3264e19, type: 3}
       propertyPath: m_Name
       value: Map_FirstInfiniteRunnerDemo
@@ -351,4 +361,7 @@ MonoBehaviour:
   blocksWithIndexes:
   - index: 6
     blockPrefab: {fileID: 5230655378198019161, guid: 988e67d4f184f2c419a37c0eaef2b77a,
+      type: 3}
+  - index: 11
+    blockPrefab: {fileID: 5230655378198019161, guid: a0b9bb1ef21bf0c48afa3f7c5e50528e,
       type: 3}

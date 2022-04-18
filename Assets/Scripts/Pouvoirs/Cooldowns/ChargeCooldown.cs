@@ -51,7 +51,7 @@ public class ChargeCooldown : Cooldown {
         }
     }
 
-    public void GainCharge() {
+    public override void GainCharge() {
         GainMultipleCharges(1);
     }
 
@@ -59,6 +59,9 @@ public class ChargeCooldown : Cooldown {
         if(currentCharges < maxCharges) {
             currentCharges = Mathf.Min(currentCharges + nbChargesToGain, maxCharges);
             pouvoir.GetPouvoirDisplay().FlashPouvoirAvailable();
+            if(currentCharges == maxCharges) {
+                StopChargingCoroutine();
+            }
         }
     }
 
@@ -109,12 +112,17 @@ public class ChargeCooldown : Cooldown {
 
     public override void SetCooldownDuration(float duration, bool keepRemainingTime) {
         base.SetCooldownDuration(duration, keepRemainingTime);
-        if(duration == 0.0f) {
+        if(duration == 0.0f)
+        {
             currentCharges = maxCharges;
-            if (chargingCoroutine != null) {
-                StopCoroutine(chargingCoroutine);
-                chargingCoroutine = null;
-            }
+            StopChargingCoroutine();
+        }
+    }
+
+    protected void StopChargingCoroutine() {
+        if (chargingCoroutine != null) {
+            StopCoroutine(chargingCoroutine);
+            chargingCoroutine = null;
         }
     }
 }
