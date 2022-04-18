@@ -20,6 +20,7 @@ public class BlockTriggerZone : IZone {
         if (block != null && map != null) {
             map.OnEnterBlock(block);
             StartRememberShiftPressed();
+            block.onEnterBlock.Invoke(block);
         }
     }
 

@@ -23,9 +23,4 @@ public class PouvoirGiverItem : Item {
             gm.pointeur.Initialize();
         }
     }
-
-    internal static void GivePouvoir(GameManager gm, object pathfinder5Prefab, PouvoirBinding a)
-    {
-        throw new NotImplementedException();
-    }
 }

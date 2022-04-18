@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Block : MonoBehaviour {
 
@@ -25,7 +26,8 @@ public class Block : MonoBehaviour {
     protected List<Cube> cubes;
     protected Block originalBlockPrefab;
     protected bool shouldNotifyToPressShift = false;
-
+    [HideInInspector]
+    public UnityEvent<Block> onEnterBlock;
 
     public void Initialize(Transform blocksFolder, Block originalBlockPrefab) {
         gm = GameManager.Instance;
