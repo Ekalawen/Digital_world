@@ -79,6 +79,7 @@ public class InfiniteMap : MapManager {
     [HideInInspector]
     public UnityEvent<int> onBlocksCrossed;
     protected bool hasReachInfiniteMode = false;
+    protected BlockForcerInIR blockForcer;
 
     protected override void InitializeSpecific()
     {
@@ -94,6 +95,7 @@ public class InfiniteMap : MapManager {
         nbBlocksDestroyed = 0;
         blockWeights = blockLists.Aggregate(new List<BlockWeight>(),
             (list, blockList) => list.Concat(blockList.blocks).ToList());
+        blockForcer = GetComponent<BlockForcerInIR>();
 
         ResetAllBlocksTime();
         CreateFirstBlocks();
@@ -167,7 +169,11 @@ public class InfiniteMap : MapManager {
     }
 
     protected GameObject GetRandomBlockPrefab() {
-        return MathTools.ChoseOneWeighted(blockWeights.Select(bw => bw.block).ToList(), blockWeights.Select(bw => bw.weight).ToList());
+        int indiceBlock = allBlocks.Count - nbFirstBlocks + 1;
+        if (blockForcer == null || !blockForcer.ShoulForceBlockAt(indiceBlock)) {
+            return MathTools.ChoseOneWeighted(blockWeights.Select(bw => bw.block).ToList(), blockWeights.Select(bw => bw.weight).ToList());
+        }
+        return blockForcer.GetForcedBlockAt(indiceBlock);
     }
 
     protected GameObject GetRandomNotCompletedBlockPrefab() {
