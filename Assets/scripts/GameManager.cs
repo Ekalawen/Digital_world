@@ -15,6 +15,8 @@ public class GameManager : MonoBehaviour {
     public static bool IsInGame { get { return _instance != null; } }
 
     public bool openInFullScreen = false;
+
+    [Header("Managers")]
     public GameObject playerPrefab; // On récupère le personnage !
 	public GameObject consolePrefab; // On récupère la console !
 	public GameObject pointeurPrefab; // Pour avoir un visuel du centre de l'écran
@@ -34,6 +36,9 @@ public class GameManager : MonoBehaviour {
     public GameObject steamInGameManagerPrefab; // Pour gérer les callbacks de Steam en jeu ! :)
     public GameObject achievementManagerPrefab; // Pour gérer les succès Steam ! :)
     public GameObject goalManagerPrefab; // Pour gérer les goal tresholds ! :)
+
+    [Header("Links")]
+    public GameObject selectorManagerPrefab; // Pour savoir si on est une démo ou pas ! :)
 
     [HideInInspector]
 	public MapManager map;
@@ -306,7 +311,12 @@ public class GameManager : MonoBehaviour {
 
     protected void GoToSelectorScene() {
         Destroy(historyManager.gameObject);
-        SceneManager.LoadScene("SelectorScene");
+        string sceneSuffix = IsDemo() ? "_Demo" : "";
+        SceneManager.LoadScene($"SelectorScene{sceneSuffix}");
+    }
+
+    public bool IsDemo() {
+        return selectorManagerPrefab.GetComponent<SelectorManager>().isDemo;
     }
 
     public bool IsTimeFreezed() {

@@ -67,7 +67,8 @@ public class MenuManager : MonoBehaviour {
         if (!HaveThinkAboutTutorial()) {
             AdvicePlayTutorial();
         } else {
-            SceneManager.LoadScene("SelectorScene");
+            string sceneSuffix = IsDemo() ? "_Demo" : "";
+            SceneManager.LoadScene($"SelectorScene{sceneSuffix}");
         }
     }
 

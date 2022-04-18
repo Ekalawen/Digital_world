@@ -58,6 +58,7 @@ public class RewardManager : MonoBehaviour {
     public TMP_Text gameDurationTextInfinite;
     public RewardNewBestScoreButton newBestScoreButton;
     public RewardNewBestScoreButton firstTimeButton;
+    public SelectorManager selectorManager;
 
     protected float dureeReward;
     protected float accelerationCoefficiant;
@@ -450,7 +451,12 @@ public class RewardManager : MonoBehaviour {
         if (hm != null) {
             Destroy(hm.gameObject); // Need to destoy it because it is in DontDestroyOnLoad :)
         }
-        SceneManager.LoadScene("SelectorScene");
+        string sceneSuffix = IsDemo() ? "_Demo" : "";
+        SceneManager.LoadScene($"SelectorScene{sceneSuffix}");
+    }
+
+    protected bool IsDemo() {
+        return selectorManager.isDemo;
     }
 
     protected float ComputeDurationTrail(float dureeGame) {
