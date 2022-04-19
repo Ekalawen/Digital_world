@@ -1899,6 +1899,12 @@ public class MapManager : MonoBehaviour {
         return maxNbLumieres;
     }
 
+    public List<Vector3> GetAllEmptyPositionInPlayerSight(Vector2 minMaxRange) {
+        List<Vector3> possiblePos = GetEmptyPositionsInSphere(gm.player.transform.position, minMaxRange.y);
+        possiblePos = possiblePos.FindAll(p => CanSeePlayerFrom(p, minMaxRange.y) && Vector3.Distance(gm.player.transform.position, p) >= minMaxRange.x);
+        return possiblePos;
+    }
+
     public Vector3 GetEmptyPositionInPlayerSight(Vector2 minMaxRange) {
         Vector3 pos = Vector3.zero;
         List<Vector3> possiblePos = GetEmptyPositionsInSphere(gm.player.transform.position, minMaxRange.y);
@@ -1913,10 +1919,14 @@ public class MapManager : MonoBehaviour {
         return pos;
     }
 
-    protected bool CanSeePlayerFrom(Vector3 position, float maxRange) {
+    public bool CanSeePlayerFrom(Vector3 position, float maxRange) {
         RaycastHit hit;
         Ray ray = new Ray (position, gm.player.transform.position - position);
-        return Physics.Raycast(ray, out hit, maxRange) && hit.collider.name == "Joueur";
+        if(Physics.Raycast(ray, out hit, maxRange)) {
+            Debug.Log($"hit.collider.name = {hit.collider.name}");
+            return hit.collider.name == "Joueur";
+        }
+        return false;
     }
 
     public bool IsOverCube(Vector3 pos) {

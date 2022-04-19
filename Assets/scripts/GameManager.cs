@@ -89,6 +89,8 @@ public class GameManager : MonoBehaviour {
     protected bool initializationIsOver = false;
     [HideInInspector]
     public UnityEvent onInitilizationFinish;
+    [HideInInspector]
+    public UnityEvent onFirstFrame;
 
     void Awake() {
         if (!_instance) {
@@ -148,11 +150,21 @@ public class GameManager : MonoBehaviour {
         achievementManager.Initialize(isInGame: true);
         inputManager.SetInGame();
         FinishInitialization();
+        CallEventsOneFrameAfterFinishInitialization();
     }
 
     private void FinishInitialization() {
         initializationIsOver = true;
         onInitilizationFinish.Invoke();
+    }
+
+    protected void CallEventsOneFrameAfterFinishInitialization() {
+        StartCoroutine(CCallEventsOneFrameAfterFinishInitialization());
+    }
+
+    protected IEnumerator CCallEventsOneFrameAfterFinishInitialization() {
+        yield return null;
+        onFirstFrame.Invoke();
     }
 
     void Update () {

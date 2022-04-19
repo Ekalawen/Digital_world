@@ -9,6 +9,11 @@ public class ItemManager : MonoBehaviour {
 
     public List<GameObject> itemsPrefabs; // On récupère les items !
     public List<int> nbItems;
+    public bool popItemInFrontOfPlayer = false;
+    [ConditionalHide("popItemInFrontOfPlayer")]
+    public GameObject itemInFrontOfPlayerPrefab;
+    [ConditionalHide("popItemInFrontOfPlayer")]
+    public Vector2 itemInFrontOfPlayerRange = new Vector2(1.5f, 5f);
 
     protected GameManager gm;
     protected GameObject itemsFolder;
@@ -27,6 +32,7 @@ public class ItemManager : MonoBehaviour {
 
         GatherAlreadyExistingItems();
         GenerateItems();
+        gm.onFirstFrame.AddListener(PopItemInFrontOfPlayer);
     }
 
     protected void GatherAlreadyExistingItems() {
@@ -48,6 +54,41 @@ public class ItemManager : MonoBehaviour {
             }
         }
     }
+
+    protected void PopItemInFrontOfPlayer() {
+        if(!popItemInFrontOfPlayer) {
+            return;
+        }
+        Vector3 itemPos = GetPosForItemInFrontOfPlayerV2();
+        GenerateItemFromPrefab(itemInFrontOfPlayerPrefab, itemPos);
+    }
+
+    protected Vector3 GetPosForItemInFrontOfPlayerV2() {
+        Vector3 playerPos = gm.player.transform.position;
+        Vector3 playerForward = gm.player.camera.transform.forward;
+        List<Vector3> allVisiblePos = gm.map.GetAllEmptyPositionInPlayerSight(itemInFrontOfPlayerRange);
+        if(allVisiblePos.Count == 0) {
+            Debug.LogError($"Aucune position visible depuis la position du joueur {playerPos} !");
+            return gm.map.GetFreeRoundedLocationWithoutLumiere();
+        }
+        Vector3 bestPos = allVisiblePos.OrderBy(p => Vector3.Dot(playerForward, (p - playerPos).normalized)).Last();
+        return bestPos;
+    }
+
+    //protected Vector3 GetPosForItemInFrontOfPlayerV1() {
+    //    Vector3 center = MathTools.Round(gm.player.transform.position + gm.player.camera.transform.forward * itemInFrontOfPlayerDistance);
+    //    for (int radius = 2; radius <= 10; radius++) {
+    //        List<Vector3> candidatePositions = gm.map.GetEmptyPositionsInSphere(center, radius);
+    //        MathTools.Shuffle(candidatePositions);
+    //        foreach (Vector3 pos in candidatePositions) {
+    //            if (gm.map.CanSeePlayerFrom(pos, maxRange: 9999)) {
+    //                return pos;
+    //            }
+    //        }
+    //    }
+    //    Debug.LogError($"Can't find any visible position from {center} to see player at {gm.player.transform.position} !");
+    //    return gm.map.GetFreeRoundedLocationWithoutLumiere();
+    //}
 
     public virtual Item PopItem(GameObject itemPrefab) {
         Vector3 pos = gm.map.GetFreeRoundedLocationWithoutLumiere();
