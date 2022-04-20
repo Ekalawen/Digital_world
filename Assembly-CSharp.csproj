@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <LangVersion>8.0</LangVersion>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -52,9 +52,6 @@
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
     <UnityVersion>2021.1.28f1</UnityVersion>
   </PropertyGroup>
-  <ItemGroup>
-    <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio Tools for Unity\16.0\Analyzers\Microsoft.Unity.Analyzers.dll" />
-  </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Math\Graphe.cs" />
     <Compile Include="Assets\Scripts\Map\MapFunctionComponents\Generate\GenerateHorizontalPonts.cs" />
@@ -672,6 +669,7 @@
     <None Include="Assets\Texts\DataHackees\3_Arc3\28_ToSondesOptimisation\DHtoSondesOptimisationFR.txt" />
     <None Include="Assets\Texts\Archives\4_Arc4\Left\39_TargetedCorruption\Archives_TargetedCorruptionFR.txt" />
     <None Include="Assets\Texts\Archives\3_Arc3\29_ClosingCaves\ArchivesClosingCaves_NewFR.txt" />
+    <None Include="Assets\Texts\DataHackees\DemoArc\02_ToMultiRunnerDemo\DHto_MultiRunnerDemoFR.txt" />
     <None Include="Assets\Imported\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Overlay.shader" />
     <None Include="Assets\Texts\DataHackees\4_Arc4\Left\41_ToInfiniteSpeed\DHtoInfiniteSpeedFR.txt" />
     <None Include="Assets\Texts\DataHackees\4_Arc4\Right\54_ToWanderingMaze\DHto_WanderingMazeEN.txt" />
@@ -952,6 +950,7 @@
     <None Include="Assets\Texts\Archives\3_Arc3\19_VerticalBounce\ArchivesVerticalBounceEN.txt" />
     <None Include="Assets\Texts\Archives\1_Arc1\03_FirstSonde\ArchivesFirstSondeEN.txt" />
     <None Include="Assets\Texts\Archives\1_Arc1\08_DashTraining\ArchivesDashTrainingEN.txt" />
+    <None Include="Assets\Texts\DataHackees\DemoArc\02_ToMultiRunnerDemo\DHto_MultiRunnerDemoEN.txt" />
     <None Include="Assets\Texts\Archives\1_Arc1\03_FirstSonde\ArchivesFirstSondeFR.txt" />
     <None Include="Assets\Texts\Archives\3_Arc3\22_SwapHighway\ArchivesSwapHighway_NewEN.txt" />
     <None Include="Assets\Texts\Archives\1_Arc1\02_FirstLevel\ArchiveFirstLevel_NewEN.txt" />
