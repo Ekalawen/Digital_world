@@ -31,7 +31,7 @@ PrefabInstance:
     - target: {fileID: -1939473570733004662, guid: b668a69fe5ff311409440deda3264e19,
         type: 3}
       propertyPath: nbFirstBlocks
-      value: 8
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -1939473570733004662, guid: b668a69fe5ff311409440deda3264e19,
         type: 3}
@@ -66,7 +66,7 @@ PrefabInstance:
     - target: {fileID: -1939473570733004662, guid: b668a69fe5ff311409440deda3264e19,
         type: 3}
       propertyPath: firstBlocks.Array.size
-      value: 3
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: -1939473570733004662, guid: b668a69fe5ff311409440deda3264e19,
         type: 3}
@@ -82,6 +82,11 @@ PrefabInstance:
         type: 3}
       propertyPath: forceNotCompletedBlocks
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -1939473570733004662, guid: b668a69fe5ff311409440deda3264e19,
+        type: 3}
+      propertyPath: nbBlocksToCreateAtStart
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: -1939473570733004662, guid: b668a69fe5ff311409440deda3264e19,
         type: 3}
@@ -128,7 +133,13 @@ PrefabInstance:
         type: 3}
       propertyPath: firstBlocks.Array.data[3]
       value: 
-      objectReference: {fileID: 5230655378198019161, guid: 96cc2f391f4fb604484f25928b152076,
+      objectReference: {fileID: 5230655378198019161, guid: 5f276109594c0624bae86012c01d65b6,
+        type: 3}
+    - target: {fileID: -1939473570733004662, guid: b668a69fe5ff311409440deda3264e19,
+        type: 3}
+      propertyPath: firstBlocks.Array.data[4]
+      value: 
+      objectReference: {fileID: 5230655378198019161, guid: c73f0998d478c6744abde0104fb6d509,
         type: 3}
     - target: {fileID: -1939473570733004662, guid: b668a69fe5ff311409440deda3264e19,
         type: 3}
@@ -255,6 +266,11 @@ PrefabInstance:
       propertyPath: timeForDestructionIfNoAverage
       value: 2.5
       objectReference: {fileID: 0}
+    - target: {fileID: -1939473570733004662, guid: b668a69fe5ff311409440deda3264e19,
+        type: 3}
+      propertyPath: useCustomNbBlocksToCreateAtStart
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1698300190402578, guid: b668a69fe5ff311409440deda3264e19, type: 3}
       propertyPath: m_Name
       value: Map_MultiRunnerDemo
@@ -340,3 +356,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   start: {fileID: 3497486675859293457}
+--- !u!114 &2442022894654127363
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8990514721042306462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 495a803ce637de549b79ce4db1f95d19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  blocksWithIndexes:
+  - index: 5
+    blockPrefab: {fileID: 5230655378198019161, guid: 3ecf38c9e214d0f47857d43b18e99bcb,
+      type: 3}
