@@ -1923,7 +1923,6 @@ public class MapManager : MonoBehaviour {
         RaycastHit hit;
         Ray ray = new Ray (position, gm.player.transform.position - position);
         if(Physics.Raycast(ray, out hit, maxRange)) {
-            Debug.Log($"hit.collider.name = {hit.collider.name}");
             return hit.collider.name == "Joueur";
         }
         return false;
