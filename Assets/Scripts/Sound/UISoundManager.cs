@@ -289,11 +289,12 @@ public class UISoundManager : MonoBehaviour {
             float stopIn = archivesAudioSource.clip.length - archivesAudioSource.time;
             StopPlayArchivesIn(stopIn);
         } else {
-            MenuLevel menuLevel = SelectorManager.Instance.GetCurrentLevel().menuLevel;
+            SelectorManager sm = SelectorManager.Instance;
+            MenuLevel menuLevel = sm.GetCurrentLevel().menuLevel;
             if (!usingInitializationArchives) {
                 PlayArchivesClip(menuLevel.archivesClip, usingInitializationArchives: usingInitializationArchives);
             } else {
-                SelectorLevelRunIntroduction introductionRunner = menuLevel.GetComponent<SelectorLevelRunIntroduction>();
+                SelectorLevelRunIntroduction introductionRunner = sm.HasSelectorLevelOpen() ? menuLevel.GetComponent<SelectorLevelRunIntroduction>() : sm.introductionRunner;
                 PlayArchivesClip(introductionRunner.archivesClip, usingInitializationArchives: usingInitializationArchives);
             }
         }

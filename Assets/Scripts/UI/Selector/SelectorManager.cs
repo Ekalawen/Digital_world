@@ -652,14 +652,14 @@ public class SelectorManager : MonoBehaviour {
     }
 
     public void PlayArchivesClip() {
-        if (hasLevelOpen) {
+        //if (hasLevelOpen) { // J'ai besoin de décommenter ça car sinon lors de l'Introduction quand on ouvre le SelecteurDeNiveau pour la première fois ça ne fonctionnera pas (car aucun niveau n'est ouvert !)
             UISoundManager.Instance.UnPauseArchivesClip();
-        }
+        //}
     }
 
     public void PauseArchivesClip() {
-        if (hasLevelOpen) {
+        //if (hasLevelOpen) { // J'ai besoin de décommenter ça car sinon lors de l'Introduction quand on ouvre le SelecteurDeNiveau pour la première fois ça ne fonctionnera pas (car aucun niveau n'est ouvert !)
             UISoundManager.Instance.PauseArchivesClip();
-        }
+        //}
     }
 }
