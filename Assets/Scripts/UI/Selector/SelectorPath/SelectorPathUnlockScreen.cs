@@ -147,22 +147,20 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
                 SubmitGoodLocked(input.text);
             }
         } else {
-            if (!CanUnlockInDemo()) {
-                SubmitDemoDenied();
-            }
-            else {
-                if (selectorPath.IsUnlocked()) {
-                    SubmitFalseUnlocked();
-                } else {
-                    SubmitFalseLocked();
-                }
+            //if (!CanUnlockInDemo()) {
+            //    SubmitDemoDenied();
+            //}
+            if (selectorPath.IsUnlocked()) {
+                SubmitFalseUnlocked();
+            } else {
+                SubmitFalseLocked();
             }
         }
         RememberNumberOfSubmits();
     }
 
     protected bool IsGoodPassword(string password) {
-        return (password == selectorPath.GetPassword() || password == MenuLevel.SUPER_CHEATED_PASSWORD) && CanUnlockInDemo();
+        return (password == selectorPath.GetPassword() || password == MenuLevel.SUPER_CHEATED_PASSWORD);// && CanUnlockInDemo();
     }
 
     protected bool CanUnlockInDemo() {

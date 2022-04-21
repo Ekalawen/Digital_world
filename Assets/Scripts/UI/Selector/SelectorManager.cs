@@ -282,7 +282,7 @@ public class SelectorManager : MonoBehaviour {
     }
 
     public void TryDisplayLevel(SelectorLevel selectorLevel, bool instantDisplay = false) {
-        if(IsLevelAccessible(selectorLevel)) {
+        if(IsLevelAccessible(selectorLevel) && CanUnlockInDemo(selectorLevel)) {
             if(HasVerticalMenuOpen()) {
                 if (HasSelectorLevelOpen() && GetCurrentLevel() == selectorLevel) {
                     return;
@@ -295,17 +295,40 @@ public class SelectorManager : MonoBehaviour {
                 selectorTarget.GoTo(selectorLevel.transform.position, selectorTarget.GetInTime());
             }
         } else {
-            string dataHackeesTitre = strings.dataHackees.GetLocalizedString().Result;
-            popup.AddReplacement(dataHackeesTitre, UIHelper.SurroundWithColor(dataHackeesTitre, UIHelper.ORANGE));
-            RunPopup(strings.niveauVerouilleTitre.GetLocalizedString().Result,
-                strings.niveauVerouilleTotalTexte.GetLocalizedString(GetNiveauxManquantToLevelString(selectorLevel)).Result,
-                //"Niveau vérouillé.\n" +
-                //"Vous devez débloquer toutes les Data Hackées() menant à ce niveau pour le dévérouiller !\n" +
-                //$"{GetNiveauxManquantToLevelString(selectorLevel)}",
-                TexteExplicatif.Theme.NEGATIF,
-                cleanReplacements: false);
+            if(IsLevelAccessible(selectorLevel) && !CanUnlockInDemo(selectorLevel)) {
+                SubmitDemoDenied();
+            } else {
+                DisplayLevelDenied(selectorLevel);
+            }
         }
     }
+
+    protected void DisplayLevelDenied(SelectorLevel selectorLevel) {
+        string dataHackeesTitre = strings.dataHackees.GetLocalizedString().Result;
+        popup.AddReplacement(dataHackeesTitre, UIHelper.SurroundWithColor(dataHackeesTitre, UIHelper.ORANGE));
+        RunPopup(strings.niveauVerouilleTitre.GetLocalizedString().Result,
+            strings.niveauVerouilleTotalTexte.GetLocalizedString(GetNiveauxManquantToLevelString(selectorLevel)).Result,
+            //"Niveau vérouillé.\n" +
+            //"Vous devez débloquer toutes les Data Hackées() menant à ce niveau pour le dévérouiller !\n" +
+            //$"{GetNiveauxManquantToLevelString(selectorLevel)}",
+            TexteExplicatif.Theme.NEGATIF,
+            cleanReplacements: false);
+    }
+
+    protected void SubmitDemoDenied() {
+        popup.Initialize(
+            title: strings.pathDemoDeniedTitre.GetLocalizedString().Result,
+            mainText: strings.pathDemoDeniedTexte.LoadAssetAsync().Result.text,
+            theme: TexteExplicatif.Theme.NEUTRAL);
+        popup.Run();
+        popup.AddButton(
+            text: strings.buttonWishlistOnSteam,
+            tooltipText: strings.buttonWishlistOnSteamTooltip,
+            theme: TexteExplicatif.Theme.POSITIF,
+            action: new UnityAction(WishlistOnSteam));
+        popup.EnableButtonsBlackBackground();
+    }
+
 
     protected string GetNiveauxManquantToLevelString(SelectorLevel selectorLevel) {
         List<string> levelsName = paths.FindAll(p => p.endLevel == selectorLevel && !p.IsUnlocked()).Select(p => p.startLevel.GetVisibleName()).ToList();
@@ -504,6 +527,11 @@ public class SelectorManager : MonoBehaviour {
     public bool IsLevelAccessible(SelectorLevel selectorLevel) {
         List<SelectorPath> precedentPaths = paths.FindAll(p => p.endLevel == selectorLevel);
         return precedentPaths.All(p => p.IsUnlocked());
+    }
+
+    public bool CanUnlockInDemo(SelectorLevel selectorLevel) {
+        List<SelectorPath> precedentPaths = paths.FindAll(p => p.endLevel == selectorLevel);
+        return precedentPaths.All(p => p.CanUnlockInDemo());
     }
 
     public List<SelectorPath> GetOutPaths(SelectorLevel selectorLevel) {

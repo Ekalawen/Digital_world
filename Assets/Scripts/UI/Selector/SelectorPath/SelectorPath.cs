@@ -329,4 +329,8 @@ public class SelectorPath : MonoBehaviour {
         string key = GetNameId() + PrefsManager.IS_HIGHLIGHTED_PATH_KEY;
         return PrefsManager.GetBool(key, false);
     }
+
+    public bool CanUnlockInDemo() {
+        return !selectorManager.isDemo || canUnlockInDemo;
+    }
 }
