@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <LangVersion>8.0</LangVersion>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -52,9 +52,6 @@
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
     <UnityVersion>2021.1.28f1</UnityVersion>
   </PropertyGroup>
-  <ItemGroup>
-    <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio Tools for Unity\16.0\Analyzers\Microsoft.Unity.Analyzers.dll" />
-  </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Math\Graphe.cs" />
     <Compile Include="Assets\Scripts\Map\MapFunctionComponents\Generate\GenerateHorizontalPonts.cs" />
@@ -771,7 +768,6 @@
     <None Include="Assets\Texts\Archives\2_Arc2\15_Analyze\ArchivesAnalyzeFR.txt" />
     <None Include="Assets\Texts\DataHackees\3_Arc3\23_ToVerticalBounce\DHtoVerticalBounceEN.txt" />
     <None Include="Assets\Texts\Archives\OldLevels\WhileTrue\ArchivesWhileTrueFR.txt" />
-    <None Include="Assets\Texts\DataHackees\DemoArc\04_ToDiscoverOfSondes_Demo\DHtoDiscoverOfSondesFR.txt" />
     <None Include="Assets\Texts\Archives\3_Arc3\27_BrisableRoad\ArchivesBrisableRoad_NewEN.txt" />
     <None Include="Assets\Shaders\AlwaysOnTop.shader" />
     <None Include="Assets\Texts\DataHackees\4_Arc4\57-58_ToSecondBoss\FromCompositeCrossroad\DHto_ToSecondBoss_FromCompositeCrossroadFR.txt" />
@@ -822,6 +818,7 @@
     <None Include="Assets\Texts\DataHackees\3_Arc3\31_ClosingCaves\DHtoClosingCavesEN.txt" />
     <None Include="Assets\Texts\Archives\OldLevels\RedWire\ArchivesRedWireEN.txt" />
     <None Include="Assets\Imported\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface.shader" />
+    <None Include="Assets\Texts\DataHackees\DemoArc\04_ToDiscoverOfSondes_Demo\DHtoDiscoverOfSondesFR_Demo.txt" />
     <None Include="Assets\Texts\Archives\2_Arc2\13_FullSpikes\ArchivesFullSpikes_NewEN.txt" />
     <None Include="Assets\Texts\DataHackees\1_Arc1\02_ToFirstSonde\DHtoFirstSondeFR.txt" />
     <None Include="Assets\Texts\DataHackees\2_Arc2\17_ToAnalyze\DHtoAnalyzeFR.txt" />
@@ -868,7 +865,6 @@
     <None Include="Assets\Texts\Archives\1_Arc1\03_FirstSonde\ArchivesFirstSonde_NewEN.txt" />
     <None Include="Assets\Texts\Archives\2_Arc2\13_FullSpikes\ArchivesFullSpikesFR.txt" />
     <None Include="Assets\Texts\Archives\3_Arc3\18_BounceHighway\ArchivesBounceHighwayEN.txt" />
-    <None Include="Assets\Texts\DataHackees\DemoArc\03_ToSecondRunner_Demo\DHtoSecondRunnerEN.txt" />
     <None Include="Assets\Texts\Archives\4_Arc4\Right\40_GravityRoad\ArchivesGravityRoadEN.txt" />
     <None Include="Assets\Texts\Archives\3_Arc3\30_FirstDataSondes\ArchivesFirstDataSondesEN.txt" />
     <None Include="Assets\Texts\Archives\4_Arc4\Left\38_DataProliferation\ArchivesDataProliferationFR.txt" />
@@ -977,7 +973,6 @@
     <None Include="Assets\Texts\Archives\2_Arc2\17_LearnPathfinding\ArchivesLearnPathfindingFR.txt" />
     <None Include="Assets\Texts\DataHackees\4_Arc4\Left\47_ToDataProliferation\DHtoDataProliferationFR.txt" />
     <None Include="Assets\Imported\TextMesh Pro\Resources\Shaders\TMP_Bitmap-Mobile.shader" />
-    <None Include="Assets\Texts\DataHackees\DemoArc\04_ToDiscoverOfSondes_Demo\DHtoDiscoverOfSondesEN.txt" />
     <None Include="Assets\Texts\Archives\3_Arc3\28_TracerGeneration\ArchivesTracerGeneration_NewFR.txt" />
     <None Include="Assets\Texts\DataHackees\3_Arc3\26_ToAlwaysReset\DHtoAlwaysResetFR.txt" />
     <None Include="Assets\Texts\Archives\3_Arc3\24_SondesOptimisation\ArchivesSondesOptimisationEN.txt" />
@@ -999,10 +994,10 @@
     <None Include="Assets\Imported\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile.shader" />
     <None Include="Assets\Materials\lwrp\Particules\Lumieres\New\Voronoi\ConvertXyzToCubeUv.hlsl" />
     <None Include="Assets\Texts\DataHackees\3_Arc3\37-38-39-40_ToFirstBoss\FeuilleDeNotes_FirstBossFR.txt" />
+    <None Include="Assets\Texts\DataHackees\DemoArc\04_ToDiscoverOfSondes_Demo\DHtoDiscoverOfSondesEN_Demo.txt" />
     <None Include="Assets\Texts\DataHackees\3_Arc3\37-38-39-40_ToFirstBoss\FromFullSwapPolycubes\DHtoFirstBoss_FromFullSwapPolycubesEN.txt" />
     <None Include="Assets\Texts\Archives\1_Arc1\02_FirstLevel\ArchiveFirstLevelEN.txt" />
     <None Include="Assets\Texts\Archives\3_Arc3\23_FullSwapPolycubes\ArchivesFullSwapPolycubesFR.txt" />
-    <None Include="Assets\Texts\DataHackees\DemoArc\03_ToSecondRunner_Demo\DHtoSecondRunnerFR.txt" />
     <None Include="Assets\Materials\lwrp\Particules\Lumieres\New\Voronoi\VoronoiLoop.hlsl" />
     <None Include="Assets\Texts\DataHackees\1_Arc1\05-06_ToLearnEndEvent\DHtoLearnEndEventFromDiscoverOfSondesFR.txt" />
     <None Include="Assets\Texts\DataHackees\4_Arc4\Left\44_ToImpossibleLevel\DHto_ImpossibleLevelFR.txt" />
