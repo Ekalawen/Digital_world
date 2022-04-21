@@ -16,6 +16,7 @@ public class MessageZone : IZone {
     [ConditionalHide("isImportant")]
     public bool isImportantOnly = false;
     public float frequence = 5.0f;
+    public float delayAtStart = 0.0f;
     public bool useSound = false;
     public bool addGapBeforeText = false;
     public bool cleanOtherImportantTexts = false;
@@ -26,7 +27,7 @@ public class MessageZone : IZone {
     protected override void Start() {
         base.Start();
         timer = new Timer(frequence);
-        timer.SetOver();
+        timer.SetRemainingTime(delayAtStart);
     }
 
     private void Update() {
