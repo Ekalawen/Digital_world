@@ -101,7 +101,7 @@ public class LoadingMenu : MonoBehaviour {
     protected void InitPouvoir(GameObject pouvoirPrefab, PouvoirDisplay display, string keyName) {
         IPouvoir pouvoir = pouvoirPrefab ? pouvoirPrefab.GetComponent<IPouvoir>() : null;
         string nom = pouvoir ? pouvoir.nom.GetLocalizedString().Result : PouvoirDisplay.GetNullName();
-        string levelToUnlockPouvoirName = UIHelper.SurroundWithColorWithoutB(display.levelToUnlockPouvoirName.GetLocalizedString().Result, UIHelper.BLUE);
+        string levelToUnlockPouvoirName = UIHelper.SurroundWithColorWithoutB(display.GetLevelToUnlockPouvoirName(), UIHelper.BLUE);
         string description = pouvoir ? pouvoir.description.GetLocalizedString().Result : PouvoirDisplay.GetNullDescription(levelToUnlockPouvoirName);
         Sprite sprite = pouvoir ? pouvoir.sprite : null;
         PouvoirDisplay.PouvoirType pouvoirType = pouvoir ? pouvoir.pouvoirType : PouvoirDisplay.PouvoirType.DEFAULT;

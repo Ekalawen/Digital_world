@@ -16,6 +16,7 @@ public class PouvoirDisplay : MonoBehaviour {
     public TMPro.TMP_Text textDescription;
     public MessageZoneBindingParameters.Bindings keyBinding;
     public LocalizedString levelToUnlockPouvoirName;
+    public LocalizedString levelToUnlockPouvoirInDemoName;
     public Image image;
     public Image bordure;
     public Color bordureColorDash;
@@ -82,5 +83,12 @@ public class PouvoirDisplay : MonoBehaviour {
     protected void SetTooltip() {
         TooltipActivator tooltipActivator = GetComponent<TooltipActivator>();
         tooltipActivator.localizedMessage.Arguments = new object[] { GetKeyName() };
+    }
+
+    public string GetLevelToUnlockPouvoirName() {
+        if (SelectorManager.Instance.isDemo) {
+            return levelToUnlockPouvoirInDemoName.GetLocalizedString().Result;
+        }
+        return levelToUnlockPouvoirName.GetLocalizedString().Result;
     }
 }
