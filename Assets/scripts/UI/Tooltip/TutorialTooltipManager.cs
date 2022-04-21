@@ -82,7 +82,7 @@ public class TutorialTooltipManager : MonoBehaviour {
                 InstantiateTutorialTooltip(tutorialTooltipToDH, tutorialTooltipToDHTransform, parent: level.menuLevel.transform);
             }
         }
-        if(level.GetNameId() == "FirstSondeScene") {
+        if(level.GetNameId() == "FirstSondeScene" || level.GetNameId() == "MultiRunnerDemoScene") {
             if(!PrefsManager.GetBool(GetKey(tutorialTooltipReadDoc), false)) {
                 RectTransform rectToTrack = level.menuLevel.docButton.GetComponent<RectTransform>();
                 InstantiateTutorialTooltip(tutorialTooltipReadDoc, tutorialTooltipReadDocTransform, parent: level.menuLevel.transform, rectToTrack: rectToTrack);
