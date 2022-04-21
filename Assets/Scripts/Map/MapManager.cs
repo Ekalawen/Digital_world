@@ -1901,6 +1901,7 @@ public class MapManager : MonoBehaviour {
 
     public List<Vector3> GetAllEmptyPositionInPlayerSight(Vector2 minMaxRange) {
         List<Vector3> possiblePos = GetEmptyPositionsInSphere(gm.player.transform.position, minMaxRange.y);
+        possiblePos = possiblePos.FindAll(p => !IsLumiereOrItemAt(p));
         possiblePos = possiblePos.FindAll(p => CanSeePlayerFrom(p, minMaxRange.y) && Vector3.Distance(gm.player.transform.position, p) >= minMaxRange.x);
         return possiblePos;
     }
