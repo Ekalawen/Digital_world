@@ -83,6 +83,8 @@ MonoBehaviour:
   cubeEnsembleQuantity: 1
   cubeEnsembleProportion: 0.5
   nbCubesVoisins: 4
+  getEmptyPositionsHelper: {fileID: 0}
+  cubeDistanceFromEmptyPositions: 1
   modifiers:
   - {fileID: 2338368893640693041}
 --- !u!114 &2338368893640693041
@@ -100,69 +102,6 @@ MonoBehaviour:
   modulo: 2
   agglomeration: 2
   trueRange: {x: 0, y: 0}
---- !u!114 &1715291383750800896
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3491683289375989780}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 054d591319f6d6546ac95c4463c0ee70, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ofSpecificCubeType: 0
-  specificCubeType: 0
---- !u!114 &1928950242945405626
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3491683289375989780}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 151e2e28aa2652d45a2762e3d9a974c6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cubeType: 0
-  minDistanceRandomFilling: 1
-  useAllEmptyPositionsInstead: 0
-  proportionRandomFilling: 0.0225
-  sizeCubeRandomFilling: 3
-  registerToColorSources: 0
-  setDissolveTime: 0
-  dissolveTime: 1
-  minNbBlocks: 0
---- !u!114 &6533042795328261037
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3491683289375989780}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce701536c965fb847a885590e740ebf0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1281226062246551779
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3491683289375989780}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5654b7ca765605645a95f025f8221ea3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  generatorPrefabs:
-  - {fileID: 5093024928719543386, guid: 3b0a5f613d9e581448c56e1090a49710, type: 3}
-  nbGenerators: 01000000
-  getEmptyPositionsHelper: {fileID: 0}
 --- !u!1 &8405548618420336026
 GameObject:
   m_ObjectHideFlags: 0
@@ -233,6 +172,8 @@ MonoBehaviour:
   cubeEnsembleQuantity: 1
   cubeEnsembleProportion: 0.5
   nbCubesVoisins: 4
+  getEmptyPositionsHelper: {fileID: 0}
+  cubeDistanceFromEmptyPositions: 1
   modifiers:
   - {fileID: 7767551100863041221}
 --- !u!114 &7767551100863041221
@@ -273,6 +214,8 @@ MonoBehaviour:
   cubeEnsembleQuantity: 1
   cubeEnsembleProportion: 0.5
   nbCubesVoisins: 4
+  getEmptyPositionsHelper: {fileID: 0}
+  cubeDistanceFromEmptyPositions: 1
   modifiers: []
 --- !u!1001 &1852852803430356768
 PrefabInstance:
@@ -450,3 +393,71 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0716ac14acd11b04098252bb48503da1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1281226062246551779
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3491683289375989780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5654b7ca765605645a95f025f8221ea3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  generatorPrefabs:
+  - {fileID: 5093024928719543386, guid: 3b0a5f613d9e581448c56e1090a49710, type: 3}
+  nbGenerators: 01000000
+  getEmptyPositionsHelper: {fileID: 0}
+--- !u!114 &1928950242945405626
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3491683289375989780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 151e2e28aa2652d45a2762e3d9a974c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cubeType: 0
+  typeZoneToFill: 0
+  minDistanceRandomFilling: 1
+  getEmptyPositionsHelper: {fileID: 0}
+  proportionRandomFilling: 0.0225
+  useSureMethodForSelection: 0
+  sizeCubeRandomFilling: 3
+  registerToColorSources: 0
+  setDissolveTime: 0
+  dissolveTime: 1
+  minNbBlocks: 0
+--- !u!114 &6533042795328261037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3491683289375989780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce701536c965fb847a885590e740ebf0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4180522890021265
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3491683289375989780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52aefa711b924e74e8bb86536864b83d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onlyOnFirstFloor: 0
+  lookAtHeight: 0
+  heightPercentage: 0.5
+  useSpecialCubeType: 0
+  cubeType: 0
