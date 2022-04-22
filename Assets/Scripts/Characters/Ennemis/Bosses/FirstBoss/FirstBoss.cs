@@ -42,12 +42,15 @@ public class FirstBoss : Sonde {
     public int nbLumieres = 15;
     public GameObject lightningToItemPrefab;
     public GameObject lightningToDataPrefab;
+    public GameObject lightningToPouvoirGiverItemPrefab;
     public GeoData geoDataToGenerator;
     public GameObject pouvoirLocalisationPrefab;
     public List<GameObject> generatorPhase2Prefabs;
     public List<GameObject> generatorPhase3Prefabs;
+    public List<GameObject> pouvoirGiverItemPrefabs;
     public int nbTriesByGeneratorPositions = 3;
     public float timeBetweenDropGenerators = 0.8f;
+    public float timeBetweenDropPouvoirGivers = 0.8f;
 
     [Header("PresenceSound")]
     public Vector2 presenceSoundVolumeRange = new Vector2(1, 7);
@@ -202,6 +205,7 @@ public class FirstBoss : Sonde {
     }
     protected IEnumerator CGoToPhase2() {
         yield return StartCoroutine(CGiveDash333());
+        //yield return StartCoroutine(CGivePouvoirsWithItems());
         UpdateConsoleMessage(phaseIndice: 2);
         AddTimeItem(2);
         yield return StartCoroutine(CExplosionAttackNormale());
@@ -258,6 +262,19 @@ public class FirstBoss : Sonde {
         yield return new WaitForSeconds(timeAfterGivingDash - gm.console.pouvoirZoomInDuration);
 
         controller.vitesse = oldVitesse;
+    }
+
+    protected IEnumerator CGivePouvoirsWithItems() {
+        List<Vector3> playerPos = new List<Vector3>() { player.transform.position };
+        List<Vector3> optimalySpacedPositions = GetOptimalySpacedPositions.GetSpacedPositions(gm.map, 2, playerPos, nbTriesByGeneratorPositions, GetOptimalySpacedPositions.Mode.MAX_MIN_DISTANCE);
+        yield return new WaitForSeconds(timeBetweenDropGenerators);
+        for(int i = 0; i < pouvoirGiverItemPrefabs.Count; i++) {
+            GameObject pouvoirGiverItemPrefab = pouvoirGiverItemPrefabs[i];
+            Item item = gm.itemManager.GenerateItemFromPrefab(pouvoirGiverItemPrefab, optimalySpacedPositions[i]);
+            Lightning lightning = GenerateLightningTo(item.transform.position, lightningToPouvoirGiverItemPrefab);
+            AddGeoPointToGenerator(item.transform.position, lightning.GetTotalDuration());
+            yield return new WaitForSeconds(timeBetweenDropGenerators);
+        }
     }
 
     protected void GiveDash333() {
