@@ -44,7 +44,7 @@ public class PouvoirPowerDash : PouvoirDash {
             gm.soundManager.PlayPowerDashImpactClip();
             player.ResetGrip();
             ennemi.HitByPlayerPowerDash(this);
-            StartImpactVfx(ennemi.transform.position);
+            StartImpactVfx(ennemi.transform.position, dontFakePosition: false);
             ApplyTimeMultiplier(useBrisableTime: false);
             gm.player.onPowerDashImpact.Invoke(this);
             gm.player.onPowerDashEnnemiImpact.Invoke(this, ennemi);
