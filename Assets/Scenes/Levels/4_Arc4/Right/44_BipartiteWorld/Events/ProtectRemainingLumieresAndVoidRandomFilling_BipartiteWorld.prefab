@@ -49,7 +49,8 @@ MonoBehaviour:
   typeZoneToFill: 2
   minDistanceRandomFilling: 1
   getEmptyPositionsHelper: {fileID: 3195524667840707945}
-  proportionRandomFilling: 0.005
+  proportionRandomFilling: 0.0075
+  useSureMethodForSelection: 0
   sizeCubeRandomFilling: 2
   registerToColorSources: 0
   setDissolveTime: 0
@@ -72,10 +73,13 @@ MonoBehaviour:
   optimalySpacedNbPositions: 0
   optimalySpacedNbTriesByPosition: 0
   optimalySpacedMode: 0
+  useCustomMapSize: 0
+  customMapSize: {x: 0, y: 0, z: 0}
   areaBoxCenter: {x: 0, y: 0, z: 0}
   areaBoxHalfExtents: {x: 0, y: 0, z: 0}
   areaSphereCenter: {x: 0, y: 0, z: 0}
   areaSphereRadius: 0
+  caveOffsetFromSides: 0
   modifiers:
   - {fileID: 1141361456261455913}
   unionGetters: []
@@ -210,7 +214,9 @@ MonoBehaviour:
   generateMode: 0
   nbToProtect: 0
   proportionToProtect: 1
+  couronneSize: 1
   destroyAlreadyExistingCubes: 1
   destroyAlreadyExistingCubesInMapBordures: 1
   setLinky: 0
   setLumiereInaccessible: 0
+  makeOneDirectionHole: 0
