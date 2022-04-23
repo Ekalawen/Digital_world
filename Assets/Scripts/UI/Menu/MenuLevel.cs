@@ -42,7 +42,7 @@ public class MenuLevel : MonoBehaviour {
     [Header("Scores")]
     public GameObject scoresRegular;
     public GameObject scoresInfinite;
-    public TMP_Text score_nbTries;
+    public TMP_Text score_nbGamesRegular;
     public TMP_Text score_nbWins;
     public TMP_Text score_winrate;
     public TMP_Text score_highestScore;
@@ -199,7 +199,7 @@ public class MenuLevel : MonoBehaviour {
 
     protected void SetRegularScores() {
         score_nbWins.text = ChangeLastWord(score_nbWins.text, GetNbWins().ToString());
-        score_nbTries.text = ChangeLastWord(score_nbTries.text, GetNbDeaths().ToString());
+        score_nbGamesRegular.text = ChangeLastWord(score_nbGamesRegular.text, GetNbTries().ToString());
         string winrateString = (100.0f * GetWinrate()).ToString("N2") + "%";
         score_winrate.text = ChangeLastWord(score_winrate.text, winrateString);
         score_highestScore.text = ChangeLastWord(score_highestScore.text, GetBestScoreToString());
