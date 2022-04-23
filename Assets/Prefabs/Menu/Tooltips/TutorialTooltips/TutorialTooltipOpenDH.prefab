@@ -1,21 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &4019719184237276944
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1184263362724344541}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d04a59eed9747de4fa68965fe74f20f2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  background: {fileID: 7109814476396454343}
-  flecheTrackingType: 2
-  rectTransformToTrack: {fileID: 0}
-  coefAvancement: 0.55
 --- !u!1001 &4479188339921653191
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -110,11 +94,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8142841419219643042, guid: bec230d569f59184dbb36c3e2ee7c15f,
         type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 75
-      objectReference: {fileID: 0}
-    - target: {fileID: 8142841419219643042, guid: bec230d569f59184dbb36c3e2ee7c15f,
-        type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -187,3 +166,21 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 4479188339921653191}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4019719184237276944
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1184263362724344541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d04a59eed9747de4fa68965fe74f20f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  background: {fileID: 7109814476396454343}
+  flecheTrackingType: 2
+  useSpecificIndice: 0
+  specificIndice: 0
+  rectTransformToTrack: {fileID: 0}
+  coefAvancement: 0.55

@@ -16,6 +16,7 @@ public class TutorialTooltip : MonoBehaviour {
     public TMP_Text textField;
     public RectTransform background;
     public TutorialTooltipFlechePosition ttFlechePosition;
+    public float buttonOkHeight = 20.0f;
 
     protected TutorialTooltipManager tutorialTooltipManager;
     protected RectTransform rectToTrack = null;
@@ -50,7 +51,6 @@ public class TutorialTooltip : MonoBehaviour {
         AsyncOperationHandle<string> handle = textString.GetLocalizedString();
         yield return handle;
         textField.text = handle.Result;
-        float buttonOkHeight = 15.0f;
         background.sizeDelta = new Vector2(background.sizeDelta.x, textField.preferredHeight + buttonOkHeight);
     }
 
