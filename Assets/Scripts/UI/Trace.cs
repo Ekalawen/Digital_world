@@ -15,6 +15,8 @@ public class LevenshteinDifferences {
 
 public class Trace {
 
+    protected static bool lastAdviceWasLevenshteinAdvice = false;
+
     public enum AdviceType {
         COMPLETE,
         ONLY_TRACE,
@@ -90,6 +92,7 @@ public class Trace {
     }
 
     protected static string GetStringForLocalizedStringReference(string reference, params object[] arguments) {
+        lastAdviceWasLevenshteinAdvice = reference == "PasseLevenshtein";
         return LocalizationSettings.StringDatabase.GetLocalizedStringAsync("PasswordAdvices", reference, null, FallbackBehavior.UseProjectSettings, arguments).Result;
     }
 
@@ -106,6 +109,10 @@ public class Trace {
             default:
                 return "Nope.";
         }
+    }
+
+    public static bool WasLastAdviceLevenshteinAdvice() {
+        return lastAdviceWasLevenshteinAdvice;
     }
 
     public static string GetPasswordAdviceComplete(string password, string truePassword, int levenshteinDistance) {
@@ -215,11 +222,15 @@ public class Trace {
         }
         int[,] levenshteinMatrice = GetLevenshteinMatrice(passe, truePasse);
         if (GetDistanceDeLevenshtein(passe, truePasse, levenshteinMatrice) <= levenshteinDistance) {
-            LevenshteinDifferences differences = GetDifferencesDeLevenshtein(passe, truePasse, levenshteinMatrice);
-            Debug.Log($"{differences.nbRemplacements} {differences.nbAjouts} {differences.nbSuppressions}");
-            return GetStringForLocalizedStringReference("PasseLevenshtein", differences.nbAjouts, differences.nbSuppressions, differences.nbRemplacements);
+            return GetDistanceDeLevenshteinPasswordAdvice(passe, truePasse, levenshteinMatrice);
         }
         return GetStringForLocalizedStringReference("MauvaisPasse");
+    }
+
+    protected static string GetDistanceDeLevenshteinPasswordAdvice(string passe, string truePasse, int[,] levenshteinMatrice) {
+        LevenshteinDifferences differences = GetDifferencesDeLevenshtein(passe, truePasse, levenshteinMatrice);
+        Debug.Log($"{differences.nbRemplacements} {differences.nbAjouts} {differences.nbSuppressions}");
+        return GetStringForLocalizedStringReference("PasseLevenshtein", differences.nbAjouts, differences.nbSuppressions, differences.nbRemplacements);
     }
 
     public static string GetWellFormatedOnlyTraceAdvice(string password, string truePassword) {
