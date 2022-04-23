@@ -36,6 +36,7 @@ public class CheatCodeManager : MonoBehaviour {
     public List<KeyCode> gainPathfinder5Code;
     public List<KeyCode> gainGripDashCode;
     public List<KeyCode> gainTimeHackCode;
+    public List<KeyCode> hackActivatedOrbTriggersCode;
 
     [Header("Links")]
     public GameObject dash333Prefab;
@@ -203,6 +204,12 @@ public class CheatCodeManager : MonoBehaviour {
         gainTimeHackCheatCode.code = gainTimeHackCode;
         gainTimeHackCheatCode.action = SwapGiveTimeHack;
         cheatCodes.Add(gainTimeHackCheatCode);
+
+        // Hack activated OrbTriggers
+        CheatCode hackActivatedOrbTriggersCheatCode = new CheatCode();
+        hackActivatedOrbTriggersCheatCode.code = hackActivatedOrbTriggersCode;
+        hackActivatedOrbTriggersCheatCode.action = gm.itemManager.HackAllActivatedOrbTriggers;
+        cheatCodes.Add(hackActivatedOrbTriggersCheatCode);
     }
 
     public void Update() {

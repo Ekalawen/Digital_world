@@ -160,8 +160,11 @@ public class ItemManager : MonoBehaviour {
         }
     }
 
-    internal ResetTimeItem PopItem(object resetTemporelPrefab)
-    {
-        throw new NotImplementedException();
+    public void HackAllActivatedOrbTriggers() {
+        foreach(OrbTrigger orbTrigger in orbTriggers) {
+            if(orbTrigger.IsActivated()) {
+                orbTrigger.Hack();
+            }
+        }
     }
 }

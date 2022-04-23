@@ -49,6 +49,7 @@ public class OrbTrigger : IZone {
     protected float coefTimeToDisplayOnScreen = 1.0f;
     protected Timer timerEnter;
     protected List<OrbTriggerEnterCondition> conditions;
+    protected bool hasBeenHacked = false;
 
     public void Initialize(float rayon, float durationToActivate) {
         base.Initialize();
@@ -156,6 +157,18 @@ public class OrbTrigger : IZone {
         }
 
         if (!gm.eventManager.IsGameOver()) {
+            yield return Hack();
+        }
+        coroutineOnEnter = null;
+    }
+
+    public Coroutine Hack() {
+        return StartCoroutine(CHack());
+    }
+
+    protected IEnumerator CHack() {
+        if(!hasBeenHacked) {
+            hasBeenHacked = true;
             AsyncOperationHandle<string> hackedHandle = gm.console.strings.lumiereProtectionHacked.GetLocalizedString();
             yield return hackedHandle;
             gm.console.AjouterMessageImportant(hackedHandle.Result,
@@ -167,7 +180,6 @@ public class OrbTrigger : IZone {
 
             CallAllEvents();
         }
-        coroutineOnEnter = null;
     }
 
     protected float GetTimeToDisplayOnScreen(Timer timer) {
@@ -235,6 +247,10 @@ public class OrbTrigger : IZone {
             DestroyLightning();
             onExit.Invoke(this);
         }
+    }
+
+    public bool IsActivated() {
+        return coroutineOnEnter != null;
     }
 
     protected void DestroyLightning() {
