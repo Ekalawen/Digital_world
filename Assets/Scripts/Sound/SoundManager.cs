@@ -228,6 +228,10 @@ public class SoundManager : MonoBehaviour
     {
         PlayClipsOnSource(sounds.intersectionEventCreateCubesClips, pos: position, duration: duration, parent: parent);
     }
+    public void PlayIntersectionEventPrevisualizationClip()
+    {
+        PlayClipsOnSource(sounds.intersectionEventPrevisualizationClips);
+    }
     public void PlayIntersectionEventSwapCubesClip(Vector3 position, float duration, Transform parent)
     {
         PlayClipsOnSource(sounds.intersectionEventSwapCubesClips, pos: position, duration: duration, parent: parent);

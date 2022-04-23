@@ -32,6 +32,13 @@ public class IntersectionEvent : RandomEvent {
         }
     }
 
+    /// The EventStart sound is better right now :)
+    //protected override void PlayStartSound() {
+    //    if (playStartSound) {
+    //        gm.soundManager.PlayIntersectionEventPrevisualizationClip();
+    //    }
+    //}
+
     protected override void EndEvent() {
         coroutines.Clear();
     }

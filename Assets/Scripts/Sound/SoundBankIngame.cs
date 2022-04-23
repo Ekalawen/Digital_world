@@ -65,6 +65,7 @@ public class SoundBankIngame : ScriptableObject {
     public AudioClipParams jumpEventStunClips;
     public AudioClipParams jumpEventUnStunClips;
 
+    public AudioClipParams intersectionEventPrevisualizationClips;
     public AudioClipParams intersectionEventCreateCubesClips;
     public AudioClipParams intersectionEventSwapCubesClips;
 
