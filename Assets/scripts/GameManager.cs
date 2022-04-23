@@ -149,7 +149,6 @@ public class GameManager : MonoBehaviour {
         cheatCodeManager.Initialize();
         achievementManager.Initialize(isInGame: true);
         inputManager.SetInGame();
-        onFirstFrame.AddListener(OpenDocIf10DefeatsInARow);
         FinishInitialization();
         CallEventsOneFrameAfterFinishInitialization();
     }
@@ -379,16 +378,6 @@ public class GameManager : MonoBehaviour {
 
     public bool IsIR() {
         return GetMapType() == MenuLevel.LevelType.INFINITE;
-    }
-
-    protected void OpenDocIf10DefeatsInARow() {
-        if (!console.HasAlreadyOpenedTheDoc() && eventManager.GetNbDeath() >= 10) {
-            if ((IsRegular() && eventManager.GetNbWins() == 0)
-             || (IsIR() && goalManager.HasUnlockedAtLeastOneTreshold())) {
-                Pause();
-                console.pauseMenu.GetComponentInChildren<PauseMenu>().OpenDoc();
-            }
-        }
     }
 }
 

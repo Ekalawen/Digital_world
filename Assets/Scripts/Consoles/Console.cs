@@ -44,6 +44,7 @@ public class Console : MonoBehaviour {
     public LocalizedString customInitMessage = null;
     public bool dontDisplayAnythingOnInit = false;
     public LocalizedString customWinMessage = null;
+    public int nbDeathBeforeAutoOpenDoc = 8;
 
     [Header("OnLumiereCapturedMessages")]
     public List<int> nbLumieresTriggers;
@@ -136,6 +137,7 @@ public class Console : MonoBehaviour {
         InitFrameRateCounter();
         arrowKeysTimer = new Timer(2, setOver: true);
         altitudeCritiqueTimer = new Timer(3, setOver: true);
+        gm.onFirstFrame.AddListener(OpenDocIf10DefeatsInARow);
         HideDataCountDisplayerIfIR();
         DisplayOrNotConsole();
         ToggleUIVisibilityBasedOnSaver();
@@ -1450,5 +1452,15 @@ public class Console : MonoBehaviour {
         string sceneName = SceneManager.GetActiveScene().name;
         string key = sceneName + PrefsManager.HAS_OPENED_DOC_KEY;
         PrefsManager.SetBool(key, true);
+    }
+
+    public void OpenDocIf10DefeatsInARow() {
+        if (!HasAlreadyOpenedTheDoc() && eventManager.GetNbDeath() >= nbDeathBeforeAutoOpenDoc) {
+            if ((gm.IsRegular() && eventManager.GetNbWins() == 0)
+             || (gm.IsIR() && !gm.goalManager.HasUnlockedAtLeastOneTreshold())) {
+                gm.Pause();
+                pauseMenu.GetComponentInChildren<PauseMenu>().OpenDoc();
+            }
+        }
     }
 }
