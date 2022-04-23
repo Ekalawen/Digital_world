@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Localization;
@@ -46,6 +47,7 @@ public class PauseMenu : MonoBehaviour {
     }
 
     protected IEnumerator COpenDoc() {
+        GameManager.Instance.console.SetHasAlreadyOpenedTheDoc(); // Car appelé à la première frame, et donc peut-être pas initialisé :/
         AsyncOperationHandle<string> handleTitle = strings.docTitle.GetLocalizedString();
         yield return handleTitle;
         string titleString = handleTitle.Result;

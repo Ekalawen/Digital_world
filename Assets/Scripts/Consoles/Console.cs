@@ -8,6 +8,7 @@ using UnityEngine.Localization;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.Localization.Settings;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public struct TimerMessage {
     public TimedMessage message;
@@ -1437,5 +1438,17 @@ public class Console : MonoBehaviour {
         pouvoirDisplayE?.UpdateBinding();
         pouvoirDisplayLeftClick?.UpdateBinding();
         pouvoirDisplayRightClick?.UpdateBinding();
+    }
+
+    public bool HasAlreadyOpenedTheDoc() {
+        string sceneName = SceneManager.GetActiveScene().name;
+        string key = sceneName + PrefsManager.HAS_OPENED_DOC_KEY;
+        return PrefsManager.GetBool(key, false);
+    }
+
+    public void SetHasAlreadyOpenedTheDoc() {
+        string sceneName = SceneManager.GetActiveScene().name;
+        string key = sceneName + PrefsManager.HAS_OPENED_DOC_KEY;
+        PrefsManager.SetBool(key, true);
     }
 }

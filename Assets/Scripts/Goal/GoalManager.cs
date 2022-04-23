@@ -61,6 +61,10 @@ public class GoalManager : MonoBehaviour {
         return tresholds.FindAll(t => t > seuil).ToList();
     }
 
+    public bool HasUnlockedAtLeastOneTreshold() {
+        return GetAllTresholds().Count > GetAllNotUnlockedTresholds().Count;
+    }
+
     public int GetNextTresholdFor(int dataCount) {
         return GetAllTresholds().Find(n => n > dataCount);
     }
