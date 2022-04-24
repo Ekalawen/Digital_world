@@ -6,7 +6,7 @@ using UnityEngine.Rendering;
 public abstract class RewardCamera : MonoBehaviour {
 
     [Header("Link")]
-    public Volume contrasteVolume;
+    public Volume luminosityVolume;
 
     protected HistoryManager hm;
     protected RewardManager rm;
@@ -16,7 +16,7 @@ public abstract class RewardCamera : MonoBehaviour {
         hm = HistoryManager.Instance;
         rm = RewardManager.Instance;
         cam = GetComponentInChildren<Camera>();
-        PostProcessManager.SetContrasteIntensity(contrasteVolume, PrefsManager.GetFloat(PrefsManager.CONTRASTE_KEY, MenuOptions.defaultContraste));
+        PostProcessManager.SetLuminosityIntensity(luminosityVolume, PrefsManager.GetFloat(PrefsManager.LUMINOSITY_KEY, MenuOptions.defaultLuminosity));
     }
 
     public abstract void Update();

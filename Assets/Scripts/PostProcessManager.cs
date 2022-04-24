@@ -90,8 +90,8 @@ public class PostProcessManager : MonoBehaviour {
     public AnimationCurve soulRobberRestoreBlackCurve;
     public float soulRobberRestoreBlackDuration = 3.0f;
 
-    [Header("Contraste")]
-    public Volume contrasteVolume;
+    [Header("Luminosity")]
+    public Volume luminosityVolume;
 
     protected Coroutine gripCoroutine = null;
     protected Coroutine hitCoroutine = null;
@@ -137,7 +137,7 @@ public class PostProcessManager : MonoBehaviour {
         InitShiftVfx();
         InitJumpVfx();
         InitTimeScaleVfx();
-        InitContrastePostProcess();
+        InitLuminosityPostProcess();
         wallLensDistorsionFluctuator = new Fluctuator(this, GetLensDistorsionIntensity, SetLensDistorsionIntensity, wallPostProcessCurve);
         wallChromaticAberrationFluctuator = new Fluctuator(this, GetChromaticAberrationIntensity, SetChromaticAberrationIntensity, wallPostProcessCurve);
         soulRobberWeightFluctuator = new Fluctuator(this, GetSoulRobberWeight, SetSoulRobberWeight);
@@ -547,23 +547,24 @@ public class PostProcessManager : MonoBehaviour {
         jumpEventVolume.weight = value;
     }
 
-    protected void InitContrastePostProcess() {
-        SetContrasteIntensity(PrefsManager.GetFloat(PrefsManager.CONTRASTE_KEY, MenuOptions.defaultContraste));
+    protected void InitLuminosityPostProcess() {
+        SetLuminosityIntensity(PrefsManager.GetFloat(PrefsManager.LUMINOSITY_KEY, MenuOptions.defaultLuminosity));
     }
 
-    public void SetContrasteIntensity(float value) {
-        SetContrasteIntensity(contrasteVolume, value);
+    public void SetLuminosityIntensity(float value) {
+        SetLuminosityIntensity(luminosityVolume, value);
     }
 
-    public static void SetContrasteIntensity(Volume contrasteVolume, float value) {
-        contrasteVolume.weight = Mathf.Abs(value) <= 0.05f ? 0 : 1;
+    public static void SetLuminosityIntensity(Volume luminosityVolume, float value) {
+        luminosityVolume.weight = Mathf.Abs(value) <= 0.05f ? 0 : 1;
 
-        ColorAdjustments colorAdjustments;
-        contrasteVolume.profile.TryGet(out colorAdjustments);
-        colorAdjustments.contrast.Override(value * 100);
+        /// En fait on va juste toucher au gain, comme ça on ira vers le noir et pas vers le gris ! :)
+        //ColorAdjustments colorAdjustments;
+        //luminosityVolume.profile.TryGet(out colorAdjustments);
+        //colorAdjustments.contrast.Override(value * 100);
 
         LiftGammaGain liftGammaGain;
-        contrasteVolume.profile.TryGet(out liftGammaGain);
+        luminosityVolume.profile.TryGet(out liftGammaGain);
         liftGammaGain.gain.Override(new Vector4(0, 0, 0, value));
     }
 }

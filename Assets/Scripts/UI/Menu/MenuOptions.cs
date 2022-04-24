@@ -31,7 +31,7 @@ public class MenuOptions : MonoBehaviour {
     public static bool defaultFpsCounter = false;
     public static bool defaultDisplayConsole = false;
     public static int defaultFrameRateIndice = 0; // Auto
-    public static float defaultContraste = 0;
+    public static float defaultLuminosity = 0;
     public static Lumiere.LumiereQuality defaultLumiereQuality = Lumiere.LumiereQuality.LOW;
     public static List<string> keyOfAchievementsToSaveDuringResetSaves = new List<string>() {
         PrefsManager.TOTAL_DATA_COUNT_KEY,
@@ -58,7 +58,7 @@ public class MenuOptions : MonoBehaviour {
     public Slider sliderMusic;
     public Slider sliderSon;
     public Slider sliderMouse;
-    public Slider sliderContraste;
+    public Slider sliderLuminosity;
     public Toggle toggleJumpWarp;
     public Toggle toggleWallWarp;
     public Toggle toggleWallDistorsion;
@@ -102,7 +102,7 @@ public class MenuOptions : MonoBehaviour {
         OnMusicVolumeChange(PrefsManager.GetFloat(PrefsManager.MUSIC_VOLUME_KEY, defaultMusicVolume));
         OnSoundVolumeChange(PrefsManager.GetFloat(PrefsManager.SOUND_VOLUME_KEY, defaultSoundVolume));
         OnMouseSpeedChange(PrefsManager.GetFloat(PrefsManager.MOUSE_SPEED_KEY, defaultMouseSpeed));
-        OnContrasteChange(PrefsManager.GetFloat(PrefsManager.CONTRASTE_KEY, defaultContraste));
+        OnLuminosityChange(PrefsManager.GetFloat(PrefsManager.LUMINOSITY_KEY, defaultLuminosity));
         OnJumpWarpActivationPress(PrefsManager.GetBool(PrefsManager.JUMP_WARP_KEY, defaultJumpWarpActivation));
         OnWallWarpActivationPress(PrefsManager.GetBool(PrefsManager.WALL_WARP_KEY, defaultWallWarpActivation));
         OnWallDistorsionActivationPress(PrefsManager.GetBool(PrefsManager.WALL_DISTORSION_KEY, defaultWallDistorsionActivation));
@@ -196,15 +196,15 @@ public class MenuOptions : MonoBehaviour {
         }
     }
 
-    public void OnContrasteChange(float newVal) {
-        PrefsManager.SetFloat(PrefsManager.CONTRASTE_KEY, newVal);
-        sliderContraste.value = newVal;
-        sliderContraste.GetComponent<SliderScript>().OnChange(newVal);
+    public void OnLuminosityChange(float newVal) {
+        PrefsManager.SetFloat(PrefsManager.LUMINOSITY_KEY, newVal);
+        sliderLuminosity.value = newVal;
+        sliderLuminosity.GetComponent<SliderScript>().OnChange(newVal);
         if(isInGame) {
-            gm.postProcessManager.SetContrasteIntensity(newVal);
+            gm.postProcessManager.SetLuminosityIntensity(newVal);
         } else {
             if(MenuManager.IsInitialized) {
-                MenuManager.Instance.SetContrasteVolume();
+                MenuManager.Instance.SetLuminosityVolume();
             }
         }
     }
@@ -305,7 +305,7 @@ public class MenuOptions : MonoBehaviour {
         OnMusicVolumeChange(defaultMusicVolume);
         OnSoundVolumeChange(defaultSoundVolume);
         OnMouseSpeedChange(defaultMouseSpeed);
-        OnContrasteChange(defaultContraste);
+        OnLuminosityChange(defaultLuminosity);
         OnWallDistorsionActivationPress(defaultWallDistorsionActivation);
         OnWallWarpActivationPress(defaultWallWarpActivation);
         OnConseilOnStartPress(defaultConseilOnStart);

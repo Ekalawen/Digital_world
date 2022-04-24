@@ -52,7 +52,6 @@ public class PrefsManager {
     public static string MUSIC_VOLUME_KEY = "musicVolumeKey";
     public static string SOUND_VOLUME_KEY = "soundVolumeKey";
     public static string MOUSE_SPEED_KEY = "mouseSpeedKey";
-    public static string CONTRASTE_KEY = "contrasteKey";
     public static string LUMINOSITY_KEY = "luminosityKey";
     public static string JUMP_WARP_KEY = "jumpWarpKey";
     public static string WALL_DISTORSION_KEY = "wallDistorsionKey";

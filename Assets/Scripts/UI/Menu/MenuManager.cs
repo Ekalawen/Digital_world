@@ -31,7 +31,7 @@ public class MenuManager : MonoBehaviour {
     public SelectorManager selectorManager;
     public Button buttonPlay;
     public Button buttonTutorial;
-    public Volume contrasteVolume;
+    public Volume luminosityVolume;
 
     [Header("TutorielTexts")]
     public MenuManagerStrings strings;
@@ -50,7 +50,7 @@ public class MenuManager : MonoBehaviour {
         SetRandomBackgroundIfNeeded();
         StartMenuMusic();
         SwapPlayAndTutorialMaterialsIfFirstRun();
-        SetContrasteVolume();
+        SetLuminosityVolume();
     }
 
     void Update() {
@@ -245,7 +245,7 @@ public class MenuManager : MonoBehaviour {
         }
     }
 
-    public void SetContrasteVolume() {
-        PostProcessManager.SetContrasteIntensity(contrasteVolume, PrefsManager.GetFloat(PrefsManager.CONTRASTE_KEY, MenuOptions.defaultContraste));
+    public void SetLuminosityVolume() {
+        PostProcessManager.SetLuminosityIntensity(luminosityVolume, PrefsManager.GetFloat(PrefsManager.LUMINOSITY_KEY, MenuOptions.defaultLuminosity));
     }
 }

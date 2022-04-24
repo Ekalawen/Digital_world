@@ -31,7 +31,7 @@ public class SelectorCameraController : MonoBehaviour {
     [Header("Links")]
     public SelectorManager selectorManager;
     public CharacterController controller;
-    public Volume contrasteVolume;
+    public Volume luminosityVolume;
 
     protected Vector3 lastClosestLevelPosition = Vector3.zero;
     protected bool isMoving;
@@ -47,7 +47,7 @@ public class SelectorCameraController : MonoBehaviour {
         speedMouse *= 100;
         lastIsMovingTimer = new Timer(dureeBeforeFocusToInterestPoint);
         timeSincePressedLeftClick = new Timer();
-        InitContrasteVolume();
+        InitLuminosityVolume();
     }
 
     public void Update() {
@@ -438,8 +438,8 @@ public class SelectorCameraController : MonoBehaviour {
     //    return res;
     //}
 
-    protected void InitContrasteVolume() {
-        PostProcessManager.SetContrasteIntensity(contrasteVolume, PrefsManager.GetFloat(PrefsManager.CONTRASTE_KEY, MenuOptions.defaultContraste));
+    protected void InitLuminosityVolume() {
+        PostProcessManager.SetLuminosityIntensity(luminosityVolume, PrefsManager.GetFloat(PrefsManager.LUMINOSITY_KEY, MenuOptions.defaultLuminosity));
     }
 
 }
