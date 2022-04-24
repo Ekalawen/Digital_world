@@ -1542,6 +1542,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1301288862}
+  - {fileID: 1804138367}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2088,6 +2089,93 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1001 &1804138366
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1374633798}
+    m_Modifications:
+    - target: {fileID: 3210836445861691905, guid: 63cb62af9a8ab804187f2171ecd1d58e,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3210836445861691905, guid: 63cb62af9a8ab804187f2171ecd1d58e,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3210836445861691905, guid: 63cb62af9a8ab804187f2171ecd1d58e,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3210836445861691905, guid: 63cb62af9a8ab804187f2171ecd1d58e,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3210836445861691905, guid: 63cb62af9a8ab804187f2171ecd1d58e,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3210836445861691905, guid: 63cb62af9a8ab804187f2171ecd1d58e,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3210836445861691905, guid: 63cb62af9a8ab804187f2171ecd1d58e,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3210836445861691905, guid: 63cb62af9a8ab804187f2171ecd1d58e,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3210836445861691905, guid: 63cb62af9a8ab804187f2171ecd1d58e,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3210836445861691905, guid: 63cb62af9a8ab804187f2171ecd1d58e,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3210836445861691905, guid: 63cb62af9a8ab804187f2171ecd1d58e,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8970706880083213104, guid: 63cb62af9a8ab804187f2171ecd1d58e,
+        type: 3}
+      propertyPath: m_Name
+      value: ContrasteVolume
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 63cb62af9a8ab804187f2171ecd1d58e, type: 3}
+--- !u!4 &1804138367 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3210836445861691905, guid: 63cb62af9a8ab804187f2171ecd1d58e,
+    type: 3}
+  m_PrefabInstance: {fileID: 1804138366}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1804138368 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2590815171918939817, guid: 63cb62af9a8ab804187f2171ecd1d58e,
+    type: 3}
+  m_PrefabInstance: {fileID: 1804138366}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1863166909 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5377110619233634205, guid: 535f29d1d3ec6fd45bdf775b2bd375e0,
@@ -2971,6 +3059,11 @@ PrefabInstance:
       propertyPath: menuOptions
       value: 
       objectReference: {fileID: 19669842}
+    - target: {fileID: 5377110619233634207, guid: 535f29d1d3ec6fd45bdf775b2bd375e0,
+        type: 3}
+      propertyPath: contrasteVolume
+      value: 
+      objectReference: {fileID: 1804138368}
     - target: {fileID: 5377110619233634207, guid: 535f29d1d3ec6fd45bdf775b2bd375e0,
         type: 3}
       propertyPath: uiSwapperButton

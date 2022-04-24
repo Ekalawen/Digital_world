@@ -8,6 +8,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Steamworks;
+using UnityEngine.Rendering;
 
 public class MenuManager : MonoBehaviour {
 
@@ -15,6 +16,8 @@ public class MenuManager : MonoBehaviour {
 
     static MenuManager _instance;
     public static MenuManager Instance { get { return _instance ?? (_instance = new GameObject().AddComponent<MenuManager>()); } }
+
+    public static bool IsInitialized { get { return _instance != null; } }
 
     public static bool DISABLE_HOTKEYS = false;
 
@@ -28,6 +31,7 @@ public class MenuManager : MonoBehaviour {
     public SelectorManager selectorManager;
     public Button buttonPlay;
     public Button buttonTutorial;
+    public Volume contrasteVolume;
 
     [Header("TutorielTexts")]
     public MenuManagerStrings strings;
@@ -46,6 +50,7 @@ public class MenuManager : MonoBehaviour {
         SetRandomBackgroundIfNeeded();
         StartMenuMusic();
         SwapPlayAndTutorialMaterialsIfFirstRun();
+        SetContrasteVolume();
     }
 
     void Update() {
@@ -238,5 +243,9 @@ public class MenuManager : MonoBehaviour {
             buttonPlay.GetComponent<Image>().material = buttonTutorial.GetComponent<Image>().material;
             buttonTutorial.GetComponent<Image>().material = tmpMaterial;
         }
+    }
+
+    public void SetContrasteVolume() {
+        PostProcessManager.SetContrasteIntensity(contrasteVolume, PrefsManager.GetFloat(PrefsManager.CONTRASTE_KEY, MenuOptions.defaultContraste));
     }
 }

@@ -202,6 +202,10 @@ public class MenuOptions : MonoBehaviour {
         sliderContraste.GetComponent<SliderScript>().OnChange(newVal);
         if(isInGame) {
             gm.postProcessManager.SetContrasteIntensity(newVal);
+        } else {
+            if(MenuManager.IsInitialized) {
+                MenuManager.Instance.SetContrasteVolume();
+            }
         }
     }
 

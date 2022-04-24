@@ -547,7 +547,15 @@ public class PostProcessManager : MonoBehaviour {
         jumpEventVolume.weight = value;
     }
 
+    protected void InitContrastePostProcess() {
+        SetContrasteIntensity(PrefsManager.GetFloat(PrefsManager.CONTRASTE_KEY, MenuOptions.defaultContraste));
+    }
+
     public void SetContrasteIntensity(float value) {
+        SetContrasteIntensity(contrasteVolume, value);
+    }
+
+    public static void SetContrasteIntensity(Volume contrasteVolume, float value) {
         contrasteVolume.weight = Mathf.Abs(value) <= 0.05f ? 0 : 1;
 
         ColorAdjustments colorAdjustments;
@@ -557,9 +565,5 @@ public class PostProcessManager : MonoBehaviour {
         LiftGammaGain liftGammaGain;
         contrasteVolume.profile.TryGet(out liftGammaGain);
         liftGammaGain.gain.Override(new Vector4(0, 0, 0, value));
-    }
-
-    protected void InitContrastePostProcess() {
-        SetContrasteIntensity(PrefsManager.GetFloat(PrefsManager.CONTRASTE_KEY, MenuOptions.defaultContraste));
     }
 }

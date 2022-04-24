@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 public class SelectorCameraController : MonoBehaviour {
     [Header("Mouvement and Rotations")]
@@ -29,6 +31,7 @@ public class SelectorCameraController : MonoBehaviour {
     [Header("Links")]
     public SelectorManager selectorManager;
     public CharacterController controller;
+    public Volume contrasteVolume;
 
     protected Vector3 lastClosestLevelPosition = Vector3.zero;
     protected bool isMoving;
@@ -44,6 +47,7 @@ public class SelectorCameraController : MonoBehaviour {
         speedMouse *= 100;
         lastIsMovingTimer = new Timer(dureeBeforeFocusToInterestPoint);
         timeSincePressedLeftClick = new Timer();
+        InitContrasteVolume();
     }
 
     public void Update() {
@@ -433,4 +437,9 @@ public class SelectorCameraController : MonoBehaviour {
     //    Vector3 res =  Quaternion.Euler(0, angle, 0) * new Vector3(distance, height, 0);
     //    return res;
     //}
+
+    protected void InitContrasteVolume() {
+        PostProcessManager.SetContrasteIntensity(contrasteVolume, PrefsManager.GetFloat(PrefsManager.CONTRASTE_KEY, MenuOptions.defaultContraste));
+    }
+
 }
