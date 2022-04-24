@@ -631,7 +631,7 @@ public class Console : MonoBehaviour {
 
         // On sauvegarde le message si celui-ci a été sauvegardé ! :3
         if (gm != null)
-            AddTimedMessageToHistory(message, type, gm.timerManager.GetElapsedTime(), 0.0f);
+            AddTimedMessageToHistory(message, type, gm.timerManager.GetRealElapsedTime(), 0.0f);
 	}
 
     public void AddTimedMessageToHistory(string message, Console.TypeText type, float time, float duree) {
