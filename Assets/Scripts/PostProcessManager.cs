@@ -90,6 +90,9 @@ public class PostProcessManager : MonoBehaviour {
     public AnimationCurve soulRobberRestoreBlackCurve;
     public float soulRobberRestoreBlackDuration = 3.0f;
 
+    [Header("Contraste")]
+    public Volume contrasteVolume;
+
     protected Coroutine gripCoroutine = null;
     protected Coroutine hitCoroutine = null;
     protected Coroutine wallPostProcessCoroutine = null;
@@ -134,6 +137,7 @@ public class PostProcessManager : MonoBehaviour {
         InitShiftVfx();
         InitJumpVfx();
         InitTimeScaleVfx();
+        InitContrastePostProcess();
         wallLensDistorsionFluctuator = new Fluctuator(this, GetLensDistorsionIntensity, SetLensDistorsionIntensity, wallPostProcessCurve);
         wallChromaticAberrationFluctuator = new Fluctuator(this, GetChromaticAberrationIntensity, SetChromaticAberrationIntensity, wallPostProcessCurve);
         soulRobberWeightFluctuator = new Fluctuator(this, GetSoulRobberWeight, SetSoulRobberWeight);
@@ -541,5 +545,21 @@ public class PostProcessManager : MonoBehaviour {
 
     protected void SetJumpEventFlashWeight(float value) {
         jumpEventVolume.weight = value;
+    }
+
+    public void SetContrasteIntensity(float value) {
+        contrasteVolume.weight = Mathf.Abs(value) <= 0.05f ? 0 : 1;
+
+        ColorAdjustments colorAdjustments;
+        contrasteVolume.profile.TryGet(out colorAdjustments);
+        colorAdjustments.contrast.Override(value * 100);
+
+        LiftGammaGain liftGammaGain;
+        contrasteVolume.profile.TryGet(out liftGammaGain);
+        liftGammaGain.gain.Override(new Vector4(0, 0, 0, value));
+    }
+
+    protected void InitContrastePostProcess() {
+        SetContrasteIntensity(PrefsManager.GetFloat(PrefsManager.CONTRASTE_KEY, MenuOptions.defaultContraste));
     }
 }
