@@ -290,6 +290,7 @@ public class InputManager : MonoBehaviour {
         SelectorManager sm = FindObjectOfType<SelectorManager>();
         if (gm != null) {
             gm.console.ControllerPlugOut();
+            gm.Pause();
         } else if (sm != null) {
             sm.NotifyControllerPlugOut();
         }
