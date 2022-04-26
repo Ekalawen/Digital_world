@@ -119,7 +119,7 @@ public class MenuManager : MonoBehaviour {
         loadingMenu.gameObject.SetActive(true);
         loadingMenu.InitializeWithTutoriel(loading);
         gameObject.SetActive(false);
-
+        uiSwapperButton.SetActive(false);
     }
 
     public void OnOptionPress() {
