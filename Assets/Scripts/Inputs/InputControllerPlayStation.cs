@@ -70,6 +70,10 @@ public class InputControllerPlayStation : InputController {
         return Input.GetKeyDown(KeyCode.JoystickButton7);
     }
 
+    public override bool GetRestartGame() {
+        return Input.GetKeyDown(KeyCode.JoystickButton6);
+    }
+
     public override bool GetPauseReturnToMenu() {
         return false;
     }
@@ -96,10 +100,6 @@ public class InputControllerPlayStation : InputController {
 
     public override bool GetPouvoirRightClickDown() {
         return controllerLeftBumper.GetDown();
-    }
-
-    public override bool GetRestartGame() {
-        return Input.GetKeyDown(KeyCode.JoystickButton7);
     }
 
     public override bool GetShift() {

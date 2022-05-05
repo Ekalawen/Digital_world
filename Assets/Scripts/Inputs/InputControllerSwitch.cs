@@ -53,6 +53,11 @@ public class InputControllerSwitch : InputController {
     }
 
     public override bool GetPauseGame() {
+        return Input.GetKeyDown(KeyCode.JoystickButton9)
+            || Input.GetKeyDown(KeyCode.JoystickButton12);
+    }
+
+    public override bool GetRestartGame() {
         return Input.GetKeyDown(KeyCode.JoystickButton8)
             || Input.GetKeyDown(KeyCode.JoystickButton13);
     }
@@ -79,11 +84,6 @@ public class InputControllerSwitch : InputController {
 
     public override KeyCode GetPouvoirRightClickKeyCode() {
         return KeyCode.JoystickButton4;
-    }
-
-    public override bool GetRestartGame() {
-        return Input.GetKeyDown(KeyCode.JoystickButton9)
-            || Input.GetKeyDown(KeyCode.JoystickButton12);
     }
 
     public override bool GetShift() {
