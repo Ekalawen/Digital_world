@@ -73,8 +73,8 @@ public abstract class InputController : MonoBehaviour {
             || GetShiftDown()
             || Input.GetKeyDown(GetPouvoirAKeyCode())
             || Input.GetKeyDown(GetPouvoirEKeyCode())
-            || Input.GetKeyDown(GetPouvoirLeftClickKeyCode())
-            || Input.GetKeyDown(GetPouvoirRightClickKeyCode())
+            //|| Input.GetKeyDown(GetPouvoirLeftClickKeyCode()) // Because we don't want to switch to keyboard if we click on the screen !
+            //|| Input.GetKeyDown(GetPouvoirRightClickKeyCode())
             || GetHorizontalMouvement() != Vector3.zero
             || GetRestartGame()
             || GetPauseGame();
