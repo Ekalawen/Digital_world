@@ -75,6 +75,10 @@ public class InputControllerXbox : InputController {
     }
 
     public override bool GetPauseGame() {
+        return Input.GetKeyDown(KeyCode.JoystickButton7);
+    }
+
+    public override bool GetRestartGame() {
         return Input.GetKeyDown(KeyCode.JoystickButton6);
     }
 
@@ -106,10 +110,6 @@ public class InputControllerXbox : InputController {
         //return KeyCode.JoystickButton1;
         //return KeyCode.JoystickButton9;
         return KeyCode.JoystickButton4;
-    }
-
-    public override bool GetRestartGame() {
-        return Input.GetKeyDown(KeyCode.JoystickButton7);
     }
 
     public override bool GetShift() {
