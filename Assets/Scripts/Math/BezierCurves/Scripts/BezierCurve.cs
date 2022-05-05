@@ -121,6 +121,10 @@ public class BezierCurve : MonoBehaviour {
 	///		- Populated through editor
 	/// </summary>
 	[SerializeField] private BezierPoint[] points = new BezierPoint[0];
+
+	public BezierPoint[] GetPoints() {
+		return points;
+    }
 	
 	#endregion
 	
@@ -309,7 +313,8 @@ public class BezierCurve : MonoBehaviour {
 		
 		for(int i = 1; i < limit; i++){
 			currentPoint = GetPoint(p1, p2, i/_res);
-			Gizmos.DrawLine(lastPoint, currentPoint);
+			//Gizmos.DrawLine(lastPoint, currentPoint);
+            Debug.DrawLine(lastPoint, currentPoint, Color.white, 10000);
 			lastPoint = currentPoint;
 		}		
 	}	

@@ -5,13 +5,11 @@ using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
-// To mark the lumiere as moving :)
-public class LumiereIsMoving : MonoBehaviour { }
-
 public class CaptureLumieresZone : IZone {
 
     public List<Lumiere> lumieres;
     public float captureDuration = 5.0f;
+    public float curveRadius = 5.0f;
     public AnimationCurve captureCurve;
 
     protected override void OnEnter(Collider other) {
@@ -23,21 +21,25 @@ public class CaptureLumieresZone : IZone {
     }
 
     protected bool IsAlreadyMoving(Lumiere lumiere) {
-        return lumiere.GetComponent<LumiereIsMoving>() != null;
+        return lumiere.gameObject.GetComponent<LumiereIsMoving>() != null;
     }
 
     protected void MoveToCapture(Lumiere lumiere) {
         StartCoroutine(CMoveToCapture(lumiere));
     }
 
-    protected IEnumerator CMoveToCapture(Lumiere lumiere) {
+    protected IEnumerator CMoveToCapture(Lumiere lumiere)
+    {
         LumiereIsMoving isMoving = lumiere.gameObject.AddComponent<LumiereIsMoving>(); // So that we know this lumiere is moving ! :)
         Timer timer = new Timer(captureDuration);
         Vector3 initialPosition = lumiere.transform.position;
-        while(lumiere != null && !timer.IsOver()) {
-            Vector3 playerPos = gm.player.transform.position;
+
+        while (lumiere != null && !timer.IsOver()) {
             float avancement = captureCurve.Evaluate(timer.GetAvancement());
-            Vector3 newPos = Vector3.Lerp(initialPosition, playerPos, avancement);
+            Vector3 playerPos = gm.player.transform.position;
+            Vector3 playerPosTop = playerPos + Vector3.up * curveRadius;
+            Vector3 playerPosForward = playerPos + Vector3.up * curveRadius / 2 + Vector3.right * curveRadius;
+            Vector3 newPos = BezierCurve.GetCubicCurvePoint(initialPosition, playerPosTop, playerPosForward, playerPos, avancement);
             lumiere.transform.position = newPos;
             yield return null;
         }
