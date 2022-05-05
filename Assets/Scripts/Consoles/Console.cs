@@ -1463,4 +1463,14 @@ public class Console : MonoBehaviour {
             }
         }
     }
+
+    public void OpenControlsSettings() {
+        if(gm.IsPaused()) {
+            return;
+        }
+        gm.Pause();
+        PauseMenu pm = pauseMenu.GetComponentInChildren<PauseMenu>();
+        pm.Options();
+        pm.menuOptions.ChosePanelControles();
+    }
 }

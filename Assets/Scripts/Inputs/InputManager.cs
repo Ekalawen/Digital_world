@@ -249,10 +249,19 @@ public class InputManager : MonoBehaviour {
             if(inputController != currentInputController
             && inputController.IsKeyboard() != currentInputController.IsKeyboard()) { // Dont swap from a keyboard controller to another ! Or from a controller to another controller !
                 if(inputController.AnyImportantKeyUsed()) {
-                    SwapToOtherControllerInGame(inputController);
+                    if (inputController.IsKeyboard()) {
+                        SwapToOtherControllerInGame(inputController);
+                    } else {
+                        OpenControlsSettings();
+                    }
                 }
             }
         }
+    }
+
+    // Must be in game
+    protected void OpenControlsSettings() {
+        GameManager.Instance.console.OpenControlsSettings();
     }
 
     protected void SwapToOtherControllerInGame(InputController inputController) {
@@ -267,7 +276,8 @@ public class InputManager : MonoBehaviour {
         bool isAControllerPlugin = GetJoystickName() != "";
         if(isAControllerPlugin && !wasAControllerPlugin) {
             NotifyControllerPlugIn();
-            SetKeybindingType(KeybindingType.XBOX);
+            OpenControlsSettings();
+            //SetKeybindingType(KeybindingType.XBOX);
         } else if (!isAControllerPlugin && wasAControllerPlugin) {
             NotifyControllerPlugOut();
             SetKeybindingType(GetDefaultKeybindingType());
