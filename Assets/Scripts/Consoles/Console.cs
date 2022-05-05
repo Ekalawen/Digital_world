@@ -88,6 +88,7 @@ public class Console : MonoBehaviour {
     public FrameRateManager frameRateManager;
     public GameObject deathAstuce;
     public GameObject selectorManagerPrefab; // Used to know if it is a demo or not ! x)
+    public TexteExplicatif popup;
 
 
     [HideInInspector]
@@ -1465,12 +1466,25 @@ public class Console : MonoBehaviour {
     }
 
     public void OpenControlsSettings() {
-        if(gm.IsPaused()) {
+        if (gm.IsPaused()) {
             return;
         }
         gm.Pause();
         PauseMenu pm = pauseMenu.GetComponentInChildren<PauseMenu>();
         pm.Options();
         pm.menuOptions.ChosePanelControles();
+        OpenChoseAControllerPopup(pm);
+    }
+
+    protected void OpenChoseAControllerPopup(PauseMenu pm) {
+        string title = strings.choseAControllerPopupTitle.GetLocalizedString().Result;
+        string texte = strings.choseAControllerPopupTexte.GetLocalizedString().Result;
+        RunPopup(title, texte, TexteExplicatif.Theme.NEUTRAL);
+    }
+
+    public void RunPopup(string title, string text, TexteExplicatif.Theme theme, bool cleanReplacements = true) {
+        popup.gameObject.SetActive(true);
+        popup.Initialize(title: title, mainText: text, theme: theme, cleanReplacements: cleanReplacements);
+        popup.Run();
     }
 }
