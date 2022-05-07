@@ -38,6 +38,7 @@ public class MenuLevel : MonoBehaviour {
     public LocalizedTextAsset archivesTextAsset;
     public bool displayArchivesOnUnlock = false;
     public AudioClipParams archivesClip;
+    public TMP_SpriteAsset archivesSpriteAsset;
 
     [Header("Scores")]
     public GameObject scoresRegular;
@@ -172,7 +173,7 @@ public class MenuLevel : MonoBehaviour {
             selectorManager.popupArchives.AddReplacement(replacement.Item1, replacement.Item2);
         }
         selectorManager.popupArchives.titleTextTarget.text = selectorManager.strings.archivesTitle.GetLocalizedString().Result;
-        selectorManager.popupArchives.Run();
+        selectorManager.popupArchives.Run(imagesAtlas: archivesSpriteAsset);
         StartArchivesClip(selectorManager.popupArchives);
     }
 
