@@ -1,42 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &1727202030147169279
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3491683289375989780}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 151e2e28aa2652d45a2762e3d9a974c6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cubeType: 0
-  typeZoneToFill: 0
-  minDistanceRandomFilling: 1
-  getEmptyPositionsHelper: {fileID: 0}
-  proportionRandomFilling: 0.025
-  useSureMethodForSelection: 0
-  sizeCubeRandomFilling: 1
-  registerToColorSources: 0
-  setDissolveTime: 0
-  dissolveTime: 1
-  minNbBlocks: 0
---- !u!114 &8245049874474481709
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3491683289375989780}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 054d591319f6d6546ac95c4463c0ee70, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ofSpecificCubeType: 1
-  specificCubeType: 0
 --- !u!1 &1947331974194664019
 GameObject:
   m_ObjectHideFlags: 0
@@ -147,6 +110,8 @@ MonoBehaviour:
   optimalySpacedNbPositions: 0
   optimalySpacedNbTriesByPosition: 0
   optimalySpacedMode: 0
+  useCustomMapSize: 0
+  customMapSize: {x: 0, y: 0, z: 0}
   areaBoxCenter: {x: 0, y: 0, z: 0}
   areaBoxHalfExtents: {x: 0, y: 0, z: 0}
   areaSphereCenter: {x: 0, y: 0, z: 0}
@@ -286,6 +251,8 @@ MonoBehaviour:
   optimalySpacedNbPositions: 0
   optimalySpacedNbTriesByPosition: 0
   optimalySpacedMode: 0
+  useCustomMapSize: 0
+  customMapSize: {x: 0, y: 0, z: 0}
   areaBoxCenter: {x: 0, y: 0, z: 0}
   areaBoxHalfExtents: {x: 0, y: 0, z: 0}
   areaSphereCenter: {x: 0, y: 0, z: 0}
@@ -407,7 +374,7 @@ PrefabInstance:
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: mapFunctionComponents.Array.size
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
@@ -443,7 +410,7 @@ PrefabInstance:
         type: 3}
       propertyPath: mapFunctionComponents.Array.data[6]
       value: 
-      objectReference: {fileID: 2043507741530955010}
+      objectReference: {fileID: -2594574691434039936}
     - target: {fileID: 3009060673421440820, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: m_Name
@@ -543,3 +510,53 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0716ac14acd11b04098252bb48503da1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-2594574691434039936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3491683289375989780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02278030236b25e439109bd6e02a824d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  letterTexture: {fileID: 2800000, guid: e201b775a3f70bc47bd8416a56d8b9fc, type: 3}
+--- !u!114 &1727202030147169279
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3491683289375989780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 151e2e28aa2652d45a2762e3d9a974c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cubeType: 0
+  typeZoneToFill: 0
+  minDistanceRandomFilling: 1
+  getEmptyPositionsHelper: {fileID: 0}
+  proportionRandomFilling: 0.025
+  useSureMethodForSelection: 0
+  sizeCubeRandomFilling: 1
+  registerToColorSources: 0
+  setDissolveTime: 0
+  dissolveTime: 1
+  minNbBlocks: 0
+--- !u!114 &8245049874474481709
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3491683289375989780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 054d591319f6d6546ac95c4463c0ee70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ofSpecificCubeType: 1
+  specificCubeType: 0

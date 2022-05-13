@@ -51,32 +51,6 @@ MonoBehaviour:
   stayInMap: 0
   chosingVoisinsMethodType: 1
   coefChosingMethod: 5
---- !u!114 &3025770646919561989
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3491683289375989780}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a380f193c501dd744b0bc579caf5843f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  offsetFromSides: 0
-  shouldBeOverAnotherCube: 1
---- !u!114 &6533042795328261037
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3491683289375989780}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce701536c965fb847a885590e740ebf0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2753005044046101328
 GameObject:
   m_ObjectHideFlags: 0
@@ -599,7 +573,7 @@ PrefabInstance:
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: mapFunctionComponents.Array.size
-      value: 12
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 2884966832998036781, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
@@ -665,7 +639,7 @@ PrefabInstance:
         type: 3}
       propertyPath: mapFunctionComponents.Array.data[12]
       value: 
-      objectReference: {fileID: 6533042795328261037}
+      objectReference: {fileID: 4344081585874818808}
     - target: {fileID: 3009060673421440820, guid: 800ea353fd52f8f458146bc8a84ea83e,
         type: 3}
       propertyPath: m_Name
@@ -765,3 +739,44 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1852852803430356768}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &3025770646919561989
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3491683289375989780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a380f193c501dd744b0bc579caf5843f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  offsetFromSides: 0
+  shouldBeOverAnotherCube: 1
+  aboveSpecificCubeType: 0
+  specificCubeType: 0
+--- !u!114 &4344081585874818808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3491683289375989780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02278030236b25e439109bd6e02a824d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  letterTexture: {fileID: 2800000, guid: e201b775a3f70bc47bd8416a56d8b9fc, type: 3}
+--- !u!114 &6533042795328261037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3491683289375989780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce701536c965fb847a885590e740ebf0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
