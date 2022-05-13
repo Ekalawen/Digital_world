@@ -83,6 +83,7 @@ public class InfiniteMap : MapManager {
     public UnityEvent<int> onBlocksCrossed;
     protected bool hasReachInfiniteMode = false;
     protected BlockForcerInIR blockForcer;
+    protected AddHiddenTextureOnCubeInIR textureAdder;
 
     protected override void InitializeSpecific()
     {
@@ -99,12 +100,20 @@ public class InfiniteMap : MapManager {
         blockWeights = blockLists.Aggregate(new List<BlockWeight>(),
             (list, blockList) => list.Concat(blockList.blocks).ToList());
         blockForcer = GetComponent<BlockForcerInIR>();
+        InitTextureAdder();
 
         ResetAllBlocksTime();
         CreateFirstBlocks();
         cameraShakeInstance = CameraShaker.Instance.StartShake(0, 0, 0);
 
         //StartCoroutine(AddFirstBlocksToHistory());
+    }
+
+    protected void InitTextureAdder() {
+        textureAdder = GetComponent<AddHiddenTextureOnCubeInIR>();
+        if(textureAdder != null) {
+            textureAdder.Initialize();
+        }
     }
 
     protected IEnumerator AddFirstBlocksToHistory() {
@@ -160,7 +169,14 @@ public class InfiniteMap : MapManager {
         blocks.Add(newBlock);
         allBlocks.Add(newBlock);
 
+        ApplyTextureAdderOnNewBlock(newBlock);
         AddBestScoreMarker(newBlock);
+    }
+
+    protected void ApplyTextureAdderOnNewBlock(Block newBlock) {
+        if(textureAdder != null) {
+            textureAdder.ApplyOn(newBlock, nbBlocksCreated - nbFirstBlocks);
+        }
     }
 
     protected void AddBestScoreMarker(Block block) {

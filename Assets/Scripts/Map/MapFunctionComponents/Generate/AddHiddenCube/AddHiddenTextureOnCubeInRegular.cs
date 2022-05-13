@@ -21,6 +21,5 @@ public class AddHiddenTextureOnCubeInRegular : MapFunctionComponent {
 
         Cube chosenCube = MathTools.ChoseOne(cubes);
         chosenCube.SetTexture(letterTexture);
-        //chosenCube.SetColor(gm.colorManager.GetNotBlackColorForPosition(chosenCube.transform.position));
     }
 }
