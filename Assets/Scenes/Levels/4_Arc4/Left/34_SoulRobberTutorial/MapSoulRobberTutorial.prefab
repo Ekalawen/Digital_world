@@ -30,19 +30,6 @@ Transform:
   m_Father: {fileID: 6410810415113497365}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -45, z: 0}
---- !u!114 &3027829192687387095
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6404323573375056085}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aaace10325988774a8a7f3743d10b6b1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  start: {fileID: 2623073294767853901}
 --- !u!1001 &6406004073022886087
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -177,8 +164,13 @@ PrefabInstance:
     - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
         type: 3}
       propertyPath: mapFunctionComponents.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
+        type: 3}
+      propertyPath: mapFunctionComponents.Array.data[0]
+      value: 
+      objectReference: {fileID: 4014444814565924077}
     - target: {fileID: 129806322342455819, guid: 129f4eb78691940da993d749688543fd,
         type: 3}
       propertyPath: mapFunctionComponents.Array.data[4]
@@ -222,3 +214,29 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 6406004073022886087}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &3027829192687387095
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6404323573375056085}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aaace10325988774a8a7f3743d10b6b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  start: {fileID: 2623073294767853901}
+--- !u!114 &4014444814565924077
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6404323573375056085}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02278030236b25e439109bd6e02a824d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  letterTexture: {fileID: 2800000, guid: 2c471c646a68408489c08785e9f5c8e1, type: 3}
