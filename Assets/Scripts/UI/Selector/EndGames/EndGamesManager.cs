@@ -49,7 +49,7 @@ public class EndGamesManager : MonoBehaviour {
         yield return handleText;
         string textString = handleText.Result.text;
 
-        sm.popup.Initialize(title: titleString, mainText: textString, theme: popup.theme);
+        sm.popup.Initialize(title: titleString, mainText: textString, theme: popup.theme, canBeDisabledWithShortcut: false);
         sm.popup.Run(replacements: sm.archivesReplacementStrings);
         sm.popup.RemoveDoneButton();
         sm.popup.RemoveAddedButtons();

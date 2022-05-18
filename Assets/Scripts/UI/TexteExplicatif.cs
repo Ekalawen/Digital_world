@@ -21,6 +21,7 @@ public class TexteExplicatif : MonoBehaviour {
 
     public float nbCharactersPrintedBySeconds = 150;
     public bool dontDisableOnSpace = false;
+    public bool canBeDisabledWithShortcut = true;
     public bool isInGame = false;
 
     [Header("Links")]
@@ -73,7 +74,8 @@ public class TexteExplicatif : MonoBehaviour {
         bool useTextAsset = false,
         TextAsset textAsset = null,
         Theme theme = Theme.POSITIF,
-        bool cleanReplacements = true) {
+        bool cleanReplacements = true,
+        bool canBeDisabledWithShortcut = true) {
         if (cleanReplacements) {
             CleanReplacements();
         }
@@ -82,6 +84,7 @@ public class TexteExplicatif : MonoBehaviour {
         this.useTextAsset = useTextAsset;
         this.textAsset = textAsset;
         this.currentTheme = theme;
+        this.canBeDisabledWithShortcut = canBeDisabledWithShortcut;
         SetColorTheme(theme);
         animationFluctuator = new Fluctuator(this, GetPopupScale, SetPopupScale, useUnscaleTime: isInGame);
     }
@@ -256,7 +259,8 @@ public class TexteExplicatif : MonoBehaviour {
         && (Input.GetKeyDown(KeyCode.Escape)
         || Input.GetKeyDown(KeyCode.KeypadEnter) 
         || Input.GetKeyDown(KeyCode.Return) 
-        || (!dontDisableOnSpace && Input.GetKeyDown(KeyCode.Space)))) {
+        || (!dontDisableOnSpace && Input.GetKeyDown(KeyCode.Space)))
+        && canBeDisabledWithShortcut) {
             Disable();
         }
         firstFrame = false;
