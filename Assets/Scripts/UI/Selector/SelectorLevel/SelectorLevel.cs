@@ -89,9 +89,11 @@ public class SelectorLevel : MonoBehaviour {
     private bool DisplayNewPallierMessage() {
         bool hasDisplay = false;
         if(selectorManager.GetOutPaths(this).Count == 0) {
-            if(DisplayEndBetaMessage()) {
-                return true;
-            }
+            //if(DisplayEndBetaMessage()) {
+            //    return true;
+            //}
+            selectorManager.endGamesManager.StartEndGame();
+            return true;
         }
         if (menuLevel.GetLevelType() == MenuLevel.LevelType.REGULAR) {
             hasDisplay = DisplayNewPallierMessageRegular();
