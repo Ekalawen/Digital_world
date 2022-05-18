@@ -88,12 +88,14 @@ public class SelectorLevel : MonoBehaviour {
 
     private bool DisplayNewPallierMessage() {
         bool hasDisplay = false;
-        if(selectorManager.GetOutPaths(this).Count == 0) {
+        if(selectorManager.GetOutPaths(this).Count == 0)
+        {
             //if(DisplayEndBetaMessage()) {
             //    return true;
             //}
-            selectorManager.endGamesManager.StartEndGame();
-            return true;
+            if (DisplayEndGamePopups()) {
+                return true;
+            }
         }
         if (menuLevel.GetLevelType() == MenuLevel.LevelType.REGULAR) {
             hasDisplay = DisplayNewPallierMessageRegular();
@@ -101,6 +103,19 @@ public class SelectorLevel : MonoBehaviour {
             hasDisplay = DisplayNewPallierMessageInfinite();
         }
         return hasDisplay;
+    }
+
+    protected bool DisplayEndGamePopups() {
+        if (menuLevel.GetLevelType() == MenuLevel.LevelType.REGULAR && menuLevel.HasJustWin()) {
+            selectorManager.endGamesManager.StartEndGame();
+            menuLevel.SetNotJustWin();
+            return true;
+        } else if (menuLevel.GetLevelType() == MenuLevel.LevelType.INFINITE && menuLevel.HasJustMakeNewBestScore()) {
+            selectorManager.endGamesManager.StartEndGame();
+            menuLevel.SetNotJustMakeNewBestScore();
+            return true;
+        }
+        return false;
     }
 
     protected bool DisplayEndBetaMessage() {
