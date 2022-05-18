@@ -26,5 +26,5 @@ public class EndGamesPopup {
     public LocalizedString noTooltip;
 
     public bool shouldAutomaticallyTransition = false;
-    public float automaticTransitionDelay = 15.0f;
+    public float automaticTransitionDelay = 0.0f;
 }
