@@ -18,6 +18,7 @@ public class EndGamesManager : MonoBehaviour {
     public EndGamesPopup firstPopup;
     public List<EndGamesPopup> separerPopups;
     public List<EndGamesPopup> conserverPopups;
+    public Vector4 buttonsMargins = new Vector4(5, 5, 10, 5);
 
     protected SelectorManager sm;
     protected State state = State.FIRST_POPUP;
@@ -38,6 +39,8 @@ public class EndGamesManager : MonoBehaviour {
     }
 
     protected IEnumerator CStartPopup(EndGamesPopup popup) {
+        sm.popup.StopAllCoroutines();
+
         AsyncOperationHandle<string> handleTitle = popup.title.GetLocalizedString();
         yield return handleTitle;
         string titleString = handleTitle.Result;
@@ -47,17 +50,41 @@ public class EndGamesManager : MonoBehaviour {
         string textString = handleText.Result.text;
 
         sm.popup.Initialize(title: titleString, mainText: textString, theme: popup.theme);
-        sm.popup.Run();
+        sm.popup.Run(replacements: sm.archivesReplacementStrings);
         sm.popup.RemoveDoneButton();
+        sm.popup.RemoveAddedButtons();
         if (popup.hasNo) {
-            UnityAction action = state == State.FIRST_POPUP ? new UnityAction(RunFirstConserverPopup) : new UnityAction(RunNextPopup);
-            sm.popup.AddButton(popup.no, popup.noTooltip, TexteExplicatif.Theme.NEGATIF, action: action);
+            UnityAction action = state == State.FIRST_POPUP ? new UnityAction(RunFirstConserverPopup) : new UnityAction(RestartEndGame);
+            Button button = sm.popup.AddButton(popup.no, popup.noTooltip, TexteExplicatif.Theme.NEGATIF, action: action);
+            button.gameObject.GetComponentInChildren<TMPro.TMP_Text>().margin = buttonsMargins;
         }
         if (popup.hasYes) {
             UnityAction action = state == State.FIRST_POPUP ? new UnityAction(RunFirstSeparerPopup) : new UnityAction(RunNextPopup);
-            sm.popup.AddButton(popup.yes, popup.yesTooltip, TexteExplicatif.Theme.POSITIF, action: action);
+            Button button = sm.popup.AddButton(popup.yes, popup.yesTooltip, TexteExplicatif.Theme.POSITIF, action: action);
+            button.gameObject.GetComponentInChildren<TMPro.TMP_Text>().margin = buttonsMargins;
         }
-        sm.popup.EnableButtonsBlackBackground();
+
+        if(popup.shouldAutomaticallyTransition) {
+            RunNextPopupIn(popup.automaticTransitionDelay);
+        }
+    }
+
+    protected void RunNextPopupIn(float delay) {
+        StartCoroutine(CRunNextPopupIn(delay));
+    }
+
+    protected IEnumerator CRunNextPopupIn(float delay) {
+        yield return new WaitForSeconds(delay);
+        RunNextPopup();
+    }
+
+    protected void RestartEndGame() {
+        StartCoroutine(CRestartEndGame());
+    }
+
+    protected IEnumerator CRestartEndGame() {
+        yield return new WaitForSeconds(sm.popup.dureeCloseAnimation);
+        StartEndGame();
     }
 
     protected void RunFirstSeparerPopup() {
@@ -75,9 +102,14 @@ public class EndGamesManager : MonoBehaviour {
     }
 
     protected IEnumerator CRunNextPopup() {
+        sm.popup.Disable();
         yield return new WaitForSeconds(sm.popup.dureeCloseAnimation);
-        EndGamesPopup nextPopup = state == State.SEPARER ? separerPopups[popupIndice] : conserverPopups[popupIndice];
-        popupIndice += 1;
-        StartPopup(nextPopup);
+        if (popupIndice < separerPopups.Count) { // On assume que separerPopups.Count == conserverPopups.Count
+            EndGamesPopup nextPopup = state == State.SEPARER ? separerPopups[popupIndice] : conserverPopups[popupIndice];
+            popupIndice += 1;
+            StartPopup(nextPopup);
+        } else {
+            Debug.Log($"Lancer le générique ! :)");
+        }
     }
 }

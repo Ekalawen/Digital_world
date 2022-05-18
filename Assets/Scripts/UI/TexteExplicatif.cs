@@ -148,7 +148,7 @@ public class TexteExplicatif : MonoBehaviour {
         StartAnimation();
     }
 
-    public void AddButton(LocalizedString text, LocalizedString tooltipText, Theme theme, UnityAction action, int siblingIndex = 0) {
+    public Button AddButton(LocalizedString text, LocalizedString tooltipText, Theme theme, UnityAction action, int siblingIndex = 0) {
         Button addedButton = Instantiate(doneButton, parent: doneButton.transform.parent).GetComponent<Button>();
         addedButton.transform.SetSiblingIndex(siblingIndex);
         addedButton.gameObject.SetActive(true);
@@ -160,6 +160,7 @@ public class TexteExplicatif : MonoBehaviour {
             addedButton.onClick.AddListener(action);
         }
         addedButtons.Add(addedButton);
+        return addedButton;
     }
 
     public void EnableButtonsBlackBackground() {
@@ -267,7 +268,7 @@ public class TexteExplicatif : MonoBehaviour {
         StartCoroutine(CDisableIn());
     }
 
-    protected void RemoveAddedButtons() {
+    public void RemoveAddedButtons() {
         foreach(Button button in addedButtons) {
             Destroy(button.gameObject);
         }
