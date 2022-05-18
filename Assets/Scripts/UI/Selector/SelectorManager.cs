@@ -39,6 +39,7 @@ public class SelectorManager : MonoBehaviour {
     public VerticalMenuHandler verticalMenuHandler;
     public SelectorTarget selectorTarget;
     public GameObject achievementManagerPrefab;
+    public EndGamesManager endGamesManager;
 
     [Header("Parameters")]
     public bool isDemo = false;
@@ -84,6 +85,7 @@ public class SelectorManager : MonoBehaviour {
         InputManager.Instance.SetNotInGame();
         verticalMenuHandler.Initialize();
         selectorTarget.Initialize();
+        endGamesManager.Initialize();
         GatherLevels();
         GatherPaths();
         ApplyCompressionFactor();
