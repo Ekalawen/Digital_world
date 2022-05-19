@@ -40,8 +40,6 @@ public class CreditsManager : MonoBehaviour {
         InitMainTextHeight();
         // Particles :3
         // Lier aux EndGamePopups ! :)
-        // Traduction
-        // Relecture Maman
     }
 
     protected IEnumerator InitMainTextContent() {
