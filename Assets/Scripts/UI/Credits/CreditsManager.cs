@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.VFX;
 
 public class CreditsManager : MonoBehaviour {
 
@@ -15,6 +16,7 @@ public class CreditsManager : MonoBehaviour {
     public float delayBeforeFirstText = 2.0f;
     public float returnButtonBlinkDuration = 2.0f;
     public float musicFadeInDuration = 3.0f;
+    public float particlesDelay = 5.0f;
 
     [Header("Links")]
     public CreditsCamera creditsCamera;
@@ -23,6 +25,7 @@ public class CreditsManager : MonoBehaviour {
     public RectTransform textHolderParent;
     public TMP_Text mainText;
     public LocalizedTextAsset textAsset;
+    public VisualEffect vfx;
 
     protected Fluctuator returnButtonAlphaFluctuator;
     protected Fluctuator musicVolumeFluctuator;
@@ -31,6 +34,7 @@ public class CreditsManager : MonoBehaviour {
 
 
     public IEnumerator Start() {
+        InitVfx();
         StartMusic();
         creditsCamera.Initialize();
         returnButtonCanvasGroup = returnButton.GetComponent<CanvasGroup>();
@@ -40,7 +44,16 @@ public class CreditsManager : MonoBehaviour {
         returnButtonCanvasGroup.alpha = 0;
         yield return InitMainTextContent();
         InitMainTextHeight();
-        // Particles :3
+    }
+
+    protected void InitVfx() {
+        StartCoroutine(CInitVfx());
+    }
+
+    protected IEnumerator CInitVfx() {
+        vfx.Stop();
+        yield return new WaitForSeconds(particlesDelay);
+        vfx.Play();
     }
 
     protected void StartMusic() {
