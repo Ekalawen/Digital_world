@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EZCameraShake;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,9 @@ public class EndGamesManager : MonoBehaviour {
     public float fadeOutDelay = 8.0f;
     public float fadeOutDuration = 8.0f;
     public float afterFadeOutDelay = 1.0f;
+    public float cameraShakeMagnitude = 10.0f;
+    public float cameraShakeRoughness = 10.0f;
+    public float cameraShakeFadeIn = 16.0f;
 
     protected SelectorManager sm;
     protected State state = State.FIRST_POPUP;
@@ -32,8 +36,7 @@ public class EndGamesManager : MonoBehaviour {
     protected Fluctuator fadeOutFluctuator;
     protected Fluctuator musicVolumeFluctuator;
 
-    public void Initialize()
-    {
+    public void Initialize() {
         sm = SelectorManager.Instance;
         InitFluctuators();
     }
@@ -127,10 +130,17 @@ public class EndGamesManager : MonoBehaviour {
             EndGamesPopup nextPopup = state == State.SEPARER ? separerPopups[popupIndice] : conserverPopups[popupIndice];
             popupIndice += 1;
             StartPopup(nextPopup);
+            if(state == State.SEPARER && popupIndice == separerPopups.Count - 1) {
+                StartShaking();
+            }
             if (state == State.SEPARER && popupIndice == separerPopups.Count) {
                 StartCredits();
             }
         }
+    }
+
+    protected void StartShaking() {
+        CameraShaker.Instance.StartShake(cameraShakeMagnitude, cameraShakeRoughness, cameraShakeFadeIn);
     }
 
     protected void StartCredits() {

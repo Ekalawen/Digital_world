@@ -41,7 +41,6 @@ public class CreditsManager : MonoBehaviour {
         yield return InitMainTextContent();
         InitMainTextHeight();
         // Particles :3
-        // Lier aux EndGamePopups ! :)
     }
 
     protected void StartMusic() {
