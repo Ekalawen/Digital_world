@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <LangVersion>latest</LangVersion>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -52,6 +52,9 @@
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
     <UnityVersion>2021.1.28f1</UnityVersion>
   </PropertyGroup>
+  <ItemGroup>
+    <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio Tools for Unity\16.0\Analyzers\Microsoft.Unity.Analyzers.dll" />
+  </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Math\Graphe.cs" />
     <Compile Include="Assets\Scripts\Map\MapFunctionComponents\Generate\GenerateHorizontalPonts.cs" />
@@ -107,6 +110,7 @@
     <Compile Include="Assets\Scripts\Map\MapFunctionComponents\PlayerStart\PlayerStartComponent.cs" />
     <Compile Include="Assets\Scripts\Steam\Achievements\Generic\Achievement_FinishLevelIR.cs" />
     <Compile Include="Assets\Imported\Moments\Moments Recorder\Scripts\Gif\GifFrame.cs" />
+    <Compile Include="Assets\Scripts\UI\Credits\CreditsCamera.cs" />
     <Compile Include="Assets\Scripts\UI\Selector\SelectorIcones\AutoExplodeIcone.cs" />
     <Compile Include="Assets\Scripts\Map\MapFunctionComponents\Lumieres\AddLumieresOptimalySpaced.cs" />
     <Compile Include="Assets\Scripts\Characters\Controllers\GoToDirectionController.cs" />
@@ -614,6 +618,7 @@
     <Compile Include="Assets\Scripts\Map\MapFunctionComponents\Generate\PlaceBouncyCubesOnVerticalSpaces.cs" />
     <Compile Include="Assets\Scripts\Map\MapElements\Generators\LinkyGenerator.cs" />
     <Compile Include="Assets\Imported\LeanTween\Examples\Scripts\PathSplinePerformance.cs" />
+    <Compile Include="Assets\Scripts\UI\Credits\CreditsManager.cs" />
     <Compile Include="Assets\Scripts\Characters\Character.cs" />
     <Compile Include="Assets\Scripts\Map\MapElements\MapElementsComponents\CaptureColorSources.cs" />
     <Compile Include="Assets\Scripts\UI\Selector\SelectorIcones\SwappyCubesHolderManagerIcone.cs" />
@@ -649,8 +654,6 @@
     <Compile Include="Assets\Scripts\UI\Menu\Utilitaires\VersionNumber.cs" />
     <Compile Include="Assets\Textures\UI\Pointeurs\CursorsAndCrosshairs\CursorChanger.cs" />
     <Compile Include="Assets\Scripts\Map\MapFunctionComponents\Get\GetCubesHelper.cs" />
-    <Compile Include="Assets\Scripts\UI\Credits\CreditsManager.cs" />
-    <Compile Include="Assets\Scripts\UI\Credits\CreditsCamera.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Texts\DataHackees\2_Arc2\15-16_ToLearnIntersection\DHtoLearnIntersectionFromConstantDestructionFR.txt" />

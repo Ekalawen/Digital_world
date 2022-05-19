@@ -14,6 +14,7 @@ public class CreditsManager : MonoBehaviour {
     public float pressKeyScrollSpeed = 2.5f;
     public float delayBeforeFirstText = 2.0f;
     public float returnButtonBlinkDuration = 2.0f;
+    public float musicFadeInDuration = 3.0f;
 
     [Header("Links")]
     public CreditsCamera creditsCamera;
@@ -24,12 +25,13 @@ public class CreditsManager : MonoBehaviour {
     public LocalizedTextAsset textAsset;
 
     protected Fluctuator returnButtonAlphaFluctuator;
+    protected Fluctuator musicVolumeFluctuator;
     protected CanvasGroup returnButtonCanvasGroup;
     protected bool pointerIsOnReturnButton = false;
 
 
     public IEnumerator Start() {
-        UISoundManager.Instance.PlayCreditsMusic();
+        StartMusic();
         creditsCamera.Initialize();
         returnButtonCanvasGroup = returnButton.GetComponent<CanvasGroup>();
         returnButtonAlphaFluctuator = new Fluctuator(this,
@@ -40,6 +42,13 @@ public class CreditsManager : MonoBehaviour {
         InitMainTextHeight();
         // Particles :3
         // Lier aux EndGamePopups ! :)
+    }
+
+    protected void StartMusic() {
+        UISoundManager soundManager = UISoundManager.Instance;
+        soundManager.PlayCreditsMusic();
+        musicVolumeFluctuator = new Fluctuator(this, soundManager.GetMusicVolume, soundManager.SetMusicVolume);
+        musicVolumeFluctuator.GoTo(PrefsManager.GetFloat(PrefsManager.MUSIC_VOLUME_KEY, MenuOptions.defaultMusicVolume), musicFadeInDuration);
     }
 
     protected IEnumerator InitMainTextContent() {

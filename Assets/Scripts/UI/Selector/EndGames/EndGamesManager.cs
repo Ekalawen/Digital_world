@@ -15,17 +15,36 @@ public class EndGamesManager : MonoBehaviour {
 
     public enum State { FIRST_POPUP, SEPARER, CONSERVER };
 
+    [Header("Popups")]
     public EndGamesPopup firstPopup;
     public List<EndGamesPopup> separerPopups;
     public List<EndGamesPopup> conserverPopups;
+
+    [Header("Parameters")]
     public Vector4 buttonsMargins = new Vector4(5, 5, 10, 5);
+    public float fadeOutDelay = 8.0f;
+    public float fadeOutDuration = 8.0f;
+    public float afterFadeOutDelay = 1.0f;
 
     protected SelectorManager sm;
     protected State state = State.FIRST_POPUP;
     protected int popupIndice = 0;
+    protected Fluctuator fadeOutFluctuator;
+    protected Fluctuator musicVolumeFluctuator;
 
-    public void Initialize() {
+    public void Initialize()
+    {
         sm = SelectorManager.Instance;
+        InitFluctuators();
+    }
+
+    protected void InitFluctuators() {
+        UnityEngine.Rendering.Volume luminosityVolume = sm.GetCameraController().luminosityVolume;
+        fadeOutFluctuator = new Fluctuator(this,
+            () => PostProcessManager.GetLuminosityIntensity(luminosityVolume),
+            (value) => PostProcessManager.SetLuminosityIntensity(luminosityVolume, value));
+        UISoundManager soundManager = UISoundManager.Instance;
+        musicVolumeFluctuator = new Fluctuator(this, soundManager.GetMusicVolume, soundManager.SetMusicVolume);
     }
 
     public void StartEndGame() {
@@ -108,8 +127,25 @@ public class EndGamesManager : MonoBehaviour {
             EndGamesPopup nextPopup = state == State.SEPARER ? separerPopups[popupIndice] : conserverPopups[popupIndice];
             popupIndice += 1;
             StartPopup(nextPopup);
-        } else {
-            Debug.Log($"Lancer le générique ! :)");
+            if (state == State.SEPARER && popupIndice == separerPopups.Count) {
+                StartCredits();
+            }
         }
+    }
+
+    protected void StartCredits() {
+        StartCoroutine(CStartCredits());
+    }
+
+    protected IEnumerator CStartCredits() {
+        Debug.Log($"StartCredits ! :)");
+        yield return new WaitForSeconds(fadeOutDelay);
+
+        fadeOutFluctuator.GoTo(-1, fadeOutDuration);
+        musicVolumeFluctuator.GoTo(0, fadeOutDuration);
+
+        yield return new WaitForSeconds(fadeOutDuration + afterFadeOutDelay);
+
+        SceneManager.LoadScene($"CreditsScene");
     }
 }

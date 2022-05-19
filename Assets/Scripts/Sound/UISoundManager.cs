@@ -230,6 +230,15 @@ public class UISoundManager : MonoBehaviour {
         }
     }
 
+    public float GetMusicVolume() {
+        return musicVolume;
+    }
+
+    public void SetMusicVolume(float value) {
+        musicVolume = value;
+        UpdateMusicVolume();
+    }
+
     public void PlayArchivesClip(AudioClipParams clip, bool usingInitializationArchives) {
         this.usingInitializationArchives = usingInitializationArchives;
         StopArchivesClip();

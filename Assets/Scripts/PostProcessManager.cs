@@ -567,4 +567,10 @@ public class PostProcessManager : MonoBehaviour {
         luminosityVolume.profile.TryGet(out liftGammaGain);
         liftGammaGain.gain.Override(new Vector4(0, 0, 0, value));
     }
+
+    public static float GetLuminosityIntensity(Volume luminosityVolume) {
+        LiftGammaGain liftGammaGain;
+        luminosityVolume.profile.TryGet(out liftGammaGain);
+        return liftGammaGain.gain.GetValue<Vector4>().z;
+    }
 }
