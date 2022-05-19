@@ -192,7 +192,7 @@ public class UISoundManager : MonoBehaviour {
             usedSources.Remove(musicAudioSource);
         } else if (!musicAudioSource.isPlaying) {
             musicAudioSource.Play();
-        } else if (musicAudioSource.isPlaying) {
+        } else if (musicAudioSource.isPlaying && musicAudioSource.clip != sounds.menuMusicClips.clips[0]) {
             musicAudioSource.Stop();
             //usedSources.Remove(musicAudioSource);
             //availableSources.Remove(musicAudioSource); // Just au cas où x)
