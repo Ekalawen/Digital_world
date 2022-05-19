@@ -11,6 +11,8 @@ public class SoundBankUI : ScriptableObject {
 
     public AudioClipParams menuMusicClips;
 
+    public AudioClipParams creditsMusicClips;
+
     public AudioClipParams newBestScoreClips;
     public AudioClipParams newBestScoreClickedClips;
     public AudioClipParams blockPassedClips;

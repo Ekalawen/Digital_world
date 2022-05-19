@@ -1099,7 +1099,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -10000}
   m_SizeDelta: {x: 800, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &706740320
@@ -2118,6 +2118,11 @@ PrefabInstance:
         type: 3}
       propertyPath: mainText
       value: 
+      objectReference: {fileID: 8439970951810278620}
+    - target: {fileID: 2480562973550210754, guid: 9db0c0f7812a0204894fddc7a3ba00c5,
+        type: 3}
+      propertyPath: textHolder
+      value: 
       objectReference: {fileID: 706740319}
     - target: {fileID: 2480562973550210754, guid: 9db0c0f7812a0204894fddc7a3ba00c5,
         type: 3}
@@ -2144,6 +2149,21 @@ PrefabInstance:
       propertyPath: mainTextParent
       value: 
       objectReference: {fileID: 8310236809056253578}
+    - target: {fileID: 2480562973550210754, guid: 9db0c0f7812a0204894fddc7a3ba00c5,
+        type: 3}
+      propertyPath: textHolderParent
+      value: 
+      objectReference: {fileID: 8310236809056253578}
+    - target: {fileID: 2480562973550210754, guid: 9db0c0f7812a0204894fddc7a3ba00c5,
+        type: 3}
+      propertyPath: textAsset.m_TableEntryReference.m_KeyId
+      value: 331383976468480
+      objectReference: {fileID: 0}
+    - target: {fileID: 2480562973550210754, guid: 9db0c0f7812a0204894fddc7a3ba00c5,
+        type: 3}
+      propertyPath: textAsset.m_TableReference.m_TableCollectionName
+      value: GUID:a290c192294a5fe43be8c4b8cc169a75
+      objectReference: {fileID: 0}
     - target: {fileID: 2480562973550210755, guid: 9db0c0f7812a0204894fddc7a3ba00c5,
         type: 3}
       propertyPath: m_RootOrder

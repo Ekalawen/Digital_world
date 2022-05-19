@@ -322,6 +322,10 @@ public class InputManager : MonoBehaviour {
         return Input.anyKeyDown;
     }
 
+    public bool GetAnyKeyOrButton() {
+        return Input.anyKey;
+    }
+
     public void SetInGame() {
         isInGame = true;
     }

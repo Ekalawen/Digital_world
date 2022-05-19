@@ -20,6 +20,7 @@ public class UISoundManager : MonoBehaviour {
     protected float musicWhenArchivesMultiplicativVolume = 0.1f;
     protected float musicWhenArchivesVolumeTransitionDuration = 1.0f;
     protected AudioSource musicAudioSource;
+
     protected AudioSource archivesAudioSource;
     protected Coroutine stopArchivesCoroutine = null;
     protected Fluctuator musicVolumeFluctuator;
@@ -191,8 +192,29 @@ public class UISoundManager : MonoBehaviour {
             usedSources.Remove(musicAudioSource);
         } else if (!musicAudioSource.isPlaying) {
             musicAudioSource.Play();
-        } else {
+        } else if (musicAudioSource.isPlaying) {
+            musicAudioSource.Stop();
+            //usedSources.Remove(musicAudioSource);
+            //availableSources.Remove(musicAudioSource); // Just au cas où x)
+            musicAudioSource = PlayClipsOnSource(sounds.menuMusicClips);
+            availableSources.Remove(musicAudioSource);
+            usedSources.Remove(musicAudioSource);
         }
+    }
+
+    public void PlayCreditsMusic() {
+        StartCoroutine(CPlayCreditsMusic());
+    }
+    protected IEnumerator CPlayCreditsMusic() {
+        yield return new WaitUntil(() => sounds != null);
+        if (musicAudioSource != null && musicAudioSource.isPlaying) {
+            musicAudioSource.Stop();
+            usedSources.Remove(musicAudioSource);
+            availableSources.Remove(musicAudioSource); // Just au cas où x)
+        }
+        musicAudioSource = PlayClipsOnSource(sounds.creditsMusicClips);
+        availableSources.Remove(musicAudioSource);
+        usedSources.Remove(musicAudioSource);
     }
 
     public void StopMusic() {
