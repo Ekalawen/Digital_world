@@ -16,7 +16,7 @@ public class CreditsManager : MonoBehaviour {
     [Header("Links")]
     public CreditsCamera creditsCamera;
     public Button returnButton;
-    public TMP_Text mainText;
+    public RectTransform mainText;
     public RectTransform mainTextParent;
 
     protected Fluctuator returnButtonAlphaFluctuator;
@@ -39,7 +39,8 @@ public class CreditsManager : MonoBehaviour {
     }
 
     private void InitMainTextHeight() {
-        float height = -mainText.preferredHeight - scrollSpeed * delayBeforeFirstText;
+        //Canvas.ForceUpdateCanvases(); // Because the ContentSizeFitter is not calculated yet!
+        float height = -mainTextParent.rect.height - scrollSpeed * delayBeforeFirstText;
         SetMainTextHeight(height);
     }
 
@@ -54,19 +55,20 @@ public class CreditsManager : MonoBehaviour {
 
     protected void ScrollMainText() {
         IncreaseMainTextHeight(scrollSpeed * Time.deltaTime);
-        if(mainText.rectTransform.anchoredPosition.y >= mainTextParent.rect.height) {
+        if(mainText.anchoredPosition.y >= mainText.rect.height) {
             InitMainTextHeight();
         }
     }
 
     protected void IncreaseMainTextHeight(float offset) {
-        SetMainTextHeight(mainText.rectTransform.anchoredPosition.y + offset);
+        SetMainTextHeight(mainText.anchoredPosition.y + offset);
     }
 
     protected void SetMainTextHeight(float value) {
-        Vector2 anchoredPos = mainText.rectTransform.anchoredPosition;
+        Vector2 anchoredPos = mainText.anchoredPosition;
         anchoredPos.y = value;
-        mainText.rectTransform.anchoredPosition = anchoredPos;
+        mainText.anchoredPosition = anchoredPos;
+        LayoutRebuilder.ForceRebuildLayoutImmediate(mainText);
     }
 
     public void TestBlink() {
