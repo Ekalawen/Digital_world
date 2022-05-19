@@ -38,8 +38,10 @@ public class CreditsManager : MonoBehaviour {
         returnButtonCanvasGroup.alpha = 0;
         yield return InitMainTextContent();
         InitMainTextHeight();
-        // Particles
-        // Musique ! :)
+        // Particles :3
+        // Lier aux EndGamePopups ! :)
+        // Traduction
+        // Relecture Maman
     }
 
     protected IEnumerator InitMainTextContent() {
