@@ -1009,7 +1009,6 @@ Transform:
   - {fileID: 7637382732677459112}
   - {fileID: 2594567466984549657}
   - {fileID: 8992954611751293175}
-  - {fileID: 7254218050146676395}
   m_Father: {fileID: 342375652405127186}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2659,36 +2658,6 @@ MonoBehaviour:
   tags: 00000000
   levelSceneName: LearnJumpScene
   treshold: 0
---- !u!1 &5182282250381831165
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7254218050146676395}
-  m_Layer: 0
-  m_Name: Arc5
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7254218050146676395
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5182282250381831165}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 2040880048045647875}
-  m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5230673088691271618
 GameObject:
   m_ObjectHideFlags: 0
@@ -2916,53 +2885,6 @@ MonoBehaviour:
   levelSceneName: LearnPathfindingScene
   pouvoirType: 1
   treshold: 0
---- !u!1 &5585593687888200834
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5388533240106792289}
-  - component: {fileID: 5297447886718227695}
-  m_Layer: 0
-  m_Name: FinishArc5
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5388533240106792289
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5585593687888200834}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 3333704922611136293}
-  m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5297447886718227695
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5585593687888200834}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 504dee954f076d24bba8203c835b9eeb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  id: FINISH_ARC_5
-  isInGame: 1
-  tags: 00000000
-  levelSceneName: 
 --- !u!1 &5603881576379843036
 GameObject:
   m_ObjectHideFlags: 0
@@ -3139,7 +3061,6 @@ Transform:
   - {fileID: 5660318078198603439}
   - {fileID: 8151551881376966440}
   - {fileID: 8243552637530282127}
-  - {fileID: 5388533240106792289}
   m_Father: {fileID: 2040880048045647875}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4111,7 +4032,7 @@ MonoBehaviour:
   id: FINISH_ARC_4
   isInGame: 1
   tags: 00000000
-  levelSceneName: 
+  levelSceneName: SecondBossScene
 --- !u!1 &7543868261066870983
 GameObject:
   m_ObjectHideFlags: 0
@@ -4724,7 +4645,7 @@ GameObject:
   - component: {fileID: 5969983616676600441}
   - component: {fileID: 1153471410770450342}
   m_Layer: 0
-  m_Name: UseSupercheatedpassword_50
+  m_Name: UseSupercheatedpassword_45
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4756,10 +4677,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23bdecc6508fb8942b2d28491b3782aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: USE_SUPERCHEATEDPASSSWORD_50
+  id: USE_SUPERCHEATEDPASSSWORD_45
   isInGame: 0
   tags: 03000000
-  treshold: 50
+  treshold: 45
 --- !u!1 &8569733291174673318
 GameObject:
   m_ObjectHideFlags: 0
