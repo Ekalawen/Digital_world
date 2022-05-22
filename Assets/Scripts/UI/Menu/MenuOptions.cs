@@ -299,6 +299,7 @@ public class MenuOptions : MonoBehaviour {
     }
 
     public void ReinitialiserSauvegardes() {
+        Debug.Log($"Réinitialisation des sauvegardes !!!");
         Dictionary<Achievement, bool> achievementsStates = GetAllAchievementsStates();
         Dictionary<string, int> keysToSave = GetKeysOfAchievementsToSave();
         PrefsManager.DeleteAll();

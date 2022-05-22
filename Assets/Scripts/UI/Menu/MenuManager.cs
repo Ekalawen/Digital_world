@@ -49,8 +49,16 @@ public class MenuManager : MonoBehaviour {
         menuBouncingBackground.Initialize();
         SetRandomBackgroundIfNeeded();
         StartMenuMusic();
+        CheckIfShouldResetSavesAfterCredits();
         SwapPlayAndTutorialMaterialsIfFirstRun();
         SetLuminosityVolume();
+    }
+
+    protected void CheckIfShouldResetSavesAfterCredits() {
+        if(PrefsManager.GetBool(PrefsManager.SHOULD_RESET_SAVE_ON_NEXT_MENU_SCENE_KEY, false)) {
+            PrefsManager.SetBool(PrefsManager.SHOULD_RESET_SAVE_ON_NEXT_MENU_SCENE_KEY, false);
+            menuOptions.ReinitialiserSauvegardes();
+        }
     }
 
     void Update() {

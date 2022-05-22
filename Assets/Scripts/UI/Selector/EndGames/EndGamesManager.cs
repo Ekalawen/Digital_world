@@ -156,6 +156,11 @@ public class EndGamesManager : MonoBehaviour {
 
         yield return new WaitForSeconds(fadeOutDuration + afterFadeOutDelay);
 
+        ResetSaves();
         SceneManager.LoadScene($"CreditsScene");
+    }
+
+    protected void ResetSaves() {
+        PrefsManager.SetBool(PrefsManager.SHOULD_RESET_SAVE_ON_NEXT_MENU_SCENE_KEY, true);
     }
 }

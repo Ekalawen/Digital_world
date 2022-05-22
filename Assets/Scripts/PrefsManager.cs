@@ -12,6 +12,7 @@ public class PrefsManager {
 
     public static string HAVE_THINK_ABOUT_TUTORIAL_KEY = "haveThinkAboutTutorialKey";
     public static string FIRST_TIME_SELECTOR_OPENED_KEY = "firstTimeSelectorOpenedKey";
+    public static string SHOULD_RESET_SAVE_ON_NEXT_MENU_SCENE_KEY = "shouldResetSaveOnNextMenuSceneKey";
 
     public static string SHOULD_SET_RANDOM_BACKGROUND_KEY = "shouldSetRandomBackgroundKey";
 
