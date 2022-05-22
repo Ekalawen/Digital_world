@@ -83,6 +83,7 @@ public class SelectorManager : MonoBehaviour {
         Application.targetFrameRate = -1;
         cameraController = baseCamera.GetComponentInParent<SelectorCameraController>();
         InputManager.Instance.SetNotInGame();
+        StartMenuMusic();
         verticalMenuHandler.Initialize();
         selectorTarget.Initialize();
         endGamesManager.Initialize();
@@ -94,7 +95,7 @@ public class SelectorManager : MonoBehaviour {
         background.gameObject.SetActive(false);
         SetCurrentLevelBasedOnLastSavedLevel();
         cameraController.PlaceCameraInFrontOfCurrentLevel();
-        StartMenuMusic();
+        // StartMenuMusic(); // Old position ! :)
         if (!LocalizationSettings.InitializationOperation.IsDone)
         {
             yield return LocalizationSettings.InitializationOperation;
