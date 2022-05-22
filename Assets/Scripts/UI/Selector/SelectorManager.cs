@@ -665,4 +665,12 @@ public class SelectorManager : MonoBehaviour {
             UISoundManager.Instance.PauseArchivesClip();
         //}
     }
+
+    public int GetNbTotalLevels() {
+        return levels.Count;
+    }
+
+    public int GetNbLevelsUnlocked() {
+        return levels.FindAll(level => level.IsAccessible()).Count;
+    }
 }

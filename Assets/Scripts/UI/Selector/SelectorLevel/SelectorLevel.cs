@@ -233,9 +233,12 @@ public class SelectorLevel : MonoBehaviour {
             bool shouldCongrats = !menuLevel.displayArchivesOnUnlock;
             if (shouldCongrats) {
                 string levelString = UIHelper.SurroundWithColor(GetVisibleName(), UIHelper.BLUE);
+                int nbLevelsUnlocked = selectorManager.GetNbLevelsUnlocked();
+                int nbTotalLevels = selectorManager.GetNbTotalLevels();
+                string pourcentage = ((float)nbLevelsUnlocked / nbTotalLevels * 100).ToString("N2");
                 selectorManager.RunPopup(
                     title: selectorManager.strings.niveauDebloqueTitre.GetLocalizedString().Result,
-                    text: selectorManager.strings.niveauDebloqueTexte.GetLocalizedString(levelString).Result,
+                    text: selectorManager.strings.niveauDebloqueTexte.GetLocalizedString(levelString, pourcentage, nbLevelsUnlocked, nbTotalLevels).Result,
                     theme: TexteExplicatif.Theme.POSITIF);
             } else {
                 menuLevel.OpenArchives();
