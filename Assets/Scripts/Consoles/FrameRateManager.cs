@@ -42,8 +42,8 @@ public class FrameRateManager : MonoBehaviour {
             }
             float meanDeltaTime = deltaTimeList.Average();
             float timeScale = Time.timeScale;
-            int fps = Mathf.RoundToInt(timeScale / meanDeltaTime);
-            int ms = Mathf.RoundToInt(meanDeltaTime * 1000.0f / timeScale);
+            int fps = Mathf.Max(0, Mathf.RoundToInt(timeScale / meanDeltaTime));
+            int ms = Mathf.Max(0, Mathf.RoundToInt(meanDeltaTime * 1000.0f / timeScale));
             frameRateText.text = $"FPS : {fps} ({ms}ms)";
         }
     }
