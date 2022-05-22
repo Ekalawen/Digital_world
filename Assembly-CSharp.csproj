@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <LangVersion>8.0</LangVersion>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -52,9 +52,6 @@
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
     <UnityVersion>2021.1.28f1</UnityVersion>
   </PropertyGroup>
-  <ItemGroup>
-    <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio Tools for Unity\16.0\Analyzers\Microsoft.Unity.Analyzers.dll" />
-  </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Math\Graphe.cs" />
     <Compile Include="Assets\Scripts\Map\MapFunctionComponents\Generate\GenerateHorizontalPonts.cs" />
@@ -659,7 +656,7 @@
     <None Include="Assets\Texts\DataHackees\2_Arc2\15-16_ToLearnIntersection\DHtoLearnIntersectionFromConstantDestructionFR.txt" />
     <None Include="Assets\Texts\DataHackees\4_Arc4\Right\52_ToBipartiteWorld\DHto_BipartiteWorldFR.txt" />
     <None Include="Assets\Texts\Archives\3_Arc3\18_BounceHighway\ArchivesBounceHighway_NewEN.txt" />
-    <None Include="Assets\Texts\DataHackees\3_Arc3\29_TracerGeneration\DHtoTracerGenerationFR.txt" />
+    <None Include="Assets\Texts\DataHackees\3_Arc3\29_ToTracerGeneration\DHtoTracerGenerationFR.txt" />
     <None Include="Assets\Texts\Archives\4_Arc4\Right\47_CompositeCrossroad\Archives_CompositeCrossroadEN.txt" />
     <None Include="Assets\Texts\Archives\3_Arc3\22_SwapHighway\ArchivesSwapHighwayEN.txt" />
     <None Include="Assets\Texts\DataHackees\OldLevels\ToLabyrinthe\DHtoLabyrintheFR.txt" />
@@ -667,7 +664,7 @@
     <None Include="Assets\Texts\DataHackees\3_Arc3\37-38-39-40_ToFirstBoss\FromFirstDataSondes\DHtoFirstBoss_FromFirstDataSondesFR.txt" />
     <None Include="Assets\Texts\DataHackees\2_Arc2\18_ToFurtiveGrid\DHtoFurtiveGridEN.txt" />
     <None Include="Assets\Texts\DataHackees\3_Arc3\23_ToVerticalBounce\DHtoVerticalBounceFR.txt" />
-    <None Include="Assets\Texts\DataHackees\3_Arc3\30_EquilibriumReset\DHtoEquilibriumResetFR.txt" />
+    <None Include="Assets\Texts\DataHackees\3_Arc3\30_ToEquilibriumReset\DHtoEquilibriumResetFR.txt" />
     <None Include="Assets\Imported\TextMesh Pro\Resources\Shaders\TMPro.cginc" />
     <None Include="Assets\Texts\OneOfs\EndGame\Conserver\EndGame_Conserver_3_EN.txt" />
     <None Include="Assets\Texts\Archives\3_Arc3\20_AlwaysReset\ArchivesAlwaysReset_NewEN.txt" />
@@ -689,7 +686,7 @@
     <None Include="Assets\Texts\Archives\2_Arc2\13_FullSpikes\ArchivesFullSpikesEN.txt" />
     <None Include="Assets\Texts\Archives\3_Arc3\31_FirstBoss\ArchivesFirstBoss_NewEN.txt" />
     <None Include="Assets\Texts\Archives\4_Arc4\Left\34_SoulRobberArena\ArchivesSoulRobberArenaFR.txt" />
-    <None Include="Assets\Texts\DataHackees\3_Arc3\29_TracerGeneration\DHtoTracerGenerationEN.txt" />
+    <None Include="Assets\Texts\DataHackees\3_Arc3\29_ToTracerGeneration\DHtoTracerGenerationEN.txt" />
     <None Include="Assets\Texts\DataHackees\1_Arc1\03_ToSecondRunner\DHtoSecondRunnerFR.txt" />
     <None Include="Assets\Texts\Archives\2_Arc2\14_LearnIntersection\ArchivesLearnIntersectionFR.txt" />
     <None Include="Assets\Texts\DataHackees\2_Arc2\10_ToParkourTraining\DHtoParkourTrainingEN.txt" />
@@ -735,7 +732,7 @@
     <None Include="Assets\Texts\Archives\OldLevels\DenseCube\ArchivesDenseCubeFR.txt" />
     <None Include="Assets\Imported\TextMesh Pro\Examples &amp; Extras\Fonts\Oswald-Bold - OFL.txt" />
     <None Include="Assets\Texts\Archives\3_Arc3\27_BrisableRoad\ArchivesBrisableRoadEN.txt" />
-    <None Include="Assets\Texts\DataHackees\3_Arc3\30_EquilibriumReset\DHtoEquilibriumResetEN.txt" />
+    <None Include="Assets\Texts\DataHackees\3_Arc3\30_ToEquilibriumReset\DHtoEquilibriumResetEN.txt" />
     <None Include="Assets\Texts\Archives\4_Arc4\Left\38_DataProliferation\ArchivesDataProliferationEN.txt" />
     <None Include="Assets\Texts\Archives\3_Arc3\21_FirstTracers\ArchivesFirstTracers_NewEN.txt" />
     <None Include="Assets\Texts\Archives\1_Arc1\07_TheFall\ArchivesTheFall_NewFR.txt" />
@@ -763,7 +760,7 @@
     <None Include="Assets\Texts\OneOfs\EndGame\Conserver\EndGame_Conserver_7_FR.txt" />
     <None Include="Assets\Texts\Archives\1_Arc1\03_FirstSonde\ArchivesFirstSonde_NewFR.txt" />
     <None Include="Assets\Texts\DataHackees\4_Arc4\Left\46_VoidConundrum\DHto_VoidConundrumFR.txt" />
-    <None Include="Assets\Texts\DataHackees\3_Arc3\31_ClosingCaves\DHtoClosingCavesFR.txt" />
+    <None Include="Assets\Texts\DataHackees\3_Arc3\31_ToClosingCaves\DHtoClosingCavesFR.txt" />
     <None Include="Assets\Texts\DataHackees\3_Arc3\34-35_ToOrbTriggerFactory\DHtoOrbTriggerFactoryFromTracerGenerationFR.txt" />
     <None Include="Assets\Texts\DataHackees\__EmptyDataHackees\DHto_EmptyEN.txt" />
     <None Include="Assets\Texts\OneOfs\EndOfBeta\EndOfBetaFR.txt" />
@@ -846,7 +843,7 @@
     <None Include="Assets\Texts\Archives\4_Arc4\Right\44_Synchronium\Archives_SynchroniumFR.txt" />
     <None Include="Assets\Texts\Archives\2_Arc2\12_RadarWave\ArchivesRadarWave_NewFR.txt" />
     <None Include="Assets\Texts\Archives\1_Arc1\07_TheFall\ArchivesTheFall_NewEN.txt" />
-    <None Include="Assets\Texts\DataHackees\3_Arc3\31_ClosingCaves\DHtoClosingCavesEN.txt" />
+    <None Include="Assets\Texts\DataHackees\3_Arc3\31_ToClosingCaves\DHtoClosingCavesEN.txt" />
     <None Include="Assets\Texts\Archives\OldLevels\RedWire\ArchivesRedWireEN.txt" />
     <None Include="Assets\Imported\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface.shader" />
     <None Include="Assets\Texts\DataHackees\DemoArc\04_ToDiscoverOfSondes_Demo\DHtoDiscoverOfSondesFR_Demo.txt" />
@@ -974,7 +971,7 @@
     <None Include="Assets\Texts\DataHackees\OldLevels\ToFirstBoss\DHtoFirstBossFR.txt" />
     <None Include="Assets\Scripts\Math\BezierCurves\readme.txt" />
     <None Include="Assets\Texts\Archives\2_Arc2\10_ParkourTraining\ArchivesParkourTraining_NewEN.txt" />
-    <None Include="Assets\Texts\DataHackees\3_Arc3\24_BrisableRoad\DHtoBrisableRoadFR.txt" />
+    <None Include="Assets\Texts\DataHackees\3_Arc3\24_ToBrisableRoad\DHtoBrisableRoadFR.txt" />
     <None Include="Assets\Texts\OneOfs\EndGame\Séparer\EndGame_Séparer_8_FR.txt" />
     <None Include="Assets\Texts\OneOfs\EndGame\EndGame_1_FR.txt" />
     <None Include="Assets\Texts\Archives\1_Arc1\06_LearnEndEvent\ArchivesLearnEndEvent_NewEN.txt" />
@@ -1025,7 +1022,7 @@
     <None Include="Assets\Texts\Archives\3_Arc3\24_SondesOptimisation\ArchivesSondesOptimisationEN.txt" />
     <None Include="Assets\Texts\DataHackees\1_Arc1\08_ToDashTraining\DHtoDashTrainingEN.txt" />
     <None Include="Assets\Texts\DataHackees\4_Arc4\Left\43_ToSoulRobberArena\DHtoSoulRobberArenaEN.txt" />
-    <None Include="Assets\Texts\DataHackees\3_Arc3\24_BrisableRoad\DHtoBrisableRoadEN.txt" />
+    <None Include="Assets\Texts\DataHackees\3_Arc3\24_ToBrisableRoad\DHtoBrisableRoadEN.txt" />
     <None Include="Assets\Texts\Archives\1_Arc1\02_FirstLevel\ArchiveFirstLevelFR.txt" />
     <None Include="Assets\Imported\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />
     <None Include="Assets\Texts\Archives\1_Arc1\08_DashTraining\ArchivesDashTraining_NewEN.txt" />
