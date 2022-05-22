@@ -12,10 +12,13 @@ public class AudioBipsPasse : MonoBehaviour {
     public float bipOffset = 0.3f;
     public float numberOffset = 0.85f;
     public float loopOffset = 3.0f;
+    public float beforeFirstLoopOffset = 1.0f;
+    public float relativeVolume = 1.5f;
 
     protected SelectorManager sm;
     protected SelectorPath path;
     protected Coroutine bippingCoroutine = null;
+    protected Coroutine firstCoroutine = null;
     protected UISoundManager soundManager;
 
     protected void Start() {
@@ -30,6 +33,16 @@ public class AudioBipsPasse : MonoBehaviour {
         if(pathOpened != path) {
             return;
         }
+        StartBippingForFirstTime();
+    }
+
+    protected void StartBippingForFirstTime() {
+        StopBipping();
+        firstCoroutine = StartCoroutine(CStartBippingForFirstTime());
+    }
+
+    protected IEnumerator CStartBippingForFirstTime() {
+        yield return new WaitForSeconds(beforeFirstLoopOffset);
         StartBipping();
     }
 
@@ -46,12 +59,15 @@ public class AudioBipsPasse : MonoBehaviour {
         if (bippingCoroutine != null) {
             StopCoroutine(bippingCoroutine);
         }
+        if(firstCoroutine != null) {
+            StopCoroutine(firstCoroutine);
+        }
     }
 
     protected IEnumerator CStartBipping() {
         foreach (int bipNb in nbOfBips) {
             for (int i = 0; i < bipNb; i++) {
-                soundManager.PlayHoverButtonClip();
+                soundManager.PlayHoverButtonClipWithVolume(relativeVolume);
                 if (i != bipNb - 1) {
                     yield return new WaitForSeconds(bipOffset);
                 }

@@ -159,6 +159,10 @@ public class UISoundManager : MonoBehaviour {
     public void PlayHoverButtonClip() {
         PlayClipsOnSource(sounds.hoverButtonClips);
     }
+    public void PlayHoverButtonClipWithVolume(float relativeVolume) {
+        AudioSource audioSource = PlayClipsOnSource(sounds.hoverButtonClips);
+        audioSource.volume *= relativeVolume;
+    }
     public void PlayClickedButtonClip() {
         PlayClipsOnSource(sounds.clickedButtonClips);
     }
