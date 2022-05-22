@@ -14,6 +14,7 @@ public class CreditsManager : MonoBehaviour {
     public float scrollSpeed = 1.0f;
     public float pressKeyScrollSpeed = 2.5f;
     public float delayBeforeFirstText = 2.0f;
+    public float delayBeforeLoopingText = 5.0f;
     public float returnButtonBlinkDuration = 2.0f;
     public float musicFadeInDuration = 3.0f;
     public float particlesDelay = 5.0f;
@@ -74,6 +75,11 @@ public class CreditsManager : MonoBehaviour {
         SetMainTextHeight(height);
     }
 
+    private void InitMainTextHeightForLooping() {
+        float height = -textHolderParent.rect.height - scrollSpeed * delayBeforeLoopingText;
+        SetMainTextHeight(height);
+    }
+
     public void Exit() {
         SceneManager.LoadScene($"MenuScene");
     }
@@ -87,7 +93,7 @@ public class CreditsManager : MonoBehaviour {
         float pressKeyCoef = InputManager.Instance.GetAnyKeyOrButton() ? pressKeyScrollSpeed : 1;
         IncreaseMainTextHeight(scrollSpeed * pressKeyCoef * Time.deltaTime);
         if(textHolder.anchoredPosition.y >= textHolder.rect.height) {
-            InitMainTextHeight();
+            InitMainTextHeightForLooping();
         }
     }
 
