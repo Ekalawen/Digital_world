@@ -16,7 +16,6 @@ public class Achievement_DieCloseToExit : Achievement {
 
     public void OnLoseGame(EventManager.DeathReason reason) {
         List<Lumiere> dataFinales = gm.map.GetLumieresFinales();
-        Debug.Log($"Distance = {Vector3.Distance(gm.player.transform.position, dataFinales[0].transform.position)}");
         if(dataFinales.Count == 1 && Vector3.Distance(gm.player.transform.position, dataFinales[0].transform.position) <= exitDistance) {
             Unlock();
         }
