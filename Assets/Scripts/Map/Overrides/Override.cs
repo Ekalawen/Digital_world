@@ -5,7 +5,7 @@ using UnityEngine;
 using System;
 using UnityEngine.Events;
 
-public class Override: MonoBehaviour {
+public abstract class Override: MonoBehaviour {
 
     protected GameManager gm;
     protected MapManager map;
@@ -13,5 +13,9 @@ public class Override: MonoBehaviour {
     public void Initialize() {
         gm = GameManager.Instance;
         map = gm.map;
+
+        InitializeSpecific();
     }
+
+    protected abstract void InitializeSpecific();
 }

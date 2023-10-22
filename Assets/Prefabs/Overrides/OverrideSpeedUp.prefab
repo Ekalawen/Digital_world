@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3230145107771090556}
-  - component: {fileID: 6768545582489768165}
+  - component: {fileID: 4705114661686570253}
   m_Layer: 0
-  m_Name: OverrideOne
+  m_Name: OverrideSpeedUp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -31,7 +31,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6768545582489768165
+--- !u!114 &4705114661686570253
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -40,6 +40,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 7681153688967334235}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d83d3e15ffd0e745b9966f4925cd360, type: 3}
+  m_Script: {fileID: 11500000, guid: 56613d34c4f5e19419690380f588cc26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  timeMultiplier:
+    type: 1
+    timeVariation: 1.5
+    totalRealDuration: 9999999
+    useRealTimeDuration: 0
+    inDurationPercentage: 0
+    outDurationPercentage: 0
+    inCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    outCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
