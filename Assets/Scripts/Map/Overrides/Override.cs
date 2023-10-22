@@ -4,8 +4,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using UnityEngine.Events;
+using UnityEngine.Localization;
 
 public abstract class Override: MonoBehaviour {
+
+    public LocalizedString overrideName;
 
     protected GameManager gm;
     protected MapManager map;
@@ -18,4 +21,8 @@ public abstract class Override: MonoBehaviour {
     }
 
     protected abstract void InitializeSpecific();
+
+    public string GetName() {
+        return overrideName.GetLocalizedString().Result;
+    }
 }

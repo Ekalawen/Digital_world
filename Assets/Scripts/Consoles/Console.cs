@@ -1487,4 +1487,10 @@ public class Console : MonoBehaviour {
         popup.Initialize(title: title, mainText: text, theme: theme, cleanReplacements: cleanReplacements);
         popup.Run();
     }
+
+    public void InitializeOverride(Override overrid) {
+        LocalizedString ls = strings.initializeOverride;
+        ls.Arguments = new object[] { overrid.GetName() };
+        AjouterMessageImportant(ls, Console.TypeText.BLUE_TEXT, 2.0f);
+    }
 }

@@ -40,6 +40,11 @@ public class OverrideManager : MonoBehaviour {
         currentOverride = Instantiate(overridePrefab, transform).GetComponent<Override>();
         Debug.Log($"Using {currentOverride.name} this game!");
         currentOverride.Initialize();
+        ApplyOverrideGlobalInitialization();
+    }
+
+    private void ApplyOverrideGlobalInitialization() {
+        gm.console.InitializeOverride(currentOverride);
     }
 
     private bool ShouldUseOverride() {
