@@ -37,18 +37,15 @@ public class MapManager : MonoBehaviour {
 
     [Header("Lumières Prefabs")]
 	public GameObject lumierePrefab; // On récupère les lumières !
-
     public GameObject lumiereSpecialePrefab; // On récupère les lumières !
 	public GameObject lumiereFinalePrefab; // On récupère les lumières finales !
 	public GameObject lumiereAlmostFinalePrefab; // On récupère les lumières presque finales !
 
     [Header("Map Construction")]
     public List<MapFunctionComponent> mapFunctionComponents;
-
     public DissolveEffectType dissolveEffectType = DissolveEffectType.REGULAR_MAP;
     public Vector3Int tailleMap; // La taille de la map, en largeur, hauteur et profondeur
 	public int nbLumieresInitial; // Le nombre de lumières lors de la création de la map
-
 
     protected Cube[,,] cubesRegular; // Toutes les positions entières dans [0, tailleMap]
     //protected List<Cube> cubesNonRegular; // Toutes les autres positions (non-entières ou en-dehors de la map)
@@ -73,36 +70,12 @@ public class MapManager : MonoBehaviour {
     public UnityEvent<Cube> onDeleteCube;
 
     public void Initialize() {
-		// Initialisation
+        // Initialisation
         gm = FindObjectOfType<GameManager>();
-		name = "MapManager";
-        mapFolder = new GameObject("Map").transform;
-        cubesFolder = new GameObject("Cubes").transform;
-        cubesFolder.transform.SetParent(mapFolder);
-        lumieresFolder = new GameObject("Lumieres").transform;
-        lumieresFolder.transform.SetParent(mapFolder);
-        zonesFolder = new GameObject("Zones").transform;
-        zonesFolder.transform.SetParent(mapFolder);
-        cubesPoolsFolder = new GameObject("CubesPools").transform;
-        cubesPoolsFolder.transform.SetParent(cubesFolder);
-        lightningsFolder = new GameObject("Lightnings").transform;
-        lightningsFolder.transform.SetParent(mapFolder);
-        particlesFolder = new GameObject("Particles").transform;
-        particlesFolder.transform.SetParent(mapFolder);
+        name = "MapManager";
+        InitializeFolders();
         InitPlayerStartComponent();
-        mapElements = new List<MapElement>();
-        dynamicCubeEnsembles = new List<DynamicCubeEnsemble>();
-        lumieres = new List<Lumiere>();
-        boundingBox = new BoundingBox(Vector3Int.zero, new Vector3Int(tailleMap.x, tailleMap.y, tailleMap.z));
-        cubesRegular = new Cube[tailleMap.x + 1, tailleMap.y + 1, tailleMap.z + 1];
-        for (int i = 0; i <= tailleMap.x; i++)
-            for (int j = 0; j <= tailleMap.y; j++)
-                for (int k = 0; k <= tailleMap.z; k++)
-                    cubesRegular[i, j, k] = null;
-        nonRegularOctree = new Octree<Cube>(cellSize: 8);
-        swappyCubesHolderManagers = new List<SwappyCubesHolderManager>();
-        cubesPools = new Dictionary<Cube.CubeType, Stack<Cube>>();
-        VoidCube.globalLoseTimeTimer = new Timer(VoidCube.GLOBAL_LOSE_TIME_TIMER_DURATION, setOver: true);
+        InitializeContainers();
 
         // Récupérer tous les cubes et toutes les lumières qui pourraient déjà exister avant la création de la map !
         GetAllAlreadyExistingCubesAndLumieres();
@@ -116,6 +89,38 @@ public class MapManager : MonoBehaviour {
 
         // Puis on affiche les proportions de cubes régular et non-regular pour vérifier que tout va bien :)
         PrintCubesNumbers();
+    }
+
+    private void InitializeContainers() {
+        mapElements = new List<MapElement>();
+        dynamicCubeEnsembles = new List<DynamicCubeEnsemble>();
+        lumieres = new List<Lumiere>();
+        boundingBox = new BoundingBox(Vector3Int.zero, new Vector3Int(tailleMap.x, tailleMap.y, tailleMap.z));
+        cubesRegular = new Cube[tailleMap.x + 1, tailleMap.y + 1, tailleMap.z + 1];
+        for (int i = 0; i <= tailleMap.x; i++)
+            for (int j = 0; j <= tailleMap.y; j++)
+                for (int k = 0; k <= tailleMap.z; k++)
+                    cubesRegular[i, j, k] = null;
+        nonRegularOctree = new Octree<Cube>(cellSize: 8);
+        swappyCubesHolderManagers = new List<SwappyCubesHolderManager>();
+        cubesPools = new Dictionary<Cube.CubeType, Stack<Cube>>();
+        VoidCube.globalLoseTimeTimer = new Timer(VoidCube.GLOBAL_LOSE_TIME_TIMER_DURATION, setOver: true);
+    }
+
+    private void InitializeFolders() {
+        mapFolder = new GameObject("Map").transform;
+        cubesFolder = new GameObject("Cubes").transform;
+        cubesFolder.transform.SetParent(mapFolder);
+        lumieresFolder = new GameObject("Lumieres").transform;
+        lumieresFolder.transform.SetParent(mapFolder);
+        zonesFolder = new GameObject("Zones").transform;
+        zonesFolder.transform.SetParent(mapFolder);
+        cubesPoolsFolder = new GameObject("CubesPools").transform;
+        cubesPoolsFolder.transform.SetParent(cubesFolder);
+        lightningsFolder = new GameObject("Lightnings").transform;
+        lightningsFolder.transform.SetParent(mapFolder);
+        particlesFolder = new GameObject("Particles").transform;
+        particlesFolder.transform.SetParent(mapFolder);
     }
 
     public List<LumiereSwitchable> GetLumieresSwitchables() {

@@ -35,6 +35,7 @@ public class GameManager : MonoBehaviour {
     public GameObject cheatCodeManagerPrefab; // Pour gérer les cheat codes ! :)
     public GameObject steamInGameManagerPrefab; // Pour gérer les callbacks de Steam en jeu ! :)
     public GameObject achievementManagerPrefab; // Pour gérer les succès Steam ! :)
+    public GameObject overrideManagerPrefab; // Pour gérer les overrides ! <3
     public GameObject goalManagerPrefab; // Pour gérer les goal tresholds ! :)
 
     [Header("Links")]
@@ -77,6 +78,8 @@ public class GameManager : MonoBehaviour {
     [HideInInspector]
     public AchievementManager achievementManager;
     [HideInInspector]
+    public OverrideManager overrideManager;
+    [HideInInspector]
     public GoalManager goalManager;
     [HideInInspector]
     public GameObject managerFolder;
@@ -118,6 +121,7 @@ public class GameManager : MonoBehaviour {
         scanManager = Instantiate(scanManagerPrefab, managerFolder.transform).GetComponent<ScanManager>();
         historyManager = Instantiate(historyManagerPrefab/*, managerFolder.transform*/).GetComponent<HistoryManager>(); // On le met à la racine car DontDestroyOnLoad only works for root components !
         flockManager = Instantiate(flockManagerPrefab, managerFolder.transform).GetComponent<FlockManager>();
+        overrideManager = Instantiate(overrideManagerPrefab, managerFolder.transform).GetComponent<OverrideManager>();
         cheatCodeManager = Instantiate(cheatCodeManagerPrefab, managerFolder.transform).GetComponent<CheatCodeManager>();
         achievementManager = Instantiate(achievementManagerPrefab, managerFolder.transform).GetComponent<AchievementManager>();
         inputManager = InputManager.Instance;
@@ -146,6 +150,7 @@ public class GameManager : MonoBehaviour {
         scanManager.Initialize();
         historyManager.Initialize();
         flockManager.Initialize();
+        overrideManager.Initialize();
         cheatCodeManager.Initialize();
         achievementManager.Initialize(isInGame: true);
         inputManager.SetInGame();
