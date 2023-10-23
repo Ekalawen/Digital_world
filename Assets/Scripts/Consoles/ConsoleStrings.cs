@@ -173,4 +173,5 @@ public class ConsoleStrings : ScriptableObject
     public LocalizedString unsetPouvoirsCooldownZero;
 
     public LocalizedString initializeOverride;
+    public LocalizedString overrideAnd;
 }

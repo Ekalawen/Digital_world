@@ -22,7 +22,7 @@ public abstract class Override: MonoBehaviour {
 
     protected abstract void InitializeSpecific();
 
-    public string GetName() {
+    public virtual string GetName() {
         return overrideName.GetLocalizedString().Result;
     }
 }
