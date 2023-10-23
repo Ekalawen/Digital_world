@@ -39,6 +39,7 @@ public class PostProcessManager : MonoBehaviour {
     public float skyboxScrollSpeedPower = 3.0f;
     public float skyboxVariationsAmplitude = 0.3f;
     public float skyboxRotationWhenOverride = 0.5f;
+    public float skyboxBlackoutLuminosity = 0.1f;
 
     [Header("CubeDissolve")]
     public float dissolveRegularTime = 3.0f;
@@ -122,6 +123,7 @@ public class PostProcessManager : MonoBehaviour {
     protected bool alwaysHasMoveForTimeScaleVfx = false;
     protected bool isWallVfxOn = false;
 
+
     public void Initialize() {
         gm = GameManager.Instance;
         camera = gm.player.camera;
@@ -167,6 +169,7 @@ public class PostProcessManager : MonoBehaviour {
     }
 
     protected void ResetSkyboxParameters() {
+        RenderSettings.skybox.SetFloat("_Luminosity", 1.0f);
         RenderSettings.skybox.SetColor("_RectangleColor", GetSkyboxHDRColor(skyboxRectangleColor));
         RenderSettings.skybox.SetFloat("_ProportionRectangles", skyboxProportionRectangles);
         RenderSettings.skybox.SetFloat("_ScrollSpeedPower", skyboxScrollSpeedPower);
@@ -179,8 +182,12 @@ public class PostProcessManager : MonoBehaviour {
         //return color * Mathf.Pow(2, skyboxRectangleColorIntensity);
     }
 
-    public void ApplySkyboxOverride() {
+    public void ApplySkyboxOverrideRotation() {
         RenderSettings.skybox.SetFloat("_Rotation", skyboxRotationWhenOverride * MathTools.RandomSign());
+    }
+
+    public void SetSkyboxToBlackout() {
+        RenderSettings.skybox.SetFloat("_Luminosity", skyboxBlackoutLuminosity);
     }
 
     public void UpdateWallEffect() {
