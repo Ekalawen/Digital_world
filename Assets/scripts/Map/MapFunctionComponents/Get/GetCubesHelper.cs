@@ -17,6 +17,7 @@ public class GetCubesHelper : MonoBehaviour {
         CAVES_OPENINGS,
         WITH_N_VOISINS,
         AROUND_EMPTY_POSITIONS,
+        OF_BLOCK,
     };
 
     public enum HowToGetCubesInCubesEnsembles {
@@ -51,6 +52,8 @@ public class GetCubesHelper : MonoBehaviour {
     public GetEmptyPositionsHelper getEmptyPositionsHelper;
     [ConditionalHide("howToGetCubes", HowToGetCubes.AROUND_EMPTY_POSITIONS)]
     public int cubeDistanceFromEmptyPositions = 1;
+    [ConditionalHide("howToGetCubes", HowToGetCubes.OF_BLOCK)]
+    public Block block;
     public List<GetHelperModifier> modifiers;
 
     protected MapManager map;
@@ -92,6 +95,8 @@ public class GetCubesHelper : MonoBehaviour {
                 return GetCubesWithNVoisins(nbCubesVoisins);
             case HowToGetCubes.AROUND_EMPTY_POSITIONS:
                 return GetCubesAroundEmptyPositions();
+            case HowToGetCubes.OF_BLOCK:
+                return GetCubesOfBlock();
             default:
                 return null;
         }
@@ -156,5 +161,12 @@ public class GetCubesHelper : MonoBehaviour {
             cubes.AddRange(map.GetCubesAtLessThanCubeDistance(pos, cubeDistanceFromEmptyPositions));
         }
         return cubes;
+    }
+
+    protected List<Cube> GetCubesOfBlock() {
+        if(!block) {
+            Debug.LogError($"The block of GetCubesHelper in {name} is nullptr !");
+        }
+        return block.GetCubes();
     }
 }

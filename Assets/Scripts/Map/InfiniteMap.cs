@@ -79,11 +79,13 @@ public class InfiniteMap : MapManager {
     protected bool startsBlockDestruction = false;
     protected CameraShakeInstance cameraShakeInstance;
     protected List<string> blocksNameToNotifyPlayerToPressShift = new List<string>();
-    [HideInInspector]
-    public UnityEvent<int> onBlocksCrossed;
     protected bool hasReachInfiniteMode = false;
     protected BlockForcerInIR blockForcer;
     protected AddHiddenTextureOnCubeInIR textureAdder;
+    [HideInInspector]
+    public UnityEvent<int> onBlocksCrossed;
+    [HideInInspector]
+    public UnityEvent<Block> onCreateBlock;
 
     protected override void InitializeSpecific()
     {
@@ -171,6 +173,8 @@ public class InfiniteMap : MapManager {
 
         ApplyTextureAdderOnNewBlock(newBlock);
         AddBestScoreMarker(newBlock);
+
+        onCreateBlock.Invoke(newBlock);
     }
 
     protected void ApplyTextureAdderOnNewBlock(Block newBlock) {
@@ -535,5 +539,9 @@ public class InfiniteMap : MapManager {
 
     public override float GetVolumeForPath() {
         return 1000; // The limit where we will stop Path research :)
+    }
+
+    public List<Block> GetAllBlocks() {
+        return allBlocks;
     }
 }
