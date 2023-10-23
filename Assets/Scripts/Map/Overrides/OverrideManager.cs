@@ -45,6 +45,7 @@ public class OverrideManager : MonoBehaviour {
 
     private void ApplyOverrideGlobalInitialization() {
         gm.console.InitializeOverride(currentOverride);
+        gm.postProcessManager.ApplySkyboxOverride();
     }
 
     private bool ShouldUseOverride() {

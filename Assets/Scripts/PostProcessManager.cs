@@ -38,6 +38,7 @@ public class PostProcessManager : MonoBehaviour {
     public float skyboxProportionRectanglesCriticalBound = 0.18f;
     public float skyboxScrollSpeedPower = 3.0f;
     public float skyboxVariationsAmplitude = 0.3f;
+    public float skyboxRotationWhenOverride = 0.5f;
 
     [Header("CubeDissolve")]
     public float dissolveRegularTime = 3.0f;
@@ -170,11 +171,16 @@ public class PostProcessManager : MonoBehaviour {
         RenderSettings.skybox.SetFloat("_ProportionRectangles", skyboxProportionRectangles);
         RenderSettings.skybox.SetFloat("_ScrollSpeedPower", skyboxScrollSpeedPower);
         RenderSettings.skybox.SetFloat("_VariationsAmplitude", skyboxVariationsAmplitude);
+        RenderSettings.skybox.SetFloat("_Rotation", 0.0f);
     }
 
     public Color GetSkyboxHDRColor(Color color) {
         return color;
         //return color * Mathf.Pow(2, skyboxRectangleColorIntensity);
+    }
+
+    public void ApplySkyboxOverride() {
+        RenderSettings.skybox.SetFloat("_Rotation", skyboxRotationWhenOverride * MathTools.RandomSign());
     }
 
     public void UpdateWallEffect() {
