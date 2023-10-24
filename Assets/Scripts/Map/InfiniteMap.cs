@@ -57,6 +57,7 @@ public class InfiniteMap : MapManager {
     [Header("Others")]
     public CounterDisplayer nbBlocksDisplayer;
     public GameObject bestScoreMarkerPrefab;
+    public GameObject newTresholdMarkerPrefab;
     public bool shouldResetAllBlocksTime = false;
     public float dureeDecompose = 5.0f;
     public bool useCustomLastTresholdForPhases = false;
@@ -173,6 +174,7 @@ public class InfiniteMap : MapManager {
 
         ApplyTextureAdderOnNewBlock(newBlock);
         AddBestScoreMarker(newBlock);
+        AddNewTresholdMarker(newBlock);
 
         onCreateBlock.Invoke(newBlock);
     }
@@ -188,6 +190,15 @@ public class InfiniteMap : MapManager {
         if(bestScore != 0 && (nbBlocksCreated - nbFirstBlocks) == bestScore + 1) {
             Vector3 pos = block.endPoint.position + Vector3.up * 1f;
             GameObject marker = Instantiate(bestScoreMarkerPrefab, pos, Quaternion.identity, block.transform.parent);
+            marker.transform.LookAt(pos + FORWARD);
+        }
+    }
+
+    protected void AddNewTresholdMarker(Block block) {
+        List<int> tresholds = gm.goalManager.GetAllTresholds();
+        if(tresholds.Any(t => t != 0 && (nbBlocksCreated - nbFirstBlocks) == t + 1)) {
+            Vector3 pos = block.endPoint.position + Vector3.up * 1f;
+            GameObject marker = Instantiate(newTresholdMarkerPrefab, pos, Quaternion.identity, block.transform.parent);
             marker.transform.LookAt(pos + FORWARD);
         }
     }

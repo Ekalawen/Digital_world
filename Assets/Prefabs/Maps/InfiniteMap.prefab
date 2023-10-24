@@ -99,6 +99,8 @@ MonoBehaviour:
   firstBlocks: []
   nbFirstBlocks: 3
   nbBlocksStartCubeDestruction: 10
+  useCustomNbBlocksToCreateAtStart: 0
+  nbBlocksToCreateAtStart: 0
   colorChangeColorBlocks: {r: 1, g: 0, b: 0, a: 1}
   rangeChangeColorBlocks: 20
   speedChangeColorBlocks: 2
@@ -117,11 +119,16 @@ MonoBehaviour:
   nbBlocksDisplayer: {fileID: 9121728038826671698}
   bestScoreMarkerPrefab: {fileID: 4936432290436896610, guid: 5f3076f730a6655419c258d202dc7f5d,
     type: 3}
+  newTresholdMarkerPrefab: {fileID: 4936432290436896610, guid: 5f3076f730a6655419c258d202dc7f5d,
+    type: 3}
   shouldResetAllBlocksTime: 0
   dureeDecompose: 5
   useCustomLastTresholdForPhases: 0
   customLastTresholdForPhases: 0
   onBlocksCrossed:
+    m_PersistentCalls:
+      m_Calls: []
+  onCreateBlock:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &858809596309769161
