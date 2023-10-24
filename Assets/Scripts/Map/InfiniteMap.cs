@@ -441,6 +441,9 @@ public class InfiniteMap : MapManager {
             nbBlocksDisplayer.Display($"{nbBlocksNonStart.ToString()}/{nextTresholdSymbol}");
             nbBlocksDisplayer.AddVolatileText($"+ {nbBlocksAdded.ToString()}", nbBlocksDisplayer.GetTextColor());
             gm.soundManager.PlayNewBlockClip();
+            if (IsNewTreshold(nbBlocksNonStart)) {
+                RewardNewTreshold();
+            }
             if (IsNewBestScore(nbBlocksNonStart)) {
                 RewardNewBestScore();
             } else {
@@ -452,10 +455,20 @@ public class InfiniteMap : MapManager {
         }
     }
 
+    protected bool IsNewTreshold(int nbBlocksNonStart) {
+        return gm.goalManager.GetAllTresholds().Contains(nbBlocksNonStart);
+    }
+
     protected void RewardNewBestScore() {
         gm.console.RewardBestScore();
         gm.soundManager.PlayRewardBestScore();
+        gm.postProcessManager.ShakeOnceOnMarker();
         hasMadeNewBestScore = true;
+    }
+
+    protected void RewardNewTreshold() {
+        gm.soundManager.PlayGetLumiereClip(gm.player.transform.position);
+        gm.postProcessManager.ShakeOnceOnMarker();
     }
 
     protected bool RewardNewInifiniteTresholdReached(int nbBlocksNonStart) {

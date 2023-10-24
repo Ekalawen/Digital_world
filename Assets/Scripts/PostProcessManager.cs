@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EZCameraShake;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -94,6 +95,11 @@ public class PostProcessManager : MonoBehaviour {
 
     [Header("Luminosity")]
     public Volume luminosityVolume;
+
+    [Header("Markers")]
+    public float markerScreenShakeMagnitude = 10.0f;
+    public float markerScreenShakeRoughness = 10.0f;
+    public float markerScreenShakeDecreaseTime = 10.0f;
 
     protected Coroutine gripCoroutine = null;
     protected Coroutine hitCoroutine = null;
@@ -585,5 +591,10 @@ public class PostProcessManager : MonoBehaviour {
         LiftGammaGain liftGammaGain;
         luminosityVolume.profile.TryGet(out liftGammaGain);
         return liftGammaGain.gain.GetValue<Vector4>().z;
+    }
+
+    public void ShakeOnceOnMarker() {
+        CameraShaker cs = CameraShaker.Instance;
+        cs.ShakeOnce(markerScreenShakeMagnitude, markerScreenShakeRoughness, 0.1f, markerScreenShakeDecreaseTime);
     }
 }
