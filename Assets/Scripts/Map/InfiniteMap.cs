@@ -196,7 +196,7 @@ public class InfiniteMap : MapManager {
 
     protected void AddNewTresholdMarker(Block block) {
         List<int> tresholds = gm.goalManager.GetAllTresholds();
-        if(tresholds.Any(t => t != 0 && (nbBlocksCreated - nbFirstBlocks) == t + 1)) {
+        if(tresholds.Any(t => t != 0 && (nbBlocksCreated - nbFirstBlocks) == t)) {
             Vector3 pos = block.endPoint.position + Vector3.up * 1f;
             GameObject marker = Instantiate(newTresholdMarkerPrefab, pos, Quaternion.identity, block.transform.parent);
             marker.transform.LookAt(pos + FORWARD);
