@@ -41,6 +41,8 @@ public class PostProcessManager : MonoBehaviour {
     public float skyboxVariationsAmplitude = 0.3f;
     public float skyboxRotationWhenOverride = 0.5f;
     public float skyboxBlackoutLuminosity = 0.1f;
+    public float skyboxChromaticShiftCoef = 0.3f;
+    public float skyboxChromaticShiftDurationOnMarker = 0.4f;
 
     [Header("CubeDissolve")]
     public float dissolveRegularTime = 3.0f;
@@ -128,6 +130,8 @@ public class PostProcessManager : MonoBehaviour {
     protected bool timeScaleEffectActivation;
     protected bool alwaysHasMoveForTimeScaleVfx = false;
     protected bool isWallVfxOn = false;
+    protected SingleCoroutine skyboxChromaticCoroutine;
+    protected BoolTimer skyboxChromaticAmount;
 
 
     public void Initialize() {
@@ -152,6 +156,8 @@ public class PostProcessManager : MonoBehaviour {
         soulRobberWeightFluctuator = new Fluctuator(this, GetSoulRobberWeight, SetSoulRobberWeight);
         soulRobberBlackFluctuator = new Fluctuator(this, GetSoulRobberBlack, SetSoulRobberBlack);
         jumpEventFluctuator = new Fluctuator(this, GetJumpEventFlashWeight, SetJumpEventFlashWeight);
+        skyboxChromaticCoroutine = new SingleCoroutine(this);
+        skyboxChromaticAmount = new BoolTimer(this);
 
         ResetSkyboxParameters();
         hitVolume.weight = 0;
@@ -181,6 +187,7 @@ public class PostProcessManager : MonoBehaviour {
         RenderSettings.skybox.SetFloat("_ScrollSpeedPower", skyboxScrollSpeedPower);
         RenderSettings.skybox.SetFloat("_VariationsAmplitude", skyboxVariationsAmplitude);
         RenderSettings.skybox.SetFloat("_Rotation", 0.0f);
+        RenderSettings.skybox.SetVector("_LayersOffset", Vector3.zero);
     }
 
     public Color GetSkyboxHDRColor(Color color) {
@@ -596,5 +603,24 @@ public class PostProcessManager : MonoBehaviour {
     public void ShakeOnceOnMarker() {
         CameraShaker cs = CameraShaker.Instance;
         cs.ShakeOnce(markerScreenShakeMagnitude, markerScreenShakeRoughness, 0.1f, markerScreenShakeDecreaseTime);
+    }
+
+    public void AddSkyboxChromaticShiftOf(float intensity) {
+        if (skyboxChromaticAmount.IsOver()) {
+            skyboxChromaticShiftCoef = skyboxChromaticShiftCoef * MathTools.RandomSign();
+            skyboxChromaticAmount.AddTime(intensity);
+            skyboxChromaticCoroutine.Start(CUpdateSkyboxChromaticShift());
+        } else {
+            skyboxChromaticAmount.AddTime(intensity);
+        }
+    }
+
+    protected IEnumerator CUpdateSkyboxChromaticShift() {
+        while(!skyboxChromaticAmount.IsOver()) {
+            float value = skyboxChromaticAmount.RemainingTime() * skyboxChromaticShiftCoef;
+            RenderSettings.skybox.SetVector("_LayersOffset", new Vector3(value, -Math.Abs(value), 0));
+            yield return null;
+        }
+        RenderSettings.skybox.SetVector("_LayersOffset", Vector3.zero);
     }
 }

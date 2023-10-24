@@ -463,12 +463,14 @@ public class InfiniteMap : MapManager {
         gm.console.RewardBestScore();
         gm.soundManager.PlayRewardBestScore();
         gm.postProcessManager.ShakeOnceOnMarker();
+        gm.postProcessManager.AddSkyboxChromaticShiftOf(gm.postProcessManager.skyboxChromaticShiftDurationOnMarker);
         hasMadeNewBestScore = true;
     }
 
     protected void RewardNewTreshold() {
         gm.soundManager.PlayGetLumiereClip(gm.player.transform.position);
         gm.postProcessManager.ShakeOnceOnMarker();
+        gm.postProcessManager.AddSkyboxChromaticShiftOf(gm.postProcessManager.skyboxChromaticShiftDurationOnMarker);
     }
 
     protected bool RewardNewInifiniteTresholdReached(int nbBlocksNonStart) {
