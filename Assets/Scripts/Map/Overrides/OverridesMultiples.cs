@@ -33,4 +33,8 @@ public class OverridesMultiples : Override {
         }
         return result;
     }
+
+    public override int GetScoreMultiplier() {
+        return GetScoreMultiplier() * overrides.Select(o => o.GetScoreMultiplier()).Sum();
+    }
 }

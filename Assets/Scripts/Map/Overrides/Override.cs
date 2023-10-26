@@ -8,6 +8,7 @@ using UnityEngine.Localization;
 
 public abstract class Override: MonoBehaviour {
 
+    public int scoreMultiplier = 2;
     public LocalizedString overrideName;
 
     protected GameManager gm;
@@ -18,11 +19,23 @@ public abstract class Override: MonoBehaviour {
         map = gm.map;
 
         InitializeSpecific();
+        InitializeScoreMultiplier();
+    }
+
+    protected void InitializeScoreMultiplier() {
+        InfiniteMap infiniteMap = gm.GetInfiniteMap();
+        if(infiniteMap) {
+            infiniteMap.GetScoreManager().SetMultiplier(scoreMultiplier);
+        }
     }
 
     protected abstract void InitializeSpecific();
 
     public virtual string GetName() {
         return overrideName.GetLocalizedString().Result;
+    }
+
+    public virtual int GetScoreMultiplier() {
+        return scoreMultiplier;
     }
 }

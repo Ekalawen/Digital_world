@@ -25,6 +25,8 @@ public abstract class ScoreManager : MonoBehaviour
 
     protected abstract void InitializeScore();
 
+    public abstract void SetMultiplier(int multiplier);
+
     public abstract void OnNewBlockCrossed();
 
     public abstract void OnCatchData();

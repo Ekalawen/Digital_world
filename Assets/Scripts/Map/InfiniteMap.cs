@@ -577,4 +577,8 @@ public class InfiniteMap : MapManager {
     public List<Block> GetAllBlocks() {
         return allBlocks;
     }
+
+    public ScoreManager GetScoreManager() {
+        return scoreManager;
+    }
 }

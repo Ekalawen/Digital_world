@@ -14,6 +14,11 @@ public class ScoreManager_IncrementMultiplier : ScoreManager {
         UpdateDisplayer();
     }
 
+    public override void SetMultiplier(int multiplier) {
+        scoreIncrement *= multiplier;
+        scoreIncrementIncrement *= multiplier;
+    }
+
     public override void OnNewBlockCrossed() {
         currentScore += scoreIncrement;
         displayer.AddVolatileText($"+ {scoreIncrement}", displayer.GetTextColor());
