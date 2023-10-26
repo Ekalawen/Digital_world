@@ -7,16 +7,21 @@ public class ScoreManager_IncrementMultiplier : ScoreManager {
 
     public int scoreIncrement = 1;
     public int scoreIncrementIncrement = 1;
+    public int initialScoreMultiplier = 2;
     public float downOffset = 30.0f;
+
+    protected int scoreMultiplier;
 
     protected override void InitializeScore() {
         currentScore = 0;
+        scoreMultiplier = initialScoreMultiplier;
         UpdateDisplayer();
     }
 
     public override void SetMultiplier(int multiplier) {
         scoreIncrement *= multiplier;
         scoreIncrementIncrement *= multiplier;
+        scoreMultiplier = initialScoreMultiplier * multiplier;
     }
 
     public override void OnNewBlockCrossed() {
@@ -32,9 +37,9 @@ public class ScoreManager_IncrementMultiplier : ScoreManager {
     }
 
     public override void OnNewTresholdCrossed() {
-        scoreIncrement *= 2;
-        scoreIncrementIncrement *= 2;
-        displayer.AddVolatileText($"× 2 !!!", displayer.GetTextColor(), downOffset);
+        scoreIncrement *= scoreMultiplier;
+        scoreIncrementIncrement *= scoreMultiplier;
+        displayer.AddVolatileText($"× {scoreMultiplier} !!!", displayer.GetTextColor(), downOffset);
         UpdateDisplayer();
     }
 }

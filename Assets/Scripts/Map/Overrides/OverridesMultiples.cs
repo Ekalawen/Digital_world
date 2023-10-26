@@ -35,6 +35,6 @@ public class OverridesMultiples : Override {
     }
 
     public override int GetScoreMultiplier() {
-        return GetScoreMultiplier() * overrides.Select(o => o.GetScoreMultiplier()).Sum();
+        return GetScoreMultiplier() + overrides.Select(o => o.GetScoreMultiplier()).Sum();
     }
 }
