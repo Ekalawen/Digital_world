@@ -41,11 +41,12 @@ public class CounterDisplayer : MonoBehaviour {
         imageContainer.rectTransform.localScale = Vector3.one * scale;
     }
 
-    public void AddVolatileText(string message, Color color) {
+    public void AddVolatileText(string message, Color color, float downOffset = 0.0f) {
         if(!isActiveAndEnabled) {
             return;
         }
         TMP_Text t = Instantiate(movingTextPrefab, textContainer).GetComponent<TMP_Text>();
+        t.rectTransform.localPosition = t.rectTransform.localPosition + Vector3.down * downOffset;
         t.gameObject.SetActive(true);
         t.text = message;
         t.color = color;

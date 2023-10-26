@@ -83,6 +83,7 @@ public class InfiniteMap : MapManager {
     protected bool hasReachInfiniteMode = false;
     protected BlockForcerInIR blockForcer;
     protected AddHiddenTextureOnCubeInIR textureAdder;
+    protected ScoreManager scoreManager;
     [HideInInspector]
     public UnityEvent<int> onBlocksCrossed;
     [HideInInspector]
@@ -95,8 +96,8 @@ public class InfiniteMap : MapManager {
         blocksFolder = new GameObject("Blocks").transform;
         blocksFolder.transform.SetParent(cubesFolder.transform);
         string nextTresholdSymbol = gm.goalManager.GetNextNotUnlockedTresholdSymbolFor(nbBlocksRun);
-        nbBlocksDisplayer.SetColor(gm.console.allyColor);
-        nbBlocksDisplayer.Display($"{nbBlocksRun.ToString()}/{nextTresholdSymbol}");
+        scoreManager = gameObject.AddComponent<ScoreManager_IncrementMultiplier>();
+        scoreManager.Initialize();
         timerSinceLastBlock = new Timer();
         nbBlocksRun = 0;
         nbBlocksDestroyed = 0;
@@ -195,8 +196,9 @@ public class InfiniteMap : MapManager {
     }
 
     protected void AddNewTresholdMarker(Block block) {
-        List<int> tresholds = gm.goalManager.GetAllTresholds();
-        if(tresholds.Any(t => t != 0 && (nbBlocksCreated - nbFirstBlocks) == t)) {
+        //List<int> tresholds = gm.goalManager.GetAllTresholds();
+        //if(tresholds.Any(t => t != 0 && (nbBlocksCreated - nbFirstBlocks) == t)) {
+        if(IsNewTreshold(nbBlocksCreated - nbFirstBlocks)) {
             Vector3 pos = block.endPoint.position + Vector3.up * 1f;
             GameObject marker = Instantiate(newTresholdMarkerPrefab, pos, Quaternion.identity, block.transform.parent);
             marker.transform.LookAt(pos + FORWARD);
@@ -437,13 +439,16 @@ public class InfiniteMap : MapManager {
     protected void RewardPlayerForNewBlock(int nbBlocksAdded) {
         if (nbBlocksRun > nbFirstBlocks) {
             int nbBlocksNonStart = GetNonStartNbBlocksRun();
-            string nextTresholdSymbol = gm.goalManager.GetNextNotUnlockedTresholdSymbolFor(nbBlocksNonStart);
-            nbBlocksDisplayer.Display($"{nbBlocksNonStart.ToString()}/{nextTresholdSymbol}");
-            nbBlocksDisplayer.AddVolatileText($"+ {nbBlocksAdded.ToString()}", nbBlocksDisplayer.GetTextColor());
-            gm.soundManager.PlayNewBlockClip();
             if (IsNewTreshold(nbBlocksNonStart)) {
                 RewardNewTreshold();
             }
+            //string nextTresholdSymbol = gm.goalManager.GetNextNotUnlockedTresholdSymbolFor(nbBlocksNonStart);
+            //nbBlocksDisplayer.Display($"{nbBlocksNonStart}/{nextTresholdSymbol}");
+            if(UnityEngine.Random.value < 0.33f) {
+                scoreManager.OnCatchData();
+            }
+            scoreManager.OnNewBlockCrossed();
+            gm.soundManager.PlayNewBlockClip();
             if (IsNewBestScore(nbBlocksNonStart)) {
                 RewardNewBestScore();
             } else {
@@ -456,7 +461,8 @@ public class InfiniteMap : MapManager {
     }
 
     protected bool IsNewTreshold(int nbBlocksNonStart) {
-        return gm.goalManager.GetAllTresholds().Contains(nbBlocksNonStart);
+        //return gm.goalManager.GetAllTresholds().Contains(nbBlocksNonStart);
+        return nbBlocksNonStart % 10 == 0 && nbBlocksNonStart > 0;
     }
 
     protected void RewardNewBestScore() {
@@ -471,6 +477,7 @@ public class InfiniteMap : MapManager {
         gm.soundManager.PlayGetLumiereClip(gm.player.transform.position);
         gm.postProcessManager.ShakeOnceOnMarker();
         gm.postProcessManager.AddSkyboxChromaticShiftOf(gm.postProcessManager.skyboxChromaticShiftDurationOnMarker);
+        scoreManager.OnNewTresholdCrossed();
     }
 
     protected bool RewardNewInifiniteTresholdReached(int nbBlocksNonStart) {
