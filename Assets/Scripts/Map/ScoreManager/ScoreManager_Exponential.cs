@@ -3,25 +3,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ScoreManager_IncrementMultiplier : ScoreManager {
+public class ScoreManager_Exponential : ScoreManager {
 
     public int scoreIncrement = 1;
     public int scoreIncrementIncrement = 1;
-    public int initialScoreMultiplier = 2;
     public float downOffset = 30.0f;
 
-    protected int scoreMultiplier;
+    protected int scoreMultiplier = 2;
 
     protected override void InitializeScore() {
         currentScore = 0;
-        scoreMultiplier = initialScoreMultiplier;
         UpdateDisplayer();
     }
 
     public override void SetMultiplier(int multiplier) {
         scoreIncrement *= multiplier;
         scoreIncrementIncrement *= multiplier;
-        scoreMultiplier = initialScoreMultiplier * multiplier;
+        scoreMultiplier = multiplier;
     }
 
     public override void OnNewBlockCrossed() {

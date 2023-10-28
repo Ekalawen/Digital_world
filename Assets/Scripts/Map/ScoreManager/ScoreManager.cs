@@ -55,7 +55,12 @@ public abstract class ScoreManager : MonoBehaviour
     }
 
     private void DisplayScore(int score) {
-        displayer.Display($"{score}");
+        int nbBlocks = infiniteMap.GetNonStartNbBlocksRun();
+        displayer.Display($"{score} {SpecificDisplayScore()}({nbBlocks})");
         currentlyDisplayedScore = score;
+    }
+
+    protected virtual string SpecificDisplayScore() {
+        return "";
     }
 }

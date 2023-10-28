@@ -14,18 +14,20 @@ public abstract class Override: MonoBehaviour {
     protected GameManager gm;
     protected MapManager map;
 
-    public void Initialize() {
+    public void Initialize(bool applyMultiplier = true) {
         gm = GameManager.Instance;
         map = gm.map;
 
         InitializeSpecific();
-        InitializeScoreMultiplier();
+        if (applyMultiplier) {
+            InitializeScoreMultiplier();
+        }
     }
 
     protected void InitializeScoreMultiplier() {
         InfiniteMap infiniteMap = gm.GetInfiniteMap();
         if(infiniteMap) {
-            infiniteMap.GetScoreManager().SetMultiplier(scoreMultiplier);
+            infiniteMap.GetScoreManager().SetMultiplier(GetScoreMultiplier());
         }
     }
 

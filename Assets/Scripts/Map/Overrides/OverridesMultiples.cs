@@ -18,7 +18,7 @@ public class OverridesMultiples : Override {
         overrides = new List<Override>();
         foreach (GameObject overridePrefab in chosenPrefabs) {
             Override overrid = Instantiate(overridePrefab, transform).GetComponent<Override>();
-            overrid.Initialize();
+            overrid.Initialize(applyMultiplier: false);
             overrides.Add(overrid);
         }
     }
@@ -35,6 +35,6 @@ public class OverridesMultiples : Override {
     }
 
     public override int GetScoreMultiplier() {
-        return GetScoreMultiplier() + overrides.Select(o => o.GetScoreMultiplier()).Sum();
+        return scoreMultiplier + overrides.Select(o => o.GetScoreMultiplier()).Sum();
     }
 }

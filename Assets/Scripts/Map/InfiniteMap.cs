@@ -96,7 +96,7 @@ public class InfiniteMap : MapManager {
         blocksFolder = new GameObject("Blocks").transform;
         blocksFolder.transform.SetParent(cubesFolder.transform);
         string nextTresholdSymbol = gm.goalManager.GetNextNotUnlockedTresholdSymbolFor(nbBlocksRun);
-        scoreManager = gameObject.AddComponent<ScoreManager_IncrementMultiplier>();
+        scoreManager = gameObject.AddComponent<ScoreManager_Quadratic>();
         scoreManager.Initialize();
         timerSinceLastBlock = new Timer();
         nbBlocksRun = 0;
