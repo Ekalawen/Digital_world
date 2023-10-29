@@ -163,7 +163,7 @@ public class InfiniteMap : MapManager {
         Quaternion blockRotation = GetNextBlockRotation();
 
         Block newBlock = Instantiate(blockPrefab, blockPosition, blockRotation, blocksFolder).GetComponent<Block>();
-        newBlock.Initialize(blocksFolder, blockPrefab.GetComponent<Block>());
+        newBlock.Initialize(blocksFolder, blockPrefab.GetComponent<Block>(), 1);
         if (blocksNameToNotifyPlayerToPressShift.Contains(newBlock.name)) {
             newBlock.ShouldNotifyPlayerHowToPressShift();
             blocksNameToNotifyPlayerToPressShift.Remove(newBlock.name);
@@ -444,9 +444,9 @@ public class InfiniteMap : MapManager {
             }
             //string nextTresholdSymbol = gm.goalManager.GetNextNotUnlockedTresholdSymbolFor(nbBlocksNonStart);
             //nbBlocksDisplayer.Display($"{nbBlocksNonStart}/{nextTresholdSymbol}");
-            if(UnityEngine.Random.value < 0.33f) {
-                scoreManager.OnCatchData();
-            }
+            //if(UnityEngine.Random.value < 0.33f) {
+            //    scoreManager.OnCatchData();
+            //}
             scoreManager.OnNewBlockCrossed();
             gm.soundManager.PlayNewBlockClip();
             if (IsNewBestScore(nbBlocksNonStart)) {
@@ -580,5 +580,9 @@ public class InfiniteMap : MapManager {
 
     public ScoreManager GetScoreManager() {
         return scoreManager;
+    }
+
+    public void CaptureLumiere(Lumiere lumiere) {
+        scoreManager.OnCatchData();
     }
 }

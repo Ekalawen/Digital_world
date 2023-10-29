@@ -8,31 +8,35 @@ using UnityEngine.Events;
 
 public class Block : MonoBehaviour {
 
+    public static int maxTimesCountForAveraging = 10;
     protected static float defaultAverageTime = 2.5f;
     protected static float timesExtremeBounds = 0.20f;
     protected static int minTimesCountForAveraging = 3;
-    public static int maxTimesCountForAveraging = 10;
 
     public Transform startPoint;
     public Transform endPoint;
     public BlockTriggerZone triggerZone;
 
     public Transform cubeFolder;
+    public Transform lumiereFolder;
     public List<float> timesForFinishing; // { private get; set; }  // Don't use this directly ! Use GetTimeList() !
     public bool shouldPlayerPressShift = false;
 
     protected GameManager gm;
     protected MapManager map;
     protected List<Cube> cubes;
+    protected List<Lumiere> lumieres;
+    protected int nbLumieresToChose;
     protected Block originalBlockPrefab;
     protected bool shouldNotifyToPressShift = false;
     [HideInInspector]
     public UnityEvent<Block> onEnterBlock;
 
-    public void Initialize(Transform blocksFolder, Block originalBlockPrefab) {
+    public void Initialize(Transform blocksFolder, Block originalBlockPrefab, int nbLumieresToChose) {
         gm = GameManager.Instance;
         map = gm.map;
         this.originalBlockPrefab = originalBlockPrefab;
+        this.nbLumieresToChose = nbLumieresToChose;
         //Debug.Log($"BLOCK = {name} -----------------");
         //StopwatchWrapper.Mesure(GatherCubes);
         //StopwatchWrapper.Mesure(RegisterCubesToMap);
@@ -42,7 +46,38 @@ public class Block : MonoBehaviour {
             RegisterCubesToColorSources();
         }
         //StopwatchWrapper.Mesure(StartSwappingCubes);
+        GatherLumieres();
+        DestroyNonGatheredLumieres();
         StartSwappingCubes();
+    }
+
+    protected void GatherLumieres() {
+        lumieres = new List<Lumiere>();
+        if(!lumiereFolder) {
+            return;
+        }
+        List<BlockLumiere> blockLumieres = new List<BlockLumiere>();
+        foreach (Transform child in lumiereFolder) {
+            BlockLumiere blockLumiere = child.gameObject.GetComponent<BlockLumiere>();
+            if (blockLumiere.CanBePicked()) {
+                blockLumieres.Add(blockLumiere);
+            }
+        }
+        blockLumieres = GaussianGenerator.SelecteSomeNumberOf(blockLumieres, nbLumieresToChose);
+        blockLumieres.ForEach(bl => lumieres.AddRange(bl.GetLumieres()));
+        lumieres.ForEach(l => map.RegisterAlreadyExistingLumiere(l));
+    }
+
+    protected void DestroyNonGatheredLumieres() {
+        if(!lumiereFolder) {
+            return;
+        }
+        List<Lumiere> allLumieres = new List<Lumiere>();
+        foreach (Transform child in lumiereFolder) {
+            BlockLumiere blockLumiere = child.gameObject.GetComponent<BlockLumiere>();
+            allLumieres.AddRange(blockLumiere.GetLumieres());
+        }
+        allLumieres.FindAll(l => !lumieres.Contains(l)).ForEach(l => Destroy(l.gameObject));
     }
 
     public void InitializeInReward() {

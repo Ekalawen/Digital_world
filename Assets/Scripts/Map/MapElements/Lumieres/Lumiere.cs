@@ -53,15 +53,22 @@ public class Lumiere : MonoBehaviour {
     protected bool isCaptured = false;
     protected LumiereQuality lumiereQuality;
     protected bool isAccessible = true;
+    protected BlockLumiere blockLumiere = null;
     protected UnityEvent<Lumiere> onCapture = new UnityEvent<Lumiere>();
 
     public virtual void Initialize () {
         gm = GameManager.Instance;
         SetName();
         //SetLumiereQuality((LumiereQuality)PrefsManager.GetInt(PrefsManager.DATA_QUALITY_KEY, (int)MenuOptions.defaultLumiereQuality));
+        InitializeBlockLumiere();
         SetLumiereQuality(LumiereQuality.LOW);
         StartAnimation();
 	}
+
+    protected void InitializeBlockLumiere() {
+        blockLumiere = GetComponent<BlockLumiere>();
+        blockLumiere.Initialize();
+    }
 
     public void SetName() {
         name = $"{GetType()} {transform.position} ({type})";
@@ -98,7 +105,13 @@ public class Lumiere : MonoBehaviour {
 
         NotifyTimerManager();
 
+        NotifyBlockLumiere();
+
         ScreenShakeOnLumiereCapture();
+    }
+
+    protected void NotifyBlockLumiere() {
+        blockLumiere.OnCapture(this);
     }
 
     protected void NotifySoundManager() {
@@ -106,6 +119,9 @@ public class Lumiere : MonoBehaviour {
     }
 
     protected void NotifyTimerManager() {
+        if(IsBlockLumiere()) {
+            return;
+        }
         int nbDataTotal = gm.map.GetMaxNbLumieres() + gm.ennemiManager.GetInitialNbDataSondeTriggers();
         int nbDataRestantes = gm.map.GetNbLumieresAndLumieresAlmostFinalesRestantes() + gm.ennemiManager.GetNbDataSondeTriggers();
         //Debug.Log($"initialDataSondes = {gm.ennemiManager.GetInitialNbDataSondeTriggers()} currentDataSondes = {gm.ennemiManager.GetNbDataSondeTriggers()} dataTotal = {nbDataTotal} dataRestantes = {nbDataRestantes}");
@@ -151,7 +167,9 @@ public class Lumiere : MonoBehaviour {
 
     protected void AddToDataCount() {
         int dataCount = IncrementDataCount(1);
-        gm.console.AddToDataCountText(dataCount, 1);
+        if (!IsBlockLumiere()) {
+            gm.console.AddToDataCountText(dataCount, 1);
+        }
     }
 
     private void AutoDestroy() {
@@ -225,6 +243,9 @@ public class Lumiere : MonoBehaviour {
     }
 
     protected virtual void NotifyConsoleLumiereCatpure() {
+        if(IsBlockLumiere()) {
+            return;
+        }
         gm.console.AttraperLumiere(gm.map.GetLumieres().Count + gm.ennemiManager.GetNbDataSondeTriggers());
         gm.console.UpdateLastLumiereAttrapee();
     }
@@ -269,5 +290,9 @@ public class Lumiere : MonoBehaviour {
 
     public void RegisterOnCapture(UnityAction<Lumiere> call) {
         onCapture.AddListener(call);
+    }
+
+    public bool IsBlockLumiere() {
+        return blockLumiere != null;
     }
 }

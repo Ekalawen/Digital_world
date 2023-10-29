@@ -69,7 +69,7 @@ public class GaussianGenerator {
 
     public static List<T> SelecteSomeNumberOf<T>(List<T> l, int number) {
         if (number > l.Count) {
-            Debug.LogError("Impossible d'extraire cette quantité d'éléments de cette liste !");
+            return l.Select(s => s).ToList();
         }
 
         List<T> res = new List<T>();

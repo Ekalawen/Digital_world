@@ -24,6 +24,7 @@ public class ScoreManager_Quadratic : ScoreManager {
         scoreIncrement *= scoreMultiplier;
         scoreIncrement2 *= scoreMultiplier;
         scoreIncrement3 *= scoreMultiplier;
+        scoreIncrement4 *= scoreMultiplier;
     }
 
     public override void OnNewBlockCrossed() {
