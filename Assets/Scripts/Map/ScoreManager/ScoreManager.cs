@@ -6,6 +6,7 @@ using UnityEngine;
 public abstract class ScoreManager : MonoBehaviour
 {
     public float dataProbability = 1 / 3.0f;
+    public int nbDataPerBlock = 1;
 
     protected GameManager gm;
     protected InfiniteMap infiniteMap;
@@ -61,7 +62,7 @@ public abstract class ScoreManager : MonoBehaviour
     public abstract void OnNewTresholdCrossed();
 
     public virtual int GetNbDataForBlock() {
-        return UnityEngine.Random.value < dataProbability ? 1 : 0;
+        return UnityEngine.Random.value < dataProbability ? nbDataPerBlock : 0;
     }
 
     public int GetCurrentScore() {

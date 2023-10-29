@@ -528,6 +528,9 @@ public class MapManager : MonoBehaviour {
     }
 
     public Lumiere RegisterAlreadyExistingLumiere(Lumiere lumiere) {
+        if(lumieres.Contains(lumiere)) {
+            return lumiere;
+        }
         lumiere.Initialize();
         lumieres.Add(lumiere);
         if (gm.ennemiManager.GetInitialNbDataSondeTriggers() <= 0) { // C'est pas hyper hyper sexy ça x)
