@@ -8,21 +8,19 @@ using UnityEngine.Events;
 
 public class BlockLumiereConditionnal : BlockLumiere {
 
-    public List<GameObject> necessaryGameObjects;
-
-    public override bool CanBePicked() {
-        return necessaryGameObjects.All(go => go != null);
+    public enum ConditionType
+    {
+        Presence,
+        Absence,
     }
 
-    public List<Lumiere> GetLumieres() {
-        Lumiere lumiere = GetComponent<Lumiere>();
-        if(lumiere) {
-            return new List<Lumiere>() { lumiere };
+    public ConditionType conditionType = ConditionType.Presence;
+    public List<Cube> necessaryCubes;
+
+    public override bool CanBePicked() {
+        if (conditionType == ConditionType.Presence) {
+            return necessaryCubes.All(c => infiniteMap.IsCubeAt(c.transform.position));
         }
-        List<Lumiere> lumieres = new List<Lumiere>();
-        foreach (Transform child in transform) {
-            lumieres.Add(child.gameObject.GetComponent<Lumiere>());
-        }
-        return lumieres;
+        return necessaryCubes.All(c => !infiniteMap.IsCubeAt(c.transform.position));
     }
 }

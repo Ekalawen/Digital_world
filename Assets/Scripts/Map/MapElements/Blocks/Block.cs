@@ -59,6 +59,7 @@ public class Block : MonoBehaviour {
         List<BlockLumiere> blockLumieres = new List<BlockLumiere>();
         foreach (Transform child in lumiereFolder) {
             BlockLumiere blockLumiere = child.gameObject.GetComponent<BlockLumiere>();
+            blockLumiere.Initialize();
             if (blockLumiere.CanBePicked()) {
                 blockLumieres.Add(blockLumiere);
             }
