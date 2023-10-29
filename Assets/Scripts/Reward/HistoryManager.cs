@@ -45,6 +45,16 @@ public struct ObjectHistory {
 
 public class HistoryManager : MonoBehaviour {
 
+    public struct BlockPrefab {
+        public GameObject prefab;
+        public int nbData;
+
+        public BlockPrefab(GameObject prefab, int nbData) {
+            this.prefab = prefab;
+            this.nbData = nbData;
+        }
+    }
+
     static HistoryManager _instance;
     public static HistoryManager Instance { get { return _instance ?? (_instance = new GameObject().AddComponent<HistoryManager>()); } }
 
@@ -62,7 +72,7 @@ public class HistoryManager : MonoBehaviour {
     protected List<ObjectHistory> lumieresHistory;
     protected List<ObjectHistory> itemsHistory;
     protected List<TimedMessage> timedMessages;
-    protected List<GameObject> blockPassedPrefabs;
+    protected List<BlockPrefab> blockPassedPrefabs;
     protected Timer echantillonnageTimer;
     protected float dureeGame;
     protected MenuLevel.LevelType mapType;
@@ -93,7 +103,7 @@ public class HistoryManager : MonoBehaviour {
             itemsHistory = new List<ObjectHistory>();
         if(timedMessages == null)
             timedMessages = new List<TimedMessage>();
-        blockPassedPrefabs = new List<GameObject>();
+        blockPassedPrefabs = new List<BlockPrefab>();
 
         echantillonnageTimer = new Timer(frequenceEchantillonnagePositions);
         mapSize = gm.map.tailleMap;
@@ -228,10 +238,10 @@ public class HistoryManager : MonoBehaviour {
     }
 
     public void AddBlockPassed(Block block) {
-        blockPassedPrefabs.Add(block.GetOriginalBlockPrefab());
+        blockPassedPrefabs.Add(new BlockPrefab(block.GetOriginalBlockPrefab(), block.GetNbData()));
     }
 
-    public List<GameObject> GetBlocksPassedPrefabs() {
+    public List<BlockPrefab> GetBlocksPassedPrefabs() {
         return blockPassedPrefabs;
     }
 }

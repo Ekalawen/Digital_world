@@ -163,7 +163,7 @@ public class InfiniteMap : MapManager {
         Quaternion blockRotation = GetNextBlockRotation();
 
         Block newBlock = Instantiate(blockPrefab, blockPosition, blockRotation, blocksFolder).GetComponent<Block>();
-        newBlock.Initialize(blocksFolder, blockPrefab.GetComponent<Block>(), 1);
+        newBlock.Initialize(blocksFolder, blockPrefab.GetComponent<Block>(), scoreManager.GetNbDataForBlock());
         if (blocksNameToNotifyPlayerToPressShift.Contains(newBlock.name)) {
             newBlock.ShouldNotifyPlayerHowToPressShift();
             blocksNameToNotifyPlayerToPressShift.Remove(newBlock.name);

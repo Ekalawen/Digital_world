@@ -47,6 +47,7 @@ public class Block : MonoBehaviour {
         }
         //StopwatchWrapper.Mesure(StartSwappingCubes);
         GatherLumieres();
+        InitializeLumieres();
         DestroyNonGatheredLumieres();
         StartSwappingCubes();
     }
@@ -66,7 +67,6 @@ public class Block : MonoBehaviour {
         }
         blockLumieres = GaussianGenerator.SelecteSomeNumberOf(blockLumieres, nbLumieresToChose);
         blockLumieres.ForEach(bl => lumieres.AddRange(bl.GetLumieres()));
-        lumieres.ForEach(l => map.RegisterAlreadyExistingLumiere(l));
     }
 
     protected void DestroyNonGatheredLumieres() {
@@ -81,12 +81,26 @@ public class Block : MonoBehaviour {
         allLumieres.FindAll(l => !lumieres.Contains(l)).ForEach(l => Destroy(l.gameObject));
     }
 
-    public void InitializeInReward() {
+    public void InitializeInReward(int nbData) {
         GatherCubesInReward();
         foreach(Cube cube in cubes) {
             cube.InitializeInReward();
         }
+        // J'ai pas trouvé de solution pour le moment pour afficher les Lumieres dans le Reward !
+        // Le problème vient du fait que pour calculer BlockLumiere.CanBePicked(), j'ai besoin d'avoir l'infiniteMap pour savoir la position des cubes
+        // Et comme on est dans le reward, il n'y a pas de map.
+        // De plus, le destroy détruit à la fin de la frame, donc je ne peux pas savoir si les cubes ont déjà été détruits ou pas.
+        // Et le destroy immediate ne fonctionne pas car il peut être appelé dans une boucle de physique :D (ce qui n'est pas autorisé)
+        // Ce qu'on pourrait faire à la limite c'est passer la liste des cubes du block actuel au CanBePicked et il se baserait là-dessus !
+        // En vrai ça pourrait marcher ! :o
+        nbLumieresToChose = nbData;
+        lumieres = new List<Lumiere>();
+        DestroyNonGatheredLumieres();
         StartSwappingCubesInReward();
+    }
+
+    protected void InitializeLumieres() {
+        lumieres.ForEach(l => map.RegisterAlreadyExistingLumiere(l));
     }
 
     public void RegisterCubesToColorSources() {
@@ -259,5 +273,13 @@ public class Block : MonoBehaviour {
     public static void AddToTotalBlocksCrossed(int nbBlocksToAdd) {
         int newTotal = GetTotalBlocksCrossed() + nbBlocksToAdd;
         PrefsManager.SetInt(PrefsManager.TOTAL_BLOCKS_CROSSED_KEY, newTotal);
+    }
+
+    public bool HasData() {
+        return lumieres.Count > 0;
+    }
+
+    public int GetNbData() {
+        return lumieres.Count;
     }
 }

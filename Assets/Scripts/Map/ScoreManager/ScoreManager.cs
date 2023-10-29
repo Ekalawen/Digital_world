@@ -5,6 +5,7 @@ using UnityEngine;
 
 public abstract class ScoreManager : MonoBehaviour
 {
+    public float dataProbability = 1 / 3.0f;
     public float scoreUpdateDuration = 0.6f;
 
     protected GameManager gm;
@@ -32,6 +33,10 @@ public abstract class ScoreManager : MonoBehaviour
     public abstract void OnCatchData();
 
     public abstract void OnNewTresholdCrossed();
+
+    public virtual int GetNbDataForBlock() {
+        return UnityEngine.Random.value < dataProbability ? 1 : 0;
+    }
 
     public int GetCurrentScore() {
         return currentScore;

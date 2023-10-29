@@ -185,7 +185,7 @@ public class RewardManager : MonoBehaviour {
     }
 
     protected void RevealBlock(int nbBlocks, List<Vector2> gridPositions, Vector2 gridShape, Vector3 tailleMaxBlock, Color startColor, Color endColor, int indice) {
-        GameObject blockPrefab = hm.GetBlocksPassedPrefabs()[indice];
+        GameObject blockPrefab = hm.GetBlocksPassedPrefabs()[indice].prefab;
         float blockRedimensionnement = GetBlockRedimensionnement(tailleMaxBlock, blockPrefab);
         Vector2 screenPosition = gridPositions[indice];
         Vector3 worldPosition = GetBlockWorldPosition(screenPosition, blockPrefab, blockRedimensionnement);
@@ -373,8 +373,8 @@ public class RewardManager : MonoBehaviour {
         bestScoreTextInfinite.text = strings.bestScore.GetLocalizedString(bestScore).Result;
 
         string gameLength = hm.GetDureeGame().ToString("0.00");
-        string nbDifferentBlocks = hm.GetBlocksPassedPrefabs().Select(b => b.name).Reverse().Skip(1).Distinct().ToList().Count.ToString("0");
-        string nbSameBlockMax = GetSameBlockMaxCount(hm.GetBlocksPassedPrefabs().Select(b => b).Reverse().Skip(1).ToList()).ToString("0");
+        string nbDifferentBlocks = hm.GetBlocksPassedPrefabs().Select(b => b.prefab.name).Reverse().Skip(1).Distinct().ToList().Count.ToString("0");
+        string nbSameBlockMax = GetSameBlockMaxCount(hm.GetBlocksPassedPrefabs().Select(b => b.prefab).Reverse().Skip(1).ToList()).ToString("0");
         gameDurationTextInfinite.text = strings.gameDuration.GetLocalizedString(gameLength).Result;
         nbDifferentBlocksTextInfinite.text = strings.nbDifferentBlocks.GetLocalizedString(nbDifferentBlocks).Result;
         nbSameBlockMaxTextInfinite.text = strings.nbSameBlockMax.GetLocalizedString(nbSameBlockMax).Result;
