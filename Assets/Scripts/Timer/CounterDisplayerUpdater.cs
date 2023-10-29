@@ -46,7 +46,7 @@ public class CounterDisplayerUpdater : MonoBehaviour {
         DisplayScore(currentValue);
     }
 
-    public void DisplayScore(int value) {
+    protected void DisplayScore(int value) {
         displayer.Display($"{prefix}{value}{suffix}");
         currentlyDisplayedValue = value;
     }

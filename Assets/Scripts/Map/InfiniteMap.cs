@@ -58,6 +58,7 @@ public class InfiniteMap : MapManager {
     public CounterDisplayer scoreDisplayer;
     public CounterDisplayer incrementDisplayer;
     public CounterDisplayer increment2Displayer;
+    public CounterDisplayer nbBlocksDisplayer;
     public GameObject bestScoreMarkerPrefab;
     public GameObject newTresholdMarkerPrefab;
     public bool shouldResetAllBlocksTime = false;
@@ -86,6 +87,7 @@ public class InfiniteMap : MapManager {
     protected BlockForcerInIR blockForcer;
     protected AddHiddenTextureOnCubeInIR textureAdder;
     protected ScoreManager scoreManager;
+    protected CounterDisplayerUpdater nbBlocksDisplayerUpdater;
     [HideInInspector]
     public UnityEvent<int> onBlocksCrossed;
     [HideInInspector]
@@ -106,6 +108,7 @@ public class InfiniteMap : MapManager {
         blockWeights = blockLists.Aggregate(new List<BlockWeight>(),
             (list, blockList) => list.Concat(blockList.blocks).ToList());
         blockForcer = GetComponent<BlockForcerInIR>();
+        InitializeNbBlockDisplayer();
         InitTextureAdder();
 
         ResetAllBlocksTime();
@@ -113,6 +116,13 @@ public class InfiniteMap : MapManager {
         cameraShakeInstance = CameraShaker.Instance.StartShake(0, 0, 0);
 
         //StartCoroutine(AddFirstBlocksToHistory());
+    }
+
+    protected void InitializeNbBlockDisplayer() {
+        nbBlocksDisplayer.SetColor(gm.console.allyColor);
+        nbBlocksDisplayerUpdater = nbBlocksDisplayer.gameObject.GetComponent<CounterDisplayerUpdater>();
+        nbBlocksDisplayerUpdater.Initialize(nbBlocksDisplayer, GetNonStartNbBlocksRun);
+        nbBlocksDisplayerUpdater.UpdateValueInstantly();
     }
 
     protected void InitTextureAdder() {
@@ -399,6 +409,7 @@ public class InfiniteMap : MapManager {
         nbBlocksRun += nbBlocksToAdd;
         IncrementTotalBlocksCrossed(nbBlocksToAdd);
         RewardPlayerForNewBlock(nbBlocksToAdd);
+        nbBlocksDisplayerUpdater.UpdateValueInstantly();
     }
 
     protected void IncrementTotalBlocksCrossed(int nbBlocksToAdd) {
@@ -445,10 +456,6 @@ public class InfiniteMap : MapManager {
                 RewardNewTreshold();
             }
             //string nextTresholdSymbol = gm.goalManager.GetNextNotUnlockedTresholdSymbolFor(nbBlocksNonStart);
-            //nbBlocksDisplayer.Display($"{nbBlocksNonStart}/{nextTresholdSymbol}");
-            //if(UnityEngine.Random.value < 0.33f) {
-            //    scoreManager.OnCatchData();
-            //}
             scoreManager.OnNewBlockCrossed();
             gm.soundManager.PlayNewBlockClip();
             if (IsNewBestScore(nbBlocksNonStart)) {
