@@ -1331,7 +1331,7 @@ public class Console : MonoBehaviour {
         if (gm.GetMapType() == MenuLevel.LevelType.REGULAR) {
             gm.timerManager.timerDisplayer.gameObject.SetActive(isVisible);
         } else {
-            gm.GetInfiniteMap().nbBlocksDisplayer.gameObject.SetActive(isVisible);
+            gm.GetInfiniteMap().scoreDisplayer.gameObject.SetActive(isVisible);
         }
     }
 

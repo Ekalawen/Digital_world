@@ -6,22 +6,48 @@ using UnityEngine;
 public abstract class ScoreManager : MonoBehaviour
 {
     public float dataProbability = 1 / 3.0f;
-    public float scoreUpdateDuration = 0.6f;
 
     protected GameManager gm;
     protected InfiniteMap infiniteMap;
-    protected CounterDisplayer displayer;
+    protected CounterDisplayer scoreDisplayer;
+    protected CounterDisplayer incrementDisplayer;
+    protected CounterDisplayer increment2Displayer;
+    protected CounterDisplayerUpdater scoreDisplayerUpdater;
+    protected CounterDisplayerUpdater incrementDisplayerUpdater;
+    protected CounterDisplayerUpdater increment2DisplayerUpdater;
     protected int currentScore;
-    protected int currentlyDisplayedScore;
-    protected SingleCoroutine updateScoreCoroutine;
+    protected int scoreIncrement = 1;
+    protected int scoreIncrement2 = 5;
 
     public void Initialize() {
         gm = GameManager.Instance;
         infiniteMap = gm.GetInfiniteMap();
-        displayer = infiniteMap.nbBlocksDisplayer;
-        displayer.SetColor(gm.console.allyColor);
-        updateScoreCoroutine = new SingleCoroutine(this);
+        InitializeDisplayers();
         InitializeScore();
+    }
+
+    private void InitializeDisplayers() {
+        scoreDisplayer = infiniteMap.scoreDisplayer;
+        incrementDisplayer = infiniteMap.incrementDisplayer;
+        increment2Displayer = infiniteMap.increment2Displayer;
+        Color color = gm.console.allyColor;
+        scoreDisplayer.SetColor(color);
+        incrementDisplayer.SetColor(color);
+        increment2Displayer.SetColor(color);
+        scoreDisplayerUpdater = scoreDisplayer.gameObject.GetComponent<CounterDisplayerUpdater>();
+        incrementDisplayerUpdater = incrementDisplayer.gameObject.GetComponent<CounterDisplayerUpdater>();
+        increment2DisplayerUpdater = increment2Displayer.gameObject.GetComponent<CounterDisplayerUpdater>();
+        scoreDisplayerUpdater.Initialize(scoreDisplayer, GetCurrentScore);
+        incrementDisplayerUpdater.Initialize(incrementDisplayer, GetCurrentIncrement);
+        increment2DisplayerUpdater.Initialize(increment2Displayer, GetCurrentIncrement2);
+    }
+
+    protected int GetCurrentIncrement() {
+        return scoreIncrement;
+    }
+
+    protected int GetCurrentIncrement2() {
+        return scoreIncrement2;
     }
 
     protected abstract void InitializeScore();
@@ -42,30 +68,9 @@ public abstract class ScoreManager : MonoBehaviour
         return currentScore;
     }
 
-    protected void UpdateDisplayer() {
-        updateScoreCoroutine.Start(CUpdateDisplayer());
-    }
-
-    private IEnumerator CUpdateDisplayer() {
-        Timer timer = new Timer(scoreUpdateDuration);
-        int startScore = currentlyDisplayedScore;
-        startScore = Mathf.Min(startScore + 1, currentScore);
-        while (!timer.IsOver()) {
-            float avancement = MathCurves.QuadraticInverse(0, 1, timer.GetAvancement());
-            int score = Mathf.CeilToInt(MathCurves.Linear(startScore, currentScore, avancement));
-            DisplayScore(score);
-            yield return null;
-        }
-        DisplayScore(currentScore);
-    }
-
-    private void DisplayScore(int score) {
-        int nbBlocks = infiniteMap.GetNonStartNbBlocksRun();
-        displayer.Display($"{score} {SpecificDisplayScore()}({nbBlocks})");
-        currentlyDisplayedScore = score;
-    }
-
-    protected virtual string SpecificDisplayScore() {
-        return "";
+    protected void UpdateAllDisplayersInstantly() {
+        scoreDisplayerUpdater.UpdateValueInstantly();
+        incrementDisplayerUpdater.UpdateValueInstantly();
+        increment2DisplayerUpdater.UpdateValueInstantly();
     }
 }

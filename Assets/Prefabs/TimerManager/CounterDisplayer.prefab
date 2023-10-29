@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 281517194067190375}
   - component: {fileID: 9083546753885678359}
+  - component: {fileID: 2326454497563885614}
   m_Layer: 5
   m_Name: CounterDisplayer
   m_TagString: Untagged
@@ -58,6 +59,21 @@ MonoBehaviour:
   textContainer: {fileID: 281517194067190375}
   imageContainer: {fileID: 5943579560321765885}
   fontSize: 20
+--- !u!114 &2326454497563885614
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 281517194067190376}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bdfb6189dc346ce40a3660c57d9e038a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefix: '+ '
+  suffix: 
+  updateDuration: 0.6
 --- !u!1 &3351999291656320411
 GameObject:
   m_ObjectHideFlags: 0

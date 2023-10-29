@@ -266,7 +266,7 @@ public class RewardManager : MonoBehaviour {
     protected void InstantiateBlockPrefab(GameObject blockPrefab, Vector3 worldPosition, float redimensionnement, Color targetColor, bool isLastBlock) {
         Block block = Instantiate(blockPrefab, worldPosition, Quaternion.identity, parent: blocksFolder).GetComponent<Block>();
         block.transform.localScale /= redimensionnement;
-        block.InitializeInReward();
+        block.InitializeInReward(0);
         List<Cube> cubes = block.GetCubes();
         if (!isLastBlock) {
             List<float> distances = cubes.Select(c => Vector3.Distance(c.transform.position, block.triggerZone.transform.position)).ToList();

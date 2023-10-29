@@ -5,39 +5,38 @@ using UnityEngine;
 
 public class ScoreManager_Exponential : ScoreManager {
 
-    public int scoreIncrement = 1;
-    public int scoreIncrementIncrement = 1;
     public float downOffset = 30.0f;
 
     protected int scoreMultiplier = 2;
 
     protected override void InitializeScore() {
         currentScore = 0;
-        UpdateDisplayer();
+        UpdateAllDisplayersInstantly();
     }
 
     public override void SetMultiplier(int multiplier) {
         scoreIncrement *= multiplier;
-        scoreIncrementIncrement *= multiplier;
+        scoreIncrement2 *= multiplier;
         scoreMultiplier = multiplier;
+        UpdateAllDisplayersInstantly();
     }
 
     public override void OnNewBlockCrossed() {
         currentScore += scoreIncrement;
-        displayer.AddVolatileText($"+ {scoreIncrement}", displayer.GetTextColor());
-        UpdateDisplayer();
+        scoreDisplayer.AddVolatileText($"+ {scoreIncrement}", scoreDisplayer.GetTextColor());
+        scoreDisplayerUpdater.UpdateValue();
     }
 
     public override void OnCatchData() {
-        scoreIncrement += scoreIncrementIncrement;
-        displayer.AddVolatileText($"+ {scoreIncrementIncrement}", displayer.GetTextColor(), downOffset);
-        UpdateDisplayer();
+        scoreIncrement += scoreIncrement2;
+        incrementDisplayer.AddVolatileText($"+ {scoreIncrement2}", incrementDisplayer.GetTextColor());
+        incrementDisplayerUpdater.UpdateValue();
     }
 
     public override void OnNewTresholdCrossed() {
         scoreIncrement *= scoreMultiplier;
-        scoreIncrementIncrement *= scoreMultiplier;
-        displayer.AddVolatileText($"× {scoreMultiplier} !!!", displayer.GetTextColor(), downOffset);
-        UpdateDisplayer();
+        scoreIncrement2 *= scoreMultiplier;
+        increment2Displayer.AddVolatileText($"× {scoreMultiplier} !!!", increment2Displayer.GetTextColor());
+        increment2DisplayerUpdater.UpdateValue();
     }
 }

@@ -55,7 +55,9 @@ public class InfiniteMap : MapManager {
     public float infiniteModeReachedScreenShakeDecreaseTime;
 
     [Header("Others")]
-    public CounterDisplayer nbBlocksDisplayer;
+    public CounterDisplayer scoreDisplayer;
+    public CounterDisplayer incrementDisplayer;
+    public CounterDisplayer increment2Displayer;
     public GameObject bestScoreMarkerPrefab;
     public GameObject newTresholdMarkerPrefab;
     public bool shouldResetAllBlocksTime = false;
@@ -425,7 +427,7 @@ public class InfiniteMap : MapManager {
         if (indiceBlockEntered == indiceCurrentAllBlock + 1 && nbBlocksRun > nbFirstBlocks) {
             if (indiceCurrentAllBlock >= 0) {
                 Block passedBlock = allBlocks[indiceCurrentAllBlock];
-                passedBlock.RememberTime(timerSinceLastBlock.GetElapsedTime(), nbBlocksDisplayer);
+                passedBlock.RememberTime(timerSinceLastBlock.GetElapsedTime(), scoreDisplayer);
             }
         }
     }

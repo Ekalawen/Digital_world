@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class ScoreManager_Quadratic : ScoreManager {
 
-    public int scoreIncrement = 1;
-    public int scoreIncrement2 = 5;
     public int scoreIncrement3 = 5;
     public int scoreIncrement4 = 5;
     public float downOffset = 30.0f;
@@ -16,7 +14,7 @@ public class ScoreManager_Quadratic : ScoreManager {
 
     protected override void InitializeScore() {
         currentScore = 0;
-        UpdateDisplayer();
+        UpdateAllDisplayersInstantly();
     }
 
     public override void SetMultiplier(int multiplier) {
@@ -25,32 +23,30 @@ public class ScoreManager_Quadratic : ScoreManager {
         scoreIncrement2 *= scoreMultiplier;
         scoreIncrement3 *= scoreMultiplier;
         scoreIncrement4 *= scoreMultiplier;
+        UpdateAllDisplayersInstantly();
     }
 
     public override void OnNewBlockCrossed() {
         currentScore += scoreIncrement;
-        displayer.AddVolatileText($"+ {scoreIncrement}", displayer.GetTextColor());
-        UpdateDisplayer();
+        scoreDisplayer.AddVolatileText($"+ {scoreIncrement}", scoreDisplayer.GetTextColor());
+        scoreDisplayerUpdater.UpdateValue();
     }
 
     public override void OnCatchData() {
         scoreIncrement += scoreIncrement2;
-        displayer.AddVolatileText($"++ {scoreIncrement2}", displayer.GetTextColor(), downOffset);
-        UpdateDisplayer();
+        incrementDisplayer.AddVolatileText($"+ {scoreIncrement2} !", incrementDisplayer.GetTextColor());
+        incrementDisplayerUpdater.UpdateValue();
     }
 
     public override void OnNewTresholdCrossed() {
         scoreIncrement2 += scoreIncrement3;
-        displayer.AddVolatileText($"+++ {scoreIncrement3} !!!", gm.console.basicColor, downOffset * 2);
+        increment2Displayer.AddVolatileText($"+ {scoreIncrement3} !!!", incrementDisplayer.GetTextColor());
+        increment2DisplayerUpdater.UpdateValue();
+
         scoreIncrement3 += scoreIncrement4;
         if(!hasAlreadyDoubleScoreIncrement4) {
             scoreIncrement4 *= 2;
             hasAlreadyDoubleScoreIncrement4 = true;
         }
-        UpdateDisplayer();
-    }
-
-    protected override string SpecificDisplayScore() {
-        return $"(+{scoreIncrement}, ++{scoreIncrement2}, +++{scoreIncrement3}) ";
     }
 }
