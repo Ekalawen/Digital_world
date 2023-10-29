@@ -12,16 +12,17 @@ public class OverrideChrismasTree : OverrideOnBlock {
     protected ScoreManager scoreManager;
 
     protected override void InitializeSpecific() {
-        base.InitializeSpecific();
+        Debug.Log($"OverrideChrimasTree.InitializeSpecific()");
+        infiniteMap = gm.GetInfiniteMap();
         scoreManager = infiniteMap.GetScoreManager();
         scoreManager.dataProbability = 1.0f;
         scoreManager.nbDataPerBlock = nbDataPerBlock;
+
+        OnAllFirstBlocks();
+        infiniteMap.onCreateBlock.AddListener(OnBlock);
     }
 
     protected override void OnBlock(Block block) {
-        int nbLumieresToChose = block.GetNbLumieresToChose();
-        if(nbLumieresToChose < nbDataPerBlock) {
-            block.AddLumieres(nbDataPerBlock - nbLumieresToChose);
-        }
+        block.SetNbDataToChose(nbDataPerBlock);
     }
 }

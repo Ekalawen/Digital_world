@@ -42,14 +42,24 @@ public class Block : MonoBehaviour {
         //StopwatchWrapper.Mesure(RegisterCubesToMap);
         GatherCubes();
         RegisterCubesToMap();
-        if(gm.timerManager.HasGameStarted()) {
+        if (gm.timerManager.HasGameStarted()) {
             RegisterCubesToColorSources();
         }
         //StopwatchWrapper.Mesure(StartSwappingCubes);
-        GatherLumieres();
         InitializeLumieres();
-        DisableNonGatheredLumieres();
         StartSwappingCubes();
+    }
+
+    protected void InitializeLumieres() {
+        if(!gm.IsInitializationOver()) {
+            Debug.Log($"Block.InitializeLumieres but will be called back ! (nbLumieresToChose = {nbLumieresToChose})");
+            gm.onInitilizationFinish.AddListener(InitializeLumieres); // We have to delay to let OverrideChrimasTree adjust nbLumieresToChose ! :3
+            return;
+        }
+        Debug.Log($"Block.InitializeLumieresEffective() with nbLumieresToChose = {nbLumieresToChose}");
+        GatherLumieres();
+        InitializeChosenLumieres();
+        DestroyNonChosenLumieres();
     }
 
     protected void GatherLumieres() {
@@ -69,7 +79,7 @@ public class Block : MonoBehaviour {
         blockLumieres.ForEach(bl => lumieres.AddRange(bl.GetLumieres()));
     }
 
-    protected void DisableNonGatheredLumieres() {
+    protected void DestroyNonChosenLumieres() {
         if(!lumiereFolder) {
             return;
         }
@@ -78,8 +88,7 @@ public class Block : MonoBehaviour {
             BlockLumiere blockLumiere = child.gameObject.GetComponent<BlockLumiere>();
             allLumieres.AddRange(blockLumiere.GetLumieres());
         }
-        //allLumieres.FindAll(l => !lumieres.Contains(l)).ForEach(l => Destroy(l.gameObject));
-        allLumieres.FindAll(l => !lumieres.Contains(l)).ForEach(l => l.gameObject.SetActive(false));
+        allLumieres.FindAll(l => !lumieres.Contains(l)).ForEach(l => Destroy(l.gameObject));
     }
 
     public void InitializeInReward(int nbData) {
@@ -96,15 +105,12 @@ public class Block : MonoBehaviour {
         // En vrai ça pourrait marcher ! :o
         nbLumieresToChose = nbData;
         lumieres = new List<Lumiere>();
-        DisableNonGatheredLumieres();
+        DestroyNonChosenLumieres();
         StartSwappingCubesInReward();
     }
 
-    protected void InitializeLumieres() {
-        lumieres.ForEach(l => {
-            l.gameObject.SetActive(true);
-            map.RegisterAlreadyExistingLumiere(l);
-        });
+    protected void InitializeChosenLumieres() {
+        lumieres.ForEach(l => map.RegisterAlreadyExistingLumiere(l));
     }
 
     public void AddLumieres(int nbLumieresToAdd) {
@@ -124,9 +130,9 @@ public class Block : MonoBehaviour {
         }
         blockLumieres = GaussianGenerator.SelecteSomeNumberOf(blockLumieres, nbLumieresToAdd);
         blockLumieres.ForEach(bl => lumieres.AddRange(bl.GetLumieres()));
-        InitializeLumieres();
+        InitializeChosenLumieres();
         lumieres.AddRange(previousLumieres);
-        DisableNonGatheredLumieres();
+        DestroyNonChosenLumieres();
     }
 
     public void RegisterCubesToColorSources() {
@@ -309,7 +315,8 @@ public class Block : MonoBehaviour {
         return lumieres.Count;
     }
 
-    public int GetNbLumieresToChose() {
-        return nbLumieresToChose;
+    public void SetNbDataToChose(int nbDataPerBlock) {
+        Debug.Log($"Block.SetNbDataToChose(nbDataPerBlock = {nbDataPerBlock})");
+        nbLumieresToChose = nbDataPerBlock;
     }
 }
