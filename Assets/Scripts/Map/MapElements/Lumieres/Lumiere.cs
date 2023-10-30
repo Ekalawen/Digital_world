@@ -110,6 +110,12 @@ public class Lumiere : MonoBehaviour {
         ScreenShakeOnLumiereCapture();
     }
 
+    public void DestroySmoothly() {
+        gm.map.RemoveLumiere(this);
+
+        AutoDestroy();
+    }
+
     protected void NotifyBlockLumiere() {
         blockLumiere.OnCapture(this);
     }
@@ -172,7 +178,7 @@ public class Lumiere : MonoBehaviour {
         }
     }
 
-    private void AutoDestroy() {
+    protected void AutoDestroy() {
         Destroy(this.gameObject, lumiereQuality == LumiereQuality.HIGH ? dureeDestructionHigh : dureeDestructionLow);
         DestroyAnimation();
     }

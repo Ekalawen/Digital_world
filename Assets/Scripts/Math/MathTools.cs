@@ -24,6 +24,24 @@ public static class MathTools
         return res;
     }
 
+    public static Vector3 Min(Vector3 v1, Vector3 v2)
+    {
+        Vector3 res;
+        res.x = Mathf.Min(v1.x, v2.x);
+        res.y = Mathf.Min(v1.y, v2.y);
+        res.z = Mathf.Min(v1.z, v2.z);
+        return res;
+    }
+
+    public static Vector3 Max(Vector3 v1, Vector3 v2)
+    {
+        Vector3 res;
+        res.x = Mathf.Max(v1.x, v2.x);
+        res.y = Mathf.Max(v1.y, v2.y);
+        res.z = Mathf.Max(v1.z, v2.z);
+        return res;
+    }
+
     public static float CubeDistance(Vector3 v1, Vector3 v2) {
         Vector3Int start = RoundToInt(v1);
         Vector3Int end = RoundToInt(v2);

@@ -374,6 +374,7 @@ public class InfiniteMap : MapManager {
         int indice = allBlocks.IndexOf(block);
         if(indice > indiceCurrentAllBlocks) {
             int nbBlocksCrossed = indice - indiceCurrentAllBlocks;
+            LeaveCurrentBlock();
             AddBlockRun(nbBlocksCrossed);
 
             RegisterPassedBlocksToHistory(indiceCurrentAllBlocks, nbBlocksCrossed);
@@ -399,6 +400,15 @@ public class InfiniteMap : MapManager {
 
             onBlocksCrossed.Invoke(nbBlocksCrossed);
         }
+    }
+
+    protected void LeaveCurrentBlock() {
+        Block currentBlock = GetCurrentBlock();
+        currentBlock.onLeaveBlock.Invoke(currentBlock);
+    }
+
+    public Block GetCurrentBlock() {
+        return blocks[indiceCurrentBlock];
     }
 
     protected int GetLastTresholdToUseForPhases() {

@@ -357,6 +357,10 @@ public class MapManager : MonoBehaviour {
         return GetCubeAt(pos) != null;
     }
 
+    public bool IsFree(Vector3 pos) {
+        return !IsCubeAt(pos) && !IsLumiereAt(pos) && !gm.itemManager.IsItemAt(pos);
+    }
+
     public bool IsEnabledCubeAt(Vector3 pos) {
         Cube cube = GetCubeAt(pos);
         return cube != null && cube.IsEnabled();
@@ -519,7 +523,7 @@ public class MapManager : MonoBehaviour {
             Debug.Log($"Une lumière est crée dans un cube ! x)");
         }
 
-        Lumiere lumiere = GameObject.Instantiate(GetPrefab(type), pos, Quaternion.identity, lumieresFolder.transform).GetComponent<Lumiere>();
+        Lumiere lumiere = Instantiate(GetPrefab(type), pos, Quaternion.identity, lumieresFolder.transform).GetComponent<Lumiere>();
         lumiere.Initialize();
 
         RegisterAlreadyExistingLumiere(lumiere);
@@ -1958,5 +1962,4 @@ public class MapManager : MonoBehaviour {
         }
         return null;
     }
-
 }

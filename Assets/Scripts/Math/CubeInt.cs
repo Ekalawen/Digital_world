@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class CubeInt {
 
@@ -202,5 +203,17 @@ public class CubeInt {
         int height = Mathf.Max(yMax - yMin, 0);
         int depth = Mathf.Max(zMax - zMin, 0);
         return new CubeInt(new Vector3Int(xMin, yMin, zMin), new Vector3Int(width, height, depth));
+    }
+
+    public void ExtendTo(Vector3 position) {
+        min = MathTools.RoundToInt(MathTools.Min(position, min));
+        max = MathTools.RoundToInt(MathTools.Max(position, max));
+    }
+
+    public Vector3 GetRandomPosition() {
+        return new Vector3(
+            Random.Range(Mathf.RoundToInt(min.x), Mathf.RoundToInt(max.x) + 1),
+            Random.Range(Mathf.RoundToInt(min.y), Mathf.RoundToInt(max.y) + 1),
+            Random.Range(Mathf.RoundToInt(min.z), Mathf.RoundToInt(max.z) + 1));
     }
 }

@@ -27,10 +27,15 @@ public class Block : MonoBehaviour {
     protected List<Cube> cubes;
     protected List<Lumiere> lumieres;
     protected int nbLumieresToChose;
+    protected int nbRandomLumieresToSpawn = 0;
     protected Block originalBlockPrefab;
     protected bool shouldNotifyToPressShift = false;
+    protected bool shouldDestroyLumieresOnLeave = false;
+    protected BoundingBox cubeBoundingBox;
     [HideInInspector]
     public UnityEvent<Block> onEnterBlock;
+    [HideInInspector]
+    public UnityEvent<Block> onLeaveBlock;
 
     public void Initialize(Transform blocksFolder, Block originalBlockPrefab, int nbLumieresToChose) {
         gm = GameManager.Instance;
@@ -40,6 +45,7 @@ public class Block : MonoBehaviour {
         //Debug.Log($"BLOCK = {name} -----------------");
         //StopwatchWrapper.Mesure(GatherCubes);
         //StopwatchWrapper.Mesure(RegisterCubesToMap);
+        InitializeTriggerZone();
         GatherCubes();
         RegisterCubesToMap();
         if (gm.timerManager.HasGameStarted()) {
@@ -50,16 +56,20 @@ public class Block : MonoBehaviour {
         StartSwappingCubes();
     }
 
+    private void InitializeTriggerZone() {
+        this.triggerZone.Initialize();
+        cubeBoundingBox = new BoundingBox(MathTools.RoundToInt(transform.position), MathTools.RoundToInt(transform.position));
+    }
+
     protected void InitializeLumieres() {
         if(!gm.IsInitializationOver()) {
-            Debug.Log($"Block.InitializeLumieres but will be called back ! (nbLumieresToChose = {nbLumieresToChose})");
             gm.onInitilizationFinish.AddListener(InitializeLumieres); // We have to delay to let OverrideChrimasTree adjust nbLumieresToChose ! :3
             return;
         }
-        Debug.Log($"Block.InitializeLumieresEffective() with nbLumieresToChose = {nbLumieresToChose}");
         GatherLumieres();
         InitializeChosenLumieres();
         DestroyNonChosenLumieres();
+        SpawnRandomLumieres();
     }
 
     protected void GatherLumieres() {
@@ -157,17 +167,18 @@ public class Block : MonoBehaviour {
         cubes = new List<Cube>();
         foreach (Transform child in cubeFolder) {
             Cube cube = child.gameObject.GetComponent<Cube>();
-            if (cube != null)
-                cubes.Add(cube);
+            if (cube != null) {
+                AddCube(cube);
+            }
 
             RandomCubes randomCubes = child.gameObject.GetComponent<RandomCubes>();
             if (randomCubes != null)
-                cubes.AddRange(randomCubes.GetChosenCubesAndDestroyOthers());
+                AddCubes(randomCubes.GetChosenCubesAndDestroyOthers());
 
             SwappyCubesHolderManager swappyCubesHolderManager = child.gameObject.GetComponent<SwappyCubesHolderManager>();
             if (swappyCubesHolderManager != null) {
                 swappyCubesHolderManager.Initialize(gatherCubesInChildren: true);
-                cubes.AddRange(swappyCubesHolderManager.GetCubes());
+                AddCubes(swappyCubesHolderManager.GetCubes());
             }
         }
     }
@@ -177,18 +188,27 @@ public class Block : MonoBehaviour {
         foreach (Transform child in cubeFolder) {
             Cube cube = child.gameObject.GetComponent<Cube>();
             if (cube != null)
-                cubes.Add(cube);
+                AddCube(cube);
 
             RandomCubes randomCubes = child.gameObject.GetComponent<RandomCubes>();
             if (randomCubes != null)
-                cubes.AddRange(randomCubes.GetChosenCubesAndDestroyOthers());
+                AddCubes(randomCubes.GetChosenCubesAndDestroyOthers());
 
             SwappyCubesHolderManager swappyCubesHolderManager = child.gameObject.GetComponent<SwappyCubesHolderManager>();
             if (swappyCubesHolderManager != null) {
                 swappyCubesHolderManager.InitializeInReward(gatherCubesInChildren: true);
-                cubes.AddRange(swappyCubesHolderManager.GetCubes());
+                AddCubes(swappyCubesHolderManager.GetCubes());
             }
         }
+    }
+
+    protected void AddCube(Cube cube) {
+        cubes.Add(cube);
+        cubeBoundingBox.ExtendTo(cube.transform.position);
+    }
+
+    protected void AddCubes(List<Cube> cubes) {
+        cubes.ForEach(c => AddCube(c));
     }
 
     protected void StartSwappingCubes() {
@@ -316,7 +336,47 @@ public class Block : MonoBehaviour {
     }
 
     public void SetNbDataToChose(int nbDataPerBlock) {
-        Debug.Log($"Block.SetNbDataToChose(nbDataPerBlock = {nbDataPerBlock})");
         nbLumieresToChose = nbDataPerBlock;
+    }
+
+    protected void SpawnLumiereAt(Vector3 pos) {
+        Lumiere lumiere = map.CreateLumiere(pos, Lumiere.LumiereType.NORMAL);
+        lumieres.Add(lumiere);
+    }
+
+    protected void SpawnOneRandomLumiere() {
+        for (int k = 0; k < 100; k++) {
+            Vector3 pos = cubeBoundingBox.GetRandomPosition() + GetHalfOffset();
+            if (map.IsFree(pos)) {
+                SpawnLumiereAt(pos);
+                break;
+            }
+        }
+    }
+
+    protected Vector3 GetHalfOffset() {
+        /// NOT WORKING ! x)
+        //return new Vector3(0.5f, 0.0f, 0.0f);
+        //Vector3 pos = transform.position;
+        Vector3 pos = cubes.First().transform.position;
+        return pos - new Vector3(Mathf.Floor(pos.x), Mathf.Floor(pos.y), Mathf.Floor(pos.z));
+    }
+
+    protected void SpawnRandomLumieres() {
+        for(int i = 0; i < nbRandomLumieresToSpawn; ++i) {
+            SpawnOneRandomLumiere();
+        }
+    }
+
+    public void SetShouldDestroyLumieresOnLeave() {
+        onLeaveBlock.AddListener(block => DestroyAllLumieres());
+    }
+
+    protected void DestroyAllLumieres() {
+        lumieres.FindAll(l => l).ForEach(l => l.DestroySmoothly());
+    }
+
+    public void SetNbRandomToSpawn(int quantity) {
+        nbRandomLumieresToSpawn = quantity;
     }
 }
