@@ -92,6 +92,8 @@ public class InfiniteMap : MapManager {
     public UnityEvent<int> onBlocksCrossed;
     [HideInInspector]
     public UnityEvent<Block> onCreateBlock;
+    [HideInInspector]
+    public UnityEvent<Block> onBeforeInitializeBlock;
 
     protected override void InitializeSpecific()
     {
@@ -175,6 +177,7 @@ public class InfiniteMap : MapManager {
         Quaternion blockRotation = GetNextBlockRotation();
 
         Block newBlock = Instantiate(blockPrefab, blockPosition, blockRotation, blocksFolder).GetComponent<Block>();
+        onBeforeInitializeBlock.Invoke(newBlock);
         newBlock.Initialize(blocksFolder, blockPrefab.GetComponent<Block>(), scoreManager.GetNbDataForBlock());
         if (blocksNameToNotifyPlayerToPressShift.Contains(newBlock.name)) {
             newBlock.ShouldNotifyPlayerHowToPressShift();
@@ -404,11 +407,14 @@ public class InfiniteMap : MapManager {
 
     protected void LeaveCurrentBlock() {
         Block currentBlock = GetCurrentBlock();
+        if(!currentBlock) {
+            return;
+        }
         currentBlock.onLeaveBlock.Invoke(currentBlock);
     }
 
     public Block GetCurrentBlock() {
-        return blocks[indiceCurrentBlock];
+        return allBlocks[indiceCurrentAllBlocks];
     }
 
     protected int GetLastTresholdToUseForPhases() {

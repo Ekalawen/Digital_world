@@ -27,15 +27,19 @@ public class Block : MonoBehaviour {
     protected List<Cube> cubes;
     protected List<Lumiere> lumieres;
     protected int nbLumieresToChose;
-    protected int nbRandomLumieresToSpawn = 0;
+    protected float randomDataProbability = 0;
     protected Block originalBlockPrefab;
     protected bool shouldNotifyToPressShift = false;
     protected bool shouldDestroyLumieresOnLeave = false;
-    protected BoundingBox cubeBoundingBox;
+    protected Bounds cubeBoundingBox;
+    protected bool isCubeBoundingBoxCreated = false;
+    protected Bounds lumiereSpawnBoundingBox;
     [HideInInspector]
     public UnityEvent<Block> onEnterBlock;
     [HideInInspector]
     public UnityEvent<Block> onLeaveBlock;
+    [HideInInspector]
+    public UnityEvent<Block> onDestroyBlock;
 
     public void Initialize(Transform blocksFolder, Block originalBlockPrefab, int nbLumieresToChose) {
         gm = GameManager.Instance;
@@ -58,7 +62,6 @@ public class Block : MonoBehaviour {
 
     private void InitializeTriggerZone() {
         this.triggerZone.Initialize();
-        cubeBoundingBox = new BoundingBox(MathTools.RoundToInt(transform.position), MathTools.RoundToInt(transform.position));
     }
 
     protected void InitializeLumieres() {
@@ -117,6 +120,18 @@ public class Block : MonoBehaviour {
         lumieres = new List<Lumiere>();
         DestroyNonChosenLumieres();
         StartSwappingCubesInReward();
+    }
+
+    protected void UpdateBoundingBoxWith(Cube cube) {
+        if (!isCubeBoundingBoxCreated) {
+            cubeBoundingBox = new Bounds(cube.transform.position, Vector3.zero);
+            lumiereSpawnBoundingBox = new Bounds(cubeBoundingBox.center, cubeBoundingBox.size + Vector3.one * 2);
+            isCubeBoundingBoxCreated = true;
+            return;
+        }
+        cubeBoundingBox.min = MathTools.Min(cubeBoundingBox.min, cube.transform.position);
+        cubeBoundingBox.max = MathTools.Max(cubeBoundingBox.max, cube.transform.position);
+        lumiereSpawnBoundingBox = new Bounds(cubeBoundingBox.center, cubeBoundingBox.size + Vector3.one * 2);
     }
 
     protected void InitializeChosenLumieres() {
@@ -204,7 +219,7 @@ public class Block : MonoBehaviour {
 
     protected void AddCube(Cube cube) {
         cubes.Add(cube);
-        cubeBoundingBox.ExtendTo(cube.transform.position);
+        UpdateBoundingBoxWith(cube);
     }
 
     protected void AddCubes(List<Cube> cubes) {
@@ -248,6 +263,7 @@ public class Block : MonoBehaviour {
             float timeBeforeDecompose = coef * speedDestruction;
             cube.DecomposeIn(dureeDecompose, timeBeforeDecompose);
         }
+        onDestroyBlock.Invoke(this);
         StartCoroutine(DestroyWhenAllCubesAreDestroyed());
     }
 
@@ -340,13 +356,13 @@ public class Block : MonoBehaviour {
     }
 
     protected void SpawnLumiereAt(Vector3 pos) {
-        Lumiere lumiere = map.CreateLumiere(pos, Lumiere.LumiereType.NORMAL);
+        Lumiere lumiere = map.CreateLumiere(pos, Lumiere.LumiereType.NORMAL, dontRoundPositions: true);
         lumieres.Add(lumiere);
     }
 
     protected void SpawnOneRandomLumiere() {
         for (int k = 0; k < 100; k++) {
-            Vector3 pos = cubeBoundingBox.GetRandomPosition() + GetHalfOffset();
+            Vector3 pos = lumiereSpawnBoundingBox.min + MathTools.RoundToInt(MathTools.Range(lumiereSpawnBoundingBox.size));
             if (map.IsFree(pos)) {
                 SpawnLumiereAt(pos);
                 break;
@@ -354,29 +370,23 @@ public class Block : MonoBehaviour {
         }
     }
 
-    protected Vector3 GetHalfOffset() {
-        /// NOT WORKING ! x)
-        //return new Vector3(0.5f, 0.0f, 0.0f);
-        //Vector3 pos = transform.position;
-        Vector3 pos = cubes.First().transform.position;
-        return pos - new Vector3(Mathf.Floor(pos.x), Mathf.Floor(pos.y), Mathf.Floor(pos.z));
-    }
-
     protected void SpawnRandomLumieres() {
-        for(int i = 0; i < nbRandomLumieresToSpawn; ++i) {
+        int nbRandomDataToSpawn = Mathf.RoundToInt(randomDataProbability * lumiereSpawnBoundingBox.size.x * lumiereSpawnBoundingBox.size.y * lumiereSpawnBoundingBox.size.z);
+        for(int i = 0; i < nbRandomDataToSpawn; ++i) {
             SpawnOneRandomLumiere();
         }
     }
 
     public void SetShouldDestroyLumieresOnLeave() {
         onLeaveBlock.AddListener(block => DestroyAllLumieres());
+        onDestroyBlock.AddListener(block => DestroyAllLumieres());
     }
 
     protected void DestroyAllLumieres() {
         lumieres.FindAll(l => l).ForEach(l => l.DestroySmoothly());
     }
 
-    public void SetNbRandomToSpawn(int quantity) {
-        nbRandomLumieresToSpawn = quantity;
+    public void SetRandomDataProbability(float probability) {
+        randomDataProbability = probability;
     }
 }

@@ -503,4 +503,10 @@ public static class MathTools
     {
         throw new NotImplementedException();
     }
+
+    public static Vector3 Range(Vector3 v) {
+        return new Vector3(UnityEngine.Random.Range(0.0f, v.x),
+                           UnityEngine.Random.Range(0.0f, v.y),
+                           UnityEngine.Random.Range(0.0f, v.z));
+    }
 }
