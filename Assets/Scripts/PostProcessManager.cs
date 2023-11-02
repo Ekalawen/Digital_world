@@ -14,6 +14,22 @@ public enum DissolveEffectType {
     INFINITE_MAP,
 };
 
+[Serializable]
+public struct SkyboxParameters {
+    public float proportionRectanglesL1;
+    public float proportionRectanglesL2;
+    public float proportionRectanglesL3;
+    [ColorUsage(true, true)] public Color primariColorL1;
+    [ColorUsage(true, true)] public Color secondaryColorL1;
+    [ColorUsage(true, true)] public Color tertiaryColorL1;
+    [ColorUsage(true, true)] public Color primariColorL2;
+    [ColorUsage(true, true)] public Color secondaryColorL2;
+    [ColorUsage(true, true)] public Color tertiaryColorL2;
+    [ColorUsage(true, true)] public Color primariColorL3;
+    [ColorUsage(true, true)] public Color secondaryColorL3;
+    [ColorUsage(true, true)] public Color tertiaryColorL3;
+}
+
 public class PostProcessManager : MonoBehaviour {
 
     public static string LAYER_NO_BLACK_AND_WHITE_POST_PROCESS = "NoBlackAndWhitePostProcessing";
@@ -46,6 +62,8 @@ public class PostProcessManager : MonoBehaviour {
     public float skyboxChromaticShiftTotalDurationOnDisconnection = 1.5f;
     public float skyboxChromaticShiftDurationOnDisconnection = 0.5f;
     public int skyboxChromaticShiftNbOnDisconnection = 6;
+    public SkyboxParameters skyboxInitialColors;
+    public SkyboxParameters skyboxDisconnectionColors;
 
     [Header("CubeDissolve")]
     public float dissolveRegularTime = 3.0f;
@@ -190,6 +208,7 @@ public class PostProcessManager : MonoBehaviour {
         RenderSettings.skybox.SetFloat("_VariationsAmplitude", skyboxVariationsAmplitude);
         RenderSettings.skybox.SetFloat("_Rotation", 0.0f);
         RenderSettings.skybox.SetVector("_LayersOffset", Vector3.zero);
+        ApplySkyboxParameters(skyboxInitialColors);
     }
 
     public Color GetSkyboxHDRColor(Color color) {
@@ -640,5 +659,44 @@ public class PostProcessManager : MonoBehaviour {
             }
             yield return null;
         }
+    }
+
+    public void ApplySkyboxParameters(SkyboxParameters skyboxParameters) {
+        RenderSettings.skybox.SetFloat("_ProportionRectanglesL1", skyboxParameters.proportionRectanglesL1);
+        RenderSettings.skybox.SetFloat("_ProportionRectanglesL2", skyboxParameters.proportionRectanglesL2);
+        RenderSettings.skybox.SetFloat("_ProportionRectanglesL3", skyboxParameters.proportionRectanglesL3);
+
+        RenderSettings.skybox.SetColor("_PrimaryColorL1", skyboxParameters.primariColorL1);
+        RenderSettings.skybox.SetColor("_SecondaryColorL1", skyboxParameters.secondaryColorL1);
+        RenderSettings.skybox.SetColor("_TertiaryColorL1", skyboxParameters.tertiaryColorL1);
+
+        RenderSettings.skybox.SetColor("_PrimaryColorL2", skyboxParameters.primariColorL2);
+        RenderSettings.skybox.SetColor("_SecondaryColorL2", skyboxParameters.secondaryColorL2);
+        RenderSettings.skybox.SetColor("_TertiaryColorL2", skyboxParameters.tertiaryColorL2);
+
+        RenderSettings.skybox.SetColor("_PrimaryColorL3", skyboxParameters.primariColorL3);
+        RenderSettings.skybox.SetColor("_SecondaryColorL3", skyboxParameters.secondaryColorL3);
+        RenderSettings.skybox.SetColor("_TertiaryColorL3", skyboxParameters.tertiaryColorL3);
+    }
+
+    public void ApplyInterpolatedSkyboxParameters(SkyboxParameters p1, SkyboxParameters p2, float t) {
+        SkyboxParameters res = new SkyboxParameters();
+        res.proportionRectanglesL1 = MathCurves.Linear(p1.proportionRectanglesL1, p2.proportionRectanglesL1, t);
+        res.proportionRectanglesL2 = MathCurves.Linear(p1.proportionRectanglesL2, p2.proportionRectanglesL2, t);
+        res.proportionRectanglesL3 = MathCurves.Linear(p1.proportionRectanglesL3, p2.proportionRectanglesL3, t);
+
+        res.primariColorL1 = ColorManager.InterpolateHSV(p1.primariColorL1, p2.primariColorL1, t);
+        res.secondaryColorL1 = ColorManager.InterpolateHSV(p1.secondaryColorL1, p2.secondaryColorL1, t);
+        res.tertiaryColorL1 = ColorManager.InterpolateHSV(p1.tertiaryColorL1, p2.tertiaryColorL1, t);
+
+        res.primariColorL2 = ColorManager.InterpolateHSV(p1.primariColorL2, p2.primariColorL2, t);
+        res.secondaryColorL2 = ColorManager.InterpolateHSV(p1.secondaryColorL2, p2.secondaryColorL2, t);
+        res.tertiaryColorL2 = ColorManager.InterpolateHSV(p1.tertiaryColorL2, p2.tertiaryColorL2, t);
+
+        res.primariColorL3 = ColorManager.InterpolateHSV(p1.primariColorL3, p2.primariColorL3, t);
+        res.secondaryColorL3 = ColorManager.InterpolateHSV(p1.secondaryColorL3, p2.secondaryColorL3, t);
+        res.tertiaryColorL3 = ColorManager.InterpolateHSV(p1.tertiaryColorL3, p2.tertiaryColorL3, t);
+
+        ApplySkyboxParameters(res);
     }
 }

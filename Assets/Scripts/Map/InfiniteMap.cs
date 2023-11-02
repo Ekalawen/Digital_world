@@ -316,16 +316,13 @@ public class InfiniteMap : MapManager {
     protected void UpdateSkyboxColorBasedOnDangerProximity() {
         float distanceToDestruction = GetCurrentDistanceToDestruction();
         if (distanceToDestruction <= distanceToStartChangeSkyboxColor) {
-            float avancement = MathCurves.LinearReversed(distanceAtCriticalSkyboxColor, distanceToStartChangeSkyboxColor, distanceToDestruction);
-            Color color = ColorManager.InterpolateHSV(gm.console.basicColor, gm.console.ennemiColor, 1 - avancement);
-            color = gm.postProcessManager.GetSkyboxHDRColor(color);
-            RenderSettings.skybox.SetColor("_RectangleColor", color);
-            float proportion = MathCurves.Linear(gm.postProcessManager.skyboxProportionRectanglesCriticalBound, gm.postProcessManager.skyboxProportionRectangles, avancement);
-            RenderSettings.skybox.SetFloat("_ProportionRectangles", proportion);
+            float avancement = Mathf.Clamp01(1 - MathCurves.LinearReversed(distanceAtCriticalSkyboxColor, distanceToStartChangeSkyboxColor, distanceToDestruction));
+            Debug.Log($"Avancement = {avancement}");
+            SkyboxParameters p1 = gm.postProcessManager.skyboxInitialColors;
+            SkyboxParameters p2 = gm.postProcessManager.skyboxDisconnectionColors;
+            gm.postProcessManager.ApplyInterpolatedSkyboxParameters(p1, p2, avancement);
         } else {
-            Color color = gm.postProcessManager.GetSkyboxHDRColor(gm.console.basicColor);
-            RenderSettings.skybox.SetColor("_RectangleColor", color);
-            RenderSettings.skybox.SetFloat("_ProportionRectangles", gm.postProcessManager.skyboxProportionRectangles);
+            gm.postProcessManager.ApplySkyboxParameters(gm.postProcessManager.skyboxInitialColors);
         }
     }
 
