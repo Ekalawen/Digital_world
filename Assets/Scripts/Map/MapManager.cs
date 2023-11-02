@@ -500,6 +500,12 @@ public class MapManager : MonoBehaviour {
         return positionsInRange;
     }
 
+    public List<Cube> GetCubesAtLessThanDistanceLInfini(Vector3 center, float distanceLInfini) {
+        List<Cube> cubesInRange = GetCubesInBox(center, Vector3.one * distanceLInfini);
+        cubesInRange = cubesInRange.FindAll(c => MathTools.DistanceLInfini(c.transform.position, center) <= distanceLInfini);
+        return cubesInRange;
+    }
+
     public List<Cube> GetCubesInLocation(Vector3 roundedLocation) {
         List<Cube> cubes = new List<Cube>();
         roundedLocation = MathTools.Round(roundedLocation);

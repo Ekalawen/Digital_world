@@ -22,11 +22,15 @@ public class OverrideProgressiveExplosions : Override {
         List<Cube> cubesInRange = map.GetCubesInSphere(player.transform.position, range);
         cubesInRange = cubesInRange.FindAll(c => !safeCubes.Contains(c));
         foreach (Cube cube in cubesInRange) {
-            if (UnityEngine.Random.value < probability) {
+            if (UnityEngine.Random.value < probability && CanExplode(cube)) {
                 cube.Explode();
             } else {
                 safeCubes.Add(cube);
             }
         }
+    }
+
+    protected bool CanExplode(Cube cube) {
+        return map.GetCubesAtLessThanDistanceLInfini(cube.transform.position, 1).Count() > 1;
     }
 }
