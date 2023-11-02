@@ -22,7 +22,7 @@ public class InfiniteMap : MapManager {
     public float timeDifficultyOffset = 1.85f;
     [ConditionalHide("difficultyMode", DifficultyMode.PROGRESSIVE)]
     public float timeDifficultyProgression = 6f;
-    public bool forceNotCompletedBlocks = false;
+    public bool forceNotCompletedBlocks = true;
 
 
     [Header("Start")]
@@ -264,7 +264,7 @@ public class InfiniteMap : MapManager {
         if (difficultyMode == DifficultyMode.CONSTANT)
             return destroyTime * timeDifficultyCoefficient;
         else {
-            float difficultyCoefficient = timeDifficultyOffset / Mathf.Pow(Mathf.Max(nbBlocksDestroyed, 1), 1 / timeDifficultyProgression);
+            float difficultyCoefficient = timeDifficultyOffset * Mathf.Pow(Mathf.Max(nbBlocksDestroyed, 1), - 1 / timeDifficultyProgression);
             //nbBlocksDisplayer.AddVolatileText(difficultyCoefficient.ToString(), Color.blue);
             return destroyTime * difficultyCoefficient;
         }
@@ -317,7 +317,6 @@ public class InfiniteMap : MapManager {
         float distanceToDestruction = GetCurrentDistanceToDestruction();
         if (distanceToDestruction <= distanceToStartChangeSkyboxColor) {
             float avancement = Mathf.Clamp01(1 - MathCurves.LinearReversed(distanceAtCriticalSkyboxColor, distanceToStartChangeSkyboxColor, distanceToDestruction));
-            Debug.Log($"Avancement = {avancement}");
             SkyboxParameters p1 = gm.postProcessManager.skyboxInitialColors;
             SkyboxParameters p2 = gm.postProcessManager.skyboxDisconnectionColors;
             gm.postProcessManager.ApplyInterpolatedSkyboxParameters(p1, p2, avancement);

@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3230145107771090556}
-  - component: {fileID: 5212041858612017809}
+  - component: {fileID: 2643012717767491866}
   m_Layer: 0
-  m_Name: OverridesMultiples
+  m_Name: OverrideFastDisconnection
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -31,7 +31,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5212041858612017809
+--- !u!114 &2643012717767491866
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -40,21 +40,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 7681153688967334235}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd3fe777123033e42898cf85d49e182a, type: 3}
+  m_Script: {fileID: 11500000, guid: e204b35f4240cb4479e5bacee7fcc05a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scoreMultiplier: 5
+  scoreMultiplier: 10
   overrideName:
     m_TableReference:
       m_TableCollectionName: GUID:015f8579c1bc3b84c9f10b13af2c8113
     m_TableEntryReference:
-      m_KeyId: 399046299394048
+      m_KeyId: 4033774873255936
       m_Key: 
     m_FallbackState: 0
-  nbOverridesToChose: 2
-  overridePrefabs:
-  - {fileID: 7681153688967334235, guid: 6b0828efb33c98045901d96de35b48c3, type: 3}
-  - {fileID: 7681153688967334235, guid: 1a38dfed3c1917f468f5d4bb87127161, type: 3}
-  - {fileID: 7681153688967334235, guid: de570e01b5c81b94ca293c7ec1d7074f, type: 3}
-  - {fileID: 7681153688967334235, guid: da311f4b7c8bca041af338233d979b82, type: 3}
-  - {fileID: 7681153688967334235, guid: b15065d7282d041458ff7570205d8ed9, type: 3}
+  nbBlocksStartDisconnection: 0
+  difficultyMode: 0
+  timeDifficultyCoefficient: 0.975
+  timeDifficultyOffset: 1
+  timeDifficultyProgression: 6
