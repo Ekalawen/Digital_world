@@ -447,6 +447,7 @@ public class InfiniteMap : MapManager {
             gm.soundManager.PlayLogoutStartedClip();
             CameraShaker.Instance.ShakeOnce(startLogoutScreenShakeMagnitude, startLogoutScreenShakeRoughness, 0.1f, startLogoutScreenShakeDecreaseTime);
             DestroyFirstBlock();
+            gm.postProcessManager.ApplySkyboxChromaticShiftOnStartDisconnection();
         }
     }
 

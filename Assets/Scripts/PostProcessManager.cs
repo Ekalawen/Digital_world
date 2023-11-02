@@ -43,6 +43,9 @@ public class PostProcessManager : MonoBehaviour {
     public float skyboxBlackoutLuminosity = 0.1f;
     public float skyboxChromaticShiftCoef = 0.3f;
     public float skyboxChromaticShiftDurationOnMarker = 0.4f;
+    public float skyboxChromaticShiftTotalDurationOnDisconnection = 1.5f;
+    public float skyboxChromaticShiftDurationOnDisconnection = 0.5f;
+    public int skyboxChromaticShiftNbOnDisconnection = 6;
 
     [Header("CubeDissolve")]
     public float dissolveRegularTime = 3.0f;
@@ -132,7 +135,6 @@ public class PostProcessManager : MonoBehaviour {
     protected bool isWallVfxOn = false;
     protected SingleCoroutine skyboxChromaticCoroutine;
     protected BoolTimer skyboxChromaticAmount;
-
 
     public void Initialize() {
         gm = GameManager.Instance;
@@ -622,5 +624,21 @@ public class PostProcessManager : MonoBehaviour {
             yield return null;
         }
         RenderSettings.skybox.SetVector("_LayersOffset", Vector3.zero);
+    }
+
+    public void ApplySkyboxChromaticShiftOnStartDisconnection() {
+        StartCoroutine(CApplySkyboxChromaticShiftOnStartDisconnection());
+    }
+
+    protected IEnumerator CApplySkyboxChromaticShiftOnStartDisconnection() {
+        List<float> times = Enumerable.Range(0, skyboxChromaticShiftNbOnDisconnection).Select(n => (float)n / skyboxChromaticShiftNbOnDisconnection).ToList();
+        Timer timer = new Timer(skyboxChromaticShiftTotalDurationOnDisconnection);
+        while (!timer.IsOver() || times.Count > 0) {
+            if (times.Count > 0 && timer.GetAvancement() >= times.First()) {
+                times.RemoveAt(0);
+                AddSkyboxChromaticShiftOf(skyboxChromaticShiftDurationOnDisconnection);
+            }
+            yield return null;
+        }
     }
 }
