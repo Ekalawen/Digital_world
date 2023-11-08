@@ -135,7 +135,14 @@ public class Block : MonoBehaviour {
     }
 
     protected void InitializeChosenLumieres() {
-        lumieres.ForEach(l => map.RegisterAlreadyExistingLumiere(l));
+        //lumieres.ForEach(l => map.RegisterAlreadyExistingLumiere(l));
+        List<Lumiere> newLumieres = new List<Lumiere>();
+        for(int i = 0; i < lumieres.Count; ++i) {
+            Vector3 pos = lumieres[i].transform.position;
+            newLumieres.Add(map.CreateLumiere(pos, Lumiere.LumiereType.NORMAL, dontRoundPositions: true));
+        }
+        lumieres.ForEach(l => Destroy(l.gameObject));
+        lumieres = newLumieres;
     }
 
     public void AddLumieres(int nbLumieresToAdd) {
