@@ -1,0 +1,217 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8009603774064782318
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4832034276601242947}
+  - component: {fileID: 1586392827639462890}
+  m_Layer: 0
+  m_Name: RewardManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4832034276601242947
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8009603774064782318}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 728.5241, y: 129.25575, z: -73.51318}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1586392827639462890
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8009603774064782318}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a716f646f31ca7498dad390d688bb4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  delayBetweenTrails: 0.5
+  durationTrailMinimum: 10
+  durationLogarithmeRegular: 1.3
+  durationDividerInfinite: 3
+  pourcentageEnnemiTrailTime: 0.2
+  pointDisplayerScaleFactor: 0.2
+  playerTrailPrefab: {fileID: 1168935213390774, guid: 0a35bfab77d3b724cb4935c589f3c4fe,
+    type: 3}
+  ennemiTrailPrefab: {fileID: 7525071127418206719, guid: 8f948c9cd14eb8f409f4c651cfa77aa0,
+    type: 3}
+  consolePrefab: {fileID: 1722120177189256, guid: 47ebd2c24c9973242ba0f62097702500,
+    type: 3}
+  revealTimeAt10Blocks: 2.5
+  revealTimeAt100Blocks: 10
+  revealCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.59769523
+      value: 0.3125658
+      inSlope: 1.029676
+      outSlope: 1.029676
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 2.8923078
+      outSlope: 2.8923078
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.058960486
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  blocksDistance: 30
+  bloomProfile: {fileID: 0}
+  gridRect: {x: 0, y: 0.15, z: 0, w: 0.2}
+  blockRotationSpeed: 0.75
+  globalColorCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  insideBlockColorCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0.33259106
+      outSlope: 0.33259106
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.99776036
+    - serializedVersion: 3
+      time: 1
+      value: 0.33
+      inSlope: 0.33378008
+      outSlope: 0.33378008
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 1
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  bounceTime: 1
+  bounceCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.4
+      value: 3.5
+      inSlope: 0.33945274
+      outSlope: 0.33945274
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.65
+      value: 0.5
+      inSlope: -0.99774104
+      outSlope: -0.99774104
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.26746175
+    - serializedVersion: 3
+      time: 0.775
+      value: 1.2541809
+      inSlope: 0.09293121
+      outSlope: 0.09293121
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.47637263
+    - serializedVersion: 3
+      time: 0.99890137
+      value: 1
+      inSlope: 0.030739598
+      outSlope: 0.030739598
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 1
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  deathMarkRectTransform: {fileID: 0}
+  strings: {fileID: 0}
+  regularCamera: {fileID: 0}
+  infiniteCamera: {fileID: 0}
+  statsHolderRegular: {fileID: 0}
+  statsHolderInfinite: {fileID: 0}
+  titleCompletedText: {fileID: 0}
+  scoreTextRegular: {fileID: 0}
+  bestScoreTextRegular: {fileID: 0}
+  gameDurationTextRegular: {fileID: 0}
+  accelerationTextRegular: {fileID: 0}
+  replayDurationTextRegular: {fileID: 0}
+  scoreTextInfinite: {fileID: 0}
+  bestScoreTextInfinite: {fileID: 0}
+  nbDifferentBlocksTextInfinite: {fileID: 0}
+  nbSameBlockMaxTextInfinite: {fileID: 0}
+  gameDurationTextInfinite: {fileID: 0}
+  newBestScoreButton: {fileID: 0}
+  firstTimeButton: {fileID: 0}
+  selectorManager: {fileID: 3396177535230050443, guid: 05984be892311994e968884a39b96d7e,
+    type: 3}
