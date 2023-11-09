@@ -17,7 +17,7 @@ public class BlockTriggerZone : IZone {
     }
 
     protected override void OnEnter(Collider other) {
-        if (block != null && map != null) {
+        if (block != null && map != null && other.GetComponent<Player>() != null) {
             map.OnEnterBlock(block);
             StartRememberShiftPressed();
             block.onEnterBlock.Invoke(block);

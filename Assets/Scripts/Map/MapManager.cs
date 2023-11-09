@@ -402,18 +402,38 @@ public class MapManager : MonoBehaviour {
 
     public List<Vector3> GetEmptyPositionsInSphere(Vector3 center, float radius) {
         List<Vector3> positions = new List<Vector3>();
-        int xMin = (int)Mathf.Floor(center.x - radius);
-        int xMax = (int)Mathf.Ceil(center.x + radius);
-        int yMin = (int)Mathf.Floor(center.y - radius);
-        int yMax = (int)Mathf.Ceil(center.y + radius);
-        int zMin = (int)Mathf.Floor(center.z - radius);
-        int zMax = (int)Mathf.Ceil(center.z + radius);
+        int xMin = Mathf.FloorToInt(center.x - radius);
+        int xMax = Mathf.CeilToInt(center.x + radius);
+        int yMin = Mathf.FloorToInt(center.y - radius);
+        int yMax = Mathf.CeilToInt(center.y + radius);
+        int zMin = Mathf.FloorToInt(center.z - radius);
+        int zMax = Mathf.CeilToInt(center.z + radius);
         for (int i = xMin; i <= xMax; i++) {
             for (int j = yMin; j <= yMax; j++) {
                 for (int k = zMin; k <= zMax; k++) {
                     Vector3 pos = new Vector3(i, j, k);
                     if (Vector3.Distance(pos, center) <= radius) {
                         if (!IsCubeAt(pos)) {
+                            positions.Add(pos);
+                        }
+                    }
+                }
+            }
+        }
+
+        return positions;
+    }
+
+    public List<Vector3> GetEmptyPositionsAlignedInSphere(Vector3 center, float radius) {
+        List<Vector3> positions = new List<Vector3>();
+        int maxOffset = Mathf.CeilToInt(radius);
+        int minOffset = -maxOffset;
+        for (int i = minOffset; i <= maxOffset; i++) {
+            for (int j = minOffset; j <= maxOffset; j++) {
+                for (int k = minOffset; k <= maxOffset; k++) {
+                    Vector3 pos = center + new Vector3(i, j, k);
+                    if (Vector3.Distance(pos, center) <= radius) {
+                        if (IsFree(pos)) {
                             positions.Add(pos);
                         }
                     }
@@ -1729,8 +1749,10 @@ public class MapManager : MonoBehaviour {
         return directions;
     }
 
-    public Cube GetClosestCubeInDirection(Vector3 center, Vector3 direction) {
-        center = MathTools.Round(center);
+    public Cube GetClosestCubeInDirection(Vector3 center, Vector3 direction, bool shouldRoundCenter = true) {
+        if (shouldRoundCenter) {
+            center = MathTools.Round(center);
+        }
         Cube closestRegular = GetClosestCubeInDirectionRegular(center, direction);
         Cube closestNonRegular = GetClosestCubeInDirectionNonRegular(center, direction);
         if(closestRegular != null && closestNonRegular != null) {
@@ -1770,16 +1792,21 @@ public class MapManager : MonoBehaviour {
         List<Vector3> alignedPos = new List<Vector3>();
         foreach(Vector3 pos in GetAllNonRegularCubePos()) {
             Vector3 diff = pos - center;
-            if((direction.x == 0) == (diff.x == 0)
-            && (direction.y == 0) == (diff.y == 0)
-            && (direction.z == 0) == (diff.z == 0)) {
-                float projection = Vector3.Project(diff, direction).magnitude;
-                if(Mathf.Sign(projection) > 0) {
-                    if(Mathf.Round(projection) == projection) {
-                        alignedPos.Add(pos);
-                    }
-                }
+            float dot = Vector3.Dot(diff, direction);
+            float magnitude = diff.magnitude;
+            if (dot > 0 && dot == magnitude) {
+                alignedPos.Add(pos);
             }
+            //if((direction.x == 0) == (diff.x == 0)
+            //&& (direction.y == 0) == (diff.y == 0)
+            //&& (direction.z == 0) == (diff.z == 0)) {
+                //float projection = Vector3.Project(diff, direction).magnitude;
+                //if(Mathf.Sign(projection) > 0) {
+                    //if(Mathf.Round(projection) == projection) {
+                    //    alignedPos.Add(pos);
+                    //}
+                //}
+            //}
         }
         if (alignedPos.Count == 0)
             return null;

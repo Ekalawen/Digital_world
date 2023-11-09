@@ -139,7 +139,8 @@ public class Block : MonoBehaviour {
         List<Lumiere> newLumieres = new List<Lumiere>();
         for(int i = 0; i < lumieres.Count; ++i) {
             Vector3 pos = lumieres[i].transform.position;
-            newLumieres.Add(map.CreateLumiere(pos, Lumiere.LumiereType.NORMAL, dontRoundPositions: true));
+            Lumiere lumiere = map.CreateLumiere(pos, Lumiere.LumiereType.NORMAL, dontRoundPositions: true);
+            newLumieres.Add(lumiere);
         }
         lumieres.ForEach(l => Destroy(l.gameObject));
         lumieres = newLumieres;

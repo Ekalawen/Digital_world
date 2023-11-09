@@ -35,9 +35,11 @@ public class LumiereEscape : Lumiere {
     public float mapOffsetShrink = 2.0f;
     public int maxNbPositionsToConsider = 100;
     public float coefLineOfSight = 1000.0f;
+    public float coefIsInFrontOfCamera = 1000.0f;
     public float coefAlignWithCamera = 50.0f;
     public float coefCloseToEscapeDistance = 10.0f;
     public float coefVerticalDistance = 30.0f;
+    public float coefDistanceToGround = 35.0f;
     public float coefDistanceToRegularMap = 20.0f;
     public float coefRandomness = 30.0f;
 
@@ -198,31 +200,40 @@ public class LumiereEscape : Lumiere {
     }
 
     protected Vector3 ComputeEscapeLocation() {
-        List<Vector3> positions = gm.map.GetEmptyPositionsInSphere(transform.position, maxEscapeDistance);
+        List<Vector3> positions = gm.map.GetEmptyPositionsAlignedInSphere(transform.position, maxEscapeDistance);
         positions = positions.FindAll(p => Vector3.Distance(p, transform.position) >= minEscapeDistance);
         positions = MathTools.ChoseSome(positions, 100);
         Vector3 chosenPosition = positions.OrderBy(p => ComputeScoreForPosition(p)).Last();
-        //ComputeScoreForPosition(chosenPosition, displayLog: true);
+        ComputeScoreForPosition(chosenPosition, displayLog: true);
         return chosenPosition;
     }
 
     protected float ComputeScoreForPosition(Vector3 pos, bool displayLog = false) {
-        float isInLineOfSightScore = (IsInLineOfSight(pos) ? 1 : 0) * coefLineOfSight;
+        float isInLineOfSightScore = IsInLineOfSight(pos) * coefLineOfSight;
+        float isInFrontOfCameraScore = IsInFrontOfcamera(pos) * coefIsInFrontOfCamera;
         float isAlignedWithCameraScore = IsAlignedWithCamera(pos) * coefAlignWithCamera;
         float isDistanceCloseToEscapeDistanceScore = - IsDistanceCloseToEscapeDistance(pos) * coefCloseToEscapeDistance;
         float distanceToRegularMapScore = - DistanceToRegularMap(pos) * coefDistanceToRegularMap;
         float verticalDistanceScore = - VerticalDistance(pos) * coefVerticalDistance;
+        float distanceToGroundScore = - GroundDistance(pos) * coefDistanceToGround;
         float randomnessScore = UnityEngine.Random.Range(0.0f, 1.0f) * coefRandomness;
         float totalScore = isInLineOfSightScore
+            + isInFrontOfCameraScore
             + isAlignedWithCameraScore
             + isDistanceCloseToEscapeDistanceScore
             + distanceToRegularMapScore
             + verticalDistanceScore
+            + distanceToGroundScore
             + randomnessScore;
         if (displayLog) {
-            Debug.Log($"LineOfSight = {isInLineOfSightScore / coefLineOfSight}({isInLineOfSightScore}) AlignedCamera = {isAlignedWithCameraScore / coefAlignWithCamera}({isAlignedWithCameraScore}) DistanceToDistance = {isDistanceCloseToEscapeDistanceScore / coefCloseToEscapeDistance}({isDistanceCloseToEscapeDistanceScore}) DistanceToMap = {distanceToRegularMapScore / coefDistanceToRegularMap}({distanceToRegularMapScore}) VerticalDistance = {verticalDistanceScore / coefVerticalDistance}({verticalDistanceScore}) Randomness = {randomnessScore / coefRandomness}({randomnessScore}) TOTAL = {totalScore}");
+            Debug.Log($"LineOfSight = {isInLineOfSightScore / coefLineOfSight}({isInLineOfSightScore}) InFrontCamera = {isInFrontOfCameraScore / coefIsInFrontOfCamera}({isInFrontOfCameraScore}) AlignedCamera = {isAlignedWithCameraScore / coefAlignWithCamera}({isAlignedWithCameraScore}) DistanceToDistance = {isDistanceCloseToEscapeDistanceScore / coefCloseToEscapeDistance}({isDistanceCloseToEscapeDistanceScore}) DistanceToMap = {distanceToRegularMapScore / coefDistanceToRegularMap}({distanceToRegularMapScore}) VerticalDistance = {verticalDistanceScore / coefVerticalDistance}({verticalDistanceScore}) DistanceToGround = {distanceToGroundScore / coefDistanceToGround}({distanceToGroundScore}) Randomness = {randomnessScore / coefRandomness}({randomnessScore}) TOTAL = {totalScore}");
         }
         return totalScore;
+    }
+
+    protected float GroundDistance(Vector3 pos) {
+        Cube underCube = gm.map.GetClosestCubeInDirection(pos, gm.gravityManager.Down(), shouldRoundCenter: false);
+        return underCube ? Vector3.Distance(pos, underCube.transform.position) : 10.0f;
     }
 
     protected float VerticalDistance(Vector3 pos) {
@@ -234,16 +245,22 @@ public class LumiereEscape : Lumiere {
         return Mathf.Abs(escapeDistance - Vector3.Distance(transform.position, pos));
     }
 
-    protected bool IsInLineOfSight(Vector3 pos) {
+    protected float IsInLineOfSight(Vector3 pos) {
         Vector3 direction = (pos - transform.position);
         float distance = direction.magnitude;
-        return !Physics.Raycast(transform.position, direction, distance);
+        return !Physics.Raycast(transform.position, direction, distance) ? 1 : 0;
     }
 
     protected float IsAlignedWithCamera(Vector3 pos) {
         Vector3 cameraPos = gm.player.camera.transform.position;
         Vector3 cameraForward = gm.player.camera.transform.forward;
-        return Vector3.Dot(pos - cameraPos, cameraForward) / Vector3.Distance(pos, cameraPos);
+        return Vector3.Dot((pos - cameraPos).normalized, cameraForward);
+    }
+
+    protected float IsInFrontOfcamera(Vector3 pos) {
+        Vector3 cameraPos = gm.player.camera.transform.position;
+        Vector3 cameraForward = Vector3.ProjectOnPlane(gm.player.camera.transform.forward, gm.gravityManager.Up()).normalized;
+        return Vector3.Dot((pos - cameraPos).normalized, cameraForward) >= 0 ? 1 : 0;
     }
 
     protected float DistanceToRegularMap(Vector3 pos) {

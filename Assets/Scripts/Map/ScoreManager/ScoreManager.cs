@@ -6,6 +6,7 @@ using UnityEngine;
 public abstract class ScoreManager : MonoBehaviour
 {
     public float dataProbability = 1 / 3.0f;
+    //public float dataProbability = 1.0f;
     public int nbDataPerBlock = 1;
 
     protected GameManager gm;
