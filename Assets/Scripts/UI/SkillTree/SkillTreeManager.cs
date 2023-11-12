@@ -14,6 +14,11 @@ public class SkillTreeManager : MonoBehaviour {
     protected List<SkillTreeUpgrade> upgrades;
     protected List<SkillTreeLink> links;
 
+    // TO REMOVE !
+    public void Start() {
+        Initilalize();
+    }
+
     public void Initilalize() {
         links = new List<SkillTreeLink>();
         GatherUpgrades();
@@ -42,6 +47,11 @@ public class SkillTreeManager : MonoBehaviour {
 
     public void CreateLink(SkillTreeUpgrade source, SkillTreeUpgrade target) {
         SkillTreeLink link = Instantiate(linkPrefab, linksFolder).GetComponent<SkillTreeLink>();
+        RectTransform rect = link.GetComponent<RectTransform>();
+        rect.anchorMin = Vector3.zero;
+        rect.anchorMax = Vector3.one;
+        rect.offsetMin = Vector3.zero;
+        rect.offsetMax = Vector3.zero;
         link.Initialize(this, source, target);
         links.Add(link);
     }
