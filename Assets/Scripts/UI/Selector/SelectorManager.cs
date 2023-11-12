@@ -27,6 +27,7 @@ public class SelectorManager : MonoBehaviour {
     public LoadingMenu loadingMenu;
     public SelectorPathUnlockScreen unlockScreen;
     public Transform collidersFolder;
+    public SkillTreeManager skillTreeManager;
 
     public TexteExplicatif popup;
     public TexteExplicatif popupArchives;
@@ -52,6 +53,7 @@ public class SelectorManager : MonoBehaviour {
     protected SelectorPath currentSelectorPath = null;
     protected bool hasLevelOpen = false;
     protected bool hasUnlockScreenOpen = false;
+    protected bool isSkillTreeOpen = false;
     protected Dictionary<GameObject, Coroutine> fadingObjects;
     protected Coroutine backAndDisplayCoroutine;
     protected SelectorCameraController cameraController;
@@ -107,6 +109,12 @@ public class SelectorManager : MonoBehaviour {
         DisplayCurrentLevel();
         CleanLastSavedLevel();
         DisplayIntroductionText();
+        InitializeSkillTree();
+    }
+
+    protected void InitializeSkillTree() {
+        skillTreeManager.Initilalize();
+        //skillTreeManager.Close();
     }
 
     protected void CleanLastSavedLevel() {
@@ -119,10 +127,11 @@ public class SelectorManager : MonoBehaviour {
     }
 
     public void Update() {
-        if (!HasSelectorLevelOpen() && !HasUnlockScreenOpen()) {
-            if (Input.GetKeyDown(KeyCode.Escape)) {
-                Return();
-            }
+        if (HasSelectorLevelOpen() || HasUnlockScreenOpen() || IsSkillTreeOpen()) {
+            return;
+        }
+        if (Input.GetKeyDown(KeyCode.Escape)) {
+            Return();
         }
     }
 
@@ -672,5 +681,13 @@ public class SelectorManager : MonoBehaviour {
 
     public int GetNbLevelsUnlocked() {
         return levels.FindAll(level => level.IsAccessible()).Count;
+    }
+
+    public void ToggleSkillTree() {
+        skillTreeManager.Toggle();
+    }
+
+    public bool IsSkillTreeOpen() {
+        return skillTreeManager.IsOpen();
     }
 }

@@ -11,18 +11,33 @@ public class SkillTreeManager : MonoBehaviour {
     public Transform linksFolder;
     public GameObject linkPrefab;
 
+    [Header("For displaying stuff")]
+    public GameObject spaceTaker;
+    public LayoutElement layoutElement;
+    public CanvasScaler canvasScaler;
+
     protected List<SkillTreeUpgrade> upgrades;
     protected List<SkillTreeLink> links;
-
-    // TO REMOVE !
-    public void Start() {
-        Initilalize();
-    }
+    protected bool isOpen = false;
+    protected Fluctuator sizeFluctuator;
+    protected SingleCoroutine setActiveCoroutine;
 
     public void Initilalize() {
         links = new List<SkillTreeLink>();
+        sizeFluctuator = new Fluctuator(this, GetSizeRatio, SetSizeRatio);
+        setActiveCoroutine = new SingleCoroutine(this);
         GatherUpgrades();
         InitializeUpgrades();
+    }
+
+    protected void SetSizeRatio(float percentageValue) {
+        float pixelValue = canvasScaler.referenceResolution.x * percentageValue;
+        layoutElement.preferredWidth = pixelValue;
+    }
+
+    protected float GetSizeRatio() {
+        float width = layoutElement.preferredWidth;
+        return width / canvasScaler.referenceResolution.x;
     }
 
     protected void InitializeUpgrades() {
@@ -54,5 +69,42 @@ public class SkillTreeManager : MonoBehaviour {
         rect.offsetMax = Vector3.zero;
         link.Initialize(this, source, target);
         links.Add(link);
+    }
+
+    public void Toggle() {
+        if(isOpen) {
+            Close();
+        } else {
+            Open();
+        }
+    }
+
+    protected void Open() {
+        isOpen = true;
+        SetActive(true);
+        setActiveCoroutine.Stop();
+        sizeFluctuator.GoTo(1.0f, 1.0f, AnimationCurve.Linear(0, 0, 1, 1));
+    }
+
+    protected void Close() {
+        isOpen = false;
+        sizeFluctuator.GoTo(0.0f, 1.0f, AnimationCurve.Linear(0, 0, 1, 1));
+        setActiveCoroutine.Start(CSetActiveIn(1.0f, false));
+    }
+
+    protected IEnumerator CSetActiveIn(float duration, bool isActive) {
+        yield return new WaitForSeconds(duration);
+        SetActive(isActive);
+    }
+
+    protected void SetActive(bool isActive) {
+        gameObject.SetActive(isActive);
+        //if (spaceTaker) {
+        //    spaceTaker.SetActive(!isActive);
+        //}
+    }
+
+    public bool IsOpen() {
+        return isOpen;
     }
 }
