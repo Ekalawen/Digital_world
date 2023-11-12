@@ -6,9 +6,15 @@ using UnityEngine.UI;
 
 public class SkillTreeLink : MonoBehaviour {
 
-    protected SkillTreeManager skillTreeManager;
+    //public UILineRenderer lineRenderer;
 
-    public void Initialize(SkillTreeManager skillTreeManager) {
+    protected SkillTreeManager skillTreeManager;
+    protected SkillTreeUpgrade sourceUpgrade;
+    protected SkillTreeUpgrade targetUpgrade;
+
+    public void Initialize(SkillTreeManager skillTreeManager, SkillTreeUpgrade sourceUpgrade, SkillTreeUpgrade targetUpgrade) {
         this.skillTreeManager = skillTreeManager;
+        this.sourceUpgrade = sourceUpgrade;
+        this.targetUpgrade = targetUpgrade;
     }
 }

@@ -9,39 +9,19 @@ public class SkillTreeManager : MonoBehaviour {
 
     public Transform upgradesFolder;
     public Transform linksFolder;
+    public GameObject linkPrefab;
 
     protected List<SkillTreeUpgrade> upgrades;
     protected List<SkillTreeLink> links;
 
     public void Initilalize() {
+        links = new List<SkillTreeLink>();
         GatherUpgrades();
-        GatherLinks();
         InitializeUpgrades();
-        InitializeLinks();
-    }
-
-    protected void InitializeLinks() {
-        links.ForEach(l => l.Initialize(this));
     }
 
     protected void InitializeUpgrades() {
         upgrades.ForEach(u => u.Initialize(this));
-    }
-
-    protected void GatherLinks() {
-        links = new List<SkillTreeLink>();
-        GatherLinksIn(linksFolder);
-    }
-
-    protected void GatherLinksIn(Transform folder) {
-        foreach (Transform child in folder) {
-            SkillTreeLink link = child.GetComponent<SkillTreeLink>();
-            if(link) {
-                links.Add(link);
-            } else {
-                GatherLinksIn(child);
-            }
-        }
     }
 
     protected void GatherUpgrades() {
@@ -58,5 +38,11 @@ public class SkillTreeManager : MonoBehaviour {
                 GatherUpgradesIn(child);
             }
         }
+    }
+
+    public void CreateLink(SkillTreeUpgrade source, SkillTreeUpgrade target) {
+        SkillTreeLink link = Instantiate(linkPrefab, linksFolder).GetComponent<SkillTreeLink>();
+        link.Initialize(this, source, target);
+        links.Add(link);
     }
 }
