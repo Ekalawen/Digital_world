@@ -26,12 +26,19 @@ public class UILineRenderer : MonoBehaviour {
         lines = new List<GameObject>();
         nodes = new List<GameObject>();
 
-        if(positions.Count < 2) {
+        if (positions.Count < 2) {
             return;
         }
 
-        for(int i = 0; i < positions.Count - 1; ++i) {
+        for (int i = 0; i < positions.Count - 1; ++i) {
             CreateLineBetween(positions[i], positions[i + 1]);
+        }
+        CreateNodes();
+    }
+
+    protected void CreateNodes() {
+        if(!nodePrefab) {
+            return;
         }
         positions.ForEach(p => CreateNodeAt(p));
     }
