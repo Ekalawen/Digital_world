@@ -5,41 +5,64 @@ using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SkillTreeManager : MonoBehaviour {
+public class SkillTreeMenu : MonoBehaviour {
 
     public Transform upgradesFolder;
     public Transform linksFolder;
     public GameObject linkPrefab;
 
     [Header("Resizing")]
-    public LayoutElement layoutElement;
+    public LayoutElement layout;
     public CanvasScaler canvasScaler;
     public float openingDuration = 1.0f;
     public float closingDuration = 1.0f;
     public AnimationCurve resizingCurve;
+
+    [Header("UpgradeDisplay")]
+    public LayoutElement upgradeDisplayLayout;
 
     protected List<SkillTreeUpgrade> upgrades;
     protected List<SkillTreeLink> links;
     protected bool isOpen = false;
     protected Fluctuator sizeFluctuator;
     protected SingleCoroutine setActiveCoroutine;
+    protected float upgradeDisplayOriginalSize;
+    protected float upgradeDisplayOriginalPadding;
 
     public void Initilalize() {
         links = new List<SkillTreeLink>();
         sizeFluctuator = new Fluctuator(this, GetSizeRatio, SetSizeRatio, resizingCurve);
-        SetSizeRatio(0.0f);
         setActiveCoroutine = new SingleCoroutine(this);
+        InitializeUpgradeDisplay();
         GatherUpgrades();
         InitializeUpgrades();
     }
 
+    protected void InitializeUpgradeDisplay() {
+        upgradeDisplayOriginalSize = upgradeDisplayLayout.preferredWidth;
+        upgradeDisplayLayout.preferredWidth = 0.0f;
+        upgradeDisplayOriginalPadding = upgradeDisplayLayout.GetComponent<VerticalLayoutGroup>().padding.left;
+        SetSizeRatio(0.0f);
+    }
+
     protected void SetSizeRatio(float percentageValue) {
         float pixelValue = canvasScaler.referenceResolution.x * percentageValue;
-        layoutElement.preferredWidth = pixelValue;
+        layout.preferredWidth = pixelValue;
+        SetUpgradeDisplaySizeRatio(percentageValue);
+    }
+
+    protected void SetUpgradeDisplaySizeRatio(float percentageValue) {
+        float pixelValue = upgradeDisplayOriginalSize * percentageValue;
+        upgradeDisplayLayout.preferredWidth = pixelValue;
+
+        float paddingPixelValue = upgradeDisplayOriginalPadding * percentageValue;
+        VerticalLayoutGroup verticalLayoutGroup = upgradeDisplayLayout.GetComponent<VerticalLayoutGroup>();
+        verticalLayoutGroup.padding.left = (int)paddingPixelValue;
+        verticalLayoutGroup.padding.right = (int)paddingPixelValue;
     }
 
     protected float GetSizeRatio() {
-        float width = layoutElement.preferredWidth;
+        float width = layout.preferredWidth;
         return width / canvasScaler.referenceResolution.x;
     }
 

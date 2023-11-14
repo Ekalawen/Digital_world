@@ -10,11 +10,11 @@ public class SkillTreeLink : MonoBehaviour {
     public GameObject lineUnlockedPrefab;
     public GameObject lineLockedPrefab;
 
-    protected SkillTreeManager skillTreeManager;
+    protected SkillTreeMenu skillTreeManager;
     protected SkillTreeUpgrade sourceUpgrade;
     protected SkillTreeUpgrade targetUpgrade;
 
-    public void Initialize(SkillTreeManager skillTreeManager, SkillTreeUpgrade sourceUpgrade, SkillTreeUpgrade targetUpgrade) {
+    public void Initialize(SkillTreeMenu skillTreeManager, SkillTreeUpgrade sourceUpgrade, SkillTreeUpgrade targetUpgrade) {
         this.skillTreeManager = skillTreeManager;
         this.sourceUpgrade = sourceUpgrade;
         this.targetUpgrade = targetUpgrade;

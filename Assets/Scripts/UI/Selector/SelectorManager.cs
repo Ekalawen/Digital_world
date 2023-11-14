@@ -27,7 +27,7 @@ public class SelectorManager : MonoBehaviour {
     public LoadingMenu loadingMenu;
     public SelectorPathUnlockScreen unlockScreen;
     public Transform collidersFolder;
-    public SkillTreeManager skillTreeManager;
+    public SkillTreeMenu skillTreeManager;
 
     public TexteExplicatif popup;
     public TexteExplicatif popupArchives;

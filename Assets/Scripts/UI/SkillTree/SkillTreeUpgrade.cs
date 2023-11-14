@@ -8,8 +8,8 @@ public class SkillTreeUpgrade : MonoBehaviour {
 
     public List<SkillTreeUpgrade> requirements;
 
-    protected SkillTreeManager skillTreeManager;
-    public void Initialize(SkillTreeManager skillTreeManager) {
+    protected SkillTreeMenu skillTreeManager;
+    public void Initialize(SkillTreeMenu skillTreeManager) {
         this.skillTreeManager = skillTreeManager;
         InitializeRequirementLinks();
     }
