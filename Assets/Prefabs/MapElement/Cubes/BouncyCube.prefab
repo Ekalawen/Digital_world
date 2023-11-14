@@ -1,25 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &4937535586855421864
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5530073751766344457}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fbdb4e6b1b24cf343b44ec8651d7baae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  type: 5
-  bIsDestructible: 1
-  shouldRegisterToColorSources: 0
-  startAsLinky: 0
-  opaqueMaterial: {fileID: 2100000, guid: 93f43767f5a8eb34781fecb69bee9c2a, type: 2}
-  distancePoussee: 3
-  dureePoussee: 0.2
-  dammageOnHit: 0
 --- !u!1001 &5529127315540471855
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -79,7 +59,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 9a6d595b30c72894dafd94ea17e4ecbe, type: 2}
+      objectReference: {fileID: 2100000, guid: 41ab10d691a90d14db894ee8cc0d4ad8, type: 2}
     m_RemovedComponents:
     - {fileID: 114048159739252504, guid: 166cc3691555747479ad6b1623980374, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 166cc3691555747479ad6b1623980374, type: 3}
@@ -89,3 +69,23 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 5529127315540471855}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4937535586855421864
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5530073751766344457}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbdb4e6b1b24cf343b44ec8651d7baae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 5
+  bIsDestructible: 1
+  shouldRegisterToColorSources: 0
+  startAsLinky: 0
+  opaqueMaterial: {fileID: 2100000, guid: 55ea193e3ace19d44a87d796f4447b11, type: 2}
+  distancePoussee: 3
+  dureePoussee: 0.2
+  dammageOnHit: 0
