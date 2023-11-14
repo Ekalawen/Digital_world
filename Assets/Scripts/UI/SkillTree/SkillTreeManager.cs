@@ -11,10 +11,12 @@ public class SkillTreeManager : MonoBehaviour {
     public Transform linksFolder;
     public GameObject linkPrefab;
 
-    [Header("For displaying stuff")]
-    public GameObject spaceTaker;
+    [Header("Resizing")]
     public LayoutElement layoutElement;
     public CanvasScaler canvasScaler;
+    public float openingDuration = 1.0f;
+    public float closingDuration = 1.0f;
+    public AnimationCurve resizingCurve;
 
     protected List<SkillTreeUpgrade> upgrades;
     protected List<SkillTreeLink> links;
@@ -24,7 +26,8 @@ public class SkillTreeManager : MonoBehaviour {
 
     public void Initilalize() {
         links = new List<SkillTreeLink>();
-        sizeFluctuator = new Fluctuator(this, GetSizeRatio, SetSizeRatio);
+        sizeFluctuator = new Fluctuator(this, GetSizeRatio, SetSizeRatio, resizingCurve);
+        SetSizeRatio(0.0f);
         setActiveCoroutine = new SingleCoroutine(this);
         GatherUpgrades();
         InitializeUpgrades();
@@ -83,13 +86,13 @@ public class SkillTreeManager : MonoBehaviour {
         isOpen = true;
         SetActive(true);
         setActiveCoroutine.Stop();
-        sizeFluctuator.GoTo(1.0f, 1.0f, AnimationCurve.Linear(0, 0, 1, 1));
+        sizeFluctuator.GoTo(1.0f, openingDuration);
     }
 
     protected void Close() {
         isOpen = false;
-        sizeFluctuator.GoTo(0.0f, 1.0f, AnimationCurve.Linear(0, 0, 1, 1));
-        setActiveCoroutine.Start(CSetActiveIn(1.0f, false));
+        sizeFluctuator.GoTo(0.0f, closingDuration);
+        setActiveCoroutine.Start(CSetActiveIn(closingDuration, false));
     }
 
     protected IEnumerator CSetActiveIn(float duration, bool isActive) {
@@ -99,9 +102,6 @@ public class SkillTreeManager : MonoBehaviour {
 
     protected void SetActive(bool isActive) {
         gameObject.SetActive(isActive);
-        //if (spaceTaker) {
-        //    spaceTaker.SetActive(!isActive);
-        //}
     }
 
     public bool IsOpen() {
