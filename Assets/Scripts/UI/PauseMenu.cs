@@ -8,6 +8,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 public class PauseMenu : MonoBehaviour {
 
     public MenuOptions menuOptions;
+    public SkillTreeMenu skillTreeMenu;
     public TexteExplicatif popup;
     public ReplacementStrings docReplacementStrings;
     public SelectorManagerStrings strings;
@@ -18,6 +19,7 @@ public class PauseMenu : MonoBehaviour {
     public void Start() {
         gm = GameManager.Instance;
         inputManager = InputManager.Instance;
+        skillTreeMenu.Initilalize();
     }
 
     public void Update() {
@@ -68,6 +70,16 @@ public class PauseMenu : MonoBehaviour {
     public void Options() {
         menuOptions.gameObject.SetActive(true);
         menuOptions.Run();
+        Tooltip.Hide();
+    }
+
+    public void OpenSkillTree() {
+        skillTreeMenu.Open();
+        Tooltip.Hide();
+    }
+
+    public void CloseSkillTree() {
+        skillTreeMenu.Close();
         Tooltip.Hide();
     }
 

@@ -30,7 +30,7 @@ public class SkillTreeMenu : MonoBehaviour {
 
     public void Initilalize() {
         links = new List<SkillTreeLink>();
-        sizeFluctuator = new Fluctuator(this, GetSizeRatio, SetSizeRatio, resizingCurve);
+        sizeFluctuator = new Fluctuator(this, GetSizeRatio, SetSizeRatio, resizingCurve, useUnscaleTime: true);
         setActiveCoroutine = new SingleCoroutine(this);
         openPrefferedWidth = layout.preferredWidth;
         InitializeUpgradeDisplay();
@@ -110,21 +110,21 @@ public class SkillTreeMenu : MonoBehaviour {
         }
     }
 
-    protected void Open() {
+    public void Open() {
         isOpen = true;
         SetActive(true);
         setActiveCoroutine.Stop();
         sizeFluctuator.GoTo(1.0f, openingDuration);
     }
 
-    protected void Close() {
+    public void Close() {
         isOpen = false;
         sizeFluctuator.GoTo(0.0f, closingDuration);
         setActiveCoroutine.Start(CSetActiveIn(closingDuration, false));
     }
 
     protected IEnumerator CSetActiveIn(float duration, bool isActive) {
-        yield return new WaitForSeconds(duration);
+        yield return new WaitForSecondsRealtime(duration);
         SetActive(isActive);
     }
 
