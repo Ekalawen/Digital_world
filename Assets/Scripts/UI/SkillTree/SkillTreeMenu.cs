@@ -13,13 +13,11 @@ public class SkillTreeMenu : MonoBehaviour {
 
     [Header("Resizing")]
     public LayoutElement layout;
-    public CanvasScaler canvasScaler;
     public float openingDuration = 1.0f;
     public float closingDuration = 1.0f;
     public AnimationCurve resizingCurve;
-
-    [Header("UpgradeDisplay")]
     public LayoutElement upgradeDisplayLayout;
+    public CanvasGroup treeGroup;
 
     protected List<SkillTreeUpgrade> upgrades;
     protected List<SkillTreeLink> links;
@@ -28,11 +26,13 @@ public class SkillTreeMenu : MonoBehaviour {
     protected SingleCoroutine setActiveCoroutine;
     protected float upgradeDisplayOriginalSize;
     protected float upgradeDisplayOriginalPadding;
+    protected float openPrefferedWidth;
 
     public void Initilalize() {
         links = new List<SkillTreeLink>();
         sizeFluctuator = new Fluctuator(this, GetSizeRatio, SetSizeRatio, resizingCurve);
         setActiveCoroutine = new SingleCoroutine(this);
+        openPrefferedWidth = layout.preferredWidth;
         InitializeUpgradeDisplay();
         GatherUpgrades();
         InitializeUpgrades();
@@ -46,9 +46,14 @@ public class SkillTreeMenu : MonoBehaviour {
     }
 
     protected void SetSizeRatio(float percentageValue) {
-        float pixelValue = canvasScaler.referenceResolution.x * percentageValue;
+        float pixelValue = openPrefferedWidth * percentageValue;
         layout.preferredWidth = pixelValue;
         SetUpgradeDisplaySizeRatio(percentageValue);
+        SetTreeAlpha(percentageValue);
+    }
+
+    protected void SetTreeAlpha(float percentageValue) {
+        treeGroup.alpha = percentageValue;
     }
 
     protected void SetUpgradeDisplaySizeRatio(float percentageValue) {
@@ -63,7 +68,7 @@ public class SkillTreeMenu : MonoBehaviour {
 
     protected float GetSizeRatio() {
         float width = layout.preferredWidth;
-        return width / canvasScaler.referenceResolution.x;
+        return width / openPrefferedWidth;
     }
 
     protected void InitializeUpgrades() {
