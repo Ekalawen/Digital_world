@@ -10,7 +10,8 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class TooltipActivator : MonoBehaviour,
     IPointerEnterHandler,
-    IPointerExitHandler
+    IPointerExitHandler,
+    IPointerMoveHandler
 {
     public LocalizedString localizedMessage;
     public float timeBeforeShowing = 0.4f;
@@ -39,16 +40,27 @@ public class TooltipActivator : MonoBehaviour,
         } else {
             Debug.LogWarning($"{gameObject.name} possède un TooltipActivator avec un localizedMessage null !", gameObject);
         }
+        showingCoroutine = null;
     }
 
     public void Hide() {
-        if (showingCoroutine != null)
+        if (showingCoroutine != null) {
             StopCoroutine(showingCoroutine);
+        }
         Tooltip.Hide();
     }
 
     public void OnPointerEnter(PointerEventData eventData) {
-        Show();
+        if (eventData.pointerCurrentRaycast.gameObject == gameObject) {
+            Show();
+        }
+    }
+
+    public void OnPointerMove(PointerEventData eventData) {
+        /// Could work with more ... work :D
+        //if (eventData.pointerCurrentRaycast.gameObject == gameObject && showingCoroutine == null) {
+        //    Show();
+        //}
     }
 
     public void OnPointerExit(PointerEventData eventData) {

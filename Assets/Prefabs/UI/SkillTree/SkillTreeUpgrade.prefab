@@ -243,6 +243,7 @@ GameObject:
   - component: {fileID: 3861656311500164506}
   - component: {fileID: 3584530031975380215}
   - component: {fileID: 5432614112956207105}
+  - component: {fileID: 907535117256219821}
   m_Layer: 5
   m_Name: State
   m_TagString: Untagged
@@ -320,6 +321,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 101b089c210da9e4e9cd77d3d8b4f330, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &907535117256219821
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1708565001705738390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbd415a19dcac79448965bbe22a15aea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  localizedMessage:
+    m_TableReference:
+      m_TableCollectionName: GUID:424a6a0bc88e9244f84baacf95644b09
+    m_TableEntryReference:
+      m_KeyId: 371611746687557632
+      m_Key: 
+    m_FallbackState: 0
+  timeBeforeShowing: 0.4
 --- !u!1 &2766949096691493902
 GameObject:
   m_ObjectHideFlags: 0
@@ -332,6 +353,7 @@ GameObject:
   - component: {fileID: 3846018410937545933}
   - component: {fileID: 4410850185006729483}
   - component: {fileID: 5847631010308946799}
+  - component: {fileID: 8666657808370698593}
   m_Layer: 5
   m_Name: PriceBackground
   m_TagString: Untagged
@@ -410,6 +432,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 101b089c210da9e4e9cd77d3d8b4f330, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8666657808370698593
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2766949096691493902}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbd415a19dcac79448965bbe22a15aea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  localizedMessage:
+    m_TableReference:
+      m_TableCollectionName: GUID:424a6a0bc88e9244f84baacf95644b09
+    m_TableEntryReference:
+      m_KeyId: 371612150087327744
+      m_Key: 
+    m_FallbackState: 0
+  timeBeforeShowing: 0.4
 --- !u!1 &3357041578925031722
 GameObject:
   m_ObjectHideFlags: 0
@@ -520,7 +562,7 @@ RectTransform:
   m_GameObject: {fileID: 4747205910949755473}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
   m_Children:
   - {fileID: 7463918302125430914}
   - {fileID: 2367071508607351876}
@@ -530,8 +572,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 300.66998, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &8851605054025339247
 MonoBehaviour:
@@ -545,7 +587,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9c687a5a2c2aa940a34aef401bef4e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  key: UPGRADE_KEY
+  name:
+    m_TableReference:
+      m_TableCollectionName: GUID:49073d70feb4a324383cb2e3f44f20dc
+    m_TableEntryReference:
+      m_KeyId: 13370171392
+      m_Key: 
+    m_FallbackState: 0
+  description:
+    m_TableReference:
+      m_TableCollectionName: GUID:49073d70feb4a324383cb2e3f44f20dc
+    m_TableEntryReference:
+      m_KeyId: 118919831552
+      m_Key: 
+    m_FallbackState: 0
+  price: 10000000
+  sprite: {fileID: 21300000, guid: 4df181cfffb19d04ab75a91337775046, type: 3}
   requirements: []
+  image: {fileID: 8703004280541545456}
+  priceText: {fileID: 1339948475756995265}
+  mainTooltip: {fileID: 5920836355996539442}
+  priceTooltip: {fileID: 8666657808370698593}
 --- !u!222 &8862238486866837293
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -606,7 +669,7 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
-    m_HighlightedColor: {r: 0.45, g: 0.45, b: 0.45, a: 1}
+    m_HighlightedColor: {r: 0.75, g: 0.75, b: 0.75, a: 1}
     m_PressedColor: {r: 0.85, g: 0.85, b: 0.85, a: 1}
     m_SelectedColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
     m_DisabledColor: {r: 0.8509804, g: 0.8509804, b: 0.8509804, a: 0.5019608}
@@ -654,9 +717,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   localizedMessage:
     m_TableReference:
-      m_TableCollectionName: 
+      m_TableCollectionName: GUID:424a6a0bc88e9244f84baacf95644b09
     m_TableEntryReference:
-      m_KeyId: 0
+      m_KeyId: 114643862251872256
       m_Key: 
     m_FallbackState: 0
   timeBeforeShowing: 0.4
