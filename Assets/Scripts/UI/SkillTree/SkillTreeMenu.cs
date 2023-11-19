@@ -28,7 +28,10 @@ public class SkillTreeMenu : MonoBehaviour {
     public LocalizeStringEvent currentUpgradeDescription;
     public LocalizeStringEvent currentUpgradePrice;
     public TooltipActivator currentUpgradePriceTooltip;
+    public GameObject currentUpgradeBuyButtonHolder;
     public Button currentUpgradeBuyButton;
+    public Button currentUpgradeEnableButton;
+    public Button currentUpgradeDisableButton;
     public Image currentUpgradeGif;
 
     protected List<SkillTreeUpgrade> upgrades;
@@ -167,6 +170,37 @@ public class SkillTreeMenu : MonoBehaviour {
         currentUpgradePrice.StringReference.Arguments = new object[] { upgrade.GetPriceString() };
         currentUpgradePriceTooltip.localizedMessage.Arguments = new object[] { upgrade.GetPriceString() };
         currentUpgradeGif.sprite = upgrade.sprite;
+        ShowAppropriateButtonFor(upgrade);
+    }
+
+    private void ShowAppropriateButtonFor(SkillTreeUpgrade upgrade) {
+        if (!SkillTreeManager.Instance.IsUnlocked(upgrade.key)) {
+            ShowBuyButton();
+        } else {
+            if (SkillTreeManager.Instance.IsEnabled(upgrade.key)) {
+                ShowDisableButton();
+            } else {
+                ShowEnableButton();
+            }
+        }
+    }
+
+    protected void ShowEnableButton() {
+        currentUpgradeBuyButtonHolder.gameObject.SetActive(false);
+        currentUpgradeDisableButton.gameObject.SetActive(false);
+        currentUpgradeEnableButton.gameObject.SetActive(true);
+    }
+
+    protected void ShowDisableButton() {
+        currentUpgradeBuyButtonHolder.gameObject.SetActive(false);
+        currentUpgradeDisableButton.gameObject.SetActive(true);
+        currentUpgradeEnableButton.gameObject.SetActive(false);
+    }
+
+    protected void ShowBuyButton() {
+        currentUpgradeBuyButtonHolder.gameObject.SetActive(true);
+        currentUpgradeDisableButton.gameObject.SetActive(false);
+        currentUpgradeEnableButton.gameObject.SetActive(false);
     }
 
     public void BuyCurrentUpgrade() {
@@ -195,5 +229,23 @@ public class SkillTreeMenu : MonoBehaviour {
 
     protected CounterDisplayer GetCounterDisplayer() {
         return creditsCounterUpdater.GetComponent<CounterDisplayer>();
+    }
+
+    public void Enable(SkillTreeUpgrade upgrade) {
+        SkillTreeManager.Instance.Enable(upgrade.key);
+        ShowAppropriateButtonFor(upgrade);
+    }
+
+    public void Disable(SkillTreeUpgrade upgrade) {
+        SkillTreeManager.Instance.Disable(upgrade.key);
+        ShowAppropriateButtonFor(upgrade);
+    }
+
+    public void EnableCurrentUpgrade() {
+        Enable(currentUpgrade);
+    }
+
+    public void DisableCurrentUpgrade() {
+        Disable(currentUpgrade);
     }
 }

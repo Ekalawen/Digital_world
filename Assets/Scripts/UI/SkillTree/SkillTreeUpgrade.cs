@@ -45,4 +45,12 @@ public class SkillTreeUpgrade : MonoBehaviour {
     public void Select() {
         skillTreeMenu.Select(this);
     }
+
+    public void Enable() {
+        skillTreeMenu.Enable(this);
+    }
+
+    public void Disable() {
+        skillTreeMenu.Disable(this);
+    }
 }
