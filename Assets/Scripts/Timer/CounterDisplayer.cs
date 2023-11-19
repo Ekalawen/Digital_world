@@ -55,10 +55,10 @@ public class CounterDisplayer : MonoBehaviour {
     }
 
     protected IEnumerator MoveTextDown(TMP_Text t) {
-        float debut = Time.timeSinceLevelLoad;
+        Timer timer = new UnpausableTimer(dureeMoving);
         float yDebut = t.rectTransform.anchoredPosition.y - 10;
-        while (Time.timeSinceLevelLoad - debut <= dureeMoving) {
-            float avancement = (Time.timeSinceLevelLoad - debut) / dureeMoving;
+        while (!timer.IsOver()) {
+            float avancement = timer.GetAvancement();
             Vector2 pos = t.rectTransform.anchoredPosition;
             pos.y = yDebut - avancement * distanceMoving;
             t.rectTransform.anchoredPosition = pos;

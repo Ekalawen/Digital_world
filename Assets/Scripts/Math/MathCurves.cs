@@ -92,6 +92,10 @@ public static class MathCurves {
         return Linear(min, max, Mathf.Log(avancement + 1) / Mathf.Log(2));
     }
 
+    public static float LogP(float min, float max, float avancement, float p) {
+        return Linear(min, max, Mathf.Log(avancement + 1, p) / Mathf.Log(2, p));
+    }
+
     public static float LogRandom(float min, float max) {
         float randNumber = UnityEngine.Random.Range(0.0f, 1.0f);
         return Log(min, max, randNumber);

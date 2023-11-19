@@ -42,7 +42,7 @@ public class SkillTreeUpgrade : MonoBehaviour {
         requirements.ForEach(r => skillTreeMenu.CreateLink(r, this));
     }
 
-    public void PopulateVerticalMenu() {
-        skillTreeMenu.PopulateVerticalMenuWith(this);
+    public void Select() {
+        skillTreeMenu.Select(this);
     }
 }

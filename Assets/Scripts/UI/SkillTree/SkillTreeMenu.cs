@@ -39,6 +39,7 @@ public class SkillTreeMenu : MonoBehaviour {
     protected float upgradeDisplayOriginalSize;
     protected float upgradeDisplayOriginalPadding;
     protected float openPrefferedWidth;
+    protected SkillTreeUpgrade currentUpgrade;
 
     public void Initilalize() {
         links = new List<SkillTreeLink>();
@@ -94,6 +95,7 @@ public class SkillTreeMenu : MonoBehaviour {
     }
 
     protected void GatherUpgrades() {
+        currentUpgrade = null;
         upgrades = new List<SkillTreeUpgrade>();
         GatherUpgradesIn(upgradesFolder);
     }
@@ -154,11 +156,44 @@ public class SkillTreeMenu : MonoBehaviour {
         return isOpen;
     }
 
-    public void PopulateVerticalMenuWith(SkillTreeUpgrade upgrade) {
+    public void Select(SkillTreeUpgrade upgrade) {
+        currentUpgrade = upgrade;
+        PopulateVerticalMenuWith(upgrade);
+    }
+
+    protected void PopulateVerticalMenuWith(SkillTreeUpgrade upgrade) {
         currentUpgradeName.StringReference = upgrade.nom;
         currentUpgradeDescription.StringReference = upgrade.description;
         currentUpgradePrice.StringReference.Arguments = new object[] { upgrade.GetPriceString() };
-        currentUpgradePriceTooltip.localizedMessage.Arguments = new object[] {upgrade.GetPriceString() };
+        currentUpgradePriceTooltip.localizedMessage.Arguments = new object[] { upgrade.GetPriceString() };
         currentUpgradeGif.sprite = upgrade.sprite;
+    }
+
+    public void BuyCurrentUpgrade() {
+        if(!currentUpgrade) {
+            return;
+        }
+        //if(SkillTreeManager.Instance.IsUnlocked(currentUpgrade.key)) {
+        //    return;
+        //}
+        if (currentUpgrade.price > SkillTreeManager.Instance.GetCredits()) {
+            return;
+        }
+        BuyUpgrade(currentUpgrade);
+    }
+
+    protected void BuyUpgrade(SkillTreeUpgrade upgrade) {
+        SkillTreeManager.Instance.RemoveCredits(upgrade.price);
+        SkillTreeManager.Instance.Unlock(upgrade.key);
+        string priceString = creditsCounterUpdater.ApplyToCreditsFormating(upgrade.price);
+        GetCounterDisplayer().AddVolatileText($"- {priceString}", GetCounterDisplayer().GetTextColor());
+        creditsCounterUpdater.UpdateValue();
+        upgrade.Initialize(this);
+        PopulateVerticalMenuWith(upgrade);
+        // Run animation ! :D
+    }
+
+    protected CounterDisplayer GetCounterDisplayer() {
+        return creditsCounterUpdater.GetComponent<CounterDisplayer>();
     }
 }

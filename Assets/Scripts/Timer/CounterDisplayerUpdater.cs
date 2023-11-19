@@ -35,12 +35,12 @@ public class CounterDisplayerUpdater : MonoBehaviour {
     }
 
     private IEnumerator CUpdateValue() {
-        Timer timer = new Timer(updateDuration);
+        Timer timer = new UnpausableTimer(updateDuration);
         int startValue = currentlyDisplayedValue;
         int currentValue = getCurrentValue();
-        startValue = Mathf.Min(startValue + 1, currentValue);
+        startValue = startValue <= currentValue ? Mathf.Min(startValue + 1, currentValue) : Mathf.Max(startValue - 1, currentValue);
         while (!timer.IsOver()) {
-            float avancement = MathCurves.QuadraticInverse(0, 1, timer.GetAvancement());
+            float avancement = MathCurves.Power(0, 1, timer.GetAvancement(), 1f / 7.0f);
             int value = Mathf.CeilToInt(MathCurves.Linear(startValue, currentValue, avancement));
             DisplayScore(value);
             yield return null;
