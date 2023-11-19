@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class CounterDisplayer : MonoBehaviour {
+
     public TMP_Text displayText;
     public GameObject movingTextPrefab;
     public float dureeMoving = 1.0f;

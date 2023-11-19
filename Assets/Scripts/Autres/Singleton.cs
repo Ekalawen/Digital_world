@@ -21,7 +21,6 @@ public class Singleton<T> : MonoBehaviour where T : Component {
                     GameObject obj = new GameObject(typeof(T).Name);
                     //obj.hideFlags = HideFlags.HideAndDontSave;
                     _instance = obj.AddComponent<T>();
-                    Initialize(_instance);
                 }
             }
             return _instance;
@@ -34,8 +33,5 @@ public class Singleton<T> : MonoBehaviour where T : Component {
         if (!_instance) {
             _instance = this as T;
         }
-    }
-
-    public virtual void Initialize(T instance) {
     }
 }

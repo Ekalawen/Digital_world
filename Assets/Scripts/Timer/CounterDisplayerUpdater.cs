@@ -12,6 +12,7 @@ public class CounterDisplayerUpdater : MonoBehaviour {
     public string prefix = "";
     public string suffix = "";
     public float updateDuration = 0.6f;
+    public bool useCreditsFormating = false;
 
     protected CounterDisplayer displayer;
     protected Getter getCurrentValue;
@@ -22,6 +23,7 @@ public class CounterDisplayerUpdater : MonoBehaviour {
         this.displayer = displayer;
         this.getCurrentValue = getCurrentValue;
         coroutine = new SingleCoroutine(this);
+        UpdateValueInstantly();
     }
 
     public void UpdateValue() {
@@ -47,7 +49,8 @@ public class CounterDisplayerUpdater : MonoBehaviour {
     }
 
     protected void DisplayScore(int value) {
-        displayer.Display($"{prefix}{value}{suffix}");
+        string valueString = useCreditsFormating ? StringHelper.ToCreditsFormat(value) : value.ToString();
+        displayer.Display($"{prefix}{valueString}{suffix}");
         currentlyDisplayedValue = value;
     }
 }

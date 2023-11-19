@@ -25,7 +25,11 @@ public class StringHelper {
             creditsRest = creditsRest % divider;
             divider /= 1000;
         }
-        res += $"{creditsRest:D3}";
+        if (creditsCount >= 1000) {
+            res += $"{creditsRest:D3}";
+        } else {
+            res += $"{creditsRest}";
+        }
         return res;
     }
 }

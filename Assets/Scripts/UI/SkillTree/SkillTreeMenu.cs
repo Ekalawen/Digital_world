@@ -23,6 +23,7 @@ public class SkillTreeMenu : MonoBehaviour {
     public CanvasGroup treeGroup;
 
     [Header("Links")]
+    public CounterDisplayerUpdater creditsCounterUpdater;
     public LocalizeStringEvent currentUpgradeName;
     public LocalizeStringEvent currentUpgradeDescription;
     public LocalizeStringEvent currentUpgradePrice;
@@ -46,6 +47,12 @@ public class SkillTreeMenu : MonoBehaviour {
         InitializeUpgradeDisplay();
         GatherUpgrades();
         InitializeUpgrades();
+        InitializeCreditsCounter();
+    }
+
+    protected void InitializeCreditsCounter() {
+        CounterDisplayer counterDisplayer = creditsCounterUpdater.GetComponent<CounterDisplayer>();
+        creditsCounterUpdater.Initialize(counterDisplayer, SkillTreeManager.Instance.GetCredits);
     }
 
     protected void InitializeUpgradeDisplay() {
