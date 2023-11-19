@@ -23,19 +23,22 @@ public class ScoreManager_Exponential : ScoreManager {
 
     public override void OnNewBlockCrossed() {
         currentScore += scoreIncrement;
-        scoreDisplayer.AddVolatileText($"+ {scoreIncrement}", scoreDisplayer.GetTextColor());
+        string scoreIncrementString = scoreDisplayerUpdater.ApplyToCreditsFormating(scoreIncrement);
+        scoreDisplayer.AddVolatileText($"+ {scoreIncrementString}", scoreDisplayer.GetTextColor());
         scoreDisplayerUpdater.UpdateValue();
     }
 
     public override void OnCatchData() {
         scoreIncrement += scoreIncrement2;
-        incrementDisplayer.AddVolatileText($"+ {scoreIncrement2}", incrementDisplayer.GetTextColor());
+        string scoreIncrement2String = incrementDisplayerUpdater.ApplyToCreditsFormating(scoreIncrement2);
+        incrementDisplayer.AddVolatileText($"+ {scoreIncrement2String}", incrementDisplayer.GetTextColor());
         incrementDisplayerUpdater.UpdateValue();
     }
 
     public override void OnNewTresholdCrossed() {
         scoreIncrement *= scoreMultiplier;
         scoreIncrement2 *= scoreMultiplier;
+        string scoreMultiplierString = increment2DisplayerUpdater.ApplyToCreditsFormating(scoreMultiplier);
         increment2Displayer.AddVolatileText($"× {scoreMultiplier} !!!", increment2Displayer.GetTextColor());
         increment2DisplayerUpdater.UpdateValue();
     }

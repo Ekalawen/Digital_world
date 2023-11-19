@@ -49,8 +49,12 @@ public class CounterDisplayerUpdater : MonoBehaviour {
     }
 
     protected void DisplayScore(int value) {
-        string valueString = useCreditsFormating ? StringHelper.ToCreditsFormat(value) : value.ToString();
+        string valueString = ApplyToCreditsFormating(value);
         displayer.Display($"{prefix}{valueString}{suffix}");
         currentlyDisplayedValue = value;
+    }
+
+    public string ApplyToCreditsFormating(int value) {
+        return useCreditsFormating ? StringHelper.ToCreditsFormat(value) : value.ToString();
     }
 }

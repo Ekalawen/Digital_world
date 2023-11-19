@@ -28,19 +28,22 @@ public class ScoreManager_Quadratic : ScoreManager {
 
     public override void OnNewBlockCrossed() {
         currentScore += scoreIncrement;
-        scoreDisplayer.AddVolatileText($"+ {scoreIncrement}", scoreDisplayer.GetTextColor());
+        string scoreIncrementString = scoreDisplayerUpdater.ApplyToCreditsFormating(scoreIncrement);
+        scoreDisplayer.AddVolatileText($"+ {scoreIncrementString}", scoreDisplayer.GetTextColor());
         scoreDisplayerUpdater.UpdateValue();
     }
 
     public override void OnCatchData() {
         scoreIncrement += scoreIncrement2;
-        incrementDisplayer.AddVolatileText($"+ {scoreIncrement2} !", incrementDisplayer.GetTextColor());
+        string scoreIncrement2String = incrementDisplayerUpdater.ApplyToCreditsFormating(scoreIncrement2);
+        incrementDisplayer.AddVolatileText($"+ {scoreIncrement2String} !", incrementDisplayer.GetTextColor());
         incrementDisplayerUpdater.UpdateValue();
     }
 
     public override void OnNewTresholdCrossed() {
         scoreIncrement2 += scoreIncrement3;
-        increment2Displayer.AddVolatileText($"+ {scoreIncrement3} !!!", incrementDisplayer.GetTextColor());
+        string scoreIncrement3String = increment2DisplayerUpdater.ApplyToCreditsFormating(scoreIncrement3);
+        increment2Displayer.AddVolatileText($"+ {scoreIncrement3String} !!!", incrementDisplayer.GetTextColor());
         increment2DisplayerUpdater.UpdateValue();
 
         scoreIncrement3 += scoreIncrement4;
