@@ -749,8 +749,9 @@ public class EventManager : MonoBehaviour {
     }
 
     public void RememberGameResult(bool success) {
-        if (gm.GetMapType() == MenuLevel.LevelType.INFINITE)
+        if (gm.GetMapType() == MenuLevel.LevelType.INFINITE) {
             success = IsNewBestScore();
+        }
 
         RememberSincelastBestScore(success);
         gm.historyManager.score = GetScore();
@@ -762,6 +763,11 @@ public class EventManager : MonoBehaviour {
             RememberHasJustWin();
         }
         IncrementSumOfAllTriesScores();
+
+        InfiniteMap infiniteMap = gm.GetInfiniteMap();
+        if(infiniteMap) {
+            infiniteMap.GetScoreManager().AddScoreToCreditCount();
+        }
     }
 
     protected void RememberHasJustWin() {

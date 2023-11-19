@@ -75,4 +75,8 @@ public abstract class ScoreManager : MonoBehaviour
         incrementDisplayerUpdater.UpdateValueInstantly();
         increment2DisplayerUpdater.UpdateValueInstantly();
     }
+
+    public void AddScoreToCreditCount() {
+        SkillTreeManager.Instance.AddCredits(GetCurrentScore());
+    }
 }
