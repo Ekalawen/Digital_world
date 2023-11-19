@@ -10,7 +10,7 @@ public class SkillTreeUpgrade : MonoBehaviour {
 
     [Header("Parameters")]
     public string key;
-    public LocalizedString name;
+    public LocalizedString nom;
     public LocalizedString description;
     public int price;
     public Sprite sprite;
@@ -27,14 +27,22 @@ public class SkillTreeUpgrade : MonoBehaviour {
     public void Initialize(SkillTreeMenu skillTreeMenu) {
         this.skillTreeMenu = skillTreeMenu;
         image.sprite = sprite;
-        string priceString = StringHelper.ToCreditsFormat(price);
+        string priceString = GetPriceString();
         priceText.text = priceString;
-        mainTooltip.localizedMessage = name;
+        mainTooltip.localizedMessage = nom;
         priceTooltip.localizedMessage.Arguments = new object[] { priceString };
         InitializeRequirementLinks();
     }
 
+    public string GetPriceString() {
+        return StringHelper.ToCreditsFormat(price);
+    }
+
     protected void InitializeRequirementLinks() {
         requirements.ForEach(r => skillTreeMenu.CreateLink(r, this));
+    }
+
+    public void PopulateVerticalMenu() {
+        skillTreeMenu.PopulateVerticalMenuWith(this);
     }
 }

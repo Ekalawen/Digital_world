@@ -2,7 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using TMPro;
 using UnityEngine;
+using UnityEngine.Localization;
+using UnityEngine.Localization.Components;
 using UnityEngine.UI;
 
 public class SkillTreeMenu : MonoBehaviour {
@@ -18,6 +21,13 @@ public class SkillTreeMenu : MonoBehaviour {
     public AnimationCurve resizingCurve;
     public LayoutElement upgradeDisplayLayout;
     public CanvasGroup treeGroup;
+
+    [Header("Links")]
+    public LocalizeStringEvent currentUpgradeName;
+    public LocalizeStringEvent currentUpgradeDescription;
+    public LocalizeStringEvent currentUpgradePrice;
+    public Button currentUpgradeBuyButton;
+    public Image currentUpgradeGif;
 
     protected List<SkillTreeUpgrade> upgrades;
     protected List<SkillTreeLink> links;
@@ -134,5 +144,12 @@ public class SkillTreeMenu : MonoBehaviour {
 
     public bool IsOpen() {
         return isOpen;
+    }
+
+    public void PopulateVerticalMenuWith(SkillTreeUpgrade upgrade) {
+        currentUpgradeName.StringReference = upgrade.nom;
+        currentUpgradeDescription.StringReference = upgrade.description;
+        currentUpgradePrice.StringReference.Arguments = new object[] { upgrade.GetPriceString() };
+        currentUpgradeGif.sprite = upgrade.sprite;
     }
 }
