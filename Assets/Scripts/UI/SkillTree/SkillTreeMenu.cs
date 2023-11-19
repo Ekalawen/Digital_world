@@ -27,6 +27,7 @@ public class SkillTreeMenu : MonoBehaviour {
     public LocalizeStringEvent currentUpgradeName;
     public LocalizeStringEvent currentUpgradeDescription;
     public LocalizeStringEvent currentUpgradePrice;
+    public TooltipActivator currentUpgradePriceTooltip;
     public Button currentUpgradeBuyButton;
     public Image currentUpgradeGif;
 
@@ -157,6 +158,7 @@ public class SkillTreeMenu : MonoBehaviour {
         currentUpgradeName.StringReference = upgrade.nom;
         currentUpgradeDescription.StringReference = upgrade.description;
         currentUpgradePrice.StringReference.Arguments = new object[] { upgrade.GetPriceString() };
+        currentUpgradePriceTooltip.localizedMessage.Arguments = new object[] {upgrade.GetPriceString() };
         currentUpgradeGif.sprite = upgrade.sprite;
     }
 }
