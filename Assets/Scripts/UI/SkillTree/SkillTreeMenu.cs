@@ -234,11 +234,13 @@ public class SkillTreeMenu : MonoBehaviour {
     public void Enable(SkillTreeUpgrade upgrade) {
         SkillTreeManager.Instance.Enable(upgrade.key);
         ShowAppropriateButtonFor(upgrade);
+        upgrade.DisplayGoodState();
     }
 
     public void Disable(SkillTreeUpgrade upgrade) {
         SkillTreeManager.Instance.Disable(upgrade.key);
         ShowAppropriateButtonFor(upgrade);
+        upgrade.DisplayGoodState();
     }
 
     public void EnableCurrentUpgrade() {

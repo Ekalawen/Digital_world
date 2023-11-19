@@ -18,9 +18,13 @@ public class SkillTreeUpgrade : MonoBehaviour {
 
     [Header("Links")]
     public Image image;
+    public GameObject priceObject;
     public TMP_Text priceText;
     public TooltipActivator mainTooltip;
     public TooltipActivator priceTooltip;
+    public GameObject lockedStateIcon;
+    public GameObject enabledStateIcon;
+    public GameObject disabledStateIcon;
 
     protected SkillTreeMenu skillTreeMenu;
 
@@ -32,6 +36,7 @@ public class SkillTreeUpgrade : MonoBehaviour {
         mainTooltip.localizedMessage = nom;
         priceTooltip.localizedMessage.Arguments = new object[] { priceString };
         InitializeRequirementLinks();
+        DisplayGoodState();
     }
 
     public string GetPriceString() {
@@ -52,5 +57,38 @@ public class SkillTreeUpgrade : MonoBehaviour {
 
     public void Disable() {
         skillTreeMenu.Disable(this);
+    }
+
+    public void DisplayGoodState() {
+        if(!SkillTreeManager.Instance.IsUnlocked(key)) {
+            DisplayLockedState();
+        } else {
+            if(SkillTreeManager.Instance.IsEnabled(key)) {
+                DisplayEnabledState();
+            } else {
+                DisplayDisabledState();
+            }
+        }
+    }
+
+    protected void DisplayDisabledState() {
+        lockedStateIcon.gameObject.SetActive(false);
+        enabledStateIcon.gameObject.SetActive(false);
+        disabledStateIcon.gameObject.SetActive(true);
+        priceObject.gameObject.SetActive(false);
+    }
+
+    protected void DisplayEnabledState() {
+        lockedStateIcon.gameObject.SetActive(false);
+        enabledStateIcon.gameObject.SetActive(true);
+        disabledStateIcon.gameObject.SetActive(false);
+        priceObject.gameObject.SetActive(false);
+    }
+
+    protected void DisplayLockedState() {
+        lockedStateIcon.gameObject.SetActive(true);
+        enabledStateIcon.gameObject.SetActive(false);
+        disabledStateIcon.gameObject.SetActive(false);
+        priceObject.gameObject.SetActive(true);
     }
 }
