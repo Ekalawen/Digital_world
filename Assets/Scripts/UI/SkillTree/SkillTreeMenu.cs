@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using TMPro;
 using UnityEngine;
@@ -16,8 +17,10 @@ public class SkillTreeMenu : MonoBehaviour {
 
     [Header("Resizing")]
     public LayoutElement layout;
-    public float openingDuration = 1.0f;
-    public float closingDuration = 1.0f;
+    public float openingDuration = 0.35f;
+    public float closingDuration = 0.35f;
+    public float upgradeDisplayOpeningDuration = 0.35f;
+    public float upgradeDisplayClosingDuration = 0.35f;
     public AnimationCurve resizingCurve;
     public LayoutElement upgradeDisplayLayout;
     public CanvasGroup treeGroup;
@@ -38,15 +41,18 @@ public class SkillTreeMenu : MonoBehaviour {
     protected List<SkillTreeLink> links;
     protected bool isOpen = false;
     protected Fluctuator sizeFluctuator;
+    protected Fluctuator upgradeDisplaySizeFluctuator;
     protected SingleCoroutine setActiveCoroutine;
     protected float upgradeDisplayOriginalSize;
     protected float upgradeDisplayOriginalPadding;
     protected float openPrefferedWidth;
     protected SkillTreeUpgrade currentUpgrade;
+    protected bool isUpgradeDisplayOpen;
 
     public void Initilalize() {
         links = new List<SkillTreeLink>();
         sizeFluctuator = new Fluctuator(this, GetSizeRatio, SetSizeRatio, resizingCurve, useUnscaleTime: true);
+        upgradeDisplaySizeFluctuator = new Fluctuator(this, GetUpgradeDisplaySizeRatio, SetUpgradeDisplaySizeRatio, useUnscaleTime: true);
         setActiveCoroutine = new SingleCoroutine(this);
         openPrefferedWidth = layout.preferredWidth;
         InitializeUpgradeDisplay();
@@ -61,16 +67,17 @@ public class SkillTreeMenu : MonoBehaviour {
     }
 
     protected void InitializeUpgradeDisplay() {
+        isUpgradeDisplayOpen = false;
         upgradeDisplayOriginalSize = upgradeDisplayLayout.preferredWidth;
         upgradeDisplayLayout.preferredWidth = 0.0f;
         upgradeDisplayOriginalPadding = upgradeDisplayLayout.GetComponent<VerticalLayoutGroup>().padding.left;
         SetSizeRatio(0.0f);
+        SetUpgradeDisplaySizeRatio(0.0f);
     }
 
     protected void SetSizeRatio(float percentageValue) {
         float pixelValue = openPrefferedWidth * percentageValue;
         layout.preferredWidth = pixelValue;
-        SetUpgradeDisplaySizeRatio(percentageValue);
         SetTreeAlpha(percentageValue);
     }
 
@@ -86,15 +93,27 @@ public class SkillTreeMenu : MonoBehaviour {
         VerticalLayoutGroup verticalLayoutGroup = upgradeDisplayLayout.GetComponent<VerticalLayoutGroup>();
         verticalLayoutGroup.padding.left = (int)paddingPixelValue;
         verticalLayoutGroup.padding.right = (int)paddingPixelValue;
+
+        upgradeDisplayLayout.gameObject.SetActive(percentageValue > 0.0f);
+    }
+
+    protected float GetUpgradeDisplaySizeRatio() {
+        return upgradeDisplayLayout.preferredWidth / upgradeDisplayOriginalSize;
     }
 
     protected float GetSizeRatio() {
-        float width = layout.preferredWidth;
-        return width / openPrefferedWidth;
+        return layout.preferredWidth / openPrefferedWidth;
     }
 
     protected void InitializeUpgrades() {
         upgrades.ForEach(u => u.Initialize(this));
+        WarnIfDuplicateKey();
+    }
+
+    protected void WarnIfDuplicateKey() {
+        if(upgrades.Select(u => u.key).Distinct().Count() < upgrades.Count()) {
+            Debug.LogError($"Certaines SkillTreeUpgrade.key sont en doubles !!!");
+        }
     }
 
     protected void GatherUpgrades() {
@@ -144,6 +163,17 @@ public class SkillTreeMenu : MonoBehaviour {
         isOpen = false;
         sizeFluctuator.GoTo(0.0f, closingDuration);
         setActiveCoroutine.Start(CSetActiveIn(closingDuration, false));
+        CloseUpgradeDisplay();
+    }
+
+    public void CloseUpgradeDisplay() {
+        isUpgradeDisplayOpen = false;
+        upgradeDisplaySizeFluctuator.GoTo(0.0f, upgradeDisplayClosingDuration);
+    }
+
+    public void OpenUpgradeDisplay() {
+        isUpgradeDisplayOpen = true;
+        upgradeDisplaySizeFluctuator.GoTo(1.0f, upgradeDisplayOpeningDuration);
     }
 
     protected IEnumerator CSetActiveIn(float duration, bool isActive) {
@@ -162,6 +192,7 @@ public class SkillTreeMenu : MonoBehaviour {
     public void Select(SkillTreeUpgrade upgrade) {
         currentUpgrade = upgrade;
         PopulateVerticalMenuWith(upgrade);
+        OpenUpgradeDisplay();
     }
 
     protected void PopulateVerticalMenuWith(SkillTreeUpgrade upgrade) {
@@ -222,7 +253,7 @@ public class SkillTreeMenu : MonoBehaviour {
         string priceString = creditsCounterUpdater.ApplyToCreditsFormating(upgrade.price);
         GetCounterDisplayer().AddVolatileText($"- {priceString}", GetCounterDisplayer().GetTextColor());
         creditsCounterUpdater.UpdateValue();
-        upgrade.Initialize(this);
+        upgrade.DisplayGoodState();
         PopulateVerticalMenuWith(upgrade);
         // Run animation ! :D
     }
