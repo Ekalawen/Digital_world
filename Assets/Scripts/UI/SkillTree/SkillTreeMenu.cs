@@ -166,9 +166,21 @@ public class SkillTreeMenu : MonoBehaviour {
         CloseUpgradeDisplay();
     }
 
+    public void CloseInstantly() {
+        isOpen = false;
+        SetSizeRatio(0.0f);
+        CloseUpgradeDisplayInstantly();
+        SetActive(false);
+    }
+
     public void CloseUpgradeDisplay() {
         isUpgradeDisplayOpen = false;
         upgradeDisplaySizeFluctuator.GoTo(0.0f, upgradeDisplayClosingDuration);
+    }
+
+    protected void CloseUpgradeDisplayInstantly() {
+        isUpgradeDisplayOpen = false;
+        SetUpgradeDisplaySizeRatio(0.0f);
     }
 
     public void OpenUpgradeDisplay() {

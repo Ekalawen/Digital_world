@@ -70,7 +70,11 @@ public class InputControllerXbox : InputController {
         return new Vector2(xRot, yRot);
     }
 
-    public override bool GetOptions() {
+    public override bool GetOptionsInput() {
+        return false;
+    }
+
+    public override bool GetSkillTreeInput() {
         return false;
     }
 

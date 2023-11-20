@@ -55,8 +55,12 @@ public class InputControllerAZERTY : InputController {
         return "AZERTY";
     }
 
-    public override bool GetOptions() {
+    public override bool GetOptionsInput() {
         return Input.GetKeyDown(KeyCode.O);
+    }
+
+    public override bool GetSkillTreeInput() {
+        return Input.GetKeyDown(KeyCode.T);
     }
 
     public override bool GetPauseGame() {
@@ -106,5 +110,4 @@ public class InputControllerAZERTY : InputController {
     public override bool IsController() {
         return false;
     }
-
 }

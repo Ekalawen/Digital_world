@@ -177,7 +177,9 @@ public class GameManager : MonoBehaviour {
 
         CheckPauseToggling();
 
-        CheckOptionsToggling();
+        //CheckOptionsToggling();
+
+        CheckSkillTreeToggling();
 
         CheckCursorToggling();
 
@@ -201,13 +203,37 @@ public class GameManager : MonoBehaviour {
     }
 
     protected void CheckOptionsToggling() {
-        if (inputManager.GetOptions()) {
-            if (!isPaused && ! eventManager.IsGameOver()) {
-                Pause();
-                console.pauseMenu.GetComponentInChildren<PauseMenu>().Options();
-            }
+        if (!inputManager.GetOptionsInput()) {
+            return;
+        }
+        if (eventManager.IsGameOver()) {
+            return;
+        }
+        PauseMenu pauseMenu = console.GetPauseMenu();
+        if (!pauseMenu.IsOptionsOpen()) {
+            Pause();
+            pauseMenu.OpenOptions();
+        } else {
+            UnPause();
         }
     }
+
+    protected void CheckSkillTreeToggling() {
+        if (!inputManager.GetSkillTreeInput()) {
+            return;
+        }
+        if (eventManager.IsGameOver()) {
+            return;
+        }
+        PauseMenu pauseMenu = console.GetPauseMenu();
+        if (!pauseMenu.IsSkillTreeOpen()) {
+            Pause();
+            pauseMenu.OpenSkillTree();
+        } else {
+            UnPause();
+        }
+    }
+
 
     public void Pause() {
         isPaused = true;
@@ -228,6 +254,7 @@ public class GameManager : MonoBehaviour {
         console.ClosePauseMenu();
         soundManager.UnPauseSounds();
         postProcessManager.UnPauseEffects();
+        console.GetPauseMenu().CloseSkillTreeInstantly();
         StartFullScreen();
     }
 

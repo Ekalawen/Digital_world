@@ -142,8 +142,13 @@ public class Console : MonoBehaviour {
         HideDataCountDisplayerIfIR();
         DisplayOrNotConsole();
         ToggleUIVisibilityBasedOnSaver();
+        InitializePauseMenu();
 
         StartCoroutine(CInitialize());
+    }
+
+    protected void InitializePauseMenu() {
+        GetPauseMenu().Initialize();
     }
 
     public virtual void DisplayOrNotConsole() {
@@ -1470,8 +1475,8 @@ public class Console : MonoBehaviour {
             return;
         }
         gm.Pause();
-        PauseMenu pm = pauseMenu.GetComponentInChildren<PauseMenu>();
-        pm.Options();
+        PauseMenu pm = GetPauseMenu();
+        pm.OpenOptions();
         pm.menuOptions.ChosePanelControles();
         OpenChoseAControllerPopup(pm);
     }
@@ -1492,5 +1497,9 @@ public class Console : MonoBehaviour {
         LocalizedString ls = strings.initializeOverride;
         ls.Arguments = new object[] { overrid.GetName() };
         AjouterMessageImportant(ls, Console.TypeText.BLUE_TEXT, 2.0f);
+    }
+
+    public PauseMenu GetPauseMenu() {
+        return pauseMenu.GetComponentInChildren<PauseMenu>(includeInactive: true);
     }
 }

@@ -63,7 +63,9 @@ public abstract class InputController : MonoBehaviour {
 
     public abstract bool GetPauseGame();
 
-    public abstract bool GetOptions();
+    public abstract bool GetOptionsInput();
+
+    public abstract bool GetSkillTreeInput();
 
     public abstract bool GetPauseReturnToMenu();
 

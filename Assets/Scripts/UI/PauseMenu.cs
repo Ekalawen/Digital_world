@@ -16,7 +16,7 @@ public class PauseMenu : MonoBehaviour {
     protected GameManager gm;
     protected InputManager inputManager;
 
-    public void Start() {
+    public void Initialize() {
         gm = GameManager.Instance;
         inputManager = InputManager.Instance;
         skillTreeMenu.Initilalize();
@@ -28,9 +28,14 @@ public class PauseMenu : MonoBehaviour {
                 Quitter();
             }
             if(inputManager.GetPauseGame()) {
-                menuOptions.ResetMenu();
-                menuOptions.gameObject.SetActive(false);
-                Reprendre();
+                if (skillTreeMenu.IsOpen()) {
+                    skillTreeMenu.Close();
+                } else {
+                    skillTreeMenu.CloseInstantly();
+                    menuOptions.ResetMenu();
+                    menuOptions.gameObject.SetActive(false);
+                    Reprendre();
+                }
             }
             // O and R are already handled
         }
@@ -67,10 +72,19 @@ public class PauseMenu : MonoBehaviour {
         popup.Run();
     }
 
-    public void Options() {
+    public void OpenOptions() {
         menuOptions.gameObject.SetActive(true);
         menuOptions.Run();
         Tooltip.Hide();
+    }
+
+    public void CloseOptions() {
+        menuOptions.gameObject.SetActive(false);
+        Tooltip.Hide();
+    }
+
+    public bool IsOptionsOpen() {
+        return menuOptions.gameObject.activeSelf;
     }
 
     public void OpenSkillTree() {
@@ -78,8 +92,17 @@ public class PauseMenu : MonoBehaviour {
         Tooltip.Hide();
     }
 
+    public bool IsSkillTreeOpen() {
+        return skillTreeMenu.IsOpen();
+    }
+
     public void CloseSkillTree() {
         skillTreeMenu.Close();
+        Tooltip.Hide();
+    }
+
+    public void CloseSkillTreeInstantly() {
+        skillTreeMenu.CloseInstantly();
         Tooltip.Hide();
     }
 

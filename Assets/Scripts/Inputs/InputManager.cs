@@ -229,8 +229,12 @@ public class InputManager : MonoBehaviour {
             || inputControllers.FindAll(ic => ic.IsKeyboard() != currentInputController.IsKeyboard()).Any(ic => ic.GetPauseGame());
     }
 
-    public bool GetOptions() {
-        return currentInputController.GetOptions();
+    public bool GetOptionsInput() {
+        return currentInputController.GetOptionsInput();
+    }
+
+    public bool GetSkillTreeInput() {
+        return currentInputController.GetSkillTreeInput();
     }
 
     public bool GetPauseReturnToMenu() {

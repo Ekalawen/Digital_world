@@ -56,8 +56,12 @@ public class InputControllerQWERTY : InputController {
         return "QWERTY";
     }
 
-    public override bool GetOptions() {
+    public override bool GetOptionsInput() {
         return Input.GetKeyDown(KeyCode.O);
+    }
+
+    public override bool GetSkillTreeInput() {
+        return Input.GetKeyDown(KeyCode.T);
     }
 
     public override bool GetPauseGame() {
