@@ -84,7 +84,7 @@ public class PauseMenu : MonoBehaviour {
     }
 
     public bool IsOptionsOpen() {
-        return menuOptions.gameObject.activeSelf;
+        return menuOptions.gameObject.activeInHierarchy;
     }
 
     public void OpenSkillTree() {

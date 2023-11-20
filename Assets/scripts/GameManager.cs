@@ -177,7 +177,7 @@ public class GameManager : MonoBehaviour {
 
         CheckPauseToggling();
 
-        //CheckOptionsToggling();
+        CheckOptionsToggling();
 
         CheckSkillTreeToggling();
 
