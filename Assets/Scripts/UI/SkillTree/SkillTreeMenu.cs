@@ -216,6 +216,7 @@ public class SkillTreeMenu : MonoBehaviour {
         }
         currentUpgradeName.StringReference = upgrade.nom;
         currentUpgradeDescription.StringReference = upgrade.description;
+        currentUpgradeDescription.StringReference.Arguments = upgrade.GetComponent<InputTextBindingParameters>().GetArguments();
         currentUpgradePrice.StringReference.Arguments = new object[] { upgrade.GetPriceString() };
         currentUpgradePriceTooltip.localizedMessage.Arguments = new object[] { upgrade.GetPriceString() };
         currentUpgradeGif.sprite = upgrade.sprite;

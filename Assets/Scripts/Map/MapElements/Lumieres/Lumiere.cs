@@ -67,7 +67,9 @@ public class Lumiere : MonoBehaviour {
 
     protected void InitializeBlockLumiere() {
         blockLumiere = GetComponent<BlockLumiere>();
-        blockLumiere.Initialize();
+        if (blockLumiere) {
+            blockLumiere.Initialize();
+        }
     }
 
     public void SetName() {

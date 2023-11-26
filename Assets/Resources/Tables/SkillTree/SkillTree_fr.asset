@@ -16,7 +16,8 @@ MonoBehaviour:
     m_Code: fr
   m_SharedData: {fileID: 11400000, guid: 49073d70feb4a324383cb2e3f44f20dc, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - id: 0
   m_TableData:
   - m_Id: 13370171392
     m_Localized: Double Dash
@@ -72,11 +73,12 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 3934648412184576
-    m_Localized: "Appuyez sur SHIFT pour vous d\xE9crochez des murs lorsque vous
-      glissez dessus.\n\nMaintenez SHIFT enfonc\xE9 au moment d'un atterrissage pour
-      gagner 30% de vitesse d\xE9gressive sur 1.2s."
+    m_Localized: "Appuyez sur {0} pour vous d\xE9crochez des murs lorsque vous glissez
+      dessus.\n\nMaintenez {0} enfonc\xE9 au moment d'un atterrissage pour gagner
+      30% de vitesse d\xE9gressive sur 1.2s."
     m_Metadata:
-      m_Items: []
+      m_Items:
+      - id: 0
   - m_Id: 3934674291040256
     m_Localized: Atterrissage explosif
     m_Metadata:
@@ -88,3 +90,7 @@ MonoBehaviour:
       m_Items: []
   references:
     version: 1
+    00000000:
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 00a0ecb88afa0d00
