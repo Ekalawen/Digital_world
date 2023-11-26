@@ -21,7 +21,8 @@ public class Player : Character {
 
     public float dureeAscensionSaut;
     public float dureeHorizontalSaut;
-	public float dureeMur; // le temps que l'on peut rester accroché au mur
+	public float dureeMurInitiale; // le temps que l'on peut rester accroché au mur
+	public float dureeMurWithUpgrade; // le temps que l'on peut rester accroché au mur
 	public float distanceMurMax; // la distance maximale de laquelle on peut s'éloigner du mur
     public float sensibilite; // la sensibilité de la souris
     public float dureeCanJumpAfterFalling = 0.1f; // La durée pendant laquelle on peut encore sauter si on vient de tomber depuis l'état AU_SOL
@@ -88,6 +89,7 @@ public class Player : Character {
     protected Coroutine gravityEffectRemovedForCoroutine = null;
     protected Timer isPowerDashingTimer = null;
     protected float cameraShakerInitialHeight;
+    protected float dureeMur;
 
     protected IPouvoir pouvoirA; // Le pouvoir de la touche A (souvent la détection)
     protected IPouvoir pouvoirE; // Le pouvoir de la touche E (souvent la localisation)
@@ -138,13 +140,14 @@ public class Player : Character {
         geoSphere.Initialize();
         inputManager = InputManager.Instance;
         GetPlayerSensitivity();
+        InitializeDureeMur();
         bSetUpRotation = true;
         sautTimer = new Timer(GetDureeTotaleSaut());
         sautTimer.SetOver();
         onHitEvent = new UnityEvent();
         timerLastTimeAuSol = new Timer(dureeCanJumpAfterFalling);
         timerLastTimeAuSol.SetOver();
-        dureeMurTimer = new Timer(dureeMur);
+        dureeMurTimer = new Timer(GetDureeMur());
         dureeMurTimer.SetOver();
         timerLastTimeAuMur = new Timer();
         timerLastTimeNotAuMur = new Timer();
@@ -173,6 +176,11 @@ public class Player : Character {
         console = GameObject.FindObjectOfType<Console>();
 
         InitPouvoirs();
+    }
+
+    protected void InitializeDureeMur() {
+        bool hasSkill = SkillTreeManager.Instance.IsEnabled(SkillTreeUpgrade.SkillKey.UPGRADE_SLIDE_DURATION_AND_UI);
+        dureeMur = hasSkill ? dureeMurWithUpgrade : dureeMurInitiale;
     }
 
     public void GetPlayerSensitivity() {
@@ -1262,5 +1270,9 @@ public class Player : Character {
     public bool IsTimeHackOn() {
         PouvoirTimeHack timeHack = GetTimeHack();
         return timeHack != null && timeHack.IsActive();
+    }
+
+    public float GetDureeMur() {
+        return dureeMur;
     }
 }

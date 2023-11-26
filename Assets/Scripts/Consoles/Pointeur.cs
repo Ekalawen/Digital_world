@@ -35,6 +35,7 @@ public class Pointeur : MonoBehaviour {
     protected ChargeCooldown tripleDashChargeCooldown = null;
     protected ChargeCooldown gripDashCooldown = null;
     protected PouvoirTimeHack timeHack = null;
+    protected bool hasSlideUi;
 
     public void Initialize() {
         gm = GameManager.Instance;
@@ -44,6 +45,7 @@ public class Pointeur : MonoBehaviour {
         gripDashPointeur.rectTransform.sizeDelta = Vector2.one * auSolScale;
         timeHackPointeur.color = auSolColor;
         timeHackPointeur.rectTransform.sizeDelta = Vector2.one * auSolScale;
+        hasSlideUi = SkillTreeManager.Instance.IsEnabled(SkillTreeUpgrade.SkillKey.UPGRADE_SLIDE_DURATION_AND_UI);
 
         InitTexture();
     }
@@ -56,7 +58,11 @@ public class Pointeur : MonoBehaviour {
     }
 
     protected void SetColorAndSize() {
-        switch (gm.player.GetEtat()) {
+        Player.EtatPersonnage etat = gm.player.GetEtat();
+        if(!hasSlideUi && etat == Player.EtatPersonnage.AU_MUR) {
+            etat = Player.EtatPersonnage.AU_SOL;
+        }
+        switch (etat) {
             case Player.EtatPersonnage.AU_SOL:
                 auMurPointeur.color = auSolColor;
                 gripDashPointeur.color = auSolColor;
@@ -143,12 +149,12 @@ public class Pointeur : MonoBehaviour {
     }
 
     protected Color GetFinalColorAuMur() {
-        float avancement = Mathf.Max(0, gm.player.GetDureeRestanteMur() / gm.player.dureeMur); // Max because when stunned, getDureeRestanteMur peut être négative !
+        float avancement = Mathf.Max(0, gm.player.GetDureeRestanteMur() / gm.player.GetDureeMur()); // Max because when stunned, getDureeRestanteMur peut être négative !
         return ColorManager.InterpolateColors(auSolColor, auMurColor, avancement);
     }
 
     protected float GetFinalScaleAuMur() {
-        float avancement = Mathf.Max(0, gm.player.GetDureeRestanteMur() / gm.player.dureeMur); // Max because when stunned, getDureeRestanteMur peut être négative !
+        float avancement = Mathf.Max(0, gm.player.GetDureeRestanteMur() / gm.player.GetDureeMur()); // Max because when stunned, getDureeRestanteMur peut être négative !
         return MathCurves.Linear(auSolScale, auMurScale, avancement);
     }
 
