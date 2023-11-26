@@ -9,13 +9,19 @@ public class CheatCode {
     public List<KeyCode> code;
     public Action action;
     public int state = 0;
+
+    public CheatCode(List<KeyCode> code, Action action, int state = 0) {
+        this.code = code;
+        this.action = action;
+        this.state = state;
+    }
 }
 
 public class CheatCodeManager : MonoBehaviour {
 
     [Header("Cheat Codes")]
+    [Header("Progression related")]
     public List<KeyCode> winCode;
-
     public List<KeyCode> loseCode;
     public List<KeyCode> plus10Code;
     public List<KeyCode> plus100Code;
@@ -27,6 +33,8 @@ public class CheatCodeManager : MonoBehaviour {
     public List<KeyCode> plus100DataCount;
     public List<KeyCode> swapPhasesCode;
     public List<KeyCode> startEndEventCode;
+
+    [Header("Power related")]
     public List<KeyCode> gravityZeroCode;
     public List<KeyCode> cooldownsZeroCode;
     public List<KeyCode> invincibilityCode;
@@ -37,6 +45,9 @@ public class CheatCodeManager : MonoBehaviour {
     public List<KeyCode> gainGripDashCode;
     public List<KeyCode> gainTimeHackCode;
     public List<KeyCode> hackActivatedOrbTriggersCode;
+
+    [Header("SkillTree related")]
+    public List<KeyCode> resetAllSkillTree;
 
     [Header("Links")]
     public GameObject dash333Prefab;
@@ -53,163 +64,38 @@ public class CheatCodeManager : MonoBehaviour {
         gm = GameManager.Instance;
         cheatCodes = new List<CheatCode>();
 
-        CheatCode winCheatCode = new CheatCode();
-        winCheatCode.code = winCode;
-        winCheatCode.action = gm.eventManager.WinGame;
-        cheatCodes.Add(winCheatCode);
+        cheatCodes.Add(new CheatCode(winCode, gm.eventManager.WinGame));
+        cheatCodes.Add(new CheatCode(loseCode, gm.eventManager.LoseGameWithTimeOut));
 
-        CheatCode loseCheatCode = new CheatCode();
-        loseCheatCode.code = loseCode;
-        loseCheatCode.action = gm.eventManager.LoseGameWithTimeOut;
-        cheatCodes.Add(loseCheatCode);
-
-        // Plus 10
         if (gm.GetMapType() == MenuLevel.LevelType.INFINITE) {
-            CheatCode plus10BlocksCheatCode = new CheatCode();
-            plus10BlocksCheatCode.code = plus10Code;
-            InfiniteMap infiniteMap = (InfiniteMap)gm.map;
-            plus10BlocksCheatCode.action = infiniteMap.Add10BlockRun;
-            cheatCodes.Add(plus10BlocksCheatCode);
-        } else {
-            CheatCode plus10SecondesCheatCode = new CheatCode();
-            plus10SecondesCheatCode.code = plus10Code;
-            plus10SecondesCheatCode.action = gm.timerManager.Add10Time;
-            cheatCodes.Add(plus10SecondesCheatCode);
+            cheatCodes.Add(new CheatCode(plus10Code, gm.GetInfiniteMap().Add10BlockRun));
+            cheatCodes.Add(new CheatCode(plus100Code, gm.GetInfiniteMap().Add100BlockRun));
         }
 
-        // Plus 100
-        if (gm.GetMapType() == MenuLevel.LevelType.INFINITE) {
-            CheatCode plus100BlocksCheatCode = new CheatCode();
-            plus100BlocksCheatCode.code = plus100Code;
-            InfiniteMap infiniteMap = (InfiniteMap)gm.map;
-            plus100BlocksCheatCode.action = infiniteMap.Add100BlockRun;
-            cheatCodes.Add(plus100BlocksCheatCode);
-        } else {
-            CheatCode plus100SecondesCheatCode = new CheatCode();
-            plus100SecondesCheatCode.code = plus100Code;
-            plus100SecondesCheatCode.action = gm.timerManager.Add100Time;
-            cheatCodes.Add(plus100SecondesCheatCode);
-        }
-
-        // Plus 1000
         if (gm.GetMapType() == MenuLevel.LevelType.REGULAR) {
-            CheatCode plus1000SecondesCheatCode = new CheatCode();
-            plus1000SecondesCheatCode.code = plus1000Code;
-            plus1000SecondesCheatCode.action = gm.timerManager.Add1000Time;
-            cheatCodes.Add(plus1000SecondesCheatCode);
+            cheatCodes.Add(new CheatCode(plus10Code, gm.timerManager.Add10Time));
+            cheatCodes.Add(new CheatCode(plus100Code, gm.timerManager.Add100Time));
+            cheatCodes.Add(new CheatCode(plus1000Code, gm.timerManager.Add1000Time));
+            cheatCodes.Add(new CheatCode(minus10Code, gm.timerManager.Minus10Time));
+            cheatCodes.Add(new CheatCode(minus100Code, gm.timerManager.Minus100Time));
+            cheatCodes.Add(new CheatCode(minus1000Code, gm.timerManager.Minus1000Time));
+            cheatCodes.Add(new CheatCode(plus10DataCount, gm.eventManager.Add10DataCount));
+            cheatCodes.Add(new CheatCode(plus100DataCount, gm.eventManager.Add100DataCount));
         }
 
-        // Minus 10
-        if (gm.GetMapType() == MenuLevel.LevelType.REGULAR) {
-            CheatCode minus10SecondesCheatCode = new CheatCode();
-            minus10SecondesCheatCode.code = minus10Code;
-            minus10SecondesCheatCode.action = gm.timerManager.Minus10Time;
-            cheatCodes.Add(minus10SecondesCheatCode);
-        }
-
-        // Minus 100
-        if (gm.GetMapType() == MenuLevel.LevelType.REGULAR) {
-            CheatCode minus100SecondesCheatCode = new CheatCode();
-            minus100SecondesCheatCode.code = minus100Code;
-            minus100SecondesCheatCode.action = gm.timerManager.Minus100Time;
-            cheatCodes.Add(minus100SecondesCheatCode);
-        }
-
-        // Minus 1000
-        if (gm.GetMapType() == MenuLevel.LevelType.REGULAR) {
-            CheatCode minus1000SecondesCheatCode = new CheatCode();
-            minus1000SecondesCheatCode.code = minus1000Code;
-            minus1000SecondesCheatCode.action = gm.timerManager.Minus1000Time;
-            cheatCodes.Add(minus1000SecondesCheatCode);
-        }
-
-        // Plus 10 DataCount
-        if (gm.GetMapType() == MenuLevel.LevelType.REGULAR) {
-            CheatCode plus10DataCountCheatCode = new CheatCode();
-            plus10DataCountCheatCode.code = plus10DataCount;
-            plus10DataCountCheatCode.action = gm.eventManager.Add10DataCount;
-            cheatCodes.Add(plus10DataCountCheatCode);
-        }
-
-        // Plus 100 DataCount
-        if (gm.GetMapType() == MenuLevel.LevelType.REGULAR) {
-            CheatCode plus100DataCountCheatCode = new CheatCode();
-            plus100DataCountCheatCode.code = plus100DataCount;
-            plus100DataCountCheatCode.action = gm.eventManager.Add100DataCount;
-            cheatCodes.Add(plus100DataCountCheatCode);
-        }
-
-        // Swap Phases
-        CheatCode swapPhasesCheatCode = new CheatCode();
-        swapPhasesCheatCode.code = swapPhasesCode;
-        swapPhasesCheatCode.action = gm.timerManager.ForceSwapPhases;
-        cheatCodes.Add(swapPhasesCheatCode);
-
-        // Start End Event
-        CheatCode startEndEventCheatCode = new CheatCode();
-        startEndEventCheatCode.code = startEndEventCode;
-        startEndEventCheatCode.action = gm.eventManager.ExternalStartEndGame;
-        cheatCodes.Add(startEndEventCheatCode);
-
-        // Gravity Zero
-        CheatCode gravityZeroCheatCode = new CheatCode();
-        gravityZeroCheatCode.code = gravityZeroCode;
-        gravityZeroCheatCode.action = gm.gravityManager.SetGravityZeroSwap;
-        cheatCodes.Add(gravityZeroCheatCode);
-
-        // Cooldowns Zero
-        CheatCode cooldownsZeroCheatCode = new CheatCode();
-        cooldownsZeroCheatCode.code = cooldownsZeroCode;
-        cooldownsZeroCheatCode.action = gm.player.SetPouvoirsCooldownZeroSwap;
-        cheatCodes.Add(cooldownsZeroCheatCode);
-
-        // Invincibility
-        CheatCode invincibilityCheatCode = new CheatCode();
-        invincibilityCheatCode.code = invincibilityCode;
-        invincibilityCheatCode.action = gm.player.SwapInvincible;
-        cheatCodes.Add(invincibilityCheatCode);
-
-        // Hide Console
-        CheatCode hideConsoleCheatCode = new CheatCode();
-        hideConsoleCheatCode.code = hideConsoleCode;
-        hideConsoleCheatCode.action = gm.console.SwapConsoleVisibility;
-        cheatCodes.Add(hideConsoleCheatCode);
-
-        // Disable Ennemis
-        CheatCode disableEnnemisCheatCode = new CheatCode();
-        disableEnnemisCheatCode.code = disableEnnemisCode;
-        disableEnnemisCheatCode.action = gm.ennemiManager.SwapDisableEnnemis;
-        cheatCodes.Add(disableEnnemisCheatCode);
-
-        // Gain Dash333 CheatCode
-        CheatCode gainDash333CheatCode = new CheatCode();
-        gainDash333CheatCode.code = gainDash333Code;
-        gainDash333CheatCode.action = SwapGiveDash333;
-        cheatCodes.Add(gainDash333CheatCode);
-
-        // Gain Pathfinder5 CheatCode
-        CheatCode gainPathfinder5CheatCode = new CheatCode();
-        gainPathfinder5CheatCode.code = gainPathfinder5Code;
-        gainPathfinder5CheatCode.action = SwapGivePathfinder5;
-        cheatCodes.Add(gainPathfinder5CheatCode);
-
-        // Gain GripDash CheatCode
-        CheatCode gainGripDashCheatCode = new CheatCode();
-        gainGripDashCheatCode.code = gainGripDashCode;
-        gainGripDashCheatCode.action = SwapGiveGripDash;
-        cheatCodes.Add(gainGripDashCheatCode);
-
-        // Gain TimeHack CheatCode
-        CheatCode gainTimeHackCheatCode = new CheatCode();
-        gainTimeHackCheatCode.code = gainTimeHackCode;
-        gainTimeHackCheatCode.action = SwapGiveTimeHack;
-        cheatCodes.Add(gainTimeHackCheatCode);
-
-        // Hack activated OrbTriggers
-        CheatCode hackActivatedOrbTriggersCheatCode = new CheatCode();
-        hackActivatedOrbTriggersCheatCode.code = hackActivatedOrbTriggersCode;
-        hackActivatedOrbTriggersCheatCode.action = gm.itemManager.HackAllActivatedOrbTriggers;
-        cheatCodes.Add(hackActivatedOrbTriggersCheatCode);
+        cheatCodes.Add(new CheatCode(swapPhasesCode, gm.timerManager.ForceSwapPhases));
+        cheatCodes.Add(new CheatCode(startEndEventCode, gm.eventManager.ExternalStartEndGame));
+        cheatCodes.Add(new CheatCode(gravityZeroCode, gm.gravityManager.SetGravityZeroSwap));
+        cheatCodes.Add(new CheatCode(cooldownsZeroCode, gm.player.SetPouvoirsCooldownZeroSwap));
+        cheatCodes.Add(new CheatCode(invincibilityCode, gm.player.SwapInvincible));
+        cheatCodes.Add(new CheatCode(hideConsoleCode, gm.console.SwapConsoleVisibility));
+        cheatCodes.Add(new CheatCode(disableEnnemisCode, gm.ennemiManager.SwapDisableEnnemis));
+        cheatCodes.Add(new CheatCode(gainDash333Code, SwapGiveDash333));
+        cheatCodes.Add(new CheatCode(gainPathfinder5Code, SwapGivePathfinder5));
+        cheatCodes.Add(new CheatCode(gainGripDashCode, SwapGiveGripDash));
+        cheatCodes.Add(new CheatCode(gainTimeHackCode, SwapGiveTimeHack));
+        cheatCodes.Add(new CheatCode(hackActivatedOrbTriggersCode, gm.itemManager.HackAllActivatedOrbTriggers));
+        cheatCodes.Add(new CheatCode(resetAllSkillTree, gm.console.GetPauseMenu().skillTreeMenu.ResetAllUpgrades));
     }
 
     public void Update() {

@@ -293,4 +293,12 @@ public class SkillTreeMenu : MonoBehaviour {
     public void DisableCurrentUpgrade() {
         Disable(currentUpgrade);
     }
+
+    public void ResetAllUpgrades() {
+        foreach (SkillTreeUpgrade upgrade in upgrades) {
+            SkillTreeManager.Instance.Lock(upgrade.key);
+        }
+        InitializeUpgrades();
+        PopulateVerticalMenuWith(currentUpgrade);
+    }
 }
