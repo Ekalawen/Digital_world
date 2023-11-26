@@ -42,6 +42,10 @@ public abstract class ScoreManager : MonoBehaviour
         scoreDisplayerUpdater.Initialize(scoreDisplayer, GetCurrentScore);
         incrementDisplayerUpdater.Initialize(incrementDisplayer, GetCurrentIncrement);
         increment2DisplayerUpdater.Initialize(increment2Displayer, GetCurrentIncrement2);
+        if (!SkillTreeManager.Instance.IsEnabled(SkillKey.UNLOCK_TRESHOLDS)) {
+            increment2Displayer.gameObject.SetActive(false);
+            infiniteMap.increment2DisplayerLockedText.gameObject.SetActive(true);
+        }
     }
 
     protected int GetCurrentIncrement() {

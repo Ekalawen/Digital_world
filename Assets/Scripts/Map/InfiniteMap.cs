@@ -5,6 +5,7 @@ using UnityEngine;
 using System;
 using EZCameraShake;
 using UnityEngine.Events;
+using TMPro;
 
 public class InfiniteMap : MapManager {
 
@@ -58,6 +59,7 @@ public class InfiniteMap : MapManager {
     public CounterDisplayer scoreDisplayer;
     public CounterDisplayer incrementDisplayer;
     public CounterDisplayer increment2Displayer;
+    public TMP_Text increment2DisplayerLockedText;
     public CounterDisplayer nbBlocksDisplayer;
     public GameObject bestScoreMarkerPrefab;
     public GameObject newTresholdMarkerPrefab;
@@ -88,6 +90,7 @@ public class InfiniteMap : MapManager {
     protected AddHiddenTextureOnCubeInIR textureAdder;
     protected ScoreManager scoreManager;
     protected CounterDisplayerUpdater nbBlocksDisplayerUpdater;
+    protected bool areTresholdsEnabled;
     [HideInInspector]
     public UnityEvent<int> onBlocksCrossed;
     [HideInInspector]
@@ -102,6 +105,7 @@ public class InfiniteMap : MapManager {
         blocksFolder = new GameObject("Blocks").transform;
         blocksFolder.transform.SetParent(cubesFolder.transform);
         string nextTresholdSymbol = gm.goalManager.GetNextNotUnlockedTresholdSymbolFor(nbBlocksRun);
+        areTresholdsEnabled = SkillTreeManager.Instance.IsEnabled(SkillKey.UNLOCK_TRESHOLDS);
         scoreManager = gameObject.AddComponent<ScoreManager_Quadratic>();
         scoreManager.Initialize();
         timerSinceLastBlock = new Timer();
@@ -483,6 +487,9 @@ public class InfiniteMap : MapManager {
     }
 
     protected bool IsNewTreshold(int nbBlocksNonStart) {
+        if(!areTresholdsEnabled) {
+            return false;
+        }
         //return gm.goalManager.GetAllTresholds().Contains(nbBlocksNonStart);
         return nbBlocksNonStart % 10 == 0 && nbBlocksNonStart > 0;
     }
