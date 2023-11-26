@@ -98,6 +98,7 @@ MonoBehaviour:
   timeDifficultyProgression: 6
   forceNotCompletedBlocks: 0
   scoreManager: {fileID: 2353232671640775551}
+  phaseSize: 20
   firstBlocks: []
   nbFirstBlocks: 3
   nbBlocksStartCubeDestruction: 10
@@ -129,8 +130,6 @@ MonoBehaviour:
     type: 3}
   shouldResetAllBlocksTime: 0
   dureeDecompose: 5
-  useCustomLastTresholdForPhases: 0
-  customLastTresholdForPhases: 0
   onBlocksCrossed:
     m_PersistentCalls:
       m_Calls: []
@@ -156,8 +155,8 @@ MonoBehaviour:
   nbDataPerBlock: 1
   scoreIncrement: 1
   scoreIncrement2: 1
-  scoreIncrement3: 5
-  scoreIncrement4: 5
+  scoreIncrement3: 1
+  scoreIncrement4: 1
   downOffset: 30
 --- !u!1 &858809596309769161
 GameObject:
