@@ -49,6 +49,9 @@ public class OverrideManager : MonoBehaviour {
     }
 
     private bool ShouldUseOverride() {
+        if(!SkillTreeManager.Instance.IsEnabled(SkillKey.UNLOCK_OVERRIDES)) {
+            return false;
+        }
         float value = UnityEngine.Random.value;
         return value < overridesLists.Select(o => o.probability).Sum();
     }

@@ -44,29 +44,29 @@ public class SkillTreeManager : Singleton<SkillTreeManager> {
         return GetCredits() >= upgrade.price;
     }
 
-    public bool IsUnlocked(SkillTreeUpgrade.SkillKey key) {
+    public bool IsUnlocked(SkillKey key) {
         return PrefsManager.GetBool(key.ToString() + UNLOCKED, false);
     }
 
-    public void Unlock(SkillTreeUpgrade.SkillKey key) {
+    public void Unlock(SkillKey key) {
         PrefsManager.SetBool(key.ToString() + UNLOCKED, true);
         Enable(key);
     }
 
-    public void Lock(SkillTreeUpgrade.SkillKey key) {
+    public void Lock(SkillKey key) {
         PrefsManager.SetBool(key.ToString() + UNLOCKED, false);
         Disable(key);
     }
 
-    public bool IsEnabled(SkillTreeUpgrade.SkillKey key) {
+    public bool IsEnabled(SkillKey key) {
         return PrefsManager.GetBool(key.ToString() + ENABLED, false);
     }
 
-    public void Enable(SkillTreeUpgrade.SkillKey key) {
+    public void Enable(SkillKey key) {
         PrefsManager.SetBool(key.ToString() + ENABLED, true);
     }
 
-    public void Disable(SkillTreeUpgrade.SkillKey key) {
+    public void Disable(SkillKey key) {
         PrefsManager.SetBool(key.ToString() + ENABLED, false);
     }
 }

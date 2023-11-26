@@ -6,16 +6,16 @@ using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.UI;
 
-public class SkillTreeUpgrade : MonoBehaviour {
+public enum SkillKey {
+    UPGRADE_SLIDE_DURATION_AND_UI = 0,
+    UNLOCK_OVERRIDES = 1,
+    UNLOCK_TRESHOLDS = 2,
+    FIRST_DASH = 3,
+    SPEED_BOOST_1 = 4,
+    UI_OVERRIDE_PREDICTOR = 5,
+}
 
-    public enum SkillKey {
-        UPGRADE_SLIDE_DURATION_AND_UI = 0,
-        UNLOCK_OVERRIDES = 1,
-        UNLOCK_TRESHOLDS = 2,
-        FIRST_DASH = 3,
-        SPEED_BOOST_1 = 4,
-        UI_OVERRIDE_PREDICTOR = 5,
-    }
+public class SkillTreeUpgrade : MonoBehaviour {
 
     [Header("Parameters")]
     public SkillKey key;

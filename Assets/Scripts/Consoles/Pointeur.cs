@@ -45,7 +45,7 @@ public class Pointeur : MonoBehaviour {
         gripDashPointeur.rectTransform.sizeDelta = Vector2.one * auSolScale;
         timeHackPointeur.color = auSolColor;
         timeHackPointeur.rectTransform.sizeDelta = Vector2.one * auSolScale;
-        hasSlideUi = SkillTreeManager.Instance.IsEnabled(SkillTreeUpgrade.SkillKey.UPGRADE_SLIDE_DURATION_AND_UI);
+        hasSlideUi = SkillTreeManager.Instance.IsEnabled(SkillKey.UPGRADE_SLIDE_DURATION_AND_UI);
 
         InitTexture();
     }

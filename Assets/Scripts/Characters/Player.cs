@@ -179,7 +179,7 @@ public class Player : Character {
     }
 
     protected void InitializeDureeMur() {
-        bool hasSkill = SkillTreeManager.Instance.IsEnabled(SkillTreeUpgrade.SkillKey.UPGRADE_SLIDE_DURATION_AND_UI);
+        bool hasSkill = SkillTreeManager.Instance.IsEnabled(SkillKey.UPGRADE_SLIDE_DURATION_AND_UI);
         dureeMur = hasSkill ? dureeMurWithUpgrade : dureeMurInitiale;
     }
 
