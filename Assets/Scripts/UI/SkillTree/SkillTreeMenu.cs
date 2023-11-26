@@ -270,12 +270,17 @@ public class SkillTreeMenu : MonoBehaviour {
     protected void BuyUpgrade(SkillTreeUpgrade upgrade) {
         SkillTreeManager.Instance.RemoveCredits(upgrade.price);
         SkillTreeManager.Instance.Unlock(upgrade.key);
-        string priceString = creditsCounterUpdater.ApplyToCreditsFormating(upgrade.price);
-        GetCounterDisplayer().AddVolatileText($"- {priceString}", GetCounterDisplayer().GetTextColor());
-        creditsCounterUpdater.UpdateValue();
+        DisplayVolatileCredits(upgrade.price);
         upgrade.DisplayGoodState();
         PopulateVerticalMenuWith(upgrade);
         // Run animation ! :D
+    }
+
+    private void DisplayVolatileCredits(int creditsVariation) {
+        string creditsVariationString = creditsCounterUpdater.ApplyToCreditsFormating(creditsVariation);
+        string signString = creditsVariation >= 0 ? "+" : "-";
+        GetCounterDisplayer().AddVolatileText($"{signString} {creditsVariationString}", GetCounterDisplayer().GetTextColor());
+        creditsCounterUpdater.UpdateValue();
     }
 
     protected CounterDisplayer GetCounterDisplayer() {
@@ -308,5 +313,12 @@ public class SkillTreeMenu : MonoBehaviour {
         }
         InitializeUpgrades();
         PopulateVerticalMenuWith(currentUpgrade);
+    }
+
+    public void MultiplyCreditsBy10() {
+        int variation = SkillTreeManager.Instance.MultiplyCreditsBy10();
+        if (IsOpen()) {
+            DisplayVolatileCredits(variation);
+        }
     }
 }

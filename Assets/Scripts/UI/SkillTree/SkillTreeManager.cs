@@ -30,6 +30,16 @@ public class SkillTreeManager : Singleton<SkillTreeManager> {
         AddCredits(-removedCredits);
     }
 
+    public int MultiplyCreditsBy10() {
+        int credits = GetCredits();
+        if (credits <= 0) {
+            SetCredits(1);
+            return 1;
+        }
+        SetCredits(credits * 10);
+        return credits * 9;
+    }
+
     public bool CanBuy(SkillTreeUpgrade upgrade) {
         return GetCredits() >= upgrade.price;
     }

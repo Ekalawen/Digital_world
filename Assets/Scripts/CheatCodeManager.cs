@@ -48,6 +48,7 @@ public class CheatCodeManager : MonoBehaviour {
 
     [Header("SkillTree related")]
     public List<KeyCode> resetAllSkillTree;
+    public List<KeyCode> creditsTimes10Code;
 
     [Header("Links")]
     public GameObject dash333Prefab;
@@ -95,7 +96,9 @@ public class CheatCodeManager : MonoBehaviour {
         cheatCodes.Add(new CheatCode(gainGripDashCode, SwapGiveGripDash));
         cheatCodes.Add(new CheatCode(gainTimeHackCode, SwapGiveTimeHack));
         cheatCodes.Add(new CheatCode(hackActivatedOrbTriggersCode, gm.itemManager.HackAllActivatedOrbTriggers));
+
         cheatCodes.Add(new CheatCode(resetAllSkillTree, gm.console.GetPauseMenu().skillTreeMenu.ResetAllUpgrades));
+        cheatCodes.Add(new CheatCode(creditsTimes10Code, gm.console.GetPauseMenu().skillTreeMenu.MultiplyCreditsBy10));
     }
 
     public void Update() {
