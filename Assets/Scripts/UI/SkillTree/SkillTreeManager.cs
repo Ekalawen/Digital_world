@@ -30,6 +30,10 @@ public class SkillTreeManager : Singleton<SkillTreeManager> {
         AddCredits(-removedCredits);
     }
 
+    public bool CanBuy(SkillTreeUpgrade upgrade) {
+        return GetCredits() >= upgrade.price;
+    }
+
     public bool IsUnlocked(string key) {
         return PrefsManager.GetBool(key + UNLOCKED, false);
     }

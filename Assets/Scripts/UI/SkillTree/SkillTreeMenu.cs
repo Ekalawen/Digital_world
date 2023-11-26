@@ -33,6 +33,7 @@ public class SkillTreeMenu : MonoBehaviour {
     public TooltipActivator currentUpgradePriceTooltip;
     public GameObject currentUpgradeBuyButtonHolder;
     public Button currentUpgradeBuyButton;
+    public Button currentUpgradeBuyButtonDisabled;
     public Button currentUpgradeEnableButton;
     public Button currentUpgradeDisableButton;
     public Image currentUpgradeGif;
@@ -218,7 +219,7 @@ public class SkillTreeMenu : MonoBehaviour {
 
     private void ShowAppropriateButtonFor(SkillTreeUpgrade upgrade) {
         if (!SkillTreeManager.Instance.IsUnlocked(upgrade.key)) {
-            ShowBuyButton();
+            ShowBuyButton(upgrade);
         } else {
             if (SkillTreeManager.Instance.IsEnabled(upgrade.key)) {
                 ShowDisableButton();
@@ -240,20 +241,27 @@ public class SkillTreeMenu : MonoBehaviour {
         currentUpgradeEnableButton.gameObject.SetActive(false);
     }
 
-    protected void ShowBuyButton() {
+    protected void ShowBuyButton(SkillTreeUpgrade upgrade) {
         currentUpgradeBuyButtonHolder.gameObject.SetActive(true);
         currentUpgradeDisableButton.gameObject.SetActive(false);
         currentUpgradeEnableButton.gameObject.SetActive(false);
+        ShowGoodBuytButton(upgrade);
+    }
+
+    protected void ShowGoodBuytButton(SkillTreeUpgrade upgrade) {
+        bool canBuy = SkillTreeManager.Instance.CanBuy(upgrade);
+        currentUpgradeBuyButton.gameObject.SetActive(canBuy);
+        currentUpgradeBuyButtonDisabled.gameObject.SetActive(!canBuy);
     }
 
     public void BuyCurrentUpgrade() {
         if(!currentUpgrade) {
             return;
         }
-        //if(SkillTreeManager.Instance.IsUnlocked(currentUpgrade.key)) {
-        //    return;
-        //}
-        if (currentUpgrade.price > SkillTreeManager.Instance.GetCredits()) {
+        if (SkillTreeManager.Instance.IsUnlocked(currentUpgrade.key)) {
+            return;
+        }
+        if (!SkillTreeManager.Instance.CanBuy(currentUpgrade)) {
             return;
         }
         BuyUpgrade(currentUpgrade);
