@@ -45,6 +45,7 @@ public class Player : Character {
     public VisualEffect powerDashVfx;
     public VisualEffect gripDashVfx;
     public VisualEffect shiftVfx;
+    public VisualEffect shiftLandingVfx;
     public VisualEffect wallVfx;
     public VisualEffect jumpVfx;
     public VisualEffect timeScaleVfx;
@@ -465,6 +466,7 @@ public class Player : Character {
             speedMultiplierController.RemoveMultiplier(currentShiftLandingSpeedMultiplier);
             currentShiftLandingSpeedMultiplier = GetShiftLandingSpeedMultiplier();
             speedMultiplierController.AddMultiplier(currentShiftLandingSpeedMultiplier);
+            gm.postProcessManager.StartShiftLandingEffect();
         }
     }
 

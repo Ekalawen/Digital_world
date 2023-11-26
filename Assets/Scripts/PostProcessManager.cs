@@ -89,6 +89,8 @@ public class PostProcessManager : MonoBehaviour {
     [Header("Shift VFX")]
     public float shiftVFXOffsetPercentageOfScreenPrimary = -0.5f;
     public float shiftVFXOffsetPercentageOfScreenSecondary = 1f;
+    public float shiftLandingVFXOffsetPercentageOfScreenPrimary = 0.98f;
+    public float shiftLandingVFXOffsetPercentageOfScreenSecondary = 0.97f;
 
     [Header("Jump VFX")]
     public float jumpVFXOffsetPercentageOfScreenPrimary = 0.9f;
@@ -134,6 +136,7 @@ public class PostProcessManager : MonoBehaviour {
     protected VisualEffect powerDashVfx;
     protected VisualEffect gripDashVfx;
     protected VisualEffect shiftVfx;
+    protected VisualEffect shiftLandingVfx;
     protected VisualEffect jumpVfx;
     protected VisualEffect wallVfx;
     protected VisualEffect timeScaleVfx;
@@ -162,6 +165,7 @@ public class PostProcessManager : MonoBehaviour {
         powerDashVfx = gm.player.powerDashVfx;
         gripDashVfx = gm.player.gripDashVfx;
         shiftVfx = gm.player.shiftVfx;
+        shiftLandingVfx = gm.player.shiftLandingVfx;
         jumpVfx = gm.player.jumpVfx;
         wallVfx = gm.player.wallVfx;
         timeScaleVfx = gm.player.timeScaleVfx;
@@ -169,6 +173,7 @@ public class PostProcessManager : MonoBehaviour {
         InitScreenSizeAtVfxDistance();
         InitShiftVfx();
         InitJumpVfx();
+        InitShiftLandingVfx();
         InitTimeScaleVfx();
         InitLuminosityPostProcess();
         wallLensDistorsionFluctuator = new Fluctuator(this, GetLensDistorsionIntensity, SetLensDistorsionIntensity, wallPostProcessCurve);
@@ -521,6 +526,12 @@ public class PostProcessManager : MonoBehaviour {
         jumpVfx.SetFloat("ScreenOffsetSecondaryVertical", - screenSizeAtVfxDistance.y);
     }
 
+    protected void InitShiftLandingVfx() {
+        shiftLandingVfx.SetFloat("ScreenOffsetPrimary", screenSizeAtVfxDistance.x * shiftLandingVFXOffsetPercentageOfScreenPrimary);
+        shiftLandingVfx.SetFloat("ScreenOffsetSecondary", screenSizeAtVfxDistance.x * shiftLandingVFXOffsetPercentageOfScreenSecondary);
+        shiftLandingVfx.SetFloat("ScreenOffsetSecondaryVertical", - screenSizeAtVfxDistance.y);
+    }
+
     protected void InitTimeScaleVfx() {
         timeScaleEffectActivation = PrefsManager.GetBool(PrefsManager.TIME_SCALE_EFFECT_KEY, MenuOptions.defaultTimeScaleEffectActivation);
         float horizontalOffset = screenSizeAtVfxDistance.x * timeScaleVFXOffsetPercentageOfScreen.x;
@@ -552,8 +563,12 @@ public class PostProcessManager : MonoBehaviour {
 
     public void StartJumpEffect() {
         if (PrefsManager.GetBool(PrefsManager.JUMP_WARP_KEY, MenuOptions.defaultJumpWarpActivation)) {
-            jumpVfx.SendEvent("JumpStart");
+            jumpVfx.SendEvent("Start");
         }
+    }
+
+    public void StartShiftLandingEffect() {
+        shiftLandingVfx.SendEvent("Start");
     }
 
     public void SetAlwaysHasMoveForTimeScaleVfx() {
