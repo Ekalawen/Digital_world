@@ -12,6 +12,7 @@ using EZCameraShake;
 public class Player : Character {
 
     public enum EtatPersonnage { AU_SOL, EN_SAUT, EN_CHUTE, AU_MUR };
+    public enum ShiftLandingMode { NONE, NORMAL, FAST };
 
     public static Player _instance;
 
@@ -26,6 +27,10 @@ public class Player : Character {
 	public float distanceMurMax; // la distance maximale de laquelle on peut s'éloigner du mur
     public float sensibilite; // la sensibilité de la souris
     public float dureeCanJumpAfterFalling = 0.1f; // La durée pendant laquelle on peut encore sauter si on vient de tomber depuis l'état AU_SOL
+
+    [Header("Shift Landing")]
+    public SpeedMultiplier shiftLandingNormalSpeedMultiplier;
+    public SpeedMultiplier shiftLandingFastSpeedMultiplier;
 
     [Header("Pouvoirs")]
     public GameObject pouvoirAPrefab; // Le pouvoir de la touche A (souvent la détection)
@@ -90,6 +95,8 @@ public class Player : Character {
     protected Timer isPowerDashingTimer = null;
     protected float cameraShakerInitialHeight;
     protected float dureeMur;
+    protected ShiftLandingMode shiftLandingMode;
+    protected SpeedMultiplier currentShiftLandingSpeedMultiplier = null;
 
     protected IPouvoir pouvoirA; // Le pouvoir de la touche A (souvent la détection)
     protected IPouvoir pouvoirE; // Le pouvoir de la touche E (souvent la localisation)
@@ -141,6 +148,7 @@ public class Player : Character {
         inputManager = InputManager.Instance;
         GetPlayerSensitivity();
         InitializeDureeMur();
+        InitializeShiftLandingMode();
         bSetUpRotation = true;
         sautTimer = new Timer(GetDureeTotaleSaut());
         sautTimer.SetOver();
@@ -176,6 +184,18 @@ public class Player : Character {
         console = GameObject.FindObjectOfType<Console>();
 
         InitPouvoirs();
+    }
+
+    protected void InitializeShiftLandingMode() {
+        if(!SkillTreeManager.Instance.IsEnabled(SkillKey.SHIFT_LANDING_BOOST_NORMAL)) {
+            shiftLandingMode = ShiftLandingMode.NONE;
+            return;
+        }
+        if(!SkillTreeManager.Instance.IsEnabled(SkillKey.SHIFT_LANDING_BOOST_FAST)) {
+            shiftLandingMode = ShiftLandingMode.NORMAL;
+            return;
+        }
+        shiftLandingMode = ShiftLandingMode.FAST;
     }
 
     protected void InitializeDureeMur() {
@@ -432,14 +452,24 @@ public class Player : Character {
         timerLastTimeAuSol.Reset();
         if (useSound && etat != etatAvant) {
             gm.soundManager.PlayLandClip(transform.position);
-            if(inputManager.GetShift()) {
-                speedMultiplierController.RemoveAllMultiplier();
-                SpeedMultiplier multiplier = new SpeedMultiplier(1.25f, 0.0f, 0.0f, 0.6f, new AnimationCurve(), AnimationCurve.Linear(0, 1, 1, 0), false);
-                speedMultiplierController.AddMultiplier(multiplier);
-                Debug.Log($"Speed = {GetSpeedMultiplier()}");
-            }
+            ApplyShiftLanding();
             onLand.Invoke(thingILandedOn);
         }
+    }
+
+    protected void ApplyShiftLanding() {
+        if(shiftLandingMode == ShiftLandingMode.NONE) {
+            return;
+        }
+        if (inputManager.GetShift()) {
+            speedMultiplierController.RemoveMultiplier(currentShiftLandingSpeedMultiplier);
+            currentShiftLandingSpeedMultiplier = GetShiftLandingSpeedMultiplier();
+            speedMultiplierController.AddMultiplier(currentShiftLandingSpeedMultiplier);
+        }
+    }
+
+    protected SpeedMultiplier GetShiftLandingSpeedMultiplier() {
+        return new SpeedMultiplier(shiftLandingMode == ShiftLandingMode.NORMAL ? shiftLandingNormalSpeedMultiplier : shiftLandingFastSpeedMultiplier);
     }
 
     // On met à jour le mouvement du joueur
@@ -506,7 +536,7 @@ public class Player : Character {
 
                 case EtatPersonnage.AU_MUR:
                     ResetDoubleJump();
-                    if (inputManager.GetShift()) {
+                    if (GetShiftInput()) {
                         // On peut se décrocher du mur en appuyant sur shift
                         FallFromWallButCanGripItAgain();
                     }
@@ -630,7 +660,7 @@ public class Player : Character {
             }
             else
             {
-                if (inputManager.GetShift())
+                if (GetShiftInput())
                 {
                     move += gm.gravityManager.Down();
                 }
@@ -879,8 +909,12 @@ public class Player : Character {
         // Et il ne doit PAS être en train d'appuyer sur SHIFT
         // AU_MUR pour pouvoir s'accrocher à un mur depuis un autre mur ! :) ==> Dans les coins ?
         return (etat == EtatPersonnage.EN_SAUT || etat == EtatPersonnage.EN_CHUTE || etat == EtatPersonnage.AU_MUR)
-            && !inputManager.GetShift()
+            && !GetShiftInput()
             && IsCubeGripable(cube);
+    }
+
+    protected bool GetShiftInput() {
+        return shiftLandingMode != ShiftLandingMode.NONE && inputManager.GetShift();
     }
 
     protected bool IsCubeGripable(Cube cube) {
@@ -1280,5 +1314,9 @@ public class Player : Character {
 
     public float GetDureeMur() {
         return dureeMur;
+    }
+
+    public ShiftLandingMode GetShiftLandingMode() {
+        return shiftLandingMode;
     }
 }

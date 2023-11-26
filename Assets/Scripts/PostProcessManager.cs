@@ -419,6 +419,9 @@ public class PostProcessManager : MonoBehaviour {
         if (!PrefsManager.GetBool(PrefsManager.SHIFT_WARP_KEY, MenuOptions.defaultShiftWarpActivation)) {
             return;
         }
+        if(gm.player.GetShiftLandingMode() == Player.ShiftLandingMode.NONE) {
+            return;
+        }
         if(inputManager.GetShiftDown()) {
             StartShiftVfx();
         } else if (inputManager.GetShiftUp()) {

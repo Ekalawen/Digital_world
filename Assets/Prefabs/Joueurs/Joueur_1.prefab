@@ -110,6 +110,78 @@ MonoBehaviour:
   distanceMurMax: 0.5
   sensibilite: 1.8
   dureeCanJumpAfterFalling: 0.08
+  shiftLandingNormalSpeedMultiplier:
+    speedAdded: 0.7
+    duration: 0
+    inDuration: 0
+    outDuration: 1.2
+    inCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    outCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: -1
+        outSlope: -1
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: -1
+        outSlope: -1
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    affectHeight: 0
+  shiftLandingFastSpeedMultiplier:
+    speedAdded: 1.4
+    duration: 0
+    inDuration: 0
+    outDuration: 0.6
+    inCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    outCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: -1
+        outSlope: -1
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: -1
+        outSlope: -1
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    affectHeight: 0
   pouvoirAPrefab: {fileID: 0}
   pouvoirEPrefab: {fileID: 0}
   pouvoirLeftBoutonPrefab: {fileID: 0}
