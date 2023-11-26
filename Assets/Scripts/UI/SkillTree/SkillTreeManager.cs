@@ -44,29 +44,29 @@ public class SkillTreeManager : Singleton<SkillTreeManager> {
         return GetCredits() >= upgrade.price;
     }
 
-    public bool IsUnlocked(string key) {
-        return PrefsManager.GetBool(key + UNLOCKED, false);
+    public bool IsUnlocked(SkillTreeUpgrade.SkillKey key) {
+        return PrefsManager.GetBool(key.ToString() + UNLOCKED, false);
     }
 
-    public void Unlock(string key) {
-        PrefsManager.SetBool(key + UNLOCKED, true);
+    public void Unlock(SkillTreeUpgrade.SkillKey key) {
+        PrefsManager.SetBool(key.ToString() + UNLOCKED, true);
         Enable(key);
     }
 
-    public void Lock(string key) {
-        PrefsManager.SetBool(key + UNLOCKED, false);
+    public void Lock(SkillTreeUpgrade.SkillKey key) {
+        PrefsManager.SetBool(key.ToString() + UNLOCKED, false);
         Disable(key);
     }
 
-    public bool IsEnabled(string key) {
-        return PrefsManager.GetBool(key + ENABLED, false);
+    public bool IsEnabled(SkillTreeUpgrade.SkillKey key) {
+        return PrefsManager.GetBool(key.ToString() + ENABLED, false);
     }
 
-    public void Enable(string key) {
-        PrefsManager.SetBool(key + ENABLED, true);
+    public void Enable(SkillTreeUpgrade.SkillKey key) {
+        PrefsManager.SetBool(key.ToString() + ENABLED, true);
     }
 
-    public void Disable(string key) {
-        PrefsManager.SetBool(key + ENABLED, false);
+    public void Disable(SkillTreeUpgrade.SkillKey key) {
+        PrefsManager.SetBool(key.ToString() + ENABLED, false);
     }
 }
