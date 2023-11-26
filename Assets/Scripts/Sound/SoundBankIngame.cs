@@ -7,6 +7,7 @@ public class SoundBankIngame : ScriptableObject {
     [Header("Main Sounds")]
     public AudioClipParams jumpClips;
     public AudioClipParams landClips;
+    public AudioClipParams shiftLandingClips;
     public AudioClipParams gripClips;
 
     public AudioClipParams timeOutClips;

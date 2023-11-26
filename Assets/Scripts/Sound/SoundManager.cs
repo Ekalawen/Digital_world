@@ -113,6 +113,10 @@ public class SoundManager : MonoBehaviour
     {
         PlayClipsOnSource(sounds.landClips, pos);
     }
+    public void PlayShiftLanding(Vector3 pos)
+    {
+        PlayClipsOnSource(sounds.shiftLandingClips, pos);
+    }
     public void PlayGripClip(Vector3 pos)
     {
         PlayClipsOnSource(sounds.gripClips, pos);

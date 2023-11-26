@@ -467,6 +467,7 @@ public class Player : Character {
             currentShiftLandingSpeedMultiplier = GetShiftLandingSpeedMultiplier();
             speedMultiplierController.AddMultiplier(currentShiftLandingSpeedMultiplier);
             gm.postProcessManager.StartShiftLandingEffect();
+            gm.soundManager.PlayShiftLanding(transform.position);
         }
     }
 
