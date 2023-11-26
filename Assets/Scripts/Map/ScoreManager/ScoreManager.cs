@@ -6,8 +6,9 @@ using UnityEngine;
 public abstract class ScoreManager : MonoBehaviour
 {
     public float dataProbability = 1 / 3.0f;
-    //public float dataProbability = 1.0f;
     public int nbDataPerBlock = 1;
+    public int scoreIncrement = 1;
+    public int scoreIncrement2 = 1;
 
     protected GameManager gm;
     protected InfiniteMap infiniteMap;
@@ -18,8 +19,6 @@ public abstract class ScoreManager : MonoBehaviour
     protected CounterDisplayerUpdater incrementDisplayerUpdater;
     protected CounterDisplayerUpdater increment2DisplayerUpdater;
     protected int currentScore;
-    protected int scoreIncrement = 1;
-    protected int scoreIncrement2 = 5;
 
     public void Initialize() {
         gm = GameManager.Instance;

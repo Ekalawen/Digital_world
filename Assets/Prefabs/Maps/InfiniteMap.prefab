@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4913549307214802}
   - component: {fileID: -1939473570733004662}
+  - component: {fileID: 2353232671640775551}
   m_Layer: 0
   m_Name: InfiniteMap
   m_TagString: Untagged
@@ -96,6 +97,7 @@ MonoBehaviour:
   timeDifficultyOffset: 1.85
   timeDifficultyProgression: 6
   forceNotCompletedBlocks: 0
+  scoreManager: {fileID: 2353232671640775551}
   firstBlocks: []
   nbFirstBlocks: 3
   nbBlocksStartCubeDestruction: 10
@@ -138,6 +140,25 @@ MonoBehaviour:
   onBeforeInitializeBlock:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &2353232671640775551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1698300190402578}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d2b44af74eaa7a4fb68f736f8574bca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dataProbability: 0.33333334
+  nbDataPerBlock: 1
+  scoreIncrement: 1
+  scoreIncrement2: 1
+  scoreIncrement3: 5
+  scoreIncrement4: 5
+  downOffset: 30
 --- !u!1 &858809596309769161
 GameObject:
   m_ObjectHideFlags: 0

@@ -25,6 +25,8 @@ public class InfiniteMap : MapManager {
     public float timeDifficultyProgression = 6f;
     public bool forceNotCompletedBlocks = true;
 
+    [Header("Score")]
+    public ScoreManager scoreManager;
 
     [Header("Start")]
     public List<GameObject> firstBlocks;
@@ -88,7 +90,6 @@ public class InfiniteMap : MapManager {
     protected bool hasReachInfiniteMode = false;
     protected BlockForcerInIR blockForcer;
     protected AddHiddenTextureOnCubeInIR textureAdder;
-    protected ScoreManager scoreManager;
     protected CounterDisplayerUpdater nbBlocksDisplayerUpdater;
     protected bool areTresholdsEnabled;
     [HideInInspector]
@@ -106,13 +107,11 @@ public class InfiniteMap : MapManager {
         blocksFolder.transform.SetParent(cubesFolder.transform);
         string nextTresholdSymbol = gm.goalManager.GetNextNotUnlockedTresholdSymbolFor(nbBlocksRun);
         areTresholdsEnabled = SkillTreeManager.Instance.IsEnabled(SkillKey.UNLOCK_TRESHOLDS);
-        scoreManager = gameObject.AddComponent<ScoreManager_Quadratic>();
         scoreManager.Initialize();
         timerSinceLastBlock = new Timer();
         nbBlocksRun = 0;
         nbBlocksDestroyed = 0;
-        blockWeights = blockLists.Aggregate(new List<BlockWeight>(),
-            (list, blockList) => list.Concat(blockList.blocks).ToList());
+        blockWeights = blockLists.Aggregate(new List<BlockWeight>(), (list, blockList) => list.Concat(blockList.blocks).ToList());
         blockForcer = GetComponent<BlockForcerInIR>();
         InitializeNbBlockDisplayer();
         InitTextureAdder();
