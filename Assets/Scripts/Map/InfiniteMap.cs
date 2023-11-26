@@ -27,6 +27,7 @@ public class InfiniteMap : MapManager {
 
     [Header("Score")]
     public ScoreManager scoreManager;
+    public int phaseSize = 20;
 
     [Header("Start")]
     public List<GameObject> firstBlocks;
@@ -67,9 +68,6 @@ public class InfiniteMap : MapManager {
     public GameObject newTresholdMarkerPrefab;
     public bool shouldResetAllBlocksTime = false;
     public float dureeDecompose = 5.0f;
-    public bool useCustomLastTresholdForPhases = false;
-    [ConditionalHide("useCustomLastTresholdForPhases")]
-    public int customLastTresholdForPhases;
 
     protected Transform blocksFolder;
     protected int indiceCurrentBlock = 0;
@@ -398,7 +396,7 @@ public class InfiniteMap : MapManager {
                 StartBlocksDestruction();
             }
 
-            gm.timerManager.TryUpdatePhase(GetNonStartNbBlocksRun(), GetLastTresholdToUseForPhases());
+            gm.timerManager.TryUpdatePhase(GetNonStartNbBlocksRun(), GetAvancementTotalForPhases());
 
             onBlocksCrossed.Invoke(nbBlocksCrossed);
         }
@@ -416,8 +414,9 @@ public class InfiniteMap : MapManager {
         return allBlocks[indiceCurrentAllBlocks];
     }
 
-    protected int GetLastTresholdToUseForPhases() {
-        return useCustomLastTresholdForPhases ? customLastTresholdForPhases : gm.goalManager.GetLastTresholdNotInfinite();
+    protected int GetAvancementTotalForPhases() {
+        //return useCustomLastTresholdForPhases ? customLastTresholdForPhases : gm.goalManager.GetLastTresholdNotInfinite();
+        return phaseSize * gm.timerManager.GetNbPhases();
     }
 
     public void AddBlockRun(int nbBlocksToAdd) {
