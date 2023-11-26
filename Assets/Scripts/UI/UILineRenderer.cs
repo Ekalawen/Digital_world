@@ -48,10 +48,6 @@ public class UILineRenderer : MonoBehaviour {
         RectTransform rect = line.GetComponent<RectTransform>();
         Vector2 direction = (target - source).normalized;
         float distance = (target - source).magnitude;
-        rect.anchorMin = Vector2.zero;
-        rect.anchorMax = Vector2.zero;
-        rect.offsetMin = Vector2.zero;
-        rect.offsetMin = Vector2.zero;
         rect.sizeDelta = new Vector2(distance, thickness);
         rect.anchoredPosition = (source + target) / 2.0f;
         rect.localEulerAngles = new Vector3(0, 0, Vector2.Angle(Vector2.right, direction));
@@ -60,10 +56,6 @@ public class UILineRenderer : MonoBehaviour {
     protected void CreateNodeAt(Vector2 pos) {
         GameObject node = Instantiate(nodePrefab, transform);
         RectTransform rect = node.GetComponent<RectTransform>();
-        rect.anchorMin = Vector2.zero;
-        rect.anchorMax = Vector2.zero;
-        rect.offsetMin = Vector2.zero;
-        rect.offsetMin = Vector2.zero;
         rect.anchoredPosition = pos;
         nodes.Add(node);
     }
