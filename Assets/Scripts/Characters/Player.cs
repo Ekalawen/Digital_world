@@ -432,6 +432,12 @@ public class Player : Character {
         timerLastTimeAuSol.Reset();
         if (useSound && etat != etatAvant) {
             gm.soundManager.PlayLandClip(transform.position);
+            if(inputManager.GetShift()) {
+                speedMultiplierController.RemoveAllMultiplier();
+                SpeedMultiplier multiplier = new SpeedMultiplier(1.25f, 0.0f, 0.0f, 0.6f, new AnimationCurve(), AnimationCurve.Linear(0, 1, 1, 0), false);
+                speedMultiplierController.AddMultiplier(multiplier);
+                Debug.Log($"Speed = {GetSpeedMultiplier()}");
+            }
             onLand.Invoke(thingILandedOn);
         }
     }

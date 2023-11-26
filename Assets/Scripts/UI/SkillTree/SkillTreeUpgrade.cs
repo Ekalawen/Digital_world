@@ -10,9 +10,10 @@ public enum SkillKey {
     UPGRADE_SLIDE_DURATION_AND_UI = 0,
     UNLOCK_OVERRIDES = 1,
     UNLOCK_TRESHOLDS = 2,
-    FIRST_DASH = 3,
-    SPEED_BOOST_1 = 4,
-    UI_OVERRIDE_PREDICTOR = 5,
+    SHIFT = 3,
+    FIRST_DASH = 4,
+    SPEED_BOOST_1 = 5,
+    UI_OVERRIDE_PREDICTOR = 6,
 }
 
 public class SkillTreeUpgrade : MonoBehaviour {
