@@ -170,6 +170,8 @@ public class SkillTreeMenu : MonoBehaviour {
     public void CloseInstantly() {
         isOpen = false;
         SetSizeRatio(0.0f);
+        GetCounterDisplayer().RemoveAllVolatilesTexts();
+        creditsCounterUpdater.UpdateValueInstantly();
         CloseUpgradeDisplayInstantly();
         SetActive(false);
     }
@@ -209,6 +211,9 @@ public class SkillTreeMenu : MonoBehaviour {
     }
 
     protected void PopulateVerticalMenuWith(SkillTreeUpgrade upgrade) {
+        if(!upgrade) {
+            return;
+        }
         currentUpgradeName.StringReference = upgrade.nom;
         currentUpgradeDescription.StringReference = upgrade.description;
         currentUpgradePrice.StringReference.Arguments = new object[] { upgrade.GetPriceString() };
@@ -270,14 +275,14 @@ public class SkillTreeMenu : MonoBehaviour {
     protected void BuyUpgrade(SkillTreeUpgrade upgrade) {
         SkillTreeManager.Instance.RemoveCredits(upgrade.price);
         SkillTreeManager.Instance.Unlock(upgrade.key);
-        DisplayVolatileCredits(upgrade.price);
+        DisplayVolatileCredits(- upgrade.price);
         upgrade.DisplayGoodState();
         PopulateVerticalMenuWith(upgrade);
         // Run animation ! :D
     }
 
     private void DisplayVolatileCredits(int creditsVariation) {
-        string creditsVariationString = creditsCounterUpdater.ApplyToCreditsFormating(creditsVariation);
+        string creditsVariationString = creditsCounterUpdater.ApplyToCreditsFormating(Mathf.Abs(creditsVariation));
         string signString = creditsVariation >= 0 ? "+" : "-";
         GetCounterDisplayer().AddVolatileText($"{signString} {creditsVariationString}", GetCounterDisplayer().GetTextColor());
         creditsCounterUpdater.UpdateValue();
@@ -319,6 +324,16 @@ public class SkillTreeMenu : MonoBehaviour {
         int variation = SkillTreeManager.Instance.MultiplyCreditsBy10();
         if (IsOpen()) {
             DisplayVolatileCredits(variation);
+            PopulateVerticalMenuWith(currentUpgrade);
+        }
+    }
+
+    public void ResetCredits() {
+        int variation = - SkillTreeManager.Instance.GetCredits();
+        SkillTreeManager.Instance.SetCredits(0);
+        if (IsOpen()) {
+            DisplayVolatileCredits(variation);
+            PopulateVerticalMenuWith(currentUpgrade);
         }
     }
 }

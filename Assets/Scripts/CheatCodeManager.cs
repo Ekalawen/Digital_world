@@ -10,10 +10,9 @@ public class CheatCode {
     public Action action;
     public int state = 0;
 
-    public CheatCode(List<KeyCode> code, Action action, int state = 0) {
+    public CheatCode(List<KeyCode> code, Action action) {
         this.code = code;
         this.action = action;
-        this.state = state;
     }
 }
 
@@ -47,8 +46,9 @@ public class CheatCodeManager : MonoBehaviour {
     public List<KeyCode> hackActivatedOrbTriggersCode;
 
     [Header("SkillTree related")]
-    public List<KeyCode> resetAllSkillTree;
+    public List<KeyCode> resetAllSkillTreeCode;
     public List<KeyCode> creditsTimes10Code;
+    public List<KeyCode> resetCreditsCode;
 
     [Header("Links")]
     public GameObject dash333Prefab;
@@ -97,8 +97,9 @@ public class CheatCodeManager : MonoBehaviour {
         cheatCodes.Add(new CheatCode(gainTimeHackCode, SwapGiveTimeHack));
         cheatCodes.Add(new CheatCode(hackActivatedOrbTriggersCode, gm.itemManager.HackAllActivatedOrbTriggers));
 
-        cheatCodes.Add(new CheatCode(resetAllSkillTree, gm.console.GetPauseMenu().skillTreeMenu.ResetAllUpgrades));
+        cheatCodes.Add(new CheatCode(resetAllSkillTreeCode, gm.console.GetPauseMenu().skillTreeMenu.ResetAllUpgrades));
         cheatCodes.Add(new CheatCode(creditsTimes10Code, gm.console.GetPauseMenu().skillTreeMenu.MultiplyCreditsBy10));
+        cheatCodes.Add(new CheatCode(resetCreditsCode, gm.console.GetPauseMenu().skillTreeMenu.ResetCredits));
     }
 
     public void Update() {

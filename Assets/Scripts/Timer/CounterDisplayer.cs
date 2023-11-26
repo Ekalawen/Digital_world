@@ -15,6 +15,8 @@ public class CounterDisplayer : MonoBehaviour {
     public Image imageContainer;
     public int fontSize = 20;
 
+    protected List<GameObject> volatilesText = new List<GameObject>();
+
     public void Display(string message) {
         displayText.text = message;
     }
@@ -46,28 +48,38 @@ public class CounterDisplayer : MonoBehaviour {
         if(!isActiveAndEnabled) {
             return;
         }
-        TMP_Text t = Instantiate(movingTextPrefab, textContainer).GetComponent<TMP_Text>();
-        t.rectTransform.localPosition = t.rectTransform.localPosition + Vector3.down * downOffset;
-        t.gameObject.SetActive(true);
-        t.text = message;
-        t.color = color;
-        StartCoroutine(MoveTextDown(t));
+        TMP_Text text = Instantiate(movingTextPrefab, textContainer).GetComponent<TMP_Text>();
+        text.rectTransform.localPosition = text.rectTransform.localPosition + Vector3.down * downOffset;
+        text.gameObject.SetActive(true);
+        text.text = message;
+        text.color = color;
+        StartCoroutine(MoveTextDown(text));
     }
 
-    protected IEnumerator MoveTextDown(TMP_Text t) {
+    protected IEnumerator MoveTextDown(TMP_Text text) {
         Timer timer = new UnpausableTimer(dureeMoving);
-        float yDebut = t.rectTransform.anchoredPosition.y - 10;
-        while (!timer.IsOver()) {
+        float yDebut = text.rectTransform.anchoredPosition.y - 10;
+        volatilesText.Add(text.gameObject);
+        while (!timer.IsOver() && text) {
             float avancement = timer.GetAvancement();
-            Vector2 pos = t.rectTransform.anchoredPosition;
+            Vector2 pos = text.rectTransform.anchoredPosition;
             pos.y = yDebut - avancement * distanceMoving;
-            t.rectTransform.anchoredPosition = pos;
-            Color color = t.color;
+            text.rectTransform.anchoredPosition = pos;
+            Color color = text.color;
             color.a = 1.0f - avancement;
-            t.color = color;
+            text.color = color;
             yield return null;
         }
-        Destroy(t.gameObject);
+        if (text) {
+            volatilesText.Remove(text.gameObject);
+            Destroy(text.gameObject);
+        }
     }
 
+    public void RemoveAllVolatilesTexts() {
+        foreach(GameObject gameObject in volatilesText) {
+            Destroy(gameObject);
+        }
+        volatilesText.Clear();
+    }
 }
