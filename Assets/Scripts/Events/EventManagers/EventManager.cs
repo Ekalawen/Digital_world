@@ -754,7 +754,7 @@ public class EventManager : MonoBehaviour {
         }
 
         RememberSincelastBestScore(success);
-        gm.historyManager.score = GetScore();
+        gm.historyManager.score = GetBlockScore();
         if (!success) {
             IncrementDeathCount();
         } else {
@@ -762,7 +762,7 @@ public class EventManager : MonoBehaviour {
             RecordBestScore();
             RememberHasJustWin();
         }
-        IncrementSumOfAllTriesScores();
+        IncrementTotalScores();
 
         InfiniteMap infiniteMap = gm.GetInfiniteMap();
         if(infiniteMap) {
@@ -777,13 +777,13 @@ public class EventManager : MonoBehaviour {
 
     protected void RecordBestScore() {
         if (IsNewBestScore()) {
-            string keyHasJustBestScore = StringHelper.GetKeyFor(PrefsManager.HAS_JUST_MAKE_BEST_SCORE);
+            string keyHasJustBestScore = StringHelper.GetKeyFor(PrefsManager.HAS_JUST_MAKE_BEST_BLOCKS_SCORE);
             PrefsManager.SetBool(keyHasJustBestScore, true);
         }
 
-        string bestScoreKey = StringHelper.GetKeyFor(PrefsManager.BEST_SCORE);
-        string precedentBestScoreKey = StringHelper.GetKeyFor(PrefsManager.PRECEDENT_BEST_SCORE);
-        float score = GetScore();
+        string bestScoreKey = StringHelper.GetKeyFor(PrefsManager.BEST_BLOCKS_SCORE);
+        string precedentBestScoreKey = StringHelper.GetKeyFor(PrefsManager.PRECEDENT_BEST_BLOCKS_SCORE);
+        float score = GetBlockScore();
         float bestScore = PrefsManager.GetFloat(bestScoreKey, 0);
         float precedentBestScore = PrefsManager.GetFloat(precedentBestScoreKey, 0);
         if(score > bestScore) {
@@ -822,7 +822,7 @@ public class EventManager : MonoBehaviour {
     }
 
     protected void RememberSincelastBestScore(bool hasWin) {
-        string keySinceLastBestScore = StringHelper.GetKeyFor(PrefsManager.SINCE_LAST_BEST_SCORE);
+        string keySinceLastBestScore = StringHelper.GetKeyFor(PrefsManager.SINCE_LAST_BEST_BLOCKS_SCORE);
         if (hasWin && IsNewBestScore()) {
             PlayerPrefs.SetInt(keySinceLastBestScore, 0);
         } else {
@@ -831,14 +831,21 @@ public class EventManager : MonoBehaviour {
         }
     }
 
-    protected void IncrementSumOfAllTriesScores() {
-        string keySum = StringHelper.GetKeyFor(PrefsManager.SUM_OF_ALL_TRIES_SCORES);
-        float oldSum = PlayerPrefs.HasKey(keySum) ? PlayerPrefs.GetFloat(keySum) : 0f;
-        float newSum = oldSum + GetScore();
-        PlayerPrefs.SetFloat(keySum, newSum);
+    protected void IncrementTotalScores() {
+        string key = StringHelper.GetKeyFor(PrefsManager.TOTAL_BLOCKS_SCORE);
+        float snewTotalBlocks = PrefsManager.GetFloat(key, 0) + GetBlockScore();
+        PlayerPrefs.SetFloat(key, snewTotalBlocks);
+
+        key = StringHelper.GetKeyFor(PrefsManager.TOTAL_CREDITS_SCORE);
+        int newTotalCredits = PrefsManager.GetInt(key, 0) + GetCreditScore();
+        PlayerPrefs.SetInt(key, newTotalCredits);
     }
 
-    public float GetScore() {
+    protected int GetCreditScore() {
+        return gm.GetInfiniteMap().scoreManager.GetCurrentScore();
+    }
+
+    public float GetBlockScore() {
         if(gm.GetMapType() == MenuLevel.LevelType.REGULAR) {
             return gm.timerManager.GetRemainingTime();
         } else {
@@ -847,23 +854,23 @@ public class EventManager : MonoBehaviour {
     }
 
     public float GetBestScore() {
-        string keyBestScore = StringHelper.GetKeyFor(PrefsManager.BEST_SCORE);
+        string keyBestScore = StringHelper.GetKeyFor(PrefsManager.BEST_BLOCKS_SCORE);
         return PrefsManager.GetFloat(keyBestScore, 0);
     }
 
     public float GetPrecedentBestScore() {
-        string key = StringHelper.GetKeyFor(PrefsManager.PRECEDENT_BEST_SCORE);
+        string key = StringHelper.GetKeyFor(PrefsManager.PRECEDENT_BEST_BLOCKS_SCORE);
         return PrefsManager.GetFloat(key, 0);
     }
 
     public bool IsNewBestScore() {
-        float currentScore = GetScore();
+        float currentScore = GetBlockScore();
         return currentScore > GetBestScore();
     }
 
     public bool IsNewBestScoreAfterBestScoreAssignation() {
-        string hasMakeBestScoreKey = StringHelper.GetKeyFor(PrefsManager.HAS_JUST_MAKE_BEST_SCORE);
-        string precedentBestScoreKey = StringHelper.GetKeyFor(PrefsManager.PRECEDENT_BEST_SCORE);
+        string hasMakeBestScoreKey = StringHelper.GetKeyFor(PrefsManager.HAS_JUST_MAKE_BEST_BLOCKS_SCORE);
+        string precedentBestScoreKey = StringHelper.GetKeyFor(PrefsManager.PRECEDENT_BEST_BLOCKS_SCORE);
         return PrefsManager.GetBool(hasMakeBestScoreKey, false) && PrefsManager.GetFloat(precedentBestScoreKey, 0) != 0;
     }
 
@@ -875,9 +882,9 @@ public class EventManager : MonoBehaviour {
     }
 
     protected bool HasJustBeatIRFirstTreshold() {
-        float score = GetScore();
+        float score = GetBlockScore();
         float firstTreshold = gm.goalManager.playerIsInControlTreshold;
-        string precedentBestScoreKey = StringHelper.GetKeyFor(PrefsManager.PRECEDENT_BEST_SCORE);
+        string precedentBestScoreKey = StringHelper.GetKeyFor(PrefsManager.PRECEDENT_BEST_BLOCKS_SCORE);
         return score >= firstTreshold && PrefsManager.GetFloat(precedentBestScoreKey, 0) < firstTreshold;
     }
 

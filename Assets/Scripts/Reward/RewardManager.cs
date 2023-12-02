@@ -368,7 +368,7 @@ public class RewardManager : MonoBehaviour {
         statsHolderRegular.SetActive(false);
 
         string score = hm.score.ToString("0");
-        string bestScore = PrefsManager.GetFloat(GetKeyFor(PrefsManager.BEST_SCORE), 0).ToString("0");
+        string bestScore = PrefsManager.GetFloat(GetKeyFor(PrefsManager.BEST_BLOCKS_SCORE), 0).ToString("0");
         scoreTextInfinite.text = strings.score.GetLocalizedString(score).Result;
         bestScoreTextInfinite.text = strings.bestScore.GetLocalizedString(bestScore).Result;
 
@@ -396,7 +396,7 @@ public class RewardManager : MonoBehaviour {
         statsHolderRegular.SetActive(true);
         statsHolderInfinite.SetActive(false);
         string score = hm.score.ToString("0.00");
-        string bestScore = PrefsManager.GetFloat(GetKeyFor(PrefsManager.BEST_SCORE), 0).ToString("0.00");
+        string bestScore = PrefsManager.GetFloat(GetKeyFor(PrefsManager.BEST_BLOCKS_SCORE), 0).ToString("0.00");
         scoreTextRegular.text = strings.score.GetLocalizedString(score).Result;
         bestScoreTextRegular.text = strings.bestScore.GetLocalizedString(bestScore).Result;
 
@@ -485,11 +485,11 @@ public class RewardManager : MonoBehaviour {
     }
 
     public bool IsNewBestScoreAfterBestScoreAssignation() {
-        string key = GetKeyFor(PrefsManager.HAS_JUST_MAKE_BEST_SCORE);
+        string key = GetKeyFor(PrefsManager.HAS_JUST_MAKE_BEST_BLOCKS_SCORE);
         return PrefsManager.GetBool(key, false);
     }
     public float GetPrecedentBestScore() {
-        return PrefsManager.GetFloat(GetKeyFor(PrefsManager.PRECEDENT_BEST_SCORE), 0);
+        return PrefsManager.GetFloat(GetKeyFor(PrefsManager.PRECEDENT_BEST_BLOCKS_SCORE), 0);
     }
     public bool IsFirstTimeFinishingLevel() {
         bool hasJustWin = PrefsManager.GetBool(GetKeyFor(PrefsManager.HAS_JUST_WIN), false);

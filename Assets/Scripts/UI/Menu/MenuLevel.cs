@@ -243,38 +243,38 @@ public class MenuLevel : MonoBehaviour {
     public float GetMeanScore() {
         float nbTries = GetNbTries();
         if (nbTries > 0)
-            return GetSumOfAllTriesScores() / (float)GetNbTries();
+            return GetTotalBlocksScore() / (float)GetNbTries();
         else
             return 0;
     }
 
-    public float GetSumOfAllTriesScores() {
-        string key = GetNameId() + PrefsManager.SUM_OF_ALL_TRIES_SCORES;
+    public float GetTotalBlocksScore() {
+        string key = GetNameId() + PrefsManager.TOTAL_BLOCKS_SCORE;
         return PrefsManager.GetFloat(key, 0);
     }
 
     public bool HasBestScore() {
-        string key = GetNameId() + PrefsManager.BEST_SCORE;
+        string key = GetNameId() + PrefsManager.BEST_BLOCKS_SCORE;
         return PrefsManager.HasKey(key);
     }
 
     public float GetBestScore() {
-        string key = GetNameId() + PrefsManager.BEST_SCORE;
+        string key = GetNameId() + PrefsManager.BEST_BLOCKS_SCORE;
         return PrefsManager.GetFloat(key, 0);
     }
 
     public void SetBestScore(float bestScore) {
-        string key = GetNameId() + PrefsManager.BEST_SCORE;
+        string key = GetNameId() + PrefsManager.BEST_BLOCKS_SCORE;
         PrefsManager.SetFloat(key, bestScore);
     }
 
     public float GetPrecedentBestScore() {
-        string key = GetNameId() + PrefsManager.PRECEDENT_BEST_SCORE;
+        string key = GetNameId() + PrefsManager.PRECEDENT_BEST_BLOCKS_SCORE;
         return PrefsManager.GetFloat(key, 0);
     }
 
     public void SetPrecedentBestScore(float precedentScore) {
-        string key = GetNameId() + PrefsManager.PRECEDENT_BEST_SCORE;
+        string key = GetNameId() + PrefsManager.PRECEDENT_BEST_BLOCKS_SCORE;
         PrefsManager.SetFloat(key, precedentScore);
     }
 
@@ -286,7 +286,7 @@ public class MenuLevel : MonoBehaviour {
     }
 
     public int GetSinceLastBestScore() {
-        string key = GetNameId() + PrefsManager.SINCE_LAST_BEST_SCORE;
+        string key = GetNameId() + PrefsManager.SINCE_LAST_BEST_BLOCKS_SCORE;
         return PrefsManager.GetInt(key, 0);
     }
 
@@ -382,12 +382,12 @@ public class MenuLevel : MonoBehaviour {
     }
 
     public bool HasJustMakeNewBestScore() {
-        string key = GetNameId() + PrefsManager.HAS_JUST_MAKE_BEST_SCORE;
+        string key = GetNameId() + PrefsManager.HAS_JUST_MAKE_BEST_BLOCKS_SCORE;
         return PrefsManager.GetBool(key, false);
     }
 
     public void SetNotJustMakeNewBestScore() {
-        string key = GetNameId() + PrefsManager.HAS_JUST_MAKE_BEST_SCORE;
+        string key = GetNameId() + PrefsManager.HAS_JUST_MAKE_BEST_BLOCKS_SCORE;
         PrefsManager.SetBool(key, false);
         SetPrecedentBestScore(GetBestScore());
     }

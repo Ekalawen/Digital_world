@@ -39,5 +39,33 @@ public class StringHelper {
         }
         return res;
     }
+
+    public static string ToCreditsShortFormat(long value) {
+        List<Tuple<long, string>> mapping = GetCreditsSuffixMapping();
+        foreach(Tuple<long, string> map in mapping) {
+            long unit = map.Item1;
+            string symbol = map.Item2;
+            if(value > unit) {
+                long quotient = value / unit;
+                string quotientString = quotient >= 10 ? quotient.ToString() : quotient.ToString(".1f");
+                return $"{quotientString}{symbol}";
+            }
+        }
+        return value.ToString();
+    }
+
+    private static List<Tuple<long, string>> mapping = null;
+    private static List<Tuple<long, string>> GetCreditsSuffixMapping() {
+        if (mapping == null) {
+            mapping = new List<Tuple<long, string>>();
+            mapping.Add(new Tuple<long, string>(1_000_000_000_000_000_000, "Qi"));
+            mapping.Add(new Tuple<long, string>(1_000_000_000_000_000, "Q"));
+            mapping.Add(new Tuple<long, string>(1_000_000_000_000, "T"));
+            mapping.Add(new Tuple<long, string>(1_000_000_000, "B"));
+            mapping.Add(new Tuple<long, string>(1_000_000, "M"));
+            mapping.Add(new Tuple<long, string>(1_000, "K"));
+        }
+        return mapping;
+    }
 }
 
