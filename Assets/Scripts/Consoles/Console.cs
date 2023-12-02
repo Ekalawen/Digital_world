@@ -77,6 +77,13 @@ public class Console : MonoBehaviour {
     public float pouvoirZoomInDuration = 1.5f;
     public AnimationCurve pouvoirZoomInCurve;
 
+    [Header("Progress Bar")]
+    public GameObject progressBarHolder;
+    public Scrollbar progressBar;
+    public TMP_Text progressBarPercentageText;
+    public TMP_Text progressBarTotalText;
+    public Image progressBarFillerImage;
+
     [Header("Links")]
 	public GameObject consoleBackground; // Là où l'on va afficher les lignes
 	public TMP_Text importantText; // Là où l'on affiche les informations importantes
@@ -89,10 +96,6 @@ public class Console : MonoBehaviour {
     public GameObject deathAstuce;
     public GameObject selectorManagerPrefab; // Used to know if it is a demo or not ! x)
     public TexteExplicatif popup;
-    public GameObject progressBarHolder;
-    public Scrollbar progressBar;
-    public TMP_Text progressBarPercentageText;
-    public TMP_Text progressBarTotalText;
 
 
     [HideInInspector]
@@ -1515,14 +1518,16 @@ public class Console : MonoBehaviour {
         if (!gm.IsIR()) {
             return;
         }
+        progressBarFillerImage.material = new Material(progressBarFillerImage.material);
         SetProgressBarValue();
     }
 
     protected void SetProgressBarValue() {
         float maxValue = 100;
-        float currentValue = (Mathf.Sin(Time.time / 2) + 1) / 2 * 50;
+        float currentValue = (Mathf.Sin(Time.time / 2) + 1) / 2 * 50 + 50;
         float avancement = currentValue / maxValue;
         progressBar.size = avancement;
         progressBarPercentageText.text = $"{avancement * 100:N0}%";
+        progressBarFillerImage.material.SetFloat("_VerticalSizeRatio", avancement);
     }
 }
