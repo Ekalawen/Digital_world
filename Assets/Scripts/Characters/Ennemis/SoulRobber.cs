@@ -138,7 +138,7 @@ public class SoulRobber : Ennemi {
     }
 
     protected void RegisterHaveCatchSoulRobber() {
-        PrefsManager.IncrementInt(PrefsManager.TOTAL_CATCH_SOULROBBER_KEY, 1, 0);
+        PrefsManager.IncrementInt(PrefsManager.TOTAL_CATCH_SOULROBBER, 1, 0);
     }
 
     protected void ShakeScreenOnTeleport() {

@@ -67,7 +67,7 @@ public class InputManager : MonoBehaviour {
 
     protected int GetKeybindingTypeIndice() {
         KeybindingType defaultValue = KeybindingDropdown.GetDefaultKeybinding();
-        return PrefsManager.GetInt(PrefsManager.KEYBINDING_INDICE_KEY, (int)defaultValue);
+        return PrefsManager.GetInt(PrefsManager.KEYBINDING_INDICE, (int)defaultValue);
     }
 
     protected KeybindingType GetKeybindingType() {
@@ -93,12 +93,12 @@ public class InputManager : MonoBehaviour {
 
     public void SetKeybindingTypeByIndice(int keybindingIndice)
     {
-        int precedentKeybindingIndice = PrefsManager.GetInt(PrefsManager.KEYBINDING_PRECEDENT_INDICE_KEY, (int)GetDefaultKeybindingType());
+        int precedentKeybindingIndice = PrefsManager.GetInt(PrefsManager.KEYBINDING_PRECEDENT_INDICE, (int)GetDefaultKeybindingType());
         if (precedentKeybindingIndice != keybindingIndice) {
-            PrefsManager.SetInt(PrefsManager.KEYBINDING_PRECEDENT_INDICE_KEY, (int)currentKeybindingType);
+            PrefsManager.SetInt(PrefsManager.KEYBINDING_PRECEDENT_INDICE, (int)currentKeybindingType);
         }
 
-        PrefsManager.SetInt(PrefsManager.KEYBINDING_INDICE_KEY, keybindingIndice);
+        PrefsManager.SetInt(PrefsManager.KEYBINDING_INDICE, keybindingIndice);
         KeybindingType keybinding = (KeybindingType)keybindingIndice;
         currentKeybindingType = keybinding;
         currentInputController = inputControllers.Find(ic => ic.GetKeybindingType() == keybinding);

@@ -15,6 +15,6 @@ public class CreditsCamera : MonoBehaviour {
 
     public virtual void Initialize() {
         cam = GetComponentInChildren<Camera>();
-        PostProcessManager.SetLuminosityIntensity(luminosityVolume, PrefsManager.GetFloat(PrefsManager.LUMINOSITY_KEY, MenuOptions.defaultLuminosity));
+        PostProcessManager.SetLuminosityIntensity(luminosityVolume, PrefsManager.GetFloat(PrefsManager.LUMINOSITY, MenuOptions.defaultLuminosity));
     }
 }

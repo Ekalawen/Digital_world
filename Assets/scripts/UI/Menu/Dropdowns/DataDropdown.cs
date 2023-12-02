@@ -16,7 +16,7 @@ public class DataDropdown : MonoBehaviour {
         LocalizationSettings.SelectedLocaleChanged += OnLocaleChange;
         SetDropdownData();
 
-        dropdown.value = PrefsManager.GetInt(PrefsManager.DATA_QUALITY_KEY, (int)MenuOptions.defaultLumiereQuality);
+        dropdown.value = PrefsManager.GetInt(PrefsManager.DATA_QUALITY, (int)MenuOptions.defaultLumiereQuality);
         dropdown.onValueChanged.AddListener(DataQualitySelected);
     }
 
@@ -28,7 +28,7 @@ public class DataDropdown : MonoBehaviour {
     }
 
     public void DataQualitySelected(int qualityIndex) {
-        PrefsManager.SetInt(PrefsManager.DATA_QUALITY_KEY, qualityIndex);
+        PrefsManager.SetInt(PrefsManager.DATA_QUALITY, qualityIndex);
         GameManager gm = FindObjectOfType<GameManager>();
         if(gm != null) {
             gm.map.SetDataQuality((Lumiere.LumiereQuality)qualityIndex);

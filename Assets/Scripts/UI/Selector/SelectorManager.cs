@@ -118,7 +118,7 @@ public class SelectorManager : MonoBehaviour {
     }
 
     protected void CleanLastSavedLevel() {
-        PrefsManager.DeleteKey(PrefsManager.LAST_LEVEL_KEY);
+        PrefsManager.DeleteKey(PrefsManager.LAST_LEVEL);
     }
 
     protected void SetCurrentLevelBasedOnLastSavedLevel() {
@@ -274,13 +274,13 @@ public class SelectorManager : MonoBehaviour {
     }
 
     protected void SaveLastLevel() {
-        PrefsManager.SetString(PrefsManager.LAST_LEVEL_KEY, GetCurrentLevel().menuLevel.levelSceneName);
+        PrefsManager.SetString(PrefsManager.LAST_LEVEL, GetCurrentLevel().menuLevel.levelSceneName);
         PlayerPrefs.Save();
     }
 
     protected SelectorLevel GetLastLevelSaved() {
-        if (PrefsManager.HasKey(PrefsManager.LAST_LEVEL_KEY)) {
-            string levelSceneName = PrefsManager.GetString(PrefsManager.LAST_LEVEL_KEY, "");
+        if (PrefsManager.HasKey(PrefsManager.LAST_LEVEL)) {
+            string levelSceneName = PrefsManager.GetString(PrefsManager.LAST_LEVEL, "");
             SelectorLevel level = levels.Find(l => l.menuLevel.levelSceneName == levelSceneName);
             if (level != null) {
                 return level;
@@ -491,7 +491,7 @@ public class SelectorManager : MonoBehaviour {
     public void Return() {
         //if (HasSelectorLevelOpen())
         //    return;
-        PrefsManager.SetBool(PrefsManager.SHOULD_SET_RANDOM_BACKGROUND_KEY, true);
+        PrefsManager.SetBool(PrefsManager.SHOULD_SET_RANDOM_BACKGROUND, true);
         SceneManager.LoadScene("MenuScene");
     }
 
@@ -559,10 +559,10 @@ public class SelectorManager : MonoBehaviour {
     }
 
     protected void DisplayIntroductionText() {
-        if (!PrefsManager.GetBool(PrefsManager.FIRST_TIME_SELECTOR_OPENED_KEY, false)) {
+        if (!PrefsManager.GetBool(PrefsManager.FIRST_TIME_SELECTOR_OPENED, false)) {
             MenuLevel firstLevel = levels[0].menuLevel;
             introductionRunner.RunIntroduction();
-            PrefsManager.SetBool(PrefsManager.FIRST_TIME_SELECTOR_OPENED_KEY, true);
+            PrefsManager.SetBool(PrefsManager.FIRST_TIME_SELECTOR_OPENED, true);
         }
     }
 

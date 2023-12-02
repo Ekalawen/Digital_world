@@ -161,6 +161,6 @@ public class EndGamesManager : MonoBehaviour {
     }
 
     protected void ResetSaves() {
-        PrefsManager.SetBool(PrefsManager.SHOULD_RESET_SAVE_ON_NEXT_MENU_SCENE_KEY, true);
+        PrefsManager.SetBool(PrefsManager.SHOULD_RESET_SAVE_ON_NEXT_MENU_SCENE, true);
     }
 }

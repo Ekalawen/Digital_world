@@ -771,18 +771,18 @@ public class EventManager : MonoBehaviour {
     }
 
     protected void RememberHasJustWin() {
-        string keyHasJustWin = GetKeyFor(PrefsManager.HAS_JUST_WIN_KEY);
+        string keyHasJustWin = StringHelper.GetKeyFor(PrefsManager.HAS_JUST_WIN);
         PrefsManager.SetBool(keyHasJustWin, true);
     }
 
     protected void RecordBestScore() {
         if (IsNewBestScore()) {
-            string keyHasJustBestScore = GetKeyFor(PrefsManager.HAS_JUST_MAKE_BEST_SCORE_KEY);
+            string keyHasJustBestScore = StringHelper.GetKeyFor(PrefsManager.HAS_JUST_MAKE_BEST_SCORE);
             PrefsManager.SetBool(keyHasJustBestScore, true);
         }
 
-        string bestScoreKey = GetKeyFor(PrefsManager.BEST_SCORE_KEY);
-        string precedentBestScoreKey = GetKeyFor(PrefsManager.PRECEDENT_BEST_SCORE_KEY);
+        string bestScoreKey = StringHelper.GetKeyFor(PrefsManager.BEST_SCORE);
+        string precedentBestScoreKey = StringHelper.GetKeyFor(PrefsManager.PRECEDENT_BEST_SCORE);
         float score = GetScore();
         float bestScore = PrefsManager.GetFloat(bestScoreKey, 0);
         float precedentBestScore = PrefsManager.GetFloat(precedentBestScoreKey, 0);
@@ -795,34 +795,34 @@ public class EventManager : MonoBehaviour {
     }
 
     protected void IncrementWinsCount() {
-        string keyNbWins = GetKeyFor(PrefsManager.NB_WINS_KEY);
+        string keyNbWins = StringHelper.GetKeyFor(PrefsManager.NB_WINS);
         int newValue = PlayerPrefs.HasKey(keyNbWins) ? PlayerPrefs.GetInt(keyNbWins) + 1 : 1;
         PlayerPrefs.SetInt(keyNbWins, newValue);
     }
 
     public bool HasAlreadyWin() {
-        string keyNbWins = GetKeyFor(PrefsManager.NB_WINS_KEY);
+        string keyNbWins = StringHelper.GetKeyFor(PrefsManager.NB_WINS);
         return PrefsManager.GetInt(keyNbWins, 0) > 0;
     }
 
     public int GetNbDeath() {
-        string keyNbDeath = GetKeyFor(PrefsManager.NB_DEATHS_KEY);
+        string keyNbDeath = StringHelper.GetKeyFor(PrefsManager.NB_DEATHS);
         return PrefsManager.GetInt(keyNbDeath, 0);
     }
 
     public int GetNbWins() {
-        string keyNbWins = GetKeyFor(PrefsManager.NB_WINS_KEY);
+        string keyNbWins = StringHelper.GetKeyFor(PrefsManager.NB_WINS);
         return PrefsManager.GetInt(keyNbWins, 0);
     }
 
     protected void IncrementDeathCount() {
-        string keyNbDeaths = GetKeyFor(PrefsManager.NB_DEATHS_KEY);
+        string keyNbDeaths = StringHelper.GetKeyFor(PrefsManager.NB_DEATHS);
         int newValue = PlayerPrefs.HasKey(keyNbDeaths) ? PlayerPrefs.GetInt(keyNbDeaths) + 1 : 1;
         PlayerPrefs.SetInt(keyNbDeaths, newValue);
     }
 
     protected void RememberSincelastBestScore(bool hasWin) {
-        string keySinceLastBestScore = GetKeyFor(PrefsManager.SINCE_LAST_BEST_SCORE_KEY);
+        string keySinceLastBestScore = StringHelper.GetKeyFor(PrefsManager.SINCE_LAST_BEST_SCORE);
         if (hasWin && IsNewBestScore()) {
             PlayerPrefs.SetInt(keySinceLastBestScore, 0);
         } else {
@@ -832,7 +832,7 @@ public class EventManager : MonoBehaviour {
     }
 
     protected void IncrementSumOfAllTriesScores() {
-        string keySum = GetKeyFor(PrefsManager.SUM_OF_ALL_TRIES_SCORES_KEY);
+        string keySum = StringHelper.GetKeyFor(PrefsManager.SUM_OF_ALL_TRIES_SCORES);
         float oldSum = PlayerPrefs.HasKey(keySum) ? PlayerPrefs.GetFloat(keySum) : 0f;
         float newSum = oldSum + GetScore();
         PlayerPrefs.SetFloat(keySum, newSum);
@@ -847,12 +847,12 @@ public class EventManager : MonoBehaviour {
     }
 
     public float GetBestScore() {
-        string keyBestScore = GetKeyFor(PrefsManager.BEST_SCORE_KEY);
+        string keyBestScore = StringHelper.GetKeyFor(PrefsManager.BEST_SCORE);
         return PrefsManager.GetFloat(keyBestScore, 0);
     }
 
     public float GetPrecedentBestScore() {
-        string key = GetKeyFor(PrefsManager.PRECEDENT_BEST_SCORE_KEY);
+        string key = StringHelper.GetKeyFor(PrefsManager.PRECEDENT_BEST_SCORE);
         return PrefsManager.GetFloat(key, 0);
     }
 
@@ -862,27 +862,23 @@ public class EventManager : MonoBehaviour {
     }
 
     public bool IsNewBestScoreAfterBestScoreAssignation() {
-        string hasMakeBestScoreKey = GetKeyFor(PrefsManager.HAS_JUST_MAKE_BEST_SCORE_KEY);
-        string precedentBestScoreKey = GetKeyFor(PrefsManager.PRECEDENT_BEST_SCORE_KEY);
+        string hasMakeBestScoreKey = StringHelper.GetKeyFor(PrefsManager.HAS_JUST_MAKE_BEST_SCORE);
+        string precedentBestScoreKey = StringHelper.GetKeyFor(PrefsManager.PRECEDENT_BEST_SCORE);
         return PrefsManager.GetBool(hasMakeBestScoreKey, false) && PrefsManager.GetFloat(precedentBestScoreKey, 0) != 0;
     }
 
     protected bool IsIRFirstTresholdHasBeenBeaten() {
-        string bestScoreKey = GetKeyFor(PrefsManager.BEST_SCORE_KEY);
-        float firstTreshold = (float)gm.goalManager.GetFirstTreshold();
-        return PrefsManager.GetFloat(bestScoreKey, 0) >= firstTreshold;
+        return gm.goalManager.IsPlayerInControl();
+        //string bestScoreKey = StringHelper.GetKeyFor(PrefsManager.BEST_SCORE);
+        //float firstTreshold = (float)gm.goalManager.GetFirstTreshold();
+        //return PrefsManager.GetFloat(bestScoreKey, 0) >= firstTreshold;
     }
 
     protected bool HasJustBeatIRFirstTreshold() {
         float score = GetScore();
-        float firstTreshold = (float)gm.goalManager.GetFirstTreshold();
-        string precedentBestScoreKey = GetKeyFor(PrefsManager.PRECEDENT_BEST_SCORE_KEY);
+        float firstTreshold = gm.goalManager.playerIsInControlTreshold;
+        string precedentBestScoreKey = StringHelper.GetKeyFor(PrefsManager.PRECEDENT_BEST_SCORE);
         return score >= firstTreshold && PrefsManager.GetFloat(precedentBestScoreKey, 0) < firstTreshold;
-    }
-
-    public string GetKeyFor(string keySuffix) {
-        string levelNameKey = SceneManager.GetActiveScene().name;
-        return levelNameKey + keySuffix;
     }
 
     protected virtual bool IsPlayerEjected() {
@@ -988,12 +984,14 @@ public class EventManager : MonoBehaviour {
     }
 
     protected void TestNewTresholdReached() {
-        if(gm.GetMapType() == MenuLevel.LevelType.REGULAR) {
-            int dataCount = Lumiere.GetCurrentDataCount();
-            if(gm.goalManager.GetAllTresholds().Contains(dataCount)) {
-                RewardForNewRegularTresholdReached(dataCount);
-            }
-        }
+        /// Ne fonctionne plus de cette manière actuellement, mais c'est intéressant de le garder peut-être pour plus tard !
+        //if (gm.GetMapType() != MenuLevel.LevelType.REGULAR) {
+        //    return;
+        //}
+        //int dataCount = Lumiere.GetCurrentDataCount();
+        //if (gm.goalManager.GetAllTresholds().Contains(dataCount)) {
+        //    RewardForNewRegularTresholdReached(dataCount);
+        //}
     }
 
     protected void RewardForNewRegularTresholdReached(int dataCount) {

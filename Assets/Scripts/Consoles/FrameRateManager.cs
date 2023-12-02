@@ -23,7 +23,7 @@ public class FrameRateManager : MonoBehaviour {
         deltaTimeList = new List<float>();
         speedCoefs = new List<float>();
         frameRateTimer = new Timer(0.1f, setOver: true);
-        showFrameRate = PrefsManager.GetBool(PrefsManager.FPS_COUNTER_KEY, MenuOptions.defaultFpsCounter);
+        showFrameRate = PrefsManager.GetBool(PrefsManager.FPS_COUNTER, MenuOptions.defaultFpsCounter);
         SetVisibility(showFrameRate);
     }
 

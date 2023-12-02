@@ -162,7 +162,7 @@ public class FastUISystem : MonoBehaviour {
         if (unlockScreenButton != null) {
             ButtonHighlighter pathHighlighter = unlockScreenButton.GetComponent<ButtonHighlighter>();
             if (fromType == FromType.LEVEL) {
-                string key = path.GetNameId() + PrefsManager.IS_HIGHLIGHTED_PATH_KEY;
+                string key = path.GetNameId() + PrefsManager.IS_HIGHLIGHTED_PATH;
                 pathHighlighter.enabled = PrefsManager.GetBool(key, false);
             } else {
                 pathHighlighter.enabled = false;

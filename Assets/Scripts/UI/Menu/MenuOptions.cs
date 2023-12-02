@@ -34,10 +34,10 @@ public class MenuOptions : MonoBehaviour {
     public static float defaultLuminosity = 0;
     public static Lumiere.LumiereQuality defaultLumiereQuality = Lumiere.LumiereQuality.LOW;
     public static List<string> keyOfAchievementsToSaveDuringResetSaves = new List<string>() {
-        PrefsManager.TOTAL_DATA_COUNT_KEY,
-        PrefsManager.TOTAL_BLOCKS_CROSSED_KEY,
-        PrefsManager.TOTAL_CATCH_SOULROBBER_KEY,
-        PrefsManager.SUPERCHEATEDPASSWORD_NB_USE_KEY,
+        PrefsManager.TOTAL_DATA_COUNT,
+        PrefsManager.TOTAL_BLOCKS_CROSSED,
+        PrefsManager.TOTAL_CATCH_SOULROBBER,
+        PrefsManager.SUPERCHEATEDPASSWORD_NB_USE,
     };
 
     public bool isInGame = false;
@@ -99,18 +99,18 @@ public class MenuOptions : MonoBehaviour {
         BackFromPanel();
         HideSomeOptionsInGame();
 
-        OnMusicVolumeChange(PrefsManager.GetFloat(PrefsManager.MUSIC_VOLUME_KEY, defaultMusicVolume));
-        OnSoundVolumeChange(PrefsManager.GetFloat(PrefsManager.SOUND_VOLUME_KEY, defaultSoundVolume));
-        OnMouseSpeedChange(PrefsManager.GetFloat(PrefsManager.MOUSE_SPEED_KEY, defaultMouseSpeed));
-        OnLuminosityChange(PrefsManager.GetFloat(PrefsManager.LUMINOSITY_KEY, defaultLuminosity));
-        OnJumpWarpActivationPress(PrefsManager.GetBool(PrefsManager.JUMP_WARP_KEY, defaultJumpWarpActivation));
-        OnWallWarpActivationPress(PrefsManager.GetBool(PrefsManager.WALL_WARP_KEY, defaultWallWarpActivation));
-        OnWallDistorsionActivationPress(PrefsManager.GetBool(PrefsManager.WALL_DISTORSION_KEY, defaultWallDistorsionActivation));
-        OnShiftWarpActivationPress(PrefsManager.GetBool(PrefsManager.SHIFT_WARP_KEY, defaultShiftWarpActivation));
-        OnTimeScaleEffectActivationPress(PrefsManager.GetBool(PrefsManager.TIME_SCALE_EFFECT_KEY, defaultTimeScaleEffectActivation));
-        OnConseilOnStartPress(PrefsManager.GetBool(PrefsManager.ADVICE_ON_START_KEY, defaultConseilOnStart));
-        OnFpsCounterPress(PrefsManager.GetBool(PrefsManager.FPS_COUNTER_KEY, defaultFpsCounter));
-        OnDisplayConsolePress(PrefsManager.GetBool(PrefsManager.DISPLAY_CONSOLE_KEY, defaultDisplayConsole));
+        OnMusicVolumeChange(PrefsManager.GetFloat(PrefsManager.MUSIC_VOLUME, defaultMusicVolume));
+        OnSoundVolumeChange(PrefsManager.GetFloat(PrefsManager.SOUND_VOLUME, defaultSoundVolume));
+        OnMouseSpeedChange(PrefsManager.GetFloat(PrefsManager.MOUSE_SPEED, defaultMouseSpeed));
+        OnLuminosityChange(PrefsManager.GetFloat(PrefsManager.LUMINOSITY, defaultLuminosity));
+        OnJumpWarpActivationPress(PrefsManager.GetBool(PrefsManager.JUMP_WARP, defaultJumpWarpActivation));
+        OnWallWarpActivationPress(PrefsManager.GetBool(PrefsManager.WALL_WARP, defaultWallWarpActivation));
+        OnWallDistorsionActivationPress(PrefsManager.GetBool(PrefsManager.WALL_DISTORSION, defaultWallDistorsionActivation));
+        OnShiftWarpActivationPress(PrefsManager.GetBool(PrefsManager.SHIFT_WARP, defaultShiftWarpActivation));
+        OnTimeScaleEffectActivationPress(PrefsManager.GetBool(PrefsManager.TIME_SCALE_EFFECT, defaultTimeScaleEffectActivation));
+        OnConseilOnStartPress(PrefsManager.GetBool(PrefsManager.ADVICE_ON_START, defaultConseilOnStart));
+        OnFpsCounterPress(PrefsManager.GetBool(PrefsManager.FPS_COUNTER, defaultFpsCounter));
+        OnDisplayConsolePress(PrefsManager.GetBool(PrefsManager.DISPLAY_CONSOLE, defaultDisplayConsole));
     }
 
     protected void HideSomeOptionsInGame() {
@@ -161,7 +161,7 @@ public class MenuOptions : MonoBehaviour {
     }
 
     public void OnMusicVolumeChange(float newVal) {
-        PrefsManager.SetFloat(PrefsManager.MUSIC_VOLUME_KEY, newVal);
+        PrefsManager.SetFloat(PrefsManager.MUSIC_VOLUME, newVal);
         sliderMusic.value = newVal;
         sliderMusic.GetComponent<SliderScript>().OnChange(newVal);
         if(isInGame) {
@@ -173,8 +173,8 @@ public class MenuOptions : MonoBehaviour {
     }
 
     public void OnSoundVolumeChange(float newVal) {
-        float oldVal = PrefsManager.GetFloat(PrefsManager.SOUND_VOLUME_KEY, defaultSoundVolume);
-        PrefsManager.SetFloat(PrefsManager.SOUND_VOLUME_KEY, newVal);
+        float oldVal = PrefsManager.GetFloat(PrefsManager.SOUND_VOLUME, defaultSoundVolume);
+        PrefsManager.SetFloat(PrefsManager.SOUND_VOLUME, newVal);
         sliderSon.value = newVal;
         sliderSon.GetComponent<SliderScript>().OnChange(newVal);
         if(isInGame) {
@@ -188,7 +188,7 @@ public class MenuOptions : MonoBehaviour {
     }
 
     public void OnMouseSpeedChange(float newVal) {
-        PrefsManager.SetFloat(PrefsManager.MOUSE_SPEED_KEY, newVal);
+        PrefsManager.SetFloat(PrefsManager.MOUSE_SPEED, newVal);
         sliderMouse.value = newVal;
         sliderMouse.GetComponent<SliderScript>().OnChange(newVal);
         if(isInGame) {
@@ -197,7 +197,7 @@ public class MenuOptions : MonoBehaviour {
     }
 
     public void OnLuminosityChange(float newVal) {
-        PrefsManager.SetFloat(PrefsManager.LUMINOSITY_KEY, newVal);
+        PrefsManager.SetFloat(PrefsManager.LUMINOSITY, newVal);
         sliderLuminosity.value = newVal;
         sliderLuminosity.GetComponent<SliderScript>().OnChange(newVal);
         if(isInGame) {
@@ -210,7 +210,7 @@ public class MenuOptions : MonoBehaviour {
     }
 
     public void OnWallWarpActivationPress(bool active) {
-        PrefsManager.SetBool(PrefsManager.WALL_WARP_KEY, active);
+        PrefsManager.SetBool(PrefsManager.WALL_WARP, active);
         toggleWallWarp.isOn = active;
         if(isInGame && !active) {
             gm.postProcessManager.StopWallVfx();
@@ -218,7 +218,7 @@ public class MenuOptions : MonoBehaviour {
     }
 
     public void OnWallDistorsionActivationPress(bool active) {
-        PrefsManager.SetBool(PrefsManager.WALL_DISTORSION_KEY, active);
+        PrefsManager.SetBool(PrefsManager.WALL_DISTORSION, active);
         toggleWallDistorsion.isOn = active;
         if(isInGame && !active) {
             gm.postProcessManager.StopWallDistorsionEffect();
@@ -226,12 +226,12 @@ public class MenuOptions : MonoBehaviour {
     }
 
     public void OnJumpWarpActivationPress(bool active) {
-        PrefsManager.SetBool(PrefsManager.JUMP_WARP_KEY, active);
+        PrefsManager.SetBool(PrefsManager.JUMP_WARP, active);
         toggleJumpWarp.isOn = active;
     }
 
     public void OnShiftWarpActivationPress(bool active) {
-        PrefsManager.SetBool(PrefsManager.SHIFT_WARP_KEY, active);
+        PrefsManager.SetBool(PrefsManager.SHIFT_WARP, active);
         toggleShiftWarp.isOn = active;
         if(isInGame && !active) {
             gm.postProcessManager.StopShiftVfx();
@@ -239,7 +239,7 @@ public class MenuOptions : MonoBehaviour {
     }
 
     public void OnTimeScaleEffectActivationPress(bool active) {
-        PrefsManager.SetBool(PrefsManager.TIME_SCALE_EFFECT_KEY, active);
+        PrefsManager.SetBool(PrefsManager.TIME_SCALE_EFFECT, active);
         toggleTimeScaleEffect.isOn = active;
         if(isInGame) {
             gm.postProcessManager.SetTimeScaleEffectActivation(active);
@@ -247,12 +247,12 @@ public class MenuOptions : MonoBehaviour {
     }
 
     public void OnConseilOnStartPress(bool active) {
-        PrefsManager.SetBool(PrefsManager.ADVICE_ON_START_KEY, active);
+        PrefsManager.SetBool(PrefsManager.ADVICE_ON_START, active);
         conseilOnStartToggle.isOn = active;
     }
 
     public void OnFpsCounterPress(bool active) {
-        PrefsManager.SetBool(PrefsManager.FPS_COUNTER_KEY, active);
+        PrefsManager.SetBool(PrefsManager.FPS_COUNTER, active);
         fpsCounterToggle.isOn = active;
         if(isInGame) {
             gm.console.InitFrameRateCounter();
@@ -260,7 +260,7 @@ public class MenuOptions : MonoBehaviour {
     }
 
     public void OnDisplayConsolePress(bool active) {
-        PrefsManager.SetBool(PrefsManager.DISPLAY_CONSOLE_KEY, active);
+        PrefsManager.SetBool(PrefsManager.DISPLAY_CONSOLE, active);
         displayConsoleToggle.isOn = active;
         if(isInGame) {
             gm.console.DisplayOrNotConsole();
@@ -268,7 +268,7 @@ public class MenuOptions : MonoBehaviour {
     }
 
     public void RememberLastLevel(int indiceLevel) {
-        PrefsManager.SetInt(PrefsManager.LAST_LEVEL_KEY, indiceLevel);
+        PrefsManager.SetInt(PrefsManager.LAST_LEVEL, indiceLevel);
     }
 
     public void ReinitialiserSauvegardesPopup() {
@@ -315,7 +315,7 @@ public class MenuOptions : MonoBehaviour {
         ApplyAllAchievementsStates(achievementsStates);
         ApplyAllKeysSaved(keysToSave);
         int index = LocalizationSettings.AvailableLocales.Locales.IndexOf(LocalizationSettings.SelectedLocale);
-        PrefsManager.SetInt(PrefsManager.LOCALE_INDEX_KEY, index);
+        PrefsManager.SetInt(PrefsManager.LOCALE_INDEX_, index);
         PrefsManager.Save();
     }
 

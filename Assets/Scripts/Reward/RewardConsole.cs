@@ -21,7 +21,7 @@ public class RewardConsole : Console {
         InitTimersMessages();
     }
     public override void DisplayOrNotConsole() {
-        bool shouldDisplayConsole = PrefsManager.GetBool(PrefsManager.DISPLAY_CONSOLE_KEY, MenuOptions.defaultDisplayConsole);
+        bool shouldDisplayConsole = PrefsManager.GetBool(PrefsManager.DISPLAY_CONSOLE, MenuOptions.defaultDisplayConsole);
         consoleBackground.SetActive(shouldDisplayConsole);
         // don't display frame rate here as we don't have one :)
     }

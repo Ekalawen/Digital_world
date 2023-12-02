@@ -271,7 +271,7 @@ public class SelectorPath : MonoBehaviour {
     }
 
     public string GetTrace() {
-        string key = name + PrefsManager.TRACE_KEY;
+        string key = name + PrefsManager.TRACE;
         if (!PrefsManager.HasKey(key)) {
             InitTrace();
         }
@@ -282,12 +282,12 @@ public class SelectorPath : MonoBehaviour {
         string trace = Trace.GenerateTrace();
         print(trace);
 
-        string key = name + PrefsManager.TRACE_KEY;
+        string key = name + PrefsManager.TRACE;
         PrefsManager.SetString(key, trace);
     }
 
     public void UnlockPath() {
-        string key = name + PrefsManager.IS_UNLOCKED_PATH_KEY;
+        string key = name + PrefsManager.IS_UNLOCKED_PATH;
         PrefsManager.SetBool(key, true);
         lineColorFluctuator.GoTo(1.0f, unlockScreen.dureeUnlockAnimation);
     }
@@ -301,12 +301,12 @@ public class SelectorPath : MonoBehaviour {
     }
 
     public bool IsUnlocked() {
-        string key = name + PrefsManager.IS_UNLOCKED_PATH_KEY;
+        string key = name + PrefsManager.IS_UNLOCKED_PATH;
         return PrefsManager.GetBool(key, false);
     }
 
     public void LockPath() {
-        string key = name + PrefsManager.IS_UNLOCKED_PATH_KEY;
+        string key = name + PrefsManager.IS_UNLOCKED_PATH;
         PrefsManager.SetBool(key, false);
         Debug.Log($"{GetNameId()} locked !");
     }
@@ -316,7 +316,7 @@ public class SelectorPath : MonoBehaviour {
     }
 
     public void HighlightPath(bool state) {
-        string key = GetNameId() + PrefsManager.IS_HIGHLIGHTED_PATH_KEY;
+        string key = GetNameId() + PrefsManager.IS_HIGHLIGHTED_PATH;
         PrefsManager.SetBool(key, state);
         HighlightCadena(state);
     }
@@ -326,7 +326,7 @@ public class SelectorPath : MonoBehaviour {
     }
 
     public bool GetHighlitedState() {
-        string key = GetNameId() + PrefsManager.IS_HIGHLIGHTED_PATH_KEY;
+        string key = GetNameId() + PrefsManager.IS_HIGHLIGHTED_PATH;
         return PrefsManager.GetBool(key, false);
     }
 

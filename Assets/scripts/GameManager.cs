@@ -325,7 +325,7 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void QuitterPartie() {
-        PrefsManager.SetString(PrefsManager.LAST_LEVEL_KEY, SceneManager.GetActiveScene().name);
+        PrefsManager.SetString(PrefsManager.LAST_LEVEL, SceneManager.GetActiveScene().name);
         console.DestroyUIVisibilitySaver();
 
         MouseDisplayer.Instance.ShowCursor();

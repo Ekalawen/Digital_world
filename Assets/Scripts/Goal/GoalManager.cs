@@ -10,88 +10,55 @@ public class GoalManager : MonoBehaviour {
         DATA,
         BLOCK,
         VICTORY,
+        SCORE,
     }
 
-    public List<GoalTresholds> goalTresholds;
+    public GoalType goalType = GoalType.SCORE;
+    public int treshold = 200_000;
+    public int playerIsInControlTreshold = 200;
+    [ConditionalHide("goalType", GoalType.SCORE)]
+    public int infiniteModeNbBlocksTreshold = 100;
 
     protected GameManager gm;
-    protected List<int> allTresholds;
 
     public void Initialize() {
         gm = GameManager.Instance;
-        AssertOnTresholds();
-    }
-
-    protected void AssertOnTresholds() {
-        if(goalTresholds.Count == 0) {
-            Debug.LogWarning($"La liste de tresholds est vide !");
-        } else {
-            if(goalTresholds.Select(gt => gt.type).Distinct().ToList().Count > 1) {
-                Debug.LogError($"La liste de tresholds contient plusieurs types !");
-            }
-        }
     }
 
     public GoalType GetGoalType() {
-        return goalTresholds[0].type;
+        return goalType;
     }
 
-    public List<int> GetAllTresholds() {
-        if (allTresholds == null) {
-            allTresholds = goalTresholds.SelectMany(gt => gt.tresholds).Distinct().OrderBy(n => n).ToList();
-            allTresholds.Add(int.MaxValue);
-        }
-        return allTresholds;
+    public int GetTreshold() {
+        return treshold;
     }
 
-    public List<int> GetAllNotUnlockedTresholds() {
-        List<int> tresholds = GetAllTresholds();
-        float seuil = 0;
-        switch (GetGoalType()) {
-            case GoalType.DATA:
-                seuil = Lumiere.GetCurrentDataCount();
-                break;
-            case GoalType.BLOCK:
-                seuil = gm.eventManager.GetBestScore();
-                break;
-            case GoalType.VICTORY:
-                seuil = gm.eventManager.GetNbWins();
-                break;
-        }
-        return tresholds.FindAll(t => t > seuil).ToList();
+    public int GetTotalScore() {
+        return PrefsManager.GetInt(StringHelper.GetKeyFor(PrefsManager.TOTAL_SCORE), 0);
     }
 
-    public bool HasUnlockedAtLeastOneTreshold() {
-        return GetAllTresholds().Count > GetAllNotUnlockedTresholds().Count;
+    public int GetBestScore() {
+        return PrefsManager.GetInt(StringHelper.GetKeyFor(PrefsManager.BEST_SCORE), 0);
     }
 
-    public int GetNextTresholdFor(int dataCount) {
-        return GetAllTresholds().Find(n => n > dataCount);
+    public bool IsUnlocked() {
+        return GetTotalScore() >= GetTreshold();
     }
 
-    public int GetNextNotUnlockedTresholdFor(int dataCount) {
-        return GetAllNotUnlockedTresholds().Find(n => n > dataCount);
+    public string GetTresholdString() {
+        return GetTreshold().ToString();
     }
 
-    public int GetFirstTreshold() {
-        return GetAllTresholds().First();
+    public bool IsPlayerInControl() {
+        return GetBestScore() >= playerIsInControlTreshold;
     }
 
-    public int GetLastTreshold() {
-        return GetAllTresholds().Last();
+    public int GetInfiniteModeNbBlocksTreshold() {
+        return infiniteModeNbBlocksTreshold;
     }
 
-    public int GetLastTresholdNotInfinite() {
-        return GetAllTresholds().FindAll(v => v < int.MaxValue).Last();
-    }
-
-    public string GetNextTresholdSymbolFor(int dataCount) {
-        int nextTreshold = GetNextTresholdFor(dataCount);
-        return nextTreshold == int.MaxValue ? "∞" : nextTreshold.ToString();
-    }
-
-    public string GetNextNotUnlockedTresholdSymbolFor(int dataCount) {
-        int nextTreshold = GetNextNotUnlockedTresholdFor(dataCount);
-        return nextTreshold == int.MaxValue ? "∞" : nextTreshold.ToString();
-    }
+    //public string GetNextTresholdSymbolFor(int dataCount) {
+    //    int nextTreshold = GetNextTresholdFor(dataCount);
+    //    return nextTreshold == int.MaxValue ? "∞" : nextTreshold.ToString();
+    //}
 }

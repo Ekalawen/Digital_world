@@ -103,7 +103,6 @@ public class InfiniteMap : MapManager {
         allBlocks = new List<Block>();
         blocksFolder = new GameObject("Blocks").transform;
         blocksFolder.transform.SetParent(cubesFolder.transform);
-        string nextTresholdSymbol = gm.goalManager.GetNextNotUnlockedTresholdSymbolFor(nbBlocksRun);
         areTresholdsEnabled = SkillTreeManager.Instance.IsEnabled(SkillKey.UNLOCK_TRESHOLDS);
         scoreManager.Initialize();
         timerSinceLastBlock = new Timer();
@@ -470,7 +469,6 @@ public class InfiniteMap : MapManager {
             if (IsNewTreshold(nbBlocksNonStart)) {
                 RewardNewTreshold();
             }
-            //string nextTresholdSymbol = gm.goalManager.GetNextNotUnlockedTresholdSymbolFor(nbBlocksNonStart);
             scoreManager.OnNewBlockCrossed();
             gm.soundManager.PlayNewBlockClip();
             if (IsNewBestScore(nbBlocksNonStart)) {
@@ -508,17 +506,18 @@ public class InfiniteMap : MapManager {
     }
 
     protected bool RewardNewInifiniteTresholdReached(int nbBlocksNonStart) {
-        if (gm.goalManager.GetAllNotUnlockedTresholds().Contains(nbBlocksNonStart)) {
-            gm.console.RewardNewInfiniteTreshold(nbBlocksNonStart);
-            gm.soundManager.PlayRewardBestScore();
-            CameraShaker.Instance.ShakeOnce(infiniteModeReachedScreenShakeMagnitude, infiniteModeReachedScreenShakeRoughness, 0.1f, infiniteModeReachedScreenShakeDecreaseTime);
-            return true;
-        }
         return false;
+        //if (gm.goalManager.GetAllNotUnlockedTresholds().Contains(nbBlocksNonStart)) {
+        //    gm.console.RewardNewInfiniteTreshold(nbBlocksNonStart);
+        //    gm.soundManager.PlayRewardBestScore();
+        //    CameraShaker.Instance.ShakeOnce(infiniteModeReachedScreenShakeMagnitude, infiniteModeReachedScreenShakeRoughness, 0.1f, infiniteModeReachedScreenShakeDecreaseTime);
+        //    return true;
+        //}
+        //return false;
     }
 
     protected void RewardForReachingInfiniteMode(int nbBlocksNonStart) {
-        if(!hasReachInfiniteMode && gm.goalManager.GetLastTresholdNotInfinite() <= nbBlocksNonStart) {
+        if(!hasReachInfiniteMode && gm.goalManager.GetInfiniteModeNbBlocksTreshold() <= nbBlocksNonStart) {
             hasReachInfiniteMode = true;
             gm.console.RewardInfiniteModeReached();
             gm.soundManager.PlayRewardBestScore();

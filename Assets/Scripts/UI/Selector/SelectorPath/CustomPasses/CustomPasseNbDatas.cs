@@ -7,7 +7,7 @@ using UnityEngine.Localization;
 
 public class CustomPasseNbDatas : CustomPasse {
     public override string GetPasse(SelectorPath selectorPath) {
-        int nbDatas = PrefsManager.GetInt(PrefsManager.TOTAL_DATA_COUNT_KEY, 0);
+        int nbDatas = PrefsManager.GetInt(PrefsManager.TOTAL_DATA_COUNT, 0);
         return nbDatas.ToString();
     }
 }

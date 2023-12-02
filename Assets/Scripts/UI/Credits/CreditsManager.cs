@@ -61,7 +61,7 @@ public class CreditsManager : MonoBehaviour {
         UISoundManager soundManager = UISoundManager.Instance;
         soundManager.PlayCreditsMusic();
         musicVolumeFluctuator = new Fluctuator(this, soundManager.GetMusicVolume, soundManager.SetMusicVolume);
-        musicVolumeFluctuator.GoTo(PrefsManager.GetFloat(PrefsManager.MUSIC_VOLUME_KEY, MenuOptions.defaultMusicVolume), musicFadeInDuration);
+        musicVolumeFluctuator.GoTo(PrefsManager.GetFloat(PrefsManager.MUSIC_VOLUME, MenuOptions.defaultMusicVolume), musicFadeInDuration);
     }
 
     protected IEnumerator InitMainTextContent() {

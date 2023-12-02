@@ -12,7 +12,7 @@ public class Achievement_UnlockPath_WithNumberOfTries : Achievement_UnlockPath {
     public bool exactlyThisTreshold = false;
 
     protected override void UnlockPath(SelectorPath selectorPath) {
-        string key = selectorPath.GetNameId() + PrefsManager.NB_SUBMITS_PATH_KEY;
+        string key = selectorPath.GetNameId() + PrefsManager.NB_SUBMITS_PATH;
         int nbTries = PrefsManager.GetInt(key, 0);
         if(exactlyThisTreshold ? nbTries == nbTriesTreshold - 1 : nbTries >= nbTriesTreshold - 1) {
             Unlock();

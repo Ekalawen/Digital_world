@@ -150,19 +150,19 @@ public class Lumiere : MonoBehaviour {
     }
 
     public static int GetCurrentDataCount() {
-        string key = SceneManager.GetActiveScene().name + PrefsManager.DATA_COUNT_KEY;
+        string key = SceneManager.GetActiveScene().name + PrefsManager.DATA_COUNT;
         return PrefsManager.GetInt(key, 0);
     }
 
     public static int GetTotalDataCount() {
-        return PrefsManager.GetInt(PrefsManager.TOTAL_DATA_COUNT_KEY, 0);
+        return PrefsManager.GetInt(PrefsManager.TOTAL_DATA_COUNT, 0);
     }
 
     public static int IncrementDataCount(int nbAdded) {
-        string key = SceneManager.GetActiveScene().name + PrefsManager.DATA_COUNT_KEY;
+        string key = SceneManager.GetActiveScene().name + PrefsManager.DATA_COUNT;
         int dataCount = GetCurrentDataCount() + nbAdded;
         PrefsManager.SetInt(key, dataCount);
-        string keyHasJustIncreased = SceneManager.GetActiveScene().name + PrefsManager.HAS_JUST_INCREASED_DATA_COUNT_KEY;
+        string keyHasJustIncreased = SceneManager.GetActiveScene().name + PrefsManager.HAS_JUST_INCREASED_DATA_COUNT;
         PrefsManager.SetBool(keyHasJustIncreased, true);
         IncrementTotalDataCount(nbAdded);
         return dataCount;
@@ -170,7 +170,7 @@ public class Lumiere : MonoBehaviour {
 
     protected static void IncrementTotalDataCount(int nbAdded) {
         int newTotalDataCount = GetTotalDataCount() + nbAdded;
-        PrefsManager.SetInt(PrefsManager.TOTAL_DATA_COUNT_KEY, newTotalDataCount);
+        PrefsManager.SetInt(PrefsManager.TOTAL_DATA_COUNT, newTotalDataCount);
     }
 
     protected void AddToDataCount() {

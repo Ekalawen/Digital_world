@@ -55,8 +55,8 @@ public class MenuManager : MonoBehaviour {
     }
 
     protected void CheckIfShouldResetSavesAfterCredits() {
-        if(PrefsManager.GetBool(PrefsManager.SHOULD_RESET_SAVE_ON_NEXT_MENU_SCENE_KEY, false)) {
-            PrefsManager.SetBool(PrefsManager.SHOULD_RESET_SAVE_ON_NEXT_MENU_SCENE_KEY, false);
+        if(PrefsManager.GetBool(PrefsManager.SHOULD_RESET_SAVE_ON_NEXT_MENU_SCENE, false)) {
+            PrefsManager.SetBool(PrefsManager.SHOULD_RESET_SAVE_ON_NEXT_MENU_SCENE, false);
             menuOptions.ReinitialiserSauvegardes();
         }
     }
@@ -86,7 +86,7 @@ public class MenuManager : MonoBehaviour {
     }
 
     protected bool HaveThinkAboutTutorial() {
-        return PrefsManager.GetBool(PrefsManager.HAVE_THINK_ABOUT_TUTORIAL_KEY, false);
+        return PrefsManager.GetBool(PrefsManager.HAVE_THINK_ABOUT_TUTORIAL, false);
     }
 
     protected void AdvicePlayTutorial() {
@@ -113,12 +113,12 @@ public class MenuManager : MonoBehaviour {
             text: texteString,
             theme: TexteExplicatif.Theme.NEUTRAL,
             cleanReplacements: false);
-        PrefsManager.SetBool(PrefsManager.HAVE_THINK_ABOUT_TUTORIAL_KEY, true);
+        PrefsManager.SetBool(PrefsManager.HAVE_THINK_ABOUT_TUTORIAL, true);
     }
 
     public void OnTutorialPress() {
 		Debug.Log("On a appuyé sur Tutoriel !");
-        PrefsManager.SetBool(PrefsManager.HAVE_THINK_ABOUT_TUTORIAL_KEY, true);
+        PrefsManager.SetBool(PrefsManager.HAVE_THINK_ABOUT_TUTORIAL, true);
 
         AsyncOperation loading = SceneManager.LoadSceneAsync("TutorialScene");
         loading.allowSceneActivation = false;
@@ -169,9 +169,9 @@ public class MenuManager : MonoBehaviour {
     }
 
     protected void SetRandomBackgroundIfNeeded() {
-        if(PrefsManager.GetBool(PrefsManager.SHOULD_SET_RANDOM_BACKGROUND_KEY, false)) {
+        if(PrefsManager.GetBool(PrefsManager.SHOULD_SET_RANDOM_BACKGROUND, false)) {
             SetRandomBackground();
-            PrefsManager.SetBool(PrefsManager.SHOULD_SET_RANDOM_BACKGROUND_KEY, false);
+            PrefsManager.SetBool(PrefsManager.SHOULD_SET_RANDOM_BACKGROUND, false);
         }
     }
 
@@ -206,9 +206,9 @@ public class MenuManager : MonoBehaviour {
         yield return LocalizationSettings.InitializationOperation;
         Debug.Log($"Initialization done !");
 
-        if (PrefsManager.HasKey(PrefsManager.LOCALE_INDEX_KEY)) {
+        if (PrefsManager.HasKey(PrefsManager.LOCALE_INDEX_)) {
             Debug.Log($"Setting saved selected locale ...");
-            int index = PrefsManager.GetInt(PrefsManager.LOCALE_INDEX_KEY, 0);
+            int index = PrefsManager.GetInt(PrefsManager.LOCALE_INDEX_, 0);
             LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[index];
         } else if (SteamManager.Initialized) { // The player haven't set his prefered locale yet! :)
             Debug.Log($"Setting Steam current locale ...");
@@ -254,6 +254,6 @@ public class MenuManager : MonoBehaviour {
     }
 
     public void SetLuminosityVolume() {
-        PostProcessManager.SetLuminosityIntensity(luminosityVolume, PrefsManager.GetFloat(PrefsManager.LUMINOSITY_KEY, MenuOptions.defaultLuminosity));
+        PostProcessManager.SetLuminosityIntensity(luminosityVolume, PrefsManager.GetFloat(PrefsManager.LUMINOSITY, MenuOptions.defaultLuminosity));
     }
 }

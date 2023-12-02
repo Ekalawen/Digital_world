@@ -55,13 +55,13 @@ public class MenuLevelSelector : MonoBehaviour {
 
     public void SaveLevelName() {
         string levelName = menuInitial.GetComponent<MenuLevel>().GetNameId();
-        PrefsManager.SetString(PrefsManager.SAVE_LEVEL_NAME_KEY, levelName);
+        PrefsManager.SetString(PrefsManager.SAVE_LEVEL_NAME, levelName);
         PrefsManager.Save();
     }
 
     public void CleanLevelIndice() {
-        PrefsManager.DeleteKey(PrefsManager.SAVE_LEVEL_NAME_KEY);
-        PrefsManager.SetBool(PrefsManager.SAVE_LEVEL_NAME_MUST_BE_USED_KEY, false);
+        PrefsManager.DeleteKey(PrefsManager.SAVE_LEVEL_NAME);
+        PrefsManager.SetBool(PrefsManager.SAVE_LEVEL_NAME_MUST_BE_USED, false);
         PrefsManager.Save();
     }
 

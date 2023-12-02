@@ -16,7 +16,7 @@ public class Achievement_UseSupercheatedpassword : Achievement {
     }
 
     protected virtual void UnlockIfBetterTreshold() {
-        if (PrefsManager.GetInt(PrefsManager.SUPERCHEATEDPASSWORD_NB_USE_KEY, 0) >= treshold) {
+        if (PrefsManager.GetInt(PrefsManager.SUPERCHEATEDPASSWORD_NB_USE, 0) >= treshold) {
             Unlock();
         }
     }

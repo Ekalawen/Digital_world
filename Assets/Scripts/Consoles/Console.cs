@@ -161,7 +161,7 @@ public class Console : MonoBehaviour {
     }
 
     public virtual void DisplayOrNotConsole() {
-        bool shouldDisplayConsole = PrefsManager.GetBool(PrefsManager.DISPLAY_CONSOLE_KEY, MenuOptions.defaultDisplayConsole);
+        bool shouldDisplayConsole = PrefsManager.GetBool(PrefsManager.DISPLAY_CONSOLE, MenuOptions.defaultDisplayConsole);
         consoleBackground.SetActive(shouldDisplayConsole);
         frameRateManager.SetToAccordingConsolePosition(shouldDisplayConsole);
     }
@@ -296,7 +296,7 @@ public class Console : MonoBehaviour {
     }
 
     protected void PremierGrandConseil() {
-        if(PrefsManager.GetBool(PrefsManager.ADVICE_ON_START_KEY, MenuOptions.defaultConseilOnStart)) {
+        if(PrefsManager.GetBool(PrefsManager.ADVICE_ON_START, MenuOptions.defaultConseilOnStart)) {
             StartCoroutine(CPremierGrandConseil());
         }
     }
@@ -713,7 +713,7 @@ public class Console : MonoBehaviour {
 
         int conseilIndice;
         if (conseilType == ConseilType.CYCLIC) {
-            string conseilKey = gm.eventManager.GetKeyFor(PrefsManager.CONSEIL_INDICE_KEY);
+            string conseilKey = StringHelper.GetKeyFor(PrefsManager.CONSEIL_INDICE);
             conseilIndice = PrefsManager.GetInt(conseilKey, 0);
             PrefsManager.SetInt(conseilKey, (conseilIndice + 1) % conseils.Count);
         } else {
@@ -1244,7 +1244,8 @@ public class Console : MonoBehaviour {
     }
 
     protected IEnumerator CSetDataCountText(int dataCount) {
-        string nextTresholdSymbol = gm.goalManager.GetNextTresholdSymbolFor(dataCount);
+        //string nextTresholdSymbol = gm.goalManager.GetNextTresholdSymbolFor(dataCount);
+        string nextTresholdSymbol = gm.goalManager.GetTresholdString();
         AsyncOperationHandle<string> handle = strings.dataCount.GetLocalizedString(dataCount, nextTresholdSymbol);
         yield return handle;
         dataCountDisplayer.Display(handle.Result);
@@ -1256,7 +1257,8 @@ public class Console : MonoBehaviour {
     }
 
     protected IEnumerator CSetNbWinsText(int nbWins) {
-        string nextTresholdSymbol = gm.goalManager.GetNextTresholdSymbolFor(nbWins);
+        //string nextTresholdSymbol = gm.goalManager.GetNextTresholdSymbolFor(nbWins);
+        string nextTresholdSymbol = gm.goalManager.GetTresholdString();
         AsyncOperationHandle<string> handle = strings.nbWinsCount.GetLocalizedString(nbWins, nextTresholdSymbol);
         yield return handle;
         dataCountDisplayer.Display(handle.Result);
@@ -1337,10 +1339,10 @@ public class Console : MonoBehaviour {
 
     public void SetConsoleVisibility(bool isVisible) {
         isConsoleVisible = isVisible;
-        consoleBackground.SetActive(isVisible && PrefsManager.GetBool(PrefsManager.DISPLAY_CONSOLE_KEY, MenuOptions.defaultDisplayConsole));
+        consoleBackground.SetActive(isVisible && PrefsManager.GetBool(PrefsManager.DISPLAY_CONSOLE, MenuOptions.defaultDisplayConsole));
         importantText.gameObject.SetActive(isVisible);
         dataCountDisplayer.gameObject.SetActive(isVisible);
-        frameRateManager.SetVisibility(isVisible && PrefsManager.GetBool(PrefsManager.FPS_COUNTER_KEY, MenuOptions.defaultFpsCounter));
+        frameRateManager.SetVisibility(isVisible && PrefsManager.GetBool(PrefsManager.FPS_COUNTER, MenuOptions.defaultFpsCounter));
         pouvoirsCanvas.SetActive(isVisible);
         escapeButton.SetActive(isVisible && gm.eventManager.IsGameOver());
         pauseMenu.SetActive(isVisible && gm.IsPaused());
@@ -1411,7 +1413,7 @@ public class Console : MonoBehaviour {
 
     public IEnumerator CDisplayDeathAstuces() {
         deathAstuce.SetActive(true);
-        string conseilKey = gm.eventManager.GetKeyFor(PrefsManager.CONSEIL_INDICE_KEY);
+        string conseilKey = StringHelper.GetKeyFor(PrefsManager.CONSEIL_INDICE);
         int conseilIndice = PrefsManager.GetInt(conseilKey, 0);
         PrefsManager.SetInt(conseilKey, (conseilIndice + 1) % conseils.Count);
         yield return CComputeConseil(conseilIndice);
@@ -1461,20 +1463,20 @@ public class Console : MonoBehaviour {
 
     public bool HasAlreadyOpenedTheDoc() {
         string sceneName = SceneManager.GetActiveScene().name;
-        string key = sceneName + PrefsManager.HAS_OPENED_DOC_KEY;
+        string key = sceneName + PrefsManager.HAS_OPENED_DOC;
         return PrefsManager.GetBool(key, false);
     }
 
     public void SetHasAlreadyOpenedTheDoc() {
         string sceneName = SceneManager.GetActiveScene().name;
-        string key = sceneName + PrefsManager.HAS_OPENED_DOC_KEY;
+        string key = sceneName + PrefsManager.HAS_OPENED_DOC;
         PrefsManager.SetBool(key, true);
     }
 
     public void OpenDocIf10DefeatsInARow() {
         if (!HasAlreadyOpenedTheDoc() && eventManager.GetNbDeath() >= nbDeathBeforeAutoOpenDoc) {
             if ((gm.IsRegular() && eventManager.GetNbWins() == 0)
-             || (gm.IsIR() && !gm.goalManager.HasUnlockedAtLeastOneTreshold())) {
+             || (gm.IsIR() && !gm.goalManager.IsPlayerInControl())) {
                 gm.Pause();
                 pauseMenu.GetComponentInChildren<PauseMenu>().OpenDoc();
             }

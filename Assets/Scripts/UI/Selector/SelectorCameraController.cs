@@ -439,7 +439,7 @@ public class SelectorCameraController : MonoBehaviour {
     //}
 
     protected void InitLuminosityVolume() {
-        PostProcessManager.SetLuminosityIntensity(luminosityVolume, PrefsManager.GetFloat(PrefsManager.LUMINOSITY_KEY, MenuOptions.defaultLuminosity));
+        PostProcessManager.SetLuminosityIntensity(luminosityVolume, PrefsManager.GetFloat(PrefsManager.LUMINOSITY, MenuOptions.defaultLuminosity));
     }
 
 }

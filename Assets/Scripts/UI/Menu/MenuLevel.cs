@@ -215,17 +215,17 @@ public class MenuLevel : MonoBehaviour {
     }
 
     public int GetNbWins() {
-        string key = GetNameId() + PrefsManager.NB_WINS_KEY;
+        string key = GetNameId() + PrefsManager.NB_WINS;
         return PrefsManager.GetInt(key, 0);
     }
 
     public void SetNbWins(int nbWins) {
-        string key = GetNameId() + PrefsManager.NB_WINS_KEY;
+        string key = GetNameId() + PrefsManager.NB_WINS;
         PrefsManager.SetInt(key, nbWins);
     }
 
     public int GetNbDeaths() {
-        string key = GetNameId() + PrefsManager.NB_DEATHS_KEY;
+        string key = GetNameId() + PrefsManager.NB_DEATHS;
         return PrefsManager.GetInt(key, 0);
     }
 
@@ -249,32 +249,32 @@ public class MenuLevel : MonoBehaviour {
     }
 
     public float GetSumOfAllTriesScores() {
-        string key = GetNameId() + PrefsManager.SUM_OF_ALL_TRIES_SCORES_KEY;
+        string key = GetNameId() + PrefsManager.SUM_OF_ALL_TRIES_SCORES;
         return PrefsManager.GetFloat(key, 0);
     }
 
     public bool HasBestScore() {
-        string key = GetNameId() + PrefsManager.BEST_SCORE_KEY;
+        string key = GetNameId() + PrefsManager.BEST_SCORE;
         return PrefsManager.HasKey(key);
     }
 
     public float GetBestScore() {
-        string key = GetNameId() + PrefsManager.BEST_SCORE_KEY;
+        string key = GetNameId() + PrefsManager.BEST_SCORE;
         return PrefsManager.GetFloat(key, 0);
     }
 
     public void SetBestScore(float bestScore) {
-        string key = GetNameId() + PrefsManager.BEST_SCORE_KEY;
+        string key = GetNameId() + PrefsManager.BEST_SCORE;
         PrefsManager.SetFloat(key, bestScore);
     }
 
     public float GetPrecedentBestScore() {
-        string key = GetNameId() + PrefsManager.PRECEDENT_BEST_SCORE_KEY;
+        string key = GetNameId() + PrefsManager.PRECEDENT_BEST_SCORE;
         return PrefsManager.GetFloat(key, 0);
     }
 
     public void SetPrecedentBestScore(float precedentScore) {
-        string key = GetNameId() + PrefsManager.PRECEDENT_BEST_SCORE_KEY;
+        string key = GetNameId() + PrefsManager.PRECEDENT_BEST_SCORE;
         PrefsManager.SetFloat(key, precedentScore);
     }
 
@@ -286,34 +286,34 @@ public class MenuLevel : MonoBehaviour {
     }
 
     public int GetSinceLastBestScore() {
-        string key = GetNameId() + PrefsManager.SINCE_LAST_BEST_SCORE_KEY;
+        string key = GetNameId() + PrefsManager.SINCE_LAST_BEST_SCORE;
         return PrefsManager.GetInt(key, 0);
     }
 
     public int GetDataCount() {
-        string key = GetNameId() + PrefsManager.DATA_COUNT_KEY;
+        string key = GetNameId() + PrefsManager.DATA_COUNT;
         return PrefsManager.GetInt(key, 0);
     }
 
     public void SetDataCount(int value) {
-        string key = GetNameId() + PrefsManager.DATA_COUNT_KEY;
+        string key = GetNameId() + PrefsManager.DATA_COUNT;
         PrefsManager.SetInt(key, value);
     }
 
     public int GetPrecedentDataCount() {
-        string key = GetNameId() + PrefsManager.PRECEDENT_DATA_COUNT_KEY;
+        string key = GetNameId() + PrefsManager.PRECEDENT_DATA_COUNT;
         return PrefsManager.GetInt(key, 0);
     }
 
     public bool HasJustIncreaseDataCount() {
-        string key = GetNameId() + PrefsManager.HAS_JUST_INCREASED_DATA_COUNT_KEY;
+        string key = GetNameId() + PrefsManager.HAS_JUST_INCREASED_DATA_COUNT;
         return PrefsManager.GetBool(key, false);
     }
 
     public void SetNotJustIncreaseDataCount() {
-        string keyHasJustIncreased = GetNameId() + PrefsManager.HAS_JUST_INCREASED_DATA_COUNT_KEY;
+        string keyHasJustIncreased = GetNameId() + PrefsManager.HAS_JUST_INCREASED_DATA_COUNT;
         PrefsManager.SetString(keyHasJustIncreased, PrefsManager.FALSE);
-        string keyPrecedentDataCount = GetNameId() + PrefsManager.PRECEDENT_DATA_COUNT_KEY;
+        string keyPrecedentDataCount = GetNameId() + PrefsManager.PRECEDENT_DATA_COUNT;
         PrefsManager.SetInt(keyPrecedentDataCount, GetDataCount());
     }
 
@@ -336,7 +336,7 @@ public class MenuLevel : MonoBehaviour {
     }
 
     public string GetTrace() {
-        string key = GetNameId() + PrefsManager.TRACE_KEY;
+        string key = GetNameId() + PrefsManager.TRACE;
         if (!PrefsManager.HasKey(key)) {
             InitTrace();
         }
@@ -347,7 +347,7 @@ public class MenuLevel : MonoBehaviour {
         string trace = Trace.GenerateTrace();
         print(trace);
 
-        string key = GetNameId() + PrefsManager.TRACE_KEY;
+        string key = GetNameId() + PrefsManager.TRACE;
         PrefsManager.SetString(key, trace);
     }
 
@@ -372,33 +372,33 @@ public class MenuLevel : MonoBehaviour {
     }
 
     public bool HasJustWin() {
-        string key = GetNameId() + PrefsManager.HAS_JUST_WIN_KEY;
+        string key = GetNameId() + PrefsManager.HAS_JUST_WIN;
         return PrefsManager.GetBool(key, false);
     }
 
     public void SetNotJustWin() {
-        string key = GetNameId() + PrefsManager.HAS_JUST_WIN_KEY;
+        string key = GetNameId() + PrefsManager.HAS_JUST_WIN;
         PrefsManager.DeleteKey(key);
     }
 
     public bool HasJustMakeNewBestScore() {
-        string key = GetNameId() + PrefsManager.HAS_JUST_MAKE_BEST_SCORE_KEY;
+        string key = GetNameId() + PrefsManager.HAS_JUST_MAKE_BEST_SCORE;
         return PrefsManager.GetBool(key, false);
     }
 
     public void SetNotJustMakeNewBestScore() {
-        string key = GetNameId() + PrefsManager.HAS_JUST_MAKE_BEST_SCORE_KEY;
+        string key = GetNameId() + PrefsManager.HAS_JUST_MAKE_BEST_SCORE;
         PrefsManager.SetBool(key, false);
         SetPrecedentBestScore(GetBestScore());
     }
 
     public bool HasAlreadyDiscoverLevel() {
-        string key = GetNameId() + PrefsManager.HAS_ALREADY_DISCOVER_LEVEL_KEY;
+        string key = GetNameId() + PrefsManager.HAS_ALREADY_DISCOVER_LEVEL;
         return PrefsManager.GetBool(key, false);
     }
 
     public void SetAlreadyDiscoverLevel() {
-        string key = GetNameId() + PrefsManager.HAS_ALREADY_DISCOVER_LEVEL_KEY;
+        string key = GetNameId() + PrefsManager.HAS_ALREADY_DISCOVER_LEVEL;
         PrefsManager.SetBool(key, true);
     }
 
@@ -427,13 +427,13 @@ public class MenuLevel : MonoBehaviour {
     }
 
     public void HighlightBackButton(bool state) {
-        string key = GetNameId() + PrefsManager.IS_LEVEL_HIGHLIGHTED_KEY;
+        string key = GetNameId() + PrefsManager.IS_LEVEL_HIGHLIGHTED;
         PrefsManager.SetBool(key, state);
         backButton.GetComponent<ButtonHighlighter>().enabled = state;
     }
 
     public void HighlightBackButtonBasedOnSave() {
-        string key = GetNameId() + PrefsManager.IS_LEVEL_HIGHLIGHTED_KEY;
+        string key = GetNameId() + PrefsManager.IS_LEVEL_HIGHLIGHTED;
         bool state = PrefsManager.GetBool(key, false);
         backButton.GetComponent<ButtonHighlighter>().enabled = state;
     }
@@ -491,12 +491,12 @@ public class MenuLevel : MonoBehaviour {
     }
 
     protected void RememberHaveOpenedDocForThisLevel() {
-        string key = GetKey(PrefsManager.HAS_OPENED_DOC_KEY);
+        string key = GetKey(PrefsManager.HAS_OPENED_DOC);
         PrefsManager.SetBool(key, true);
     }
 
     public bool HasOpenedDoc() {
-        string key = GetKey(PrefsManager.HAS_OPENED_DOC_KEY);
+        string key = GetKey(PrefsManager.HAS_OPENED_DOC);
         return PrefsManager.GetBool(key, false);
     }
 

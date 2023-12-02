@@ -251,19 +251,19 @@ public class SelectorLevel : MonoBehaviour {
 
     public void ResetScores() {
         List<string> keysSuffix = new List<string>() {
-            PrefsManager.NB_WINS_KEY,
-            PrefsManager.NB_DEATHS_KEY,
-            PrefsManager.SUM_OF_ALL_TRIES_SCORES_KEY,
-            PrefsManager.BEST_SCORE_KEY,
-            PrefsManager.PRECEDENT_BEST_SCORE_KEY,
-            PrefsManager.SINCE_LAST_BEST_SCORE_KEY,
-            PrefsManager.HAS_JUST_WIN_KEY,
-            PrefsManager.HAS_JUST_MAKE_BEST_SCORE_KEY,
-            PrefsManager.HAS_ALREADY_DISCOVER_LEVEL_KEY,
-            PrefsManager.IS_LEVEL_HIGHLIGHTED_KEY,
-            PrefsManager.DATA_COUNT_KEY,
-            PrefsManager.PRECEDENT_DATA_COUNT_KEY,
-            PrefsManager.HAS_JUST_INCREASED_DATA_COUNT_KEY,
+            PrefsManager.NB_WINS,
+            PrefsManager.NB_DEATHS,
+            PrefsManager.SUM_OF_ALL_TRIES_SCORES,
+            PrefsManager.BEST_SCORE,
+            PrefsManager.PRECEDENT_BEST_SCORE,
+            PrefsManager.SINCE_LAST_BEST_SCORE,
+            PrefsManager.HAS_JUST_WIN,
+            PrefsManager.HAS_JUST_MAKE_BEST_SCORE,
+            PrefsManager.HAS_ALREADY_DISCOVER_LEVEL,
+            PrefsManager.IS_LEVEL_HIGHLIGHTED,
+            PrefsManager.DATA_COUNT,
+            PrefsManager.PRECEDENT_DATA_COUNT,
+            PrefsManager.HAS_JUST_INCREASED_DATA_COUNT,
         };
         foreach(string keySuffix in keysSuffix) {
             string key = GetNameId() + keySuffix;

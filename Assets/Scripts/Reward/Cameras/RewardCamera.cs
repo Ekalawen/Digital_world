@@ -16,7 +16,7 @@ public abstract class RewardCamera : MonoBehaviour {
         hm = HistoryManager.Instance;
         rm = RewardManager.Instance;
         cam = GetComponentInChildren<Camera>();
-        PostProcessManager.SetLuminosityIntensity(luminosityVolume, PrefsManager.GetFloat(PrefsManager.LUMINOSITY_KEY, MenuOptions.defaultLuminosity));
+        PostProcessManager.SetLuminosityIntensity(luminosityVolume, PrefsManager.GetFloat(PrefsManager.LUMINOSITY, MenuOptions.defaultLuminosity));
     }
 
     public abstract void Update();

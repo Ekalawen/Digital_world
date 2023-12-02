@@ -78,7 +78,7 @@ public class LoadingMenu : MonoBehaviour {
     protected IEnumerator CInitConseil() {
         if (level != null) {
             Console console = level.consolePrefab.GetComponent<Console>();
-            string conseilKey = level.GetKey(PrefsManager.CONSEIL_INDICE_KEY);
+            string conseilKey = level.GetKey(PrefsManager.CONSEIL_INDICE);
             int conseilIndice = PrefsManager.GetInt(conseilKey, 0);
             PrefsManager.SetInt(conseilKey, (conseilIndice + 1) % console.conseils.Count);
             yield return console.CComputeConseil(conseilIndice);

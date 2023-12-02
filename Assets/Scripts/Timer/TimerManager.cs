@@ -91,7 +91,7 @@ public class TimerManager : MonoBehaviour {
     }
 
     public void SetFrameRate() {
-        int frameRateIndice = PrefsManager.GetInt(PrefsManager.FRAME_RATES_INDICE_KEY, MenuOptions.defaultFrameRateIndice);
+        int frameRateIndice = PrefsManager.GetInt(PrefsManager.FRAME_RATES_INDICE, MenuOptions.defaultFrameRateIndice);
         int frameRate = FrameRatesDropdown.GetFrameRateInt(frameRateIndice);
         Application.targetFrameRate = frameRate;
     }

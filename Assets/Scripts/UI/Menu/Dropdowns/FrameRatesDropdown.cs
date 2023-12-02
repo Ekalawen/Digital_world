@@ -58,12 +58,12 @@ public class FrameRatesDropdown : MonoBehaviour {
         options.Add(new Dropdown.OptionData(frameRate144LocalizedString.GetLocalizedString().Result));
         dropdown.options = options;
 
-        dropdown.value = PrefsManager.GetInt(PrefsManager.FRAME_RATES_INDICE_KEY, MenuOptions.defaultFrameRateIndice);
+        dropdown.value = PrefsManager.GetInt(PrefsManager.FRAME_RATES_INDICE, MenuOptions.defaultFrameRateIndice);
         dropdown.onValueChanged.AddListener(FrameRateSelected);
     }
 
     static void FrameRateSelected(int index) {
-        PrefsManager.SetInt(PrefsManager.FRAME_RATES_INDICE_KEY, index);
+        PrefsManager.SetInt(PrefsManager.FRAME_RATES_INDICE, index);
         if(GameManager.IsInGame) {
             GameManager.Instance.timerManager.SetFrameRate();
         }

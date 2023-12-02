@@ -243,10 +243,10 @@ public class PostProcessManager : MonoBehaviour {
 
     public void StopWallEffect() {
         isWallVfxOn = false;
-        if (PrefsManager.GetBool(PrefsManager.WALL_WARP_KEY, MenuOptions.defaultWallWarpActivation)) {
+        if (PrefsManager.GetBool(PrefsManager.WALL_WARP, MenuOptions.defaultWallWarpActivation)) {
             StopWallVfx();
         }
-        if (PrefsManager.GetBool(PrefsManager.WALL_DISTORSION_KEY, MenuOptions.defaultWallDistorsionActivation)) {
+        if (PrefsManager.GetBool(PrefsManager.WALL_DISTORSION, MenuOptions.defaultWallDistorsionActivation)) {
             StopWallDistorsionEffect();
         }
     }
@@ -258,10 +258,10 @@ public class PostProcessManager : MonoBehaviour {
 
     public void StartWallEffect() {
         isWallVfxOn = true;
-        if (PrefsManager.GetBool(PrefsManager.WALL_WARP_KEY, MenuOptions.defaultWallWarpActivation)) {
+        if (PrefsManager.GetBool(PrefsManager.WALL_WARP, MenuOptions.defaultWallWarpActivation)) {
             StartWallVfx();
         }
-        if (PrefsManager.GetBool(PrefsManager.WALL_DISTORSION_KEY, MenuOptions.defaultWallDistorsionActivation)) {
+        if (PrefsManager.GetBool(PrefsManager.WALL_DISTORSION, MenuOptions.defaultWallDistorsionActivation)) {
             StartWallDistorsionEffect();
         }
     }
@@ -348,7 +348,7 @@ public class PostProcessManager : MonoBehaviour {
     }
 
     protected void OrientWallVfxEffect() {
-        if (!PrefsManager.GetBool(PrefsManager.WALL_WARP_KEY, MenuOptions.defaultWallWarpActivation)) {
+        if (!PrefsManager.GetBool(PrefsManager.WALL_WARP, MenuOptions.defaultWallWarpActivation)) {
             return;
         }
         // Horizontal Angle
@@ -421,7 +421,7 @@ public class PostProcessManager : MonoBehaviour {
     }
 
     public void UpdateShiftEffect() {
-        if (!PrefsManager.GetBool(PrefsManager.SHIFT_WARP_KEY, MenuOptions.defaultShiftWarpActivation)) {
+        if (!PrefsManager.GetBool(PrefsManager.SHIFT_WARP, MenuOptions.defaultShiftWarpActivation)) {
             return;
         }
         if(gm.player.GetShiftLandingMode() == Player.ShiftLandingMode.NONE) {
@@ -533,7 +533,7 @@ public class PostProcessManager : MonoBehaviour {
     }
 
     protected void InitTimeScaleVfx() {
-        timeScaleEffectActivation = PrefsManager.GetBool(PrefsManager.TIME_SCALE_EFFECT_KEY, MenuOptions.defaultTimeScaleEffectActivation);
+        timeScaleEffectActivation = PrefsManager.GetBool(PrefsManager.TIME_SCALE_EFFECT, MenuOptions.defaultTimeScaleEffectActivation);
         float horizontalOffset = screenSizeAtVfxDistance.x * timeScaleVFXOffsetPercentageOfScreen.x;
         float contraction = screenSizeAtVfxDistance.y * timeScaleVFXOffsetPercentageOfScreen.y / horizontalOffset;
         timeScaleVfx.SetFloat("ElipseContraction", contraction);
@@ -562,7 +562,7 @@ public class PostProcessManager : MonoBehaviour {
     }
 
     public void StartJumpEffect() {
-        if (PrefsManager.GetBool(PrefsManager.JUMP_WARP_KEY, MenuOptions.defaultJumpWarpActivation)) {
+        if (PrefsManager.GetBool(PrefsManager.JUMP_WARP, MenuOptions.defaultJumpWarpActivation)) {
             jumpVfx.SendEvent("Start");
         }
     }
@@ -613,7 +613,7 @@ public class PostProcessManager : MonoBehaviour {
     }
 
     protected void InitLuminosityPostProcess() {
-        SetLuminosityIntensity(PrefsManager.GetFloat(PrefsManager.LUMINOSITY_KEY, MenuOptions.defaultLuminosity));
+        SetLuminosityIntensity(PrefsManager.GetFloat(PrefsManager.LUMINOSITY, MenuOptions.defaultLuminosity));
     }
 
     public void SetLuminosityIntensity(float value) {

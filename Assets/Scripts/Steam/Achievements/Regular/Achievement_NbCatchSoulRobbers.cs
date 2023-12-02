@@ -16,7 +16,7 @@ public class Achievement_NbCatchSoulRobbers : Achievement {
     }
 
     protected void OnCatchSoulRobber(SoulRobber soulRobber) {
-        if(PrefsManager.GetInt(PrefsManager.TOTAL_CATCH_SOULROBBER_KEY, 0) >= treshold) {
+        if(PrefsManager.GetInt(PrefsManager.TOTAL_CATCH_SOULROBBER, 0) >= treshold) {
             Unlock();
         }
     }

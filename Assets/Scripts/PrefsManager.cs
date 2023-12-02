@@ -8,64 +8,65 @@ public class PrefsManager {
     public static string TRUE = "true";
     public static string FALSE = "false";
 
-    public static string LOCALE_INDEX_KEY = "localeIndexKey";
+    public static string LOCALE_INDEX_ = "localeIndexKey";
 
-    public static string HAVE_THINK_ABOUT_TUTORIAL_KEY = "haveThinkAboutTutorialKey";
-    public static string FIRST_TIME_SELECTOR_OPENED_KEY = "firstTimeSelectorOpenedKey";
-    public static string SHOULD_RESET_SAVE_ON_NEXT_MENU_SCENE_KEY = "shouldResetSaveOnNextMenuSceneKey";
+    public static string HAVE_THINK_ABOUT_TUTORIAL = "haveThinkAboutTutorialKey";
+    public static string FIRST_TIME_SELECTOR_OPENED = "firstTimeSelectorOpenedKey";
+    public static string SHOULD_RESET_SAVE_ON_NEXT_MENU_SCENE = "shouldResetSaveOnNextMenuSceneKey";
 
-    public static string SHOULD_SET_RANDOM_BACKGROUND_KEY = "shouldSetRandomBackgroundKey";
+    public static string SHOULD_SET_RANDOM_BACKGROUND = "shouldSetRandomBackgroundKey";
 
-    public static string TRACE_KEY = "trace";
-    public static string CURRENT_INPUT_FIELD_KEY = "currentInputField"; // A renommer en CURRENT_PASSWORD_INPUT_FIELD_KEY
-    public static string EYE_MODE_KEY = "eyeModeKey";
+    public static string TRACE = "trace";
+    public static string CURRENT_INPUT_FIELD = "currentInputField"; // A renommer en CURRENT_PASSWORD_INPUT_FIELD_KEY
+    public static string EYE_MODE = "eyeModeKey";
 
-    public static string NB_WINS_KEY = "nbVictoires";
-    public static string NB_DEATHS_KEY = "nbTries";
-    public static string HAS_JUST_WIN_KEY = "hasJustWin";
-    public static string BEST_SCORE_KEY = "bestScore";
-    public static string PRECEDENT_BEST_SCORE_KEY = "precedentBestScore";
-    public static string HAS_JUST_MAKE_BEST_SCORE_KEY = "hasJustMakeBestScore";
-    public static string SINCE_LAST_BEST_SCORE_KEY = "sinceLastBestScore";
-    public static string SUM_OF_ALL_TRIES_SCORES_KEY = "sumOfAllTriesScores";
-    public static string HAS_ALREADY_DISCOVER_LEVEL_KEY = "hasAlreadyDiscoverLevel";
-    public static string IS_LEVEL_HIGHLIGHTED_KEY = "isLevelHighlighted";
-    public static string DATA_COUNT_KEY = "dataCountKey";
-    public static string TOTAL_DATA_COUNT_KEY = "totalDataCountKey";
-    public static string TOTAL_BLOCKS_CROSSED_KEY = "totalBlocksCrossedKey";
-    public static string TOTAL_CATCH_SOULROBBER_KEY = "totalCatchSoulRobberKey";
-    public static string PRECEDENT_DATA_COUNT_KEY = "precedentDataCountKey";
-    public static string HAS_JUST_INCREASED_DATA_COUNT_KEY = "hasJustIncreaseDataCountKey";
-    public static string HAS_OPENED_DOC_KEY = "hasOpenedDocKey";
+    public static string NB_WINS = "nbVictoires";
+    public static string NB_DEATHS = "nbTries";
+    public static string HAS_JUST_WIN = "hasJustWin";
+    public static string TOTAL_SCORE = "totalScore";
+    public static string BEST_SCORE = "bestScore";
+    public static string PRECEDENT_BEST_SCORE = "precedentBestScore";
+    public static string HAS_JUST_MAKE_BEST_SCORE = "hasJustMakeBestScore";
+    public static string SINCE_LAST_BEST_SCORE = "sinceLastBestScore";
+    public static string SUM_OF_ALL_TRIES_SCORES = "sumOfAllTriesScores";
+    public static string HAS_ALREADY_DISCOVER_LEVEL = "hasAlreadyDiscoverLevel";
+    public static string IS_LEVEL_HIGHLIGHTED = "isLevelHighlighted";
+    public static string DATA_COUNT = "dataCountKey";
+    public static string TOTAL_DATA_COUNT = "totalDataCountKey";
+    public static string TOTAL_BLOCKS_CROSSED = "totalBlocksCrossedKey";
+    public static string TOTAL_CATCH_SOULROBBER = "totalCatchSoulRobberKey";
+    public static string PRECEDENT_DATA_COUNT = "precedentDataCountKey";
+    public static string HAS_JUST_INCREASED_DATA_COUNT = "hasJustIncreaseDataCountKey";
+    public static string HAS_OPENED_DOC = "hasOpenedDocKey";
 
-    public static string IS_UNLOCKED_PATH_KEY = "IS_UNLOCKED_PATH_KEY";
-    public static string HAS_DISPLAY_PATH_UNLOCK_POPUP_KEY = "HAS_DISPLAY_PATH_UNLOCK_POPUP_KEY";
-    public static string IS_HIGHLIGHTED_PATH_KEY = "IS_HIGHLIGHTED_PATH_KEY";
-    public static string NB_SUBMITS_PATH_KEY = "NB_SUBMITS_PATH_KEY";
-    public static string CONSEIL_INDICE_KEY = "CONSEIL_INDICE_KEY";
-    public static string SUPERCHEATEDPASSWORD_NB_USE_KEY = "supercheatedpasswordNbUseKey";
+    public static string IS_UNLOCKED_PATH = "IS_UNLOCKED_PATH_KEY";
+    public static string HAS_DISPLAY_PATH_UNLOCK_POPUP = "HAS_DISPLAY_PATH_UNLOCK_POPUP_KEY";
+    public static string IS_HIGHLIGHTED_PATH = "IS_HIGHLIGHTED_PATH_KEY";
+    public static string NB_SUBMITS_PATH = "NB_SUBMITS_PATH_KEY";
+    public static string CONSEIL_INDICE = "CONSEIL_INDICE_KEY";
+    public static string SUPERCHEATEDPASSWORD_NB_USE = "supercheatedpasswordNbUseKey";
 
-    public static string SAVE_LEVEL_NAME_KEY = "saveLevelNameKey";
-    public static string SAVE_LEVEL_NAME_MUST_BE_USED_KEY = "saveLevelNameMustBeUsedKey";
+    public static string SAVE_LEVEL_NAME = "saveLevelNameKey";
+    public static string SAVE_LEVEL_NAME_MUST_BE_USED = "saveLevelNameMustBeUsedKey";
 
-    public static string LAST_LEVEL_KEY = "lastLevelKey";
+    public static string LAST_LEVEL = "lastLevelKey";
 
-    public static string MUSIC_VOLUME_KEY = "musicVolumeKey";
-    public static string SOUND_VOLUME_KEY = "soundVolumeKey";
-    public static string MOUSE_SPEED_KEY = "mouseSpeedKey";
-    public static string LUMINOSITY_KEY = "luminosityKey";
-    public static string JUMP_WARP_KEY = "jumpWarpKey";
-    public static string WALL_DISTORSION_KEY = "wallDistorsionKey";
-    public static string WALL_WARP_KEY = "wallWarpKey";
-    public static string SHIFT_WARP_KEY = "shiftWarpKey";
-    public static string TIME_SCALE_EFFECT_KEY = "timeScaleEffectKey";
-    public static string ADVICE_ON_START_KEY = "adviceOnStartKey";
-    public static string FPS_COUNTER_KEY = "fpsCounterKey";
-    public static string KEYBINDING_INDICE_KEY = "keybindingIndiceKey";
-    public static string KEYBINDING_PRECEDENT_INDICE_KEY = "keybindingPrecedentIndiceKey";
-    public static string DATA_QUALITY_KEY = "dataQualityKey";
-    public static string DISPLAY_CONSOLE_KEY = "displayConsoleKey";
-    public static string FRAME_RATES_INDICE_KEY = "frameRatesIndiceKey";
+    public static string MUSIC_VOLUME = "musicVolumeKey";
+    public static string SOUND_VOLUME = "soundVolumeKey";
+    public static string MOUSE_SPEED = "mouseSpeedKey";
+    public static string LUMINOSITY = "luminosityKey";
+    public static string JUMP_WARP = "jumpWarpKey";
+    public static string WALL_DISTORSION = "wallDistorsionKey";
+    public static string WALL_WARP = "wallWarpKey";
+    public static string SHIFT_WARP = "shiftWarpKey";
+    public static string TIME_SCALE_EFFECT = "timeScaleEffectKey";
+    public static string ADVICE_ON_START = "adviceOnStartKey";
+    public static string FPS_COUNTER = "fpsCounterKey";
+    public static string KEYBINDING_INDICE = "keybindingIndiceKey";
+    public static string KEYBINDING_PRECEDENT_INDICE = "keybindingPrecedentIndiceKey";
+    public static string DATA_QUALITY = "dataQualityKey";
+    public static string DISPLAY_CONSOLE = "displayConsoleKey";
+    public static string FRAME_RATES_INDICE = "frameRatesIndiceKey";
 
     public static string HAS_DISPLAY_TUTORIAL_TOOLTIP_PREFIX = "hasDisplayTutorialTooltipPrefix"; // <==
     public static string HAS_DISPLAY_TUTORIAL_TOOLTIP_SELECTOR_MOUVEMENT = "hasDisplayTutorialTooltipSelectorMouvement";

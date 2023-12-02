@@ -168,7 +168,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
     }
 
     protected void RememberNumberOfSubmits() {
-        string key = selectorPath.GetNameId() + PrefsManager.NB_SUBMITS_PATH_KEY;
+        string key = selectorPath.GetNameId() + PrefsManager.NB_SUBMITS_PATH;
         int nbSubmits = PrefsManager.GetInt(key, 0);
         PrefsManager.SetInt(key, nbSubmits + 1);
     }
@@ -182,7 +182,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
 
     protected void SubmitGoodLocked(string password) {
         if(password == MenuLevel.SUPER_CHEATED_PASSWORD) {
-            PrefsManager.IncrementInt(PrefsManager.SUPERCHEATEDPASSWORD_NB_USE_KEY, 1, 0);
+            PrefsManager.IncrementInt(PrefsManager.SUPERCHEATEDPASSWORD_NB_USE, 1, 0);
             onUseSupercheatedpassword.Invoke();
         }
         unlockAnimationCoroutine = StartCoroutine(CUnlockAnimation());
@@ -260,7 +260,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
     }
 
     protected void RunPathUnlockedPopup() {
-        string key = PrefsManager.HAS_DISPLAY_PATH_UNLOCK_POPUP_KEY;
+        string key = PrefsManager.HAS_DISPLAY_PATH_UNLOCK_POPUP;
         if(PrefsManager.GetBool(key, false)) {
             selectorManager.RunPopup(selectorManager.strings.pathGoodLockedTitle, selectorManager.strings.pathGoodLockedTexte, TexteExplicatif.Theme.POSITIF);
             PrefsManager.SetBool(key, true);

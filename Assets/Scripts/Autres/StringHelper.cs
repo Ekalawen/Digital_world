@@ -4,8 +4,15 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.SceneManagement;
 
 public class StringHelper {
+
+    public static string GetKeyFor(string keySuffix) {
+        string levelNameKey = SceneManager.GetActiveScene().name;
+        return levelNameKey + keySuffix;
+    }
+
     public static string ToCreditsFormat(int creditsCount) {
         //System.Globalization.CultureInfo.CurrentCulture = System.Globalization.CultureInfo.GetCultureInfo("fr-FR");
         //return $"{creditsCount:N3}";

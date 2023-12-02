@@ -343,12 +343,12 @@ public class Block : MonoBehaviour {
     }
 
     public static int GetTotalBlocksCrossed() {
-        return PrefsManager.GetInt(PrefsManager.TOTAL_BLOCKS_CROSSED_KEY, 0);
+        return PrefsManager.GetInt(PrefsManager.TOTAL_BLOCKS_CROSSED, 0);
     }
 
     public static void AddToTotalBlocksCrossed(int nbBlocksToAdd) {
         int newTotal = GetTotalBlocksCrossed() + nbBlocksToAdd;
-        PrefsManager.SetInt(PrefsManager.TOTAL_BLOCKS_CROSSED_KEY, newTotal);
+        PrefsManager.SetInt(PrefsManager.TOTAL_BLOCKS_CROSSED, newTotal);
     }
 
     public bool HasData() {
