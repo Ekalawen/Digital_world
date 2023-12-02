@@ -89,6 +89,10 @@ public class Console : MonoBehaviour {
     public GameObject deathAstuce;
     public GameObject selectorManagerPrefab; // Used to know if it is a demo or not ! x)
     public TexteExplicatif popup;
+    public GameObject progressBarHolder;
+    public Scrollbar progressBar;
+    public TMP_Text progressBarPercentageText;
+    public TMP_Text progressBarTotalText;
 
 
     [HideInInspector]
@@ -143,6 +147,7 @@ public class Console : MonoBehaviour {
         DisplayOrNotConsole();
         ToggleUIVisibilityBasedOnSaver();
         InitializePauseMenu();
+        InitializeProgressBar();
 
         StartCoroutine(CInitialize());
     }
@@ -199,6 +204,8 @@ public class Console : MonoBehaviour {
     public virtual void Update () {
         if (!isLocalizationLoaded)
             return;
+
+        SetProgressBarValue();
 
         AltitudeCritique();
 
@@ -1501,5 +1508,21 @@ public class Console : MonoBehaviour {
 
     public PauseMenu GetPauseMenu() {
         return pauseMenu.GetComponentInChildren<PauseMenu>(includeInactive: true);
+    }
+
+    protected void InitializeProgressBar() {
+        progressBarHolder.SetActive(gm.IsIR());
+        if (!gm.IsIR()) {
+            return;
+        }
+        SetProgressBarValue();
+    }
+
+    protected void SetProgressBarValue() {
+        float maxValue = 100;
+        float currentValue = (Mathf.Sin(Time.time / 2) + 1) / 2 * 100;
+        float avancement = currentValue / maxValue;
+        progressBar.size = avancement;
+        progressBarPercentageText.text = $"{avancement * 100:N0}%";
     }
 }
