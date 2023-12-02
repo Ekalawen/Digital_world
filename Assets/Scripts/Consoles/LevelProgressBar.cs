@@ -13,6 +13,7 @@ using UnityEngine.SceneManagement;
 
 public class LevelProgressBar : MonoBehaviour {
 
+    public float changeValueDuration = 0.5f;
     public GameObject holder;
     public Scrollbar scrollBar;
     public TMP_Text percentageText;
@@ -22,6 +23,7 @@ public class LevelProgressBar : MonoBehaviour {
 
     protected GameManager gm;
     protected int maxValue;
+    protected Fluctuator valueFluctuator;
 
     public void Initialize() {
         gm = GameManager.Instance;
@@ -33,20 +35,34 @@ public class LevelProgressBar : MonoBehaviour {
         if (!gm.IsIR()) {
             return;
         }
+        valueFluctuator = new Fluctuator(this, GetProgressBarValue, SetProgressBarValue);
         maxValue = gm.goalManager.GetTreshold();
         totalText.text = StringHelper.ToCreditsShortFormat(maxValue);
         fillerImage.material = new Material(fillerImage.material);
-        SetProgressBarValue();
-        gm.GetInfiniteMap().scoreManager.onScoreChange.AddListener(v => SetProgressBarValue());
+        valueFluctuator.GoTo(GetCurrentAvancement(), changeValueDuration);
+        gm.GetInfiniteMap().scoreManager.onScoreChange.AddListener(v => UpdateProgressBarValue());
     }
 
-    protected void SetProgressBarValue() {
+    protected void UpdateProgressBarValue() {
+        float avancement = GetCurrentAvancement();
+        valueFluctuator.GoTo(avancement, changeValueDuration);
+    }
+
+    protected float GetCurrentAvancement() {
         float currentValue = gm.goalManager.GetCurrentTotalCreditScore();
-        float avancement = Mathf.Min(currentValue / maxValue, 1.0f);
+        return currentValue / maxValue;
+    }
+
+    protected void SetProgressBarValue(float avancement) {
+        avancement = Mathf.Min(avancement, 1.0f);
         scrollBar.size = avancement;
         percentageText.text = $"{StringHelper.ToCreditsShortFormat((long)(avancement * 100))}%";
         float textYPosition = avancement <= 0.5f ? percentageTextYPositions[0] : percentageTextYPositions[1];
         percentageText.rectTransform.anchoredPosition = new Vector2(percentageText.rectTransform.anchoredPosition.x, textYPosition);
         fillerImage.material.SetFloat("_ColorAvancement", avancement);
+    }
+
+    protected float GetProgressBarValue() {
+        return scrollBar.size;
     }
 }
