@@ -1520,7 +1520,7 @@ public class Console : MonoBehaviour {
 
     protected void SetProgressBarValue() {
         float maxValue = 100;
-        float currentValue = (Mathf.Sin(Time.time / 2) + 1) / 2 * 100;
+        float currentValue = (Mathf.Sin(Time.time / 2) + 1) / 2 * 50;
         float avancement = currentValue / maxValue;
         progressBar.size = avancement;
         progressBarPercentageText.text = $"{avancement * 100:N0}%";
