@@ -81,6 +81,7 @@ public class Console : MonoBehaviour {
     public GameObject progressBarHolder;
     public Scrollbar progressBar;
     public TMP_Text progressBarPercentageText;
+    public Vector2 progressBarPercentageTextYPositions = new Vector2(15, -5);
     public TMP_Text progressBarTotalText;
     public Image progressBarFillerImage;
 
@@ -1528,6 +1529,8 @@ public class Console : MonoBehaviour {
         float avancement = currentValue / maxValue;
         progressBar.size = avancement;
         progressBarPercentageText.text = $"{avancement * 100:N0}%";
+        float textYPosition = avancement <= 0.5f ? progressBarPercentageTextYPositions[0] : progressBarPercentageTextYPositions[1];
+        progressBarPercentageText.rectTransform.anchoredPosition = new Vector2(progressBarPercentageText.rectTransform.anchoredPosition.x, textYPosition);
         progressBarFillerImage.material.SetFloat("_ColorAvancement", avancement);
     }
 }
