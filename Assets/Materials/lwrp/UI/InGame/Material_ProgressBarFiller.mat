@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Material_ProgressBarFiller
-  m_Shader: {fileID: -6465566751694194690, guid: 3c399fc1ffc23b448a5b61e3eda1c60c,
+  m_Shader: {fileID: -6465566751694194690, guid: 8279c3f6134865442b7fbf1215c1e929,
     type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
@@ -20,10 +20,6 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - InsideTexture:
-        m_Texture: {fileID: 2800000, guid: 41aab9b142db82243bdfef142c713584, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: 33af2a5501cac4e4eb6193eec7ae0b08, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -42,19 +38,14 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - InsideNoisePower: 0
-    - InsideNoiseScale: 4
-    - NoisePower: 2
-    - NoiseScale: 1
-    - Transparency: 0
-    - VerticalSizeRatio: 1
+    - NoisePower1: 2
+    - NoisePower2: 2
+    - NoiseScale1: 4
+    - NoiseScale2: 12
+    - Transparency: 0.5
     - _UnscaledTime: 0
-    - _VerticalSizeRatio: 1
     m_Colors:
-    - FillerColor: {r: 0, g: 0, b: 0, a: 0}
-    - InsideColor: {r: 0, g: 0, b: 0, a: 0}
-    - InsideNoiseSpeed: {r: -0.1, g: -0.5, b: 0, a: 0}
-    - InsideTextureTiling: {r: 0.25, g: 4.5, b: 0, a: 0}
-    - NoiseSpeed: {r: 0, g: -0.5, b: 0, a: 0}
+    - NoiseSpeed1: {r: -0.1, g: -0.5, b: 0, a: 0}
+    - NoiseSpeed2: {r: -0.3, g: -1.5, b: 0, a: 0}
     - _Color: {r: 0.33286306, g: 4.5412054, b: 4.5412054, a: 1}
   m_BuildTextureStacks: []
