@@ -42,12 +42,20 @@ public class GoalManager : MonoBehaviour {
         return PrefsManager.GetInt(StringHelper.GetKeyFor(PrefsManager.BEST_CREDITS_SCORE), 0);
     }
 
+    public int GetCurrentTotalCreditScore() {
+        return GetTotalCreditScore() + gm.GetInfiniteMap().scoreManager.GetCurrentScore();
+    }
+
     public int GetTotalBlocksScore() {
         return PrefsManager.GetInt(StringHelper.GetKeyFor(PrefsManager.TOTAL_BLOCKS_SCORE), 0);
     }
 
     public int GetBestBlocksScore() {
         return PrefsManager.GetInt(StringHelper.GetKeyFor(PrefsManager.BEST_BLOCKS_SCORE), 0);
+    }
+
+    public int GetCurrentTotalBlocksScore() {
+        return GetTotalBlocksScore() + gm.GetInfiniteMap().GetNonStartNbBlocksRun();
     }
 
     public bool IsUnlocked() {

@@ -46,8 +46,8 @@ public class StringHelper {
             long unit = map.Item1;
             string symbol = map.Item2;
             if(value > unit) {
-                long quotient = value / unit;
-                string quotientString = quotient >= 10 ? quotient.ToString() : quotient.ToString(".1f");
+                float quotient = value / (float)unit;
+                string quotientString = quotient >= 10 ? quotient.ToString("N0") : quotient.ToString("N1");
                 return $"{quotientString}{symbol}";
             }
         }

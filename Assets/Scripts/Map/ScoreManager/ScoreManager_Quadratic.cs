@@ -13,7 +13,7 @@ public class ScoreManager_Quadratic : ScoreManager {
     protected bool hasAlreadyDoubleScoreIncrement4 = false;
 
     protected override void InitializeScore() {
-        currentScore = 0;
+        SetCurrentScore(0);
         UpdateAllDisplayersInstantly();
     }
 
@@ -27,7 +27,7 @@ public class ScoreManager_Quadratic : ScoreManager {
     }
 
     public override void OnNewBlockCrossed() {
-        currentScore += scoreIncrement;
+        SetCurrentScore(currentScore + scoreIncrement);
         string scoreIncrementString = scoreDisplayerUpdater.ApplyToCreditsFormating(scoreIncrement);
         scoreDisplayer.AddVolatileText($"+ {scoreIncrementString}", scoreDisplayer.GetTextColor());
         scoreDisplayerUpdater.UpdateValue();

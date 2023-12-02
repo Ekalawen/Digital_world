@@ -10,7 +10,7 @@ public class ScoreManager_Exponential : ScoreManager {
     protected int scoreMultiplier = 2;
 
     protected override void InitializeScore() {
-        currentScore = 0;
+        SetCurrentScore(0);
         UpdateAllDisplayersInstantly();
     }
 
@@ -22,7 +22,7 @@ public class ScoreManager_Exponential : ScoreManager {
     }
 
     public override void OnNewBlockCrossed() {
-        currentScore += scoreIncrement;
+        SetCurrentScore(currentScore + scoreIncrement);
         string scoreIncrementString = scoreDisplayerUpdater.ApplyToCreditsFormating(scoreIncrement);
         scoreDisplayer.AddVolatileText($"+ {scoreIncrementString}", scoreDisplayer.GetTextColor());
         scoreDisplayerUpdater.UpdateValue();

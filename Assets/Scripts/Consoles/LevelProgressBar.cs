@@ -28,10 +28,6 @@ public class LevelProgressBar : MonoBehaviour {
         InitializeProgressBar();
     }
 
-    public void Update() {
-        SetProgressBarValue();
-    }
-
     protected void InitializeProgressBar() {
         holder.SetActive(gm.IsIR());
         if (!gm.IsIR()) {
@@ -41,14 +37,14 @@ public class LevelProgressBar : MonoBehaviour {
         totalText.text = StringHelper.ToCreditsShortFormat(maxValue);
         fillerImage.material = new Material(fillerImage.material);
         SetProgressBarValue();
+        gm.GetInfiniteMap().scoreManager.onScoreChange.AddListener(v => SetProgressBarValue());
     }
 
     protected void SetProgressBarValue() {
-        float currentValue = gm.goalManager.GetTotalCreditScore();
-        Debug.Log($"currentValue = {currentValue} bestScore = {gm.goalManager.GetBestCreditScore()}");
-        float avancement = currentValue / maxValue;
+        float currentValue = gm.goalManager.GetCurrentTotalCreditScore();
+        float avancement = Mathf.Min(currentValue / maxValue, 1.0f);
         scrollBar.size = avancement;
-        percentageText.text = $"{avancement * 100:N0}%";
+        percentageText.text = $"{StringHelper.ToCreditsShortFormat((long)(avancement * 100))}%";
         float textYPosition = avancement <= 0.5f ? percentageTextYPositions[0] : percentageTextYPositions[1];
         percentageText.rectTransform.anchoredPosition = new Vector2(percentageText.rectTransform.anchoredPosition.x, textYPosition);
         fillerImage.material.SetFloat("_ColorAvancement", avancement);

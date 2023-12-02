@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public abstract class ScoreManager : MonoBehaviour
 {
@@ -19,6 +20,8 @@ public abstract class ScoreManager : MonoBehaviour
     protected CounterDisplayerUpdater incrementDisplayerUpdater;
     protected CounterDisplayerUpdater increment2DisplayerUpdater;
     protected int currentScore;
+    [HideInInspector]
+    public UnityEvent<long> onScoreChange;
 
     public void Initialize() {
         gm = GameManager.Instance;
@@ -71,6 +74,14 @@ public abstract class ScoreManager : MonoBehaviour
 
     public int GetCurrentScore() {
         return currentScore;
+    }
+
+    public void SetCurrentScore(int newValue) {
+        if(newValue == currentScore) {
+            return;
+        }
+        currentScore = newValue;
+        onScoreChange.Invoke(currentScore);
     }
 
     protected void UpdateAllDisplayersInstantly() {
