@@ -28,6 +28,8 @@ public class LevelProgressBar : MonoBehaviour {
     protected int maxValue;
     protected Fluctuator valueFluctuator;
     protected bool hasPlayMaxValueParticles = false;
+    protected float startAvancement;
+    protected float displayedAvancement;
 
     public void Initialize() {
         gm = GameManager.Instance;
@@ -41,10 +43,13 @@ public class LevelProgressBar : MonoBehaviour {
         }
         valueFluctuator = new Fluctuator(this, GetProgressBarValue, SetProgressBarValue);
         maxValue = gm.goalManager.GetTreshold();
+        displayedAvancement = 0.0f;
+        startAvancement = GetCurrentAvancement();
         totalText.text = StringHelper.ToCreditsShortFormat(maxValue);
         fillerImage.material = new Material(fillerImage.material);
         valueFluctuator.GoTo(GetCurrentAvancement(), changeValueDuration);
         gm.GetInfiniteMap().scoreManager.onScoreChange.AddListener(v => UpdateProgressBarValue());
+        PlayParticlesOnValueChange(0);
     }
 
     protected void UpdateProgressBarValue() {
@@ -60,6 +65,7 @@ public class LevelProgressBar : MonoBehaviour {
 
     protected void SetProgressBarValue(float avancement) {
         percentageText.text = $"{StringHelper.ToCreditsShortFormat((long)(avancement * 100))}%";
+        displayedAvancement = avancement;
         avancement = Mathf.Min(avancement, 1.0f);
         scrollBar.size = avancement;
         float textYPosition = avancement <= 0.5f ? percentageTextYPositions[0] : percentageTextYPositions[1];
@@ -68,16 +74,18 @@ public class LevelProgressBar : MonoBehaviour {
     }
 
     protected void PlayParticlesOnValueChange(float avancement) {
-        float gainQuantity = maxValue * (avancement - GetProgressBarValue());
-        PlayParticles(onValueChangeParticlesHolderPrefab, gainQuantity);
-        if(avancement >= 1.0f && !hasPlayMaxValueParticles && !gm.goalManager.IsInfiniteModeUnlocked()) {
+        if (avancement < 1.0f) {
+            float gainQuantity = maxValue * (avancement - GetProgressBarValue());
+            PlayParticles(onValueChangeParticlesHolderPrefab, gainQuantity);
+        }
+        if (avancement >= 1.0f && startAvancement < 1.0f && !hasPlayMaxValueParticles) {
             hasPlayMaxValueParticles = true;
             PlayParticles(onReachMaxValueParticlesHolderPrefab, -1);
         }
     }
 
     protected float GetProgressBarValue() {
-        return scrollBar.size;
+        return displayedAvancement;
     }
 
     protected void PlayParticles(GameObject particlesHolderPrefab, float gainQuantity) {
@@ -94,7 +102,7 @@ public class LevelProgressBar : MonoBehaviour {
                 particleSystem.emission.SetBurst(0, bursts[0]);
             }
             particleSystem.Play();
-            Destroy(particleSystem.gameObject, 5.0f);
+            Destroy(particlesHolder, 5.0f);
         }
         /// BAD IDEA ALWAYS LEAD TO BAD STUFF !!!
         /// When you can't do something, find the plugins that does ! <3
