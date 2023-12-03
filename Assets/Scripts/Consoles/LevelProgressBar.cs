@@ -14,6 +14,7 @@ using UnityEngine.SceneManagement;
 public class LevelProgressBar : MonoBehaviour {
 
     public float changeValueDuration = 0.5f;
+    public float onChangeParticlesCountLogProgression = 4;
     public GameObject holder;
     public Scrollbar scrollBar;
     public TMP_Text percentageText;
@@ -48,8 +49,8 @@ public class LevelProgressBar : MonoBehaviour {
 
     protected void UpdateProgressBarValue() {
         float avancement = GetCurrentAvancement();
-        valueFluctuator.GoTo(avancement, changeValueDuration);
         PlayParticlesOnValueChange(avancement);
+        valueFluctuator.GoTo(avancement, changeValueDuration);
     }
 
     protected float GetCurrentAvancement() {
@@ -67,10 +68,11 @@ public class LevelProgressBar : MonoBehaviour {
     }
 
     protected void PlayParticlesOnValueChange(float avancement) {
-        PlayParticles(onValueChangeParticlesHolderPrefab);
+        float gainQuantity = maxValue * (avancement - GetProgressBarValue());
+        PlayParticles(onValueChangeParticlesHolderPrefab, gainQuantity);
         if(avancement >= 1.0f && !hasPlayMaxValueParticles && !gm.goalManager.IsInfiniteModeUnlocked()) {
             hasPlayMaxValueParticles = true;
-            PlayParticles(onReachMaxValueParticlesHolderPrefab);
+            PlayParticles(onReachMaxValueParticlesHolderPrefab, -1);
         }
     }
 
@@ -78,30 +80,37 @@ public class LevelProgressBar : MonoBehaviour {
         return scrollBar.size;
     }
 
-    protected void PlayParticles(GameObject particlesHolderPrefab) {
+    protected void PlayParticles(GameObject particlesHolderPrefab, float gainQuantity) {
         GameObject particlesHolder = Instantiate(particlesHolderPrefab, parent: fillerImage.transform);
         foreach(Transform child in particlesHolder.transform) {
             ParticleSystem particleSystem = child.GetComponent<ParticleSystem>();
             if(!particleSystem) {
                 continue;
             }
-            particleSystem.loop = true;
+            if (gainQuantity >= 0) {
+                ParticleSystem.Burst[] bursts = new ParticleSystem.Burst[particleSystem.emission.burstCount];
+                particleSystem.emission.GetBursts(bursts);
+                bursts[0].count = Mathf.RoundToInt(Mathf.Max(Mathf.Log(gainQuantity, onChangeParticlesCountLogProgression), 2));
+                particleSystem.emission.SetBurst(0, bursts[0]);
+            }
             particleSystem.Play();
-            //Destroy(particleSystem.gameObject, 5.0f);
+            Destroy(particleSystem.gameObject, 5.0f);
         }
-        particlesHolder.transform.SetParent(gm.player.particlesCanvas.transform, true);
-        //Vector2 screenPoint = percentageText.GetComponent<RectTransform>().position;
-        RectTransform rect = percentageText.GetComponent<RectTransform>();
-        //float x = rect.anchorMin.x * Screen.width * rect.gameObject.GetComponentInParent<Canvas>().scaleFactor;
-        //float y = rect.anchorMin.y * Screen.height * rect.gameObject.GetComponentInParent<Canvas>().scaleFactor;
-        Vector2 size = Vector2.Scale(rect.sizeDelta, rect.lossyScale);
-        Rect newRect = new Rect((Vector2)rect.position - (size * rect.pivot), size);
-        //Vector2 screenPoint = new Vector2(rect.anchorMin.x * Screen.width, rect.anchorMin.y * Screen.height);
-        Vector2 screenPoint = new Vector2(newRect.x + newRect.width, newRect.y - newRect.height);
-        Canvas canvas = gm.console.GetComponent<Canvas>();
-        Vector2 canvasSize = canvas.GetComponent<RectTransform>().sizeDelta;
-        particlesHolder.GetComponent<RectTransform>().localScale = Vector3.one;
-        particlesHolder.GetComponent<RectTransform>().localRotation = Quaternion.Euler(0, 0, 0);
-        particlesHolder.GetComponent<RectTransform>().localPosition = - canvasSize + screenPoint;
+        /// BAD IDEA ALWAYS LEAD TO BAD STUFF !!!
+        /// When you can't do something, find the plugins that does ! <3
+        //particlesHolder.transform.SetParent(gm.player.particlesCanvas.transform, true);
+        ////Vector2 screenPoint = percentageText.GetComponent<RectTransform>().position;
+        //RectTransform rect = percentageText.GetComponent<RectTransform>();
+        ////float x = rect.anchorMin.x * Screen.width * rect.gameObject.GetComponentInParent<Canvas>().scaleFactor;
+        ////float y = rect.anchorMin.y * Screen.height * rect.gameObject.GetComponentInParent<Canvas>().scaleFactor;
+        //Vector2 size = Vector2.Scale(rect.sizeDelta, rect.lossyScale);
+        //Rect newRect = new Rect((Vector2)rect.position - (size * rect.pivot), size);
+        ////Vector2 screenPoint = new Vector2(rect.anchorMin.x * Screen.width, rect.anchorMin.y * Screen.height);
+        //Vector2 screenPoint = new Vector2(newRect.x + newRect.width, newRect.y - newRect.height);
+        //Canvas canvas = gm.console.GetComponent<Canvas>();
+        //Vector2 canvasSize = canvas.GetComponent<RectTransform>().sizeDelta;
+        //particlesHolder.GetComponent<RectTransform>().localScale = Vector3.one;
+        //particlesHolder.GetComponent<RectTransform>().localRotation = Quaternion.Euler(0, 0, 0);
+        //particlesHolder.GetComponent<RectTransform>().localPosition = - canvasSize + screenPoint;
     }
 }
