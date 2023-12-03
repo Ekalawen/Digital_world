@@ -36,6 +36,7 @@ public class InfiniteMap : MapManager {
     public bool useCustomNbBlocksToCreateAtStart = false;
     [ConditionalHide("useCustomNbBlocksToCreateAtStart")]
     public int nbBlocksToCreateAtStart;
+    public GameObject lastReachInfinityBlock;
 
     [Header("Color Change")]
     public Color colorChangeColorBlocks;
@@ -91,6 +92,7 @@ public class InfiniteMap : MapManager {
     protected AddHiddenTextureOnCubeInIR textureAdder;
     protected CounterDisplayerUpdater nbBlocksDisplayerUpdater;
     protected bool areTresholdsEnabled;
+    protected bool isInfiniteModeUnlocked;
     [HideInInspector]
     public UnityEvent<int> onBlocksCrossed;
     [HideInInspector]
@@ -111,6 +113,7 @@ public class InfiniteMap : MapManager {
         nbBlocksDestroyed = 0;
         blockWeights = blockLists.Aggregate(new List<BlockWeight>(), (list, blockList) => list.Concat(blockList.blocks).ToList());
         blockForcer = GetComponent<BlockForcerInIR>();
+        isInfiniteModeUnlocked = gm.goalManager.IsInfiniteModeUnlocked();
         InitializeNbBlockDisplayer();
         InitTextureAdder();
 
@@ -161,15 +164,26 @@ public class InfiniteMap : MapManager {
     }
 
     protected void CreateNextBlock() {
-        if (nbBlocksCreated < firstBlocks.Count) {
+        if (nbBlocksCreated < firstBlocks.Count) { // Don't use nbFirstBlocks here because the list can go further than nbFirstBlocks ! :)
             CreateBlock(firstBlocks[nbBlocksCreated]);
-        } else {
-            if (!forceNotCompletedBlocks) {
-                CreateBlock(GetRandomBlockPrefab());
-            } else {
-                CreateBlock(GetRandomNotCompletedBlockPrefab());
-            }
+            return;
         }
+
+        if(IsReachInfinityMarkerNextBlock(nbBlocksCreated - nbFirstBlocks - 1)) {
+            return;
+        }
+
+        if(IsReachInfinityMarkerNextBlock(nbBlocksCreated - nbFirstBlocks)) {
+            CreateBlock(lastReachInfinityBlock);
+            return;
+        }
+
+        if (forceNotCompletedBlocks) {
+            CreateBlock(GetRandomNotCompletedBlockPrefab());
+            return;
+        }
+
+        CreateBlock(GetRandomBlockPrefab());
     }
 
     protected void CreateBlock(GameObject blockPrefab) {
@@ -235,11 +249,11 @@ public class InfiniteMap : MapManager {
     }
 
     protected bool IsReachInfinityMarker(int nbBlocks) {
-        return nbBlocks == gm.goalManager.GetInfiniteModeNbBlocksTreshold() && !gm.goalManager.IsInfiniteModeUnlocked();
+        return nbBlocks == gm.goalManager.GetInfiniteModeNbBlocksTreshold() && !isInfiniteModeUnlocked;
     }
 
     protected bool IsReachInfinityMarkerNextBlock(int nbBlocks) {
-        return nbBlocks >= gm.goalManager.GetInfiniteModeNbBlocksTreshold() && !gm.goalManager.IsInfiniteModeUnlocked();
+        return nbBlocks >= gm.goalManager.GetInfiniteModeNbBlocksTreshold() && !isInfiniteModeUnlocked;
     }
 
     protected GameObject GetRandomBlockPrefab() {
