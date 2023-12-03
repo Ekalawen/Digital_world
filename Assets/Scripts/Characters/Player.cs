@@ -53,6 +53,7 @@ public class Player : Character {
     public Vector2 angleStopShakingRange = new Vector2(5f, 45f);
     public Camera noBlackAndWhiteCamera;
     public GeoSphere geoSphere;
+    public Canvas particlesCanvas;
 
     [HideInInspector]
 	public GameObject personnage;
