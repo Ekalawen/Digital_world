@@ -74,7 +74,7 @@ public class LevelProgressBar : MonoBehaviour {
     }
 
     protected void PlayParticlesOnValueChange(float avancement) {
-        if (avancement < 1.0f) {
+        if (avancement < 1.0f && startAvancement < 1.0f) {
             float gainQuantity = maxValue * (avancement - GetProgressBarValue());
             PlayParticles(onValueChangeParticlesHolderPrefab, gainQuantity);
         }
