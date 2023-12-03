@@ -51,7 +51,7 @@ public class GoalManager : MonoBehaviour {
     }
 
     public int GetBestBlocksScore() {
-        return PrefsManager.GetInt(StringHelper.GetKeyFor(PrefsManager.BEST_BLOCKS_SCORE), 0);
+        return (int)PrefsManager.GetFloat(StringHelper.GetKeyFor(PrefsManager.BEST_BLOCKS_SCORE), 0);
     }
 
     public int GetCurrentTotalBlocksScore() {

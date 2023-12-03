@@ -68,6 +68,14 @@ public abstract class ScoreManager : MonoBehaviour
 
     public abstract void OnNewTresholdCrossed();
 
+    public virtual void OnWinGame() {
+        int scoreGain = gm.goalManager.treshold;
+        SetCurrentScore(currentScore + scoreGain);
+        string scoreGainString = scoreDisplayerUpdater.ApplyToCreditsFormating(scoreGain);
+        scoreDisplayer.AddVolatileText($"+ {scoreGainString}", scoreDisplayer.GetTextColor());
+        scoreDisplayerUpdater.UpdateValue();
+    }
+
     public virtual int GetNbDataForBlock() {
         return UnityEngine.Random.value < dataProbability ? nbDataPerBlock : 0;
     }

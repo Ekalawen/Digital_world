@@ -303,7 +303,7 @@ public class GameManager : MonoBehaviour {
     protected void SaveGameResultIfQuitBeforeEnding() {
         if (GetMapType() == MenuLevel.LevelType.INFINITE
         && !eventManager.IsGameOver()
-        && eventManager.IsNewBestScore()) {
+        && eventManager.IsNewBestBlocksScore()) {
             eventManager.RememberGameResult(success: false);
         } else if (timerManager.GetRealElapsedTime() > 10
                 && !eventManager.IsGameOver()) {

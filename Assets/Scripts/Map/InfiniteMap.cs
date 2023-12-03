@@ -66,6 +66,7 @@ public class InfiniteMap : MapManager {
     public CounterDisplayer nbBlocksDisplayer;
     public GameObject bestScoreMarkerPrefab;
     public GameObject newTresholdMarkerPrefab;
+    public GameObject reachInfinityMarkerPrefab;
     public bool shouldResetAllBlocksTime = false;
     public float dureeDecompose = 5.0f;
 
@@ -191,6 +192,7 @@ public class InfiniteMap : MapManager {
         ApplyTextureAdderOnNewBlock(newBlock);
         AddBestScoreMarker(newBlock);
         AddNewTresholdMarker(newBlock);
+        AddReachInfinityMarker(newBlock);
 
         onCreateBlock.Invoke(newBlock);
     }
@@ -202,7 +204,7 @@ public class InfiniteMap : MapManager {
     }
 
     protected void AddBestScoreMarker(Block block) {
-        int bestScore = (int)gm.eventManager.GetBestScore();
+        int bestScore = (int)gm.eventManager.GetBestBlocksScore();
         if(bestScore != 0 && (nbBlocksCreated - nbFirstBlocks) == bestScore + 1) {
             Vector3 pos = block.endPoint.position + Vector3.up * 1f;
             GameObject marker = Instantiate(bestScoreMarkerPrefab, pos, Quaternion.identity, block.transform.parent);
@@ -211,13 +213,33 @@ public class InfiniteMap : MapManager {
     }
 
     protected void AddNewTresholdMarker(Block block) {
-        //List<int> tresholds = gm.goalManager.GetAllTresholds();
-        //if(tresholds.Any(t => t != 0 && (nbBlocksCreated - nbFirstBlocks) == t)) {
-        if(IsNewTreshold(nbBlocksCreated - nbFirstBlocks)) {
+        int nbBlocks = nbBlocksCreated - nbFirstBlocks;
+        if(IsNewTreshold(nbBlocks) && !IsReachInfinityMarker(nbBlocks)) {
             Vector3 pos = block.endPoint.position + Vector3.up * 1f;
             GameObject marker = Instantiate(newTresholdMarkerPrefab, pos, Quaternion.identity, block.transform.parent);
             marker.transform.LookAt(pos + FORWARD);
         }
+    }
+
+    protected void AddReachInfinityMarker(Block block) {
+        if (IsReachInfinityMarker(nbBlocksCreated - nbFirstBlocks)) {
+            Vector3 pos = block.endPoint.position + Vector3.up * 1f;
+            GameObject marker = Instantiate(reachInfinityMarkerPrefab, pos, Quaternion.identity, block.transform.parent);
+            marker.transform.LookAt(pos + FORWARD);
+        }
+    }
+
+    public void WinInfinityMap() {
+        scoreManager.OnWinGame();
+        gm.eventManager.WinGame();
+    }
+
+    protected bool IsReachInfinityMarker(int nbBlocks) {
+        return nbBlocks == gm.goalManager.GetInfiniteModeNbBlocksTreshold() && !gm.goalManager.IsInfiniteModeUnlocked();
+    }
+
+    protected bool IsReachInfinityMarkerNextBlock(int nbBlocks) {
+        return nbBlocks >= gm.goalManager.GetInfiniteModeNbBlocksTreshold() && !gm.goalManager.IsInfiniteModeUnlocked();
     }
 
     protected GameObject GetRandomBlockPrefab() {
@@ -469,7 +491,9 @@ public class InfiniteMap : MapManager {
             if (IsNewTreshold(nbBlocksNonStart)) {
                 RewardNewTreshold();
             }
-            scoreManager.OnNewBlockCrossed();
+            if (!IsReachInfinityMarker(nbBlocksNonStart)) {
+                scoreManager.OnNewBlockCrossed();
+            }
             gm.soundManager.PlayNewBlockClip();
             if (IsNewBestScore(nbBlocksNonStart)) {
                 RewardNewBestScore();
@@ -479,6 +503,9 @@ public class InfiniteMap : MapManager {
                     RewardForReachingInfiniteMode(nbBlocksNonStart);
                 }
             }
+            if(IsReachInfinityMarkerNextBlock(nbBlocksNonStart)) {
+                WinInfinityMap();
+            }
         }
     }
 
@@ -486,7 +513,6 @@ public class InfiniteMap : MapManager {
         if(!areTresholdsEnabled) {
             return false;
         }
-        //return gm.goalManager.GetAllTresholds().Contains(nbBlocksNonStart);
         return nbBlocksNonStart % 10 == 0 && nbBlocksNonStart > 0;
     }
 
@@ -526,7 +552,7 @@ public class InfiniteMap : MapManager {
     }
 
     protected bool IsNewBestScore(int score) {
-        int precedentBestScore = (int)gm.eventManager.GetBestScore();
+        int precedentBestScore = (int)gm.eventManager.GetBestBlocksScore();
         return precedentBestScore > 0 && score > precedentBestScore && !hasMadeNewBestScore;
     }
 
