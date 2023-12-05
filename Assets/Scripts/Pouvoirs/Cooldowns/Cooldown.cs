@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Localization;
 
@@ -10,10 +11,13 @@ public class Cooldown : MonoBehaviour {
 
     protected Timer cooldownTimer;
     protected IPouvoir pouvoir;
+    protected List<CooldownModifier> modifiers;
 
     public virtual void Initialize() {
         pouvoir = GetComponent<IPouvoir>();
         cooldownTimer = new Timer(cooldown, setOver: true);
+        modifiers = GetComponents<CooldownModifier>().ToList();
+        modifiers.ForEach(modifier => modifier.Initialize(this));
     }
 
     public virtual void RechargeEntirely() {
@@ -33,10 +37,7 @@ public class Cooldown : MonoBehaviour {
     }
 
     public virtual float GetRemainingTimeBeforeUse() {
-        if(IsAvailable()) {
-            return 0.0f;
-        }
-        return cooldownTimer.GetRemainingTime();
+        return IsAvailable() ? 0.0f : cooldownTimer.GetRemainingTime();
     }
 
     public virtual void SetCooldownDuration(float duration, bool keepRemainingTime) {

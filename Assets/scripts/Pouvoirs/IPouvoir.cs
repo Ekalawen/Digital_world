@@ -32,8 +32,8 @@ public abstract class IPouvoir : MonoBehaviour {
     protected PouvoirDisplayInGame pouvoirDisplay;
 
     public virtual void Initialize() {
+        gm = GameManager.Instance;
         pouvoirEnabled = true;
-        gm = FindObjectOfType<GameManager>();
         player = gm.player;
         InitializeCooldown();
     }
@@ -86,15 +86,17 @@ public abstract class IPouvoir : MonoBehaviour {
     }
 
     protected virtual void ApplyTimerMalus() {
-        if (!timerMalusTimeProportional) {
-            if (timerMalus != 0.0f) {
-                gm.timerManager.RemoveTime(timerMalus, EventManager.DeathReason.POUVOIR_COST);
-            }
-        } else {
+        if (timerMalusTimeProportional) {
             float timeToRemove = gm.timerManager.GetRemainingTime() * timerMalusTimeProportion;
-            if (timeToRemove != 0.0f) {
-                gm.timerManager.RemoveTime(timerMalus, EventManager.DeathReason.POUVOIR_COST);
-            }
+            RemoveTime(timeToRemove);
+        } else {
+            RemoveTime(timerMalus);
+        }
+    }
+
+    protected void RemoveTime(float timeToRemove) {
+        if (timeToRemove != 0.0f) {
+            gm.timerManager.RemoveTime(timerMalus, EventManager.DeathReason.POUVOIR_COST);
         }
     }
 
