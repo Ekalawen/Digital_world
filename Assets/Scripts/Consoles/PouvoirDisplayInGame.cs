@@ -9,13 +9,14 @@ using UnityEngine.UI;
 
 public class PouvoirDisplayInGame : MonoBehaviour {
 
+    public GameObject contentHolder;
     public Image image;
     public Image bordure;
     public GameObject onCooldownGroup;
     public TMP_Text cooldownText;
     public Image loadingCircle;
     public float vitesseRotationLoadingCircle = 5.0f;
-    public Text keyText;
+    public TMP_Text keyText;
     public MessageZoneBindingParameters.Bindings binding;
     public PouvoirDisplayFlash flash;
 
@@ -39,7 +40,7 @@ public class PouvoirDisplayInGame : MonoBehaviour {
     public void Initialize(IPouvoir pouvoir) {
         gm = GameManager.Instance;
         if (pouvoir == null) {
-            bordure.gameObject.SetActive(false);
+            contentHolder.gameObject.SetActive(false);
             return;
         }
         StartCoroutine(CInitialize(pouvoir));
@@ -47,7 +48,7 @@ public class PouvoirDisplayInGame : MonoBehaviour {
 
     protected IEnumerator CInitialize(IPouvoir pouvoir)
     {
-        bordure.gameObject.SetActive(true);
+        contentHolder.gameObject.SetActive(true);
         this.pouvoir = pouvoir;
         this.cooldown = pouvoir.GetCooldown();
         string nom = PouvoirDisplay.GetNullName();
