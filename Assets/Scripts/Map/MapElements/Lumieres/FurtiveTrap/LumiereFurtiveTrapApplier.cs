@@ -62,7 +62,7 @@ public class LumiereFurtiveTrapApplier : MonoBehaviour {
 
     protected void GiveBackDash() {
         PouvoirGiverItem.PouvoirBinding pouvoirBinding = PouvoirGiverItem.PouvoirBinding.LEFT_CLICK;
-        gm.player.SetPouvoir(pouvoirDashPrefab, pouvoirBinding);
+        gm.player.pouvoirHolder.SetPouvoir(pouvoirDashPrefab, pouvoirBinding);
         IPouvoir pouvoir = pouvoirDashPrefab.GetComponent<IPouvoir>();
         gm.console.CapturePouvoirGiverItem(pouvoir.nom, pouvoirBinding);
     }

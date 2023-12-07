@@ -23,7 +23,7 @@ public class PouvoirTripleSauts : IPouvoir {
         // Freezer le temps
         pouvoirEnabled = false;
         GameManager.Instance.FreezeTime();
-        player.FreezePouvoirs(true);
+        player.pouvoirHolder.FreezePouvoirs(true);
         // Faire un dash et attendre qu'il se termine
         StartCoroutine(PerformDash(nbDashs));
 
@@ -67,12 +67,12 @@ public class PouvoirTripleSauts : IPouvoir {
                 // Si c'est la dernière coroutine, defreezer le temps
                 pouvoirEnabled = true;
                 GameManager.Instance.UnFreezeTime();
-                player.FreezePouvoirs(false);
+                player.pouvoirHolder.FreezePouvoirs(false);
             }
         } else {
             pouvoirEnabled = true;
             GameManager.Instance.UnFreezeTime();
-            player.FreezePouvoirs(false);
+            player.pouvoirHolder.FreezePouvoirs(false);
         }
     }
 

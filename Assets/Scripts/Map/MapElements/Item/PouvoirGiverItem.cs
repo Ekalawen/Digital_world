@@ -37,7 +37,7 @@ public class PouvoirGiverItem : Item {
     }
 
     public static void GivePouvoir(GameManager gm, GameObject pouvoirPrefab, PouvoirBinding pouvoirBinding, bool printDefaultMessage = true) {
-        gm.player.SetPouvoir(pouvoirPrefab, pouvoirBinding);
+        gm.player.pouvoirHolder.SetPouvoir(pouvoirPrefab, pouvoirBinding);
         if(pouvoirPrefab != null) {
             IPouvoir pouvoir = pouvoirPrefab.GetComponent<IPouvoir>();
             if (printDefaultMessage) {

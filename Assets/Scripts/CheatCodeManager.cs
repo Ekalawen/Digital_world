@@ -87,7 +87,7 @@ public class CheatCodeManager : MonoBehaviour {
         cheatCodes.Add(new CheatCode(swapPhasesCode, gm.timerManager.ForceSwapPhases));
         cheatCodes.Add(new CheatCode(startEndEventCode, gm.eventManager.ExternalStartEndGame));
         cheatCodes.Add(new CheatCode(gravityZeroCode, gm.gravityManager.SetGravityZeroSwap));
-        cheatCodes.Add(new CheatCode(cooldownsZeroCode, gm.player.SetPouvoirsCooldownZeroSwap));
+        cheatCodes.Add(new CheatCode(cooldownsZeroCode, gm.player.pouvoirHolder.SetPouvoirsCooldownZeroSwap));
         cheatCodes.Add(new CheatCode(invincibilityCode, gm.player.SwapInvincible));
         cheatCodes.Add(new CheatCode(hideConsoleCode, gm.console.SwapConsoleVisibility));
         cheatCodes.Add(new CheatCode(disableEnnemisCode, gm.ennemiManager.SwapDisableEnnemis));
@@ -123,7 +123,7 @@ public class CheatCodeManager : MonoBehaviour {
             PouvoirGiverItem.GivePouvoir(gm, dash333Prefab, PouvoirGiverItem.PouvoirBinding.LEFT_CLICK);
         } else {
             Debug.Log($"On met le pouvoir à null !");
-            PouvoirGiverItem.GivePouvoir(gm, gm.player.pouvoirLeftBoutonPrefab, PouvoirGiverItem.PouvoirBinding.LEFT_CLICK);
+            PouvoirGiverItem.GivePouvoir(gm, gm.player.pouvoirHolder.pouvoirLeftBoutonPrefab, PouvoirGiverItem.PouvoirBinding.LEFT_CLICK);
         }
     }
 
@@ -132,7 +132,7 @@ public class CheatCodeManager : MonoBehaviour {
             PouvoirGiverItem.GivePouvoir(gm, pathfinder5Prefab, PouvoirGiverItem.PouvoirBinding.A);
         } else {
             Debug.Log($"On met le pouvoir à null !");
-            PouvoirGiverItem.GivePouvoir(gm, gm.player.pouvoirAPrefab, PouvoirGiverItem.PouvoirBinding.A);
+            PouvoirGiverItem.GivePouvoir(gm, gm.player.pouvoirHolder.pouvoirAPrefab, PouvoirGiverItem.PouvoirBinding.A);
         }
     }
 
@@ -141,7 +141,7 @@ public class CheatCodeManager : MonoBehaviour {
             PouvoirGiverItem.GivePouvoir(gm, gripDashPrefab, PouvoirGiverItem.PouvoirBinding.RIGHT_CLICK);
         } else {
             Debug.Log($"On met le pouvoir à null !");
-            PouvoirGiverItem.GivePouvoir(gm, gm.player.pouvoirRightBoutonPrefab, PouvoirGiverItem.PouvoirBinding.RIGHT_CLICK);
+            PouvoirGiverItem.GivePouvoir(gm, gm.player.pouvoirHolder.pouvoirRightBoutonPrefab, PouvoirGiverItem.PouvoirBinding.RIGHT_CLICK);
         }
     }
 
@@ -150,7 +150,7 @@ public class CheatCodeManager : MonoBehaviour {
             PouvoirGiverItem.GivePouvoir(gm, timeHackPrefab, PouvoirGiverItem.PouvoirBinding.E);
         } else {
             Debug.Log($"On met le pouvoir à null !");
-            PouvoirGiverItem.GivePouvoir(gm, gm.player.pouvoirEPrefab, PouvoirGiverItem.PouvoirBinding.E);
+            PouvoirGiverItem.GivePouvoir(gm, gm.player.pouvoirHolder.pouvoirEPrefab, PouvoirGiverItem.PouvoirBinding.E);
         }
     }
 }

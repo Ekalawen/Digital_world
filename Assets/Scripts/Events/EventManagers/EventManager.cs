@@ -568,7 +568,7 @@ public class EventManager : MonoBehaviour {
 
         gm.historyManager.SetDureeGame(gm.timerManager.GetRealGameTimer().GetElapsedTime());
 
-        gm.player.FreezePouvoirs();
+        gm.player.pouvoirHolder.FreezePouvoirs();
 
         gm.player.geoSphere.StopAllContinueGeoPoints();
 
@@ -697,7 +697,7 @@ public class EventManager : MonoBehaviour {
 
         gm.FreezeTime();
 
-        gm.player.FreezePouvoirs();
+        gm.player.pouvoirHolder.FreezePouvoirs();
 
         gm.player.geoSphere.StopAllContinueGeoPoints();
 

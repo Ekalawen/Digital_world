@@ -92,10 +92,10 @@ public class LoadingMenu : MonoBehaviour {
 
     protected void InitPouvoirs() {
         Player player = level.joueurPrefab.GetComponent<Player>();
-        InitPouvoir(player.pouvoirAPrefab, pouvoirA, pouvoirA.GetKeyName());
-        InitPouvoir(player.pouvoirEPrefab, pouvoirE, pouvoirE.GetKeyName());
-        InitPouvoir(player.pouvoirLeftBoutonPrefab, pouvoirLeftClick, pouvoirLeftClick.GetKeyName());
-        InitPouvoir(player.pouvoirRightBoutonPrefab, pouvoirRightClick, pouvoirRightClick.GetKeyName());
+        InitPouvoir(player.pouvoirHolder.pouvoirAPrefab, pouvoirA, pouvoirA.GetKeyName());
+        InitPouvoir(player.pouvoirHolder.pouvoirEPrefab, pouvoirE, pouvoirE.GetKeyName());
+        InitPouvoir(player.pouvoirHolder.pouvoirLeftBoutonPrefab, pouvoirLeftClick, pouvoirLeftClick.GetKeyName());
+        InitPouvoir(player.pouvoirHolder.pouvoirRightBoutonPrefab, pouvoirRightClick, pouvoirRightClick.GetKeyName());
     }
 
     protected void InitPouvoir(GameObject pouvoirPrefab, PouvoirDisplay display, string keyName) {

@@ -77,12 +77,12 @@ public class PouvoirRollback : IPouvoir {
         }
 
         gm.FreezeTime();
-        player.FreezePouvoirs(true);
+        player.pouvoirHolder.FreezePouvoirs(true);
         player.RemoveAllPoussees();
     }
 
     protected void UnInitPouvoir() {
-        player.FreezePouvoirs(false);
+        player.pouvoirHolder.FreezePouvoirs(false);
         gm.UnFreezeTime();
         player.ResetGrip();
     }

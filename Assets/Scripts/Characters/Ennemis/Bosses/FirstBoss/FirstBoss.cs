@@ -177,9 +177,9 @@ public class FirstBoss : Sonde {
     protected void RemovePouvoirs() {
         gm.console.PouvoirsDesactives();
         gm.itemManager.RemoveAllPouvoirsGivers();
-        gm.player.RemoveAllPouvoirs();
+        gm.player.pouvoirHolder.RemoveAllPouvoirs();
         //gm.player.SetNbDoubleJumps(0); // C'est la seule façon de s'en sortir du joueur au stade 4 :)
-        gm.player.SetPouvoir(pouvoirLocalisationPrefab, PouvoirGiverItem.PouvoirBinding.E);
+        gm.player.pouvoirHolder.SetPouvoir(pouvoirLocalisationPrefab, PouvoirGiverItem.PouvoirBinding.E);
     }
 
     protected void PopAllDatas() {
@@ -279,7 +279,7 @@ public class FirstBoss : Sonde {
 
     protected void GiveDash333() {
         PouvoirGiverItem.PouvoirBinding pouvoirBindingLeft = PouvoirGiverItem.PouvoirBinding.LEFT_CLICK;
-        player.SetPouvoir(pouvoirDash333Prefab, pouvoirBindingLeft);
+        player.pouvoirHolder.SetPouvoir(pouvoirDash333Prefab, pouvoirBindingLeft);
         IPouvoir pouvoir = player.GetPouvoirLeftClick().GetComponent<IPouvoir>();
         gm.console.CapturePouvoirGiverItem(pouvoir.nom, pouvoirBindingLeft, gm.console.strings.pouvoirGiverDash333SubPhrase);
         gm.pointeur.Initialize();
@@ -288,7 +288,7 @@ public class FirstBoss : Sonde {
 
     protected void GivePathfinder5() {
         PouvoirGiverItem.PouvoirBinding pouvoirBindingA = PouvoirGiverItem.PouvoirBinding.A;
-        player.SetPouvoir(pouvoirPathfinder5Prefab, pouvoirBindingA);
+        player.pouvoirHolder.SetPouvoir(pouvoirPathfinder5Prefab, pouvoirBindingA);
         gm.soundManager.PlayGainPouvoirClip();
     }
 
