@@ -44,14 +44,18 @@ public class PouvoirHolder : MonoBehaviour {
         if (!pouvoirPrefab) {
             return null;
         }
-        IPouvoir newPouvoir = Instantiate(pouvoirPrefab, parent: this.transform).GetComponent<IPouvoir>();
+        IPouvoir newPouvoir = Instantiate(pouvoirPrefab, parent: transform).GetComponent<IPouvoir>();
         newPouvoir.Initialize();
         return newPouvoir;
     }
 
     protected void InitializeSkillTreePouvoirs() {
         if(SkillTreeManager.Instance.IsEnabled(SkillKey.FIRST_DASH)) {
-            pouvoirLeftBouton = InitializePouvoirWith(pouvoirFirstDashPrefab);
+            pouvoirLeftBouton = Instantiate(pouvoirFirstDashPrefab, parent: transform).GetComponent<IPouvoir>();
+            if(SkillTreeManager.Instance.IsEnabled(SkillKey.DASH_RESET_WHILE_ON_GROUND)) {
+                pouvoirLeftBouton.GetComponent<CooldownModifier_ResetOnLand>().resetWhileOnGround = true;
+            }
+            pouvoirLeftBouton.Initialize();
         }
     }
 

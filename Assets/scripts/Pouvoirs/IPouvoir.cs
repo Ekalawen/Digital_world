@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Localization;
 
 /// <summary>
@@ -30,6 +31,8 @@ public abstract class IPouvoir : MonoBehaviour {
     protected KeyCode binding;
     protected Cooldown cooldown;
     protected PouvoirDisplayInGame pouvoirDisplay;
+    [HideInInspector]
+    public UnityEvent onUse;
 
     public virtual void Initialize() {
         gm = GameManager.Instance;
@@ -61,6 +64,7 @@ public abstract class IPouvoir : MonoBehaviour {
         if (UsePouvoir()) {
             ApplyUsePouvoirConsequences();
             player.onUsePouvoir.Invoke(this);
+            onUse.Invoke();
         } else {
             gm.soundManager.PlayDeniedPouvoirClip();
         }

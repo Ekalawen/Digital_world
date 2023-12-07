@@ -76,4 +76,8 @@ public class Cooldown : MonoBehaviour {
         yield return new WaitForSeconds(duration);
         GainCharge();
     }
+
+    public IPouvoir GetPouvoir() {
+        return pouvoir;
+    }
 }

@@ -654,6 +654,10 @@ public class Player : Character {
         return false;
     }
 
+    public bool IsOnGround() {
+        return isGrounded;
+    }
+
     protected Vector3 GetNormaleToDirection(Vector3 move) {
         RaycastHit[] hits = Physics.SphereCastAll(transform.position,
                                                   transform.localScale.x / 2.0f,
