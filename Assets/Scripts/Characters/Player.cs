@@ -189,11 +189,11 @@ public class Player : Character {
     }
 
     protected void InitializeShiftLandingMode() {
-        if(!SkillTreeManager.Instance.IsEnabled(SkillKey.SHIFT_LANDING_BOOST_NORMAL)) {
+        if(!SkillTreeManager.Instance.IsEnabled(SkillKey.ACCELERATED_LANDING)) {
             shiftLandingMode = ShiftLandingMode.NONE;
             return;
         }
-        if(!SkillTreeManager.Instance.IsEnabled(SkillKey.SHIFT_LANDING_BOOST_FAST)) {
+        if(!SkillTreeManager.Instance.IsEnabled(SkillKey.EXPLOSIVE_LANDING)) {
             shiftLandingMode = ShiftLandingMode.NORMAL;
             return;
         }
@@ -201,7 +201,7 @@ public class Player : Character {
     }
 
     protected void InitializeDureeMur() {
-        bool hasSkill = SkillTreeManager.Instance.IsEnabled(SkillKey.UPGRADE_SLIDE_DURATION_AND_UI);
+        bool hasSkill = SkillTreeManager.Instance.IsEnabled(SkillKey.BLUE_SLIDE);
         dureeMur = hasSkill ? dureeMurWithUpgrade : dureeMurInitiale;
     }
 
