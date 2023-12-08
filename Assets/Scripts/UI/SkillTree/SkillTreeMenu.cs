@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Components;
 using UnityEngine.UI;
@@ -26,6 +27,7 @@ public class SkillTreeMenu : MonoBehaviour {
     public CanvasGroup treeGroup;
 
     [Header("Links")]
+    public SkillTreeBackButtonInGame skillTreeBackButtonInGame;
     public CounterDisplayerUpdater creditsCounterUpdater;
     public LocalizeStringEvent currentUpgradeName;
     public LocalizeStringEvent currentUpgradeDescription;
@@ -49,6 +51,8 @@ public class SkillTreeMenu : MonoBehaviour {
     protected float openPrefferedWidth;
     protected SkillTreeUpgrade currentUpgrade;
     protected bool isUpgradeDisplayOpen;
+    [HideInInspector]
+    public UnityEvent onUpgradeChange;
 
     public void Initilalize() {
         links = new List<SkillTreeLink>();
@@ -60,6 +64,14 @@ public class SkillTreeMenu : MonoBehaviour {
         GatherUpgrades();
         InitializeUpgrades();
         InitializeCreditsCounter();
+        InitializeSkillTreeBackButtonInGame();
+    }
+
+    protected void InitializeSkillTreeBackButtonInGame() {
+        if(!skillTreeBackButtonInGame) {
+            return;
+        }
+        skillTreeBackButtonInGame.Initialize(this);
     }
 
     protected void InitializeCreditsCounter() {
@@ -158,6 +170,7 @@ public class SkillTreeMenu : MonoBehaviour {
         SetActive(true);
         setActiveCoroutine.Stop();
         sizeFluctuator.GoTo(1.0f, openingDuration);
+        InitializeSkillTreeBackButtonInGame();
     }
 
     public void Close() {
@@ -271,6 +284,7 @@ public class SkillTreeMenu : MonoBehaviour {
             return;
         }
         BuyUpgrade(currentUpgrade);
+        onUpgradeChange.Invoke();
     }
 
     protected void BuyUpgrade(SkillTreeUpgrade upgrade) {
@@ -297,12 +311,14 @@ public class SkillTreeMenu : MonoBehaviour {
         SkillTreeManager.Instance.Enable(upgrade.key);
         ShowAppropriateButtonFor(upgrade);
         upgrade.DisplayGoodState();
+        onUpgradeChange.Invoke();
     }
 
     public void Disable(SkillTreeUpgrade upgrade) {
         SkillTreeManager.Instance.Disable(upgrade.key);
         ShowAppropriateButtonFor(upgrade);
         upgrade.DisplayGoodState();
+        onUpgradeChange.Invoke();
     }
 
     public void EnableCurrentUpgrade() {
@@ -319,6 +335,7 @@ public class SkillTreeMenu : MonoBehaviour {
         }
         InitializeUpgrades();
         PopulateVerticalMenuWith(currentUpgrade);
+        onUpgradeChange.Invoke();
     }
 
     public void MultiplyCreditsBy10() {
