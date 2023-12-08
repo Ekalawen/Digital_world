@@ -250,7 +250,7 @@ public class GameManager : MonoBehaviour {
         timerManager.UpdateTimeScaleToCurrentPhase();
         MouseDisplayer.Instance.HideCursor();
         pointeur.gameObject.SetActive(true);
-        Tooltip.Hide();
+        Tooltip.HideAll();
         console.ClosePauseMenu();
         soundManager.UnPauseSounds();
         postProcessManager.UnPauseEffects();

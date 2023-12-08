@@ -75,12 +75,12 @@ public class PauseMenu : MonoBehaviour {
     public void OpenOptions() {
         menuOptions.gameObject.SetActive(true);
         menuOptions.Run();
-        Tooltip.Hide();
+        Tooltip.HideAll();
     }
 
     public void CloseOptions() {
         menuOptions.gameObject.SetActive(false);
-        Tooltip.Hide();
+        Tooltip.HideAll();
     }
 
     public bool IsOptionsOpen() {
@@ -89,7 +89,7 @@ public class PauseMenu : MonoBehaviour {
 
     public void OpenSkillTree() {
         skillTreeMenu.Open();
-        Tooltip.Hide();
+        Tooltip.HideAll();
     }
 
     public bool IsSkillTreeOpen() {
@@ -98,12 +98,12 @@ public class PauseMenu : MonoBehaviour {
 
     public void CloseSkillTree() {
         skillTreeMenu.Close();
-        Tooltip.Hide();
+        Tooltip.HideAll();
     }
 
     public void CloseSkillTreeInstantly() {
         skillTreeMenu.CloseInstantly();
-        Tooltip.Hide();
+        Tooltip.HideAll();
     }
 
     public void Quitter() {

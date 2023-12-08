@@ -641,6 +641,6 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
     }
 
     public void HideTooltipOnSelectInput() {
-        Tooltip.Hide();
+        Tooltip.HideAll();
     }
 }

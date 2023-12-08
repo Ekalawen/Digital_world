@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -17,10 +18,14 @@ public class Tooltip : MonoBehaviour {
 
     protected float planeDistance;
     protected Timer lastHideTime;
+    protected List<TooltipActivator> activatedActivators;
+    protected SingleCoroutine alwaysTriesToHideCoroutine;
 
     public void Awake() {
         instance = this;
         gameObject.SetActive(false);
+        activatedActivators = new List<TooltipActivator>();
+        alwaysTriesToHideCoroutine = new SingleCoroutine(this);
         planeDistance = FindObjectOfType<Canvas>().planeDistance;
         lastHideTime = new UnpausableTimer();
         lastHideTime.SetOver();
@@ -53,26 +58,74 @@ public class Tooltip : MonoBehaviour {
         rectTransform.localPosition = clampedPos;
     }
 
-    protected void ShowProtected(string message, float timeBeforeShowingUsed) {
-        if(lastHideTime.GetElapsedTime() < timeBeforeShowingUsed) {
+    protected void ShowProtected(string message, TooltipActivator activator) {
+        if(activatedActivators.Contains(activator)) {
             return;
         }
+        activatedActivators.Add(activator);
         text.SetText(message);
         background.sizeDelta = text.GetPreferredValues(message);
         SetPositionToMouse();
         gameObject.SetActive(true);
+        alwaysTriesToHideCoroutine.Start(CAlwaysTriesToHideCoroutine());
     }
 
-    protected void HideProtected() {
+    protected IEnumerator CAlwaysTriesToHideCoroutine() {
+        while(true) {
+            yield return null;
+            TooltipActivator lastActivator = activatedActivators.Last();
+            if(!lastActivator.IsHovering()) {
+                HideProtected(lastActivator);
+            }
+        }
+    }
+
+    protected void HideProtected(TooltipActivator activator) {
+        if(!activatedActivators.Contains(activator)) {
+            return;
+        }
+        if(activatedActivators.Last() != activator) {
+            activatedActivators.Remove(activator);
+            return;
+        }
+        activatedActivators.Remove(activator);
         gameObject.SetActive(false);
         lastHideTime.Reset();
+        ShowNextActivator();
     }
 
-    public static void Show(string message, float timeBeforeShowingUsed) {
-        instance.ShowProtected(message, timeBeforeShowingUsed);
+    protected void ShowNextActivator() {
+        if(activatedActivators.Count <= 0) {
+            alwaysTriesToHideCoroutine.Stop();
+            return;
+        }
+        TooltipActivator lastActivator = activatedActivators.Last();
+        if(lastActivator.IsHovering()) {
+            activatedActivators.Remove(lastActivator);
+            lastActivator.ShowImmediate();
+        } else {
+            activatedActivators.Remove(lastActivator);
+            ShowNextActivator();
+        }
     }
 
-    public static void Hide() {
-        instance.HideProtected();
+    public static void Show(string message, TooltipActivator activator) {
+        instance.ShowProtected(message, activator);
     }
+
+    public static void Hide(TooltipActivator activator) {
+        instance.HideProtected(activator);
+    }
+
+    public static void HideAll() {
+        instance.HideAllProtected();
+    }
+
+    protected void HideAllProtected() {
+        List<TooltipActivator> activators = activatedActivators.Select(a => a).ToList();
+        foreach (TooltipActivator activator in activators) {
+            Hide(activator);
+        }
+    }
+
 }

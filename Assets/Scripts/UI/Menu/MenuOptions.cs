@@ -154,7 +154,7 @@ public class MenuOptions : MonoBehaviour {
         PlayerPrefs.Save();
         menuPrecedent.SetActive(true);
         menuOptions.SetActive(false);
-        Tooltip.Hide();
+        Tooltip.HideAll();
         if (!isInGame) {
             menuPrecedent.GetComponent<MenuManager>().SetRandomBackground();
         }
@@ -353,7 +353,7 @@ public class MenuOptions : MonoBehaviour {
         mainPanel.SetActive(false);
         hasPanelOpen = true;
         CloseAllPanels();
-        Tooltip.Hide();
+        Tooltip.HideAll();
         switch (panelType) {
             case PanelType.CONTROLES:
                 panelControles.SetActive(true);
