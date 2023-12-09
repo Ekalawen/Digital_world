@@ -1,68 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &5377110617293807769
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2271010793996400035}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f2bf4a8babcfed468e63c4985c52370, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  localizedMessage:
-    m_TableReference:
-      m_TableCollectionName: 
-    m_TableEntryReference:
-      m_KeyId: 0
-      m_Key: 
-    m_FallbackState: 0
-  timeBeforeShowing: 0.4
-  localizedMessages:
-  - m_TableReference:
-      m_TableCollectionName: GUID:424a6a0bc88e9244f84baacf95644b09
-    m_TableEntryReference:
-      m_KeyId: 701366509568
-      m_Key: 
-    m_FallbackState: 0
-  - m_TableReference:
-      m_TableCollectionName: GUID:424a6a0bc88e9244f84baacf95644b09
-    m_TableEntryReference:
-      m_KeyId: 728986001408
-      m_Key: 
-    m_FallbackState: 0
-  - m_TableReference:
-      m_TableCollectionName: GUID:424a6a0bc88e9244f84baacf95644b09
-    m_TableEntryReference:
-      m_KeyId: 781876174848
-      m_Key: 
-    m_FallbackState: 0
-  - m_TableReference:
-      m_TableCollectionName: GUID:424a6a0bc88e9244f84baacf95644b09
-    m_TableEntryReference:
-      m_KeyId: 898343608320
-      m_Key: 
-    m_FallbackState: 0
-  - m_TableReference:
-      m_TableCollectionName: GUID:424a6a0bc88e9244f84baacf95644b09
-    m_TableEntryReference:
-      m_KeyId: 1000013537280
-      m_Key: 
-    m_FallbackState: 0
-  - m_TableReference:
-      m_TableCollectionName: GUID:424a6a0bc88e9244f84baacf95644b09
-    m_TableEntryReference:
-      m_KeyId: 1110764134400
-      m_Key: 
-    m_FallbackState: 0
-  - m_TableReference:
-      m_TableCollectionName: GUID:424a6a0bc88e9244f84baacf95644b09
-    m_TableEntryReference:
-      m_KeyId: 1173393481728
-      m_Key: 
-    m_FallbackState: 0
 --- !u!1 &5377110619233634205
 GameObject:
   m_ObjectHideFlags: 0
@@ -126,7 +63,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: 81dcd9b90960a4b43b51b66d779bfb1b, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -166,6 +103,7 @@ MonoBehaviour:
     type: 3}
   buttonPlay: {fileID: 1328336074871125862}
   buttonTutorial: {fileID: 1328336074410149603}
+  luminosityVolume: {fileID: 0}
   strings: {fileID: 11400000, guid: d7986b974f79f7b47a55d64951f515e9, type: 2}
   tutoriel:
     m_TableReference:
@@ -622,6 +560,69 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 5377110618667762685}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5377110617293807769
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2271010793996400035}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f2bf4a8babcfed468e63c4985c52370, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  localizedMessage:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+  timeBeforeShowing: 0.4
+  localizedMessages:
+  - m_TableReference:
+      m_TableCollectionName: GUID:424a6a0bc88e9244f84baacf95644b09
+    m_TableEntryReference:
+      m_KeyId: 701366509568
+      m_Key: 
+    m_FallbackState: 0
+  - m_TableReference:
+      m_TableCollectionName: GUID:424a6a0bc88e9244f84baacf95644b09
+    m_TableEntryReference:
+      m_KeyId: 728986001408
+      m_Key: 
+    m_FallbackState: 0
+  - m_TableReference:
+      m_TableCollectionName: GUID:424a6a0bc88e9244f84baacf95644b09
+    m_TableEntryReference:
+      m_KeyId: 781876174848
+      m_Key: 
+    m_FallbackState: 0
+  - m_TableReference:
+      m_TableCollectionName: GUID:424a6a0bc88e9244f84baacf95644b09
+    m_TableEntryReference:
+      m_KeyId: 898343608320
+      m_Key: 
+    m_FallbackState: 0
+  - m_TableReference:
+      m_TableCollectionName: GUID:424a6a0bc88e9244f84baacf95644b09
+    m_TableEntryReference:
+      m_KeyId: 1000013537280
+      m_Key: 
+    m_FallbackState: 0
+  - m_TableReference:
+      m_TableCollectionName: GUID:424a6a0bc88e9244f84baacf95644b09
+    m_TableEntryReference:
+      m_KeyId: 1110764134400
+      m_Key: 
+    m_FallbackState: 0
+  - m_TableReference:
+      m_TableCollectionName: GUID:424a6a0bc88e9244f84baacf95644b09
+    m_TableEntryReference:
+      m_KeyId: 1173393481728
+      m_Key: 
+    m_FallbackState: 0
 --- !u!1001 &5377110618725122784
 PrefabInstance:
   m_ObjectHideFlags: 0
