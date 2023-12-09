@@ -119,6 +119,8 @@ public class SkillTreeMenu : MonoBehaviour {
     }
 
     protected void InitializeUpgrades() {
+        links.ForEach(l => Destroy(l.gameObject));
+        links.Clear();
         upgrades.ForEach(u => u.Initialize(this));
         WarnIfDuplicateKey();
     }
@@ -280,7 +282,7 @@ public class SkillTreeMenu : MonoBehaviour {
         if (SkillTreeManager.Instance.IsUnlocked(currentUpgrade.key)) {
             return;
         }
-        if (!SkillTreeManager.Instance.CanBuy(currentUpgrade)) {
+        if (!SkillTreeManager.Instance.IsAffordable(currentUpgrade)) {
             return;
         }
         BuyUpgrade(currentUpgrade);
@@ -293,6 +295,7 @@ public class SkillTreeMenu : MonoBehaviour {
         DisplayVolatileCredits(- upgrade.price);
         upgrade.DisplayGoodState();
         PopulateVerticalMenuWith(upgrade);
+        InitializeUpgrades(); // Mostly for links
         // Run animation ! :D
     }
 
@@ -343,6 +346,7 @@ public class SkillTreeMenu : MonoBehaviour {
         if (IsOpen()) {
             DisplayVolatileCredits(variation);
             PopulateVerticalMenuWith(currentUpgrade);
+            InitializeUpgrades();
         }
     }
 
@@ -352,6 +356,7 @@ public class SkillTreeMenu : MonoBehaviour {
         if (IsOpen()) {
             DisplayVolatileCredits(variation);
             PopulateVerticalMenuWith(currentUpgrade);
+            InitializeUpgrades();
         }
     }
 }

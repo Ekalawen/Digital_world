@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using TMPro;
 using UnityEngine;
@@ -40,8 +41,16 @@ public class SkillTreeManager : Singleton<SkillTreeManager> {
         return credits * 9;
     }
 
-    public bool CanBuy(SkillTreeUpgrade upgrade) {
+    public bool IsAffordable(SkillTreeUpgrade upgrade) {
         return GetCredits() >= upgrade.price;
+    }
+
+    public bool IsAccessible(SkillTreeUpgrade upgrade) {
+        return upgrade.requirements.All(source => IsUnlocked(source.key));
+    }
+
+    public bool CanBuy(SkillTreeUpgrade upgrade) {
+        return IsAffordable(upgrade) && IsAccessible(upgrade);
     }
 
     public bool IsUnlocked(SkillKey key) {
