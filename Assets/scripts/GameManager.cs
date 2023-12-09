@@ -230,6 +230,7 @@ public class GameManager : MonoBehaviour {
             Pause();
             pauseMenu.OpenSkillTree();
         } else {
+            pauseMenu.CloseSkillTree();
             UnPause();
         }
     }

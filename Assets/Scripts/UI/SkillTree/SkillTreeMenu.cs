@@ -53,6 +53,8 @@ public class SkillTreeMenu : MonoBehaviour {
     protected bool isUpgradeDisplayOpen;
     [HideInInspector]
     public UnityEvent onUpgradeChange;
+    [HideInInspector]
+    public UnityEvent onClose;
 
     public void Initilalize() {
         links = new List<SkillTreeLink>();
@@ -148,7 +150,7 @@ public class SkillTreeMenu : MonoBehaviour {
         }
     }
 
-    public void CreateLink(SkillTreeUpgrade source, SkillTreeUpgrade target) {
+    public SkillTreeLink CreateLink(SkillTreeUpgrade source, SkillTreeUpgrade target) {
         SkillTreeLink link = Instantiate(linkPrefab, linksFolder).GetComponent<SkillTreeLink>();
         RectTransform rect = link.GetComponent<RectTransform>();
         rect.anchorMin = Vector3.zero;
@@ -157,6 +159,7 @@ public class SkillTreeMenu : MonoBehaviour {
         rect.offsetMax = Vector3.zero;
         link.Initialize(this, source, target);
         links.Add(link);
+        return link;
     }
 
     public void Toggle() {
@@ -172,6 +175,7 @@ public class SkillTreeMenu : MonoBehaviour {
         SetActive(true);
         setActiveCoroutine.Stop();
         sizeFluctuator.GoTo(1.0f, openingDuration);
+        InitializeUpgrades();
         InitializeSkillTreeBackButtonInGame();
     }
 
@@ -180,6 +184,7 @@ public class SkillTreeMenu : MonoBehaviour {
         sizeFluctuator.GoTo(0.0f, closingDuration);
         setActiveCoroutine.Start(CSetActiveIn(closingDuration, false));
         CloseUpgradeDisplay();
+        onClose.Invoke();
     }
 
     public void CloseInstantly() {
@@ -358,5 +363,13 @@ public class SkillTreeMenu : MonoBehaviour {
             PopulateVerticalMenuWith(currentUpgrade);
             InitializeUpgrades();
         }
+    }
+
+    public bool HasNewlyAffordableUpgrades() {
+        return upgrades.Any(upgrade => SkillTreeManager.Instance.IsNewlyAffordable(upgrade));
+    }
+
+    public List<SkillTreeLink> GetLinks() {
+        return links;
     }
 }

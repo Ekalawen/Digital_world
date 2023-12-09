@@ -34,7 +34,7 @@ public class SkillTreeLink : MonoBehaviour {
         if(SkillTreeManager.Instance.IsUnlocked(targetUpgrade.key)) {
             return lineUnlockedPrefab;
         }
-        if(SkillTreeManager.Instance.CanBuy(targetUpgrade)) {
+        if(SkillTreeManager.Instance.IsNewlyAffordable(targetUpgrade)) {
             return lineAffordablePrefab;
         }
         return lineLockedPrefab;

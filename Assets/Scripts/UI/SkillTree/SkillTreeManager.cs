@@ -13,7 +13,8 @@ public class SkillTreeManager : Singleton<SkillTreeManager> {
 
     public static string UNLOCKED = "_UNLOCKED";
     public static string ENABLED = "_ENABLED";
-    public static string CREDITS_COUNT = "CREDITS_COUNT_KEY";
+    public static string CREDITS_COUNT = "_CREDITS_COUNT_KEY";
+    public static string HAS_BEEN_NEWLY_AFFORDABLE = "_HAS_BEEN_NEWLY_AFFORDABLE_KEY";
 
     public int GetCredits() {
         return PrefsManager.GetInt(CREDITS_COUNT, 0);
@@ -65,6 +66,7 @@ public class SkillTreeManager : Singleton<SkillTreeManager> {
     public void Lock(SkillKey key) {
         PrefsManager.SetBool(key.ToString() + UNLOCKED, false);
         Disable(key);
+        SetHasBeenNewlyAffordable(key, false);
     }
 
     public bool IsEnabled(SkillKey key) {
@@ -77,5 +79,17 @@ public class SkillTreeManager : Singleton<SkillTreeManager> {
 
     public void Disable(SkillKey key) {
         PrefsManager.SetBool(key.ToString() + ENABLED, false);
+    }
+
+    public bool HasBeenNewlyAffordable(SkillKey key) {
+        return PrefsManager.GetBool(key.ToString() + HAS_BEEN_NEWLY_AFFORDABLE, false);
+    }
+
+    public void SetHasBeenNewlyAffordable(SkillKey key, bool value) {
+        PrefsManager.SetBool(key.ToString() + HAS_BEEN_NEWLY_AFFORDABLE, value);
+    }
+
+    public bool IsNewlyAffordable(SkillTreeUpgrade upgrade) {
+        return !HasBeenNewlyAffordable(upgrade.key) && CanBuy(upgrade);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Localization;
@@ -39,6 +40,7 @@ public class SkillTreeUpgrade : MonoBehaviour {
     public GameObject disabledStateIcon;
 
     protected SkillTreeMenu skillTreeMenu;
+    protected List<SkillTreeLink> links;
 
     public void Initialize(SkillTreeMenu skillTreeMenu) {
         this.skillTreeMenu = skillTreeMenu;
@@ -49,6 +51,13 @@ public class SkillTreeUpgrade : MonoBehaviour {
         priceTooltip.localizedMessage.Arguments = new object[] { priceString };
         InitializeRequirementLinks();
         DisplayGoodState();
+        skillTreeMenu.onClose.AddListener(SetHasBeenNewlyAffordable);
+    }
+
+    public void SetHasBeenNewlyAffordable() {
+        if(SkillTreeManager.Instance.IsNewlyAffordable(this)) {
+            SkillTreeManager.Instance.SetHasBeenNewlyAffordable(key, true);
+        }
     }
 
     public string GetPriceString() {
@@ -56,7 +65,8 @@ public class SkillTreeUpgrade : MonoBehaviour {
     }
 
     protected void InitializeRequirementLinks() {
-        requirements.ForEach(r => skillTreeMenu.CreateLink(r, this));
+        links = new List<SkillTreeLink>();
+        requirements.ForEach(r => links.Add(skillTreeMenu.CreateLink(r, this)));
     }
 
     public void Select() {
