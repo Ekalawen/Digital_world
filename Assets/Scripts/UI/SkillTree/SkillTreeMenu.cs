@@ -67,6 +67,15 @@ public class SkillTreeMenu : MonoBehaviour {
         InitializeUpgrades();
         InitializeCreditsCounter();
         InitializeSkillTreeBackButtonInGame();
+        InitializeSkillTreeNewSkillTip();
+    }
+
+    protected void InitializeSkillTreeNewSkillTip() {
+        SkillTreeNewSkillTip tip = FindObjectOfType<SkillTreeNewSkillTip>();
+        if(!tip) {
+            return;
+        }
+        tip.Initialize();
     }
 
     protected void InitializeSkillTreeBackButtonInGame() {
