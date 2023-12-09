@@ -374,8 +374,8 @@ public class SkillTreeMenu : MonoBehaviour {
         }
     }
 
-    public bool HasNewlyAffordableUpgrades() {
-        return upgrades.Any(upgrade => SkillTreeManager.Instance.IsNewlyAffordable(upgrade));
+    public bool HasNewlyAffordableUpgrades(int additionnalCredits = 0) {
+        return upgrades.Any(upgrade => SkillTreeManager.Instance.IsNewlyAffordable(upgrade, additionnalCredits));
     }
 
     public List<SkillTreeLink> GetLinks() {

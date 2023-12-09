@@ -42,16 +42,16 @@ public class SkillTreeManager : Singleton<SkillTreeManager> {
         return credits * 9;
     }
 
-    public bool IsAffordable(SkillTreeUpgrade upgrade) {
-        return GetCredits() >= upgrade.price;
+    public bool IsAffordable(SkillTreeUpgrade upgrade, int additionnalCredits = 0) {
+        return GetCredits() + additionnalCredits >= upgrade.price;
     }
 
     public bool IsAccessible(SkillTreeUpgrade upgrade) {
         return upgrade.requirements.All(source => IsUnlocked(source.key));
     }
 
-    public bool CanBuy(SkillTreeUpgrade upgrade) {
-        return IsAffordable(upgrade) && IsAccessible(upgrade);
+    public bool CanBuy(SkillTreeUpgrade upgrade, int additionnalCredits = 0) {
+        return IsAffordable(upgrade, additionnalCredits) && IsAccessible(upgrade);
     }
 
     public bool IsUnlocked(SkillKey key) {
@@ -89,7 +89,7 @@ public class SkillTreeManager : Singleton<SkillTreeManager> {
         PrefsManager.SetBool(key.ToString() + HAS_BEEN_NEWLY_AFFORDABLE, value);
     }
 
-    public bool IsNewlyAffordable(SkillTreeUpgrade upgrade) {
-        return !HasBeenNewlyAffordable(upgrade.key) && CanBuy(upgrade);
+    public bool IsNewlyAffordable(SkillTreeUpgrade upgrade, int additionnalCredits = 0) {
+        return !HasBeenNewlyAffordable(upgrade.key) && CanBuy(upgrade, additionnalCredits);
     }
 }
