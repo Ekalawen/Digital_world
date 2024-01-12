@@ -70,6 +70,7 @@ public class Player : Character {
 	protected EtatPersonnage origineSaut; // Permet de savoir depuis où (le sol ou un mur) le personnage a sauté !
 	protected Vector3 normaleOrigineSaut; // La normale au plan du mur duquel le personnage a sauté
     protected EtatPersonnage jumpedFrom;
+    protected bool usePreciseJump; // If true, the player can modulate the height of its jumps. If false, jumps always go to max height.
 	protected float hauteurMaxSaut; // La hauteur maximale d'un saut !
 	protected float debutMur; // le timing où le personnage a commencé à s'accrocher au mur !
 	protected Vector3 normaleMur; // la normale au mur sur lequel le personnage est accroché !
@@ -98,7 +99,7 @@ public class Player : Character {
 
     protected bool bCanUseLocalisation = true;
     [HideInInspector]
-    public bool bIsStun = false;
+    public bool isStun = false;
     protected bool isInvincible = false;
     protected UnityEvent onHitEvent;
     [HideInInspector]
@@ -141,6 +142,7 @@ public class Player : Character {
         geoSphere.Initialize();
         inputManager = InputManager.Instance;
         GetPlayerSensitivity();
+        InitializeUsePreciseJump();
         InitializeDureeMur();
         InitializeShiftLandingMode();
         bSetUpRotation = true;
@@ -178,6 +180,10 @@ public class Player : Character {
         console = GameObject.FindObjectOfType<Console>();
 
         InitializePouvoirs();
+    }
+
+    protected void InitializeUsePreciseJump() {
+        usePreciseJump = SkillTreeManager.Instance.IsEnabled(SkillKey.PRECISE_JUMP);
     }
 
     protected void InitializeShiftLandingMode() {
@@ -333,11 +339,19 @@ public class Player : Character {
         cameraShaker.DefaultRotInfluence = Vector3.one * shakeInfluence;
     }
 
-    void GetEtatPersonnage() {
+    protected bool GetHoldingPreciseJump() {
+        return !usePreciseJump || inputManager.GetJump();
+    }
+
+    protected bool GetPreciseJumpUp() {
+        return usePreciseJump && inputManager.GetJumpUp();
+    }
+
+    protected void GetEtatPersonnage() {
         etatAvant = etat;
         isGrounded = IsGrounded();
         if (etat != EtatPersonnage.AU_MUR) {
-            if (inputManager.GetJump() && !sautTimer.IsOver()) {
+            if (GetHoldingPreciseJump() && !sautTimer.IsOver()) {
                 etat = EtatPersonnage.EN_SAUT;
             } else if (isGrounded) {
                 SetAuSol();
@@ -403,77 +417,72 @@ public class Player : Character {
     }
 
     protected Vector3 UpdateJumpMouvement(Vector3 move) {
-        if (!bIsStun) {
-            switch (etat) {
-                case EtatPersonnage.AU_SOL:
-                    if (inputManager.GetJump() && gm.gravityManager.HasGravity()) {
+        if (isStun) {
+            return move;
+        }
+
+        switch (etat) {
+            case EtatPersonnage.AU_SOL:
+                if (inputManager.GetJump() && gm.gravityManager.HasGravity()) {
+                    Jump(from: EtatPersonnage.AU_SOL);
+                    move = ApplyJumpMouvement(move);
+                }
+                ResetAuSol();
+                break;
+
+            case EtatPersonnage.EN_SAUT:
+                if (inputManager.GetJumpDown() && gm.gravityManager.HasGravity() && CanDoubleJump()) {
+                    AddDoubleJump();
+                    Jump(from: origineSaut);
+                }
+                if (sautTimer.IsOver() || GetPreciseJumpUp()) {
+                    etat = EtatPersonnage.EN_CHUTE;
+                } else {
+                    move = ApplyJumpMouvement(move);
+                }
+                break;
+
+            case EtatPersonnage.EN_CHUTE:
+                if (inputManager.GetJumpDown()) {
+                    if (!timerLastTimeAuSol.IsOver()) { // Permet de sauter quelques frames après être tombé d'une plateforme !
+                        timerLastTimeAuSol.SetOver();
                         Jump(from: EtatPersonnage.AU_SOL);
                         move = ApplyJumpMouvement(move);
-                    }
-                    ResetAuSol();
-                    break;
-
-                case EtatPersonnage.EN_SAUT:
-                    if (inputManager.GetJumpDown() && gm.gravityManager.HasGravity() && CanDoubleJump()) {
+                    } else if (gm.gravityManager.HasGravity() && CanDoubleJump()) {
                         AddDoubleJump();
                         Jump(from: origineSaut);
-                    }
-                    if(sautTimer.IsOver() || inputManager.GetJumpUp()) {
-                        etat = EtatPersonnage.EN_CHUTE;
-                    } else {
                         move = ApplyJumpMouvement(move);
                     }
-                    break;
+                }
+                break;
 
-                case EtatPersonnage.EN_CHUTE:
-                    if (inputManager.GetJumpDown()) {
-                        if(!timerLastTimeAuSol.IsOver()) { // Permet de sauter quelques frames après être tombé d'une plateforme !
-                            timerLastTimeAuSol.SetOver();
-                            Jump(from: EtatPersonnage.AU_SOL);
-                            move = ApplyJumpMouvement(move);
-                        } else if (gm.gravityManager.HasGravity() && CanDoubleJump()) {
-                            AddDoubleJump();
-                            Jump(from: origineSaut);
-                            move = ApplyJumpMouvement(move);
-                        }
+            case EtatPersonnage.AU_MUR:
+                ResetDoubleJump();
+                if (GetShiftInput()) {
+                    // On peut se décrocher du mur en appuyant sur shift
+                    FallFromWallButCanGripItAgain();
+                } else if (inputManager.GetJumpDown() && gm.gravityManager.HasGravity()) {
+                    // On peut encore sauter quand on est au mur ! 
+                    // Mais il faut appuyer à nouveau !
+                    Jump(from: EtatPersonnage.AU_MUR);
+                    move = ApplyJumpMouvement(move);
+
+                } else if (GetHoldingPreciseJump()) {
+                    // On a le droit de terminer son saut lorsqu'on touche un mur
+                    move = ApplyJumpMouvement(move);
+
+                } else {
+                    // Si on ne fait rien, alors on ne chute pas.
+                    if (!isGravityEffectRemoved) {
+                        move = gm.gravityManager.CounterGravity(move);
                     }
-                    break;
+                }
 
-                case EtatPersonnage.AU_MUR:
-                    ResetDoubleJump();
-                    if (GetShiftInput()) {
-                        // On peut se décrocher du mur en appuyant sur shift
-                        FallFromWallButCanGripItAgain();
-                    }
-                    else if (inputManager.GetJumpDown() && gm.gravityManager.HasGravity())
-                    {
-                        // On peut encore sauter quand on est au mur ! 
-                        // Mais il faut appuyer à nouveau !
-                        Jump(from: EtatPersonnage.AU_MUR);
-                        move = ApplyJumpMouvement(move);
+                CheckIfWeAreNotToFarFromWallForSlidding();
 
-                    }
-                    else if (inputManager.GetJump())
-                    {
-                        // On a le droit de terminer son saut lorsqu'on touche un mur
-                        move = ApplyJumpMouvement(move);
-
-                    }
-                    else
-                    {
-                        // Si on ne fait rien, alors on ne chute pas.
-                        if (!isGravityEffectRemoved)
-                        {
-                            move = gm.gravityManager.CounterGravity(move);
-                        }
-                    }
-
-                    CheckIfWeAreNotToFarFromWallForSlidding();
-
-                    CheckIfTheWallContinueForSlidding();
-                    break;
-                default: break;
-            }
+                CheckIfTheWallContinueForSlidding();
+                break;
+            default: break;
         }
 
         return move;
@@ -552,7 +561,7 @@ public class Player : Character {
     }
 
     protected Vector3 UpdateHorizontalMouvement(Vector3 move) {
-        if (!bIsStun) {
+        if (!isStun) {
             move = inputManager.GetHorizontalMouvement(ShouldGetRawAxisAccordingToTimeMultiplier());
             move = camera.transform.TransformDirection(move);
             float magnitude = move.magnitude;
@@ -1059,16 +1068,16 @@ public class Player : Character {
     }
 
     public void Stun() {
-        bIsStun = true;
+        isStun = true;
         pouvoirHolder.FreezePouvoirs(true);
     }
 
     public void StunAndKeepPouvoirs() {
-        bIsStun = true;
+        isStun = true;
     }
 
     public void UnStun() {
-        bIsStun = false;
+        isStun = false;
         pouvoirHolder.FreezePouvoirs(false);
     }
 

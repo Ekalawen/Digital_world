@@ -9,14 +9,15 @@ using UnityEngine.UI;
 
 public enum SkillKey {
     BLUE_SLIDE = 0,
-    UNLOCK_OVERRIDES = 1,
     UNLOCK_TRESHOLDS = 2,
+    PRECISE_JUMP = 7,
     ACCELERATED_LANDING = 3,
+    UNLOCK_OVERRIDES = 1,
     EXPLOSIVE_LANDING = 4,
     FIRST_DASH = 5,
     DASH_RESET_WHILE_ON_GROUND = 6,
-    SPEED_BOOST_1 = 7,
-    UI_OVERRIDE_PREDICTOR = 8,
+    SPEED_BOOST_1 = 8,
+    UI_OVERRIDE_PREDICTOR = 9,
 }
 
 public class SkillTreeUpgrade : MonoBehaviour {
