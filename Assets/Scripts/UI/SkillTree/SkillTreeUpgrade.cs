@@ -15,9 +15,10 @@ public enum SkillKey {
     UNLOCK_OVERRIDES = 1,
     EXPLOSIVE_LANDING = 4,
     FIRST_DASH = 5,
+    QUADRATIC_TRESHOLDS = 8,
     DASH_RESET_WHILE_ON_GROUND = 6,
-    SPEED_BOOST_1 = 8,
-    UI_OVERRIDE_PREDICTOR = 9,
+    SPEED_BOOST_1 = 9,
+    UI_OVERRIDE_PREDICTOR = 10,
 }
 
 public class SkillTreeUpgrade : MonoBehaviour {

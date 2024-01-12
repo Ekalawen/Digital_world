@@ -7,16 +7,20 @@ public class ScoreManager_Quadratic : ScoreManager {
 
     [Tooltip("On Crossing Treshold")]
     public int scoreIncrement3 = 5;
-    [Tooltip("On Crossing Treshold Internally")]
-    public int scoreIncrement4 = 5;
     public float downOffset = 30.0f;
 
+    protected int scoreIncrement4 = 0;
     protected int scoreMultiplier = 2;
     protected bool hasAlreadyDoubleScoreIncrement4 = false;
 
     protected override void InitializeScore() {
+        InitializeScoreIncrement4();
         SetCurrentScore(0);
         UpdateAllDisplayersInstantly();
+    }
+
+    protected void InitializeScoreIncrement4() {
+        scoreIncrement4 = SkillTreeManager.Instance.IsEnabled(SkillKey.QUADRATIC_TRESHOLDS) ? 1 : 0;
     }
 
     public override void SetMultiplier(int multiplier) {
