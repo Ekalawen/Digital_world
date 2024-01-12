@@ -8,7 +8,9 @@ public abstract class ScoreManager : MonoBehaviour
 {
     public float dataProbability = 1 / 3.0f;
     public int nbDataPerBlock = 1;
+    [Tooltip("On Crossing Block")]
     public int scoreIncrement = 1;
+    [Tooltip("On Catching Data")]
     public int scoreIncrement2 = 1;
 
     protected GameManager gm;
@@ -62,10 +64,13 @@ public abstract class ScoreManager : MonoBehaviour
 
     public abstract void SetMultiplier(int multiplier);
 
+    // Score Increment
     public abstract void OnNewBlockCrossed();
 
+    // Score Increment 2
     public abstract void OnCatchData();
 
+    // Score Increment 3 and 4
     public abstract void OnNewTresholdCrossed();
 
     public virtual void OnWinGame() {

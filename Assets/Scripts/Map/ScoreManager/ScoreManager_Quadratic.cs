@@ -5,7 +5,9 @@ using UnityEngine;
 
 public class ScoreManager_Quadratic : ScoreManager {
 
+    [Tooltip("On Crossing Treshold")]
     public int scoreIncrement3 = 5;
+    [Tooltip("On Crossing Treshold Internally")]
     public int scoreIncrement4 = 5;
     public float downOffset = 30.0f;
 
@@ -47,9 +49,9 @@ public class ScoreManager_Quadratic : ScoreManager {
         increment2DisplayerUpdater.UpdateValue();
 
         scoreIncrement3 += scoreIncrement4;
-        if(!hasAlreadyDoubleScoreIncrement4) {
-            scoreIncrement4 *= 2;
-            hasAlreadyDoubleScoreIncrement4 = true;
-        }
+        //if(!hasAlreadyDoubleScoreIncrement4) {
+        //    scoreIncrement4 *= 2;
+        //    hasAlreadyDoubleScoreIncrement4 = true;
+        //}
     }
 }
