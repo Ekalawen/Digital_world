@@ -6,9 +6,9 @@ using UnityEngine.UI;
 
 public class SkillTreeBackButtonInGame : MonoBehaviour {
 
-    public Button normalBackButton;
-    public Button backWithoutSaveButton;
-    public Button saveAndRestartBackButton;
+    public GameObject normalBackButton;
+    public GameObject backWithoutSaveButton;
+    public GameObject saveAndRestartBackButton;
 
     protected SkillTreeMenu skillTreeMenu;
 
@@ -19,8 +19,8 @@ public class SkillTreeBackButtonInGame : MonoBehaviour {
     }
 
     protected void SetActiveButtons(bool skillTreeHasChanged) {
-        normalBackButton.gameObject.SetActive(!skillTreeHasChanged);
-        backWithoutSaveButton.gameObject.SetActive(skillTreeHasChanged);
-        saveAndRestartBackButton.gameObject.SetActive(skillTreeHasChanged);
+        normalBackButton.SetActive(!skillTreeHasChanged);
+        backWithoutSaveButton.SetActive(skillTreeHasChanged);
+        saveAndRestartBackButton.SetActive(skillTreeHasChanged);
     }
 }
