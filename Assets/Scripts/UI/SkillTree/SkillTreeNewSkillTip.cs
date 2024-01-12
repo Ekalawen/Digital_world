@@ -19,10 +19,18 @@ public class SkillTreeNewSkillTip : MonoBehaviour {
         scoreManager.onScoreChange.AddListener(score => SetActiveNewSkillTip());
         skillTreeMenu.onClose.AddListener(SetActiveNewSkillTip);
         SetActiveNewSkillTip();
+        gm.onInitilizationFinish.AddListener(TryOpenSkillTreeMenu);
     }
 
     public void SetActiveNewSkillTip() {
         int additionnalCredits = scoreManager.GetCurrentScore();
         newSkillTip.SetActive(skillTreeMenu.HasNewlyAffordableUpgrades(additionnalCredits));
+    }
+
+    protected void TryOpenSkillTreeMenu() {
+        if (newSkillTip.activeInHierarchy) {
+            gm.Pause();
+            gm.console.GetPauseMenu().OpenSkillTree();
+        }
     }
 }
