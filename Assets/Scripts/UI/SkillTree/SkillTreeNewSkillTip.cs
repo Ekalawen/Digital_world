@@ -19,7 +19,7 @@ public class SkillTreeNewSkillTip : MonoBehaviour {
         scoreManager.onScoreChange.AddListener(score => SetActiveNewSkillTip());
         skillTreeMenu.onClose.AddListener(SetActiveNewSkillTip);
         SetActiveNewSkillTip();
-        gm.onInitilizationFinish.AddListener(TryOpenSkillTreeMenu);
+        gm.onFirstFrame.AddListener(TryOpenSkillTreeMenu);
     }
 
     public void SetActiveNewSkillTip() {

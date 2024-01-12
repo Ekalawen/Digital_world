@@ -5,6 +5,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Localization;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public enum SkillKey {
@@ -33,6 +34,7 @@ public class SkillTreeUpgrade : MonoBehaviour {
 
     [Header("Links")]
     public Image image;
+    public Image borderImage;
     public GameObject priceObject;
     public TMP_Text priceText;
     public TooltipActivator mainTooltip;
@@ -40,6 +42,9 @@ public class SkillTreeUpgrade : MonoBehaviour {
     public GameObject lockedStateIcon;
     public GameObject enabledStateIcon;
     public GameObject disabledStateIcon;
+    public Material materialBorderUnlocked;
+    public Material materialBorderAffordable;
+    public Material materialBorderLocked;
 
     protected SkillTreeMenu skillTreeMenu;
     protected List<SkillTreeLink> links;
@@ -53,6 +58,7 @@ public class SkillTreeUpgrade : MonoBehaviour {
         priceTooltip.localizedMessage.Arguments = new object[] { priceString };
         InitializeRequirementLinks();
         DisplayGoodState();
+        DisplayGoodBorder();
         skillTreeMenu.onClose.AddListener(SetHasBeenNewlyAffordable);
     }
 
@@ -114,5 +120,15 @@ public class SkillTreeUpgrade : MonoBehaviour {
         enabledStateIcon.gameObject.SetActive(false);
         disabledStateIcon.gameObject.SetActive(false);
         priceObject.gameObject.SetActive(true);
+    }
+
+    public void DisplayGoodBorder() {
+        if(SkillTreeManager.Instance.IsUnlocked(key)) {
+            borderImage.material = materialBorderUnlocked;
+        } else {
+            int additionnalCredits = GameManager.IsInGame ? GameManager.Instance.GetInfiniteMap().GetScoreManager().GetCurrentScore() : 0;
+            borderImage.material = SkillTreeManager.Instance.CanBuy(this, additionnalCredits) ? materialBorderAffordable : materialBorderLocked;
+        }
+        GetComponent<UpdateUnscaledTime>().Start();
     }
 }

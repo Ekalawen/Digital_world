@@ -308,6 +308,7 @@ public class SkillTreeMenu : MonoBehaviour {
         SkillTreeManager.Instance.Unlock(upgrade.key);
         DisplayVolatileCredits(- upgrade.price);
         upgrade.DisplayGoodState();
+        upgrade.DisplayGoodBorder();
         PopulateVerticalMenuWith(upgrade);
         InitializeUpgrades(); // Mostly for links
         // Run animation ! :D
@@ -328,6 +329,7 @@ public class SkillTreeMenu : MonoBehaviour {
         SkillTreeManager.Instance.Enable(upgrade.key);
         ShowAppropriateButtonFor(upgrade);
         upgrade.DisplayGoodState();
+        upgrade.DisplayGoodBorder();
         onUpgradeChange.Invoke();
     }
 
@@ -335,6 +337,7 @@ public class SkillTreeMenu : MonoBehaviour {
         SkillTreeManager.Instance.Disable(upgrade.key);
         ShowAppropriateButtonFor(upgrade);
         upgrade.DisplayGoodState();
+        upgrade.DisplayGoodBorder();
         onUpgradeChange.Invoke();
     }
 
