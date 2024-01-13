@@ -9,15 +9,22 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public enum SkillKey {
+    // Main Skills
     BLUE_SLIDE = 0,
     UNLOCK_TRESHOLDS = 2,
     PRECISE_JUMP = 7,
     ACCELERATED_LANDING = 3,
     UNLOCK_OVERRIDES = 1,
-    EXPLOSIVE_LANDING = 4,
     FIRST_DASH = 5,
     QUADRATIC_TRESHOLDS = 8,
+
+    // Left Skills
+
+    // Right Skills
     DASH_RESET_WHILE_ON_GROUND = 6,
+    EXPLOSIVE_LANDING = 4,
+
+    // Not created Skills
     SPEED_BOOST_1 = 9,
     UI_OVERRIDE_PREDICTOR = 10,
 }
