@@ -156,6 +156,7 @@ public class PostProcessManager : MonoBehaviour {
     protected bool isWallVfxOn = false;
     protected SingleCoroutine skyboxChromaticCoroutine;
     protected BoolTimer skyboxChromaticAmount;
+    protected bool isBlueSlideUnlocked;
 
     public void Initialize() {
         gm = GameManager.Instance;
@@ -167,7 +168,7 @@ public class PostProcessManager : MonoBehaviour {
         shiftVfx = gm.player.shiftVfx;
         shiftLandingVfx = gm.player.shiftLandingVfx;
         jumpVfx = gm.player.jumpVfx;
-        wallVfx = gm.player.wallVfx;
+        InitWallVfx();
         timeScaleVfx = gm.player.timeScaleVfx;
         inputManager = InputManager.Instance;
         InitScreenSizeAtVfxDistance();
@@ -189,6 +190,11 @@ public class PostProcessManager : MonoBehaviour {
         StopShiftVfx();
 
         gm.onInitilizationFinish.AddListener(StartCubesDissolveOnStart);
+    }
+
+    protected void InitWallVfx() {
+        wallVfx = gm.player.wallVfx;
+        isBlueSlideUnlocked = SkillTreeManager.Instance.IsEnabled(SkillKey.BLUE_SLIDE);
     }
 
     protected void InitScreenSizeAtVfxDistance() {
@@ -230,6 +236,9 @@ public class PostProcessManager : MonoBehaviour {
     }
 
     public void UpdateWallEffect() {
+        if(!isBlueSlideUnlocked) {
+            return;
+        }
         Player.EtatPersonnage etat = gm.player.GetEtat();
         if(!isWallVfxOn && etat == Player.EtatPersonnage.AU_MUR) {
             StartWallEffect();
