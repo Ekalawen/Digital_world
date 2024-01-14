@@ -10,6 +10,7 @@ using UnityEngine.UI;
 
 public enum SkillKey {
     // Main Skills
+    DATA_BREACH = 13,
     BLUE_SLIDE = 0,
     UNLOCK_TRESHOLDS = 2,
     PRECISE_JUMP = 7,
@@ -29,8 +30,8 @@ public enum SkillKey {
     EXPLOSIVE_LANDING = 4,
 
     // Not created Skills
-    SPEED_BOOST_1 = 13,
-    UI_OVERRIDE_PREDICTOR = 14,
+    SPEED_BOOST_1 = 14,
+    UI_OVERRIDE_PREDICTOR = 15,
 }
 
 public class SkillTreeUpgrade : MonoBehaviour {

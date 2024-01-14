@@ -62,6 +62,7 @@ public class InfiniteMap : MapManager {
     [Header("Others")]
     public CounterDisplayer scoreDisplayer;
     public CounterDisplayer incrementDisplayer;
+    public TMP_Text incrementDisplayerLockedText;
     public CounterDisplayer increment2Displayer;
     public TMP_Text increment2DisplayerLockedText;
     public CounterDisplayer nbBlocksDisplayer;

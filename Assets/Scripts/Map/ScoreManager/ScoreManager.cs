@@ -28,8 +28,13 @@ public abstract class ScoreManager : MonoBehaviour
     public void Initialize() {
         gm = GameManager.Instance;
         infiniteMap = gm.GetInfiniteMap();
+        InitializeDataProbability();
         InitializeDisplayers();
         InitializeScore();
+    }
+
+    protected void InitializeDataProbability() {
+        dataProbability = SkillTreeManager.Instance.IsEnabled(SkillKey.DATA_BREACH) ? 1.0f / 3.0f : 0.0f;
     }
 
     private void InitializeDisplayers() {
@@ -46,6 +51,10 @@ public abstract class ScoreManager : MonoBehaviour
         scoreDisplayerUpdater.Initialize(scoreDisplayer, GetCurrentScore);
         incrementDisplayerUpdater.Initialize(incrementDisplayer, GetCurrentIncrement);
         increment2DisplayerUpdater.Initialize(increment2Displayer, GetCurrentIncrement2);
+        if (!SkillTreeManager.Instance.IsEnabled(SkillKey.DATA_BREACH)) {
+            incrementDisplayer.gameObject.SetActive(false);
+            infiniteMap.incrementDisplayerLockedText.gameObject.SetActive(true);
+        }
         if (!SkillTreeManager.Instance.IsEnabled(SkillKey.UNLOCK_TRESHOLDS)) {
             increment2Displayer.gameObject.SetActive(false);
             infiniteMap.increment2DisplayerLockedText.gameObject.SetActive(true);
