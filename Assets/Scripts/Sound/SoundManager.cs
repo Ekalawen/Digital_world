@@ -278,7 +278,7 @@ public class SoundManager : MonoBehaviour
     {
         PlayClipsOnSource(sounds.orbTriggerActivationClips, pos);
     }
-    public void PlayRewardBestScore()
+    public void PlayRewardBestBlocksScore()
     {
         PlayClipsOnSource(sounds.rewardBestScoreClips);
     }

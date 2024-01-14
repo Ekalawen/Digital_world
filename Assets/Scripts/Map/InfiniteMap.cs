@@ -70,6 +70,7 @@ public class InfiniteMap : MapManager {
     public GameObject reachInfinityMarkerPrefab;
     public bool shouldResetAllBlocksTime = false;
     public float dureeDecompose = 5.0f;
+    public float bootUpgradeTotalDuration = 1.0f;
 
     protected Transform blocksFolder;
     protected int indiceCurrentBlock = 0;
@@ -83,7 +84,7 @@ public class InfiniteMap : MapManager {
     protected Block lastlyDestroyedBlock = null;
     protected Timer destructionBlockTimer;
     protected Timer timerSinceLastBlock;
-    protected bool hasMadeNewBestScore = false;
+    protected bool hasMadeNewBestBlocksScore = false;
     protected bool startsBlockDestruction = false;
     protected CameraShakeInstance cameraShakeInstance;
     protected List<string> blocksNameToNotifyPlayerToPressShift = new List<string>();
@@ -93,6 +94,7 @@ public class InfiniteMap : MapManager {
     protected CounterDisplayerUpdater nbBlocksDisplayerUpdater;
     protected bool areTresholdsEnabled;
     protected bool isInfiniteModeUnlocked;
+    protected int bootUpgradeQuantity;
     [HideInInspector]
     public UnityEvent<int> onBlocksCrossed;
     [HideInInspector]
@@ -114,6 +116,7 @@ public class InfiniteMap : MapManager {
         blockWeights = blockLists.Aggregate(new List<BlockWeight>(), (list, blockList) => list.Concat(blockList.blocks).ToList());
         blockForcer = GetComponent<BlockForcerInIR>();
         isInfiniteModeUnlocked = gm.goalManager.IsInfiniteModeUnlocked();
+        InitializeBootUpgrades();
         InitializeNbBlockDisplayer();
         InitTextureAdder();
 
@@ -122,6 +125,22 @@ public class InfiniteMap : MapManager {
         cameraShakeInstance = CameraShaker.Instance.StartShake(0, 0, 0);
 
         //StartCoroutine(AddFirstBlocksToHistory());
+    }
+
+    protected void InitializeBootUpgrades() {
+        if(SkillTreeManager.Instance.IsEnabled(SkillKey.CHRONO_BOOT)) {
+            bootUpgradeQuantity = 10;
+            return;
+        }
+        if(SkillTreeManager.Instance.IsEnabled(SkillKey.DUAL_BOOT)) {
+            bootUpgradeQuantity = 5;
+            return;
+        }
+        if(SkillTreeManager.Instance.IsEnabled(SkillKey.QUICK_BOOT)) {
+            bootUpgradeQuantity = 3;
+            return;
+        }
+        bootUpgradeQuantity = 1;
     }
 
     protected void InitializeNbBlockDisplayer() {
@@ -500,27 +519,49 @@ public class InfiniteMap : MapManager {
     }
 
     protected void RewardPlayerForNewBlock(int nbBlocksAdded) {
-        if (nbBlocksRun > nbFirstBlocks) {
-            int nbBlocksNonStart = GetNonStartNbBlocksRun();
-            if (IsNewTreshold(nbBlocksNonStart)) {
-                RewardNewTreshold();
-            }
-            if (!IsReachInfinityMarker(nbBlocksNonStart)) {
-                scoreManager.OnNewBlockCrossed();
-            }
-            gm.soundManager.PlayNewBlockClip();
-            if (IsNewBestScore(nbBlocksNonStart)) {
-                RewardNewBestScore();
-            } else {
-                bool unlockNewTreshold = RewardNewInifiniteTresholdReached(nbBlocksNonStart);
-                if (!unlockNewTreshold) {
-                    RewardForReachingInfiniteMode(nbBlocksNonStart);
-                }
-            }
-            if(IsReachInfinityMarkerNextBlock(nbBlocksNonStart)) {
-                WinInfinityMap();
+        if (nbBlocksRun <= nbFirstBlocks) {
+            return;
+        }
+        int nbBlocksNonStart = GetNonStartNbBlocksRun();
+        if (IsNewTreshold(nbBlocksNonStart)) {
+            RewardNewTreshold();
+        }
+        RewardCrossNewBlock(nbBlocksNonStart);
+        gm.soundManager.PlayNewBlockClip();
+        if (IsNewBestBlocksScore(nbBlocksNonStart)) {
+            RewardNewBestBlocksScore();
+        } else {
+            bool unlockNewTreshold = RewardNewInifiniteTresholdReached(nbBlocksNonStart);
+            if (!unlockNewTreshold) {
+                RewardForReachingInfiniteMode(nbBlocksNonStart);
             }
         }
+        if (IsReachInfinityMarkerNextBlock(nbBlocksNonStart)) {
+            WinInfinityMap();
+        }
+    }
+
+    protected void RewardCrossNewBlock(int nbBlocksNonStart) {
+        if (IsReachInfinityMarker(nbBlocksNonStart)) {
+            return;
+        }
+        if(nbBlocksNonStart <= bootUpgradeQuantity) {
+            float delay = bootUpgradeTotalDuration / (bootUpgradeQuantity - 1);
+            StartCoroutine(CNotifyRepeateadlyScoreManagerNewBlockCrossed(bootUpgradeQuantity, delay));
+        } else {
+            NotifyScoreManagerCrossNewBlock();
+        }
+    }
+
+    protected IEnumerator CNotifyRepeateadlyScoreManagerNewBlockCrossed(int nbTimes, float delay) {
+        for(int i = 0; i < nbTimes; i++) {
+            NotifyScoreManagerCrossNewBlock();
+            yield return new WaitForSeconds(delay);
+        }
+    }
+
+    protected void NotifyScoreManagerCrossNewBlock() {
+        scoreManager.OnNewBlockCrossed();
     }
 
     protected bool IsNewTreshold(int nbBlocksNonStart) {
@@ -530,12 +571,12 @@ public class InfiniteMap : MapManager {
         return nbBlocksNonStart % 10 == 0 && nbBlocksNonStart > 0;
     }
 
-    protected void RewardNewBestScore() {
-        gm.console.RewardBestScore();
-        gm.soundManager.PlayRewardBestScore();
+    protected void RewardNewBestBlocksScore() {
+        gm.console.RewardBestBlocksScore();
+        gm.soundManager.PlayRewardBestBlocksScore();
         gm.postProcessManager.ShakeOnceOnMarker();
         gm.postProcessManager.AddSkyboxChromaticShiftOf(gm.postProcessManager.skyboxChromaticShiftDurationOnMarker);
-        hasMadeNewBestScore = true;
+        hasMadeNewBestBlocksScore = true;
     }
 
     protected void RewardNewTreshold() {
@@ -560,14 +601,14 @@ public class InfiniteMap : MapManager {
         if(!hasReachInfiniteMode && gm.goalManager.GetInfiniteModeNbBlocksTreshold() <= nbBlocksNonStart) {
             hasReachInfiniteMode = true;
             gm.console.RewardInfiniteModeReached();
-            gm.soundManager.PlayRewardBestScore();
+            gm.soundManager.PlayRewardBestBlocksScore();
             CameraShaker.Instance.ShakeOnce(infiniteModeReachedScreenShakeMagnitude, infiniteModeReachedScreenShakeRoughness, 0.1f, infiniteModeReachedScreenShakeDecreaseTime);
         }
     }
 
-    protected bool IsNewBestScore(int score) {
+    protected bool IsNewBestBlocksScore(int score) {
         int precedentBestScore = (int)gm.eventManager.GetBestBlocksScore();
-        return precedentBestScore > 0 && score > precedentBestScore && !hasMadeNewBestScore;
+        return precedentBestScore > 0 && score > precedentBestScore && !hasMadeNewBestBlocksScore;
     }
 
     public void OnExitBlock(Block block) {

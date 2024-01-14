@@ -1003,7 +1003,7 @@ public class EventManager : MonoBehaviour {
 
     protected void RewardForNewRegularTresholdReached(int dataCount) {
         gm.console.RewardNewRegularTreshold(dataCount);
-        gm.soundManager.PlayRewardBestScore();
+        gm.soundManager.PlayRewardBestBlocksScore();
     }
 
     protected void PreFillPoolIfDeathCubesEndEvent() {

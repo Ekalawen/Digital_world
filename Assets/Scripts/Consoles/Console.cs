@@ -1142,7 +1142,7 @@ public class Console : MonoBehaviour {
         }
     }
 
-    public void RewardBestScore() {
+    public void RewardBestBlocksScore() {
         AjouterMessageImportant(strings.meilleurScore, TypeText.GREEN_TEXT, 3, bAfficherInConsole: true);
     }
 
