@@ -713,6 +713,31 @@ MonoBehaviour:
   prefix: 
   suffix: 
   updateDuration: 0.6
+  bounceScale: 1.5
+  bounceCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   useCreditsFormating: 1
 --- !u!1 &8744474717547291422
 GameObject:
@@ -1003,6 +1028,16 @@ PrefabInstance:
         type: 3}
       propertyPath: prefix
       value: '++ '
+      objectReference: {fileID: 0}
+    - target: {fileID: 2326454497563885614, guid: 1be4a5dd18f8f004dac12b62e140e223,
+        type: 3}
+      propertyPath: bounceScale
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2326454497563885614, guid: 1be4a5dd18f8f004dac12b62e140e223,
+        type: 3}
+      propertyPath: updateDuration
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2326454497563885614, guid: 1be4a5dd18f8f004dac12b62e140e223,
         type: 3}
@@ -1597,6 +1632,16 @@ PrefabInstance:
     - target: {fileID: 281517194067190376, guid: 1be4a5dd18f8f004dac12b62e140e223,
         type: 3}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2326454497563885614, guid: 1be4a5dd18f8f004dac12b62e140e223,
+        type: 3}
+      propertyPath: bounceScale
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2326454497563885614, guid: 1be4a5dd18f8f004dac12b62e140e223,
+        type: 3}
+      propertyPath: updateDuration
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2326454497563885614, guid: 1be4a5dd18f8f004dac12b62e140e223,
