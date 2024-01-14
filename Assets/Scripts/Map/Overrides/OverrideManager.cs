@@ -19,16 +19,32 @@ public class OverridesList {
 
 public class OverrideManager : MonoBehaviour {
 
+    public int nbBlocksBetweenOverrides = 20;
     public List<OverridesList> overridesLists;
 
     protected GameManager gm;
     protected MapManager map;
 
     protected Override currentOverride = null;
+    protected int nbBlocksCrossedSinceLastOverride;
 
     public void Initialize() {
         gm = GameManager.Instance;
+        InitializeBlocksCounter();
         InitializeOverride();
+    }
+
+    protected void InitializeBlocksCounter() {
+        nbBlocksCrossedSinceLastOverride = PrefsManager.GetInt(PrefsManager.NB_BLOCKS_CROSSED_SINCE_LAST_OVERRIDE, nbBlocksBetweenOverrides);
+        if(!gm.IsIR()) {
+            return;
+        }
+        gm.GetInfiniteMap().onBlocksCrossedNonStart.AddListener(IncrementNbBlockCrossed);
+    }
+
+    protected void IncrementNbBlockCrossed(int nbBlocksCrossed) {
+        nbBlocksCrossedSinceLastOverride += nbBlocksCrossed;
+        PrefsManager.SetInt(PrefsManager.NB_BLOCKS_CROSSED_SINCE_LAST_OVERRIDE, nbBlocksCrossedSinceLastOverride);
     }
 
     private void InitializeOverride() {
@@ -41,6 +57,12 @@ public class OverrideManager : MonoBehaviour {
         Debug.Log($"Using {currentOverride.name} this game!");
         currentOverride.Initialize();
         ApplyOverrideGlobalInitialization();
+        ResetNbBlocksCrossed();
+    }
+
+    protected void ResetNbBlocksCrossed() {
+        nbBlocksCrossedSinceLastOverride = 0;
+        PrefsManager.SetInt(PrefsManager.NB_BLOCKS_CROSSED_SINCE_LAST_OVERRIDE, 0);
     }
 
     private void ApplyOverrideGlobalInitialization() {
@@ -52,8 +74,9 @@ public class OverrideManager : MonoBehaviour {
         if(!SkillTreeManager.Instance.IsEnabled(SkillKey.UNLOCK_OVERRIDES)) {
             return false;
         }
-        float value = UnityEngine.Random.value;
-        return value < overridesLists.Select(o => o.probability).Sum();
+        //float value = UnityEngine.Random.value;
+        //return value < overridesLists.Select(o => o.probability).Sum();
+        return nbBlocksCrossedSinceLastOverride >= nbBlocksBetweenOverrides;
     }
 
     private GameObject SelectOverridePrefab() {

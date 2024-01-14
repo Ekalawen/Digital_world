@@ -99,6 +99,8 @@ public class InfiniteMap : MapManager {
     [HideInInspector]
     public UnityEvent<int> onBlocksCrossed;
     [HideInInspector]
+    public UnityEvent<int> onBlocksCrossedNonStart;
+    [HideInInspector]
     public UnityEvent<Block> onCreateBlock;
     [HideInInspector]
     public UnityEvent<Block> onBeforeInitializeBlock;
@@ -429,6 +431,7 @@ public class InfiniteMap : MapManager {
         int indice = allBlocks.IndexOf(block);
         if(indice > indiceCurrentAllBlocks) {
             int nbBlocksCrossed = indice - indiceCurrentAllBlocks;
+            int nbBlocksCrossedNonStart = Mathf.Max(indice, nbFirstBlocks) - Mathf.Max(indiceCurrentAllBlocks, nbFirstBlocks);
             LeaveCurrentBlock();
             AddBlockRun(nbBlocksCrossed);
 
@@ -454,6 +457,7 @@ public class InfiniteMap : MapManager {
             gm.timerManager.TryUpdatePhase(GetNonStartNbBlocksRun(), GetAvancementTotalForPhases());
 
             onBlocksCrossed.Invoke(nbBlocksCrossed);
+            onBlocksCrossedNonStart.Invoke(nbBlocksCrossedNonStart);
         }
     }
 
