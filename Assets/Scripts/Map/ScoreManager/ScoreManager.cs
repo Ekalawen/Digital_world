@@ -74,6 +74,9 @@ public abstract class ScoreManager : MonoBehaviour
     public abstract void OnNewTresholdCrossed();
 
     public virtual void OnWinGame() {
+        if(!SkillTreeManager.Instance.IsEnabled(SkillKey.EPIPHANIC_EXPLOIT)) {
+            return;
+        }
         int scoreGain = gm.goalManager.treshold;
         SetCurrentScore(currentScore + scoreGain);
         string scoreGainString = scoreDisplayerUpdater.ApplyToCreditsFormating(scoreGain);

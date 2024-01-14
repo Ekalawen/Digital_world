@@ -19,14 +19,15 @@ public enum SkillKey {
     QUADRATIC_TRESHOLDS = 8,
 
     // Left Skills
+    EPIPHANIC_EXPLOIT = 9,
 
     // Right Skills
     DASH_RESET_WHILE_ON_GROUND = 6,
     EXPLOSIVE_LANDING = 4,
 
     // Not created Skills
-    SPEED_BOOST_1 = 9,
-    UI_OVERRIDE_PREDICTOR = 10,
+    SPEED_BOOST_1 = 10,
+    UI_OVERRIDE_PREDICTOR = 11,
 }
 
 public class SkillTreeUpgrade : MonoBehaviour {
