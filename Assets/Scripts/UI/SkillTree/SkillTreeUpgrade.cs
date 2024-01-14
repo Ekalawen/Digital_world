@@ -22,12 +22,15 @@ public enum SkillKey {
     EPIPHANIC_EXPLOIT = 9,
 
     // Right Skills
+    QUICK_BOOT = 10,
+    DUAL_BOOT = 11,
+    CHRONO_BOOT = 12,
     DASH_RESET_WHILE_ON_GROUND = 6,
     EXPLOSIVE_LANDING = 4,
 
     // Not created Skills
-    SPEED_BOOST_1 = 10,
-    UI_OVERRIDE_PREDICTOR = 11,
+    SPEED_BOOST_1 = 13,
+    UI_OVERRIDE_PREDICTOR = 14,
 }
 
 public class SkillTreeUpgrade : MonoBehaviour {
