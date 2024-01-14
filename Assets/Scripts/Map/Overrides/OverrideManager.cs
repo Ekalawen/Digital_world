@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using UnityEngine.Events;
+using UnityEngine.Networking.NetworkSystem;
 
 [Serializable]
 public class OverrideWeight {
@@ -34,8 +35,12 @@ public class OverrideManager : MonoBehaviour {
         InitializeOverride();
     }
 
+    protected string GetNbBlocksKey() {
+        return StringHelper.GetKeyFor(PrefsManager.NB_BLOCKS_CROSSED_SINCE_LAST_OVERRIDE);
+    }
+
     protected void InitializeBlocksCounter() {
-        nbBlocksCrossedSinceLastOverride = PrefsManager.GetInt(PrefsManager.NB_BLOCKS_CROSSED_SINCE_LAST_OVERRIDE, nbBlocksBetweenOverrides);
+        nbBlocksCrossedSinceLastOverride = PrefsManager.GetInt(GetNbBlocksKey(), 0);
         if(!gm.IsIR()) {
             return;
         }
@@ -44,7 +49,7 @@ public class OverrideManager : MonoBehaviour {
 
     protected void IncrementNbBlockCrossed(int nbBlocksCrossed) {
         nbBlocksCrossedSinceLastOverride += nbBlocksCrossed;
-        PrefsManager.SetInt(PrefsManager.NB_BLOCKS_CROSSED_SINCE_LAST_OVERRIDE, nbBlocksCrossedSinceLastOverride);
+        PrefsManager.SetInt(GetNbBlocksKey(), nbBlocksCrossedSinceLastOverride);
     }
 
     private void InitializeOverride() {
@@ -62,7 +67,7 @@ public class OverrideManager : MonoBehaviour {
 
     protected void ResetNbBlocksCrossed() {
         nbBlocksCrossedSinceLastOverride = 0;
-        PrefsManager.SetInt(PrefsManager.NB_BLOCKS_CROSSED_SINCE_LAST_OVERRIDE, 0);
+        PrefsManager.SetInt(GetNbBlocksKey(), 0);
     }
 
     private void ApplyOverrideGlobalInitialization() {
