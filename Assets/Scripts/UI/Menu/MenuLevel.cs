@@ -107,7 +107,10 @@ public class MenuLevel : MonoBehaviour {
         nextPaths.Reverse();
         previousPaths.Reverse();
         for(int i = 0; i < nextPaths.Count; i++) {
-            SelectorPath nextPath = nextPaths[i];
+            if (nextPaths[i].GetPathType() == SelectorPath.TYPE.DIRECT) {
+                continue;
+            }
+            SelectorPath_Password nextPath = nextPaths[i] as SelectorPath_Password as SelectorPath_Password;
             float heightOffset = ComputeHeightOffset();
             Vector3 pos = fastUISystemNextTransform.transform.position + Vector3.up * heightOffset * (i - (nextPaths.Count - 1) / 2.0f);
             Quaternion rotation = Quaternion.LookRotation(fastUISystemNextTransform.transform.forward);
@@ -116,7 +119,10 @@ public class MenuLevel : MonoBehaviour {
         }
         fastUISystemNextTransform.gameObject.SetActive(nextPaths.Count > 0);
         for (int i = 0; i < previousPaths.Count; i++) {
-            SelectorPath previousPath = previousPaths[i];
+            if (previousPaths[i].GetPathType() == SelectorPath.TYPE.DIRECT) {
+                continue;
+            }
+            SelectorPath_Password previousPath = previousPaths[i] as SelectorPath_Password;
             float heightOffset = ComputeHeightOffset();
             Vector3 pos = fastUISystemPreviousTransform.transform.position + Vector3.up * heightOffset * (i - (previousPaths.Count - 1) / 2.0f);
             Quaternion rotation = Quaternion.LookRotation(fastUISystemPreviousTransform.transform.forward);
@@ -321,7 +327,7 @@ public class MenuLevel : MonoBehaviour {
     public string GetDataCountToString() {
         int dataCount = GetDataCount();
         SelectorLevel selectorLevel = selectorManager.GetLevelFromMenuLevel(this);
-        List<SelectorPath> outPaths = selectorManager.GetOutPaths(selectorLevel);
+        List<SelectorPath_Password> outPaths = selectorManager.GetOutPasswordPaths(selectorLevel);
         List<int> tresholds = outPaths.SelectMany(path => path.GetTresholds()).Distinct().OrderBy(n => n).ToList();
         tresholds.Add(int.MaxValue);
         int nextTreshold = tresholds.Find(t => t > dataCount);

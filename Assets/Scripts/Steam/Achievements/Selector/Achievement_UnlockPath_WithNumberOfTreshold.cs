@@ -15,15 +15,20 @@ public class Achievement_UnlockPath_WithNumberOfTreshold : Achievement_UnlockPat
     public int nbTresholdsUnlocked = 1;
 
     protected override void UnlockPath(SelectorPath selectorPath) {
+        SelectorPath_Password passwordPath = selectorPath.gameObject.GetComponent<SelectorPath_Password>();
+        if(!passwordPath) {
+            return;
+        }
+
         switch (mode) {
             case Mode.QUANTITY:
-                if(selectorPath.GetNbUnlockedTresholds() == nbTresholdsUnlocked) {
+                if(passwordPath.GetNbUnlockedTresholds() == nbTresholdsUnlocked) {
                     Unlock();
                 }
                 break;
             case Mode.MAX:
-                int nbTresholdsInLevel = selectorPath.GetTresholds().Count;
-                if(nbTresholdsInLevel >= 4 && selectorPath.GetNbUnlockedTresholds() == nbTresholdsInLevel) {
+                int nbTresholdsInLevel = passwordPath.GetTresholds().Count;
+                if(nbTresholdsInLevel >= 4 && passwordPath.GetNbUnlockedTresholds() == nbTresholdsInLevel) {
                     Unlock();
                 }
                 break;

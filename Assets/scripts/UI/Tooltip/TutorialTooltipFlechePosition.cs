@@ -47,7 +47,7 @@ public class TutorialTooltipFlechePosition : MonoBehaviour {
             }
             interestPoints = levels.Select(l => l.objectLevel.transform.position).ToList();
         } else if(flecheTrackingType == FlecheTrackingType.CADENAS) {
-            List<SelectorPath> paths = selectorManager.GetPaths();
+            List<SelectorPath_Password> paths = selectorManager.GetAllPasswordPaths();
             if(useSpecificIndice) {
                 paths = paths.FindAll(p => selectorManager.GetPathIndice(p) == specificIndice);
             }

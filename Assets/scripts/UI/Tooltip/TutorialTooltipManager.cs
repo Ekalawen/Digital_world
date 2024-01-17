@@ -165,7 +165,7 @@ public class TutorialTooltipManager : MonoBehaviour {
             DisplaySelectorTutorialTooltips();
         }
         if(keySuffix == GetKeySuffix(tutorialTooltipOpenDH)) {
-            DisplayPathOnOpenDHTutorialTooltips(selectorManager.GetPaths()[0]);
+            DisplayPathOnOpenDHTutorialTooltips(selectorManager.GetAllPasswordPaths()[0]);
         }
     }
 

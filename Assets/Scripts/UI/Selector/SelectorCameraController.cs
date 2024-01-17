@@ -229,7 +229,7 @@ public class SelectorCameraController : MonoBehaviour {
     }
 
     protected List<Vector3> GetCadenasPositions() {
-        return selectorManager.GetPaths().Select(p => p.cadena.transform.position).ToList();
+        return selectorManager.GetAllPasswordPaths().Select(p => p.cadena.transform.position).ToList();
     }
 
     protected Vector3 GetClosestInterestPoint(Vector3 pos) {
@@ -353,7 +353,7 @@ public class SelectorCameraController : MonoBehaviour {
         PlaceCameraInFrontOfInterestTransform(selectorManager.GetCurrentLevel().transform);
     }
 
-    public void PlaceCameraInFrontOfPath(SelectorPath path) {
+    public void PlaceCameraInFrontOfPath(SelectorPath_Password path) {
         PlaceCameraInFrontOfInterestPoint(path.cadena.transform.position);
     }
 

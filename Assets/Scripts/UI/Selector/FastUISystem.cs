@@ -35,14 +35,14 @@ public class FastUISystem : MonoBehaviour {
     public LocalizedString niveauString;
 
     protected SelectorManager selectorManager;
-    protected SelectorPath path;
+    protected SelectorPath_Password path;
     protected SelectorLevel level;
     protected FromType fromType;
     protected DirectionType directionType;
     protected Button unlockScreenButton = null;
     protected Button levelButton = null;
     
-    public void Initialize(SelectorPath path, DirectionType directionType, FromType fromType)
+    public void Initialize(SelectorPath_Password path, DirectionType directionType, FromType fromType)
     {
         selectorManager = SelectorManager.Instance;
         this.path = path;

@@ -141,61 +141,68 @@ public class SelectorLevel : MonoBehaviour {
 
     protected bool DisplayNewPallierMessageInfinite() {
         bool hasDisplayed = false;
-        if (menuLevel.HasJustMakeNewBestScore()) {
-            int bestScore = (int)menuLevel.GetBestScore();
-            int precedentBestScore = (int)menuLevel.GetPrecedentBestScore();
-            List<string> nextLevels = new List<string>();
-            List<int> nextTresholds = new List<int>();
-            List<SelectorPath> nextPaths = new List<SelectorPath>();
-            foreach (SelectorPath selectorPath in selectorManager.GetOutPaths(this)) {
-                List<int> tresholds = selectorPath.GetTresholds();
-                List<int> candidateTresholds = tresholds.FindAll(t => (t <= bestScore && t > precedentBestScore));
-                candidateTresholds.Sort();
-                if (candidateTresholds.Count > 0) {
-                    foreach (int candidateTreshold in candidateTresholds) {
-                        nextLevels.Add(selectorPath.endLevel.GetVisibleName());
-                        nextTresholds.Add(candidateTreshold);
-                        nextPaths.Add(selectorPath);
-                        selectorPath.HighlightPath(true);
-                    }
+        if (!menuLevel.HasJustMakeNewBestScore()) {
+            return hasDisplayed;
+        }
+
+        int bestScore = (int)menuLevel.GetBestScore();
+        int precedentBestScore = (int)menuLevel.GetPrecedentBestScore();
+        List<string> nextLevels = new List<string>();
+        List<int> nextTresholds = new List<int>();
+        List<SelectorPath> nextPaths = new List<SelectorPath>();
+        foreach (SelectorPath_Password selectorPath in selectorManager.GetOutPasswordPaths(this)) {
+            List<int> tresholds = selectorPath.GetTresholds();
+            List<int> candidateTresholds = tresholds.FindAll(t => (t <= bestScore && t > precedentBestScore));
+            candidateTresholds.Sort();
+            if (candidateTresholds.Count > 0) {
+                foreach (int candidateTreshold in candidateTresholds) {
+                    nextLevels.Add(selectorPath.endLevel.GetVisibleName());
+                    nextTresholds.Add(candidateTreshold);
+                    nextPaths.Add(selectorPath);
+                    selectorPath.HighlightPath(true);
                 }
             }
-            if (nextLevels.Count > 0) {
-                DisplayNewPallierMessage(nextTresholds, nextLevels, nextPaths);
-                hasDisplayed = true;
-                menuLevel.SetNotJustMakeNewBestScore();
-            }
+        }
+
+        if (nextLevels.Count > 0) {
+            DisplayNewPallierMessage(nextTresholds, nextLevels, nextPaths);
+            hasDisplayed = true;
+            menuLevel.SetNotJustMakeNewBestScore();
         }
         return hasDisplayed;
     }
 
     protected bool DisplayNewPallierMessageRegular() {
         bool hasDisplayed = false;
-        if (menuLevel.GetNbWins() > 0 && menuLevel.HasJustIncreaseDataCount()) {
-            List<int> tresholdUnlocked = new List<int>();
-            int currentDataCount = menuLevel.GetDataCount();
-            int precedentDataCount = menuLevel.GetPrecedentDataCount();
-            List<string> nextLevels = new List<string>();
-            List<SelectorPath> nextPaths = new List<SelectorPath>();
-            foreach (SelectorPath selectorPath in selectorManager.GetOutPaths(this)) {
-                List<int> tresholds = selectorPath.GetTresholds();
-                foreach(int treshold in tresholds) {
-                    if(treshold == 0 && precedentDataCount == 0
-                    || (precedentDataCount < treshold && treshold <= currentDataCount)) {
-                        nextLevels.Add(selectorPath.endLevel.GetVisibleName());
-                        tresholdUnlocked.Add(treshold);
-                        nextPaths.Add(selectorPath);
-                        selectorPath.HighlightPath(true);
-                    }
+        if (menuLevel.GetNbWins() <= 0 || !menuLevel.HasJustIncreaseDataCount()) {
+            return hasDisplayed;
+        }
+
+        List<int> tresholdUnlocked = new List<int>();
+        int currentDataCount = menuLevel.GetDataCount();
+        int precedentDataCount = menuLevel.GetPrecedentDataCount();
+        List<string> nextLevels = new List<string>();
+        List<SelectorPath> nextPaths = new List<SelectorPath>();
+        foreach (SelectorPath_Password selectorPath in selectorManager.GetOutPasswordPaths(this)) {
+            List<int> tresholds = selectorPath.GetTresholds();
+            foreach (int treshold in tresholds) {
+                if (treshold == 0 && precedentDataCount == 0
+                || (precedentDataCount < treshold && treshold <= currentDataCount)) {
+                    nextLevels.Add(selectorPath.endLevel.GetVisibleName());
+                    tresholdUnlocked.Add(treshold);
+                    nextPaths.Add(selectorPath);
+                    selectorPath.HighlightPath(true);
                 }
             }
-            if (nextLevels.Count > 0) {
-                DisplayNewPallierMessage(tresholdUnlocked, nextLevels, nextPaths);
-                hasDisplayed = true;
-                menuLevel.SetNotJustWin();
-                menuLevel.SetNotJustIncreaseDataCount();
-            }
         }
+
+        if (nextLevels.Count > 0) {
+            DisplayNewPallierMessage(tresholdUnlocked, nextLevels, nextPaths);
+            hasDisplayed = true;
+            menuLevel.SetNotJustWin();
+            menuLevel.SetNotJustIncreaseDataCount();
+        }
+
         return hasDisplayed;
     }
 
@@ -280,7 +287,7 @@ public class SelectorLevel : MonoBehaviour {
             menuLevel.SetNbWins(1);
             menuLevel.SetDataCount(maxTreshold);
             Debug.Log($"{GetNameId()} a maintenant {maxTreshold} de Data Count !");
-            List<SelectorPath> outPathOfVictoryType = selectorManager.GetOutPaths(this).FindAll(path => path.goalTresholds.type == GoalManager.GoalType.VICTORY);
+            List<SelectorPath_Password> outPathOfVictoryType = selectorManager.GetOutPasswordPaths(this).FindAll(path => path.goalTresholds.type == GoalManager.GoalType.VICTORY);
             if(outPathOfVictoryType.Count > 0) {
                 int nbWinsNeeded = outPathOfVictoryType.Select(p => p.goalTresholds.tresholds.Max()).Max();
                 menuLevel.SetNbWins(nbWinsNeeded);
@@ -295,7 +302,7 @@ public class SelectorLevel : MonoBehaviour {
     }
 
     protected int GetMaxTreshold() {
-        List<SelectorPath> paths = selectorManager.GetPaths().FindAll(p => p.startLevel == this);
+        List<SelectorPath_Password> paths = selectorManager.GetAllPasswordPaths().FindAll(p => p.startLevel == this);
         List<int> maxTresholds = paths.Select(p => p.GetMaxTreshold()).ToList();
         if(maxTresholds.Count == 0) {
             return 0;

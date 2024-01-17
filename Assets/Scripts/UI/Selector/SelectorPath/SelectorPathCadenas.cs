@@ -12,7 +12,7 @@ public class SelectorPathCadenas : MonoBehaviour {
     public Material materialFocused;
 
     [Header("Links")]
-    public SelectorPath selectorPath;
+    public SelectorPath_Password selectorPath;
     public Image cadenaOpen;
     public Image cadenaClosed;
     public Image background;

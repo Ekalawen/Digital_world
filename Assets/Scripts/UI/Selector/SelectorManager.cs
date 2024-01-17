@@ -139,8 +139,16 @@ public class SelectorManager : MonoBehaviour {
         return levels;
     }
 
-    public List<SelectorPath> GetPaths() {
+    public List<SelectorPath> GetAllPaths() {
         return paths;
+    }
+
+    public List<SelectorPath_Password> GetAllPasswordPaths() {
+        return ToPasswordPaths(GetAllPaths());
+    }
+
+    public List<SelectorPath_Direct> GetAllDirectPaths() {
+        return ToDirectPaths(GetAllPaths());
     }
 
     protected void GatherPaths() {
@@ -407,7 +415,7 @@ public class SelectorManager : MonoBehaviour {
         backAndDisplayCoroutine = StartCoroutine(CBackAndDisplayLevel(selectorLevel, instantDisplay));
     }
 
-    public void BackAndDisplayUnlockScreen(SelectorPath selectorPath, bool instantDisplay) {
+    public void BackAndDisplayUnlockScreen(SelectorPath_Password selectorPath, bool instantDisplay) {
         StopBackAndDisplayCoroutine();
         backAndDisplayCoroutine = StartCoroutine(CBackAndDisplayUnlockScreen(selectorPath, instantDisplay));
     }
@@ -429,7 +437,7 @@ public class SelectorManager : MonoBehaviour {
         DisplayLevel(selectorLevel, instantDisplay);
     }
 
-    public IEnumerator CBackAndDisplayUnlockScreen(SelectorPath selectorPath, bool instantDisplay) {
+    public IEnumerator CBackAndDisplayUnlockScreen(SelectorPath_Password selectorPath, bool instantDisplay) {
         BackToSelector(willReopen: true);
         hasLevelOpen = false; // Usefull while we are closing the VerticalMenu
         hasUnlockScreenOpen = true;
@@ -550,8 +558,32 @@ public class SelectorManager : MonoBehaviour {
         return paths.FindAll(p => p.startLevel == selectorLevel);
     }
 
+    public List<SelectorPath_Password> GetOutPasswordPaths(SelectorLevel selectorLevel) {
+        return ToPasswordPaths(GetOutPaths(selectorLevel));
+    }
+
+    public List<SelectorPath_Direct> GetOutDirectPaths(SelectorLevel selectorLevel) {
+        return ToDirectPaths(GetOutPaths(selectorLevel));
+    }
+
     public List<SelectorPath> GetInPaths(SelectorLevel selectorLevel) {
         return paths.FindAll(p => p.endLevel == selectorLevel);
+    }
+
+    public List<SelectorPath_Password> GetInPasswordPaths(SelectorLevel selectorLevel) {
+        return ToPasswordPaths(GetInPaths(selectorLevel));
+    }
+
+    public List<SelectorPath_Direct> GetInDirectPaths(SelectorLevel selectorLevel) {
+        return ToDirectPaths(GetInPaths(selectorLevel));
+    }
+
+    public List<SelectorPath_Password> ToPasswordPaths(List<SelectorPath> paths) {
+        return paths.FindAll(p => p.GetPathType() == SelectorPath.TYPE.PASSWORD).Select(p => (SelectorPath_Password)p).ToList();
+    }
+
+    public List<SelectorPath_Direct> ToDirectPaths(List<SelectorPath> paths) {
+        return paths.FindAll(p => p.GetPathType() == SelectorPath.TYPE.DIRECT).Select(p => (SelectorPath_Direct)p).ToList();
     }
 
     public SelectorLevel GetLevelFromMenuLevel(MenuLevel menuLevel) {

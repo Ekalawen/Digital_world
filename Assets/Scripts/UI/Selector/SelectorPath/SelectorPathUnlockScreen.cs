@@ -60,14 +60,14 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
 
     protected SelectorManager selectorManager;
     [HideInInspector]
-    public SelectorPath selectorPath;
+    public SelectorPath_Password selectorPath;
     protected Fluctuator cadenaAnimationFluctuator;
     protected Coroutine unlockAnimationCoroutine = null;
     protected List<GameObject> particlesToDestroy = new List<GameObject>();
     [HideInInspector]
     public UnityEvent onUseSupercheatedpassword;
 
-    public void Initialize(SelectorPath selectorPath, bool shouldHighlightDataHackees) {
+    public void Initialize(SelectorPath_Password selectorPath, bool shouldHighlightDataHackees) {
         this.selectorManager = SelectorManager.Instance;
         this.selectorPath = selectorPath;
         //SetBackgroundAccordingToLockState();
@@ -99,10 +99,10 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
     protected void InitializeCyclicDHButtons() {
         SelectorLevel nextLevel = selectorPath.endLevel;
         SelectorLevel previousLevel = selectorPath.startLevel;
-        List<SelectorPath> outPaths = selectorManager.GetOutPaths(previousLevel);
-        List<SelectorPath> inPaths = selectorManager.GetInPaths(nextLevel);
+        List<SelectorPath_Password> outPaths = selectorManager.GetOutPasswordPaths(previousLevel);
+        List<SelectorPath_Password> inPaths = selectorManager.GetInPasswordPaths(nextLevel);
         if(outPaths.Count > 1 || inPaths.Count > 1) {
-            List<SelectorPath> interestingPaths = Enumerable.Union(outPaths, inPaths).ToList();
+            List<SelectorPath_Password> interestingPaths = Enumerable.Union(outPaths, inPaths).ToList();
             int currentIndice = interestingPaths.FindIndex(p => p == selectorPath);
             InitOneCyclicDHButton(cyclicDHRightButton, interestingPaths[(currentIndice + 1) % interestingPaths.Count]);
             InitOneCyclicDHButton(cyclicDHLeftButton, interestingPaths[(currentIndice - 1 + interestingPaths.Count) % interestingPaths.Count]);
@@ -116,7 +116,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
         cyclicDHRightButton.gameObject.SetActive(false);
     }
 
-    protected void InitOneCyclicDHButton(Button cyclicDHButton, SelectorPath path) {
+    protected void InitOneCyclicDHButton(Button cyclicDHButton, SelectorPath_Password path) {
         cyclicDHButton.gameObject.SetActive(true);
         cyclicDHButton.onClick.RemoveAllListeners();
         cyclicDHButton.onClick.AddListener(path.OpenUnlockScreenInstant);
