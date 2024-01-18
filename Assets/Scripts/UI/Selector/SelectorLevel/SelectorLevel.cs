@@ -319,8 +319,12 @@ public class SelectorLevel : MonoBehaviour {
         DisplayInitialPopup();
     }
 
-    public bool HasCrossedCreditsTreshold(int treshold) {
+    public int GetTotalCreditsScore() {
         string key = GetNameId() + PrefsManager.TOTAL_CREDITS_SCORE;
-        return PrefsManager.GetInt(key, 0) >= treshold;
+        return PrefsManager.GetInt(key, 0);
+    }
+
+    public bool HasCrossedCreditsTreshold(int treshold) {
+        return GetTotalCreditsScore() >= treshold;
     }
 }
