@@ -33,10 +33,7 @@ public class ScoreManager_Quadratic : ScoreManager {
     }
 
     public override void OnNewBlockCrossed() {
-        SetCurrentScore(currentScore + scoreIncrement);
-        string scoreIncrementString = scoreDisplayerUpdater.ApplyToCreditsFormating(scoreIncrement);
-        scoreDisplayer.AddVolatileText($"+ {scoreIncrementString}", scoreDisplayer.GetTextColor());
-        scoreDisplayerUpdater.UpdateValue();
+        AddToScore(scoreIncrement);
     }
 
     public override void OnCatchData() {

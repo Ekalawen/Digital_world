@@ -86,10 +86,14 @@ public abstract class ScoreManager : MonoBehaviour
         if(!SkillTreeManager.Instance.IsEnabled(SkillKey.EPIPHANIC_EXPLOIT)) {
             return;
         }
-        int scoreGain = gm.goalManager.treshold;
-        SetCurrentScore(currentScore + scoreGain);
-        string scoreGainString = scoreDisplayerUpdater.ApplyToCreditsFormating(scoreGain);
-        scoreDisplayer.AddVolatileText($"+ {scoreGainString}", scoreDisplayer.GetTextColor());
+        AddToScore(gm.goalManager.treshold);
+    }
+
+    public void AddToScore(int value) {
+        SetCurrentScore(currentScore + value);
+        string scoreGainString = scoreDisplayerUpdater.ApplyToCreditsFormating(value);
+        string sign = value >= 0 ? "+" : "-";
+        scoreDisplayer.AddVolatileText($"{sign} {scoreGainString}", scoreDisplayer.GetTextColor());
         scoreDisplayerUpdater.UpdateValue();
     }
 
@@ -105,7 +109,7 @@ public abstract class ScoreManager : MonoBehaviour
         if(newValue == currentScore) {
             return;
         }
-        currentScore = newValue;
+        currentScore = Math.Max(0, newValue);
         onScoreChange.Invoke(currentScore);
     }
 

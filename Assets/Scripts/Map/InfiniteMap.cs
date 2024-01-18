@@ -497,6 +497,46 @@ public class InfiniteMap : MapManager {
         AddBlockRun(100);
     }
 
+    public void Add10Score() {
+        scoreManager.AddToScore(10);
+    }
+
+    public void Add100Score() {
+        scoreManager.AddToScore(100);
+    }
+
+    public void Add1000Score() {
+        scoreManager.AddToScore(1000);
+    }
+
+    public void Add10000Score() {
+        scoreManager.AddToScore(10000);
+    }
+
+    public void Add100000Score() {
+        scoreManager.AddToScore(100000);
+    }
+
+    public void Substract10Score() {
+        scoreManager.AddToScore(-10);
+    }
+
+    public void Substract100Score() {
+        scoreManager.AddToScore(-100);
+    }
+
+    public void Substract1000Score() {
+        scoreManager.AddToScore(-1000);
+    }
+
+    public void Substract10000Score() {
+        scoreManager.AddToScore(-10000);
+    }
+
+    public void Substract100000Score() {
+        scoreManager.AddToScore(-100000);
+    }
+
     protected void StartBlocksDestruction() {
         if (!startsBlockDestruction) {
             startsBlockDestruction = true;
