@@ -264,7 +264,7 @@ public class MenuLevel : MonoBehaviour {
         return PrefsManager.HasKey(key);
     }
 
-    public float GetBestScore() {
+    public float GetBestBlocksScore() {
         string key = GetNameId() + PrefsManager.BEST_BLOCKS_SCORE;
         return PrefsManager.GetFloat(key, 0);
     }
@@ -286,9 +286,9 @@ public class MenuLevel : MonoBehaviour {
 
     public string GetBestScoreToString() {
         if(GetLevelType() == LevelType.REGULAR)
-            return (HasBestScore()) ? GetBestScore().ToString("N2") : "null";
+            return (HasBestScore()) ? GetBestBlocksScore().ToString("N2") : "null";
         else
-            return (HasBestScore()) ? ((int)GetBestScore()).ToString() : "null";
+            return (HasBestScore()) ? ((int)GetBestBlocksScore()).ToString() : "null";
     }
 
     public int GetSinceLastBestScore() {
@@ -395,7 +395,7 @@ public class MenuLevel : MonoBehaviour {
     public void SetNotJustMakeNewBestScore() {
         string key = GetNameId() + PrefsManager.HAS_JUST_MAKE_BEST_BLOCKS_SCORE;
         PrefsManager.SetBool(key, false);
-        SetPrecedentBestScore(GetBestScore());
+        SetPrecedentBestScore(GetBestBlocksScore());
     }
 
     public bool HasAlreadyDiscoverLevel() {
@@ -419,7 +419,7 @@ public class MenuLevel : MonoBehaviour {
         if (GetLevelType() == LevelType.REGULAR) {
             return GetNbWins() > 0;
         } else {
-            return GetBestScore() > 0;
+            return GetBestBlocksScore() > 0;
         }
     }
 
@@ -514,6 +514,6 @@ public class MenuLevel : MonoBehaviour {
         if (levelType == MenuLevel.LevelType.REGULAR)
             return GetDataCount();
         else
-            return (int)GetBestScore();
+            return (int)GetBestBlocksScore();
     }
 }

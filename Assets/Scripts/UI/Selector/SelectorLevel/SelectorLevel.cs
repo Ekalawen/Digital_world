@@ -145,7 +145,7 @@ public class SelectorLevel : MonoBehaviour {
             return hasDisplayed;
         }
 
-        int bestScore = (int)menuLevel.GetBestScore();
+        int bestScore = (int)menuLevel.GetBestBlocksScore();
         int precedentBestScore = (int)menuLevel.GetPrecedentBestScore();
         List<string> nextLevels = new List<string>();
         List<int> nextTresholds = new List<int>();
@@ -317,5 +317,10 @@ public class SelectorLevel : MonoBehaviour {
     protected IEnumerator CDisplayInitialPopupIn(float time) {
         yield return new WaitForSeconds(time);
         DisplayInitialPopup();
+    }
+
+    public bool HasCrossedCreditsTreshold(int treshold) {
+        string key = GetNameId() + PrefsManager.TOTAL_CREDITS_SCORE;
+        return PrefsManager.GetInt(key, 0) >= treshold;
     }
 }

@@ -124,12 +124,6 @@ public abstract class SelectorPath : MonoBehaviour {
         }
     }
 
-    public void UnlockPath() {
-        string key = name + PrefsManager.IS_UNLOCKED_PATH;
-        PrefsManager.SetBool(key, true);
-        lineColorFluctuator.GoTo(1.0f, unlockScreen.dureeUnlockAnimation);
-    }
-
     public string GetVisibleName() {
         return $"{startLevel.GetVisibleName()} ==> {endLevel.GetVisibleName()}";
     }
@@ -138,12 +132,18 @@ public abstract class SelectorPath : MonoBehaviour {
         return $"{startLevel.GetNameId()} ==> {endLevel.GetNameId()}";
     }
 
-    public bool IsUnlocked() {
+    public virtual bool IsUnlocked() {
         string key = name + PrefsManager.IS_UNLOCKED_PATH;
         return PrefsManager.GetBool(key, false);
     }
 
-    public void LockPath() {
+    public virtual void UnlockPath() {
+        string key = name + PrefsManager.IS_UNLOCKED_PATH;
+        PrefsManager.SetBool(key, true);
+        lineColorFluctuator.GoTo(1.0f, unlockScreen.dureeUnlockAnimation);
+    }
+
+    public virtual void LockPath() {
         string key = name + PrefsManager.IS_UNLOCKED_PATH;
         PrefsManager.SetBool(key, false);
         Debug.Log($"{GetNameId()} locked !");

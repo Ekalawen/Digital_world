@@ -10,11 +10,18 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class SelectorPath_Direct : SelectorPath {
 
+    [Header("Unlock")]
+    public GoalManager startLevelGoalManager;
+
     public override void Initialize(SelectorPathUnlockScreen unlockScreen) {
         base.Initialize(unlockScreen);
     }
 
     public override TYPE GetPathType() {
         return TYPE.DIRECT;
+    }
+
+    public override bool IsUnlocked() {
+        return startLevel.HasCrossedCreditsTreshold(startLevelGoalManager.treshold);
     }
 }

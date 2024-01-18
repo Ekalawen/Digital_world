@@ -390,7 +390,7 @@ public class SelectorPathUnlockScreen : MonoBehaviour {
             case GoalManager.GoalType.DATA:
                 return selectorPath.startLevel.menuLevel.GetDataCount();
             case GoalManager.GoalType.BLOCK:
-                return (int)selectorPath.startLevel.menuLevel.GetBestScore();
+                return (int)selectorPath.startLevel.menuLevel.GetBestBlocksScore();
             case GoalManager.GoalType.VICTORY:
                 return selectorPath.startLevel.menuLevel.GetNbWins();
             default:
