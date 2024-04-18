@@ -77,16 +77,19 @@ public class Console : MonoBehaviour {
     public float pouvoirZoomInDuration = 1.5f;
     public AnimationCurve pouvoirZoomInCurve;
 
+    [Header("EndLevelScreen")]
+    public GameObject endLevelScreen;
+    public GameObject deathAstuce;
+    public GameObject escapeButton; // Le truc qui clignote pour nous dire d'appuyer sur Escape à la fin du jeu !
+    public TMP_Text escapeButtonText;
+
     [Header("Links")]
 	public GameObject consoleBackground; // Là où l'on va afficher les lignes
 	public TMP_Text importantText; // Là où l'on affiche les informations importantes
-    public GameObject escapeButton; // Le truc qui clignote pour nous dire d'appuyer sur Escape à la fin du jeu !
-    public TMP_Text escapeButtonText;
     public GameObject pauseMenu;
     public MenuOptions optionsMenu;
     public CounterDisplayer dataCountDisplayer;
     public FrameRateManager frameRateManager;
-    public GameObject deathAstuce;
     public GameObject selectorManagerPrefab; // Used to know if it is a demo or not ! x)
     public TexteExplicatif popup;
     public LevelProgressBar progressBar;
@@ -145,8 +148,13 @@ public class Console : MonoBehaviour {
         ToggleUIVisibilityBasedOnSaver();
         InitializePauseMenu();
         progressBar.Initialize();
+        InitializeEndLevelScreen();
 
         StartCoroutine(CInitialize());
+    }
+
+    protected void InitializeEndLevelScreen() {
+        endLevelScreen.SetActive(false);
     }
 
     protected void InitializePauseMenu() {
@@ -805,79 +813,92 @@ public class Console : MonoBehaviour {
 
 	// Lorsque le joueur a été bloqué par les drones
 	public void LoseGame(EventManager.DeathReason reason) {
+        endLevelScreen.SetActive(true);
+        MouseDisplayer.Instance.ShowCursor();
+        DisplayYouDied();
+        //DisplayDeathReason(reason);
+        DisplayEscapeButton();
+        //DisplayDeathAstuces(); // Desactivated
+        StartCoroutine(SeMoquer());
+    }
+
+    public void RestartGameFromButton() {
+        gm.RestartGame();
+    }
+
+    private void DisplayYouDied() {
+        AjouterMessageImportant(strings.deathTimeOut1, Console.TypeText.RED_TEXT, 5.0f);
+    }
+
+    private void DisplayDeathReason(EventManager.DeathReason reason) {
         float timeDeathMessage = 5;
-        switch(reason) {
+        switch (reason) {
             case EventManager.DeathReason.TIME_OUT:
-                AjouterMessageImportant (strings.deathTimeOut2, Console.TypeText.RED_TEXT, timeDeathMessage);
-                AjouterMessageImportant (strings.deathTimeOut1, Console.TypeText.RED_TEXT, timeDeathMessage);
+                AjouterMessageImportant(strings.deathTimeOut2, Console.TypeText.RED_TEXT, timeDeathMessage);
+                AjouterMessageImportant(strings.deathTimeOut1, Console.TypeText.RED_TEXT, timeDeathMessage);
                 break;
             case EventManager.DeathReason.FALL_OUT:
-                AjouterMessageImportant (strings.deathFallOut2, Console.TypeText.RED_TEXT, timeDeathMessage);
-                AjouterMessageImportant (strings.deathFallOut1, Console.TypeText.RED_TEXT, timeDeathMessage);
+                AjouterMessageImportant(strings.deathFallOut2, Console.TypeText.RED_TEXT, timeDeathMessage);
+                AjouterMessageImportant(strings.deathFallOut1, Console.TypeText.RED_TEXT, timeDeathMessage);
                 break;
             case EventManager.DeathReason.CAPTURED:
-                AjouterMessageImportant (strings.deathCaptured2, Console.TypeText.RED_TEXT, timeDeathMessage);
-                AjouterMessageImportant (strings.deathCaptured1, Console.TypeText.RED_TEXT, timeDeathMessage);
+                AjouterMessageImportant(strings.deathCaptured2, Console.TypeText.RED_TEXT, timeDeathMessage);
+                AjouterMessageImportant(strings.deathCaptured1, Console.TypeText.RED_TEXT, timeDeathMessage);
                 break;
             case EventManager.DeathReason.TOUCHED_DEATH_CUBE:
-                AjouterMessageImportant (strings.deathTouchedDeathCube2, Console.TypeText.RED_TEXT, timeDeathMessage);
-                AjouterMessageImportant (strings.deathTouchedDeathCube1, Console.TypeText.RED_TEXT, timeDeathMessage);
+                AjouterMessageImportant(strings.deathTouchedDeathCube2, Console.TypeText.RED_TEXT, timeDeathMessage);
+                AjouterMessageImportant(strings.deathTouchedDeathCube1, Console.TypeText.RED_TEXT, timeDeathMessage);
                 break;
             case EventManager.DeathReason.TOUCHED_BOUNCY_CUBE:
-                AjouterMessageImportant (strings.deathTouchedBouncyCube2, Console.TypeText.RED_TEXT, timeDeathMessage);
-                AjouterMessageImportant (strings.deathTouchedBouncyCube1, Console.TypeText.RED_TEXT, timeDeathMessage);
+                AjouterMessageImportant(strings.deathTouchedBouncyCube2, Console.TypeText.RED_TEXT, timeDeathMessage);
+                AjouterMessageImportant(strings.deathTouchedBouncyCube1, Console.TypeText.RED_TEXT, timeDeathMessage);
                 break;
             case EventManager.DeathReason.POUVOIR_COST:
-                AjouterMessageImportant (strings.deathPouvoirCost2, Console.TypeText.RED_TEXT, timeDeathMessage);
-                AjouterMessageImportant (strings.deathPouvoirCost1, Console.TypeText.RED_TEXT, timeDeathMessage);
+                AjouterMessageImportant(strings.deathPouvoirCost2, Console.TypeText.RED_TEXT, timeDeathMessage);
+                AjouterMessageImportant(strings.deathPouvoirCost1, Console.TypeText.RED_TEXT, timeDeathMessage);
                 break;
             case EventManager.DeathReason.OUT_OF_BLOCKS:
-                AjouterMessageImportant (strings.deathOutOfBlocks2, Console.TypeText.RED_TEXT, timeDeathMessage);
-                AjouterMessageImportant (strings.deathOutOfBlocks1, Console.TypeText.RED_TEXT, timeDeathMessage);
+                AjouterMessageImportant(strings.deathOutOfBlocks2, Console.TypeText.RED_TEXT, timeDeathMessage);
+                AjouterMessageImportant(strings.deathOutOfBlocks1, Console.TypeText.RED_TEXT, timeDeathMessage);
                 break;
             case EventManager.DeathReason.FAILED_JUMP_EVENT:
-                AjouterMessageImportant (strings.deathFailedJumpEvent2, Console.TypeText.RED_TEXT, timeDeathMessage);
-                AjouterMessageImportant (strings.deathFailedJumpEvent1, Console.TypeText.RED_TEXT, timeDeathMessage);
+                AjouterMessageImportant(strings.deathFailedJumpEvent2, Console.TypeText.RED_TEXT, timeDeathMessage);
+                AjouterMessageImportant(strings.deathFailedJumpEvent1, Console.TypeText.RED_TEXT, timeDeathMessage);
                 break;
             case EventManager.DeathReason.SONDE_HIT:
-                AjouterMessageImportant (strings.deathSondeHit2, Console.TypeText.RED_TEXT, timeDeathMessage);
-                AjouterMessageImportant (strings.deathSondeHit1, Console.TypeText.RED_TEXT, timeDeathMessage);
+                AjouterMessageImportant(strings.deathSondeHit2, Console.TypeText.RED_TEXT, timeDeathMessage);
+                AjouterMessageImportant(strings.deathSondeHit1, Console.TypeText.RED_TEXT, timeDeathMessage);
                 break;
             case EventManager.DeathReason.TRACER_HIT:
-                AjouterMessageImportant (strings.deathTracerHit2, Console.TypeText.RED_TEXT, timeDeathMessage);
-                AjouterMessageImportant (strings.deathTracerHit1, Console.TypeText.RED_TEXT, timeDeathMessage);
+                AjouterMessageImportant(strings.deathTracerHit2, Console.TypeText.RED_TEXT, timeDeathMessage);
+                AjouterMessageImportant(strings.deathTracerHit1, Console.TypeText.RED_TEXT, timeDeathMessage);
                 break;
             case EventManager.DeathReason.TRACER_BLAST:
-                AjouterMessageImportant (strings.deathTracerBlast2, Console.TypeText.RED_TEXT, timeDeathMessage);
-                AjouterMessageImportant (strings.deathTracerBlast1, Console.TypeText.RED_TEXT, timeDeathMessage);
+                AjouterMessageImportant(strings.deathTracerBlast2, Console.TypeText.RED_TEXT, timeDeathMessage);
+                AjouterMessageImportant(strings.deathTracerBlast1, Console.TypeText.RED_TEXT, timeDeathMessage);
                 break;
             case EventManager.DeathReason.FLIRD_HIT:
-                AjouterMessageImportant (strings.deathFlirdHit2, Console.TypeText.RED_TEXT, timeDeathMessage);
-                AjouterMessageImportant (strings.deathFlirdHit1, Console.TypeText.RED_TEXT, timeDeathMessage);
+                AjouterMessageImportant(strings.deathFlirdHit2, Console.TypeText.RED_TEXT, timeDeathMessage);
+                AjouterMessageImportant(strings.deathFlirdHit1, Console.TypeText.RED_TEXT, timeDeathMessage);
                 break;
             case EventManager.DeathReason.FIRST_BOSS_BLAST:
-                AjouterMessageImportant (strings.deathFirstBossBlast2, Console.TypeText.RED_TEXT, timeDeathMessage);
-                AjouterMessageImportant (strings.deathFirstBossBlast1, Console.TypeText.RED_TEXT, timeDeathMessage);
+                AjouterMessageImportant(strings.deathFirstBossBlast2, Console.TypeText.RED_TEXT, timeDeathMessage);
+                AjouterMessageImportant(strings.deathFirstBossBlast1, Console.TypeText.RED_TEXT, timeDeathMessage);
                 break;
             case EventManager.DeathReason.FIRST_BOSS_HIT:
-                AjouterMessageImportant (strings.deathFirstBossHit2, Console.TypeText.RED_TEXT, timeDeathMessage);
-                AjouterMessageImportant (strings.deathFirstBossHit1, Console.TypeText.RED_TEXT, timeDeathMessage);
+                AjouterMessageImportant(strings.deathFirstBossHit2, Console.TypeText.RED_TEXT, timeDeathMessage);
+                AjouterMessageImportant(strings.deathFirstBossHit1, Console.TypeText.RED_TEXT, timeDeathMessage);
                 break;
             case EventManager.DeathReason.SOUL_ROBBER_ASPIRATION:
-                AjouterMessageImportant (strings.deathSoulRobberAspiration2, Console.TypeText.RED_TEXT, timeDeathMessage);
-                AjouterMessageImportant (strings.deathSoulRobberAspiration1, Console.TypeText.RED_TEXT, timeDeathMessage);
+                AjouterMessageImportant(strings.deathSoulRobberAspiration2, Console.TypeText.RED_TEXT, timeDeathMessage);
+                AjouterMessageImportant(strings.deathSoulRobberAspiration1, Console.TypeText.RED_TEXT, timeDeathMessage);
                 break;
             case EventManager.DeathReason.SECOND_BOSS_LASER:
-                AjouterMessageImportant (strings.deathSecondBossLaser2, Console.TypeText.RED_TEXT, timeDeathMessage);
-                AjouterMessageImportant (strings.deathSecondBossLaser1, Console.TypeText.RED_TEXT, timeDeathMessage);
+                AjouterMessageImportant(strings.deathSecondBossLaser2, Console.TypeText.RED_TEXT, timeDeathMessage);
+                AjouterMessageImportant(strings.deathSecondBossLaser1, Console.TypeText.RED_TEXT, timeDeathMessage);
                 break;
         }
-        DisplayEscapeButton();
-        if (gm.eventManager.ShouldQuitOrReload() == EventManager.QuitType.RELOAD) {
-            DisplayDeathAstuces();
-        }
-		StartCoroutine (SeMoquer());
-	}
+    }
 
     // On se moque de lui
     IEnumerator SeMoquer() {
@@ -1222,12 +1243,23 @@ public class Console : MonoBehaviour {
         allyPrefix = allyPrefixLocalizedString.GetLocalizedString().Result;
     }
 
+    public void TogglePauseMenu() {
+        if (pauseMenu.activeSelf) {
+            ClosePauseMenu();
+            return;
+        }
+        OpenPauseMenu();
+    }
+
     public void OpenPauseMenu() {
         pauseMenu.SetActive(IsConsoleVisible());
     }
 
     public void ClosePauseMenu() {
         pauseMenu.SetActive(false);
+        if(eventManager.IsGameOver()) {
+            MouseDisplayer.Instance.ShowCursor();
+        }
     }
 
     public void SetDataCountText(int dataCount) {
@@ -1399,7 +1431,9 @@ public class Console : MonoBehaviour {
     }
 
     public void DisplayDeathAstuces() {
-        StartCoroutine(CDisplayDeathAstuces());
+        if (gm.eventManager.ShouldQuitOrReload() == EventManager.QuitType.RELOAD) {
+            StartCoroutine(CDisplayDeathAstuces());
+        }
     }
 
     public IEnumerator CDisplayDeathAstuces() {

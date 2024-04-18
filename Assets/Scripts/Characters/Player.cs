@@ -26,6 +26,7 @@ public class Player : Character {
 	public float dureeMurWithUpgrade; // le temps que l'on peut rester accroché au mur
 	public float distanceMurMax; // la distance maximale de laquelle on peut s'éloigner du mur
     public float sensibilite; // la sensibilité de la souris
+    public float sensibiliteCoefAtEndLevel = 0.1f;
     public float dureeCanJumpAfterFalling = 0.1f; // La durée pendant laquelle on peut encore sauter si on vient de tomber depuis l'état AU_SOL
 
     [Header("Shift Landing")]
@@ -273,6 +274,9 @@ public class Player : Character {
 
         // On mesure la rotation que l'on veut faire
         Vector2 currentRotation = inputManager.GetCameraMouvement() * sensibilite;
+        if(gm.eventManager.IsGameOver()) {
+            currentRotation *= sensibiliteCoefAtEndLevel;
+        }
 
         // On précalcul les principaux vecteurs
         Vector3 up = gm.gravityManager.Up();

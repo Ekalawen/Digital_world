@@ -192,8 +192,7 @@ public class GameManager : MonoBehaviour {
         if (inputManager.GetPauseGame()) {
             if (!isPaused) {
                 if (eventManager.IsGameOver()) {
-                    SaveGameResultIfQuitBeforeEnding();
-                    eventManager.QuitOrReload();
+                    console.TogglePauseMenu();
                 } else {
                     Pause();
                 }
@@ -222,19 +221,19 @@ public class GameManager : MonoBehaviour {
         if (!inputManager.GetSkillTreeInput()) {
             return;
         }
-        if (eventManager.IsGameOver()) {
-            return;
-        }
         PauseMenu pauseMenu = console.GetPauseMenu();
         if (!pauseMenu.IsSkillTreeOpen()) {
-            Pause();
+            if (!eventManager.IsGameOver()) {
+                Pause();
+            }
             pauseMenu.OpenSkillTree();
         } else {
             pauseMenu.CloseSkillTree();
-            UnPause();
+            if (!eventManager.IsGameOver()) {
+                UnPause();
+            }
         }
     }
-
 
     public void Pause() {
         isPaused = true;
