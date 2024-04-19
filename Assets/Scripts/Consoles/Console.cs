@@ -78,10 +78,7 @@ public class Console : MonoBehaviour {
     public AnimationCurve pouvoirZoomInCurve;
 
     [Header("EndLevelScreen")]
-    public GameObject endLevelScreen;
-    public GameObject deathAstuce;
-    public GameObject escapeButton; // Le truc qui clignote pour nous dire d'appuyer sur Escape à la fin du jeu !
-    public TMP_Text escapeButtonText;
+    public EndLevelScreen endLevelScreen;
 
     [Header("Links")]
 	public GameObject consoleBackground; // Là où l'on va afficher les lignes
@@ -92,8 +89,6 @@ public class Console : MonoBehaviour {
     public FrameRateManager frameRateManager;
     public GameObject selectorManagerPrefab; // Used to know if it is a demo or not ! x)
     public TexteExplicatif popup;
-    public LevelProgressBar progressBar;
-
 
     [HideInInspector]
 	public GameManager gm;
@@ -147,14 +142,13 @@ public class Console : MonoBehaviour {
         DisplayOrNotConsole();
         ToggleUIVisibilityBasedOnSaver();
         InitializePauseMenu();
-        progressBar.Initialize();
         InitializeEndLevelScreen();
 
         StartCoroutine(CInitialize());
     }
 
     protected void InitializeEndLevelScreen() {
-        endLevelScreen.SetActive(false);
+        endLevelScreen.Initialize();
     }
 
     protected void InitializePauseMenu() {
@@ -791,7 +785,7 @@ public class Console : MonoBehaviour {
             AjouterMessageImportant(customWinMessage, Console.TypeText.BLUE_TEXT, 5);
         }
         AjouterMessageImportant(strings.winGameImportant, Console.TypeText.BLUE_TEXT, 5);
-        DisplayEscapeButton();
+        endLevelScreen.Open();
 		StartCoroutine (Recompenser ());
 	}
 
@@ -817,12 +811,10 @@ public class Console : MonoBehaviour {
 
 	// Lorsque le joueur a été bloqué par les drones
 	public void LoseGame(EventManager.DeathReason reason) {
-        endLevelScreen.SetActive(true);
+        endLevelScreen.Open();
         MouseDisplayer.Instance.ShowCursor();
         //DisplayYouDied();
         DisplayDeathReason(reason);
-        DisplayEscapeButton();
-        //DisplayDeathAstuces(); // Desactivated
         StartCoroutine(SeMoquer());
     }
 
@@ -1219,17 +1211,6 @@ public class Console : MonoBehaviour {
         AjouterMessage(strings.jumpStunConsole, TypeText.RED_TEXT);
     }
 
-    public void DisplayEscapeButton() {
-        escapeButton.SetActive(IsConsoleVisible());
-        if (gm.eventManager.ShouldQuitOrReload() == EventManager.QuitType.RELOAD) {
-            string binding = InputManager.Instance.GetCurrentInputController().GetStringForBinding(MessageZoneBindingParameters.Bindings.RESTART);
-            escapeButtonText.text = strings.restartButtonRestart.GetLocalizedString(binding).Result;
-        } else {
-            string binding = InputManager.Instance.GetCurrentInputController().GetStringForBinding(MessageZoneBindingParameters.Bindings.PAUSE);
-            escapeButtonText.text = strings.restartButtonContinue.GetLocalizedString(binding).Result;
-        }
-    }
-
     public void NotifyPlayerToPressShift() {
         string bindingArgument = InputManager.Instance.GetCurrentInputController().GetStringForBinding(MessageZoneBindingParameters.Bindings.SHIFT);
 
@@ -1257,7 +1238,7 @@ public class Console : MonoBehaviour {
     }
 
     public void OpenPauseMenu() {
-        pauseMenu.SetActive(IsConsoleVisible());
+        pauseMenu.SetActive(IsVisible());
     }
 
     public void ClosePauseMenu() {
@@ -1361,7 +1342,7 @@ public class Console : MonoBehaviour {
         frameRateManager.Tick();
     }
 
-    public bool IsConsoleVisible() {
+    public bool IsVisible() {
         return isConsoleVisible;
     }
 
@@ -1372,7 +1353,7 @@ public class Console : MonoBehaviour {
         dataCountDisplayer.gameObject.SetActive(isVisible);
         frameRateManager.SetVisibility(isVisible && PrefsManager.GetBool(PrefsManager.FPS_COUNTER, MenuOptions.defaultFpsCounter));
         pouvoirsCanvas.SetActive(isVisible);
-        escapeButton.SetActive(isVisible && gm.eventManager.IsGameOver());
+        endLevelScreen.SetOpen(isVisible && gm.eventManager.IsGameOver());
         pauseMenu.SetActive(isVisible && gm.IsPaused());
         if (gm.GetMapType() == MenuLevel.LevelType.REGULAR) {
             gm.timerManager.timerDisplayer.gameObject.SetActive(isVisible);
@@ -1433,24 +1414,6 @@ public class Console : MonoBehaviour {
         if(uiVisibilitySaver != null) {
             SetUIVisibilityTo(uiVisibilitySaver.uIVisibility);
         }
-    }
-
-    public void DisplayDeathAstuces() {
-        if (gm.eventManager.ShouldQuitOrReload() == EventManager.QuitType.RELOAD) {
-            StartCoroutine(CDisplayDeathAstuces());
-        }
-    }
-
-    public IEnumerator CDisplayDeathAstuces() {
-        deathAstuce.SetActive(true);
-        string conseilKey = StringHelper.GetKeyFor(PrefsManager.CONSEIL_INDICE);
-        int conseilIndice = PrefsManager.GetInt(conseilKey, 0);
-        PrefsManager.SetInt(conseilKey, (conseilIndice + 1) % conseils.Count);
-        yield return CComputeConseil(conseilIndice);
-        string conseil = computedConseil;
-        TMP_Text text = deathAstuce.GetComponentInChildren<TMP_Text>();
-        text.text = text.text.Substring(0, text.text.Count() - 1) + " "; // Delete ending '\n'
-        text.text += conseil;
     }
 
     public void ZoomInPouvoir(PouvoirDisplayInGame pouvoirDisplay) {

@@ -26,29 +26,22 @@ public class LevelProgressBar : MonoBehaviour {
 
     protected GameManager gm;
     protected int maxValue;
+    protected int currentValue;
     protected Fluctuator valueFluctuator;
     protected bool hasPlayMaxValueParticles = false;
     protected float startAvancement;
     protected float displayedAvancement;
 
-    public void Initialize() {
+    public void Initialize(int maxValue) {
         gm = GameManager.Instance;
-        InitializeProgressBar();
-    }
-
-    protected void InitializeProgressBar() {
-        holder.SetActive(gm.IsIR());
-        if (!gm.IsIR()) {
-            return;
-        }
-        valueFluctuator = new Fluctuator(this, GetProgressBarValue, SetProgressBarValue);
-        maxValue = gm.goalManager.GetTreshold();
-        displayedAvancement = 0.0f;
+        holder.SetActive(true);
+        valueFluctuator = new Fluctuator(this, GetProgressBarDisplayedAvancement, SetProgressBarValue);
+        this.maxValue = maxValue;
+        currentValue = 0;
         startAvancement = GetCurrentAvancement();
         totalText.text = StringHelper.ToCreditsShortFormat(maxValue);
         fillerImage.material = new Material(fillerImage.material);
-        valueFluctuator.GoTo(GetCurrentAvancement(), changeValueDuration);
-        gm.GetInfiniteMap().scoreManager.onScoreChange.AddListener(v => UpdateProgressBarValue());
+        SetProgressBarValue(avancement: 0.0f);
         PlayParticlesOnValueChange(0);
     }
 
@@ -59,8 +52,16 @@ public class LevelProgressBar : MonoBehaviour {
     }
 
     protected float GetCurrentAvancement() {
-        float currentValue = gm.goalManager.GetCurrentTotalCreditScore();
-        return currentValue / maxValue;
+        return (float)currentValue / maxValue;
+    }
+
+    protected float GetProgressBarDisplayedAvancement() {
+        return displayedAvancement;
+    }
+
+    public void SetCurrentValue(int value) {
+        currentValue = value;
+        UpdateProgressBarValue();
     }
 
     protected void SetProgressBarValue(float avancement) {
@@ -75,17 +76,13 @@ public class LevelProgressBar : MonoBehaviour {
 
     protected void PlayParticlesOnValueChange(float avancement) {
         if (avancement < 1.0f && startAvancement < 1.0f) {
-            float gainQuantity = maxValue * (avancement - GetProgressBarValue());
+            float gainQuantity = maxValue * (avancement - GetProgressBarDisplayedAvancement());
             PlayParticles(onValueChangeParticlesHolderPrefab, gainQuantity);
         }
         if (avancement >= 1.0f && startAvancement < 1.0f && !hasPlayMaxValueParticles) {
             hasPlayMaxValueParticles = true;
             PlayParticles(onReachMaxValueParticlesHolderPrefab, -1);
         }
-    }
-
-    protected float GetProgressBarValue() {
-        return displayedAvancement;
     }
 
     protected void PlayParticles(GameObject particlesHolderPrefab, float gainQuantity) {
