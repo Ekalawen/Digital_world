@@ -84,11 +84,13 @@ public class MenuOptions : MonoBehaviour {
     public LocalizedString graphismsTitle;
     public LocalizedString languageTitle;
 
+    protected bool isRunning = false;
     protected bool hasPanelOpen = false;
     protected GameManager gm;
     protected float titleTextFontSize;
 
     public void Run() {
+        isRunning = true;
         if(isInGame) {
             gm = GameManager.Instance;
         }
@@ -101,7 +103,9 @@ public class MenuOptions : MonoBehaviour {
 
         OnMusicVolumeChange(PrefsManager.GetFloat(PrefsManager.MUSIC_VOLUME, defaultMusicVolume));
         OnSoundVolumeChange(PrefsManager.GetFloat(PrefsManager.SOUND_VOLUME, defaultSoundVolume));
+
         OnMouseSpeedChange(PrefsManager.GetFloat(PrefsManager.MOUSE_SPEED, defaultMouseSpeed));
+
         OnLuminosityChange(PrefsManager.GetFloat(PrefsManager.LUMINOSITY, defaultLuminosity));
         OnJumpWarpActivationPress(PrefsManager.GetBool(PrefsManager.JUMP_WARP, defaultJumpWarpActivation));
         OnWallWarpActivationPress(PrefsManager.GetBool(PrefsManager.WALL_WARP, defaultWallWarpActivation));
@@ -151,6 +155,7 @@ public class MenuOptions : MonoBehaviour {
     }
 
     protected void BackFromOptions() {
+        isRunning = false;
         PlayerPrefs.Save();
         menuPrecedent.SetActive(true);
         menuOptions.SetActive(false);
@@ -161,6 +166,7 @@ public class MenuOptions : MonoBehaviour {
     }
 
     public void OnMusicVolumeChange(float newVal) {
+        if (!isRunning) return;
         PrefsManager.SetFloat(PrefsManager.MUSIC_VOLUME, newVal);
         sliderMusic.value = newVal;
         sliderMusic.GetComponent<SliderScript>().OnChange(newVal);
@@ -173,6 +179,7 @@ public class MenuOptions : MonoBehaviour {
     }
 
     public void OnSoundVolumeChange(float newVal) {
+        if (!isRunning) return;
         float oldVal = PrefsManager.GetFloat(PrefsManager.SOUND_VOLUME, defaultSoundVolume);
         PrefsManager.SetFloat(PrefsManager.SOUND_VOLUME, newVal);
         sliderSon.value = newVal;
@@ -188,6 +195,8 @@ public class MenuOptions : MonoBehaviour {
     }
 
     public void OnMouseSpeedChange(float newVal) {
+        if (!isRunning) return;
+        Debug.Log($"Speed changed to {newVal} !!!");
         PrefsManager.SetFloat(PrefsManager.MOUSE_SPEED, newVal);
         sliderMouse.value = newVal;
         sliderMouse.GetComponent<SliderScript>().OnChange(newVal);
@@ -197,6 +206,7 @@ public class MenuOptions : MonoBehaviour {
     }
 
     public void OnLuminosityChange(float newVal) {
+        if (!isRunning) return;
         PrefsManager.SetFloat(PrefsManager.LUMINOSITY, newVal);
         sliderLuminosity.value = newVal;
         sliderLuminosity.GetComponent<SliderScript>().OnChange(newVal);
@@ -210,6 +220,7 @@ public class MenuOptions : MonoBehaviour {
     }
 
     public void OnWallWarpActivationPress(bool active) {
+        if (!isRunning) return;
         PrefsManager.SetBool(PrefsManager.WALL_WARP, active);
         toggleWallWarp.isOn = active;
         if(isInGame && !active) {
@@ -218,6 +229,7 @@ public class MenuOptions : MonoBehaviour {
     }
 
     public void OnWallDistorsionActivationPress(bool active) {
+        if (!isRunning) return;
         PrefsManager.SetBool(PrefsManager.WALL_DISTORSION, active);
         toggleWallDistorsion.isOn = active;
         if(isInGame && !active) {
@@ -226,11 +238,13 @@ public class MenuOptions : MonoBehaviour {
     }
 
     public void OnJumpWarpActivationPress(bool active) {
+        if (!isRunning) return;
         PrefsManager.SetBool(PrefsManager.JUMP_WARP, active);
         toggleJumpWarp.isOn = active;
     }
 
     public void OnShiftWarpActivationPress(bool active) {
+        if (!isRunning) return;
         PrefsManager.SetBool(PrefsManager.SHIFT_WARP, active);
         toggleShiftWarp.isOn = active;
         if(isInGame && !active) {
@@ -239,6 +253,7 @@ public class MenuOptions : MonoBehaviour {
     }
 
     public void OnTimeScaleEffectActivationPress(bool active) {
+        if (!isRunning) return;
         PrefsManager.SetBool(PrefsManager.TIME_SCALE_EFFECT, active);
         toggleTimeScaleEffect.isOn = active;
         if(isInGame) {
@@ -247,11 +262,13 @@ public class MenuOptions : MonoBehaviour {
     }
 
     public void OnConseilOnStartPress(bool active) {
+        if (!isRunning) return;
         PrefsManager.SetBool(PrefsManager.ADVICE_ON_START, active);
         conseilOnStartToggle.isOn = active;
     }
 
     public void OnFpsCounterPress(bool active) {
+        if (!isRunning) return;
         PrefsManager.SetBool(PrefsManager.FPS_COUNTER, active);
         fpsCounterToggle.isOn = active;
         if(isInGame) {
@@ -260,6 +277,7 @@ public class MenuOptions : MonoBehaviour {
     }
 
     public void OnDisplayConsolePress(bool active) {
+        if (!isRunning) return;
         PrefsManager.SetBool(PrefsManager.DISPLAY_CONSOLE, active);
         displayConsoleToggle.isOn = active;
         if(isInGame) {
