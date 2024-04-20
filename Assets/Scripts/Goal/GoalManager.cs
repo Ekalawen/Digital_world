@@ -12,12 +12,12 @@ public class GoalManager : MonoBehaviour {
         BLOCK,
         VICTORY,
         SCORE,
+        CREDITS,
     }
 
-    public GoalType goalType = GoalType.SCORE;
+    public GoalType goalType = GoalType.CREDITS;
     public int treshold = 200_000;
     public int playerIsInControlTreshold = 10;
-    [ConditionalHide("goalType", GoalType.SCORE)]
     public int infiniteModeNbBlocksTreshold = 100;
 
     protected GameManager gm;

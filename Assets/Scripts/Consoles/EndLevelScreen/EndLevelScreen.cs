@@ -35,7 +35,6 @@ public class EndLevelScreen : MonoBehaviour {
     protected void InitializeUnlockGroups() {
         unlockGroups = new List<EndLevelUnlockGroup>();
         CreateUnlockGroup();
-        CreateUnlockGroup();
     }
 
     protected void CreateUnlockGroup() {
@@ -47,9 +46,7 @@ public class EndLevelScreen : MonoBehaviour {
     public void Open() {
         holder.SetActive(true);
         DisplayEscapeButton();
-        foreach(EndLevelUnlockGroup group in unlockGroups) {
-            group.StartProgressBar();
-        }
+        unlockGroups.ForEach(g => g.StartProgressBar());
         //DisplayDeathAstuces(); // Desactivated
     }
 

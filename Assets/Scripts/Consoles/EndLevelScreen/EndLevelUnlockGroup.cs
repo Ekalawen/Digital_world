@@ -16,11 +16,15 @@ public class EndLevelUnlockGroup : MonoBehaviour {
     public Button unlockButton;
     public LevelProgressBar progressBar;
 
+    protected GameManager gm;
+
     public void Initialize() {
-        progressBar.Initialize(maxValue: 1200);
+        gm = GameManager.Instance;
+        progressBar.Initialize(maxValue: gm.goalManager.GetTreshold());
     }
 
     public void StartProgressBar() {
-        progressBar.SetCurrentValue(500);
+        int currentValue = SkillTreeManager.Instance.GetCredits();
+        progressBar.SetCurrentValue(currentValue);
     }
 }
