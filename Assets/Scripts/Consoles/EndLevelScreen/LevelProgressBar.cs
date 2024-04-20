@@ -14,6 +14,7 @@ using UnityEngine.SceneManagement;
 public class LevelProgressBar : MonoBehaviour {
 
     public float changeValueDuration = 0.5f;
+    public AnimationCurve changeValueCurve;
     public float onChangeParticlesCountLogProgression = 4;
     public GameObject holder;
     public Scrollbar scrollBar;
@@ -48,7 +49,7 @@ public class LevelProgressBar : MonoBehaviour {
     protected void UpdateProgressBarValue() {
         float avancement = GetCurrentAvancement();
         PlayParticlesOnValueChange(avancement);
-        valueFluctuator.GoTo(avancement, changeValueDuration);
+        valueFluctuator.GoTo(avancement, changeValueDuration, changeValueCurve);
     }
 
     protected float GetCurrentAvancement() {

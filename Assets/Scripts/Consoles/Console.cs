@@ -812,8 +812,6 @@ public class Console : MonoBehaviour {
 	// Lorsque le joueur a été bloqué par les drones
 	public void LoseGame(EventManager.DeathReason reason) {
         endLevelScreen.Open();
-        MouseDisplayer.Instance.ShowCursor();
-        //DisplayYouDied();
         DisplayDeathReason(reason);
         StartCoroutine(SeMoquer());
     }

@@ -95,7 +95,67 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 679f57c1ca1b7a7468ff2baa1378d6c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  changeValueDuration: 0.5
+  changeValueDuration: 1.5
+  changeValueCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0.0125065865
+      outSlope: 0.0125065865
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.5727235
+    - serializedVersion: 3
+      time: 0.31238258
+      value: 0.0028489716
+      inSlope: 0.03424753
+      outSlope: 0.03424753
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.54432994
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.59051335
+      value: 0.8001121
+      inSlope: 1.8139415
+      outSlope: 1.8139415
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.90145874
+      value: 1.0273702
+      inSlope: 0.005000659
+      outSlope: 0.005000659
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 1
+      outWeight: 1
+    - serializedVersion: 3
+      time: 0.94436103
+      value: 0.9245608
+      inSlope: 0.032083366
+      outSlope: 0.032083366
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 1
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   onChangeParticlesCountLogProgression: 4
   holder: {fileID: 1628455521098766610}
   scrollBar: {fileID: 3527314551319320837}
@@ -912,7 +972,7 @@ PrefabInstance:
     - target: {fileID: 7596890694149930210, guid: df108c3e51959b046aaa9a02ab191c65,
         type: 3}
       propertyPath: m_fontSize
-      value: 14
+      value: 9.6
       objectReference: {fileID: 0}
     - target: {fileID: 7596890694149930210, guid: df108c3e51959b046aaa9a02ab191c65,
         type: 3}

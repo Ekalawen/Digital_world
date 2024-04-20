@@ -44,6 +44,7 @@ public class EndLevelScreen : MonoBehaviour {
     }
 
     public void Open() {
+        MouseDisplayer.Instance.ShowCursor();
         holder.SetActive(true);
         DisplayEscapeButton();
         unlockGroups.ForEach(g => g.StartProgressBar());
@@ -63,13 +64,16 @@ public class EndLevelScreen : MonoBehaviour {
 
     public void DisplayEscapeButton() {
         restartButton.SetActive(console.IsVisible());
-        if (gm.eventManager.ShouldQuitOrReload() == EventManager.QuitType.RELOAD) {
-            string binding = InputManager.Instance.GetCurrentInputController().GetStringForBinding(MessageZoneBindingParameters.Bindings.RESTART);
-            restartButtonText.text = console.strings.restartButtonRestart.GetLocalizedString(binding).Result;
-        } else {
-            string binding = InputManager.Instance.GetCurrentInputController().GetStringForBinding(MessageZoneBindingParameters.Bindings.PAUSE);
-            restartButtonText.text = console.strings.restartButtonContinue.GetLocalizedString(binding).Result;
-        }
+        string binding = InputManager.Instance.GetCurrentInputController().GetStringForBinding(MessageZoneBindingParameters.Bindings.RESTART);
+        restartButtonText.text = console.strings.restartButtonRestart.GetLocalizedString(binding).Result;
+
+        //if (gm.eventManager.ShouldQuitOrReload() == EventManager.QuitType.RELOAD) {
+        //    string binding = InputManager.Instance.GetCurrentInputController().GetStringForBinding(MessageZoneBindingParameters.Bindings.RESTART);
+        //    restartButtonText.text = console.strings.restartButtonRestart.GetLocalizedString(binding).Result;
+        //} else {
+        //    string binding = InputManager.Instance.GetCurrentInputController().GetStringForBinding(MessageZoneBindingParameters.Bindings.PAUSE);
+        //    restartButtonText.text = console.strings.restartButtonContinue.GetLocalizedString(binding).Result;
+        //}
     }
 
     public void DisplayDeathAstuces() {

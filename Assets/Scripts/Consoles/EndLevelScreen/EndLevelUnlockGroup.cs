@@ -24,7 +24,8 @@ public class EndLevelUnlockGroup : MonoBehaviour {
     }
 
     public void StartProgressBar() {
-        int currentValue = SkillTreeManager.Instance.GetCredits();
+        //int currentValue = SkillTreeManager.Instance.GetCredits();
+        int currentValue = gm.goalManager.GetCurrentTotalCreditScore();
         progressBar.SetCurrentValue(currentValue);
     }
 }
