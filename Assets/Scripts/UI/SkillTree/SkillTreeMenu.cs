@@ -51,6 +51,7 @@ public class SkillTreeMenu : MonoBehaviour {
     protected float openPrefferedWidth;
     protected SkillTreeUpgrade currentUpgrade;
     protected bool isUpgradeDisplayOpen;
+    protected int addedCreditsThisGame = 0;
     [HideInInspector]
     public UnityEvent onUpgradeChange;
     [HideInInspector]
@@ -88,6 +89,27 @@ public class SkillTreeMenu : MonoBehaviour {
     protected void InitializeCreditsCounter() {
         CounterDisplayer counterDisplayer = creditsCounterUpdater.GetComponent<CounterDisplayer>();
         creditsCounterUpdater.Initialize(counterDisplayer, SkillTreeManager.Instance.GetCredits);
+    }
+
+    protected void AddCurrentScoreToCredits() {
+        if(!IsInGame()) {
+            return;
+        }
+        GameManager gm = GameManager.Instance;
+        if(!gm.IsIR()) {
+            return;
+        }
+        int scoreToAdd = gm.GetInfiniteMap().scoreManager.GetCurrentScore() - addedCreditsThisGame;
+        addedCreditsThisGame += scoreToAdd;
+        SkillTreeManager.Instance.AddCredits(scoreToAdd);
+    }
+
+    public int GetAddedCreditsThiGame() {
+        return addedCreditsThisGame;
+    }
+
+    public bool IsInGame() {
+        return skillTreeBackButtonInGame != null;
     }
 
     protected void InitializeUpgradeDisplay() {
@@ -184,6 +206,8 @@ public class SkillTreeMenu : MonoBehaviour {
         SetActive(true);
         setActiveCoroutine.Stop();
         sizeFluctuator.GoTo(1.0f, openingDuration);
+        AddCurrentScoreToCredits();
+        InitializeCreditsCounter();
         InitializeUpgrades();
         InitializeSkillTreeBackButtonInGame();
     }

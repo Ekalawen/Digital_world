@@ -120,6 +120,7 @@ public abstract class ScoreManager : MonoBehaviour
     }
 
     public void AddScoreToCreditCount() {
-        SkillTreeManager.Instance.AddCredits(GetCurrentScore());
+        int scoreToAdd = GetCurrentScore() - gm.console.GetPauseMenu().skillTreeMenu.GetAddedCreditsThiGame();
+        SkillTreeManager.Instance.AddCredits(scoreToAdd);
     }
 }
