@@ -25,7 +25,7 @@ public class SkillTreeManager : Singleton<SkillTreeManager> {
     }
 
     public void AddCredits(int addedCredits) {
-        PrefsManager.SetInt(CREDITS_COUNT, GetCredits() + addedCredits);
+        SetCredits(GetCredits() + addedCredits);
     }
 
     public void RemoveCredits(int removedCredits) {

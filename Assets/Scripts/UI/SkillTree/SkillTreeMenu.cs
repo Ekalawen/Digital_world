@@ -99,6 +99,9 @@ public class SkillTreeMenu : MonoBehaviour {
         if(!gm.IsIR()) {
             return;
         }
+        if(gm.eventManager.IsGameOver()) { // credits already added !
+            return;
+        }
         int scoreToAdd = gm.GetInfiniteMap().scoreManager.GetCurrentScore() - addedCreditsThisGame;
         addedCreditsThisGame += scoreToAdd;
         SkillTreeManager.Instance.AddCredits(scoreToAdd);
