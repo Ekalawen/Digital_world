@@ -301,14 +301,25 @@ public class GameManager : MonoBehaviour {
     }
 
     protected void SaveGameResultIfQuitBeforeEnding() {
-        if (GetMapType() == MenuLevel.LevelType.INFINITE
-        && !eventManager.IsGameOver()
-        && eventManager.IsNewBestBlocksScore()) {
-            eventManager.RememberGameResult(success: false);
-        } else if (timerManager.GetRealElapsedTime() > 10
-                && !eventManager.IsGameOver()) {
-            eventManager.RememberGameResult(success: false);
-        }
+        eventManager.RememberGameResult(success: false); // Before ending, so you couldn't have won
+
+        /// Tried something
+        //if(IsIR()) {
+        //    bool success = eventManager.IsNewBestBlocksScore();
+        //    eventManager.RememberGameResult(success: success);
+        //} else {
+        //    eventManager.RememberGameResult(success: false); // Before ending, so you couldn't have won
+        //}
+
+        /// Original version
+        //if (GetMapType() == MenuLevel.LevelType.INFINITE
+        //&& !eventManager.IsGameOver()
+        //&& eventManager.IsNewBestBlocksScore()) {
+        //    eventManager.RememberGameResult(success: false);
+        //} else if (timerManager.GetRealElapsedTime() > 10
+        //        && !eventManager.IsGameOver()) {
+        //    eventManager.RememberGameResult(success: false);
+        //}
     }
 
     public IEnumerator QuitInSeconds(float tps) {

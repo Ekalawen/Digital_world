@@ -112,6 +112,7 @@ public class EventManager : MonoBehaviour {
     protected bool shouldAutomaticallyQuitScene = true;
     protected Coroutine automaticallyQuitSceneCoroutine = null;
     protected List<object> elementsToBeDoneBeforeStartEndGame = new List<object>();
+    protected bool gameResultsHaveBeenRemembered = false;
     [HideInInspector]
     public UnityEvent onStartEndGame;
     [HideInInspector]
@@ -749,14 +750,21 @@ public class EventManager : MonoBehaviour {
     }
 
     public void RememberGameResult(bool success) {
-        if (gm.GetMapType() == MenuLevel.LevelType.INFINITE) {
+        if(HasGameResultBeenRemembered()) {
+            return;
+        }
+        gameResultsHaveBeenRemembered = true;
+
+        if (gm.IsIR()) {
             success |= IsNewBestBlocksScore();
         }
 
         RememberSincelastBestScore(success);
         gm.historyManager.score = GetBlocksScore();
         if (!success) {
-            IncrementDeathCount();
+            if(gm.timerManager.GetRealElapsedTime() >= 3) {
+                IncrementDeathCount();
+            }
         } else {
             IncrementWinsCount();
             RecordBestScore();
@@ -768,6 +776,10 @@ public class EventManager : MonoBehaviour {
         if(infiniteMap) {
             infiniteMap.GetScoreManager().AddScoreToCreditCount();
         }
+    }
+
+    public bool HasGameResultBeenRemembered() {
+        return gameResultsHaveBeenRemembered;
     }
 
     protected void RememberHasJustWin() {
