@@ -779,8 +779,6 @@ public class Console : MonoBehaviour {
 
 	// Lorsque le joueur réussi à s'échapper
 	public void WinGame() {
-		AjouterMessage (strings.winGameConsole1, Console.TypeText.RED_TEXT);
-		AjouterMessage (strings.winGameConsole2, Console.TypeText.RED_TEXT);
         if (!customWinMessage.IsEmpty) {
             AjouterMessageImportant(customWinMessage, Console.TypeText.BLUE_TEXT, 5);
         }

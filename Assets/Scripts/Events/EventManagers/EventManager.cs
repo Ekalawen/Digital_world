@@ -696,6 +696,8 @@ public class EventManager : MonoBehaviour {
         gameIsWin = true;
         StopEventsAndEndEvents();
 
+        RememberGameResult(success: true);
+
         gm.FreezeTime();
 
         gm.player.pouvoirHolder.FreezePouvoirs();
@@ -714,8 +716,6 @@ public class EventManager : MonoBehaviour {
         gm.timerManager.timeMultiplierController.RemoveAllMultipliers();
 
         //gm.postProcessManager.StopTimeScaleVfx();
-
-        RememberGameResult(success: true);
 
         NotifyListenersWinGame();
 

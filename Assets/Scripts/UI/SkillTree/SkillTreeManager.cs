@@ -51,7 +51,7 @@ public class SkillTreeManager : Singleton<SkillTreeManager> {
     }
 
     public bool CanBuy(SkillTreeUpgrade upgrade, int additionnalCredits = 0) {
-        return IsAffordable(upgrade, additionnalCredits) && IsAccessible(upgrade);
+        return IsAffordable(upgrade, additionnalCredits) && IsAccessible(upgrade) && !IsUnlocked(upgrade.key);
     }
 
     public bool IsUnlocked(SkillKey key) {
