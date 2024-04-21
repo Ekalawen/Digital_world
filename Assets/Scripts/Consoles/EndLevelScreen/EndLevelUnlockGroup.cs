@@ -18,13 +18,12 @@ public class EndLevelUnlockGroup : MonoBehaviour {
 
     protected GameManager gm;
 
-    public void Initialize() {
+    public void Initialize(GoalLevel goalLevel) {
         gm = GameManager.Instance;
-        progressBar.Initialize(maxValue: gm.goalManager.GetTreshold());
+        progressBar.Initialize(maxValue: goalLevel.treshold);
     }
 
     public void StartProgressBar() {
-        //int currentValue = SkillTreeManager.Instance.GetCredits();
         int currentValue = gm.goalManager.GetCurrentTotalCreditScore();
         progressBar.SetCurrentValue(currentValue);
     }

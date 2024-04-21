@@ -12,13 +12,12 @@ public class GoalManager : MonoBehaviour {
         BLOCK,
         VICTORY,
         SCORE,
-        CREDITS,
     }
 
-    public GoalType goalType = GoalType.CREDITS;
-    public int treshold = 200_000;
+    public GoalType goalType = GoalType.SCORE;
     public int playerIsInControlTreshold = 10;
     public int infiniteModeNbBlocksTreshold = 100;
+    public List<GoalLevel> goalLevels;
 
     protected GameManager gm;
 
@@ -30,8 +29,8 @@ public class GoalManager : MonoBehaviour {
         return goalType;
     }
 
-    public int GetTreshold() {
-        return treshold;
+    public int GetMaxTreshold() {
+        return goalLevels.Select(g => g.treshold).Max();
     }
 
     public int GetTotalCreditScore() {
@@ -58,12 +57,8 @@ public class GoalManager : MonoBehaviour {
         return GetTotalBlocksScore() + gm.GetInfiniteMap().GetNonStartNbBlocksRun();
     }
 
-    public bool IsUnlocked() {
-        return GetTotalCreditScore() >= GetTreshold();
-    }
-
     public string GetTresholdString() {
-        return GetTreshold().ToString();
+        return GetMaxTreshold().ToString();
     }
 
     public bool IsPlayerInControl() {
@@ -76,6 +71,10 @@ public class GoalManager : MonoBehaviour {
 
     public bool IsInfiniteModeUnlocked() {
         return GetBestBlocksScore() >= GetInfiniteModeNbBlocksTreshold();
+    }
+
+    public GoalLevel GetGoalLevel(SelectorLevel endLevel) {
+        return goalLevels.Find(g => g.menuLevel == endLevel.menuLevel);
     }
 
     //public string GetNextTresholdSymbolFor(int dataCount) {

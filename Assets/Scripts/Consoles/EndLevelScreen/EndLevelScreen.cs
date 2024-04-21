@@ -34,13 +34,15 @@ public class EndLevelScreen : MonoBehaviour {
 
     protected void InitializeUnlockGroups() {
         unlockGroups = new List<EndLevelUnlockGroup>();
-        CreateUnlockGroup();
+        foreach (GoalLevel goalLevel in gm.goalManager.goalLevels) {
+            CreateUnlockGroup(goalLevel);
+        }
     }
 
-    protected void CreateUnlockGroup() {
+    protected void CreateUnlockGroup(GoalLevel goalLevel) {
         EndLevelUnlockGroup unlockGroup = Instantiate(unlockGroupPrefab, parent: unlockGroupsHolder.transform).GetComponent<EndLevelUnlockGroup>();
         unlockGroups.Add(unlockGroup);
-        unlockGroup.Initialize();
+        unlockGroup.Initialize(goalLevel);
     }
 
     public void Open() {

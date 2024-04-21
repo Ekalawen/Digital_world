@@ -86,7 +86,7 @@ public abstract class ScoreManager : MonoBehaviour
         if(!SkillTreeManager.Instance.IsEnabled(SkillKey.EPIPHANIC_EXPLOIT)) {
             return;
         }
-        AddToScore(gm.goalManager.treshold);
+        AddToScore(gm.goalManager.GetMaxTreshold());
     }
 
     public void AddToScore(int value) {

@@ -21,7 +21,7 @@ public class SelectorPath_Direct : SelectorPath {
     }
 
     protected void SetLineMaterial() {
-        float avancement = startLevel.GetTotalCreditsScore() / (float)startLevelGoalManager.treshold;
+        float avancement = startLevel.GetTotalCreditsScore() / (float)GetTreshold();
         Gradient gradient = new Gradient();
         gradient.SetKeys(new GradientColorKey[] {
             new GradientColorKey(Color.white, 0),
@@ -33,11 +33,16 @@ public class SelectorPath_Direct : SelectorPath {
         lineColorAvancement = avancement;
     }
 
+    protected int GetTreshold() {
+        GoalLevel goalLevel = startLevelGoalManager.GetGoalLevel(endLevel);
+        return goalLevel.treshold;
+    }
+
     public override TYPE GetPathType() {
         return TYPE.DIRECT;
     }
 
     public override bool IsUnlocked() {
-        return startLevel.HasCrossedCreditsTreshold(startLevelGoalManager.treshold);
+        return startLevel.HasCrossedCreditsTreshold(GetTreshold());
     }
 }
