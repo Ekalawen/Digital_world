@@ -12,6 +12,8 @@ public class PauseMenu : MonoBehaviour {
     public TexteExplicatif popup;
     public ReplacementStrings docReplacementStrings;
     public SelectorManagerStrings strings;
+    public GameObject skillTreeNormalButton;
+    public GameObject skillTreeWithNewSkillButton;
 
     protected GameManager gm;
     protected InputManager inputManager;
@@ -20,6 +22,18 @@ public class PauseMenu : MonoBehaviour {
         gm = GameManager.Instance;
         inputManager = InputManager.Instance;
         skillTreeMenu.Initilalize();
+        skillTreeMenu.onClose.AddListener(SetActiveGoodSkillTreeButton);
+    }
+
+    public void Open() {
+        SetActiveGoodSkillTreeButton();
+    }
+
+    protected void SetActiveGoodSkillTreeButton() {
+        int additionnalCredits = gm.GetInfiniteMap().scoreManager.GetCurrentScore() - skillTreeMenu.GetAddedCreditsThiGame();
+        bool hasNewlyAffordableUpgrade = skillTreeMenu.HasNewlyAffordableUpgrades(additionnalCredits);
+        skillTreeNormalButton.SetActive(!hasNewlyAffordableUpgrade);
+        skillTreeWithNewSkillButton.SetActive(hasNewlyAffordableUpgrade);
     }
 
     public void Update() {

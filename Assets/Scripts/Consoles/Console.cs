@@ -1237,6 +1237,7 @@ public class Console : MonoBehaviour {
 
     public void OpenPauseMenu() {
         pauseMenu.SetActive(IsVisible());
+        GetPauseMenu().Open();
     }
 
     public void ClosePauseMenu() {

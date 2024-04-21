@@ -15,7 +15,7 @@ public class ButtonHighlighter : MonoBehaviour {
     protected Vector3 startScale = Vector3.one;
 
     void Start() {
-        timer = new Timer(intervalTime);
+        timer = new UnpausableTimer(intervalTime);
         rect = GetComponent<RectTransform>();
         if(rect == null) {
             Debug.LogWarning("Un ButtonHighlighter doit posséder un RectTransform ! ;)");
@@ -30,14 +30,14 @@ public class ButtonHighlighter : MonoBehaviour {
     }
 
     protected IEnumerator CBounce() {
-        Timer toBounceTimer = new Timer(timeToBounceSize);
+        Timer toBounceTimer = new UnpausableTimer(timeToBounceSize);
         startScale = rect.localScale;
         while (!toBounceTimer.IsOver()) {
             float avancement = toBounceTimer.GetAvancement();
             rect.localScale = startScale * (1 + (bounceSize - 1) * avancement);
             yield return null;
         }
-        Timer toNormalTimer = new Timer(timeToNormalSize);
+        Timer toNormalTimer = new UnpausableTimer(timeToNormalSize);
         while (!toNormalTimer.IsOver())
         {
             float avancement = toNormalTimer.GetAvancement();
