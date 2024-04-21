@@ -50,4 +50,8 @@ public class EndLevelUnlockGroup : MonoBehaviour {
     public void UnlockPath() {
         goalLevel.GetPath().UnlockPath();
     }
+
+    public void QuitterPartie() {
+        gm.QuitterPartie();
+    }
 }

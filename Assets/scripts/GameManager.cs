@@ -342,22 +342,24 @@ public class GameManager : MonoBehaviour {
         MouseDisplayer.Instance.ShowCursor();
         Time.timeScale = 1.0f;
 
-        if (SceneManager.GetActiveScene().name == "TutorialScene") {
-            Destroy(historyManager.gameObject);
-            SceneManager.LoadScene("MenuScene");
-        } else if ((GetMapType() == MenuLevel.LevelType.REGULAR)) {
-            if (eventManager.IsGameWin()) {
-                GoToRewardScene();
-            } else {
-                GoToSelectorScene();
-            }
-        } else { // MenuLevel.LevelType == INFINITE
-            if (!IsPaused() && eventManager.ShouldQuitOrReload() == EventManager.QuitType.QUIT) { // We did good
-                GoToRewardScene();
-            } else {
-                GoToSelectorScene();
-            }
-        }
+        GoToSelectorScene();
+
+        //if (SceneManager.GetActiveScene().name == "TutorialScene") {
+        //    Destroy(historyManager.gameObject);
+        //    SceneManager.LoadScene("MenuScene");
+        //} else if (GetMapType() == MenuLevel.LevelType.REGULAR) {
+        //    if (eventManager.IsGameWin()) {
+        //        GoToRewardScene();
+        //    } else {
+        //        GoToSelectorScene();
+        //    }
+        //} else { // MenuLevel.LevelType == INFINITE
+        //    if (!IsPaused() && eventManager.ShouldQuitOrReload() == EventManager.QuitType.QUIT) { // We did good
+        //        GoToRewardScene();
+        //    } else {
+        //        GoToSelectorScene();
+        //    }
+        //}
     }
 
     protected void GoToRewardScene() {
