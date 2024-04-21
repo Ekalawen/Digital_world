@@ -55,16 +55,20 @@ public class EndLevelScreen : MonoBehaviour {
     public void Open() {
         MouseDisplayer.Instance.ShowCursor();
         holder.SetActive(true);
-        DisplayRestartButton();
         DisplaySkillTreeButton();
         unlockGroups.ForEach(g => g.Display());
+        DisplayRestartButton();
         //DisplayDeathAstuces(); // Desactivated
     }
 
     protected void DisplaySkillTreeButton() {
-        bool hasNewlyAffordableUpgrade = gm.console.GetPauseMenu().skillTreeMenu.HasNewlyAffordableUpgrades(additionnalCredits: 0);
+        bool hasNewlyAffordableUpgrade = ShouldHightlightSkillTreeButton();
         skillTreeNormalButton.SetActive(!hasNewlyAffordableUpgrade);
         skillTreeWithNewSkillButton.SetActive(hasNewlyAffordableUpgrade);
+    }
+
+    protected bool ShouldHightlightSkillTreeButton() {
+        return gm.console.GetPauseMenu().skillTreeMenu.HasNewlyAffordableUpgrades(additionnalCredits: 0);
     }
 
     public void Close() {
@@ -82,14 +86,8 @@ public class EndLevelScreen : MonoBehaviour {
         restartButton.SetActive(console.IsVisible());
         string binding = InputManager.Instance.GetCurrentInputController().GetStringForBinding(MessageZoneBindingParameters.Bindings.RESTART);
         restartButtonText.text = console.strings.restartButtonRestart.GetLocalizedString(binding).Result;
-
-        //if (gm.eventManager.ShouldQuitOrReload() == EventManager.QuitType.RELOAD) {
-        //    string binding = InputManager.Instance.GetCurrentInputController().GetStringForBinding(MessageZoneBindingParameters.Bindings.RESTART);
-        //    restartButtonText.text = console.strings.restartButtonRestart.GetLocalizedString(binding).Result;
-        //} else {
-        //    string binding = InputManager.Instance.GetCurrentInputController().GetStringForBinding(MessageZoneBindingParameters.Bindings.PAUSE);
-        //    restartButtonText.text = console.strings.restartButtonContinue.GetLocalizedString(binding).Result;
-        //}
+        bool shouldBeHightlighted = !unlockGroups.Any(g => g.progressBar.IsFull()) && !ShouldHightlightSkillTreeButton();
+        restartButton.GetComponent<ButtonHighlighter>().enabled = shouldBeHightlighted; 
     }
 
     public void DisplayDeathAstuces() {
