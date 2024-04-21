@@ -26,7 +26,7 @@ public class EndLevelUnlockGroup : MonoBehaviour {
     }
 
     public void StartProgressBar() {
-        int currentValue = gm.goalManager.GetCurrentTotalCreditScore();
+        int currentValue = gm.goalManager.GetTotalCreditScore();
         progressBar.SetCurrentValue(currentValue);
     }
 
