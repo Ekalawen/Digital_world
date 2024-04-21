@@ -516,4 +516,8 @@ public class MenuLevel : MonoBehaviour {
         else
             return (int)GetBestBlocksScore();
     }
+
+    internal bool IsUnlocked() {
+        throw new NotImplementedException();
+    }
 }

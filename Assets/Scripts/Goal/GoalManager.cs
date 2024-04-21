@@ -74,11 +74,12 @@ public class GoalManager : MonoBehaviour {
     }
 
     public GoalLevel GetGoalLevel(SelectorLevel endLevel) {
-        return goalLevels.Find(g => g.menuLevel == endLevel.menuLevel);
+        //return goalLevels.Find(g => g.GetNextLevel() == endLevel.menuLevel);
+        foreach(GoalLevel goalLevel in goalLevels) {
+            if(goalLevel.GetNextMenuLevel().GetNameId() == endLevel.menuLevel.GetNameId()) {
+                return goalLevel;
+            }
+        }
+        return null;
     }
-
-    //public string GetNextTresholdSymbolFor(int dataCount) {
-    //    int nextTreshold = GetNextTresholdFor(dataCount);
-    //    return nextTreshold == int.MaxValue ? "∞" : nextTreshold.ToString();
-    //}
 }

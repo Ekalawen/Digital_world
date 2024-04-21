@@ -140,7 +140,7 @@ public abstract class SelectorPath : MonoBehaviour {
     public virtual void UnlockPath() {
         string key = name + PrefsManager.IS_UNLOCKED_PATH;
         PrefsManager.SetBool(key, true);
-        lineColorFluctuator.GoTo(1.0f, unlockScreen.dureeUnlockAnimation);
+        lineColorFluctuator?.GoTo(1.0f, unlockScreen.dureeUnlockAnimation);
     }
 
     public virtual void LockPath() {
