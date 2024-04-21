@@ -12,6 +12,14 @@ using UnityEngine.SceneManagement;
 using UnityEngine.Localization.Components;
 using Coffee.UIExtensions;
 
+[Serializable]
+public class AttractedParticle
+{
+    public int creditValue = 10;
+    public GameObject particleSystemPrefab;
+    public UIParticleAttractor attractor;
+}
+
 public class EndLevelUnlockGroup : MonoBehaviour {
 
     public Button unlockButtonEnabled;
@@ -19,6 +27,7 @@ public class EndLevelUnlockGroup : MonoBehaviour {
     public UIParticle unlockButtonParticles;
     public float durationUnlockButtonParticles = 2.5f;
     public LevelProgressBar progressBar;
+    public List<AttractedParticle> attractedParticles;
 
     protected GameManager gm;
     protected GoalLevel goalLevel;
@@ -29,6 +38,20 @@ public class EndLevelUnlockGroup : MonoBehaviour {
         unlockButtonParticles.gameObject.SetActive(false);
         progressBar.Initialize(maxValue: goalLevel.treshold);
         progressBar.onReachMaxValueVisual.AddListener(SwapToEnabledUnlockButton);
+        InitializeAttractedParticles();
+    }
+
+    protected void InitializeAttractedParticles() {
+        Transform scoreCounterTransform = gm.GetInfiniteMap().scoreDisplayer.displayText.transform;
+        foreach (AttractedParticle attractedParticle in attractedParticles) {
+            ParticleSystem particleSystem = Instantiate(attractedParticle.particleSystemPrefab, parent: scoreCounterTransform).GetComponentInChildren<ParticleSystem>();
+            attractedParticle.attractor.gameObject.SetActive(false);
+            attractedParticle.attractor.particleSystem = particleSystem;
+            attractedParticle.attractor.gameObject.SetActive(true);
+            for (int i = 0; i < 10; i++) {
+                particleSystem.Play();
+            }
+        }
     }
 
     public void Display() {
@@ -57,7 +80,7 @@ public class EndLevelUnlockGroup : MonoBehaviour {
     public void UnlockNextLevelButton() {
         UnlockPath();
         PlayUnlockButtonParticles();
-        ReturnToSelectorIn(durationUnlockButtonParticles);
+        //ReturnToSelectorIn(durationUnlockButtonParticles);
     }
 
     protected void PlayUnlockButtonParticles() {

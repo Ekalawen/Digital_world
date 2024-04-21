@@ -157,4 +157,8 @@ public class LevelProgressBar : MonoBehaviour {
     public bool IsFull() {
         return currentValue >= maxValue;
     }
+
+    public void ReceiveParticle() {
+        Debug.Log($"Receive particle! :)");
+    }
 }
