@@ -10,11 +10,14 @@ using UnityEngine.Localization.Settings;
 using TMPro;
 using UnityEngine.SceneManagement;
 using UnityEngine.Localization.Components;
+using Coffee.UIExtensions;
 
 public class EndLevelUnlockGroup : MonoBehaviour {
 
     public Button unlockButtonEnabled;
     public Button unlockButtonDisabled;
+    public UIParticle unlockButtonParticles;
+    public float durationUnlockButtonParticles = 2.5f;
     public LevelProgressBar progressBar;
 
     protected GameManager gm;
@@ -23,6 +26,7 @@ public class EndLevelUnlockGroup : MonoBehaviour {
     public void Initialize(GoalLevel goalLevel) {
         gm = GameManager.Instance;
         this.goalLevel = goalLevel;
+        unlockButtonParticles.gameObject.SetActive(false);
         progressBar.Initialize(maxValue: goalLevel.treshold);
         progressBar.onReachMaxValueVisual.AddListener(SwapToEnabledUnlockButton);
     }
@@ -50,11 +54,29 @@ public class EndLevelUnlockGroup : MonoBehaviour {
         progressBar.SetCurrentValue(currentValue);
     }
 
-    public void UnlockPath() {
-        goalLevel.GetPath().UnlockPath();
+    public void UnlockNextLevelButton() {
+        UnlockPath();
+        PlayUnlockButtonParticles();
+        ReturnToSelectorIn(durationUnlockButtonParticles);
     }
 
-    public void QuitterPartie() {
+    protected void PlayUnlockButtonParticles() {
+        unlockButtonParticles.gameObject.SetActive(true);
+        unlockButtonParticles.Play();
+    }
+
+    protected void ReturnToSelectorIn(float delay) {
+        StartCoroutine(CReturnToSelectorIn(delay));
+    }
+
+    protected IEnumerator CReturnToSelectorIn(float delay) {
+        yield return new WaitForSecondsRealtime(delay);
         gm.QuitterPartie();
+    }
+
+    protected void UnlockPath() {
+        if (goalLevel.IsSet()) {
+            goalLevel.GetPath().UnlockPath();
+        }
     }
 }
