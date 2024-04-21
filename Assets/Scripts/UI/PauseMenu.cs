@@ -3,17 +3,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Localization;
+using UnityEngine.Localization.Components;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class PauseMenu : MonoBehaviour {
 
     public MenuOptions menuOptions;
-    public SkillTreeMenu skillTreeMenu;
     public TexteExplicatif popup;
     public ReplacementStrings docReplacementStrings;
     public SelectorManagerStrings strings;
+
+    [Header("SkillTree")]
+    public SkillTreeMenu skillTreeMenu;
     public GameObject skillTreeNormalButton;
+    public LocalizeStringEvent skillTreeNormalButtonString;
     public GameObject skillTreeWithNewSkillButton;
+    public LocalizeStringEvent skillTreeWithNewSkillButtonString;
 
     protected GameManager gm;
     protected InputManager inputManager;
@@ -34,6 +39,8 @@ public class PauseMenu : MonoBehaviour {
         bool hasNewlyAffordableUpgrade = skillTreeMenu.HasNewlyAffordableUpgrades(additionnalCredits);
         skillTreeNormalButton.SetActive(!hasNewlyAffordableUpgrade);
         skillTreeWithNewSkillButton.SetActive(hasNewlyAffordableUpgrade);
+        skillTreeNormalButtonString.StringReference.Arguments = skillTreeNormalButtonString.GetComponent<InputTextBindingParameters>().GetArguments();
+        skillTreeWithNewSkillButtonString.StringReference.Arguments = skillTreeWithNewSkillButtonString.GetComponent<InputTextBindingParameters>().GetArguments();
     }
 
     public void Update() {

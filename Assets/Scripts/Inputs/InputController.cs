@@ -110,6 +110,8 @@ public abstract class InputController : MonoBehaviour {
                 return GetStringForLocalizedStringReference("Restart");
             case MessageZoneBindingParameters.Bindings.PAUSE:
                 return GetStringForLocalizedStringReference("Pause");
+            case MessageZoneBindingParameters.Bindings.SKILL_TREE:
+                return GetStringForLocalizedStringReference("SkillTree");
             default:
                 throw new Exception("Unknowed Binding in GetStringForBinding !");
         }

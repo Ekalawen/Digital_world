@@ -9,7 +9,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.Localization.Settings;
 using TMPro;
 using UnityEngine.SceneManagement;
-
+using UnityEngine.Localization.Components;
 
 public class EndLevelScreen : MonoBehaviour {
 
@@ -22,7 +22,9 @@ public class EndLevelScreen : MonoBehaviour {
     public TMP_Text restartButtonText;
 
     public GameObject skillTreeNormalButton;
+    public LocalizeStringEvent skillTreeNormalButtonString;
     public GameObject skillTreeWithNewSkillButton;
+    public LocalizeStringEvent skillTreeWithNewSkillButtonString;
 
     protected GameManager gm;
     protected Console console;
@@ -64,7 +66,9 @@ public class EndLevelScreen : MonoBehaviour {
     protected void DisplaySkillTreeButton() {
         bool hasNewlyAffordableUpgrade = ShouldHightlightSkillTreeButton();
         skillTreeNormalButton.SetActive(!hasNewlyAffordableUpgrade);
+        skillTreeNormalButtonString.StringReference.Arguments = skillTreeNormalButtonString.GetComponent<InputTextBindingParameters>().GetArguments();
         skillTreeWithNewSkillButton.SetActive(hasNewlyAffordableUpgrade);
+        skillTreeWithNewSkillButtonString.StringReference.Arguments = skillTreeWithNewSkillButtonString.GetComponent<InputTextBindingParameters>().GetArguments();
     }
 
     protected bool ShouldHightlightSkillTreeButton() {

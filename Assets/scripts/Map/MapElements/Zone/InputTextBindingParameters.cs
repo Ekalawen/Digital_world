@@ -19,6 +19,7 @@ public class InputTextBindingParameters : MonoBehaviour {
         POUVOIR_RIGHT,
         RESTART,
         PAUSE,
+        SKILL_TREE,
     };
 
     public List<Bindings> bindingParameter;
