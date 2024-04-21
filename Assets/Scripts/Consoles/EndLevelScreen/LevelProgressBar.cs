@@ -10,6 +10,7 @@ using UnityEngine.Localization.Settings;
 using TMPro;
 using UnityEngine.SceneManagement;
 using UnityEngine.Events;
+using UnityEditor.PackageManager.UI;
 
 public class LevelProgressBar : MonoBehaviour {
 
@@ -26,6 +27,7 @@ public class LevelProgressBar : MonoBehaviour {
     public GameObject onValueChangeParticlesHolderPrefab;
     public float onValueChangeParticlesFrequence = 0.1f;
     public GameObject onReachMaxValueParticlesHolderPrefab;
+    public float offsetSize = 165f; // How much vertical pixel place are taking other elements of the UI in order to redimension it
 
     protected GameManager gm;
     protected int maxValue;
@@ -42,6 +44,7 @@ public class LevelProgressBar : MonoBehaviour {
     public void Initialize(int maxValue) {
         gm = GameManager.Instance;
         holder.SetActive(true);
+        InitializeSize();
         onValueChangeParticlesTimer = new Timer(onValueChangeParticlesFrequence, setOver: true);
         valueFluctuator = new Fluctuator(this, GetProgressBarDisplayedAvancement, SetProgressBarValue);
         this.maxValue = maxValue;
@@ -50,6 +53,14 @@ public class LevelProgressBar : MonoBehaviour {
         totalText.text = StringHelper.ToCreditsShortFormat(maxValue);
         fillerImage.material = new Material(fillerImage.material);
         SetProgressBarValue(avancement: 0.0f);
+    }
+
+    protected void InitializeSize() {
+        Vector2 size = GetComponent<RectTransform>().sizeDelta;
+        RectTransform canvasSize = gm.console.GetComponent<RectTransform>(); // The canvas is on the console
+        size.y = canvasSize.sizeDelta.y - offsetSize;
+        GetComponent<RectTransform>().sizeDelta = size;
+        GetComponent<VerticalLayoutGroup>().CalculateLayoutInputVertical();
     }
 
     protected void UpdateProgressBarValue() {
