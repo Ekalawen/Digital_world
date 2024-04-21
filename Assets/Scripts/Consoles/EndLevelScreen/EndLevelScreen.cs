@@ -40,9 +40,9 @@ public class EndLevelScreen : MonoBehaviour {
     }
 
     protected void CreateUnlockGroup(GoalLevel goalLevel) {
-        if(goalLevel.IsSet() && goalLevel.GetPath().IsUnlocked()) {
-            return;
-        }
+        //if(goalLevel.IsSet() && goalLevel.GetPath().IsUnlocked()) {
+        //    return;
+        //}
         EndLevelUnlockGroup unlockGroup = Instantiate(unlockGroupPrefab, parent: unlockGroupsHolder.transform).GetComponent<EndLevelUnlockGroup>();
         unlockGroups.Add(unlockGroup);
         unlockGroup.Initialize(goalLevel);

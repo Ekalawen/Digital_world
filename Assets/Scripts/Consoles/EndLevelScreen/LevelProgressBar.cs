@@ -23,6 +23,7 @@ public class LevelProgressBar : MonoBehaviour {
     public TMP_Text totalText;
     public Image fillerImage;
     public GameObject onValueChangeParticlesHolderPrefab;
+    public float onValueChangeParticlesFrequence = 0.1f;
     public GameObject onReachMaxValueParticlesHolderPrefab;
 
     protected GameManager gm;
@@ -32,10 +33,12 @@ public class LevelProgressBar : MonoBehaviour {
     protected bool hasPlayMaxValueParticles = false;
     protected float startAvancement;
     protected float displayedAvancement;
+    protected Timer onValueChangeParticlesTimer;
 
     public void Initialize(int maxValue) {
         gm = GameManager.Instance;
         holder.SetActive(true);
+        onValueChangeParticlesTimer = new Timer(onValueChangeParticlesFrequence, setOver: true);
         valueFluctuator = new Fluctuator(this, GetProgressBarDisplayedAvancement, SetProgressBarValue);
         this.maxValue = maxValue;
         currentValue = 0;
@@ -43,12 +46,10 @@ public class LevelProgressBar : MonoBehaviour {
         totalText.text = StringHelper.ToCreditsShortFormat(maxValue);
         fillerImage.material = new Material(fillerImage.material);
         SetProgressBarValue(avancement: 0.0f);
-        PlayParticlesOnValueChange(0);
     }
 
     protected void UpdateProgressBarValue() {
         float avancement = GetCurrentAvancement();
-        PlayParticlesOnValueChange(avancement);
         valueFluctuator.GoTo(avancement, changeValueDuration, changeValueCurve);
     }
 
@@ -73,9 +74,14 @@ public class LevelProgressBar : MonoBehaviour {
         float textYPosition = avancement <= 0.5f ? percentageTextYPositions[0] : percentageTextYPositions[1];
         percentageText.rectTransform.anchoredPosition = new Vector2(percentageText.rectTransform.anchoredPosition.x, textYPosition);
         fillerImage.material.SetFloat("_ColorAvancement", avancement);
+        PlayParticlesOnValueChange(avancement);
     }
 
     protected void PlayParticlesOnValueChange(float avancement) {
+        if(!onValueChangeParticlesTimer.IsOver()) {
+            return;
+        }
+        onValueChangeParticlesTimer.Reset();
         if (avancement < 1.0f && startAvancement < 1.0f) {
             float gainQuantity = maxValue * (avancement - GetProgressBarDisplayedAvancement());
             PlayParticles(onValueChangeParticlesHolderPrefab, gainQuantity);
