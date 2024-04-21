@@ -113,7 +113,7 @@ public class InputManager : MonoBehaviour {
     protected void UpdateKeybindingDropdown(int keybindingIndice) {
         // On est forcément en jeu
         KeybindingDropdown keybindingDropdown = GameManager.Instance.console.optionsMenu.keybindingDropdown;
-        Debug.Log($"Indice = {keybindingIndice}");
+        Debug.Log($"Change Keybinding : Indice = {keybindingIndice}");
         keybindingDropdown.dropdown.SetValueWithoutNotify(keybindingIndice);
     }
 

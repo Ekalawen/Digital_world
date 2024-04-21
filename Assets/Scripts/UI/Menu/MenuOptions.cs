@@ -103,9 +103,7 @@ public class MenuOptions : MonoBehaviour {
 
         OnMusicVolumeChange(PrefsManager.GetFloat(PrefsManager.MUSIC_VOLUME, defaultMusicVolume));
         OnSoundVolumeChange(PrefsManager.GetFloat(PrefsManager.SOUND_VOLUME, defaultSoundVolume));
-
         OnMouseSpeedChange(PrefsManager.GetFloat(PrefsManager.MOUSE_SPEED, defaultMouseSpeed));
-
         OnLuminosityChange(PrefsManager.GetFloat(PrefsManager.LUMINOSITY, defaultLuminosity));
         OnJumpWarpActivationPress(PrefsManager.GetBool(PrefsManager.JUMP_WARP, defaultJumpWarpActivation));
         OnWallWarpActivationPress(PrefsManager.GetBool(PrefsManager.WALL_WARP, defaultWallWarpActivation));

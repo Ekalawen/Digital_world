@@ -19,12 +19,13 @@ public class SkillTreeNewSkillTip : MonoBehaviour {
         scoreManager.onScoreChange.AddListener(score => SetActiveNewSkillTip());
         skillTreeMenu.onClose.AddListener(SetActiveNewSkillTip);
         SetActiveNewSkillTip();
-        gm.onFirstFrame.AddListener(TryOpenSkillTreeMenu);
+        //gm.onFirstFrame.AddListener(TryOpenSkillTreeMenu); // Don't open SkillTreeOnRestartLevel anymore!
     }
 
     public void SetActiveNewSkillTip() {
-        int additionnalCredits = scoreManager.GetCurrentScore();
-        newSkillTip.SetActive(skillTreeMenu.HasNewlyAffordableUpgrades(additionnalCredits));
+        int additionnalCredits = scoreManager.GetCurrentScore() - skillTreeMenu.GetAddedCreditsThiGame();
+        bool hasNewlyAffordableUpgrade = skillTreeMenu.HasNewlyAffordableUpgrades(additionnalCredits);
+        newSkillTip.SetActive(hasNewlyAffordableUpgrade);
     }
 
     protected void TryOpenSkillTreeMenu() {

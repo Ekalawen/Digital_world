@@ -138,7 +138,8 @@ public class SkillTreeUpgrade : MonoBehaviour {
         if(SkillTreeManager.Instance.IsUnlocked(key)) {
             borderImage.material = materialBorderUnlocked;
         } else {
-            int additionnalCredits = GameManager.IsInGame ? GameManager.Instance.GetInfiniteMap().GetScoreManager().GetCurrentScore() : 0;
+            //int additionnalCredits = GameManager.IsInGame ? GameManager.Instance.GetInfiniteMap().GetScoreManager().GetCurrentScore() : 0;
+            int additionnalCredits = 0; // Because now the credits are added when we open the SkillTree
             borderImage.material = SkillTreeManager.Instance.CanBuy(this, additionnalCredits) ? materialBorderAffordable : materialBorderLocked;
         }
         GetComponent<UpdateUnscaledTime>().Start();
