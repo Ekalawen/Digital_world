@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Components;
@@ -12,6 +13,7 @@ public class PauseMenu : MonoBehaviour {
     public TexteExplicatif popup;
     public ReplacementStrings docReplacementStrings;
     public SelectorManagerStrings strings;
+    public TMP_Text restartButtonText;
 
     [Header("SkillTree")]
     public SkillTreeMenu skillTreeMenu;
@@ -30,8 +32,14 @@ public class PauseMenu : MonoBehaviour {
         skillTreeMenu.onClose.AddListener(SetActiveGoodSkillTreeButton);
     }
 
+    protected void InitializeRestartButton() {
+        string binding = InputManager.Instance.GetCurrentInputController().GetStringForBinding(MessageZoneBindingParameters.Bindings.RESTART);
+        restartButtonText.text = gm.console.strings.restartButtonRestart.GetLocalizedString(binding).Result;
+    }
+
     public void Open() {
         SetActiveGoodSkillTreeButton();
+        InitializeRestartButton();
     }
 
     protected void SetActiveGoodSkillTreeButton() {

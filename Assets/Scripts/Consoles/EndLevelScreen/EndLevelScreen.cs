@@ -90,6 +90,7 @@ public class EndLevelScreen : MonoBehaviour {
         restartButton.SetActive(console.IsVisible());
         string binding = InputManager.Instance.GetCurrentInputController().GetStringForBinding(MessageZoneBindingParameters.Bindings.RESTART);
         restartButtonText.text = console.strings.restartButtonRestart.GetLocalizedString(binding).Result;
+
         bool shouldBeHightlighted = !unlockGroups.Any(g => g.progressBar.IsFull()) && !ShouldHightlightSkillTreeButton();
         restartButton.GetComponent<ButtonHighlighter>().enabled = shouldBeHightlighted; 
     }
