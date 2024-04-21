@@ -21,6 +21,9 @@ public class EndLevelScreen : MonoBehaviour {
     public GameObject restartButton; // Le truc qui clignote pour nous dire d'appuyer sur Escape à la fin du jeu !
     public TMP_Text restartButtonText;
 
+    public GameObject skillTreeNormalButton;
+    public GameObject skillTreeWithNewSkillButton;
+
     protected GameManager gm;
     protected Console console;
     protected List<EndLevelUnlockGroup> unlockGroups;
@@ -30,6 +33,7 @@ public class EndLevelScreen : MonoBehaviour {
         console = gm.console;
         holder.SetActive(false);
         InitializeUnlockGroups();
+        gm.console.GetPauseMenu().skillTreeMenu.onClose.AddListener(DisplaySkillTreeButton);
     }
 
     protected void InitializeUnlockGroups() {
@@ -40,9 +44,9 @@ public class EndLevelScreen : MonoBehaviour {
     }
 
     protected void CreateUnlockGroup(GoalLevel goalLevel) {
-        //if(goalLevel.IsSet() && goalLevel.GetPath().IsUnlocked()) {
-        //    return;
-        //}
+        if (goalLevel.IsSet() && goalLevel.GetPath().IsUnlocked()) {
+            return;
+        }
         EndLevelUnlockGroup unlockGroup = Instantiate(unlockGroupPrefab, parent: unlockGroupsHolder.transform).GetComponent<EndLevelUnlockGroup>();
         unlockGroups.Add(unlockGroup);
         unlockGroup.Initialize(goalLevel);
@@ -51,9 +55,16 @@ public class EndLevelScreen : MonoBehaviour {
     public void Open() {
         MouseDisplayer.Instance.ShowCursor();
         holder.SetActive(true);
-        DisplayEscapeButton();
+        DisplayRestartButton();
+        DisplaySkillTreeButton();
         unlockGroups.ForEach(g => g.Display());
         //DisplayDeathAstuces(); // Desactivated
+    }
+
+    protected void DisplaySkillTreeButton() {
+        bool hasNewlyAffordableUpgrade = gm.console.GetPauseMenu().skillTreeMenu.HasNewlyAffordableUpgrades(additionnalCredits: 0);
+        skillTreeNormalButton.SetActive(!hasNewlyAffordableUpgrade);
+        skillTreeWithNewSkillButton.SetActive(hasNewlyAffordableUpgrade);
     }
 
     public void Close() {
@@ -67,7 +78,7 @@ public class EndLevelScreen : MonoBehaviour {
             Close();
     }
 
-    public void DisplayEscapeButton() {
+    public void DisplayRestartButton() {
         restartButton.SetActive(console.IsVisible());
         string binding = InputManager.Instance.GetCurrentInputController().GetStringForBinding(MessageZoneBindingParameters.Bindings.RESTART);
         restartButtonText.text = console.strings.restartButtonRestart.GetLocalizedString(binding).Result;
