@@ -13,7 +13,8 @@ using UnityEngine.SceneManagement;
 
 public class EndLevelUnlockGroup : MonoBehaviour {
 
-    public Button unlockButton;
+    public Button unlockButtonEnabled;
+    public Button unlockButtonDisabled;
     public LevelProgressBar progressBar;
 
     protected GameManager gm;
@@ -23,9 +24,25 @@ public class EndLevelUnlockGroup : MonoBehaviour {
         gm = GameManager.Instance;
         this.goalLevel = goalLevel;
         progressBar.Initialize(maxValue: goalLevel.treshold);
+        progressBar.onReachMaxValueVisual.AddListener(SwapToEnabledUnlockButton);
     }
 
-    public void StartProgressBar() {
+    public void Display() {
+        DisplayProgressBar();
+        DisplayUnlockButton();
+    }
+
+    public void SwapToEnabledUnlockButton() {
+        unlockButtonEnabled.gameObject.SetActive(true);
+        unlockButtonDisabled.gameObject.SetActive(false);
+    }
+
+    protected void DisplayUnlockButton() {
+        unlockButtonEnabled.gameObject.SetActive(false);
+        unlockButtonDisabled.gameObject.SetActive(true);
+    }
+
+    private void DisplayProgressBar() {
         int currentValue = gm.goalManager.GetTotalCreditScore();
         progressBar.SetCurrentValue(currentValue);
     }

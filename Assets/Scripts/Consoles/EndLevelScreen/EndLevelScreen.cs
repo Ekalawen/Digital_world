@@ -52,7 +52,7 @@ public class EndLevelScreen : MonoBehaviour {
         MouseDisplayer.Instance.ShowCursor();
         holder.SetActive(true);
         DisplayEscapeButton();
-        unlockGroups.ForEach(g => g.StartProgressBar());
+        unlockGroups.ForEach(g => g.Display());
         //DisplayDeathAstuces(); // Desactivated
     }
 

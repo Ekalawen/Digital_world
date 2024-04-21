@@ -9,12 +9,13 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.Localization.Settings;
 using TMPro;
 using UnityEngine.SceneManagement;
-
+using UnityEngine.Events;
 
 public class LevelProgressBar : MonoBehaviour {
 
     public float changeValueDuration = 0.5f;
     public AnimationCurve changeValueCurve;
+    public AnimationCurve changeValueOver100Curve;
     public float onChangeParticlesCountLogProgression = 4;
     public GameObject holder;
     public Scrollbar scrollBar;
@@ -34,6 +35,9 @@ public class LevelProgressBar : MonoBehaviour {
     protected float startAvancement;
     protected float displayedAvancement;
     protected Timer onValueChangeParticlesTimer;
+    [HideInInspector]
+    public UnityEvent onReachMaxValueVisual;
+    protected bool hasReachedMaxValue = false;
 
     public void Initialize(int maxValue) {
         gm = GameManager.Instance;
@@ -50,7 +54,8 @@ public class LevelProgressBar : MonoBehaviour {
 
     protected void UpdateProgressBarValue() {
         float avancement = GetCurrentAvancement();
-        valueFluctuator.GoTo(avancement, changeValueDuration, changeValueCurve);
+        AnimationCurve curve = avancement >= 1.0f ? changeValueOver100Curve : changeValueCurve;
+        valueFluctuator.GoTo(avancement, changeValueDuration, curve);
     }
 
     protected float GetCurrentAvancement() {
@@ -75,6 +80,18 @@ public class LevelProgressBar : MonoBehaviour {
         percentageText.rectTransform.anchoredPosition = new Vector2(percentageText.rectTransform.anchoredPosition.x, textYPosition);
         fillerImage.material.SetFloat("_ColorAvancement", avancement);
         PlayParticlesOnValueChange(avancement);
+        SendHasReachMaxValue(avancement);
+    }
+
+    protected void SendHasReachMaxValue(float avancement) {
+        if(avancement < 1.0f) {
+            return;
+        }
+        if(hasReachedMaxValue) {
+            return;
+        }
+        hasReachedMaxValue = true;
+        onReachMaxValueVisual.Invoke();
     }
 
     protected void PlayParticlesOnValueChange(float avancement) {
@@ -124,5 +141,9 @@ public class LevelProgressBar : MonoBehaviour {
         //particlesHolder.GetComponent<RectTransform>().localScale = Vector3.one;
         //particlesHolder.GetComponent<RectTransform>().localRotation = Quaternion.Euler(0, 0, 0);
         //particlesHolder.GetComponent<RectTransform>().localPosition = - canvasSize + screenPoint;
+    }
+
+    public bool IsFull() {
+        return currentValue >= maxValue;
     }
 }

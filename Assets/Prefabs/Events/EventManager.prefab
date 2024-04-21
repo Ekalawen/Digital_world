@@ -48,6 +48,7 @@ MonoBehaviour:
   ejectionCubesArroundRadius: 20
   endGameDuration: 25
   endGameFrameRate: 0.1
+  endGameRecomputePositionsOrder: 0.2
   endEventCurveSpeed:
     serializedVersion: 2
     m_Curve:
@@ -82,15 +83,41 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   endGameType: 0
-  endEventDeathCubesType: 0
+  endEventCubesSelectionMethod: 0
+  endEventSeuilProximite: 2.5
   dureeDestructionCubesDestruction: 2
   proportionToKeep: 0
   bNoEndgame: 0
+  finalLightSpawnMode: 0
+  finalLightGetEmptyPositionsHelper: {fileID: 0}
+  finalLumiereShouldUseBoundingBox: 0
+  mapFunctionsOnCreateFinalLight: []
   screenShakeMagnitude: 4
   screenShakeRoughness: 15
   dureeScreenShake: 3
-  randomEventsPrefabs: []
+  eventsPrefabs: []
   nbLumieresTriggers: 
-  eventsToAddPrefabs: []
-  quitSceneTime: 7
-  reloadSceneTime: 7
+  nbLumieresSingleEvents: []
+  quitSceneTime: 99999
+  reloadSceneTime: 99999
+  onStartEndGame:
+    m_PersistentCalls:
+      m_Calls: []
+  onCaptureLumiere:
+    m_PersistentCalls:
+      m_Calls: []
+  onWinGame:
+    m_PersistentCalls:
+      m_Calls: []
+  onLoseGame:
+    m_PersistentCalls:
+      m_Calls: []
+  onGameOver:
+    m_PersistentCalls:
+      m_Calls: []
+  onJumpSuccess:
+    m_PersistentCalls:
+      m_Calls: []
+  onJumpFailed:
+    m_PersistentCalls:
+      m_Calls: []
