@@ -9,7 +9,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.Localization.Settings;
 using TMPro;
 using UnityEngine.SceneManagement;
-
+using UnityEngine.Localization.Components;
 
 public class EndLevelUnlockGroup : MonoBehaviour {
 
@@ -40,6 +40,9 @@ public class EndLevelUnlockGroup : MonoBehaviour {
     protected void DisplayUnlockButton() {
         unlockButtonEnabled.gameObject.SetActive(false);
         unlockButtonDisabled.gameObject.SetActive(true);
+        string levelName = goalLevel.IsSet() ? goalLevel.GetNextMenuLevel().GetVisibleName() : "";
+        unlockButtonEnabled.GetComponentInChildren<LocalizeStringEvent>().StringReference.Arguments = new object[] { levelName };
+        unlockButtonDisabled.GetComponentInChildren<LocalizeStringEvent>().StringReference.Arguments = new object[] { levelName };
     }
 
     private void DisplayProgressBar() {
