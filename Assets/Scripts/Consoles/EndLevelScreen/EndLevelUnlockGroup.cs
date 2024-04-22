@@ -27,6 +27,8 @@ public class EndLevelUnlockGroup : MonoBehaviour {
     public UIParticle unlockButtonParticles;
     public float durationUnlockButtonParticles = 2.5f;
     public LevelProgressBar progressBar;
+    public float durationToEmitAttractedParticles = 3.0f;
+    public AnimationCurve attractedParticlesCurve;
     public List<AttractedParticle> attractedParticles;
 
     protected GameManager gm;
@@ -42,21 +44,67 @@ public class EndLevelUnlockGroup : MonoBehaviour {
     }
 
     protected void InitializeAttractedParticles() {
+        attractedParticles = attractedParticles.OrderByDescending(p => p.creditValue).ToList();
         Transform scoreCounterTransform = gm.GetInfiniteMap().scoreDisplayer.displayText.transform;
         foreach (AttractedParticle attractedParticle in attractedParticles) {
             ParticleSystem particleSystem = Instantiate(attractedParticle.particleSystemPrefab, parent: scoreCounterTransform).GetComponentInChildren<ParticleSystem>();
             attractedParticle.attractor.gameObject.SetActive(false);
             attractedParticle.attractor.particleSystem = particleSystem;
             attractedParticle.attractor.gameObject.SetActive(true);
-            for (int i = 0; i < 10; i++) {
-                particleSystem.Play();
-            }
         }
     }
 
     public void Display() {
         DisplayProgressBar();
         DisplayUnlockButton();
+        PlayAttractedParticles();
+    }
+
+    protected void PlayAttractedParticles() {
+        List<ParticleSystem> particlesToPlay = GetParticlesToPlay();
+        StartCoroutine(CPlayParticlesToPlay(particlesToPlay));
+    }
+
+    protected IEnumerator CPlayParticlesToPlay(List<ParticleSystem> particlesToPlay) {
+        Timer timer = new UnpausableTimer(durationToEmitAttractedParticles);
+        Dictionary<ParticleSystem, int> particleBatch = new Dictionary<ParticleSystem, int>();
+        particlesToPlay.Distinct().ToList().ForEach(p => particleBatch[p] = 0);
+        for (int i = 0; i < particlesToPlay.Count; i++) {
+            float avancement = (float)i / particlesToPlay.Count;
+            if(avancement > attractedParticlesCurve.Evaluate(timer.GetAvancement())) {
+                SendParticleBatch(particleBatch);
+                particlesToPlay.Distinct().ToList().ForEach(p => particleBatch[p] = 0);
+                yield return null;
+                i--;
+                continue;
+            }
+            particleBatch[particlesToPlay[i]] += 1;
+        }
+        SendParticleBatch(particleBatch);
+    }
+
+    protected void SendParticleBatch(Dictionary<ParticleSystem, int> particleBatch) {
+        ParticleSystem.EmitParams emitParams = new ParticleSystem.EmitParams();
+        foreach (KeyValuePair<ParticleSystem, int> pair in particleBatch) {
+            pair.Key.Emit(emitParams, pair.Value);
+        }
+    }
+
+    protected List<ParticleSystem> GetParticlesToPlay() {
+        List<ParticleSystem> triggeredParticles = new List<ParticleSystem>();
+        int score = gm.goalManager.GetTotalCreditScore();
+        foreach (AttractedParticle attractedParticle in attractedParticles) {
+            bool isLastParticles = attractedParticle == attractedParticles.Last();
+            int nb = !isLastParticles ? Mathf.FloorToInt(score / attractedParticle.creditValue)
+                : Mathf.CeilToInt((float)score / attractedParticle.creditValue);
+            if (nb >= 2 && !isLastParticles) {
+                nb /= 2;
+            }
+            score = score - nb * attractedParticle.creditValue;
+            triggeredParticles.AddRange(Enumerable.Repeat(attractedParticle.attractor.particleSystem, nb));
+        }
+        MathTools.Shuffle(triggeredParticles);
+        return triggeredParticles;
     }
 
     public void SwapToEnabledUnlockButton() {
