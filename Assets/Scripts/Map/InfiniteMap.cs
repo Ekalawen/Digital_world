@@ -517,6 +517,14 @@ public class InfiniteMap : MapManager {
         scoreManager.AddToScore(100000);
     }
 
+    public void Add1000000Score() {
+        scoreManager.AddToScore(1000000);
+    }
+
+    public void Add10000000Score() {
+        scoreManager.AddToScore(10000000);
+    }
+
     public void Substract10Score() {
         scoreManager.AddToScore(-10);
     }
@@ -535,6 +543,14 @@ public class InfiniteMap : MapManager {
 
     public void Substract100000Score() {
         scoreManager.AddToScore(-100000);
+    }
+
+    public void Substract1000000Score() {
+        scoreManager.AddToScore(-1000000);
+    }
+
+    public void Substract10000000Score() {
+        scoreManager.AddToScore(-10000000);
     }
 
     protected void StartBlocksDestruction() {

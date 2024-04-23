@@ -27,11 +27,15 @@ public class CheatCodeManager : MonoBehaviour {
     public List<KeyCode> plus1000Code;
     public List<KeyCode> plus10000Code;
     public List<KeyCode> plus100000Code;
+    public List<KeyCode> plus1000000Code;
+    public List<KeyCode> plus10000000Code;
     public List<KeyCode> minus10Code;
     public List<KeyCode> minus100Code;
     public List<KeyCode> minus1000Code;
     public List<KeyCode> minus10000Code;
     public List<KeyCode> minus100000Code;
+    public List<KeyCode> minus1000000Code;
+    public List<KeyCode> minus10000000Code;
     public List<KeyCode> plus10DataCount;
     public List<KeyCode> plus100DataCount;
     public List<KeyCode> swapPhasesCode;
@@ -79,11 +83,15 @@ public class CheatCodeManager : MonoBehaviour {
             cheatCodes.Add(new CheatCode(plus1000Code, gm.GetInfiniteMap().Add1000Score));
             cheatCodes.Add(new CheatCode(plus10000Code, gm.GetInfiniteMap().Add10000Score));
             cheatCodes.Add(new CheatCode(plus100000Code, gm.GetInfiniteMap().Add100000Score));
+            cheatCodes.Add(new CheatCode(plus1000000Code, gm.GetInfiniteMap().Add1000000Score));
+            cheatCodes.Add(new CheatCode(plus10000000Code, gm.GetInfiniteMap().Add10000000Score));
             cheatCodes.Add(new CheatCode(minus10Code, gm.GetInfiniteMap().Substract10Score));
             cheatCodes.Add(new CheatCode(minus100Code, gm.GetInfiniteMap().Substract100Score));
             cheatCodes.Add(new CheatCode(minus1000Code, gm.GetInfiniteMap().Substract1000Score));
             cheatCodes.Add(new CheatCode(minus10000Code, gm.GetInfiniteMap().Substract10000Score));
             cheatCodes.Add(new CheatCode(minus100000Code, gm.GetInfiniteMap().Substract100000Score));
+            cheatCodes.Add(new CheatCode(minus1000000Code, gm.GetInfiniteMap().Substract1000000Score));
+            cheatCodes.Add(new CheatCode(minus10000000Code, gm.GetInfiniteMap().Substract10000000Score));
         }
 
         if (gm.GetMapType() == MenuLevel.LevelType.REGULAR) {

@@ -27,7 +27,8 @@ public class EndLevelUnlockGroup : MonoBehaviour {
     public UIParticle unlockButtonParticles;
     public float durationUnlockButtonParticles = 2.5f;
     public LevelProgressBar progressBar;
-    public float durationToEmitAttractedParticles = 3.0f;
+    [Tooltip("Duration Range = [x, y], Particles Count Range = [z, w]")]
+    public Vector4 durationToEmitAttractedParticlesMapping = new Vector4(2, 7, 1, 500);
     public AnimationCurve attractedParticlesCurve;
     public List<AttractedParticle> attractedParticles;
 
@@ -65,8 +66,15 @@ public class EndLevelUnlockGroup : MonoBehaviour {
         StartCoroutine(CPlayParticlesToPlay(particlesToPlay));
     }
 
+    protected float GetDurationToEmitAttractedParticles(int nbOfParticles) {
+        Vector4 m = durationToEmitAttractedParticlesMapping;
+        float duration = MathCurves.Remap(nbOfParticles, m.z, m.w, m.x, m.y);
+        return Mathf.Clamp(duration, m.x, m.y);
+    }
+
     protected IEnumerator CPlayParticlesToPlay(List<ParticleSystem> particlesToPlay) {
-        Timer timer = new UnpausableTimer(durationToEmitAttractedParticles);
+        Timer timer = new UnpausableTimer(GetDurationToEmitAttractedParticles(particlesToPlay.Count));
+        Debug.Log($"Duration = {timer.GetDuree()}");
         Dictionary<ParticleSystem, int> particleBatch = new Dictionary<ParticleSystem, int>();
         particlesToPlay.Distinct().ToList().ForEach(p => particleBatch[p] = 0);
         for (int i = 0; i < particlesToPlay.Count; i++) {
@@ -92,13 +100,14 @@ public class EndLevelUnlockGroup : MonoBehaviour {
 
     protected List<ParticleSystem> GetParticlesToPlay() {
         int score = gm.GetInfiniteMap().scoreManager.GetCurrentScore();
+        int multiplicator = score <= 100_000 ? 5 : score >= 5_000_000 ? 9 : 8;
         List<ParticleSystem> triggeredParticles = new List<ParticleSystem>();
         foreach (AttractedParticle attractedParticle in attractedParticles) {
             bool isLastParticles = attractedParticle == attractedParticles.Last();
             int nb = !isLastParticles ? Mathf.FloorToInt(score / attractedParticle.creditValue)
                 : Mathf.CeilToInt((float)score / attractedParticle.creditValue);
             if (nb >= 2 && !isLastParticles) {
-                nb /= 2;
+                nb = multiplicator * nb / 10;
             }
             score = score - nb * attractedParticle.creditValue;
             triggeredParticles.AddRange(Enumerable.Repeat(attractedParticle.attractor.particleSystem, nb));
