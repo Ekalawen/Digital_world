@@ -77,12 +77,10 @@ public class MenuManager : MonoBehaviour {
 	// Lorsqu'on appui sur le bouton jouer
 	public void OnPlayPress() {
 		Debug.Log("On a appuyé sur Play !");
-        if (!HaveThinkAboutTutorial()) {
-            AdvicePlayTutorial();
-        } else {
-            string sceneSuffix = IsDemo() ? "_Demo" : "";
-            SceneManager.LoadScene($"SelectorScene{sceneSuffix}");
-        }
+        //if (!HaveThinkAboutTutorial()) {
+            //AdvicePlayTutorial();
+        string sceneSuffix = IsDemo() ? "_Demo" : "";
+        SceneManager.LoadScene($"SelectorScene{sceneSuffix}");
     }
 
     protected bool HaveThinkAboutTutorial() {
