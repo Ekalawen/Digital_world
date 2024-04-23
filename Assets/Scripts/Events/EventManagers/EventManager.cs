@@ -1099,4 +1099,17 @@ public class EventManager : MonoBehaviour {
             corruptedCubeManager.Initialize();
         }
     }
+
+    public void ResetScores() {
+        PrefsManager.SetInt(StringHelper.GetKeyFor(PrefsManager.NB_WINS), 0);
+        PrefsManager.SetInt(StringHelper.GetKeyFor(PrefsManager.NB_DEATHS), 0);
+        PrefsManager.SetBool(StringHelper.GetKeyFor(PrefsManager.HAS_JUST_WIN), false);
+        PrefsManager.SetInt(StringHelper.GetKeyFor(PrefsManager.BEST_CREDITS_SCORE), 0);
+        PrefsManager.SetInt(StringHelper.GetKeyFor(PrefsManager.TOTAL_CREDITS_SCORE), 0);
+        PrefsManager.SetFloat(StringHelper.GetKeyFor(PrefsManager.BEST_BLOCKS_SCORE), 0);
+        PrefsManager.SetFloat(StringHelper.GetKeyFor(PrefsManager.TOTAL_BLOCKS_SCORE), 0);
+        PrefsManager.SetFloat(StringHelper.GetKeyFor(PrefsManager.PRECEDENT_BEST_BLOCKS_SCORE), 0);
+        PrefsManager.SetBool(StringHelper.GetKeyFor(PrefsManager.HAS_JUST_MAKE_BEST_BLOCKS_SCORE), false);
+        PrefsManager.SetInt(StringHelper.GetKeyFor(PrefsManager.SINCE_LAST_BEST_BLOCKS_SCORE), 0);
+    }
 }

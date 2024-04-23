@@ -91,8 +91,8 @@ public class EndLevelUnlockGroup : MonoBehaviour {
     }
 
     protected List<ParticleSystem> GetParticlesToPlay() {
+        int score = gm.GetInfiniteMap().scoreManager.GetCurrentScore();
         List<ParticleSystem> triggeredParticles = new List<ParticleSystem>();
-        int score = gm.goalManager.GetTotalCreditScore();
         foreach (AttractedParticle attractedParticle in attractedParticles) {
             bool isLastParticles = attractedParticle == attractedParticles.Last();
             int nb = !isLastParticles ? Mathf.FloorToInt(score / attractedParticle.creditValue)

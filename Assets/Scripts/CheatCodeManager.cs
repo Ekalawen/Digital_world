@@ -36,6 +36,7 @@ public class CheatCodeManager : MonoBehaviour {
     public List<KeyCode> plus100DataCount;
     public List<KeyCode> swapPhasesCode;
     public List<KeyCode> startEndEventCode;
+    public List<KeyCode> resetLevelScores;
 
     [Header("Power related")]
     public List<KeyCode> gravityZeroCode;
@@ -98,6 +99,7 @@ public class CheatCodeManager : MonoBehaviour {
 
         cheatCodes.Add(new CheatCode(swapPhasesCode, gm.timerManager.ForceSwapPhases));
         cheatCodes.Add(new CheatCode(startEndEventCode, gm.eventManager.ExternalStartEndGame));
+        cheatCodes.Add(new CheatCode(resetLevelScores, gm.eventManager.ResetScores));
         cheatCodes.Add(new CheatCode(gravityZeroCode, gm.gravityManager.SetGravityZeroSwap));
         cheatCodes.Add(new CheatCode(cooldownsZeroCode, gm.player.pouvoirHolder.SetPouvoirsCooldownZeroSwap));
         cheatCodes.Add(new CheatCode(invincibilityCode, gm.player.SwapInvincible));
