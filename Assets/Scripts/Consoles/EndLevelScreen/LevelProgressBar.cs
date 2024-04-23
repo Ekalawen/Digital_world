@@ -41,18 +41,18 @@ public class LevelProgressBar : MonoBehaviour {
     public UnityEvent onReachMaxValueVisual;
     protected bool hasReachedMaxValue = false;
 
-    public void Initialize(int maxValue) {
+    public void Initialize(int maxValue, int currentValue) {
         gm = GameManager.Instance;
         holder.SetActive(true);
         InitializeSize();
         onValueChangeParticlesTimer = new Timer(onValueChangeParticlesFrequence, setOver: true);
         valueFluctuator = new Fluctuator(this, GetProgressBarDisplayedAvancement, SetProgressBarValue);
         this.maxValue = maxValue;
-        currentValue = 0;
+        this.currentValue = currentValue;
         startAvancement = GetCurrentAvancement();
         totalText.text = StringHelper.ToCreditsShortFormat(maxValue);
         fillerImage.material = new Material(fillerImage.material);
-        SetProgressBarValue(avancement: 0.0f);
+        SetProgressBarValue(avancement: startAvancement);
     }
 
     protected void InitializeSize() {
@@ -67,6 +67,7 @@ public class LevelProgressBar : MonoBehaviour {
         float avancement = GetCurrentAvancement();
         AnimationCurve curve = avancement >= 1.0f ? changeValueOver100Curve : changeValueCurve;
         valueFluctuator.GoTo(avancement, changeValueDuration, curve);
+        PlayParticlesOnValueChange(avancement);
     }
 
     protected float GetCurrentAvancement() {
@@ -90,7 +91,6 @@ public class LevelProgressBar : MonoBehaviour {
         float textYPosition = avancement <= 0.5f ? percentageTextYPositions[0] : percentageTextYPositions[1];
         percentageText.rectTransform.anchoredPosition = new Vector2(percentageText.rectTransform.anchoredPosition.x, textYPosition);
         fillerImage.material.SetFloat("_ColorAvancement", avancement);
-        PlayParticlesOnValueChange(avancement);
         SendHasReachMaxValue(avancement);
     }
 
@@ -158,7 +158,7 @@ public class LevelProgressBar : MonoBehaviour {
         return currentValue >= maxValue;
     }
 
-    public void ReceiveParticle() {
-        Debug.Log($"Receive particle! :)");
+    public void ReceiveParticle(int particleValue) {
+        SetCurrentValue(currentValue + particleValue);
     }
 }

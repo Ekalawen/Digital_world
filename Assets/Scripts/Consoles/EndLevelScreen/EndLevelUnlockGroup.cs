@@ -38,7 +38,7 @@ public class EndLevelUnlockGroup : MonoBehaviour {
         gm = GameManager.Instance;
         this.goalLevel = goalLevel;
         unlockButtonParticles.gameObject.SetActive(false);
-        progressBar.Initialize(maxValue: goalLevel.treshold);
+        progressBar.Initialize(maxValue: goalLevel.treshold, currentValue: gm.goalManager.GetTotalCreditScore());
         progressBar.onReachMaxValueVisual.AddListener(SwapToEnabledUnlockButton);
         InitializeAttractedParticles();
     }
@@ -55,7 +55,7 @@ public class EndLevelUnlockGroup : MonoBehaviour {
     }
 
     public void Display() {
-        DisplayProgressBar();
+        //DisplayProgressBar();
         DisplayUnlockButton();
         PlayAttractedParticles();
     }

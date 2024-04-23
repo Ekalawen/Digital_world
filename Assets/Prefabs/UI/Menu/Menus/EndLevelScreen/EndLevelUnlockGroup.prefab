@@ -96,11 +96,11 @@ MonoBehaviour:
       - m_Target: {fileID: 4203307428777715442}
         m_TargetAssemblyTypeName: LevelProgressBar, Assembly-CSharp
         m_MethodName: ReceiveParticle
-        m_Mode: 1
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 10
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -165,11 +165,11 @@ MonoBehaviour:
       - m_Target: {fileID: 4203307428777715442}
         m_TargetAssemblyTypeName: LevelProgressBar, Assembly-CSharp
         m_MethodName: ReceiveParticle
-        m_Mode: 1
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 1000
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -233,55 +233,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 679f57c1ca1b7a7468ff2baa1378d6c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  changeValueDuration: 3
+  changeValueDuration: 0.1
   changeValueCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 0.0125065865
-      outSlope: 0.0125065865
+      inSlope: 0
+      outSlope: 0
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.5727235
-    - serializedVersion: 3
-      time: 0.31238258
-      value: 0.0028489716
-      inSlope: 0.03424753
-      outSlope: 0.03424753
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.54432994
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.59051335
-      value: 0.8001121
-      inSlope: 1.8139415
-      outSlope: 1.8139415
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.90145874
-      value: 1.0273702
-      inSlope: 0.005000659
-      outSlope: 0.005000659
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 1
-      outWeight: 1
-    - serializedVersion: 3
-      time: 0.94436103
-      value: 0.9245608
-      inSlope: 0.032083366
-      outSlope: 0.032083366
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 1
+      outWeight: 0
     - serializedVersion: 3
       time: 1
       value: 1
@@ -300,30 +264,12 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 0.0125065865
-      outSlope: 0.0125065865
+      inSlope: 0
+      outSlope: 0
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.5727235
-    - serializedVersion: 3
-      time: 0.31238258
-      value: 0.0028489716
-      inSlope: 0.03424753
-      outSlope: 0.03424753
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.54432994
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.58836186
-      value: 0.78259504
-      inSlope: 1.8139415
-      outSlope: 1.8139415
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
+      outWeight: 0
     - serializedVersion: 3
       time: 1
       value: 1
@@ -333,15 +279,6 @@ MonoBehaviour:
       weightedMode: 0
       inWeight: 0
       outWeight: 0
-    - serializedVersion: 3
-      time: 1.0081406
-      value: 0.9963491
-      inSlope: 0.005000659
-      outSlope: 0.005000659
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 1
-      outWeight: 1
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
@@ -447,11 +384,11 @@ MonoBehaviour:
       - m_Target: {fileID: 4203307428777715442}
         m_TargetAssemblyTypeName: LevelProgressBar, Assembly-CSharp
         m_MethodName: ReceiveParticle
-        m_Mode: 1
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 10000
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -516,11 +453,11 @@ MonoBehaviour:
       - m_Target: {fileID: 4203307428777715442}
         m_TargetAssemblyTypeName: LevelProgressBar, Assembly-CSharp
         m_MethodName: ReceiveParticle
-        m_Mode: 1
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 100
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -537,7 +474,7 @@ GameObject:
   - component: {fileID: 8278973430854697867}
   - component: {fileID: 2346875559989642109}
   m_Layer: 0
-  m_Name: UnlockGroup
+  m_Name: EndLevelUnlockGroup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1039,11 +976,11 @@ MonoBehaviour:
       - m_Target: {fileID: 4203307428777715442}
         m_TargetAssemblyTypeName: LevelProgressBar, Assembly-CSharp
         m_MethodName: ReceiveParticle
-        m_Mode: 1
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 100000
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
