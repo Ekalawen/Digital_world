@@ -90,7 +90,7 @@ public class OverrideManager : MonoBehaviour {
         return overridePrefab;
     }
 
-    bool HasOverride() {
+    public bool HasOverride() {
         return currentOverride;
     }
 }

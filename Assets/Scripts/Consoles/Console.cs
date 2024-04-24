@@ -164,6 +164,7 @@ public class Console : MonoBehaviour {
     private IEnumerator CInitialize()
     {
         yield return LocalizationSettings.InitializationOperation;
+        yield return new WaitUntil(() => gm.IsInitializationOver());
         isLocalizationLoaded = true;
 
         // Les premiers messages
@@ -264,7 +265,7 @@ public class Console : MonoBehaviour {
     }
 
     protected void VaAussiLoinQueTuPeux(bool displayImportant) {
-        if (displayImportant) {
+        if (displayImportant && !gm.overrideManager.HasOverride()) {
             AjouterMessageImportant(strings.vaAussiLoinQueTuPeux, TypeText.BLUE_TEXT, 3);
         } else {
             AjouterMessage(strings.vaAussiLoinQueTuPeux, TypeText.BLUE_TEXT);

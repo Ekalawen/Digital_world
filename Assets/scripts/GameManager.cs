@@ -402,6 +402,10 @@ public class GameManager : MonoBehaviour {
         return initializationIsOver;
     }
 
+    public bool IsGameStarted() {
+        return initializationIsOver;
+    }
+
     protected void StartFullScreen() {
 #if UNITY_EDITOR
         if (openInFullScreen) {
