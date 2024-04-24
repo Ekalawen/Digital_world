@@ -136,7 +136,7 @@ public class EndLevelUnlockGroup : MonoBehaviour {
     public void UnlockNextLevelButton() {
         UnlockPath();
         PlayUnlockButtonParticles();
-        //ReturnToSelectorIn(durationUnlockButtonParticles);
+        ReturnToSelectorIn(durationUnlockButtonParticles);
     }
 
     protected void PlayUnlockButtonParticles() {
