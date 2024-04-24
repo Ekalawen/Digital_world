@@ -121,8 +121,9 @@ public class EndLevelUnlockGroup : MonoBehaviour {
     }
 
     protected void DisplayUnlockButton() {
-        unlockButtonEnabled.gameObject.SetActive(false);
-        unlockButtonDisabled.gameObject.SetActive(true);
+        bool hasReachedMaxValue = progressBar.IsFull();
+        unlockButtonEnabled.gameObject.SetActive(hasReachedMaxValue);
+        unlockButtonDisabled.gameObject.SetActive(!hasReachedMaxValue);
         string levelName = goalLevel.IsSet() ? goalLevel.GetNextMenuLevel().GetVisibleName() : "";
         unlockButtonEnabled.GetComponentInChildren<LocalizeStringEvent>().StringReference.Arguments = new object[] { levelName };
         unlockButtonDisabled.GetComponentInChildren<LocalizeStringEvent>().StringReference.Arguments = new object[] { levelName };
