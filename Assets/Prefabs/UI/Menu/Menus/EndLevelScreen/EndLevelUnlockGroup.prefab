@@ -282,19 +282,21 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  onChangeParticlesCountLogProgression: 4
   holder: {fileID: 1628455521098766610}
   scrollBar: {fileID: 3527314551319320837}
   percentageText: {fileID: 25067526143716964}
   percentageTextYPositions: {x: 15, y: -5}
   totalText: {fileID: 6281070426807112484}
   fillerImage: {fileID: 9038592426574744221}
+  onChangeParticlesCountLogProgression: 4
   onValueChangeParticlesHolderPrefab: {fileID: 2817210705592042985, guid: 1b454cd87569d254eaa62cbc27b5ea2e,
     type: 3}
   onValueChangeParticlesFrequence: 0.075
   onReachMaxValueParticlesHolderPrefab: {fileID: 1922596523734511279, guid: 9733f83d8ddef3b4f8049e2a8355ab68,
     type: 3}
   offsetSize: 180
+  totalTextTooltip: {fileID: 9068233946527735747}
+  percentageTextTooltip: {fileID: 3847246711143373575}
   onReachMaxValueVisual:
     m_PersistentCalls:
       m_Calls: []
@@ -545,7 +547,7 @@ MonoBehaviour:
   unlockButtonParticles: {fileID: 7503182871053861862}
   durationUnlockButtonParticles: 3
   progressBar: {fileID: 4203307428777715442}
-  durationToEmitAttractedParticles: 5
+  durationToEmitAttractedParticlesMapping: {x: 2, y: 7, z: 1, w: 400}
   attractedParticlesCurve:
     serializedVersion: 2
     m_Curve:
@@ -787,6 +789,7 @@ GameObject:
   - component: {fileID: 1902665237595305429}
   - component: {fileID: 7794398078107762405}
   - component: {fileID: 25067526143716964}
+  - component: {fileID: 3847246711143373575}
   m_Layer: 5
   m_Name: PercentageText
   m_TagString: Untagged
@@ -916,6 +919,26 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &3847246711143373575
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6040437743633905649}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbd415a19dcac79448965bbe22a15aea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  localizedMessage:
+    m_TableReference:
+      m_TableCollectionName: GUID:424a6a0bc88e9244f84baacf95644b09
+    m_TableEntryReference:
+      m_KeyId: 429935527969202176
+      m_Key: 
+    m_FallbackState: 0
+  timeBeforeShowing: 0.4
 --- !u!1 &8313135637083200785
 GameObject:
   m_ObjectHideFlags: 0
@@ -1085,6 +1108,7 @@ GameObject:
   - component: {fileID: 3416314709227797885}
   - component: {fileID: 2897259421696146807}
   - component: {fileID: 6281070426807112484}
+  - component: {fileID: 9068233946527735747}
   m_Layer: 5
   m_Name: TotalText
   m_TagString: Untagged
@@ -1209,6 +1233,26 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &9068233946527735747
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9049574788313570114}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbd415a19dcac79448965bbe22a15aea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  localizedMessage:
+    m_TableReference:
+      m_TableCollectionName: GUID:424a6a0bc88e9244f84baacf95644b09
+    m_TableEntryReference:
+      m_KeyId: 429926267273125888
+      m_Key: 
+    m_FallbackState: 0
+  timeBeforeShowing: 0.4
 --- !u!1001 &3692834415225432423
 PrefabInstance:
   m_ObjectHideFlags: 0

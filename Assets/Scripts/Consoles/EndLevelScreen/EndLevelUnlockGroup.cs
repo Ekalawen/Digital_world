@@ -28,7 +28,7 @@ public class EndLevelUnlockGroup : MonoBehaviour {
     public float durationUnlockButtonParticles = 2.5f;
     public LevelProgressBar progressBar;
     [Tooltip("Duration Range = [x, y], Particles Count Range = [z, w]")]
-    public Vector4 durationToEmitAttractedParticlesMapping = new Vector4(2, 7, 1, 500);
+    public Vector4 durationToEmitAttractedParticlesMapping = new Vector4(2, 7, 1, 400);
     public AnimationCurve attractedParticlesCurve;
     public List<AttractedParticle> attractedParticles;
 
@@ -74,7 +74,6 @@ public class EndLevelUnlockGroup : MonoBehaviour {
 
     protected IEnumerator CPlayParticlesToPlay(List<ParticleSystem> particlesToPlay) {
         Timer timer = new UnpausableTimer(GetDurationToEmitAttractedParticles(particlesToPlay.Count));
-        Debug.Log($"Duration = {timer.GetDuree()}");
         Dictionary<ParticleSystem, int> particleBatch = new Dictionary<ParticleSystem, int>();
         particlesToPlay.Distinct().ToList().ForEach(p => particleBatch[p] = 0);
         for (int i = 0; i < particlesToPlay.Count; i++) {

@@ -11,23 +11,30 @@ using TMPro;
 using UnityEngine.SceneManagement;
 using UnityEngine.Events;
 using UnityEditor.PackageManager.UI;
+using UnityEngine.Localization.Components;
 
 public class LevelProgressBar : MonoBehaviour {
 
     public float changeValueDuration = 0.5f;
     public AnimationCurve changeValueCurve;
     public AnimationCurve changeValueOver100Curve;
-    public float onChangeParticlesCountLogProgression = 4;
     public GameObject holder;
     public Scrollbar scrollBar;
     public TMP_Text percentageText;
     public Vector2 percentageTextYPositions = new Vector2(15, -5);
     public TMP_Text totalText;
     public Image fillerImage;
+
+    [Header("Particles")]
+    public float onChangeParticlesCountLogProgression = 4;
     public GameObject onValueChangeParticlesHolderPrefab;
     public float onValueChangeParticlesFrequence = 0.1f;
     public GameObject onReachMaxValueParticlesHolderPrefab;
     public float offsetSize = 165f; // How much vertical pixel place are taking other elements of the UI in order to redimension it
+
+    [Header("Tooltips")]
+    public TooltipActivator totalTextTooltip;
+    public TooltipActivator percentageTextTooltip;
 
     protected GameManager gm;
     protected int maxValue;
@@ -53,6 +60,13 @@ public class LevelProgressBar : MonoBehaviour {
         totalText.text = StringHelper.ToCreditsShortFormat(maxValue);
         fillerImage.material = new Material(fillerImage.material);
         SetProgressBarValue(avancement: startAvancement);
+    }
+
+    protected void SetTooltipsValues() {
+        float avancement = currentValue / (float)maxValue * 100;
+        avancement = Mathf.Round(avancement * 100) / 100; // Only 2 digits of precisionj
+        totalTextTooltip.localizedMessage.Arguments = new object[] { StringHelper.ToCreditsFormat(maxValue) };
+        percentageTextTooltip.localizedMessage.Arguments = new object[] { StringHelper.ToCreditsFormat(currentValue), avancement };
     }
 
     protected void InitializeSize() {
@@ -91,6 +105,7 @@ public class LevelProgressBar : MonoBehaviour {
         float textYPosition = avancement <= 0.5f ? percentageTextYPositions[0] : percentageTextYPositions[1];
         percentageText.rectTransform.anchoredPosition = new Vector2(percentageText.rectTransform.anchoredPosition.x, textYPosition);
         fillerImage.material.SetFloat("_ColorAvancement", avancement);
+        SetTooltipsValues();
         SendHasReachMaxValue(avancement);
     }
 
@@ -136,22 +151,6 @@ public class LevelProgressBar : MonoBehaviour {
             particleSystem.Play();
             Destroy(particlesHolder, 5.0f);
         }
-        /// BAD IDEA ALWAYS LEAD TO BAD STUFF !!!
-        /// When you can't do something, find the plugins that does ! <3
-        //particlesHolder.transform.SetParent(gm.player.particlesCanvas.transform, true);
-        ////Vector2 screenPoint = percentageText.GetComponent<RectTransform>().position;
-        //RectTransform rect = percentageText.GetComponent<RectTransform>();
-        ////float x = rect.anchorMin.x * Screen.width * rect.gameObject.GetComponentInParent<Canvas>().scaleFactor;
-        ////float y = rect.anchorMin.y * Screen.height * rect.gameObject.GetComponentInParent<Canvas>().scaleFactor;
-        //Vector2 size = Vector2.Scale(rect.sizeDelta, rect.lossyScale);
-        //Rect newRect = new Rect((Vector2)rect.position - (size * rect.pivot), size);
-        ////Vector2 screenPoint = new Vector2(rect.anchorMin.x * Screen.width, rect.anchorMin.y * Screen.height);
-        //Vector2 screenPoint = new Vector2(newRect.x + newRect.width, newRect.y - newRect.height);
-        //Canvas canvas = gm.console.GetComponent<Canvas>();
-        //Vector2 canvasSize = canvas.GetComponent<RectTransform>().sizeDelta;
-        //particlesHolder.GetComponent<RectTransform>().localScale = Vector3.one;
-        //particlesHolder.GetComponent<RectTransform>().localRotation = Quaternion.Euler(0, 0, 0);
-        //particlesHolder.GetComponent<RectTransform>().localPosition = - canvasSize + screenPoint;
     }
 
     public bool IsFull() {
