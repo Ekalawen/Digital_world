@@ -29,6 +29,15 @@ public enum SkillKey {
     DASH_RESET_WHILE_ON_GROUND = 6,
     EXPLOSIVE_LANDING = 4,
 
+    // Dash Skills
+    DASH_LENGTH_PLUS_1,
+    DASH_LENGTH_PLUS_2,
+    DASH_LENGTH_PLUS_3,
+    DASH_CHARGE_PLUS_1,
+    DASH_CHARGE_PLUS_2,
+    DASH_CANCEL_POUSSEES,
+    DASH_RESET_GRIP,
+
     // Not created Skills
     SPEED_BOOST_1 = 14,
     UI_OVERRIDE_PREDICTOR = 15,

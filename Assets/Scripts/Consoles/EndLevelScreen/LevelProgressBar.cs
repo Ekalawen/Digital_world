@@ -10,7 +10,6 @@ using UnityEngine.Localization.Settings;
 using TMPro;
 using UnityEngine.SceneManagement;
 using UnityEngine.Events;
-using UnityEditor.PackageManager.UI;
 using UnityEngine.Localization.Components;
 
 public class LevelProgressBar : MonoBehaviour {
