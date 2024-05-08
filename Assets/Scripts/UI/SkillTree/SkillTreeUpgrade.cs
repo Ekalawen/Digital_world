@@ -37,10 +37,11 @@ public enum SkillKey {
     DASH_CHARGE_PLUS_2 = 18,
     DASH_CANCEL_POUSSEES = 19,
     DASH_RESET_GRIP = 20,
+    DASH_CURSOR_UI = 21,
 
     // Not created Skills
-    SPEED_BOOST_1 = 21,
-    UI_OVERRIDE_PREDICTOR = 22,
+    SPEED_BOOST_1 = 22,
+    UI_OVERRIDE_PREDICTOR = 23,
 }
 
 public class SkillTreeUpgrade : MonoBehaviour {
@@ -152,5 +153,11 @@ public class SkillTreeUpgrade : MonoBehaviour {
             borderImage.material = SkillTreeManager.Instance.CanBuy(this, additionnalCredits) ? materialBorderAffordable : materialBorderLocked;
         }
         GetComponent<UpdateUnscaledTime>().Start();
+    }
+
+    private void OnValidate() {
+        if (image) {
+            image.sprite = sprite;
+        }
     }
 }
