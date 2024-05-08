@@ -143,6 +143,7 @@ public class Player : Character {
         geoSphere.Initialize();
         inputManager = InputManager.Instance;
         GetPlayerSensitivity();
+        InitializeAdditionnalJumps();
         InitializeUsePreciseJump();
         InitializeDureeMur();
         InitializeShiftLandingMode();
@@ -185,6 +186,15 @@ public class Player : Character {
 
     protected void InitializeUsePreciseJump() {
         usePreciseJump = SkillTreeManager.Instance.IsEnabled(SkillKey.PRECISE_JUMP);
+    }
+
+    protected void InitializeAdditionnalJumps() {
+        if(SkillTreeManager.Instance.IsEnabled(SkillKey.DOUBLE_JUMP)) {
+            AddDoubleJump(1);
+        }
+        if(SkillTreeManager.Instance.IsEnabled(SkillKey.TRIPLE_JUMP)) {
+            AddDoubleJump(1);
+        }
     }
 
     protected void InitializeShiftLandingMode() {

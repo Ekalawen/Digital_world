@@ -18,6 +18,8 @@ public enum SkillKey {
     UNLOCK_OVERRIDES = 1,
     FIRST_DASH = 5,
     QUADRATIC_TRESHOLDS = 8,
+    DOUBLE_JUMP = 22,
+    TRIPLE_JUMP = 23,
 
     // Left Skills
     EPIPHANIC_EXPLOIT = 9,
@@ -40,8 +42,8 @@ public enum SkillKey {
     DASH_CURSOR_UI = 21,
 
     // Not created Skills
-    SPEED_BOOST_1 = 22,
-    UI_OVERRIDE_PREDICTOR = 23,
+    SPEED_BOOST_1 = 24,
+    UI_OVERRIDE_PREDICTOR = 25,
 }
 
 public class SkillTreeUpgrade : MonoBehaviour {
