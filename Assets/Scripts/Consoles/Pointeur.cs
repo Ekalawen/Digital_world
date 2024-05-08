@@ -36,6 +36,7 @@ public class Pointeur : MonoBehaviour {
     protected ChargeCooldown gripDashCooldown = null;
     protected PouvoirTimeHack timeHack = null;
     protected bool hasSlideUi;
+    protected bool shouldUpdateDashImage = false;
 
     public void Initialize() {
         gm = GameManager.Instance;
@@ -46,6 +47,7 @@ public class Pointeur : MonoBehaviour {
         timeHackPointeur.color = auSolColor;
         timeHackPointeur.rectTransform.sizeDelta = Vector2.one * auSolScale;
         hasSlideUi = SkillTreeManager.Instance.IsEnabled(SkillKey.BLUE_SLIDE);
+        shouldUpdateDashImage = SkillTreeManager.Instance.IsEnabled(SkillKey.DASH_CURSOR_UI);
 
         InitTexture();
     }
@@ -129,7 +131,7 @@ public class Pointeur : MonoBehaviour {
         if(tripleDashChargeCooldown == null) {
             return;
         }
-        int nbCharges = Mathf.Min(tripleDashChargeCooldown.GetCurrentCharges(), textureByDashCharges.Count - 1);
+        int nbCharges = shouldUpdateDashImage ? Mathf.Min(tripleDashChargeCooldown.GetCurrentCharges(), textureByDashCharges.Count - 1) : 3;
         Texture2D textureToUse = textureByDashCharges[nbCharges];
         SetTexture(textureToUse);
     }
