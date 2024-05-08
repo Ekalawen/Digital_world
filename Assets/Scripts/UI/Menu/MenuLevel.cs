@@ -365,6 +365,10 @@ public class MenuLevel : MonoBehaviour {
         return visibleName.GetLocalizedString().Result;
     }
 
+    public LocalizedString GetVisibleNameLocalizedString() {
+        return visibleName;
+    }
+
     public string GetPasse() {
         return nextPassword;
     }

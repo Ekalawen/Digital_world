@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Localization;
 
 public class SelectorLevel : MonoBehaviour {
 
@@ -33,6 +34,10 @@ public class SelectorLevel : MonoBehaviour {
 
     public string GetVisibleName() {
         return menuLevel.GetVisibleName();
+    }
+
+    public LocalizedString GetVisibleNameLocalizedString() {
+        return menuLevel.GetVisibleNameLocalizedString();
     }
 
     public string GetNameId() {

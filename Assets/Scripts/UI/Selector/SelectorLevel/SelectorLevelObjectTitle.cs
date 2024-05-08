@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.UI;
 
 public class SelectorLevelObjectTitle : MonoBehaviour {
@@ -44,7 +45,14 @@ public class SelectorLevelObjectTitle : MonoBehaviour {
     }
 
     protected void SetTitleToLevelName() {
-        text.text = objectLevel.level.GetVisibleName();
+        StartCoroutine(CSetTitleToLevelName());
+    }
+
+    protected IEnumerator CSetTitleToLevelName() {
+        UnityEngine.Localization.LocalizedString nameString = objectLevel.level.GetVisibleNameLocalizedString();
+        AsyncOperationHandle<string> handle = nameString.GetLocalizedString();
+        yield return handle;
+        text.text = handle.Result;
         UIHelper.FitTextHorizontally(objectLevel.level.GetVisibleName(), text);
     }
 
