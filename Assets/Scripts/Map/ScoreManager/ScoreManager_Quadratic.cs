@@ -14,9 +14,14 @@ public class ScoreManager_Quadratic : ScoreManager {
     protected bool hasAlreadyDoubleScoreIncrement4 = false;
 
     protected override void InitializeScore() {
+        InitializeScoreIncrement3();
         InitializeScoreIncrement4();
         SetCurrentScore(0);
         UpdateAllDisplayersInstantly();
+    }
+
+    protected void InitializeScoreIncrement3() {
+        scoreIncrement3 += SkillTreeManager.Instance.IsEnabled(SkillKey.QUADRATIC_TRESHOLDS) ? 1 : 0;
     }
 
     protected void InitializeScoreIncrement4() {
