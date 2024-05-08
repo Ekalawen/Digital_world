@@ -50,7 +50,6 @@ public class MenuManager : MonoBehaviour {
         SetRandomBackgroundIfNeeded();
         StartMenuMusic();
         CheckIfShouldResetSavesAfterCredits();
-        SwapPlayAndTutorialMaterialsIfFirstRun();
         SetLuminosityVolume();
     }
 
