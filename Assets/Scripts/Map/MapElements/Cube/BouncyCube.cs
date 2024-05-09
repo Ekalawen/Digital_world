@@ -32,7 +32,7 @@ public class BouncyCube : Cube {
         player.AddPoussee(new Poussee(direction, dureePoussee, distancePoussee));
         player.ResetGrip();
         if (Vector3.Dot(direction, gm.gravityManager.Up()) > 0 && InputManager.Instance.GetJump()) {
-            player.SetCarefulJumping(Player.EtatPersonnage.AU_SOL);
+            player.StartUncancellableJump(Player.EtatPersonnage.AU_SOL);
             gm.soundManager.PlayBounceWithJumpClip();
         } else {
             player.RemoveGravityEffectFor(dureePoussee); // La gravité est déjà artificiellement annulée lors d'un saut :)

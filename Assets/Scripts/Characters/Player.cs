@@ -72,6 +72,7 @@ public class Player : Character {
 	protected Vector3 normaleOrigineSaut; // La normale au plan du mur duquel le personnage a sauté
     protected EtatPersonnage jumpedFrom;
     protected bool usePreciseJump; // If true, the player can modulate the height of its jumps. If false, jumps always go to max height.
+    protected bool isCurrentJumpCancellable = true; // Set to false when the jump provides from external sources (BouncyCubes, DashResetItem) so that we can't cancel this kind of jumps
 	protected float hauteurMaxSaut; // La hauteur maximale d'un saut !
 	protected float debutMur; // le timing où le personnage a commencé à s'accrocher au mur !
 	protected Vector3 normaleMur; // la normale au mur sur lequel le personnage est accroché !
@@ -449,7 +450,7 @@ public class Player : Character {
                     RegisterAdditionnalJump();
                     Jump(from: origineSaut);
                 }
-                if (sautTimer.IsOver() || GetPreciseJumpUp()) {
+                if (sautTimer.IsOver() || (GetPreciseJumpUp() && isCurrentJumpCancellable)) {
                     etat = EtatPersonnage.EN_CHUTE;
                 } else {
                     move = ApplyJumpMouvement(move);
@@ -959,6 +960,7 @@ public class Player : Character {
         origineSaut = from;
         lastAvancementSaut = 0f;
         timerLastTimeAuSol.SetOver(); // On ne veut pas pouvoir double sauter à cause de ça !
+        isCurrentJumpCancellable = true;
         if (from == EtatPersonnage.AU_SOL) {
         } else if (from == EtatPersonnage.AU_MUR) {
             normaleOrigineSaut = normaleMur;
@@ -977,8 +979,9 @@ public class Player : Character {
         }
     }
 
-    public void SetCarefulJumping(EtatPersonnage from) {
+    public void StartUncancellableJump(EtatPersonnage from) {
         Jump(from);
+        isCurrentJumpCancellable = false;
     }
 
     public void FreezeLocalisation() {
