@@ -9,5 +9,6 @@ public class ResetDashItem : Item {
         gm.player.ResetGrip();
         gm.player.ResetAdditionnalJumps();
         gm.player.GetDash().GetCooldown().RechargeEntirely();
+        gm.player.SetCarefulJumping(gm.player.GetEtat());
     }
 }
