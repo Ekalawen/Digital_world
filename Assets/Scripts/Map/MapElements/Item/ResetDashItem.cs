@@ -10,5 +10,6 @@ public class ResetDashItem : Item {
         gm.player.ResetAdditionnalJumps();
         gm.player.GetDash().GetCooldown().RechargeEntirely();
         gm.player.StartUncancellableJump(gm.player.GetEtat());
+        gm.player.RemoveAllPoussees();
     }
 }
