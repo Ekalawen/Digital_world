@@ -966,8 +966,6 @@ public class Player : Character {
             normaleOrigineSaut = normaleMur;
             timerLastTimeAuMur.Reset();
             dureeMurRestante = 0; // Si on a sauté depuis un mur, il ne faut surtout pas qu'on puisse s'accrocher à nouveau à ce même mur !
-        } else {
-            Debug.Log("On saute depuis un endroit non autorisé !");
         }
         PlayJumpSound();
         gm.postProcessManager.StartJumpEffect();

@@ -95,6 +95,7 @@ public class ItemManager : MonoBehaviour {
         Transform parentFolder = parent ?? itemsFolder.transform;
         Item item = Instantiate(itemPrefab, pos, Quaternion.identity, parentFolder).GetComponent<Item>();
         item.SetPrefab(itemPrefab);
+        item.Initialize();
         Register(item, itemPrefab);
 
         return item;

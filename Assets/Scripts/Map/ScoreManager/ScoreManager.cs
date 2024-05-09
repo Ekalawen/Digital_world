@@ -34,7 +34,8 @@ public abstract class ScoreManager : MonoBehaviour
     }
 
     protected void InitializeDataProbability() {
-        dataProbability = SkillTreeManager.Instance.IsEnabled(SkillKey.DATA_BREACH) ? 1.0f / 3.0f : 0.0f;
+        //dataProbability = SkillTreeManager.Instance.IsEnabled(SkillKey.DATA_BREACH) ? 1.0f / 3.0f : 0.0f;
+        dataProbability = 1.0f;
     }
 
     private void InitializeDisplayers() {

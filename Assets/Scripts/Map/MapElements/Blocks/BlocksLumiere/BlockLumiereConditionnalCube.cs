@@ -6,7 +6,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class BlockLumiereConditionnal : BlockLumiere {
+public class BlockLumiereConditionnalCube : BlockLumiere {
 
     public enum ConditionType
     {

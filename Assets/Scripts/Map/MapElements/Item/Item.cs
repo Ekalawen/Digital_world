@@ -35,14 +35,18 @@ public abstract class Item : MonoBehaviour {
     protected GameObject itemPrefab;
     protected bool isCaptured = false;
 
-    protected virtual void Start() {
+    public void Start() {
+        Initialize();
+    }
+
+    public void Initialize() {
         gm = GameManager.Instance;
         if (gm.timerManager.HasGameStarted()) {
             gm.itemManager.Register(this, gameObject);
         }
     }
 
-	protected virtual void OnTriggerEnter(Collider hit) {
+    protected virtual void OnTriggerEnter(Collider hit) {
 		if (!isCaptured && hit.gameObject.name == "Joueur"){
             isCaptured = true;
             gm.soundManager.PlayGetItemClip(transform.position);

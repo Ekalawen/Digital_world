@@ -26,6 +26,7 @@ public class Block : MonoBehaviour {
     protected MapManager map;
     protected List<Cube> cubes;
     protected List<Lumiere> lumieres;
+    protected List<Item> items;
     protected int nbLumieresToChose;
     protected float randomDataProbability = 0;
     protected Block originalBlockPrefab;
@@ -55,9 +56,31 @@ public class Block : MonoBehaviour {
         if (gm.timerManager.HasGameStarted()) {
             RegisterCubesToColorSources();
         }
+        GatherItems();
         //StopwatchWrapper.Mesure(StartSwappingCubes);
         InitializeLumieres();
         StartSwappingCubes();
+    }
+
+    protected void GatherItems() {
+        items = new List<Item>();
+        GatherItemsIn(cubeFolder);
+    }
+
+    protected void GatherItemsIn(Transform folder) {
+        foreach (Transform child in folder) {
+            Item item = child.gameObject.GetComponent<Item>();
+            if (item) {
+                item.Initialize();
+                items.Add(item);
+                continue;
+            }
+            RandomCubes randomCubes = child.gameObject.GetComponent<RandomCubes>();
+            if(randomCubes && randomCubes.IsMarkedAsDestroyed()) {
+                continue;
+            }
+            GatherItemsIn(child);
+        }
     }
 
     private void InitializeTriggerZone() {
@@ -214,8 +237,9 @@ public class Block : MonoBehaviour {
                 AddCube(cube);
 
             RandomCubes randomCubes = child.gameObject.GetComponent<RandomCubes>();
-            if (randomCubes != null)
+            if (randomCubes != null) {
                 AddCubes(randomCubes.GetChosenCubesAndDestroyOthers());
+            }
 
             SwappyCubesHolderManager swappyCubesHolderManager = child.gameObject.GetComponent<SwappyCubesHolderManager>();
             if (swappyCubesHolderManager != null) {
@@ -396,5 +420,9 @@ public class Block : MonoBehaviour {
 
     public void SetRandomDataProbability(float probability) {
         randomDataProbability = probability;
+    }
+
+    public bool IsItemAt(Vector3 position) {
+        return items.Any(i => i.transform.position == position);
     }
 }

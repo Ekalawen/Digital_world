@@ -11,7 +11,7 @@ public class BlockLumiere : MonoBehaviour {
     protected List<Lumiere> lumieres;
     protected InfiniteMap infiniteMap;
 
-    public void Initialize() {
+    public virtual void Initialize() {
         infiniteMap = GameManager.Instance.GetInfiniteMap();
     }
 

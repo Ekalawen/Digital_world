@@ -7,10 +7,6 @@ public class GravityInverseItemBlackAndWhite : GravityInverseItem {
 
     public float addedTime = 35.0f;
 
-    protected override void Start() {
-        base.Start();
-    }
-
     public override void OnTrigger(Collider hit) {
         base.OnTrigger(hit);
 

@@ -8,6 +8,8 @@ public class RandomCubes : MonoBehaviour {
 
     public int nbToChose = 1;
 
+    protected bool isMarkedAsDestroyed = false;
+
     protected List<Cube> GatherCubes() {
         List<Cube> cubes = new List<Cube>();
         foreach (Transform child in transform) {
@@ -36,8 +38,9 @@ public class RandomCubes : MonoBehaviour {
             MathTools.Shuffle(cubes);
             List<Cube> chosen = cubes.Take(nbToChose).ToList();
             List<Cube> others = cubes.Skip(nbToChose).Take(cubes.Count - nbToChose).ToList();
-            foreach (Cube cube in others)
+            foreach (Cube cube in others) {
                 Destroy(cube.gameObject);
+            }
             return chosen;
         } else {
             List<RandomCubes> groups = GatherRandomGroups();
@@ -45,9 +48,18 @@ public class RandomCubes : MonoBehaviour {
             List<RandomCubes> chosen = groups.Take(nbToChose).ToList();
             List<RandomCubes> others = groups.Skip(nbToChose).Take(groups.Count - nbToChose).ToList();
             foreach (RandomCubes otherGroup in others) {
+                otherGroup.MarkAsDestroyed();
                 Destroy(otherGroup.gameObject);
             }
             return chosen.SelectMany(g => g.GetChosenCubesAndDestroyOthers()).ToList();
         }
+    }
+
+    public void MarkAsDestroyed() {
+        isMarkedAsDestroyed = true;
+    }
+
+    public bool IsMarkedAsDestroyed() {
+        return isMarkedAsDestroyed;
     }
 }
