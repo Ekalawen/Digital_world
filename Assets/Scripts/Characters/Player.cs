@@ -82,8 +82,8 @@ public class Player : Character {
     protected float dureeMurRestante = 0; // Le temps qu'il nous reste à être accroché au mur après s'en être détaché via SHIFT ! :)
     protected Timer timerLastTimeAuMur; // La dernière fois que l'on était accroché au mur.
     protected Timer timerLastTimeNotAuMur; // La dernière fois que l'on n'était PAS accroché au mur.
-    protected int nbDoublesSautsMax = 0; // Nombre de doubles sauts
-    protected int nbDoublesSautsCourrant = 0; // Le nombre de doubles sauts déjà utilisés
+    protected int nbAdditionnalJumpsMax = 0; // Nombre de doubles sauts
+    protected int nbAdditionnalJumpsCurrent = 0; // Le nombre de doubles sauts déjà utilisés
     protected float slideLimit; // La limite à partir de laquelle on va slider sur une surface.
     protected float skinWidthCoef = 1.1f;
     protected float lastAvancementSaut;
@@ -190,10 +190,10 @@ public class Player : Character {
 
     protected void InitializeAdditionnalJumps() {
         if(SkillTreeManager.Instance.IsEnabled(SkillKey.DOUBLE_JUMP)) {
-            AddDoubleJump(1);
+            AddAdditionnalJumpMax(1);
         }
         if(SkillTreeManager.Instance.IsEnabled(SkillKey.TRIPLE_JUMP)) {
-            AddDoubleJump(1);
+            AddAdditionnalJumpMax(1);
         }
     }
 
@@ -445,8 +445,8 @@ public class Player : Character {
                 break;
 
             case EtatPersonnage.EN_SAUT:
-                if (inputManager.GetJumpDown() && gm.gravityManager.HasGravity() && CanDoubleJump()) {
-                    AddDoubleJump();
+                if (inputManager.GetJumpDown() && gm.gravityManager.HasGravity() && CanAdditionnalJump()) {
+                    RegisterAdditionnalJump();
                     Jump(from: origineSaut);
                 }
                 if (sautTimer.IsOver() || GetPreciseJumpUp()) {
@@ -462,8 +462,8 @@ public class Player : Character {
                         timerLastTimeAuSol.SetOver();
                         Jump(from: EtatPersonnage.AU_SOL);
                         move = ApplyJumpMouvement(move);
-                    } else if (gm.gravityManager.HasGravity() && CanDoubleJump()) {
-                        AddDoubleJump();
+                    } else if (gm.gravityManager.HasGravity() && CanAdditionnalJump()) {
+                        RegisterAdditionnalJump();
                         Jump(from: origineSaut);
                         move = ApplyJumpMouvement(move);
                     }
@@ -471,7 +471,7 @@ public class Player : Character {
                 break;
 
             case EtatPersonnage.AU_MUR:
-                ResetDoubleJump();
+                ResetAdditionnalJumps();
                 if (GetShiftInput()) {
                     // On peut se décrocher du mur en appuyant sur shift
                     FallFromWallButCanGripItAgain();
@@ -614,22 +614,22 @@ public class Player : Character {
         return move;
     }
 
-    protected void AddDoubleJump() {
-        nbDoublesSautsCourrant++;
+    protected void RegisterAdditionnalJump() {
+        nbAdditionnalJumpsCurrent++;
     }
 
-    protected bool CanDoubleJump() {
-        return nbDoublesSautsCourrant < nbDoublesSautsMax;
+    protected bool CanAdditionnalJump() {
+        return nbAdditionnalJumpsCurrent < nbAdditionnalJumpsMax;
     }
 
     protected void ResetAuSol() {
-        ResetDoubleJump();
+        ResetAdditionnalJumps();
         ResetDureeMur();
         ResetOrigineSaut();
     }
 
-    protected void ResetDoubleJump() {
-        nbDoublesSautsCourrant = 0;
+    public void ResetAdditionnalJumps() {
+        nbAdditionnalJumpsCurrent = 0;
     }
 
     protected void ResetDureeMur() {
@@ -1016,16 +1016,16 @@ public class Player : Character {
         }
     }
 
-    public int GetNbDoubleSautsMax() {
-        return nbDoublesSautsMax;
+    public int GetNbAdditionnalJumpsMax() {
+        return nbAdditionnalJumpsMax;
     }
 
-    public void AddDoubleJump(int nbToAdd) {
-        nbDoublesSautsMax += nbToAdd;
+    public void AddAdditionnalJumpMax(int nbToAdd) {
+        nbAdditionnalJumpsMax += nbToAdd;
     }
 
-    public void SetNbDoubleJumps(int nbDoubleJumps) {
-        nbDoublesSautsMax = nbDoubleJumps;
+    public void SetAdditionnalJumpsMax(int nbDoubleJumps) {
+        nbAdditionnalJumpsMax = nbDoubleJumps;
     }
 
     public IPouvoir GetPouvoirA() {

@@ -1074,7 +1074,7 @@ public class Console : MonoBehaviour {
 
     // Lorsque le joueur capture un item double saut !
     public void CaptureAddDoubleJump() {
-        if (player.GetNbDoubleSautsMax() == 1) {
+        if (player.GetNbAdditionnalJumpsMax() == 1) {
             AjouterMessageImportant(strings.doubleSautActive, TypeText.BLUE_TEXT, 2, bAfficherInConsole: false);
         } else {
             AjouterMessageImportant(strings.doubleSautPlusUn, TypeText.BLUE_TEXT, 2, bAfficherInConsole: false);

@@ -7,7 +7,13 @@ using UnityEngine.Assertions;
 
 public abstract class Item : MonoBehaviour {
 
-    public enum Type { TIME_RESET, NANOBOOST, POWER_GIVER, GRAVITY };
+    public enum Type {
+        TIME_RESET,
+        NANOBOOST,
+        POWER_GIVER,
+        GRAVITY,
+        RESET_DASH,
+    };
 
     [Header("Type")]
     public Type type;

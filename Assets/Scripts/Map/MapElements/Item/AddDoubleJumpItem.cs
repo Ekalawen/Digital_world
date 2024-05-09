@@ -7,7 +7,7 @@ public class AddDoubleJumpItem : Item {
     public int nbDoubleJumpAdded = 1;
 
     public override void OnTrigger(Collider hit) {
-        gm.player.AddDoubleJump(nbDoubleJumpAdded);
+        gm.player.AddAdditionnalJumpMax(nbDoubleJumpAdded);
         gm.console.CaptureAddDoubleJump();
     }
 }
