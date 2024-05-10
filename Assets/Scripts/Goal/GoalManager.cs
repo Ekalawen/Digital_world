@@ -76,7 +76,9 @@ public class GoalManager : MonoBehaviour {
     public GoalLevel GetGoalLevel(SelectorLevel endLevel) {
         //return goalLevels.Find(g => g.GetNextLevel() == endLevel.menuLevel);
         foreach(GoalLevel goalLevel in goalLevels) {
-            if(goalLevel.GetNextMenuLevel().GetNameId() == endLevel.menuLevel.GetNameId()) {
+            string goalLevelNameId = goalLevel.GetNextMenuLevel().GetNameId();
+            string endLevelNameId = endLevel.menuLevel.GetNameId();
+            if (goalLevelNameId == endLevelNameId) {
                 return goalLevel;
             }
         }
