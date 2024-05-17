@@ -10,6 +10,7 @@ public class Pointeur : MonoBehaviour {
     public RawImage auSolPointeur;
     public RawImage gripDashPointeur;
     public RawImage timeHackPointeur;
+    public RawImage dashFlashImage;
 
     [Header("Couleurs")]
     public Color auSolColor;
@@ -22,6 +23,7 @@ public class Pointeur : MonoBehaviour {
     public float enSautScale = 3;
     public float enChuteScale = 3;
     public float auMurScale = 5;
+    public float dashFlashScale = 28;
 
     [Header("Textures")]
     public Texture2D dashDefaultTexture;
@@ -104,6 +106,7 @@ public class Pointeur : MonoBehaviour {
                 timeHackPointeur.rectTransform.sizeDelta = Vector2.one * scale;
                 break;
         }
+        dashFlashImage.rectTransform.sizeDelta = Vector2.one * dashFlashScale;
     }
 
     protected void InitTexture() {
