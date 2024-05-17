@@ -482,7 +482,7 @@ public class Player : Character {
                     Jump(from: EtatPersonnage.AU_MUR);
                     move = ApplyJumpMouvement(move);
 
-                } else if (GetHoldingPreciseJump()) {
+                } else if (GetHoldingPreciseJump() || !isCurrentJumpCancellable) {
                     // On a le droit de terminer son saut lorsqu'on touche un mur
                     move = ApplyJumpMouvement(move);
 
