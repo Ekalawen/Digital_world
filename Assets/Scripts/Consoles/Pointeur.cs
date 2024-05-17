@@ -31,6 +31,9 @@ public class Pointeur : MonoBehaviour {
     public Texture2D gripDefaultTexture;
     public Texture2D gripTargetingTexture;
 
+    [Header("Links")]
+    public PointeurFlash pointeurFlash;
+
     protected GameManager gm;
     protected ChargeCooldown tripleDashChargeCooldown = null;
     protected ChargeCooldown gripDashCooldown = null;
@@ -50,6 +53,7 @@ public class Pointeur : MonoBehaviour {
         shouldUpdateDashImage = SkillTreeManager.Instance.IsEnabled(SkillKey.DASH_CURSOR_UI);
 
         InitTexture();
+        pointeurFlash.Initialize(this);
     }
 
     void Update() {

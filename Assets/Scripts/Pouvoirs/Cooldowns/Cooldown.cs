@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Localization;
 
 public class Cooldown : MonoBehaviour {
@@ -12,6 +13,8 @@ public class Cooldown : MonoBehaviour {
     protected Timer cooldownTimer;
     protected IPouvoir pouvoir;
     protected List<CooldownModifier> modifiers;
+    [HideInInspector]
+    public UnityEvent<int> onGainCharge; // The number of charges gained
 
     public virtual void Initialize() {
         pouvoir = GetComponent<IPouvoir>();
@@ -22,6 +25,7 @@ public class Cooldown : MonoBehaviour {
 
     public virtual void RechargeEntirely() {
         cooldownTimer.SetOver();
+        onGainCharge.Invoke(1);
     }
 
     public virtual void Use() {
@@ -66,6 +70,7 @@ public class Cooldown : MonoBehaviour {
 
     public virtual void GainCharge() {
         cooldownTimer.SetOver();
+        onGainCharge.Invoke(1);
     }
 
     public virtual void GainChargeIn(float duration) {

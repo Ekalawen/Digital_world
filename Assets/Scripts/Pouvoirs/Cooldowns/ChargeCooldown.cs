@@ -20,7 +20,6 @@ public class ChargeCooldown : Cooldown {
     }
 
     public override void RechargeEntirely() {
-        base.RechargeEntirely();
         GainMultipleCharges(maxCharges - currentCharges);
     }
 
@@ -44,7 +43,7 @@ public class ChargeCooldown : Cooldown {
         chargingCoroutine = null;
         if(currentCharges < maxCharges) {
             currentCharges++;
-            pouvoir.GetPouvoirDisplay().FlashPouvoirAvailable();
+            SendOnGainCharges(1);
             if(currentCharges < maxCharges) {
                 StartCharging();
             }
@@ -57,11 +56,20 @@ public class ChargeCooldown : Cooldown {
 
     public void GainMultipleCharges(int nbChargesToGain) {
         if(currentCharges < maxCharges) {
+            int previousChargesCount = currentCharges;
             currentCharges = Mathf.Min(currentCharges + nbChargesToGain, maxCharges);
-            pouvoir.GetPouvoirDisplay().FlashPouvoirAvailable();
+            int nbChargesGained = currentCharges - previousChargesCount;
+            SendOnGainCharges(nbChargesGained);
             if(currentCharges == maxCharges) {
                 StopChargingCoroutine();
             }
+        }
+    }
+    
+    protected void SendOnGainCharges(int nbChargesGained) {
+        pouvoir.GetPouvoirDisplay().FlashPouvoirAvailable();
+        if(nbChargesGained > 0) {
+            onGainCharge.Invoke(nbChargesGained);
         }
     }
 
@@ -71,7 +79,7 @@ public class ChargeCooldown : Cooldown {
 
     public void GainMultipleChargeOverMax(int nbChargesToGain) {
         currentCharges += nbChargesToGain;
-        pouvoir.GetPouvoirDisplay().FlashPouvoirAvailable();
+        SendOnGainCharges(nbChargesToGain);
     }
 
     public override bool IsAvailable() {
