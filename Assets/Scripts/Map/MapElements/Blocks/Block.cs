@@ -28,6 +28,7 @@ public class Block : MonoBehaviour {
     protected List<Lumiere> lumieres;
     protected List<Item> items;
     protected int nbLumieresToChose;
+    protected int nbLumieresToChoseMissing; // The Data to spawn we couldn't because we didn't have enought BlockLumieres setup for it! We are fallbacking to random data instead! :)
     protected float randomDataProbability = 0;
     protected Block originalBlockPrefab;
     protected bool shouldNotifyToPressShift = false;
@@ -112,6 +113,7 @@ public class Block : MonoBehaviour {
             }
         }
         blockLumieres = GaussianGenerator.SelecteSomeNumberOf(blockLumieres, nbLumieresToChose);
+        nbLumieresToChoseMissing = nbLumieresToChose - blockLumieres.Count;
         blockLumieres.ForEach(bl => lumieres.AddRange(bl.GetLumieres()));
     }
 
@@ -407,6 +409,7 @@ public class Block : MonoBehaviour {
 
     protected void SpawnRandomLumieres() {
         int nbRandomDataToSpawn = Mathf.RoundToInt(randomDataProbability * lumiereSpawnBoundingBox.size.x * lumiereSpawnBoundingBox.size.y * lumiereSpawnBoundingBox.size.z);
+        nbRandomDataToSpawn += nbLumieresToChoseMissing;
         for(int i = 0; i < nbRandomDataToSpawn; ++i) {
             SpawnOneRandomLumiere();
         }

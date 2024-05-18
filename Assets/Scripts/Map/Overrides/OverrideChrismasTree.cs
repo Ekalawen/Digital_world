@@ -8,7 +8,6 @@ using UnityEngine.Events;
 public class OverrideChrismasTree : OverrideOnBlock {
 
     public int nbStandardDataPerBlock = 3;
-    //public int nbRandomDataPerBlock = 7;
     public float randomDataProbability = 0.02f;
 
     protected ScoreManager scoreManager;
@@ -16,8 +15,7 @@ public class OverrideChrismasTree : OverrideOnBlock {
     protected override void InitializeSpecific() {
         infiniteMap = gm.GetInfiniteMap();
         scoreManager = infiniteMap.GetScoreManager();
-        scoreManager.dataProbability = 1.0f;
-        scoreManager.nbDataPerBlock = nbStandardDataPerBlock;
+        scoreManager.SetDataProbabilities(Enumerable.Repeat(1.0f, nbStandardDataPerBlock).ToList());
 
         OnAllFirstBlocks();
         infiniteMap.onBeforeInitializeBlock.AddListener(OnBlock);

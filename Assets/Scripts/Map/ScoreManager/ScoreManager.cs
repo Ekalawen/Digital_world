@@ -1,18 +1,18 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
 public abstract class ScoreManager : MonoBehaviour
 {
-    public float dataProbability = 1 / 3.0f;
-    public int nbDataPerBlock = 1;
     [Tooltip("On Crossing Block")]
     public int scoreIncrement = 1;
     [Tooltip("On Catching Data")]
     public int scoreIncrement2 = 1;
 
+    protected List<float> dataProbabilities; // For each probability, their is a chance to spawn 1 more Data !
     protected GameManager gm;
     protected InfiniteMap infiniteMap;
     protected CounterDisplayer scoreDisplayer;
@@ -34,8 +34,15 @@ public abstract class ScoreManager : MonoBehaviour
     }
 
     protected void InitializeDataProbability() {
-        //dataProbability = SkillTreeManager.Instance.IsEnabled(SkillKey.DATA_BREACH) ? 1.0f / 3.0f : 0.0f;
-        dataProbability = 1.0f;
+        //dataProbabilities = new List<float>() { 1.0f }; // Always one data
+        //return;
+        dataProbabilities = new List<float>();
+        if(SkillTreeManager.Instance.IsEnabled(SkillKey.DATA_BREACH)) {
+            dataProbabilities.Add(1.0f / 3.0f);
+        }
+        if (SkillTreeManager.Instance.IsEnabled(SkillKey.DATA_EXPLOIT)) {
+            dataProbabilities.Add(1.0f / 2.0f);
+        }
     }
 
     private void InitializeDisplayers() {
@@ -99,7 +106,11 @@ public abstract class ScoreManager : MonoBehaviour
     }
 
     public virtual int GetNbDataForBlock() {
-        return UnityEngine.Random.value < dataProbability ? nbDataPerBlock : 0;
+        return dataProbabilities.Select(p => UnityEngine.Random.value < p ? 1 : 0).Sum();
+    }
+
+    public void SetDataProbabilities(List<float> dataProbabilities) {
+        this.dataProbabilities = dataProbabilities;
     }
 
     public int GetCurrentScore() {
