@@ -280,10 +280,10 @@ public class InfiniteMap : MapManager {
 
     protected GameObject GetRandomBlockPrefab() {
         int indiceBlock = allBlocks.Count - nbFirstBlocks;
-        if (blockForcer == null || !blockForcer.ShoulForceBlockAt(indiceBlock)) {
-            return MathTools.ChoseOneWeighted(blockWeights.Select(bw => bw.block).ToList(), blockWeights.Select(bw => bw.weight).ToList());
+        if (blockForcer && blockForcer.ShoulForceBlockAt(indiceBlock)) {
+            return blockForcer.GetForcedBlockAt(indiceBlock);
         }
-        return blockForcer.GetForcedBlockAt(indiceBlock);
+        return MathTools.ChoseOneWeighted(blockWeights.Select(bw => bw.block).ToList(), blockWeights.Select(bw => bw.weight).ToList());
     }
 
     protected GameObject GetRandomNotCompletedBlockPrefab() {
@@ -752,5 +752,17 @@ public class InfiniteMap : MapManager {
 
     public void CaptureLumiere(Lumiere lumiere) {
         scoreManager.OnCatchData();
+    }
+
+    public int GetTotalTimesToRememberCount() {
+        return blockWeights.Count * Block.maxTimesCountForAveraging;
+    }
+
+    public int GetRememberedTimesToRememberCount() {
+        return blockWeights.Select(bw => bw.block.GetComponent<Block>().timesForFinishing.Count).Sum();
+    }
+
+    public int GetRemainingTimesToRememberCount() {
+        return GetTotalTimesToRememberCount() - GetRememberedTimesToRememberCount();
     }
 }

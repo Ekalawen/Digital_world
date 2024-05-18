@@ -23,7 +23,7 @@ public class Block : MonoBehaviour {
     public bool shouldPlayerPressShift = false;
 
     protected GameManager gm;
-    protected MapManager map;
+    protected InfiniteMap map;
     protected List<Cube> cubes;
     protected List<Lumiere> lumieres;
     protected List<Item> items;
@@ -44,7 +44,7 @@ public class Block : MonoBehaviour {
 
     public void Initialize(Transform blocksFolder, Block originalBlockPrefab, int nbLumieresToChose) {
         gm = GameManager.Instance;
-        map = gm.map;
+        map = gm.GetInfiniteMap();
         this.originalBlockPrefab = originalBlockPrefab;
         this.nbLumieresToChose = nbLumieresToChose;
         //Debug.Log($"BLOCK = {name} -----------------");
@@ -321,8 +321,11 @@ public class Block : MonoBehaviour {
             EditorUtility.SetDirty(originalBlockPrefab);
 #endif
             GetTimeList().Add(time);
-            nbBlocksDisplayer.AddVolatileText($"{time}s", Color.red);
             RemoveExtremeTimes();
+            int total = map.GetTotalTimesToRememberCount();
+            int remembered = map.GetRememberedTimesToRememberCount();
+            float percentage = (float)remembered / total * 100;
+            nbBlocksDisplayer.AddVolatileText($"{time}s {percentage:F2}%", Color.red);
         }
     }
 
