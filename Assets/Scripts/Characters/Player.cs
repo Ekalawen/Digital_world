@@ -650,6 +650,9 @@ public class Player : Character {
     }
 
     protected bool IsGrounded() {
+        if(etat == EtatPersonnage.EN_SAUT && !isCurrentJumpCancellable) {
+            return false;
+        }
         RaycastHit[] hits = Physics.SphereCastAll(transform.position,
             transform.localScale.x / 2.0f,
             gm.gravityManager.Down(),
