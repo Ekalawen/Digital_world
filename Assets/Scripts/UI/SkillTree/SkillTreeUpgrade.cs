@@ -18,9 +18,10 @@ public enum SkillKey {
     UNLOCK_OVERRIDES = 1,
     FIRST_DASH = 5,
     QUADRATIC_TRESHOLDS = 8,
+    DATA_EXPLOIT = 24,
+    DASH_RESET_SOURCE = 25,
     DOUBLE_JUMP = 22,
     TRIPLE_JUMP = 23,
-    DATA_EXPLOIT = 24,
 
     // Left Skills
     EPIPHANIC_EXPLOIT = 9,
@@ -43,7 +44,7 @@ public enum SkillKey {
     DASH_CURSOR_UI = 21,
 
     // Not created Skills
-    LAST_ENUM_NUMBER = 25,
+    LAST_ENUM_NUMBER = 26,
     //SPEED_BOOST_1 = 25,
     //UI_OVERRIDE_PREDICTOR = 25,
 }

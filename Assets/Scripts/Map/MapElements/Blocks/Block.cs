@@ -48,9 +48,6 @@ public class Block : MonoBehaviour {
         map = gm.GetInfiniteMap();
         this.originalBlockPrefab = originalBlockPrefab;
         this.nbLumieresToChose = nbLumieresToChose;
-        //Debug.Log($"BLOCK = {name} -----------------");
-        //StopwatchWrapper.Mesure(GatherCubes);
-        //StopwatchWrapper.Mesure(RegisterCubesToMap);
         InitializeTriggerZone();
         GatherCubes();
         RegisterCubesToMap();
@@ -58,8 +55,8 @@ public class Block : MonoBehaviour {
             RegisterCubesToColorSources();
         }
         GatherItems();
-        //StopwatchWrapper.Mesure(StartSwappingCubes);
         InitializeLumieres();
+        SpawnRandomItems();
         StartSwappingCubes();
     }
 
@@ -73,7 +70,7 @@ public class Block : MonoBehaviour {
             Item item = child.gameObject.GetComponent<Item>();
             if (item) {
                 item.Initialize();
-                items.Add(item);
+                RegisterItem(item);
                 continue;
             }
             RandomCubes randomCubes = child.gameObject.GetComponent<RandomCubes>();
@@ -82,6 +79,11 @@ public class Block : MonoBehaviour {
             }
             GatherItemsIn(child);
         }
+    }
+
+    protected void RegisterItem(Item item) {
+        items.Add(item);
+        UpdateBoundingBoxWith(item.transform.position);
     }
 
     private void InitializeTriggerZone() {
@@ -147,20 +149,19 @@ public class Block : MonoBehaviour {
         StartSwappingCubesInReward();
     }
 
-    protected void UpdateBoundingBoxWith(Cube cube) {
+    protected void UpdateBoundingBoxWith(Vector3 pos) {
         if (!isCubeBoundingBoxCreated) {
-            cubeBoundingBox = new Bounds(cube.transform.position, Vector3.zero);
+            cubeBoundingBox = new Bounds(pos, Vector3.zero);
             lumiereSpawnBoundingBox = new Bounds(cubeBoundingBox.center, cubeBoundingBox.size + Vector3.one * 2);
             isCubeBoundingBoxCreated = true;
             return;
         }
-        cubeBoundingBox.min = MathTools.Min(cubeBoundingBox.min, cube.transform.position);
-        cubeBoundingBox.max = MathTools.Max(cubeBoundingBox.max, cube.transform.position);
+        cubeBoundingBox.min = MathTools.Min(cubeBoundingBox.min, pos);
+        cubeBoundingBox.max = MathTools.Max(cubeBoundingBox.max, pos);
         lumiereSpawnBoundingBox = new Bounds(cubeBoundingBox.center, cubeBoundingBox.size + Vector3.one * 2);
     }
 
     protected void InitializeChosenLumieres() {
-        //lumieres.ForEach(l => map.RegisterAlreadyExistingLumiere(l));
         List<Lumiere> newLumieres = new List<Lumiere>();
         for(int i = 0; i < lumieres.Count; ++i) {
             Vector3 pos = lumieres[i].transform.position;
@@ -253,7 +254,7 @@ public class Block : MonoBehaviour {
 
     protected void AddCube(Cube cube) {
         cubes.Add(cube);
-        UpdateBoundingBoxWith(cube);
+        UpdateBoundingBoxWith(cube.transform.position);
     }
 
     protected void AddCubes(List<Cube> cubes) {
@@ -397,6 +398,14 @@ public class Block : MonoBehaviour {
         lumieres.Add(lumiere);
     }
 
+    protected void SpawnItemAt(Vector3 pos, GameObject itemPrefab) {
+        if(!map.IsFree(pos)) { // Additionnal check necessary here because we are waiting a frame sometimes before spawning the Item
+            return;
+        }
+        Item item = gm.itemManager.GenerateItemFromPrefab(itemPrefab, pos);
+        RegisterItem(item);
+    }
+
     protected void SpawnOneRandomLumiere() {
         for (int k = 0; k < 100; k++) {
             Vector3 pos = lumiereSpawnBoundingBox.min + MathTools.RoundToInt(MathTools.Range(lumiereSpawnBoundingBox.size));
@@ -404,6 +413,36 @@ public class Block : MonoBehaviour {
                 SpawnLumiereAt(pos);
                 break;
             }
+        }
+    }
+
+    protected void SpawnOneRandomItem(GameObject itemPrefab) {
+        for (int k = 0; k < 100; k++) {
+            Vector3 pos = lumiereSpawnBoundingBox.min + MathTools.RoundToInt(MathTools.Range(lumiereSpawnBoundingBox.size));
+            if (map.IsFree(pos)) {
+                if (gm.IsGameStarted()) {
+                    SpawnItemAt(pos, itemPrefab);
+                } else {
+                    gm.onInitilizationFinish.AddListener(() => SpawnItemAt(pos, itemPrefab));
+                }
+                break;
+            }
+        }
+    }
+
+    protected void SpawnRandomItems() {
+        if(!SkillTreeManager.Instance.IsEnabled(SkillKey.DASH_RESET_SOURCE)) {
+            return;
+        }
+        if(map.IsFromStartBlocks(this)) {
+            return;
+        }
+        if(UnityEngine.Random.value >= 0.20f) {
+            return;
+        }
+        int nbRandomItemsToSpawn = Mathf.RoundToInt(0.01f * lumiereSpawnBoundingBox.size.x * lumiereSpawnBoundingBox.size.y * lumiereSpawnBoundingBox.size.z);
+        for(int i = 0; i < nbRandomItemsToSpawn; ++i) {
+            SpawnOneRandomItem(gm.itemManager.GetDashResetPrefab());
         }
     }
 

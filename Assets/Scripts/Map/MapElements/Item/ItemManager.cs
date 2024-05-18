@@ -9,6 +9,7 @@ public class ItemManager : MonoBehaviour {
 
     public List<GameObject> itemsPrefabs; // On récupère les items !
     public List<int> nbItems;
+    public GameObject dashResetPrefab;
     public bool popItemInFrontOfPlayer = false;
     [ConditionalHide("popItemInFrontOfPlayer")]
     public GameObject itemInFrontOfPlayerPrefab1;
@@ -167,5 +168,9 @@ public class ItemManager : MonoBehaviour {
                 orbTrigger.Hack();
             }
         }
+    }
+
+    public GameObject GetDashResetPrefab() {
+        return dashResetPrefab;
     }
 }

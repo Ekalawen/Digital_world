@@ -215,15 +215,14 @@ public class InfiniteMap : MapManager {
 
         Block newBlock = Instantiate(blockPrefab, blockPosition, blockRotation, blocksFolder).GetComponent<Block>();
         onBeforeInitializeBlock.Invoke(newBlock);
+        blocks.Add(newBlock);
+        allBlocks.Add(newBlock);
         newBlock.Initialize(blocksFolder, blockPrefab.GetComponent<Block>(), scoreManager.GetNbDataForBlock());
         if (blocksNameToNotifyPlayerToPressShift.Contains(newBlock.name)) {
             newBlock.ShouldNotifyPlayerHowToPressShift();
             blocksNameToNotifyPlayerToPressShift.Remove(newBlock.name);
         }
         nbBlocksCreated += 1;
-
-        blocks.Add(newBlock);
-        allBlocks.Add(newBlock);
 
         ApplyTextureAdderOnNewBlock(newBlock);
         AddBestScoreMarker(newBlock);
@@ -764,5 +763,10 @@ public class InfiniteMap : MapManager {
 
     public int GetRemainingTimesToRememberCount() {
         return GetTotalTimesToRememberCount() - GetRememberedTimesToRememberCount();
+    }
+
+    public bool IsFromStartBlocks(Block block) {
+        int indice = allBlocks.IndexOf(block);
+        return indice != -1 && indice < nbFirstBlocks;
     }
 }
