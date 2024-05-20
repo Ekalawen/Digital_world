@@ -111,6 +111,7 @@ public class Block : MonoBehaviour {
         List<BlockLumiere> alwaysBlockLumieres = new List<BlockLumiere>();
         foreach (Transform child in lumiereFolder) {
             BlockLumiere blockLumiere = child.gameObject.GetComponent<BlockLumiere>();
+            blockLumiere.Initialize();
             if (blockLumiere.CanBePicked()) {
                 if (blockLumiere.isAlwaysSpawned) {
                     alwaysBlockLumieres.Add(blockLumiere);
