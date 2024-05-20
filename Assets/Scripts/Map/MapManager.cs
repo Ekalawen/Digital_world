@@ -538,7 +538,8 @@ public class MapManager : MonoBehaviour {
         return cubes;
     }
 
-    public Lumiere CreateLumiere(Vector3 pos, Lumiere.LumiereType type, bool dontRoundPositions = false) {
+
+    public Lumiere CreateLumiere(Vector3 pos, GameObject lumierePrefab, bool dontRoundPositions = false) {
         // On arrondie les positions pour être à une valeur entière :)
         // C'EST TRES IMPORTANT QUE CES POSITIONS SOIENT ENTIERES !!! (pour vérifier qu'elles sont accessibles)
         if(!dontRoundPositions)
@@ -549,12 +550,16 @@ public class MapManager : MonoBehaviour {
             Debug.Log($"Une lumière est crée dans un cube ! x)");
         }
 
-        Lumiere lumiere = Instantiate(GetPrefab(type), pos, Quaternion.identity, lumieresFolder.transform).GetComponent<Lumiere>();
+        Lumiere lumiere = Instantiate(lumierePrefab, pos, Quaternion.identity, lumieresFolder.transform).GetComponent<Lumiere>();
         lumiere.Initialize();
 
         RegisterAlreadyExistingLumiere(lumiere);
 
         return lumiere;
+    }
+
+    public Lumiere CreateLumiere(Vector3 pos, Lumiere.LumiereType type, bool dontRoundPositions = false) {
+        return CreateLumiere(pos, GetPrefab(type), dontRoundPositions);
     }
 
     public Lumiere RegisterAlreadyExistingLumiere(Lumiere lumiere) {

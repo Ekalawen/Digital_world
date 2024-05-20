@@ -75,10 +75,10 @@ public class ScoreManager_Quadratic : ScoreManager {
     public override void MultiplyAllScores(float multiplier) {
         base.MultiplyAllScores(multiplier);
         int scoreIncrementToAdd = Mathf.RoundToInt(scoreIncrement * (multiplier - 1));
-        AddToScoreIncrement(scoreIncrementToAdd);
         int scoreIncrement2ToAdd = Mathf.RoundToInt(scoreIncrement2 * (multiplier - 1));
-        AddToScoreIncrement2(scoreIncrement2ToAdd);
         int scoreIncrement3ToAdd = Mathf.RoundToInt(scoreIncrement3 * (multiplier - 1));
+        AddToScoreIncrement(scoreIncrementToAdd);
+        AddToScoreIncrement2(scoreIncrement2ToAdd);
         AddToScoreIncrement3(scoreIncrement3ToAdd);
         // Pour le moment scoreIncrement4 reste comme ça :)
     }

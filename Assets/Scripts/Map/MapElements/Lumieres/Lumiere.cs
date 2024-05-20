@@ -61,10 +61,15 @@ public class Lumiere : MonoBehaviour {
         gm = GameManager.Instance;
         SetName();
         //SetLumiereQuality((LumiereQuality)PrefsManager.GetInt(PrefsManager.DATA_QUALITY_KEY, (int)MenuOptions.defaultLumiereQuality));
+        InitializeRewards();
         InitializeBlockLumiere();
         SetLumiereQuality(LumiereQuality.LOW);
         StartAnimation();
 	}
+
+    protected void InitializeRewards() {
+        rewards.ForEach(r => r.Initialize(this));
+    }
 
     protected void InitializeBlockLumiere() {
         blockLumiere = GetComponent<BlockLumiere>();
@@ -116,6 +121,7 @@ public class Lumiere : MonoBehaviour {
     }
 
     protected void ApplyRewards() {
+        Debug.Log($"REWARD !");
         rewards.ForEach(r => r.Reward());
     }
 

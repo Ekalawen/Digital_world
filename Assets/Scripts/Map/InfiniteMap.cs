@@ -216,7 +216,6 @@ public class InfiniteMap : MapManager {
         }
 
         if(ShouldCreateSuperBlock()) {
-            Debug.Log($"Create SUPER BLOCK !!! <3");
             CreateBlock(GetRandomBlockPrefab(superBlocksWeights));
             return;
         }
@@ -238,7 +237,6 @@ public class InfiniteMap : MapManager {
     protected bool ShouldCreateSuperBlock() {
         //return shouldUseSuperBlocks && UnityEngine.Random.value < 0.02f;
         return UnityEngine.Random.value < 0.5f;
-        //return true;
     }
 
     protected bool ShouldCreateForcedBlock() {
@@ -783,7 +781,6 @@ public class InfiniteMap : MapManager {
     }
 
     public void CaptureLumiere(Lumiere lumiere) {
-        scoreManager.OnCatchData();
     }
 
     public int GetTotalTimesToRememberCount() {

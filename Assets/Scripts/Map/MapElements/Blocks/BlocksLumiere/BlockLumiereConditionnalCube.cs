@@ -15,7 +15,7 @@ public class BlockLumiereConditionnalCube : BlockLumiere {
     }
 
     public ConditionType conditionType = ConditionType.Presence;
-    public List<Cube> necessaryCubes;
+    public List<Cube> necessaryCubes = new List<Cube>();
 
     public override bool CanBePicked() {
         if (conditionType == ConditionType.Presence) {

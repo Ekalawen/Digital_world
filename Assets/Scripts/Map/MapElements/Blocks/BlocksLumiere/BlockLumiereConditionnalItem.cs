@@ -9,7 +9,7 @@ using UnityEngine.Events;
 public class BlockLumiereConditionnalItem : BlockLumiere {
 
     public BlockLumiereConditionnalCube.ConditionType conditionType = BlockLumiereConditionnalCube.ConditionType.Presence;
-    public List<Item> necessaryItems;
+    public List<Item> necessaryItems = new List<Item>();
 
     protected Block block;
 
