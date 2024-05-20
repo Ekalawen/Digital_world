@@ -8,6 +8,8 @@ using UnityEngine.Events;
 
 public class BlockLumiere : MonoBehaviour {
 
+    public bool isAlwaysSpawned = false;
+
     protected List<Lumiere> lumieres;
     protected InfiniteMap infiniteMap;
 

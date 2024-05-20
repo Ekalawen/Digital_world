@@ -15,6 +15,7 @@ public class InfiniteMap : MapManager {
 
     [Header("Parameters")]
     public List<BlockList> blockLists;
+    public List<BlockList> superBlocksList;
     public int nbBlocksForward = 3;
     public DifficultyMode difficultyMode = DifficultyMode.CONSTANT;
     [ConditionalHide("difficultyMode", DifficultyMode.CONSTANT)]
@@ -80,6 +81,7 @@ public class InfiniteMap : MapManager {
     protected int nbBlocksDestroyed;
     protected int nbBlocksCreated = 0;
     protected List<BlockWeight> blockWeights;
+    protected List<BlockWeight> superBlocksWeights;
     protected List<Block> blocks; // Les blocks vont des blocks en train de se faire détruire jusqu'à nbBlocksForwards blocks devant la position du joueur
     protected List<Block> allBlocks; // Les allBlocks vont du premier block crée jusqu'au dernier block crée. Certains pourront donc être null après leurs destructions !
     protected Block lastlyDestroyedBlock = null;
@@ -96,6 +98,7 @@ public class InfiniteMap : MapManager {
     protected bool areTresholdsEnabled;
     protected bool isInfiniteModeUnlocked;
     protected int bootUpgradeQuantity;
+    protected bool shouldUseSuperBlocks = false;
     [HideInInspector]
     public UnityEvent<int> onBlocksCrossed;
     [HideInInspector]
@@ -117,8 +120,10 @@ public class InfiniteMap : MapManager {
         nbBlocksRun = 0;
         nbBlocksDestroyed = 0;
         blockWeights = blockLists.Aggregate(new List<BlockWeight>(), (list, blockList) => list.Concat(blockList.blocks).ToList());
+        superBlocksWeights = superBlocksList.Aggregate(new List<BlockWeight>(), (list, blockList) => list.Concat(blockList.blocks).ToList());
         blockForcer = GetComponent<BlockForcerInIR>();
         isInfiniteModeUnlocked = gm.goalManager.IsInfiniteModeUnlocked();
+        shouldUseSuperBlocks = SkillTreeManager.Instance.IsEnabled(SkillKey.SUPER_DATA);
         InitializeBootUpgrades();
         InitializeNbBlockDisplayer();
         InitTextureAdder();
@@ -200,12 +205,43 @@ public class InfiniteMap : MapManager {
             return;
         }
 
-        if (forceNotCompletedBlocks) {
+        if (ShouldCreatedNotCompletedBlock()) {
             CreateBlock(GetRandomNotCompletedBlockPrefab());
             return;
         }
 
-        CreateBlock(GetRandomBlockPrefab());
+        if(ShouldCreateForcedBlock()) {
+            CreateBlock(blockForcer.GetForcedBlockAt(GetCurrentBlockIndice()));
+            return;
+        }
+
+        if(ShouldCreateSuperBlock()) {
+            Debug.Log($"Create SUPER BLOCK !!! <3");
+            CreateBlock(GetRandomBlockPrefab(superBlocksWeights));
+            return;
+        }
+
+        CreateBlock(GetRandomBlockPrefab(blockWeights));
+    }
+
+    protected bool ShouldCreatedNotCompletedBlock() {
+        if(!forceNotCompletedBlocks) {
+            return false;
+        }
+        if(GetRemainingTimesToRememberCount() > 0) {
+            return true;
+        }
+        forceNotCompletedBlocks = false;
+        return false;
+    }
+
+    protected bool ShouldCreateSuperBlock() {
+        //return shouldUseSuperBlocks && UnityEngine.Random.value < 0.02f;
+        return true;
+    }
+
+    protected bool ShouldCreateForcedBlock() {
+        return blockForcer && blockForcer.ShoulForceBlockAt(GetCurrentBlockIndice());
     }
 
     protected void CreateBlock(GameObject blockPrefab) {
@@ -277,18 +313,14 @@ public class InfiniteMap : MapManager {
         return nbBlocks >= gm.goalManager.GetInfiniteModeNbBlocksTreshold() && !isInfiniteModeUnlocked;
     }
 
-    protected GameObject GetRandomBlockPrefab() {
-        int indiceBlock = allBlocks.Count - nbFirstBlocks;
-        if (blockForcer && blockForcer.ShoulForceBlockAt(indiceBlock)) {
-            return blockForcer.GetForcedBlockAt(indiceBlock);
-        }
-        return MathTools.ChoseOneWeighted(blockWeights.Select(bw => bw.block).ToList(), blockWeights.Select(bw => bw.weight).ToList());
+    protected GameObject GetRandomBlockPrefab(List<BlockWeight> weights) {
+        return MathTools.ChoseOneWeighted(weights.Select(bw => bw.block).ToList(), weights.Select(bw => bw.weight).ToList());
     }
 
     protected GameObject GetRandomNotCompletedBlockPrefab() {
         float totalWeight = blockWeights.Sum(bw => Block.maxTimesCountForAveraging - bw.block.GetComponent<Block>().timesForFinishing.Count);
         if(totalWeight <= 0) {
-            return GetRandomBlockPrefab();
+            return GetRandomBlockPrefab(blockWeights);
         }
         float randomNumber = UnityEngine.Random.Range(0f, 1f) * totalWeight;
         float sum = 0;
@@ -768,5 +800,9 @@ public class InfiniteMap : MapManager {
     public bool IsFromStartBlocks(Block block) {
         int indice = allBlocks.IndexOf(block);
         return indice != -1 && indice < nbFirstBlocks;
+    }
+
+    public int GetCurrentBlockIndice() {
+        return allBlocks.Count - nbFirstBlocks;
     }
 }

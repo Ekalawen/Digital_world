@@ -19,6 +19,7 @@ public class Block : MonoBehaviour {
 
     public Transform cubeFolder;
     public Transform lumiereFolder;
+    public bool canHaveRandomData = true;
     public List<float> timesForFinishing; // { private get; set; }  // Don't use this directly ! Use GetTimeList() !
     public bool shouldPlayerPressShift = false;
 
@@ -107,16 +108,21 @@ public class Block : MonoBehaviour {
             return;
         }
         List<BlockLumiere> blockLumieres = new List<BlockLumiere>();
+        List<BlockLumiere> alwaysBlockLumieres = new List<BlockLumiere>();
         foreach (Transform child in lumiereFolder) {
             BlockLumiere blockLumiere = child.gameObject.GetComponent<BlockLumiere>();
-            blockLumiere.Initialize();
             if (blockLumiere.CanBePicked()) {
-                blockLumieres.Add(blockLumiere);
+                if (blockLumiere.isAlwaysSpawned) {
+                    alwaysBlockLumieres.Add(blockLumiere);
+                } else {
+                    blockLumieres.Add(blockLumiere);
+                }
             }
         }
         blockLumieres = GaussianGenerator.SelecteSomeNumberOf(blockLumieres, nbLumieresToChose);
         nbLumieresToChoseMissing = nbLumieresToChose - blockLumieres.Count;
         blockLumieres.ForEach(bl => lumieres.AddRange(bl.GetLumieres()));
+        alwaysBlockLumieres.ForEach(bl => lumieres.AddRange(bl.GetLumieres()));
     }
 
     protected void DestroyNonChosenLumieres() {
@@ -447,6 +453,9 @@ public class Block : MonoBehaviour {
     }
 
     protected void SpawnRandomLumieres() {
+        if(!canHaveRandomData) {
+            return;
+        }
         int nbRandomDataToSpawn = Mathf.RoundToInt(randomDataProbability * lumiereSpawnBoundingBox.size.x * lumiereSpawnBoundingBox.size.y * lumiereSpawnBoundingBox.size.z);
         nbRandomDataToSpawn += nbLumieresToChoseMissing;
         for(int i = 0; i < nbRandomDataToSpawn; ++i) {

@@ -91,6 +91,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   blockLists: []
+  superBlocksList:
+  - {fileID: 9165647878576227112, guid: bed2e3a82d7c9b74d9ce9eafdc5f8204, type: 3}
   nbBlocksForward: 3
   difficultyMode: 0
   timeDifficultyCoefficient: 1
@@ -139,6 +141,9 @@ MonoBehaviour:
   onBlocksCrossed:
     m_PersistentCalls:
       m_Calls: []
+  onBlocksCrossedNonStart:
+    m_PersistentCalls:
+      m_Calls: []
   onCreateBlock:
     m_PersistentCalls:
       m_Calls: []
@@ -157,8 +162,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d2b44af74eaa7a4fb68f736f8574bca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dataProbability: 0
-  nbDataPerBlock: 1
   scoreIncrement: 1
   scoreIncrement2: 1
   onScoreChange:
