@@ -444,7 +444,7 @@ public class Block : MonoBehaviour {
         if(map.IsFromStartBlocks(this)) {
             return;
         }
-        if(UnityEngine.Random.value >= 0.20f) {
+        if(UnityEngine.Random.value >= 0.15f) {
             return;
         }
         int nbRandomItemsToSpawn = Mathf.RoundToInt(0.01f * lumiereSpawnBoundingBox.size.x * lumiereSpawnBoundingBox.size.y * lumiereSpawnBoundingBox.size.z);
