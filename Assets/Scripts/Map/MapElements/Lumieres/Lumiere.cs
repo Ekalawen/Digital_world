@@ -24,6 +24,7 @@ public class Lumiere : MonoBehaviour {
     [Header("Propriétés")]
     public LumiereType type;
     public float timeBonus = 10.0f;
+    public List<LumiereReward> rewards;
 
     [Header("Reward")]
     public GameObject rewardLumierePrefab;
@@ -107,9 +108,15 @@ public class Lumiere : MonoBehaviour {
 
         NotifyTimerManager();
 
+        ApplyRewards();
+
         NotifyBlockLumiere();
 
         ScreenShakeOnLumiereCapture();
+    }
+
+    protected void ApplyRewards() {
+        rewards.ForEach(r => r.Reward());
     }
 
     public void DestroySmoothly() {

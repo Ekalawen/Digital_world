@@ -135,4 +135,9 @@ public abstract class ScoreManager : MonoBehaviour
         int scoreToAdd = GetCurrentScore() - gm.console.GetPauseMenu().skillTreeMenu.GetAddedCreditsThiGame();
         SkillTreeManager.Instance.AddCredits(scoreToAdd);
     }
+
+    public virtual void MultiplyAllScores(float multiplier) {
+        int scoreToAdd = Mathf.RoundToInt(GetCurrentScore() * (multiplier - 1.0f));
+        AddToScore(scoreToAdd);
+    }
 }

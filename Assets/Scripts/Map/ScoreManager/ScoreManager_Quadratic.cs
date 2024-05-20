@@ -42,22 +42,44 @@ public class ScoreManager_Quadratic : ScoreManager {
     }
 
     public override void OnCatchData() {
-        scoreIncrement += scoreIncrement2;
-        string scoreIncrement2String = incrementDisplayerUpdater.ApplyToCreditsFormating(scoreIncrement2);
-        incrementDisplayer.AddVolatileText($"+ {scoreIncrement2String} !", incrementDisplayer.GetTextColor());
+        AddToScoreIncrement(scoreIncrement2);
+    }
+
+    private void AddToScoreIncrement(int scoreIncrementToAdd) {
+        scoreIncrement += scoreIncrementToAdd;
+        string scoreIncrementToAddString = incrementDisplayerUpdater.ApplyToCreditsFormating(scoreIncrementToAdd);
+        incrementDisplayer.AddVolatileText($"+ {scoreIncrementToAddString} !", incrementDisplayer.GetTextColor());
         incrementDisplayerUpdater.UpdateValue();
     }
 
     public override void OnNewTresholdCrossed() {
-        scoreIncrement2 += scoreIncrement3;
-        string scoreIncrement3String = increment2DisplayerUpdater.ApplyToCreditsFormating(scoreIncrement3);
-        increment2Displayer.AddVolatileText($"+ {scoreIncrement3String} !!!", incrementDisplayer.GetTextColor());
-        increment2DisplayerUpdater.UpdateValue();
-
-        scoreIncrement3 += scoreIncrement4;
+        AddToScoreIncrement2(scoreIncrement3);
+        AddToScoreIncrement3(scoreIncrement4);
         //if(!hasAlreadyDoubleScoreIncrement4) {
         //    scoreIncrement4 *= 2;
         //    hasAlreadyDoubleScoreIncrement4 = true;
         //}
+    }
+
+    protected void AddToScoreIncrement3(int scoreIncrementToAdd) {
+        scoreIncrement3 += scoreIncrementToAdd;
+    }
+
+    private void AddToScoreIncrement2(int scoreIncrement2ToAdd) {
+        scoreIncrement2 += scoreIncrement2ToAdd;
+        string scoreIncrement2ToAddString = increment2DisplayerUpdater.ApplyToCreditsFormating(scoreIncrement2ToAdd);
+        increment2Displayer.AddVolatileText($"+ {scoreIncrement2ToAddString} !!!", incrementDisplayer.GetTextColor());
+        increment2DisplayerUpdater.UpdateValue();
+    }
+
+    public override void MultiplyAllScores(float multiplier) {
+        base.MultiplyAllScores(multiplier);
+        int scoreIncrementToAdd = Mathf.RoundToInt(scoreIncrement * (multiplier - 1));
+        AddToScoreIncrement(scoreIncrementToAdd);
+        int scoreIncrement2ToAdd = Mathf.RoundToInt(scoreIncrement2 * (multiplier - 1));
+        AddToScoreIncrement2(scoreIncrement2ToAdd);
+        int scoreIncrement3ToAdd = Mathf.RoundToInt(scoreIncrement3 * (multiplier - 1));
+        AddToScoreIncrement3(scoreIncrement3ToAdd);
+        // Pour le moment scoreIncrement4 reste comme ça :)
     }
 }
