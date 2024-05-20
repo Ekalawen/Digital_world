@@ -121,7 +121,6 @@ public class Lumiere : MonoBehaviour {
     }
 
     protected void ApplyRewards() {
-        Debug.Log($"REWARD !");
         rewards.ForEach(r => r.Reward());
     }
 
