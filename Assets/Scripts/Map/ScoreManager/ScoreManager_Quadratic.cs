@@ -65,6 +65,10 @@ public class ScoreManager_Quadratic : ScoreManager {
         scoreIncrement3 += scoreIncrementToAdd;
     }
 
+    protected void AddToScoreIncrement4(int scoreIncrementToAdd) {
+        scoreIncrement4 += scoreIncrementToAdd;
+    }
+
     private void AddToScoreIncrement2(int scoreIncrement2ToAdd) {
         scoreIncrement2 += scoreIncrement2ToAdd;
         string scoreIncrement2ToAddString = increment2DisplayerUpdater.ApplyToCreditsFormating(scoreIncrement2ToAdd);
@@ -80,6 +84,6 @@ public class ScoreManager_Quadratic : ScoreManager {
         AddToScoreIncrement(scoreIncrementToAdd);
         AddToScoreIncrement2(scoreIncrement2ToAdd);
         AddToScoreIncrement3(scoreIncrement3ToAdd);
-        // Pour le moment scoreIncrement4 reste comme ça :)
+        AddToScoreIncrement4(scoreIncrement3ToAdd);
     }
 }

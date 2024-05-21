@@ -236,7 +236,7 @@ public class InfiniteMap : MapManager {
 
     protected bool ShouldCreateSuperBlock() {
         //return shouldUseSuperBlocks && UnityEngine.Random.value < 0.02f;
-        return UnityEngine.Random.value < 0.4f;
+        return UnityEngine.Random.value < 0.1f;
     }
 
     protected bool ShouldCreateForcedBlock() {
