@@ -110,6 +110,7 @@ MonoBehaviour:
   dureeMurWithUpgrade: 1.3
   distanceMurMax: 0.5
   sensibilite: 1.8
+  sensibiliteCoefAtEndLevel: 0.1
   dureeCanJumpAfterFalling: 0.08
   shiftLandingNormalSpeedMultiplier:
     speedAdded: 0.7
@@ -183,6 +184,10 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     affectHeight: 0
+  glidingHorizontalSpeedCoef: 1.5
+  glidingVerticalSpeedCoef: 0.5
+  divingHorizontalSpeedCoef: 0.5
+  divingVerticalSpeedCoef: 1.5
   pouvoirHolder: {fileID: 539755138291621234}
   camera: {fileID: 20265978551892820}
   dashVfx: {fileID: 3987839259345345149}
@@ -201,7 +206,7 @@ MonoBehaviour:
   personnage: {fileID: 0}
   console: {fileID: 0}
   bSetUpRotation: 0
-  bIsStun: 0
+  isStun: 0
   onLand:
     m_PersistentCalls:
       m_Calls: []

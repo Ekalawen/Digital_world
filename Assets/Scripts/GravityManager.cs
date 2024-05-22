@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Rendering.PostProcessing;
 
 public class GravityManager : MonoBehaviour {
 
@@ -52,12 +53,20 @@ public class GravityManager : MonoBehaviour {
         playerCameraOffsetFluctuator = new Fluctuator(this, gm.player.GetCameraShakerHeight, gm.player.SetCameraShakerHeight);
     }
 
+    public Vector3 ComputeGravity() {
+        return DirToVec(gravityDirection) * gravityIntensity;
+    }
+
     public Vector3 ApplyGravity(Vector3 initialMovement) {
-        return initialMovement + DirToVec(gravityDirection) * gravityIntensity;
+        return initialMovement + ComputeGravity();
+    }
+
+    public Vector3 ComputeCounterGravity() {
+        return - ComputeGravity();
     }
 
     public Vector3 CounterGravity(Vector3 initialMovement) {
-        return initialMovement - DirToVec(gravityDirection) * gravityIntensity;
+        return initialMovement + ComputeCounterGravity();
     }
 
     public Vector3 MoveOppositeDirectionOfGravity(Vector3 initialMovement, float intensityMovement) {

@@ -33,6 +33,14 @@ public class Player : Character {
     public SpeedMultiplier shiftLandingNormalSpeedMultiplier;
     public SpeedMultiplier shiftLandingFastSpeedMultiplier;
 
+    [Header("Gliding")]
+    public float glidingHorizontalSpeedCoef = 1.5f;
+    public float glidingVerticalSpeedCoef = 0.5f;
+
+    [Header("Diving")]
+    public float divingHorizontalSpeedCoef = 0.5f;
+    public float divingVerticalSpeedCoef = 3.0f;
+
     [Header("Pouvoirs")]
     public PouvoirHolder pouvoirHolder;
 
@@ -604,13 +612,36 @@ public class Player : Character {
     }
 
     public float GetHorizontalVitesse() {
-        //Debug.Log($"SpeedMultiplier = {GetSpeedMultiplier()}");
-        return vitesseDeplacement * GetSpeedMultiplier();
+        return vitesseDeplacement * GetSpeedMultiplier() * GetGlidingHorizontalSpeedCoef() * GetDivingVerticalSpeedCoef();
+    }
+
+    public bool IsGliding() {
+        return (etat == EtatPersonnage.EN_CHUTE || etat == EtatPersonnage.EN_SAUT) && inputManager.GetJump() && !IsDiving();
+    }
+
+    public float GetGlidingHorizontalSpeedCoef() {
+        return IsGliding() ? glidingHorizontalSpeedCoef : 1.0f;
+    }
+
+    public float GetGlidingVerticalSpeedCoef() {
+        return IsGliding() ? glidingVerticalSpeedCoef : 1.0f;
+    }
+
+    public bool IsDiving() {
+        return (etat == EtatPersonnage.EN_CHUTE || etat == EtatPersonnage.EN_SAUT) && GetShiftInput();
+    }
+
+    public float GetDivingHorizontalSpeedCoef() {
+        return IsDiving() ? divingHorizontalSpeedCoef : 1.0f;
+    }
+
+    public float GetDivingVerticalSpeedCoef() {
+        return IsDiving() ? divingVerticalSpeedCoef : 1.0f;
     }
 
     protected Vector3 ApplyGravity(Vector3 move) {
         if(!isGravityEffectRemoved) {
-            move = gm.gravityManager.ApplyGravity(move);
+            move += gm.gravityManager.ComputeGravity() * GetGlidingVerticalSpeedCoef() * GetDivingVerticalSpeedCoef();
         }
         return move;
     }
@@ -935,7 +966,7 @@ public class Player : Character {
             move += gm.gravityManager.Up() * vitesseSaut * avancementRestant;
         }
         if (!isGravityEffectRemoved) {
-            move = gm.gravityManager.CounterGravity(move);
+            move += gm.gravityManager.ComputeCounterGravity() * GetGlidingVerticalSpeedCoef() * GetDivingVerticalSpeedCoef();
         }
         lastAvancementSaut = avancementSaut;
         return move;
